@@ -1,0 +1,118 @@
+/**
+ */
+package org.scalaml.regression.logit
+
+import org.scalaml.core.Types
+
+/**
+ *  @author Patrick Nicolas
+ *  @date Jun 2, 2014
+ *  @project Book
+ */
+
+import Types.ScalaMl._
+class LogitRegression[T <% Double](val lambda: Double, val numIters: Int, val features: Array[T], val y: Array[T]) {
+	require(lambda > 0.0 && lambda < 1.0)
+	
+	val theta: DblVector = {
+		
+	}
+	
+	private def train: Unit = {
+
+    // add the bias
+		/*
+    if (features[0].isSparse()) {
+      x = new SparseDoubleRowMatrix(DenseDoubleVector.ones(features.length),
+          new SparseDoubleRowMatrix(features));
+    } else {
+      x = new DenseDoubleMatrix(DenseDoubleVector.ones(features.length),
+          new DenseDoubleMatrix(features));
+    }
+    if (outcome[0].isSparse()) {
+      y = new SparseDoubleRowMatrix(outcome);
+    } else {
+      y = new DenseDoubleMatrix(outcome);
+    }
+    * 
+    */
+    // transpose y to get a faster lookup in the cost function
+    val yt = y.transpose
+
+    LogisticRegressionCostFunction cnf = new LogisticRegressionCostFunction(x,
+        y, lambda);
+
+    // random init theta
+    theta = new DenseDoubleVector(x.getColumnCount() * y.getRowCount());
+    for (int i = 0; i < theta.getDimension(); i++) {
+      theta.set(i, (random.nextDouble() * 2) - 1d);
+    }
+    theta = minimizer.minimize(cnf, theta, numIterations, verbose);
+	}
+	
+	
+	def predict(values: Array[T]): DblVector = {
+		  if (features.isSparse()) {
+      SparseDoubleVector tmp = new SparseDoubleVector(
+          features.getDimension() + 1);
+      tmp.set(0, 1d);
+      Iterator<DoubleVectorElement> iterateNonZero = features.iterateNonZero();
+      while (iterateNonZero.hasNext()) {
+        DoubleVectorElement next = iterateNonZero.next();
+        tmp.set(next.getIndex() + 1, next.getValue());
+      }
+      features = tmp;
+    } else {
+      features = new DenseDoubleVector(1d, features.toArray());
+    }
+    return new DenseDoubleVector(new double[] { SIGMOID.get().apply(
+        features.dot(theta)) });
+	}
+	
+
+
+}
+
+
+
+class Gradient(val x: DblMatrix, val y: DblMatrix, val lambda: Double) {
+	val sigmoidDerive = sigmoid(x.multiplyVectorRow(theta))
+	DoubleVector activation = SIGMOID.get().apply(x.multiplyVectorRow(theta));
+    DenseDoubleMatrix hypo = new DenseDoubleMatrix(Arrays.asList(activation));
+    double error = ERROR_FUNCTION.calculateError(y, hypo);
+    DoubleMatrix loss = hypo.subtract(y);
+    double j = error / m;
+    DoubleVector gradient = xTransposed.multiplyVectorRow(loss.getRowVector(0))
+        .divide(m);
+    if (lambda != 0d) {
+      DoubleVector reg = theta.multiply(lambda / m);
+      // don't regularize the bias
+      reg.set(0, 0d);
+      gradient = gradient.add(reg);
+      j += lambda * theta.pow(2).sum() / m;
+    }
+
+    (j, gradient);
+    
+    
+    def error(y: DblMatrix, h: DblMatrix): Double = {
+    	 DoubleMatrix negativeOutcome = y.subtractBy(1.0d);
+    DoubleMatrix inverseOutcome = y.multiply(-1d);
+    DoubleMatrix negativeHypo = hypothesis.subtractBy(1d);
+    DoubleMatrix negativeLogHypo = MathUtils.logMatrix(negativeHypo);
+    DoubleMatrix positiveLogHypo = MathUtils.logMatrix(hypothesis);
+    DoubleMatrix negativePenalty = negativeOutcome
+        .multiplyElementWise(negativeLogHypo);
+    DoubleMatrix positivePenalty = inverseOutcome
+        .multiplyElementWise(positiveLogHypo);
+
+    return (positivePenalty.subtract(negativePenalty)).sum();
+    }
+    
+   def sigmoid(x: Double): (Double, Double) = {
+		val sigmoidValue = 1.0/(1.0 + Math.exp(-x))
+		(sigmoidValue, sigmoidValue*(1.0 - sigmoidValue))
+	}
+}
+
+// ---------------------------  EOF ------------------------------------------------
