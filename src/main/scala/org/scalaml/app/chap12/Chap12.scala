@@ -53,14 +53,10 @@ object Chap12 extends App {
 			  
 			 implicit val actorSystem = ActorSystem("system")
 			      
-			 val regression = actorSystem.actorOf(Props(classOf[RegressionFuturesCallback], 
-			    									    volatility_volume, 
-			    									    logItGradient, 
-			    									    numWorkers, 
-			    									    numIters), name = "Regressionfuture")
-			    
-			 val rGen =  new Random(System.currentTimeMillis)
-			 val fut = regression ? Next((rGen.nextDouble, rGen.nextDouble))
+			 val callback = new RegressionFuturesCallback( volatility_volume, logItGradient, numWorkers, numIters)
+             val regression = actorSystem.actorOf(Props(callback), name = "Regressionfuture")
+
+			 val fut = regression ? Next((Random.nextDouble, Random.nextDouble))
 		
 			 val results = Await.result(fut, timeout.duration).asInstanceOf[XY]
 			 println(results.toString)

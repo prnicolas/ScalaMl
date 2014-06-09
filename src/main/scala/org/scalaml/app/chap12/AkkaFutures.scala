@@ -167,14 +167,10 @@ object AkkaFuturesEval {
   
        implicit val actorSystem = ActorSystem("system")
       
-       val regression = actorSystem.actorOf(Props(classOf[RegressionFuturesCallback], 
-    									      volatility_volume, 
-    									      logItGradient, 
-    									      6, 
-    									      10), name = "Regressionfuture")
+       val callback = new RegressionFuturesCallback( volatility_volume, logItGradient, 6, 10)
+       val regression = actorSystem.actorOf(Props(callback), name = "Regressionfuture")
     
-       val rGen =  new Random(System.currentTimeMillis)
-       val fut = regression ? Next((rGen.nextDouble, rGen.nextDouble))
+       val fut = regression ? Next((Random.nextDouble, Random.nextDouble))
        val results = Await.result(fut, timeout.duration).asInstanceOf[XY]
        println(results.toString)
        actorSystem.shutdown

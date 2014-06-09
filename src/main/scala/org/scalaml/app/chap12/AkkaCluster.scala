@@ -64,12 +64,12 @@ class Master(val numActors: Int,
 		      val numIters: Int) extends Actor {
  
 	var weights: XY = (Random.nextDouble, Random.nextDouble)
-
  
     val workers: Array[ActorRef] = {
 	   val ar = new Array[ActorRef](numActors)
        Range(0, numActors).foreach( i => {  
-           val routedActor = context.actorOf(Props(classOf[WorkerActor], gradient).withRouter(RoundRobinRouter(nrOfInstances = numActors)))    
+      	   val workerActor = new WorkerActor(gradient)
+           val routedActor = context.actorOf(Props(workerActor).withRouter(RoundRobinRouter(nrOfInstances = numActors)))    
            ar.update(i, routedActor)
        })
        ar

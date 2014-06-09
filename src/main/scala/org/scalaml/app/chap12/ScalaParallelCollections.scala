@@ -1,10 +1,15 @@
+/**
+ * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the only purpose of illustrating the 
+ * concepts and algorithms presented in Scala for Machine Learning.
+ */
 package org.scalaml.app.chap12
 
 import scala.collection.parallel.mutable.ParArray
 import scala.collection.mutable.ArraySeq
 import scala.collection.parallel.ForkJoinTaskSupport
 import scala.concurrent.forkjoin.ForkJoinPool
-import scala.actors.Actor
 
 
 class ParallelCollections[U <: Double](val t: Array[U], numCores: Int = 1) {

@@ -46,7 +46,7 @@ final class WorkerActor(val gradient: (XY, XY) =>Double) extends Actor {
          msg.sender ! (Completed(0, data.map( gradient(_, msg.weights)) ))
       }
       case msg: Iterate =>  msg.sender ! Completed(0, data.map( gradient( _, msg.weights)))
-      case Terminate => exit
+      case Terminate => sys.exit
    }
 }
 
@@ -105,7 +105,7 @@ class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters
       if( execution.decrNumIters ) {
          workers.foreach( _ ! Terminate )
          saveToFile
-         exit
+         sys.exit
       }
       else {
 	      println("Iterate")
