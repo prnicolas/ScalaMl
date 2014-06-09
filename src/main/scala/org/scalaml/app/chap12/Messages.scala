@@ -4,9 +4,8 @@ import scala.collection.parallel.mutable.ParArray
 import scala.collection.mutable.ArraySeq
 import scala.collection.parallel.ForkJoinTaskSupport
 import scala.concurrent.forkjoin.ForkJoinPool
-import scala.actors.Actor
 import scala.collection.mutable.ArrayBuffer
-
+import akka.actor.ActorRef
 
 
 sealed abstract class Message(val id: Int)
@@ -16,8 +15,8 @@ case class Completed(val _id: Int, w: Array[Double]) extends Message(_id)
 case class Activate(val _id: Int, 
 		            val data: Array[(Double, Double)], 
 		            val weights: (Double, Double), 
-		            val sender: Actor) extends Message(_id)
-case class Iterate(val _id: Int, val weights: (Double, Double), val sender: Actor) extends Message(_id)
+		            val sender: ActorRef) extends Message(_id)
+case class Iterate(val _id: Int, val weights: (Double, Double), val sender: ActorRef) extends Message(_id)
 
 
 

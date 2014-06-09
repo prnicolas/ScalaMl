@@ -4,9 +4,8 @@ import scala.collection.parallel.mutable.ParArray
 import scala.collection.mutable.ArraySeq
 import scala.collection.parallel.ForkJoinTaskSupport
 import scala.concurrent.forkjoin.ForkJoinPool
-import scala.actors.Actor
 import org.scalaml.core.XTSeries
-
+import akka.actor.Actor
 
 
 
@@ -83,10 +82,9 @@ object Chap12 extends App {
 		  case Some(volatilityVol) => {
 		     val volatility_volume = volatilityVol(0).arr.zip(volatilityVol(1).arr)
 		   
-		     val workers = List.fill(numWorkers)(new WorkerActor(logItGradient))
+		     val workers = List.fill(numWorkers)(new WorkerActor(logItGradient).self)
 		     val master = new MasterActor(workers, volatility_volume, numIters)
-		     master.start
-		     master ! Start
+		     master.self ! Start
 		  }
 		  
 		  case none =>  Console.println("Cannot extract volatility and volume data")
