@@ -6,17 +6,26 @@
  */
 package org.scalaml.app.chap12
 
-import scala.collection.parallel.mutable.ParArray
-import scala.collection.mutable.ArraySeq
-import scala.collection.parallel.ForkJoinTaskSupport
-import scala.concurrent.forkjoin.ForkJoinPool
-import akka.actor.{Actor, ActorRef}
+
 import scala.collection.mutable.ArrayBuffer
-import org.scalaml.core.Types
+import org.scalaml.core.Types.ScalaMl._
+import java.io.{IOException, PrintWriter}
+import akka.actor._
+import scala.util.Random
 
-import Types.ScalaMl._
 
 
+		/**
+		 * <p>Define the state of the execution of a distributed workflow composed
+		 * of a Master actor and several worker/slave actors.</p>
+		 * @param numIters Number of iterations used in the computation performed by the worker
+		 * @param numWorkers Number of workers used in the computation
+		 * @exception IllegalArgumenException if the number of iterations or the number of workers is out of range
+		 * 
+		 * @author Patrick Nicolas
+		 * @date March 23, 2014
+		 * @project Scala for Machine Learning
+		 */
 class ExecutionState(val numIters: Int, val numWorkers: Int) {
    require(numIters > 0 && numIters < 1000, "Number of iterations " + numIters + " in execution state in out of range" )
    require(numWorkers > 0 && numWorkers < 32, "Number of worker actors " + numWorkers + " in execution state in out of range" )
@@ -33,11 +42,17 @@ class ExecutionState(val numIters: Int, val numWorkers: Int) {
 
 
 		/**
-		 * This is a worker actor that execute a process
+		 * <p>Worker actor used to execute a computation 'gradient'. The computation is
+		 * initiated by the Master or workflow controller.</p>
+		 * @param gradient function to compute the Gradient from a array of (x,y) values
+		 * @exception IllegalArgumenException if gradient is undefined
+		 * 
+		 * @author Patrick Nicolas
+		 * @date March 24, 2014
+		 * @project Scala for Machine Learning
 		 */
 final class WorkerActor(val gradient: (XY, XY) =>Double) extends Actor {
    require(gradient != null, "Gradient function in the worker actor is undefined")
-	
 	
    var data: XYTSeries = null
    override def receive = {
@@ -52,7 +67,20 @@ final class WorkerActor(val gradient: (XY, XY) =>Double) extends Actor {
 
 
 
-class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters: Int) extends Actor {
+		/**
+		 * <p>Master actor that specifies and distributed the computation of gradient
+		 * on a data set {x,y}. This purpose of the class is to illustrate the 
+		 * Akka actors and message passing mechanism..</p>
+		 * @param workers List of reference to the worker or slave actors.
+		 * @param data Data set to be processed by the worker actors
+		 * @param numIters Maximum number of iterations allowed to the works to 
+		 * @exception IllegalArgumenException if gradient is undefined
+		 * 
+		 * @author Patrick Nicolas
+		 * @date March 24, 2014
+		 * @project Scala for Machine Learning
+		 */
+final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters: Int) extends Actor {
    require(workers != null && workers.size > 0, "Cannot create a master actor with undefined workers")	
    require(data != null && data.size > 0, "Cannot create a master actor to process undefined data")	
    require(numIters > 0 && numIters < 1000, "Number of iteration for data processing in Master " + numIters + " is out of range")

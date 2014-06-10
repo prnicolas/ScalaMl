@@ -6,13 +6,8 @@
  */
 package org.scalaml.app.chap12
 
-import scala.collection.parallel.mutable.ParArray
-import scala.collection.mutable.ArraySeq
-import scala.collection.parallel.ForkJoinTaskSupport
-import scala.concurrent.forkjoin.ForkJoinPool
-import scala.collection.mutable.ArrayBuffer
-import akka.actor.ActorRef
 
+import akka.actor._
 
 sealed abstract class Message(val id: Int)
 case class Terminate(val _id: Int) extends Message(_id)

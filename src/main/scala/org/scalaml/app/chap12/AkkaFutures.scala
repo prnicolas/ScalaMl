@@ -6,58 +6,65 @@
  */
 package org.scalaml.app.chap12
 
-import akka.actor.{Actor, ActorSystem, ActorRef, Props}
-import akka.util.Timeout
-import akka.pattern.ask
+
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
-import com.typesafe.config.Config
-import scala.io.Source
-import org.scalaml.stats.Stats
-import org.scalaml.trading.PriceVolume
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
-import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.Types
-import Types.ScalaMl._
+import scala.collection.mutable.ArrayBuffer
+import org.scalaml.core.Types.ScalaMl._
+import akka.actor._
+import akka.util.Timeout
+
 
 case class Next(w: XY)
 
 
 		/**
-		 * Create a task that trigger a another task/actor to simulate future
+		 * <p>Base class for the two versions of a future computation of a regression.<br>
+		 *  blocking the caller<br>
+		 *  Callback the caller.<br>
+		 *  The task consists of performing a regression using a gradient function and a timee series
+		 *  as input.</p>
+		 *  @param data Time series input for which regression has to be computed
+		 *  @param gradient gradient function
+		 *  @param numFutures number of futures used in the parallelization of the computation
+		 *  @param numIters maximum number of iterations used in the regression
+		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  
+		 *  @author Patrick Nicolas
+		 *  @data March 30, 2014
+		 *  @project Scala for Machine Learning
 		 */
 abstract class RegressionFutures(val data: XYTSeries,
-                      			 val derivatives: (XY, XY) =>Double, 
+                      			 val gradient: (XY, XY) =>Double, 
                       			 val numFutures: Int,
-                      			 val maxNumIters: Int = 200) extends Actor {
+                      			 val numIters: Int = 200) extends Actor {
 	
 	require(data != null && data.size > 0, "Cannot execute a regression future with undefined data")
-	require(derivatives != null , "Cannot execute a regression future with undefined derivatives")
+	require(gradient != null , "Cannot execute a regression future with undefined derivatives")
 	require( numFutures > 0 && numFutures <32, "Number of futures in Regression " + numFutures + " is out of range")
-    require(  maxNumIters > 0 && maxNumIters < 1000, "Number of iterations allowed for regression " + maxNumIters + " is out of range")
+    require(numIters > 0 && numIters < 1000, "Number of iterations allowed for regression " + numIters + " is out of range")
 		
     import scala.util.Random
     
 	implicit val timeout = Timeout(2000)
 	      
 	protected[this] val aggrGradient = new ArrayBuffer[DblVector](numFutures)
-	private[this] var numIters = maxNumIters
-	
+	private[this] var counter = numIters
+	private[this] var parent: ActorRef = null
 	private[this] val partitions = {
-       val partitionsBuffer = new ArrayBuffer[XYTSeries]
        val segSize = data.size/numFutures
-	   var index = 0
-	   Range(0, numFutures).foreach( _ => {
-	       partitionsBuffer.append( data.slice(index, index + segSize) )
-	       index += segSize
-	   })
-	   partitionsBuffer.toArray
+	   
+	   Range(0, numFutures).foldLeft(List[XYTSeries]())( (xs, n) => {
+	  	   val lowerBound = n * segSize
+	  	   data.slice( lowerBound, lowerBound + segSize) :: xs
+	   }).toArray
     }
 	   
 	override def preStart: Unit = { println("Setup Actor") }
-	     
-    private[this] var parent: ActorRef = null
-    
+	    
+       /**
+        * <pMain co-routine that processes messages
+        */
 	def receive = {
 	  case next: Next => { if( parent == null) parent = sender; iterate(next.w) }
       case _ => println("Not recognized")
@@ -68,17 +75,16 @@ abstract class RegressionFutures(val data: XYTSeries,
 	
 	protected def processHandler(futures: Array[Future[DblVector]], w: XY): Unit
 	
-	
 	private[this] def iterate(w: XY): Unit = {   
-	   if( numIters > 0) {
+	   if( counter > 0) {
 	      val futures = new Array[Future[DblVector]](numFutures)
 	      
 	      Range(0, numFutures) foreach( i => {
 		     futures(i) = Future[DblVector] {
-			    partitions(i).map(derivatives(_, w) )
+			    partitions(i).map(gradient(_, w) )
 			 }
 	      }) 
-	      numIters -= 1
+	      counter -= 1
 	      processHandler(futures, w)
 	   }
 	   else 
@@ -87,36 +93,62 @@ abstract class RegressionFutures(val data: XYTSeries,
 }
 
 
+
+
+		/**
+		 * <p>Version of the future regression for which the client or caller blocks until all the
+		 * future computations are completed.</p>
+		 *  @param _data Time series input for which regression has to be computed
+		 *  @param _gradient gradient function
+		 *  @param _numFutures number of futures used in the parallelization of the computation
+		 *  @param _numIters maximum number of iterations used in the regression
+		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  
+		 *  @author Patrick Nicolas
+		 *  @data March 30, 2014
+		 *  @project Scala for Machine Learning
+		 */			
 final class RegressionFuturesBlocking(val _data: XYTSeries,
-                      				val _derivatives: (XY, XY) =>Double, 
+                      				val _gradient: (XY, XY) =>Double, 
                       				val _numFutures: Int,
-                      				val _maxNumIters: Int) extends RegressionFutures(_data, _derivatives, _numFutures, _maxNumIters) {
+                      				val _numIters: Int) extends RegressionFutures(_data, _gradient, _numFutures, _numIters) {
   
    override def processHandler(futures: Array[Future[DblVector]], we: XY): Unit = {
        var counter = 1
        
-       (0 until numFutures) foreach( i => {
+       Range(0, numFutures) foreach( i => {
          val partialGradient = Await.result(futures(i), timeout.duration).asInstanceOf[DblVector]  
          
          if(counter == numFutures) {   
 	        val g = aggrGradient.toArray.flatten.reduceLeft( _ + _)
             counter = 1
-            println("Apply to next")
             self ! Next((-g*we._1, -g*we._2))
 	      }
 	      counter += 1
 	      aggrGradient += partialGradient
-     
        })
    }
 }
 
 
 
+		/**
+		 * <p>Version of the future regression for which the client or caller blocks until all the
+		 * future computations are completed.</p>
+		 *  @param _data Time series input for which regression has to be computed
+		 *  @param _gradient gradient function
+		 *  @param _numFutures number of futures used in the parallelization of the computation
+		 *  @param _numIters maximum number of iterations used in the regression
+		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  
+		 *  @author Patrick Nicolas
+		 *  @data March 30, 2014
+		 *  @project Scala for Machine Learning
+		 */	
 final class RegressionFuturesCallback(	val _data: XYTSeries,
-                      					val _derivatives: (XY, XY) =>Double, 
+                      					val _gradient: (XY, XY) =>Double, 
                       					val _numFutures: Int,
-                      					val _maxNumIters: Int) extends RegressionFutures(_data, _derivatives, _numFutures, _maxNumIters) {
+                      					val _numIters: Int) extends RegressionFutures(_data, _gradient, _numFutures, _numIters) {
   
    override def processHandler(futures: Array[Future[DblVector]], we: XY): Unit = {
 	  var counter = 1
@@ -141,45 +173,6 @@ final class RegressionFuturesCallback(	val _data: XYTSeries,
 	   })
 	}
 }
-
-
-object AkkaFuturesEval {
-   import scala.util.Random   
-   import org.scalaml.workflow.data.DataSource
-   
-   implicit val timeout = Timeout(20000)
-  	   
-   val logItGradient = (x: XY, w: XY) => {
-       val exponent = - x._2*(w._1*x._1 + w._2)
-       (1.0/(1.0 + Math.exp(-exponent)) -1.0)*x._1*x._2
-   }
-      
-   
-   val transforms = List[Array[String] => Double](
-  	 (f:Array[String]) => f(PriceVolume.HIGH.id).toDouble - f(PriceVolume.LOW.id).toDouble,
-  	  (f:Array[String]) => f(PriceVolume.VOLUME.id).toDouble
-   )
-
-   val dataSource = DataSource("resources/data/chap12/CSCO.csv",  true)
-   dataSource |> transforms match {
-     case Some(volatilityVol) => {
-       val volatility_volume: XYTSeries = volatilityVol(0).arr.zip(volatilityVol(1).arr)
-  
-       implicit val actorSystem = ActorSystem("system")
-      
-       val callback = new RegressionFuturesCallback( volatility_volume, logItGradient, 6, 10)
-       val regression = actorSystem.actorOf(Props(callback), name = "Regressionfuture")
-    
-       val fut = regression ? Next((Random.nextDouble, Random.nextDouble))
-       val results = Await.result(fut, timeout.duration).asInstanceOf[XY]
-       println(results.toString)
-       actorSystem.shutdown
-     }
-     
-     case None => Console.println("Cannot load volatility and volume data")
-   }
-}
-
 
 
 // ------------------------  EOF -----------------------------------------------------------------------------

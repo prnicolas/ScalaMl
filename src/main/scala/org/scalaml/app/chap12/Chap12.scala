@@ -1,11 +1,20 @@
+/**
+ * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the only purpose of illustrating the 
+ * concepts and algorithms presented in Scala for Machine Learning.
+ */
 package org.scalaml.app.chap12
 
-import scala.collection.parallel.mutable.ParArray
-import scala.collection.mutable.ArraySeq
-import scala.collection.parallel.ForkJoinTaskSupport
-import scala.concurrent.forkjoin.ForkJoinPool
+
 import org.scalaml.core.XTSeries
-import akka.actor.Actor
+import scala.util.Random
+import scala.io.Source
+import scala.concurrent.ExecutionContext.Implicits.global
+import com.typesafe.config.Config
+import akka.actor.Props
+import scala.concurrent.Await
+
 
 
 
@@ -32,19 +41,11 @@ object Chap12 extends App {
    final val numIters = 100
    
       
-   def testFutures = {
-      import scala.util.Random   
-      import scala.io.Source
-      import scala.concurrent.ExecutionContext.Implicits.global
-      import scala.concurrent.{Await, Future}
-      
-      import akka.pattern.ask
-      import akka.actor.{Actor, ActorSystem, ActorRef, Props}
-	  import akka.util.Timeout
-
-	  import com.typesafe.config.Config
-
-
+   def testAkkaFutures = {
+  	  import akka.actor.ActorSystem
+  	  import akka.util.Timeout
+  	  import akka.pattern.ask
+  	  
       implicit val timeout = Timeout(20000)
 	  		
 	  extractVolatilityVolume match {
@@ -67,7 +68,7 @@ object Chap12 extends App {
     }
    
    
-   def testScalaActors: Unit = {
+   def testAkkaActors: Unit = {
 	  import scala.io.Source
 	  import org.scalaml.trading._
 	  import scala.concurrent.duration.Duration
@@ -88,6 +89,11 @@ object Chap12 extends App {
    }
 
    def testParallelCollections: Unit  = {
+  	 import scala.collection.parallel.mutable.ParArray
+     import scala.collection.mutable.ArraySeq
+     import scala.collection.parallel.ForkJoinTaskSupport
+     import scala.concurrent.forkjoin.ForkJoinPool
+
 	  val sz = 100000
 	  val data = Array.tabulate(sz) ( _ << 1)
 		
