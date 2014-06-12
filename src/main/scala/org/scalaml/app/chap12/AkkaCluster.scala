@@ -43,14 +43,14 @@ case class Execute(val _id: Int,
 		 /**
 		  * <p>Class that control the execution of the gradient for a data set.
 		  */
-class Controller(val numActors: Int,  val data: XYTSeries, val gradient: (XY, XY) =>Double, val numIters: Int) extends Actor {
+class Controller(val numActors: Int,  val data: XYTSeries, val numIters: Int) extends Actor {
  
 	val weights: XY = (Random.nextDouble, Random.nextDouble)
 	
     val workers: Array[ActorRef] = {
 	   val ar = new Array[ActorRef](numActors)
        Range(0, numActors).foreach( i => {  
-      	   val workerActor = new WorkerActor(gradient)
+      	   val workerActor = new WorkerActor
            val routedActor = context.actorOf(Props(workerActor).withRouter(RoundRobinRouter(nrOfInstances = numActors)))    
            ar.update(i, routedActor)
        })

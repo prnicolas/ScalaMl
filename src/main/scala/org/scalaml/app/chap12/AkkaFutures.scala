@@ -13,82 +13,67 @@ import scala.collection.mutable.ArrayBuffer
 import org.scalaml.core.Types.ScalaMl._
 import akka.actor._
 import akka.util.Timeout
+import org.scalaml.stats.Stats
 
 
-case class Next(w: XY)
+case class Launch
 
 
 		/**
-		 * <p>Base class for the two versions of a future computation of a regression.<br>
+		 * <p>Base class for the two versions of using futures to balance folds for cross
+		 * validation. The folds are balanced by minimizing the variance of data on each
+		 * fold. The two versions are<br>
 		 *  blocking the caller<br>
-		 *  Callback the caller.<br>
-		 *  The task consists of performing a regression using a gradient function and a timee series
-		 *  as input.</p>
-		 *  @param data Time series input for which regression has to be computed
-		 *  @param gradient gradient function
+		 *  Callback the caller.</p>
+		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
 		 *  @param numFutures number of futures used in the parallelization of the computation
-		 *  @param numIters maximum number of iterations used in the regression
 		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
+		 *  @see org.scalaml.app.chap12.FoldsBalancer
 		 *  @author Patrick Nicolas
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */
-abstract class RegressionFutures(val data: XYTSeries,
-                      			 val gradient: (XY, XY) =>Double, 
-                      			 val numFutures: Int,
-                      			 val numIters: Int = 200) extends Actor {
+abstract class FoldNormalizerFuture(val data: XYTSeries,
+                      			 val numFutures: Int) extends Actor {
 	
-	require(data != null && data.size > 0, "Cannot execute a regression future with undefined data")
-	require(gradient != null , "Cannot execute a regression future with undefined derivatives")
-	require( numFutures > 0 && numFutures <32, "Number of futures in Regression " + numFutures + " is out of range")
-    require(numIters > 0 && numIters < 1000, "Number of iterations allowed for regression " + numIters + " is out of range")
+	require(data != null && data.size > 0, "Cannot balance undefined data across folds")
+	require(numFutures > 0 && numFutures <32, "Number of futures in balancing folds " +  numFutures + " is out of range")
+
 		
-    import scala.util.Random
-    
-	implicit val timeout = Timeout(2000)
-	      
-	protected[this] val aggrGradient = new ArrayBuffer[DblVector](numFutures)
-	private[this] var counter = numIters
+	implicit val timeout = Timeout(2000)	
+	val normalizer = new FoldsNormalizer(numFutures, data)
+
 	private[this] var parent: ActorRef = null
-	private[this] val partitions = {
-       val segSize = data.size/numFutures
-	   
-	   Range(0, numFutures).foldLeft(List[XYTSeries]())( (xs, n) => {
-	  	   val lowerBound = n * segSize
-	  	   data.slice( lowerBound, lowerBound + segSize) :: xs
-	   }).toArray
-    }
-	   
-	override def preStart: Unit = { println("Setup Actor") }
+
+	override def preStart: Unit = { }
+    override def postStop: Unit = {  }
 	    
        /**
-        * <pMain co-routine that processes messages
+        * <pMain event loop used to distribute the computation of the
+        * variance of each fold to each future. The only message process is
+        * the launch of the computation of the variance.</p>
         */
 	def receive = {
-	  case next: Next => { if( parent == null) parent = sender; iterate(next.w) }
-      case _ => println("Not recognized")
+	   case launch: Launch => { if( parent == null) parent = sender; compute(normalizer.folds) }
+       case _ => println("Message not recognized")
 	}
 
 	
-	override def postStop: Unit = {  }
+	protected def execute(futures: Array[Future[Double]]): Double
 	
-	protected def processHandler(futures: Array[Future[DblVector]], w: XY): Unit
-	
-	private[this] def iterate(w: XY): Unit = {   
-	   if( counter > 0) {
-	      val futures = new Array[Future[DblVector]](numFutures)
+	private[this] def compute(data: Array[Array[(XY, Int)]]): Unit = {   
+	   val futures = new Array[Future[Double]](numFutures)
 	      
-	      Range(0, numFutures) foreach( i => {
-		     futures(i) = Future[DblVector] {
-			    partitions(i).map(gradient(_, w) )
-			 }
-	      }) 
-	      counter -= 1
-	      processHandler(futures, w)
-	   }
-	   else 
-	      parent ! w
+	   Range(0, numFutures) foreach( i => {
+		  futures(i) = Future[Double] { 
+  	         val xSeries = data(i).map( _._1._1 )
+  	         val ySeries = data(i).map( _._1._2 )
+  	         Stats[Double](xSeries).variance + Stats[Double](ySeries).variance
+		  }
+	   }) 
+	   
+	   execute(futures)
 	}
 }
 
@@ -96,82 +81,76 @@ abstract class RegressionFutures(val data: XYTSeries,
 
 
 		/**
-		 * <p>Version of the future regression for which the client or caller blocks until all the
-		 * future computations are completed.</p>
-		 *  @param _data Time series input for which regression has to be computed
-		 *  @param _gradient gradient function
-		 *  @param _numFutures number of futures used in the parallelization of the computation
-		 *  @param _numIters maximum number of iterations used in the regression
+		 * <p>Version of the future to compute the variance of fold for which the
+		 *  the execution blocks until all the future complete the computation of 
+		 *  the variance for each assigned fold..</p>
+		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
+		 *  @param numFutures number of futures used in the parallelization of the computation
 		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */			
-final class RegressionFuturesBlocking(val _data: XYTSeries,
-                      				val _gradient: (XY, XY) =>Double, 
-                      				val _numFutures: Int,
-                      				val _numIters: Int) extends RegressionFutures(_data, _gradient, _numFutures, _numIters) {
+final class FoldNormalizerBlocking(val _data: XYTSeries,
+                      				  val _numFutures: Int) extends FoldNormalizerFuture(_data, _numFutures) {
   
-   override def processHandler(futures: Array[Future[DblVector]], we: XY): Unit = {
-       var counter = 1
-       
-       Range(0, numFutures) foreach( i => {
-         val partialGradient = Await.result(futures(i), timeout.duration).asInstanceOf[DblVector]  
-         
-         if(counter == numFutures) {   
-	        val g = aggrGradient.toArray.flatten.reduceLeft( _ + _)
-            counter = 1
-            self ! Next((-g*we._1, -g*we._2))
-	      }
-	      counter += 1
-	      aggrGradient += partialGradient
-       })
+		/**
+		 * <p>Delegates the computation of the variance of each fold
+		 * to their respective future. The execution blocks using Await.</p>
+		 * @param futures set of futures used to compute the variance of each fold
+		 * @exception IllegalArgumentException if futures are undefined
+		 */
+   override def execute(futures: Array[Future[Double]]): Double = {
+  	  require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
+  	  
+      val variances = Range(0, numFutures).map( i =>
+         Await.result(futures(i), timeout.duration).asInstanceOf[Double]  )
+      Stats[Double](variances.toArray).variance
    }
 }
 
 
-
 		/**
-		 * <p>Version of the future regression for which the client or caller blocks until all the
-		 * future computations are completed.</p>
-		 *  @param _data Time series input for which regression has to be computed
-		 *  @param _gradient gradient function
-		 *  @param _numFutures number of futures used in the parallelization of the computation
-		 *  @param _numIters maximum number of iterations used in the regression
+		 * <p>Version of the future computation of variance for which the execution
+		 * get notified of the completion of each future by call back..</p>
+		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
+		 *  @param numFutures number of futures used in the parallelization of the computation
 		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */	
-final class RegressionFuturesCallback(	val _data: XYTSeries,
-                      					val _gradient: (XY, XY) =>Double, 
-                      					val _numFutures: Int,
-                      					val _numIters: Int) extends RegressionFutures(_data, _gradient, _numFutures, _numIters) {
+final class FoldNormalizerCallback(val _data: XYTSeries,
+                      			 val _numFutures: Int) extends FoldNormalizerFuture(_data, _numFutures) {
   
-   override def processHandler(futures: Array[Future[DblVector]], we: XY): Unit = {
-	  var counter = 1
-	  
-	  (0 until numFutures) foreach( i => {
-	      futures(i) onSuccess {
-	        case partialGradient: DblVector => { 
-	          if(counter == numFutures) {
-	             val g = aggrGradient.flatten.reduceLeft( _ + _)
-                 counter = 1
-                 self ! Next((-g*we._1, -g*we._2))
-	          }
-	          else 
-		        aggrGradient += partialGradient
-		      counter += 1
-	        }  
-	      }
-	      
-	      futures(i) onFailure {
-	        case e: Exception => Console.println("Failed with future " + i)
-	      }
-	   })
-	}
+	
+	    /**
+		 * <p>Delegates the computation of the variance of each fold
+		 * to their respective future. The execution get notified through callbacks.</p>
+		 * @param futures set of futures used to compute the variance of each fold
+		 * @exception IllegalArgumentException if futures are undefined
+		 */
+   override def execute(futures: Array[Future[Double]]): Double = {
+  	 require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
+  	   	  
+  	 val variances = new DblVector(numFutures)
+  	 
+  	 Range(0, numFutures).foreach( i => { 
+  		futures(i) onSuccess {
+  		   case variance: Double => variances(i) = variance
+  		}
+  		futures(i) onFailure {
+	       case e: Exception => Console.println("Failed with future " + i)
+	    }
+  	 })
+  	 
+  	 variances.find( _ == -1.0 ) match {
+  		 case Some(found) => -1.0
+  		 case None => Stats[Double](variances).variance
+  	 }
+   }
 }
 
 

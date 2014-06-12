@@ -16,9 +16,22 @@ import org.scalaml.workflow.data.DataSource
 
 
 
-class DataExtractor(private val pathName: String, val suffix: String, private val reverseOrder: Boolean, val topLines: Int = 0)(implicit sc: SparkContext)  {
+	/**
+	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
+	 * @param pathName relative path for data sources
+	 * @param suffix suffix for the data files
+	 * @param reversedOrder specify that the order of the data in the CSV file has to be revered before processing
+	 * @param header number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
+	 * @exception IllegalArgumentException if the pathName or the file suffix is undefined.
+	 * 
+	 * @author Patrick Nicolas
+	 * @date April 1, 2014
+	 * @project Scala for Machine Learning
+	 */
+class DataExtractor(private val pathName: String, val suffix: String, private val reverseOrder: Boolean, val header: Int = 0)(implicit sc: SparkContext)  {
    require ( pathName != null & pathName.length > 1, "Cannot load data from undefined path")
-    
+   require ( suffix != null & suffix.length > 1, "Cannot load data from undefined file suffix")
+       
     protected val filesList: Array[String] = {   
   	  val file = new java.io.File(pathName)
   	  if( file.isDirectory) {
@@ -36,8 +49,8 @@ class DataExtractor(private val pathName: String, val suffix: String, private va
      
      try {
         val src = Source.fromFile(fileName)
-        val results = if( topLines > 0)
-           if( reverseOrder ) src.getLines.toArray.drop(topLines).reverse else src.getLines.toArray.drop(topLines) 
+        val results = if( header > 0)
+           if( reverseOrder ) src.getLines.toArray.drop(header).reverse else src.getLines.toArray.drop(header) 
         else 
            if( reverseOrder ) src.getLines.toArray.reverse else src.getLines.toArray	  	
 	  	src.close
@@ -50,6 +63,12 @@ class DataExtractor(private val pathName: String, val suffix: String, private va
      }
    }
    
+   		/**
+   		 * <p>Load input data from a source of CSV files defined in the constructors and
+   		 * apply a conversion function for selected field.</p>
+   		 * @param f implicit conversion from String to Double
+   		 * @return a Spark RDD as a list of index, value pair
+   		 */
    def load(implicit f: String => Double): Option[RDD[(Long, Double)]] = {
       require(f != null, "Cannot extracts fields with undefined extractors")
      
