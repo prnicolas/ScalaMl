@@ -16,7 +16,7 @@ import akka.util.Timeout
 import org.scalaml.stats.Stats
 
 
-case class Launch
+case class Launch(val id: Int = 0)
 
 
 		/**
@@ -29,12 +29,12 @@ case class Launch
 		 *  @param numFutures number of futures used in the parallelization of the computation
 		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
-		 *  @see org.scalaml.app.chap12.FoldsBalancer
+		 *  @see org.scalaml.app.chap12.FoldsNormalizer
 		 *  @author Patrick Nicolas
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */
-abstract class FoldNormalizerFuture(val data: XYTSeries,
+abstract class GroupsNormalizerActor(val data: XYTSeries,
                       			 val numFutures: Int) extends Actor {
 	
 	require(data != null && data.size > 0, "Cannot balance undefined data across folds")
@@ -42,9 +42,8 @@ abstract class FoldNormalizerFuture(val data: XYTSeries,
 
 		
 	implicit val timeout = Timeout(2000)	
-	val normalizer = new FoldsNormalizer(numFutures, data)
+	val normalizer = new GroupsNormalizer(numFutures, data)
 
-	private[this] var parent: ActorRef = null
 
 	override def preStart: Unit = { }
     override def postStop: Unit = {  }
@@ -55,7 +54,7 @@ abstract class FoldNormalizerFuture(val data: XYTSeries,
         * the launch of the computation of the variance.</p>
         */
 	def receive = {
-	   case launch: Launch => { if( parent == null) parent = sender; compute(normalizer.folds) }
+	   case launch: Launch => compute(normalizer.groups)
        case _ => println("Message not recognized")
 	}
 
@@ -81,10 +80,10 @@ abstract class FoldNormalizerFuture(val data: XYTSeries,
 
 
 		/**
-		 * <p>Version of the future to compute the variance of fold for which the
+		 * <p>Version of the future to compute the variance of data assigned to each group for which the
 		 *  the execution blocks until all the future complete the computation of 
 		 *  the variance for each assigned fold..</p>
-		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
+		 *  @param data time series {x, y} used in the cross validation and to be broken down into normalized groups
 		 *  @param numFutures number of futures used in the parallelization of the computation
 		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
@@ -92,13 +91,13 @@ abstract class FoldNormalizerFuture(val data: XYTSeries,
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */			
-final class FoldNormalizerBlocking(val _data: XYTSeries,
-                      				  val _numFutures: Int) extends FoldNormalizerFuture(_data, _numFutures) {
+final class GroupsNormalizerBlocking(val _data: XYTSeries,
+                      				  val _numFutures: Int) extends GroupsNormalizerActor(_data, _numFutures) {
   
 		/**
-		 * <p>Delegates the computation of the variance of each fold
+		 * <p>Delegates the computation of the variance of each group
 		 * to their respective future. The execution blocks using Await.</p>
-		 * @param futures set of futures used to compute the variance of each fold
+		 * @param futures set of futures used to compute the variance of each grou[
 		 * @exception IllegalArgumentException if futures are undefined
 		 */
    override def execute(futures: Array[Future[Double]]): Double = {
@@ -122,14 +121,14 @@ final class FoldNormalizerBlocking(val _data: XYTSeries,
 		 *  @data March 30, 2014
 		 *  @project Scala for Machine Learning
 		 */	
-final class FoldNormalizerCallback(val _data: XYTSeries,
-                      			 val _numFutures: Int) extends FoldNormalizerFuture(_data, _numFutures) {
+final class GroupsNormalizerCallback(val _data: XYTSeries,
+                      			 val _numFutures: Int) extends GroupsNormalizerActor(_data, _numFutures) {
   
 	
 	    /**
-		 * <p>Delegates the computation of the variance of each fold
+		 * <p>Delegates the computation of the variance of each group
 		 * to their respective future. The execution get notified through callbacks.</p>
-		 * @param futures set of futures used to compute the variance of each fold
+		 * @param futures set of futures used to compute the variance of each group
 		 * @exception IllegalArgumentException if futures are undefined
 		 */
    override def execute(futures: Array[Future[Double]]): Double = {

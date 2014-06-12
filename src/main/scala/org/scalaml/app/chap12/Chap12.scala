@@ -15,6 +15,8 @@ import com.typesafe.config.Config
 import akka.actor.Props
 import scala.concurrent.Await
 import org.scalaml.core.Types.ScalaMl._
+import scala.concurrent.duration
+
 
 
 object ScalaParallelCollectionEval {
@@ -83,6 +85,8 @@ object AkkaActorEval extends AkkaEval {
 		     
 		     val master = actorSystem.actorOf(Props(new MasterActor(workers, volatilityVol, numIters)), "Master")
 		     master ! Start(0)
+		     actorSystem.awaitTermination(Duration(5000, "millis"))
+		     actorSystem.shutdown
 		  }
 		  
 		  case none =>  Console.println("Cannot extract volatility and volume data")
@@ -103,19 +107,16 @@ object AkkaFutureEval extends AkkaEval {
 	  		
       Console.println(descriptor)
 	  extractVolatilityVolume match {
-		  case Some(volatilityVol) => {
-			 val volatility_volume = volatilityVol(0).arr.zip(volatilityVol(1).arr)
+		  case Some(x) => {
+			 val volatilityVol = x(0).arr.zip(x(1).arr)
 			  
 			 implicit val actorSystem = ActorSystem("system")
-			      
-             val regression = actorSystem.actorOf(
-            		              Props(new FoldNormalizerBlocking(volatility_volume, numWorkers)), 
-            		                    name = "Regressionfuture")
+			 val normalizer = new GroupsNormalizerBlocking(volatilityVol, numWorkers)
+             val normalization = actorSystem.actorOf(Props(normalizer), name = "Regressionfuture")
 
-			 val fut = regression ? Launch
+			 val fut = normalization ? Launch
 		
 			 val results = Await.result(fut, timeout.duration).asInstanceOf[Double]
-			 println(results.toString)
 			 actorSystem.shutdown
 		  }
 		  case None => Console.println("Cannot extract volatility and volume data")

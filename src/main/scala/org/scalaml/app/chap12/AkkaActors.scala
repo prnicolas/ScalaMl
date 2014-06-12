@@ -48,12 +48,13 @@ final class WorkerActor extends Actor {
 
 
 		/**
-		 * <p>Master actor to manage the distribution of the balancing of folds used in
-		 * cross validation of a supervised machine learning algorithm.</p>
+		 * <p>Master actor to manage the normalization of groups used in
+		 * N-fold cross validation of a supervised machine learning algorithm.</p>
 		 * @param workers List of reference to the worker or slave actors.
 		 * @param data Data set to be processed by the worker actors
 		 * @param numIters Maximum number of iterations allowed to the works to 
-		 * @exception IllegalArgumenException if gradient is undefined
+		 * @exception IllegalArgumenException if worker actors are undefined, 
+		 * the data is undefined or the maximum number of iterations is out of range
 		 * 
 		 * @author Patrick Nicolas
 		 * @date March 24, 2014
@@ -64,15 +65,15 @@ final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val nu
    require(data != null && data.size > 0, "Cannot create a master actor to process undefined data")	
    require(numIters > 0 && numIters < 1000, "Number of iteration for data processing in Master " + numIters + " is out of range")
 	   
-   val normalizer = new FoldsNormalizer(workers.size, data)
+   val normalizer = new GroupsNormalizer(workers.size, data)
    
    		/**
-   		 * <p>Event loop of the mastet actor that processes two messages<br>
-   		 * Start to initialize the worker actor and launch the execution of balancing of folds<br>
+   		 * <p>Event loop of the master actor that processes two messages<br>
+   		 * Start to initialize the worker actor and launch the normalization of cross validation groups<br>
    		 * Completed to process the results of the current iteration in the balancing procedure.</p>
    		 */
    override def receive = {
-      case msg: Start => execute(0, normalizer.folds)
+      case msg: Start => execute(0, normalizer.groups)
       
       case msg: Completed => {
       	 if( normalizer.update(msg.id, msg.variance) ) {
@@ -81,7 +82,7 @@ final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val nu
 	      	   context.stop(self)
 	      	}
 	      	else 
-	      	   execute(msg.id +1, normalizer.folds)
+	      	   execute(msg.id +1, normalizer.groups)
 	     }
       }
       case _ => println("Message not recognized")
