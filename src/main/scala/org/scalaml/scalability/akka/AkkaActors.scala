@@ -4,14 +4,12 @@
  * The source code in this file is provided by the author for the only purpose of illustrating the 
  * concepts and algorithms presented in Scala for Machine Learning.
  */
-package org.scalaml.app.chap12
+package org.scalaml.scalability.akka
 
 
-import scala.collection.mutable.ArrayBuffer
 import org.scalaml.core.Types.ScalaMl._
 import java.io.{IOException, PrintWriter}
 import akka.actor._
-import scala.util.Random
 import org.scalaml.stats.Stats
 
 
@@ -60,7 +58,7 @@ final class WorkerActor extends Actor {
 		 * @date March 24, 2014
 		 * @project Scala for Machine Learning
 		 */
-final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters: Int) extends Actor {
+class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters: Int) extends Actor {
    require(workers != null && workers.size > 0 && workers.size < 32, "Cannot create a master actor with undefined workers")	
    require(data != null && data.size > 0, "Cannot create a master actor to process undefined data")	
    require(numIters > 0 && numIters < 1000, "Number of iteration for data processing in Master " + numIters + " is out of range")
@@ -73,7 +71,7 @@ final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val nu
    		 * Completed to process the results of the current iteration in the balancing procedure.</p>
    		 */
    override def receive = {
-      case msg: Start => execute(0, normalizer.groups)
+      case msg: Start => execute(0)
       
       case msg: Completed => {
       	 if( normalizer.update(msg.id, msg.variance) ) {
@@ -82,15 +80,15 @@ final class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val nu
 	      	   context.stop(self)
 	      	}
 	      	else 
-	      	   execute(msg.id +1, normalizer.groups)
+	      	   execute(msg.id +1)
 	     }
       }
       case _ => println("Message not recognized")
    }
    
 
-   private[this] def execute(id: Int, folds: Array[Array[(XY, Int)]]): Unit = 
-      workers.zipWithIndex.foreach( w =>  w._1 ! Activate(id, folds(w._2), self) )   
+   private[this] def execute(id: Int): Unit = 
+      workers.zipWithIndex.foreach( w =>  w._1 ! Activate(id, normalizer.groups(w._2), self) )   
 }
 
 

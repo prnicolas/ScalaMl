@@ -4,7 +4,7 @@
  * The source code in this file is provided by the author for the only purpose of illustrating the 
  * concepts and algorithms presented in Scala for Machine Learning.
  */
-package org.scalaml.app.chap12
+package org.scalaml.scalability.akka
 
 
 import org.scalaml.core.Types.ScalaMl._
@@ -44,28 +44,31 @@ case class Execute(val _id: Int,
 		  * <p>Class that control the execution of the gradient for a data set.
 		  */
 class Controller(val numActors: Int,  val data: XYTSeries, val numIters: Int) extends Actor {
- 
-	val weights: XY = (Random.nextDouble, Random.nextDouble)
-	
-    val workers: Array[ActorRef] = {
-	   val ar = new Array[ActorRef](numActors)
-       Range(0, numActors).foreach( i => {  
-      	   val workerActor = new WorkerActor
-           val routedActor = context.actorOf(Props(workerActor).withRouter(RoundRobinRouter(nrOfInstances = numActors)))    
-           ar.update(i, routedActor)
-       })
-       ar
-    }
-    
-    override def receive = {
-       case Start => {
-      	  val segSize = data.size/workers.size
- 
-      	  workers.zipWithIndex.foreach( w => {
-      	  	val lowBound = segSize*w._2
-      	    w._1 ! Execute(w._2, data.slice(lowBound, lowBound + segSize), weights, this) })
-       }
-    }
+   require(numActors > 0 && numActors < 32, "Cannot create a master actor with number of actors " + numActors + " out of range")	
+   require(data != null && data.size > 0, "Cannot create a master actor to process undefined data")	
+   require(numIters > 0 && numIters < 1000, "Number of iteration for data processing in Master " + numIters + " is out of range")
+
+   val router = context.actorOf(Props(new WorkerActor).withRouter(RoundRobinRouter(nrOfInstances = numActors)))  	
+   val normalizer = new GroupsNormalizer(numActors, data)
+
+   override def receive = {
+      case msg: Start => execute(0)
+      
+      case msg: Completed => {
+      	 if( normalizer.update(msg.id, msg.variance) ) {
+	      	if( msg.id >= numIters) {
+	      	   router ! Terminate
+	      	   context.stop(self)
+	      	}
+	      	else 
+	      	   execute(msg.id +1)
+	     }
+      }
+      case _ => println("Message not recognized")
+   } 
+   
+  private def execute(id: Int): Unit = 
+  	 Range(0, numActors).foreach(n => router ! Activate(id, normalizer.groups(n), self) )
 }
 
 // --------------------------------  EOF -------------------------------------

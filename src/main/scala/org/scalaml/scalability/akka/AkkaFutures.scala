@@ -4,7 +4,7 @@
  * The source code in this file is provided by the author for the only purpose of illustrating the 
  * concepts and algorithms presented in Scala for Machine Learning.
  */
-package org.scalaml.app.chap12
+package org.scalaml.scalability.akka
 
 
 import scala.concurrent.{Await, Future}

@@ -4,7 +4,7 @@
  * The source code in this file is provided by the author for the only purpose of illustrating the 
  * concepts and algorithms presented in Scala for Machine Learning.
  */
-package org.scalaml.app.chap12
+package org.scalaml.scalability.akka
 
 
 import scala.collection.mutable.ArrayBuffer
@@ -29,7 +29,8 @@ import org.scalaml.stats.Stats
 		 * @project Scala for Machine Learning
 		 */
 protected class GroupsNormalizer(val numGroups: Int, val data: XYTSeries) {  
-   final val BANDWIDTH = 35
+   require(numGroups > 0 && numGroups < 64, "Number of groups group normalizer is out of range")
+   require(data != null && data.size > 0, "Cannot create normalized cross-validation groups from undefined data")
       
    private var workersCnt = numGroups
    private val variances = new DblVector(numGroups)
@@ -37,19 +38,21 @@ protected class GroupsNormalizer(val numGroups: Int, val data: XYTSeries) {
    private var bestDistribution: Array[Array[(XY, Int)]] = null
    
    		/**
-   		 * Definition of the folds created by broken down the original data set
-   		 * into folds or segments of similar size, each of which is processed
-   		 * by a dedicated worker actor.
+   		 * Cross-validation groups created by broken down the original data set
+   		 * into segments of similar size, each of which is processed
+   		 * by a dedicated worker actor or future.
    		 */
    val groups = {
   	  val _groups = new Array[Array[(XY, Int)]](numGroups)
   	  val indexedData = data.zipWithIndex
   	  val grpSize: Int = ((data.size).toDouble/numGroups).floor.toInt
   	    
+  	  	// First numGroups-1 groups have similar size
   	  Range(0, numGroups-1).foreach( n => {
   	     val lowBound = grpSize*n
   	     _groups(n) = indexedData.slice(lowBound, grpSize+lowBound) 
   	  })
+  	  	// The last group contains all the remaing data
   	  _groups(numGroups-1) = indexedData.drop(grpSize*(numGroups-1))
   	  _groups
    }
@@ -76,10 +79,11 @@ protected class GroupsNormalizer(val numGroups: Int, val data: XYTSeries) {
   	  	shuffle(id)
   	  	
   	  workersCnt -= 1
-  	  val allWorkersCompleted = workersCnt == 0
+  	  val allTasksCompleted = workersCnt == 0
   	  variances(workersCnt) = variance
   	  
-  	  if( allWorkersCompleted ) {
+  	  	// If all the workers or futures are completed then
+  	  if( allTasksCompleted ) {
   	     val lastVariance = evaluateVariance
   	     println("Iteration: " + (id +1) + " cross validator variance: " + lastVariance)
   	     if( lastVariance < lowestVariance) {
@@ -88,10 +92,10 @@ protected class GroupsNormalizer(val numGroups: Int, val data: XYTSeries) {
   	     }
   	     workersCnt = numGroups
   	  }
-  	  allWorkersCompleted
+  	  allTasksCompleted
    }
    
-   
+   final val BANDWIDTH = 35
    private def shuffle(index: Int): Unit = {
        val lowBand = index*BANDWIDTH % data.size
        val highBand = (lowBand + BANDWIDTH) % data.size
