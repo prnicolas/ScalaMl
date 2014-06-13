@@ -13,9 +13,14 @@ import scala.io.Source
 import scala.concurrent.ExecutionContext.Implicits.global
 import com.typesafe.config.Config
 import akka.actor.Props
-import scala.concurrent.Await
+import scala.concurrent.{Await, duration}
 import org.scalaml.core.Types.ScalaMl._
-import scala.concurrent.duration
+import org.scalaml.scalability.spark._
+import org.apache.spark.SparkContext
+import org.apache.spark.storage.StorageLevel
+import org.scalaml.scalability.akka._
+import org.scalaml.scalability.scala._
+
 
 
 
@@ -125,19 +130,55 @@ object AkkaFutureEval extends AkkaEval {
 }
 
 
+object SparkKMeansEval extends AkkaEval {
+  final val K = 8
+  final val numRuns = 16
+
+  def run(args: Array[String] = null): Unit = {
+  		  
+  	 extractVolatilityVolume match {
+		case Some(x) => {
+		   val volatilityVol = XTSeries[DblVector](x(0).arr.zip(x(1).arr).map( x => Array[Double](x._1, x._2)))
+		   
+		   val kmeansConfig = SparkKMeansConfig(K, numIters, numRuns)
+		   implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
+		   
+		   val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
+		   val sparkKMeans = SparkKMeans(kmeansConfig, rddConfig, volatilityVol)
+		   
+		   val obs = Array[Double](0.23, 0.67)
+		   sparkKMeans |> obs match {
+		  	 case Some(clusterId) => println("(" + obs(0) + "," + obs(1) + ") = " + clusterId)
+		  	 case None => println("Failed to predict data")
+		   }
+		   
+		   val obs2 = Array[Double](0.56, 0.11)
+		   sparkKMeans |> obs2 match {
+		  	 case Some(clusterId) => println("(" + obs2(0) + "," + obs2(1) + ") = " + clusterId)
+		  	 case None => println("Failed to predict data")
+		   }
+		}
+		case None => println("Failed to extract data")
+  	 }
+  }
+}
+
+
 
 
 object Chap12 extends App {
 	import java.util.concurrent.TimeoutException
 	try {
-//   ScalaParallelCollectionEval.run()
+      ScalaParallelCollectionEval.run()
       AkkaActorEval.run()
-	 //   AkkaFutureEval.run()
+	  AkkaFutureEval.run()
 	}
 	catch {
 		case e: TimeoutException  => println("Execution time out " + e.toString)
 		case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
 	}
+	
+	
 }
 
 
