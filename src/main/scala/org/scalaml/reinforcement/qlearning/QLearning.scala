@@ -62,9 +62,6 @@ object QLLabel {
    def apply[T <% Double](labels: List[(DVector[T], QLState[T])]): QLLabel[T] = new QLLabel[T](labels)
 }
 
-
-
-
 		/**
 		 * <p>Generic parameterized class that implements the QLearning algorithm. The Q-Learning
 		 * model is initialized and trained during the instantiation of the class so it can be 
@@ -81,6 +78,7 @@ object QLLabel {
 		 * 
 		 * @author Patrick Nicolas
 		 * @date January 22, 2014
+		 * @project Scala for Machine Learning
 		 */
 class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val numStates: Int) 
                                    extends PipeOperator[Episode[T], (QLState[T], Double)]  {
