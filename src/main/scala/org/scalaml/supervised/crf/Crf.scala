@@ -56,20 +56,19 @@ case class CrfConfig(val initLambda: Double, val maxIters: Int, val l2Penalty: D
 	 * and its associated tagged file    taggedObs.raw and taggedObs.tagged files.
 	 * @exception IllegalArgumentException if nLabels, config, delims and taggedObs are either undefined or out of range.
 	 * @see org.scalaml.workflow.PipeOperator
+	 * 
 	 * @author Patrick Nicolas
 	 * @data April 3, 2014
-	 * 
 	 */
-
 class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
                                                extends PipeOperator[String, Double] with Supervised[String] {
   require(nLabels > 0 && nLabels < 1000, "Number of labels for generating tags for CRF " + nLabels + " is out of range")
   require(config != null, "Configuration of the linear Chain CRF is undefined")
   require(delims != null, "delimiters used in the CRF training files are undefined")
 
-  case class TaggingGenerator(val nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
+  class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
 	
-  private[this] val features = TaggingGenerator(nLabels)
+  private[this] val features = new TaggingGenerator(nLabels)
   private[this] lazy val model = new CRF(nLabels, features, config.params)
   val lambdas = train(taggedObs)
   
