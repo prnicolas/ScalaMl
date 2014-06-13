@@ -6,11 +6,10 @@
  */
 package org.scalaml.unsupervised.clustering
 
-import org.scalaml.core.XTSeries
+import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.workflow.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-import org.scalaml.core.Types
 import org.scalaml.unsupervised.Distance
 
 
