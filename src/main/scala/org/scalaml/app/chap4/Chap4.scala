@@ -20,7 +20,7 @@ trait UnsupervisedLearningEval {
    final val path = "resources/data/chap4/"
        
    def run(args: Array[String]): Unit
-   protected val extractor = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble) :: List[Array[String] =>Double]()
+   protected val extractor = PriceVolume.adjClose :: List[Array[String] =>Double]()
    protected def symbols = DataSource.listSymbols(path)
 }
 
