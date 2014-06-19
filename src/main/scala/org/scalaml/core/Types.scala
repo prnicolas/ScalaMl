@@ -101,11 +101,9 @@ object Types {
 	 implicit def double2RealMatrix(data: DblMatrix): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealMatrix2(data: DblVector): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealVector(data: DblVector): RealVector = new ArrayRealVector(data)
+  	 implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
   }
-  
-  object Iitb {
-  	
-  }
+
 }
 
 
