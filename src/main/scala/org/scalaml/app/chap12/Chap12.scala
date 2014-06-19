@@ -61,8 +61,7 @@ trait AkkaEval {
       import org.scalaml.workflow.data.DataSource
         
       val extractors = List[Array[String] => Double](
-	  	 (f:Array[String]) => f(PriceVolume.HIGH.id).toDouble - f(PriceVolume.LOW.id).toDouble,
-	  	 (f:Array[String]) => f(PriceVolume.VOLUME.id).toDouble )		
+      	 PriceVolume.volatility, PriceVolume.volume )	
 	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors
    }
 }
