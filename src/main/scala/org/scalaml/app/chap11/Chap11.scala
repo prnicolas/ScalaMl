@@ -46,9 +46,8 @@ object QLearningEval {
 	  	val qConfig = QLConfig(alpha, gamma, maxIters)
 	  	
 	  		// extract the input values for each symbol (stock time series)
-	  	val extractor = (s: Array[String]) =>s(ADJ_CLOSE.id).toDouble
 	  	val values = etfs.map( etf =>
-	  		DataSource(path + etf + ".csv", false, true, 1) |> extractor )
+	  		DataSource(path + etf + ".csv", false, true, 1) |> PriceVolume.adjClose )
 	  		
 	  		// If all values have been retrieved
 	    values find( _ != None) match {
