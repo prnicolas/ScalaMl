@@ -32,7 +32,7 @@ object MovingAveragesEval extends FilteringEval {
      weights.foreach( x => println( x + ",") )
      val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
      
-	 dataSource |> ((s: Array[String]) => { s(ADJ_CLOSE.id).toDouble }) match {
+	 dataSource |> PriceVolume.adjClose match {
 	    case Some(price) => {  
 	      val sMvAve = SimpleMovingAverage[Double](p)  
 	      val wMvAve = WeightedMovingAverage[Double](weights)

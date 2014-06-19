@@ -18,6 +18,7 @@ import scala.annotation.implicitNotFound
 		/**
 		 * Class to evaluate the Kalman filter algorithm.
 		 * @param f implicit conversion of a double to a string
+		 * 
 		 * @author Patrick Nicolas
 		 * @date February 10, 2014
 		 * @project Scala for Machine Learning
@@ -28,7 +29,9 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
   
 
    implicit val qrNoise = QRNoise((0.7, 0.9), (m: Double) => m* Random.nextGaussian)
-   val extractor = ((s:Array[String]) => { s(ADJ_CLOSE.id).toDouble }) ::  List[Array[String] =>Double]()
+ //  val extractor = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble) :: List[Array[String] =>Double]()
+   
+   val extractor = PriceVolume.adjClose :: List[Array[String] =>Double]()
 
    		/**
    		 * Implements the run/evaluation function for the Kalman filter.
@@ -64,7 +67,7 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
       
       val symbol = args(0)
       val source = DataSource("resources/data/chap3/" + symbol + ".csv", false)
-      source |> ((s: Array[String]) => { s(ADJ_CLOSE.id).toDouble }) match {
+      source |> PriceVolume.adjClose match {
           case Some(zt) => {  
 		       val testx1 = Array[Double](0.5)
 		       val testx2 = Array[Double](0.5)

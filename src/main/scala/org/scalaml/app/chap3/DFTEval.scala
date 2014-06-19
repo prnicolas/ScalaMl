@@ -32,7 +32,7 @@ object DFTEval extends FilteringEval {
      val symbol = args(0)
      val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
      
-     src |>((s: Array[String]) => { s(ADJ_CLOSE.id).toDouble }) match {
+     src |> PriceVolume.adjClose match {
        
         case Some(price) => {  
           val filter = DFT[Double]
