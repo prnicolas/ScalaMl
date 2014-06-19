@@ -45,7 +45,7 @@ import Gene._
 import Operator._
 
 @implicitNotFound("Gene encoding requires double to integer conversion") 
-class Gene(val value: Double, op: Operator)(implicit f: Double => Int)  {
+class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   require(op != null, "Cannot create a gene/predicate with undefined operator")
   
   		/**
@@ -55,7 +55,7 @@ class Gene(val value: Double, op: Operator)(implicit f: Double => Int)  {
   val bits = {
   	val bitset = new BitSet(GENE_SIZE)
     rOp foreach( i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
-  	rValue foreach( i => if( ((f(value)>>i) & 0x01)  == 0x01) bitset.set(i)  )
+  	rValue foreach( i => if( ((discr(value)>>i) & 0x01)  == 0x01) bitset.set(i)  )
   	bitset
   }
   
