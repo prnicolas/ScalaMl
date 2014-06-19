@@ -31,7 +31,7 @@ import scala.annotation.implicitNotFound
 import Operator._
 import Signal._
 @implicitNotFound("Signal does not have a dicretization function implicitly defined")
-class Signal(val id: String, val threshold: Double, val op: Operator)(implicit f: Double => Int) extends Gene(threshold, op) {
+class Signal(val id: String, val threshold: Double, val op: Operator)(implicit discr: Double => Int) extends Gene(threshold, op) {
    require( id != null && id.length > 0, "Cannot create a signal with undefined id")
    require( op != null, "Cannot create a signal with undefined operator")
    
