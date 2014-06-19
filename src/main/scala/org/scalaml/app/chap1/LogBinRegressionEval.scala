@@ -14,7 +14,7 @@ import org.scalaml.trading.{Signal, PriceVolume}
 import org.scalaml.core.Types
 import Signal._
 import Types.ScalaMl._
-import org.scalaml.supervised.regression.LogBinRegression
+import org.scalaml.supervised.regression.logistic.LogBinRegression
 
 
 
@@ -28,7 +28,6 @@ import org.scalaml.supervised.regression.LogBinRegression
 object LogBinRegressionEval  {
 	import PriceVolume._
 	
-	    
     final val nIters = 300
     final val eps = 0.02
     final val eta = 0.000002
