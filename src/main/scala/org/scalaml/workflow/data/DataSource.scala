@@ -124,7 +124,7 @@ class DataSource(val pathName: String,
        case None => None
      }
    }
-   
+
    
   def load(extr: TxtFields => DblVector): Option[XTSeries[DblVector]] = {
      require(extr != null, "Cannot extracts fields with undefined extractors")
