@@ -38,17 +38,27 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 	require(y != null && y.size > 0, "Cannot train a Multivariate linear regression with undefined labels")
     require (xt.size == y.size, "Size of Input data " + xt.size + " and labels " + y.size + " for Multivariate linear regression are difference")
 		
-	val weights: Option[DblVector] = {
+	private val weightsRSS: Option[(DblVector, Double)] = {
 	  try {
 		newXSampleData(xt.toDblMatrix)
 		newYSampleData(y.toDblVector)
-	 	Some(estimateRegressionParameters)
+	 	Some(calculateBeta, calculateResidualSumOfSquares)
 	  }
 	  catch {
 		 case e: MathIllegalArgumentException => println("Cannot compute regression coefficients: " + e.toString); None
 		 case e: MathRuntimeException => println("Cannot compute regression coefficients: " + e.toString); None
 		 case e: OutOfRangeException =>  println("Cannot compute regression coefficients: " + e.toString); None
 	  }
+	}
+	
+	final def weights: Option[DblVector] = weightsRSS match {
+		case Some(wrss) => Some(wrss._1)
+		case None => None
+	}
+	
+	final def rss: Option[Double] = weightsRSS match {
+		case Some(wrss) => Some(wrss._2)
+		case None => None
 	}
 
     

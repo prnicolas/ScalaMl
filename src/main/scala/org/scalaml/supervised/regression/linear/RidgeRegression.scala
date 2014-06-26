@@ -12,17 +12,24 @@ import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRun
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import scala.annotation.implicitNotFound
+import org.apache.commons.math3.stat.StatUtils
+import org.apache.commons.math3.stat.descriptive.moment.SecondMoment
+
 
 
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
-final class RidgeRegression[@specialized(Double) T <% Double](val xt: XTSeries[Array[T]], val y: XTSeries[T], val lambda: Double) extends AbstractMultipleLinearRegression {
-    private var qr: QRDecomposition = null
+final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val y: XTSeries[T], val lambda: Double) extends AbstractMultipleLinearRegression {
+    require(xt != null && xt.size > 0, "Cannot create Ridge regression model with undefined features")
+	require(y != null && y.size > 0, "Cannot create Ridge regression model with undefined observed data")
+	require(xt.size == y.size, "Size of the features set " + xt.size + " differs for the size of observed data " + y.size)
+	  
+	private var qr: QRDecomposition = null
   
-  	val weights: Option[DblVector] = {
+  	private val weightsRss: Option[(DblVector, Double)] = {
 	  try {
 		this.newXSampleData(xt.toDblMatrix)
 		newYSampleData(y.toDblVector)
-	 	Some(calculateBeta.toArray)
+	 	Some((calculateBeta.toArray, calculateTotalSumOfSquares))
 	  }
 	  catch {
 		 case e: MathIllegalArgumentException => println("Cannot compute regression coefficients: " + e.toString); None
@@ -30,13 +37,27 @@ final class RidgeRegression[@specialized(Double) T <% Double](val xt: XTSeries[A
 		 case e: OutOfRangeException => println("Cannot compute regression coefficients: " + e.toString); None
 	  }
 	}
+    
+    def weights: Option[DblVector] = {
+    	weightsRss match {
+    		case Some(wr) => Some(wr._1)
+    		case None => None
+    	}
+    }
+    
+    def rss: Option[Double] = {
+    	weightsRss match {
+    		case Some(wr) => Some(wr._2)
+    		case None => None
+    	}
+    }
   
-  override protected def newXSampleData(x: DblMatrix): Unit =  {
+    override protected def newXSampleData(x: DblMatrix): Unit =  {
         super.newXSampleData(x)
         val xtx: RealMatrix = getX
         Range(0, xt(0).size).foreach( i => xtx.setEntry(i, i, xtx.getEntry(i, i) + lambda) )
         qr = new QRDecomposition(xtx)
-   }
+     }
   
    override protected def calculateBeta: RealVector = qr.getSolver().solve(getY())
 
@@ -47,6 +68,9 @@ final class RidgeRegression[@specialized(Double) T <% Double](val xt: XTSeries[A
        val Rinv = new LUDecomposition(R).getSolver.getInverse
        Rinv.multiply(Rinv.transpose);
    }
+   
+   private def calculateTotalSumOfSquares: Double = 
+       if (isNoIntercept)  StatUtils.sumSq(getY.toArray) else (new SecondMoment).evaluate(getY.toArray)
 }
 
 
