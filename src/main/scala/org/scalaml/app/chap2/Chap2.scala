@@ -28,8 +28,31 @@ import org.scalaml.plots.LightPlotTheme
 		 * @project Scala for Machine Learning.
 		 */
 object Chap2 extends App {
-	WorkflowEval.run(args)
-	BiasVarianceEval.run(args)
+   private def runAll = {
+  	 BiasVarianceEval.run
+  	 WorkflowEval.run
+   }
+		
+	final val cmdDescriptor: String = {
+		new StringBuilder("Command line: Chap 2 arg\n")
+		   .append(" biasvariance: Evaluation of Bias-Variance decomposition\n")
+		   .append(" workflow:  Evaluation of workflow\n")
+		   .append(" all: All evaluation").toString
+	}
+	
+	val argument = if( args == null && args.length == 0) "?" else args(0)
+	try {
+		argument match {
+			case "?" => println(cmdDescriptor)
+			case "biasvariance" => BiasVarianceEval.run
+			case "workflow" =>   	 WorkflowEval.run
+			case "all" => runAll
+			case _ =>  println(cmdDescriptor)
+		}	
+	}
+	catch {
+	   case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+	}
 }
 
      

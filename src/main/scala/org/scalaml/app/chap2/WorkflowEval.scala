@@ -29,6 +29,8 @@ object TransformExample {
 	}
 	
 	def run: Unit = { 
+		println("Evaluation of workflow framework")
+		
 		val tform = new Transform[Int, Double](op1)
 		tform |> 6 match {
 			case Some(res) => println(res)
@@ -106,7 +108,7 @@ class Reducer extends PipeOperator[DblVector, Int] {
 	 * @project Scala for Machine Learning
 	 */
 object WorkflowEval {
-	def run(args: Array[String]): Unit = {
+	def run: Unit = {
 		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
 		                         with PreprocModule[Double => Double, DblVector] 
 		                                  with ProcModule[DblVector, DblVector] 

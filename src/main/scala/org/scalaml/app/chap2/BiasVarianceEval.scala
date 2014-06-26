@@ -21,7 +21,9 @@ import org.scalaml.core.Types.ScalaMl._
 object BiasVarianceEval {
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 			
-	def run(args: Array[String]): Unit = {
+	def run: Unit = {
+		println("Evaluation of Bias Variance decomposition")
+		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)
 	    
 		val emul = (x: Double) => 0.2*x*(1.0 + Math.sin(x*0.05))
