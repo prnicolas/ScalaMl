@@ -14,7 +14,7 @@ import org.scalaml.trading.{Signal, PriceVolume}
 import org.scalaml.core.Types
 import Signal._
 import Types.ScalaMl._
-import org.scalaml.supervised.regression.LogBinRegression
+import org.scalaml.supervised.regression.logistic.LogBinRegression
 
 
 
