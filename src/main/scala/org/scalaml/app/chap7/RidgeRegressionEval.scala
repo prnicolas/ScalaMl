@@ -31,8 +31,9 @@ object RidgeRegressionEval {
 		    DataSink[Double](dataInput) |> deltaPrice :: volatility.get :: volume.get :: List[XTSeries[Double]]()
 		    val data =  volatility.get.arr.zip(volume.get.arr).map(z => Array[Double](z._1, z._2))
 		
-		    val regression = new RidgeRegression[Double](XTSeries[DblVector](data.take(data.size-1)), 
-				                                              deltaPrice, 0.5)
+		    val features = XTSeries[DblVector](data.take(data.size-1))
+		    val regression = new RidgeRegression[Double](features, 
+				                                         deltaPrice, 0.5)
 	        regression.weights match {
 			   case Some(w) => w.zipWithIndex.foreach( wi => println(wi._1 +": " + wi._2))
 			   case None => println("The multivariate regression could not be trained")
