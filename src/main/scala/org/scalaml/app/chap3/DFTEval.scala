@@ -28,7 +28,7 @@ object DFTEval extends FilteringEval {
    def run(args: Array[String]): Unit = {
      require(args != null && args.length > 0, "Incorrect argument: required DFTEval.run symbolName")
      
-     Console.println("Discrete Fourier series evaluation")
+     Console.println("Evaluation of Discrete Fourier series")
      val symbol = args(0)
      val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
      

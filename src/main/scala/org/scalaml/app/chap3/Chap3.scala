@@ -21,18 +21,34 @@ trait FilteringEval {
 
 
 object Chap3 extends App {
-   try {
-	  MovingAveragesEval.run(Array[String]("BAC", "10"))
+	private def runAll = {
+      MovingAveragesEval.run(Array[String]("BAC", "10"))
 	  DFTEval.run(Array[String]("BAC"))
 	  
 	  implicit def double2String(x: Double): String = x.toString
 	  (new DKalmanEval).run(Array[String]("BAC"))
-   }
-   catch {
-  	  case e: IllegalArgumentException => Console.println("Filter evaluation failed " + e.toString)
-  	  case e: RuntimeException => Console.println("Filter evaluation failed " + e.toString)
-   }
- 
+	}
+		
+	final val cmdDescriptor: String = {
+		new StringBuilder("Command line: Chap 3 arg\n")
+		   .append(" mvaverage: Evaluation of moving average\n")
+		   .append(" fourier:  Evaluation of Discrete Fourier\n")
+		   .append(" kalman: Evaluation of Kalman filter\n")
+		   .append(" all: All evaluation").toString
+	}
+	
+	val argument = if( args == null && args.length == 0) "?" else args(0)
+	argument match {
+		case "?" => println(cmdDescriptor)
+		case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10"))
+		case "fourier" =>   DFTEval.run(Array[String]("BAC"))
+		case "kalman" => {
+		   implicit def double2String(x: Double): String = x.toString
+	       (new DKalmanEval).run(Array[String]("BAC"))
+		}
+		case "all" => runAll
+		case _ =>  println(cmdDescriptor)
+	}
 }
 
 
