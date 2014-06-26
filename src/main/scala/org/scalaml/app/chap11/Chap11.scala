@@ -41,7 +41,8 @@ object QLearningEval {
 	)
 	
 	
-    def run(args: Array[String]): Unit = {	
+    def run: Unit = {	
+    	println("Evaluation Q-Learning algorithm")
     		// configuration of QLearning algorithm
 	  	val qConfig = QLConfig(alpha, gamma, maxIters)
 	  	
@@ -73,13 +74,12 @@ object QLearningEval {
 
 object Chap11 extends App {  
 	try {
-		QLearningEval.run(null)
+		QLearningEval.run
 	}
 	catch {
 		case e: IllegalArgumentException => Console.println("Incorrect class or method parameters " + e.toString)
 		case e: RuntimeException => Console.println(e.toString)
 	}
-	
 }
 
 // ------------------------------------  EOF ----------------------------------
