@@ -16,7 +16,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.workflow.PipeOperator
 import org.scalaml.supervised.Supervised
 import java.io.IOException
-
+import org.scalaml.core.Types.ScalaMl._
 
 	/**
 	 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
@@ -26,19 +26,20 @@ import java.io.IOException
 	 * @param l2Penalty L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
 	 * @param eps Covergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
 	 * @param debug Optional debugging flag 
+	 * 
 	 * @author Patrick Nicolas
 	 * @date April 3, 2014
 	 */
-case class CrfConfig(val initLambda: Double, val maxIters: Int, val l2Penalty: Double, val eps:Double, val debug: Int = 0) {
-	require( initLambda > -1.0 && initLambda < 2.5, "Initialization of the CRF weights " + initLambda + " is out of range")
+case class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, val eps:Double, val debug: Int = 0) {
+	require( initW > -1.0 && initW < 2.5, "Initialization of the CRF weights " + initW + " is out of range")
 	require( maxIters > 10 && maxIters < 250, "Maximum number of iterations for CRF training " + maxIters + " is out of range")
-	require( l2Penalty >= 0.0 && l2Penalty <= 1.5, "The factor for the L2 penalty for CRF" + l2Penalty + " is out of range")
+	require( lambda >= 0.0 && lambda <= 1.5, "The factor for the L2 penalty for CRF" + lambda + " is out of range")
 	require( eps > 1e-5 && eps<= 0.1, "The convergence criteria for the CRF training " + eps + " is out of range")
 	
 		// textual description of the CRF configuration
-	val params = new StringBuilder().append("initValue ").append(String.valueOf(initLambda))
-		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" invSigmaSquare ")
-		              .append(String.valueOf(l2Penalty)).append( " scale ")
+	val params = new StringBuilder().append("initValue ").append(String.valueOf(initW))
+		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" lambda ")
+		              .append(String.valueOf(lambda)).append( " scale ")
 		                 .append(" true" ).append(" epsForConvergence ").append(String.valueOf(eps) )
 		                   .append(" debugLvl ").append(debug).toString
 }
@@ -62,6 +63,7 @@ case class CrfConfig(val initLambda: Double, val maxIters: Int, val l2Penalty: D
 	 */
 class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
                                                extends PipeOperator[String, Double] with Supervised[String] {
+	
   require(nLabels > 0 && nLabels < 1000, "Number of labels for generating tags for CRF " + nLabels + " is out of range")
   require(config != null, "Configuration of the linear Chain CRF is undefined")
   require(delims != null, "delimiters used in the CRF training files are undefined")
@@ -70,14 +72,14 @@ class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeq
 	
   private[this] val features = new TaggingGenerator(nLabels)
   private[this] lazy val model = new CRF(nLabels, features, config.params)
-  val lambdas = train(taggedObs)
+  val weights = train(taggedObs)
   
   		/**
   		 * Main training method for the CRF
   		 */
 
   override def |> (obs: String): Option[Double] = {
-  	 if(lambdas != null) {
+  	 if(weights != null) {
 	  	 val dataSeq =  new CrfRecommendation(nLabels, obs, delims.dObs)
 	  	 Some(model.apply(dataSeq))
   	 }
@@ -87,15 +89,15 @@ class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeq
   
   override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
   
-  private[this] def train(taggedObs: String): Array[Double] = {  
+  private[this] def train(taggedObs: String): Option[DblVector] = {  
   	 val seqIter = CrfSeqIter(nLabels: Int, taggedObs, delims)
   	 try {
 	  	 features.train(seqIter)
-	  	 model.train(seqIter)
+	  	 Some(model.train(seqIter))
   	 }
   	 catch {
-  		 case e: IOException => Console.println(e.toString); null
-  		 case e: Exception  =>Console.println(e.toString); null
+  		 case e: IOException => Console.println(e.toString); None
+  		 case e: Exception  =>Console.println(e.toString); None
   	 }
   }
 }
