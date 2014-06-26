@@ -22,8 +22,9 @@ object EMEval extends UnsupervisedLearningEval {
     import MultivariateEM._
     	
    override def run(args: Array[String]): Unit = {
-	 require(args != null && args.length != 2, "Cannot evaluate K-Means with undefined arguments")
-
+	 require(args != null && args.length != 2, "Cannot evaluate EM with undefined arguments")
+     println("Evaluation of EM clustering")
+     
 	 val K = args(0).toInt
 	 val samplingRate = args(1).toInt
      val period = 8

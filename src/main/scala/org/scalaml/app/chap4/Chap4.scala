@@ -14,8 +14,6 @@ import Types.ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 
 
-
-
 trait UnsupervisedLearningEval {
    final val path = "resources/data/chap4/"
        
@@ -26,13 +24,40 @@ trait UnsupervisedLearningEval {
 
 
 object Chap4 extends App { 
-   PCAEval.run(Array[String](" ") )
+	private def runAll = {
+		KMeansEval.run(null)
+		EMEval.run(Array[String]("2", "40"))
+        EMEval.run(Array[String]("3", "25"))
+        EMEval.run(Array[String]("4", "15"))
+		PCAEval.run(null)
+	}
+		
+		final val cmdDescriptor: String = {
+		new StringBuilder("Command line: Chap 4 arg\n")
+		   .append(" kmeans: Evaluation Kmeans clustering\n")
+		   .append(" em:  Evaluation Expectation Maximization\n")
+		   .append(" pca: Evaluation Principal Components Analysis\n")
+		   .append(" all: All evaluation").toString
+	}
 	
-   KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
- 
-   EMEval.run(Array[String]("2", "40"))
-   EMEval.run(Array[String]("3", "25"))
-   EMEval.run(Array[String]("4", "15"))
+	val argument = if( args == null && args.length == 0) "?" else args(0)
+	try {
+		argument match {
+			case "?" => println(cmdDescriptor)
+			case "kmeans" => KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
+			case "em" => {
+			    EMEval.run(Array[String]("2", "40"))
+	            EMEval.run(Array[String]("3", "25"))
+	            EMEval.run(Array[String]("4", "15"))
+			}
+			case "pca" =>  PCAEval.run(null)
+			case "all" => runAll
+			case _ =>  println(cmdDescriptor)
+		}
+	 }
+	 catch {
+  	  case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+    }
 }
 
 

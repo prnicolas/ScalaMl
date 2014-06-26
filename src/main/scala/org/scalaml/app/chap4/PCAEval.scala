@@ -68,6 +68,8 @@ object PCAEval extends UnsupervisedLearningEval {
   
   
   override def run(args: Array[String]): Unit = {
+  	  println("Evaluation of Principal Component Analysis")
+  	  
   	  import XTSeries._
 	  val pca = new PCA[Double]
 	  val timeSeries =  XTSeries[DblVector](data.map( _._2.take(3)) )

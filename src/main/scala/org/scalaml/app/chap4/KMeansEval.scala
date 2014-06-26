@@ -30,6 +30,8 @@ object KMeansEval extends UnsupervisedLearningEval {
       import Types.CommonMath._
       require(args != null && args.length > 0, "Cannot evaluate K-Means with undefined arguments")
       
+      println("Evaluation of K-means clustering")
+      
       		// nested function to generate K clusters from a set of observations observations
             // obs. The condition on the argument are caught by the K-means constructor.
       def run(K: Int, obs: DblMatrix): Unit = {
