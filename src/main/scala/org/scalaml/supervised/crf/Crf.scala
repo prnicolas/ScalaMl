@@ -71,35 +71,35 @@ class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeq
   class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
 	
   private[this] val features = new TaggingGenerator(nLabels)
-  private[this] lazy val model = new CRF(nLabels, features, config.params)
-  val weights = train(taggedObs)
+  private[this] lazy val crf = new CRF(nLabels, features, config.params)
   
-  		/**
-  		 * Main training method for the CRF
-  		 */
-
-  override def |> (obs: String): Option[Double] = {
-  	 if(weights != null) {
-	  	 val dataSeq =  new CrfRecommendation(nLabels, obs, delims.dObs)
-	  	 Some(model.apply(dataSeq))
-  	 }
-  	 else
-  		 None
-  }
-  
-  override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
-  
-  private[this] def train(taggedObs: String): Option[DblVector] = {  
+  private val model = {
   	 val seqIter = CrfSeqIter(nLabels: Int, taggedObs, delims)
   	 try {
 	  	 features.train(seqIter)
-	  	 Some(model.train(seqIter))
+	  	 Some(crf.train(seqIter))
   	 }
   	 catch {
   		 case e: IOException => Console.println(e.toString); None
   		 case e: Exception  =>Console.println(e.toString); None
   	 }
   }
+  
+  		/**
+  		 * Main training method for the CRF
+  		 */
+
+  override def |> (obs: String): Option[Double] = model match {
+  	case Some(w) => {
+	  	 val dataSeq =  new CrfRecommendation(nLabels, obs, delims.dObs)
+	  	 Some(crf.apply(dataSeq))
+  	}
+  	case None => None
+  }
+  
+  def weights: Option[DblVector] = model
+  
+  override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
 }
 
 

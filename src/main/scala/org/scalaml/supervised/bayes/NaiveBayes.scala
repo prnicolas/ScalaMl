@@ -31,12 +31,12 @@ class MultinomialNaiveBayes[T <% Double](val smoothing: Double, val lblSeries: X
                               extends PipeOperator[XTSeries[Array[T]], Array[Int]]
                                  with Supervised[T] {
 	import XTSeries._, Types.ScalaMl._
-	val model = BinNaiveBayesModel[T](train(lblSeries.arr, 1), train(lblSeries.arr, 0), density)
+	private val model = BinNaiveBayesModel[T](train(lblSeries.toArray, 1), train(lblSeries.toArray, 0), density)
 
 		/**
 		 * Run-time classifier
 		 */
-	override def |> (xt: XTSeries[Array[T]]): Option[Array[Int]] =  Some( xt.arr.map( model.classify( _)) )
+	override def |> (xt: XTSeries[Array[T]]): Option[Array[Int]] =  Some( xt.toArray.map( model.classify( _)) )
 	
 	
 	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Double = 

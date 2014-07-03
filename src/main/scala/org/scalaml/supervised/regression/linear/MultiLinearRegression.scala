@@ -38,7 +38,8 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 	require(y != null && y.size > 0, "Cannot train a Multivariate linear regression with undefined labels")
     require (xt.size == y.size, "Size of Input data " + xt.size + " and labels " + y.size + " for Multivariate linear regression are difference")
 		
-	private val weightsRSS: Option[(DblVector, Double)] = {
+    type Feature = Array[T]
+	private val model: Option[(DblVector, Double)] = {
 	  try {
 		newXSampleData(xt.toDblMatrix)
 		newYSampleData(y.toDblVector)
@@ -51,13 +52,13 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 	  }
 	}
 	
-	final def weights: Option[DblVector] = weightsRSS match {
-		case Some(wrss) => Some(wrss._1)
+	final def weights: Option[DblVector] = model match {
+		case Some(m) => Some(m._1)
 		case None => None
 	}
 	
-	final def rss: Option[Double] = weightsRSS match {
-		case Some(wrss) => Some(wrss._2)
+	final def rss: Option[Double] = model match {
+		case Some(m) => Some(m._2)
 		case None => None
 	}
 
@@ -65,16 +66,17 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 		/**
 		 * <p>Data transformation that predicts the value of a vector input.</p>
 		 * @param x Array of parameterized values
-		 * @exception IllegalArgumentException if the input array is undefined
+		 * @exception IllegalStateException if the input array is undefined
 		 * @return predicted value if the model has been successfully trained, None otherwise
 		 */
-	override def |> (x: Array[T]): Option[Double] = {
-	  require( x != null && x.size > 0, "Cannot predict undefined value using the Multivariate linear regression")
-	  require( x.size != weights.size -1, "Size of input data for prediction " + x.size + " should be " + (weights.size -1))
-	  
-	  if( weights == None) None
-	  else
-		Some(x.zip(weights.get.drop(1)).foldLeft(weights.get(0))((s, z) => s + z._1*z._2))
+	override def |> (x: Feature): Option[Double] =   model match {
+	   case Some(m) => {
+    	 if( x == null || x.size != m._1.size +1) 
+    		 throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m._1.size -1))
+    	 
+         Some(x.zip(m._1.drop(1)).foldLeft(m._1(0))((s, z) => s + z._1*z._2))
+       }
+       case None => None
 	}
 }
 

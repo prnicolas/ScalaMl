@@ -54,6 +54,7 @@ case class LogisticRegressionOptimizer(val maxIters: Int,
 		 * @date April 24, 2014
 		 * @project Scala for Machine Learning
 		 */
+import XTSeries._
 class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]], 
 		                                val y: Array[Int], 
 										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
@@ -62,7 +63,7 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 	require(xt.size == y.size, "Size of input data " + xt.size + " is different from size of labels " + y.size)
     require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
 	
-	private val weightsRMS: Option[(DblVector, Double)] = {
+	private val model: Option[(DblVector, Double)] = {
 		try {
 			Some(train)
 		}
@@ -75,6 +76,45 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 		}
 	}
 		
+	
+	
+	def weights: Option[DblVector] = {
+		model match {
+			case Some(wr) => Some(wr._1)
+			case None => None
+		}
+	}
+	
+	def rms: Option[Double] = {
+	    model match {
+			case Some(wr) => Some(wr._2)
+			case None => None
+		}
+	}
+			/**
+			 * <p>Binary predictor using the Binomial logistic regression and implemented
+			 * as a data transformation (PipeOperator). The predictor relies on a margin
+			 * error to associated to the outcome 0 or 1.</p>
+			 * @param x new data point to classify as 0 or 1
+			 * @return 0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained
+			 * @exception IllegalArgumentException if the data point is undefined
+			 * @exception DimensionMismatchException if the dimension of the data point x is incorrect
+			 */
+	override def |> (x: Array[T]): Option[Int] = model match {
+	  case Some(m) => {
+		 if( x != null || m._1.size +1 != x.size) 
+			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m._1.size -1))
+				
+		 val z= - x.zip(m._1).foldLeft(0.0)((s,xw) => s + xw._1*xw._2)
+		 Some(if( Math.abs(1.0 - logit(z)) < MARGIN ) 1 else 0)
+	   }
+	   case None => None	
+	}
+	
+	@inline
+	private def logit(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
+	
+	
 	private def train: (DblVector, Double) = {
         val _weights = Array.fill(xt(0).size +1)(0.5)
           
@@ -84,19 +124,19 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
         		 */
 	  	 val lrJacobian = new MultivariateJacobianFunction {
 
-        	  override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
-		  	  require(w != null && w.toArray.length == xt.arr(0).size+1, "Incorrect size of weight for computing the Jacobian matrix")
+            override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
+		  	  require(w != null && w.toArray.length == dimension(xt)+1, "Incorrect size of weight for computing the Jacobian matrix")
 		  	  
 		  	  val nW = w.toArray 	  
 		  			  // computes the pair (function value, derivative value)
-		  	  val gradient = xt.arr.map( g => {  
+		  	  val gradient = xt.toArray.map( g => {  
 		  	  	 val exponent = g.zip(nW.drop(0)).foldLeft(nW(0))((s,z) => s + z._1*z._2)
 		  	  	 val f = logit(exponent)
 		  	  	 (f, f*(1-f))
 		  	  })
 		  	  
-		  	 val jacobian = Array.ofDim[Double](xt.arr.size, _weights.size)
-	         xt.arr.zipWithIndex.foreach(xi => {    // 1
+		  	 val jacobian = Array.ofDim[Double](xt.size, _weights.size)
+	         xt.toArray.zipWithIndex.foreach(xi => {    // 1
 	        	 val df: Double = gradient(xi._2)._2
 	        	 Range(0, xi._1.size).foreach(j => jacobian(xi._2)(j+1) = xi._1(j)*df)
 	        	 jacobian(xi._2)(0) = 1.0
@@ -128,48 +168,6 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
         println("Optimum: ")
         (optimum.getPoint.toArray, optimum.getRMS)
 	}
-	
-	
-	def weights: Option[DblVector] = {
-		weightsRMS match {
-			case Some(wr) => Some(wr._1)
-			case None => None
-		}
-	}
-	
-	def rms: Option[Double] = {
-	    weightsRMS match {
-			case Some(wr) => Some(wr._2)
-			case None => None
-		}
-	}
-
-	
-			/**
-			 * <p>Binary predictor using the Binomial logistic regression and implemented
-			 * as a data transformation (PipeOperator). The predictor relies on a margin
-			 * error to associated to the outcome 0 or 1.</p>
-			 * @param x new data point to classify as 0 or 1
-			 * @return 0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained
-			 * @exception IllegalArgumentException if the data point is undefined
-			 * @exception DimensionMismatchException if the dimension of the data point x is incorrect
-			 */
-	override def |> (x: Array[T]): Option[Int] = {
-		require(x != null, "Cannot classify an undefined data point")
-		
-		weightsRMS match {
-			case Some(wR) => {
-				if( wR._1.size +1 != x.size) 
-					throw new DimensionMismatchException(x.size, wR._1.size+1)
-				 val z= - x.zip(wR._1).foldLeft(0.0)((s,xw) => s + xw._1*xw._2)
-				 Some(if( Math.abs(1.0 - logit(z)) < MARGIN ) 1 else 0)
-			}
-			case None => None	
-		}
-	}
-	
-	@inline
-	private def logit(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
 }
 
 

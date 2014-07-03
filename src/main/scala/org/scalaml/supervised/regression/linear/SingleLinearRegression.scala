@@ -29,9 +29,9 @@ class SingleLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[
                                           extends PipeOperator[Int, T] {
 	require(xt != null && xt.size > 0, "Cannot compute the single variate linear regression of a undefined time series")
 	
-    val wr: Option[(Double, Double)] = {
+    private val model: Option[(Double, Double)] = {
     	try {
-	    	val data: DblMatrix = xt.arr.zipWithIndex.map(x => Array[Double](x._2.toDouble, x._1.toDouble))
+	    	val data: DblMatrix = xt.zipWithIndex.map(x => Array[Double](x._2.toDouble, x._1.toDouble))
 	    	val regr = new SimpleRegression(true)
 	    	regr.addData(data)
 	    	Some((regr.getSlope, regr.getIntercept))
@@ -40,6 +40,16 @@ class SingleLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[
     		case e: RuntimeException => println("Linear regression failed"); None
     	}
     }
+	
+	def slope: Option[Double] = model match {
+		case Some(m) => Some(m._1)
+		case None => None
+	}
+	
+	def intercept: Option[Double] = model match {
+	    case Some(m) => Some(m._2)
+		case None => None
+	}
     
     	/**
     	 * <p>Data transformation that computes the predictive value of a time series
@@ -48,11 +58,9 @@ class SingleLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[
     	 * @param index of the time series n
     	 * @return new predictive value for index index
     	 */
-    override def |> (index: Int): Option[T] = {
-    	if( wr == None)
-    		None
-    	else
-    		Some(wr.get._1*index + wr.get._2)
+    override def |> (index: Int): Option[T] = model match {
+    	case None => None
+    	case Some(m) => Some(m._1*index + m._2)
     }
 }
 

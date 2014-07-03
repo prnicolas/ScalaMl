@@ -23,6 +23,7 @@ import NaiveBayesModel._
 		 * @param classLikelihood probability of occurrence for the class specified by the label.
 		 * @exception IllegalArgumentException if the array of mean and standard deviation of the prior is undefined 
 		 * of if the class likelihood is out of range ]0,1]
+		 * 
 		 * @author Patrick Nicolas
 		 * @date March 11, 2014
 		 * @project Scala for Machine Learning
