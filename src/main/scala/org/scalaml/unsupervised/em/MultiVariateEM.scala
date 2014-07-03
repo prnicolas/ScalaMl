@@ -28,6 +28,7 @@ import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsT
 		 */
 import Types.ScalaMl._
 import MultivariateEM._
+import XTSeries._
 final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
 	require( K > 0 && K < MAX_K, "Number K of clusters for EM " + K + " is out of range")
 	
@@ -42,8 +43,8 @@ final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSerie
 		 * NumberIsTooSmallException, NumberIsTooLargeException or NotStrictlyPositiveException is caught
 		 */
 	override def |> (xt: XTSeries[Array[T]]): Option[EMOutput] = {
-	  require(xt != null && xt.arr.size > 0, "Cannot apply EM on undefined time series")
-	  require(xt.arr(0).size > 0, "Cannot apply EM on time series with zero dimension")
+	  require(xt != null && xt.toArray.size > 0, "Cannot apply EM on undefined time series")
+	  require( dimension(xt) > 0, "Cannot apply EM on time series with zero dimension")
 	  
 	  val data: DblMatrix = xt  // force a conversion
 		
