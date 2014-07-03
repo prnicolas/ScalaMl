@@ -27,11 +27,11 @@ object RidgeRegressionEval {
 		val volume = src |> PriceVolume.volume
 		
 		if( price != None && volatility != None && volume != None) {
-			val prices = price.get.arr
+			val prices = price.get.toArray
 		    val deltaPrice = XTSeries[Double](prices.drop(1).zip(prices.take(prices.size -1)).map( z => z._1 - z._2))
 		
 		    DataSink[Double](dataInput) |> deltaPrice :: volatility.get :: volume.get :: List[XTSeries[Double]]()
-		    val data =  volatility.get.arr.zip(volume.get.arr).map(z => Array[Double](z._1, z._2))
+		    val data =  volatility.get.zip(volume.get).map(z => Array[Double](z._1, z._2))
 		
 		    val features = XTSeries[DblVector](data.take(data.size-1))
 		    val regression = new RidgeRegression[Double](features, 

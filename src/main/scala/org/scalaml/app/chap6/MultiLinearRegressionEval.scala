@@ -42,24 +42,24 @@ object MultiLinearRegressionEval {
   	  		// Retrieve the input variables by removing the first 
   	  		// time series (labeled dataset) and transpose the array
   	  val allVariables = input.drop(1)
-  	  var variables = allVariables.map( _.arr).transpose
+  	  var variables = allVariables.map( _.toArray).transpose
   	  println("CNY = f(SPY, GLD, TLT)" )
   	  rss(XTSeries[DblVector](variables), input(0))
   	  
   	  println("CNY = f(GLD, TLT)" )
-  	  variables = allVariables.drop(1).map( _.arr).transpose
+  	  variables = allVariables.drop(1).map( _.toArray).transpose
   	  rss(XTSeries[DblVector](variables), input(0))
   	  
   	  println("CNY = f(SPY, GLD)" )
-  	  variables = allVariables.take(2).map( _.arr).transpose
+  	  variables = allVariables.take(2).map( _.toArray).transpose
   	  rss(XTSeries[DblVector](variables), input(0))
   	  
   	  println("CNY = f(SPY, TLT)" )
-  	  variables = allVariables.zipWithIndex.filter( _._2 != 1).map( _._1.arr).transpose
+  	  variables = allVariables.zipWithIndex.filter( _._2 != 1).map( _._1.toArray).transpose
   	  rss(XTSeries[DblVector](variables), input(0))
   	  
   	  println("CNY = f(GLD)" )
-  	  variables = allVariables.slice(1,2).map( _.arr).transpose
+  	  variables = allVariables.slice(1,2).map( _.toArray).transpose
   	  rss(XTSeries[DblVector](variables), input(0))
 
    }
@@ -90,11 +90,11 @@ object MultiLinearRegressionEval {
 	 val volume = src |> PriceVolume.volume
 		
 	 if( price != None && volatility != None && volume != None) {
-		val prices = price.get.arr
+		val prices = price.get.toArray
 	    val deltaPrice = XTSeries[Double](prices.drop(1).zip(prices.take(prices.size -1)).map( z => z._1 - z._2))
 		
 		DataSink[Double](dataInput) |> deltaPrice :: volatility.get :: volume.get :: List[XTSeries[Double]]()
-		val data =  volatility.get.arr.zip(volume.get.arr).map(z => Array[Double](z._1, z._2))
+		val data =  volatility.get.zip(volume.get).map(z => Array[Double](z._1, z._2))
 		    
 		val features = XTSeries[DblVector](data.take(data.size-1))
 		val regression = MultiLinearRegression[Double](features, deltaPrice)
