@@ -47,16 +47,16 @@ class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(imp
       require(xt != null && xt.size > 0, "Cannot compute simple moving average for undefined series")
       
       val slider = xt.take(xt.size - period).zip(xt.drop(period) )
-      val a0 =  xt.take(period).arr.sum/period
+      val a0 =  xt.take(period).toArray.sum/period
       var a: Double = a0
       
       	// Computing each point by removing the first element in the time window
         // an adding the data point.
-      val arr = Array[Array[Double]]( 
+      val z = Array[Array[Double]]( 
           Array.fill(period)(0.0), a,  slider.map(x => {a += (x._2 - x._1) /period; a }) 
       ).flatten
       
-      Some(XTSeries[Double](arr))
+      Some(XTSeries[Double](z))
    }
    
    	     /**
@@ -151,7 +151,7 @@ class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVe
       require(xt != null, "Cannot computed the weighted moving average for undefined time series")
       
       val smoothed =  Range(weights.size, xt.size).map( i => {
-         xt.arr.slice(i- weights.size , i).zip(weights).foldLeft(0.0)((s, x) => s + x._1*x._2)
+         xt.toArray.slice(i- weights.size , i).zip(weights).foldLeft(0.0)((s, x) => s + x._1*x._2)
       })
 
       Some(XTSeries[Double](Array.fill(weights.size)(0.0) ++ smoothed))
