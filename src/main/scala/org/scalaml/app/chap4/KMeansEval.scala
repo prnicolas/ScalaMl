@@ -57,7 +57,7 @@ object KMeansEval extends UnsupervisedLearningEval {
       obsList.find ( _ == None) match {
       	 case Some(nullObsList) => Console.println("Could not load data")
       	 case None => {
-      		 val values = obsList.head.get.head.arr.drop(START_INDEX).take(NUM_SAMPLES)
+      		 val values = obsList.head.get.head.drop(START_INDEX).take(NUM_SAMPLES)
       		 args.map(_.toInt) foreach(run(_, values))
       	 }
       }

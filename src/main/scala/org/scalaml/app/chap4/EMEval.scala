@@ -36,9 +36,12 @@ object EMEval extends UnsupervisedLearningEval {
           case Some(xs) => {
               val values: XTSeries[Double] = xs.head  // force a data type conversion (implicit)
 
-              smAve |> values.arr match {
+              smAve |> values match {
                 case Some(filtered) => {
-                   filtered.zipWithIndex.drop(period+1).filter( _._2 % samplingRate == 0).map( _._1)
+                   filtered.zipWithIndex
+                           .drop(period+1)
+                           .toArray
+                           .filter( _._2 % samplingRate == 0).map( _._1)
                 }
                 case None =>null
               }
