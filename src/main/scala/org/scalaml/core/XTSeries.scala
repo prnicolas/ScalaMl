@@ -27,8 +27,11 @@ import scala.annotation.implicitNotFound
 		 * @date January, 22, 2014
 		 * @project Scala for Machine Learning
 		 */
-class XTSeries[@specialized(Double) T](val label: String, val arr: Array[T]) { 
+class XTSeries[@specialized(Double) T](val label: String, protected val arr: Array[T]) { 
   require(arr != null && arr.size > 0, "Cannot create a times series from undefined values")
+  
+  def toArray: Array[T] = arr
+  def toList: List[T] = arr.toList
   
   @inline def head: T = arr.head
 	
@@ -44,7 +47,7 @@ class XTSeries[@specialized(Double) T](val label: String, val arr: Array[T]) {
   def == (that: XTSeries[T]): Boolean = {
   	require(that != null, "Cannot compare this time series with undefined time series")
   	
-  	if(that != null) size == that.size && arr.equals(that.arr) else false
+  	if(that != null) size == that.size && arr.equals(that.toArray) else false
   }
         
   	/**
@@ -86,26 +89,33 @@ class XTSeries[@specialized(Double) T](val label: String, val arr: Array[T]) {
   
   def apply(n: Int): T = arr.apply(n)
   
-  def zip[U](that: XTSeries[U]): Array[(T, U)] = arr.zip(that.arr)
+  @inline
+  def zip[U](that: XTSeries[U]): XTSeries[(T, U)] = XTSeries[(T,U)](arr.zip(that.toArray))
   
   def slice(start: Int, end: Int): XTSeries[T] = {
     require( start < arr.size && end < arr.size && start < end, "Slice of XTSeries is incorrectly specified")
     new XTSeries[T](label, arr.slice(start, end))
   }
   
-  @inline def max(implicit cmp: Ordering[T]): T = arr.max
+  @inline 
+  def max(implicit cmp: Ordering[T]): T = arr.max
   
-  @inline def min(implicit cmp: Ordering[T]): T = arr.min
+  @inline 
+  def min(implicit cmp: Ordering[T]): T = arr.min
   
-  @inline def toArray: Array[T] = arr
  
   override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => b.append(x).append("\n") ).toString
   
+  @inline 
   def size: Int = arr.size
-  
+
   def foreach( f: T => Unit) = arr.foreach(f)
   
-  def sortWith(lt: (T,T)=>Boolean): XTSeries[T] = new XTSeries[T](label, arr.sortWith(lt))
+  def sortWith(lt: (T,T)=>Boolean): XTSeries[T] = XTSeries[T](label, arr.sortWith(lt))
+  
+  def zipWithIndex: XTSeries[(T, Int)] = XTSeries[(T, Int)](label, arr.zipWithIndex)
+  
+  def foldLeft[U](z: U)(op: (U, T)=> U): U = arr.foldLeft(z)(op)
 }
 
 
@@ -142,11 +152,13 @@ object XTSeries {
       
    implicit def xTSeries[T: ClassTag](label: String, v: Vector[T]) = new XTSeries[T](label, v.toArray)
    implicit def xTSeries[T: ClassTag](xs: List[T]): XTSeries[T] = new XTSeries[T]("", xs.toArray)
-   implicit def xTSeries[T: ClassTag](xs: Array[String])(implicit fc: String=> T) = new XTSeries[T]("", xs.map{fc(_)})
+   implicit def xTSeries[T: ClassTag](xs: Array[String])(implicit fc: String=> T) = new XTSeries[T]("", xs.toArray.map{fc(_)})
    implicit def xTseries[T](xtseries: XTSeries[T]) = new XTSeries[T]("", xtseries.arr)
    
    implicit def series2DblVector[T](series: XTSeries[T])(implicit f: T => Double): DblVector = series.toDblVector(f)
    implicit def series2DblMatrix[T](series: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = series.toDblMatrix(fv)
+   
+   def dimension[T](xt: XTSeries[Array[T]]): Int = xt.toArray(0).size
 
    		/**
    		 * Implements the normalization of a parameterized single dimension time series within [0, 1]
