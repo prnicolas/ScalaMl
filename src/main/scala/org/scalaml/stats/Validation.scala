@@ -92,7 +92,7 @@ class ClassValidation(val actualExpected: Array[(Int, Int)], val tpClass: Int) e
 		 */
 object ClassValidation {
   def apply(data: Array[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data, tpClass)
-  def apply(data: XTSeries[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data.arr, tpClass)
+  def apply(data: XTSeries[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data.toArray, tpClass)
 }
 
 
