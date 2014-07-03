@@ -25,10 +25,15 @@ object SingleLinearRegressionEval {
 	    src |> adjClose match {
 	    	case Some(price) => {
 	    		val linRegr = SingleLinearRegression(price)
-	    		linRegr.wr match {
-	    			case Some(w) => println("y = " + w._1 + ".x + " + w._2)
+	    		linRegr.slope match {
+	    			case Some(w) => println("slope: " + w)
 	    			case None => println("Linear regression could not be trained")
 	    		}
+	    		linRegr.intercept match {
+	    			case Some(int) => println("slope: " + int)
+	    			case None => println("Linear regression could not be trained")
+	    		}
+
 	    		println("Volume")
 	    	    linRegr |> price.size match {
 	    	    	case Some(predicted) => println("predicted: " + predicted)
