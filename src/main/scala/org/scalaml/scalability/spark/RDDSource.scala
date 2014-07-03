@@ -58,7 +58,7 @@ class RDDSource(val pathName: String,
      
      src.load(extr) match {
        case Some(xt) => {
-      	   val rdd = sc.parallelize( xt.arr)
+      	   val rdd = sc.parallelize( xt.toArray)
       	   rdd.persist(config.persist)
            if( config.cache)
           	   rdd.cache
@@ -85,7 +85,7 @@ object RDDSource {
   	 require(xt != null && xt.size > 0, "Cannot generate a RDD from undefined time series")
      require(rddConfig != null, "Cannot generate a RDD from a time series without an RDD configuration")
      
-     val rdd = sc.parallelize( xt.arr)
+     val rdd = sc.parallelize( xt.toArray)
      rdd.persist(rddConfig.persist)
      if( rddConfig.cache)
          rdd.cache
