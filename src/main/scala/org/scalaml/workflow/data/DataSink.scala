@@ -59,7 +59,7 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
          val last = xs.size-1
          var k = 0
          while( k < numValues) {
-        	val values = xs.arr
+        	val values = xs.toArray
             (0 until last) foreach(j => content.append(values(j)(k)).append(CSV_DELIM) )
             content.append(values(last)(k)).append("\n")
             k += 1
