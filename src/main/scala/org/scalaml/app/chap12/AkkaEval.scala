@@ -53,7 +53,7 @@ object AkkaActorEval extends AkkaEval {
 	  Console.println(descriptor)
 	  extractVolatilityVolume match {
 		  case Some(x) => {
-		     val volatilityVol = x(0).arr.zip(x(1).arr)
+		     val volatilityVol = x(0).zip(x(1)).toArray
 		     
 		     val workers = List.tabulate(numWorkers)(n => 
 		    	    actorSystem.actorOf(Props(new WorkerActor), name = "worker" + String.valueOf(n)))
@@ -83,7 +83,7 @@ object AkkaFutureEval extends AkkaEval {
       Console.println(descriptor)
 	  extractVolatilityVolume match {
 		  case Some(x) => {
-			 val volatilityVol = x(0).arr.zip(x(1).arr)
+			 val volatilityVol = x(0).zip(x(1)).toArray
 			  
 			 implicit val actorSystem = ActorSystem("system")
 			 val normalizer = new GroupsNormalizerBlocking(volatilityVol, numWorkers)

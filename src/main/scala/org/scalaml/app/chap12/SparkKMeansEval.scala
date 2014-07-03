@@ -31,7 +31,7 @@ object SparkKMeansEval extends AkkaEval {
   		  
   	 extractVolatilityVolume match {
 		case Some(x) => {
-		   val volatilityVol = XTSeries[DblVector](x(0).arr.zip(x(1).arr).map( x => Array[Double](x._1, x._2)))
+		   val volatilityVol = XTSeries[DblVector](x(0).zip(x(1)).map( x => Array[Double](x._1, x._2)))
 		   
 		   val kmeansConfig = SparkKMeansConfig(K, numIters, numRuns)
 		   implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
