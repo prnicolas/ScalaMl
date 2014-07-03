@@ -27,6 +27,7 @@ import org.scalaml.unsupervised.Distance.euclidean
 		 * @project Scala for Machine Learning
 		 */
 import Types.ScalaMl._
+import XTSeries._
 class Cluster[T <% Double](val center: DblVector) {
    require(center != null && center.size > 0, "Cannot create a cluster with undefined centers")
    
@@ -49,8 +50,7 @@ class Cluster[T <% Double](val center: DblVector) {
    final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
   	   require(xt != null && xt.size > 0, "Cannot migrate undefined times series values within the cluster" )
   	   
-  	   val dimension = xt.arr(0).size
-  	   val centroid = Array.fill(dimension)(0.0)
+  	   val centroid = Array.fill(dimension(xt))(0.0)
   	   members.map(xt( _ )).foreach( Op( _, centroid, (x:T, y:Double)=>x+y))
   	   Cluster[T](/ (centroid, members.size))
    }

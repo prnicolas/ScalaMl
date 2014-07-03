@@ -86,7 +86,7 @@ final class KMeans[T <% Double](val K: Int, val maxIters: Int, val distance: (Db
         
 	    val stats = statistics(xt)   // step 1
 		val maxSDevIdx = Range(0, stats.size).maxBy (stats( _ ).stdDev )
-	    val maxStdDev = xt.arr.zipWithIndex.map( x=> (x._1(maxSDevIdx), x._2) ).sortWith( _._1  < _._1) // 3
+	    val maxStdDev = xt.zipWithIndex.map( x=> (x._1(maxSDevIdx), x._2) ).sortWith( _._1  < _._1).toArray // 3
 	    val halfSegSize = (maxStdDev.size*0.5/K).floor.toInt
 
 	    val centroids = maxStdDev.filter(screen( _, halfSegSize, maxStdDev.size) ).map( x => xt( x._2))
@@ -98,7 +98,7 @@ final class KMeans[T <% Double](val K: Int, val maxIters: Int, val distance: (Db
   
 
 	private def assignToClusters(xt: XTSeries[Array[T]], clusters: List[Cluster[T]], membership: Array[Int]): Int =  {
-	   xt.arr.zipWithIndex.filter( x => {
+	   xt.toArray.zipWithIndex.filter( x => {
 	     val nearestCluster = getNearestCluster(clusters, x._1);
 	     val reassigned = nearestCluster != membership(x._2) 
 	     clusters(nearestCluster) += x._2
