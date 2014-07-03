@@ -57,10 +57,10 @@ object Dim2BayesEval extends BayesEval {
 	       case Some(xs) => {
 	          val em = SimpleMovingAverage[Double](period)
      
-	          val ratios: List[Array[Int]] = xs.map( values => 
+	          val ratios: List[Array[Int]] = xs.map(values => 
 	             em |> values match { 
 	                case Some(xt) => 
-	                	values.drop(period).zip(xt.drop(period)).map( z => if( z._1 > z._2) 1 else 0)
+	                	values.drop(period).zip(xt.drop(period)).map( z => if( z._1 > z._2) 1 else 0).toArray
 	            	case None => throw new IllegalStateException("Moving Average failed") 
 	           })
 	          
@@ -72,7 +72,7 @@ object Dim2BayesEval extends BayesEval {
 	          	  val y = if( x > prev) 1 else 0
 	          	  prev = x
 	          	  y
-	           }).arr 
+	           }).toArray 
 	             // Transpose the list of ratios and zip with the label
 	           Some(ratios.transpose.take(label.size).zip(label))
 	       }
