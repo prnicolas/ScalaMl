@@ -21,10 +21,8 @@ object SingleLinearRegressionEval {
 		
 	def run(args: Array[String] = null): Unit =  {
 		println("Evaluation of single variate linear regression")
-		  	 
-		val src = DataSource(path, false, true, 1)
 		
-	    src |> adjClose match {
+	    DataSource(path, false, true, 1) |> adjClose match {
 	    	case Some(price) => {
 	    		val linRegr = SingleLinearRegression(price)
 	    

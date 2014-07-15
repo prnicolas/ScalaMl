@@ -41,7 +41,7 @@ object LogisticRegressionEval {
 		    
 		println("RMS: " +  logIt.rms.get + "\nWeights: ")
 		logIt.weights.get.foreach( println )
-       }
+     }
    }
 }
 
