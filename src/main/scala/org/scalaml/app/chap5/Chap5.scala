@@ -14,22 +14,22 @@ import org.scalaml.supervised.bayes.MultinomialNaiveBayes
 
 object Chap5 extends App {
   private def runAll = {
-	 Dim2BayesEval.run(Array[String]("0.5", "8"))
+	 BinomialBayesEval.run(Array[String]("0.5", "8"))
 	 TextBayesEval.run
   }
 	
   final val cmdDescriptor: String = {
 	new StringBuilder("Command line: Chap 5 arg\n")
-		  .append(" bayes: Evaluation Multinomial Naive Bayes\n")
+		  .append(" bayes: Evaluation Binomial Naive Bayes\n")
 		  .append(" textBayes:  Evaluation Naive Bayes for text analysis\n")
 		  .append(" all: All evaluation").toString
   }
   
-  val argument = if( args == null && args.length == 0) "?" else args(0)
+  val argument = if( args == null || args.length == 0) "?" else args(0)
   try {
 	  argument match {
 	  	 case "?" => println(cmdDescriptor)
-	  	 case "bayes" => Dim2BayesEval.run(Array[String]("0.5", "8"))
+	  	 case "bayes" => BinomialBayesEval.run(Array[String]("0.5", "8"))
 	  	 case "textBayes" => TextBayesEval.run
 	  	 case "all" => runAll
 	  	 case _ =>  println(cmdDescriptor)
