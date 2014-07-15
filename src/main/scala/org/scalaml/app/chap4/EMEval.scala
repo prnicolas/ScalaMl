@@ -34,7 +34,7 @@ object EMEval extends UnsupervisedLearningEval {
      val obs = symbols.map(sym => {
         DataSource(sym, path, true) |> extractor match {
           case Some(xs) => {
-              val values: XTSeries[Double] = xs.head  // force a data type conversion (implicit)
+              val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
 
               smAve |> values match {
                 case Some(filtered) => {
