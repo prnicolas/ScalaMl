@@ -40,7 +40,7 @@ object Chap2 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null && args.length == 0) "?" else args(0)
+	val argument = if( args == null || args.length == 0) "?" else args(0)
 	try {
 		argument match {
 			case "?" => println(cmdDescriptor)
