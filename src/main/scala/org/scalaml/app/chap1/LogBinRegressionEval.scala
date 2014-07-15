@@ -96,8 +96,6 @@ object LogBinRegressionEval  {
        val plotter = new ScatterPlot(("CSCO 2012-2013 Stock", "Session Volatility", "Session Volume"), new BlackPlotTheme)
        plotter.display(volatilityVolume.filter(x => (x._2 < 0.4 && x._2 > -0.48) && x._1 < 0.40), 250, 340)
 	}
-
-    
 }
 
 

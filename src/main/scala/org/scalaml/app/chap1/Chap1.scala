@@ -29,8 +29,31 @@ import org.scalaml.supervised.regression.logistic.LogBinRegression
 		 * @project Scala for Machine Learning.
 		 */
 object Chap1 extends App {
-	PlotterEval.run(args)
-	LogBinRegressionEval.run(args)
+	private def runAll = {
+  	   PlotterEval.run(args)
+  	   LogBinRegressionEval.run(args)
+    }
+		
+	final val cmdDescriptor: String = {
+		new StringBuilder("Command line: Chap 1 args\n")
+		   .append(" plotter: Evaluation of JFreeChart library\n")
+		   .append(" test:  Evaluation of test case of logistic regression\n")
+		   .append(" all: All evaluations").toString
+	}
+	
+	val argument = if( args == null || args.length == 0) "?" else args(0)
+	try {
+		argument match {
+			case "?" => println(cmdDescriptor)
+			case "plotter" => PlotterEval.run(args)
+			case "test" =>  LogBinRegressionEval.run(args)
+			case "all" => runAll
+			case _ =>  println(cmdDescriptor)
+		}	
+	}
+	catch {
+	   case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+	}
 }
 
 // --------------------  EOF --------------------------------------
