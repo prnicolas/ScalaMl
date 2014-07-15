@@ -7,25 +7,27 @@
 package org.scalaml.trading
 
 	/**
-	 * <p>Singleton that descrive the differen
+	 *  Singleton that describes the fields used in the extraction of price related data from the Yahoo
+	 *  finances historical data. The data is loaded from a CSV file.
+	 *  
 	 *  @author Patrick Nicolas
 	 *  @date Feb 17, 2014
-	 *  @project Book
+	 *  @project Scala for Machine Learning
 	 */
 object PriceVolume extends Enumeration {
-  type PriceVolume = Value
-  val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
+   type PriceVolume = Value
+   val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
   
-  val adjClose = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble)
-  val volume =  ((s:Array[String]) => s(VOLUME.id).toDouble)
-  val volatility = ((s:Array[String]) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
-  val volatilityVol = ((s:Array[String]) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+   val adjClose = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble)
+   val volume =  ((s:Array[String]) => s(VOLUME.id).toDouble)
+   val volatility = ((s:Array[String]) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
+   val volatilityVol = ((s:Array[String]) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
   
-  def toDouble(value: Value): Array[String] => Double = (s: Array[String]) => s(value.id).toDouble
-  def /(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble/s(value2.id).toDouble
-  def %(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try { s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => s.foreach(println); 1.0} 
-  def +(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
-  def *(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
+   def toDouble(value: Value): Array[String] => Double = (s: Array[String]) => s(value.id).toDouble
+   def /(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble/s(value2.id).toDouble
+   def %(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try { s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => s.foreach(println); 1.0} 
+   def +(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
+   def *(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
 }
 
 

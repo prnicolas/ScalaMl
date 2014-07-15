@@ -19,7 +19,7 @@ import scala.annotation.implicitNotFound
 		 * implicitly. </p>
 		 * @param id  The label for the trading signal
 		 * @param op The operator that is used to defined the condition such as greater than, equals....
-		 * @param _value value threshold defined by the signal
+		 * @param targetValue value threshold defined by the signal
 		 * @exception IllegalArgumentException if the operator or id is not defined
 		 * @see org.scalaml.ga.Gene
 		 * 
@@ -31,21 +31,30 @@ import scala.annotation.implicitNotFound
 import Operator._
 import Signal._
 @implicitNotFound("Signal does not have a dicretization function implicitly defined")
-class Signal(val id: String, val threshold: Double, val op: Operator)(implicit discr: Double => Int) extends Gene(threshold, op) {
+class Signal(val id: String, val targetValue: Double, val op: Operator)(implicit discr: Double => Int) extends Gene(targetValue, op) {
    require( id != null && id.length > 0, "Cannot create a signal with undefined id")
    require( op != null, "Cannot create a signal with undefined operator")
    
    		/**
-   		 * Score this signal by comparing the input value with the threshold
+   		 * Computation of the score of this trading signal by comparing a value with the threshold, value
+   		 * @param x value to compare with the target value
+   		 * @param factor amplification factor for the generation of the score
+   		 * @return computed score for this trading signal
    		 */
-   def score(x: Double, delta: Double = 1.0) = op match  {
-      case LESS_THAN =>  (value -x)*delta
-      case GREATER_THAN => (x - value)*delta
-      case EQUAL => Math.abs((x - value)*delta)
+   def score(x: Double, factor: Double = 1.0) = op match  {
+      case LESS_THAN =>  (value -x)*factor
+      case GREATER_THAN => (x - value)*factor
+      case EQUAL => Math.abs(x - value)*factor
       case _ => 0.0
    }
    
+   		/**
+   		 * Compare this trading signal with another one
+   		 * @param that  other trading signal
+   		 * @return true if the two trading signals share the same operator and threshold value
+   		 */
    def == (that: Signal): Boolean = op == that.op && Math.abs(value - that.value) < EPS
+   
    override def toString: String = {
       new StringBuilder(id)
             .append(" ")
@@ -57,10 +66,13 @@ class Signal(val id: String, val threshold: Double, val op: Operator)(implicit d
 
 
 
+	/**
+	 * Companion object to the trading signal class, used to defined constructors.
+	 */
 object Signal {
    final val EPS = 1e-3
    final val CSV_DELIM = ",";
-   def apply(id: String, threshold: Double, op: Operator)(implicit f: Double => Int): Signal = new Signal(id, threshold, op)
+   def apply(id: String, targetValue: Double, op: Operator)(implicit f: Double => Int): Signal = new Signal(id, targetValue, op)
 }
 
 
