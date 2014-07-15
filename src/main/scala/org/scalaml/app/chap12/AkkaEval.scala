@@ -33,7 +33,11 @@ trait AkkaEval {
         
       val extractors = List[Array[String] => Double](
       	 PriceVolume.volatility, PriceVolume.volume )	
-	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors
+      	 
+	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors match {
+	  	case Some(xs) => Some(xs.map( XTSeries(_) ))
+	  	case None => None
+	  }
    }
 }
 
