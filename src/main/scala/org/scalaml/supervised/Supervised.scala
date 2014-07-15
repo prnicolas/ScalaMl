@@ -26,6 +26,7 @@ trait Supervised[T] {
 		 * @return F1 measure
 		 */
    def validate(xt: XTSeries[(Array[T], Int)], tpClass: Int): Double
+   def crossValidation: Array[Double] = null
 }
 
 // --------------------------------  EOF ------------------------------------------
