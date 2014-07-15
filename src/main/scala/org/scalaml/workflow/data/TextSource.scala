@@ -9,7 +9,9 @@ package org.scalaml.workflow.data
 
 import TextSource._
 class TextSource(val pathName: String) {
-  val filesList: Array[String] = {   
+   require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
+	   
+   val filesList: Array[String] = {   
   	  val file = new java.io.File(pathName)
   	  if( file.isDirectory) file.listFiles.map( x => x.getName) else Array[String](pathName)
    }

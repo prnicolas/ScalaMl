@@ -15,6 +15,7 @@ import org.scalaml.workflow.PipeOperator
 import scala.io.Source
 import org.scalaml.core.Types.ScalaMl._
 
+
 		/**
 		 * <p>Generic class to load or save files into either HDFS or local files system.</p>
 		 * @param pathName relative path for the data files
@@ -25,12 +26,13 @@ import org.scalaml.core.Types.ScalaMl._
 		 * 
 		 * @author Patrick Nicolas
 		 * @date December 11, 2013
-		 * @project Scala for Machine Learnin
+		 * @project Scala for Machine Learning
 		 */
-class DataSource(val pathName: String, 
-				 val normalize: Boolean, 
-				 val reverseOrder: Boolean,
-				 val headerLines: Int = 1) extends PipeOperator[List[Array[String] =>Double], List[XTSeries[Double]]] {
+final class DataSource(val pathName: String, 
+				       val normalize: Boolean, 
+				       val reverseOrder: Boolean,
+				       val headerLines: Int = 1,
+				       val srcFilter: Option[Array[String] => Boolean]= None) extends PipeOperator[List[Array[String] =>Double], List[DblVector]] {
 	
    require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
    require(headerLines >=0,  "Cannot create a data source with negative number of lines for header " + headerLines)
@@ -40,7 +42,7 @@ class DataSource(val pathName: String,
    final val CSV_DELIM = ","
    type TxtFields = Array[String]
    
-   val fileList: Array[String] = {
+   val fileList = {
   	  import java.io.File
    
   	  val file = new File(pathName)
@@ -58,7 +60,9 @@ class DataSource(val pathName: String,
      
      try {
     	 val src = Source.fromFile(pathName)
-	  	 val fields = src.getLines.map( _.split(CSV_DELIM)).toArray.drop(headerLines)
+	  	 val rawFields = src.getLines.map( _.split(CSV_DELIM)).toArray.drop(headerLines)
+	  	 
+	  	 val fields = if( srcFilter != None) rawFields.filter(srcFilter.get) else rawFields
 	  	 val results = if( reverseOrder ) fields.reverse else  fields
 	  	 val textFields = (fields(0), results)
 	  	 src.close
@@ -68,6 +72,7 @@ class DataSource(val pathName: String,
         case e: IOException => { Console.println(e.toString); None }
         case e: FileNotFoundException => { Console.println(e.toString); None }
         case e: Exception => { Console.println(e.toString); None }
+        case e: ArrayIndexOutOfBoundsException =>  {Console.println(e.toString); None }
      }
    }
    
@@ -76,7 +81,8 @@ class DataSource(val pathName: String,
    def loadConvert[T](implicit c: String => T): Option[List[ArraySeq[T]]] = {
   	  try {
     	 val src = Source.fromFile(pathName)
-	  	 val fields: List[ArraySeq[T]] = src.getLines.map( _.split(CSV_DELIM).map(c(_))).toList
+	  	 val fields = src.getLines.map( _.split(CSV_DELIM).map(c(_))).toList
+	     src.close
 	     Some(fields)
      }
      catch {
@@ -85,6 +91,7 @@ class DataSource(val pathName: String,
         case e: Exception => { Console.println(e.toString); None }
      }
    }
+   
    			/**
    			 * Load, extracts, convert and normalize a list of fields using an extractors.
    			 * @param ext function to extract and convert a list of comma delimited fields into a double
@@ -92,17 +99,17 @@ class DataSource(val pathName: String,
    			 * conversion of some of the text fields failed.
    			 * @exception IllegalArgumentException if the extraction function is undefined
    			 */
-   override def |> (extr: List[TxtFields =>Double]): Option[List[XTSeries[Double]]] = {
+   override def |> (extr: List[TxtFields => Double]): Option[List[DblVector]] = {
      require(extr != null && extr.size > 0, "Cannot extracts fields with undefined extractors")
        	 
   	 load match {
        case Some(data) => {
           if( normalize) {
           	 import org.scalaml.stats.Stats
-             Some(extr map {t => XTSeries[Double]((Stats[Double])( data._2.map(t(_) ) ).normalize) })
+              Some(extr map {t => Stats[Double](data._2.map(t(_))).normalize })
           }
           else
-             Some(extr map {t => XTSeries[Double](data._2.map(t(_) ) ) })
+             Some(extr map {t => data._2.map(t(_) ) })
        }
        case None => None
      }
@@ -150,9 +157,10 @@ object DataSource {
         directory.listFiles.map( _.getName)
     }
   
-  def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int): DataSource = new DataSource(pathName, normalize, reverseOrder, headerLines)
+  def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int, filter: Option[Array[String] => Boolean]): DataSource = new DataSource(pathName, normalize, reverseOrder, headerLines, filter)  
+  def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int): DataSource = new DataSource(pathName, normalize, reverseOrder, headerLines, None)
   def apply(pathName: String, normalize: Boolean): DataSource = new DataSource(pathName, normalize, true)
-  def apply(fileName: String, pathName: String, normalize: Boolean): DataSource = new DataSource(fileName, normalize, true)
+  def apply(symName: String, pathName: String, normalize: Boolean): DataSource = new DataSource(symName, normalize, true)
 }
 
 // ----------------------------------   EOF ----------------------------------------------
