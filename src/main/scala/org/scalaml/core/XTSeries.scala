@@ -82,6 +82,7 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   def tail: XTSeries[T] = new XTSeries(label, arr.tail)
   
   def take(n: Int): XTSeries[T] = new XTSeries(label, arr.take(n))
+  def takeRight(n: Int): XTSeries[T] = new XTSeries(label, arr.takeRight(n))
   
   def drop(n: Int):  XTSeries[T] = new XTSeries(label, arr.drop(n))
   
@@ -159,6 +160,9 @@ object XTSeries {
    implicit def series2DblMatrix[T](series: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = series.toDblMatrix(fv)
    
    def dimension[T](xt: XTSeries[Array[T]]): Int = xt.toArray(0).size
+   
+   
+   def |>[T] (xs: List[Array[T]]): List[XTSeries[T]] = xs map{ XTSeries[T](_) }
 
    		/**
    		 * Implements the normalization of a parameterized single dimension time series within [0, 1]
@@ -173,6 +177,16 @@ object XTSeries {
        val range = xt.max - mn
        if(range < EPS) None  else Some(xt.map(x => (x -mn)/range))
    }
+   
+   @implicitNotFound("Ordering for normalizatoin is undefined")
+   def normalize[T <% Double](feature: Array[T])(implicit ordering: Ordering[T]): Option[DblVector] = {
+  	   require(feature != null, "Cannot normalize an undefined time vector")
+  	   
+  	   val mn = feature.min
+       val range = feature.max - mn
+       if(range < EPS) None  else Some(feature.map(x => (x -mn)/range))
+   }
+   
    
    
          /**
@@ -258,6 +272,8 @@ object XTSeries {
    }
    
    def transpose[T](from: Array[Array[T]]): Array[Array[T]] = from.transpose
+   
+   def transpose[T: ClassTag](from: List[Array[T]]):  Array[Array[T]] = from.toArray.transpose
    
    
    def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.arr)
