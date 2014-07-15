@@ -37,7 +37,7 @@ object Chap3 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null && args.length == 0) "?" else args(0)
+	val argument = if( args == null || args.length == 0) "?" else args(0)
 	argument match {
 		case "?" => println(cmdDescriptor)
 		case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10"))

@@ -28,9 +28,7 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
    import PriceVolume._, Types.ScalaMl._
   
 
-   implicit val qrNoise = QRNoise((0.7, 0.9), (m: Double) => m* Random.nextGaussian)
- //  val extractor = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble) :: List[Array[String] =>Double]()
-   
+   implicit val qrNoise = QRNoise((0.7, 0.9), (m: Double) => m* Random.nextGaussian)   
    val extractor = PriceVolume.adjClose :: List[Array[String] =>Double]()
 
    		/**
