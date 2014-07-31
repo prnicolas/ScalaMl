@@ -10,8 +10,8 @@ import org.scalaml.reinforcement.qlearning.{QLearning, QLState, QLConfig, QLLabe
 import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
-import org.scalaml.trading.PriceVolume
-import PriceVolume._
+import org.scalaml.trading.YahooFinancials
+import YahooFinancials._
 import org.scalaml.core.Types.ScalaMl.DblVector
 
 
@@ -48,7 +48,7 @@ object QLearningEval {
 	  	
 	  		// extract the input values for each symbol (stock time series)
 	  	val values = etfs.map( etf =>
-	  		DataSource(path + etf + ".csv", false, true, 1) |> PriceVolume.adjClose )
+	  		DataSource(path + etf + ".csv", false, true, 1) |> YahooFinancials.adjClose )
 	  		
 	  		// If all values have been retrieved
 	    values find( _ != None) match {
