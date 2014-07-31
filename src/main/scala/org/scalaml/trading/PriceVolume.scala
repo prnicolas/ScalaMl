@@ -6,6 +6,8 @@
  */
 package org.scalaml.trading
 
+
+
 	/**
 	 *  Singleton that describes the fields used in the extraction of price related data from the Yahoo
 	 *  finances historical data. The data is loaded from a CSV file.
@@ -14,8 +16,8 @@ package org.scalaml.trading
 	 *  @date Feb 17, 2014
 	 *  @project Scala for Machine Learning
 	 */
-object PriceVolume extends Enumeration {
-   type PriceVolume = Value
+object YahooFinancials extends Enumeration {
+   type YahooFinancials = Value
    val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
   
    val adjClose = ((s:Array[String]) => s(ADJ_CLOSE.id).toDouble)
@@ -28,6 +30,17 @@ object PriceVolume extends Enumeration {
    def %(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try { s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => s.foreach(println); 1.0} 
    def +(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
    def *(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
+}
+
+
+object GoogleFinancials extends Enumeration {
+   type GoogleFinancials = Value
+   val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME = Value
+  
+   val close = ((s:Array[String]) => s(CLOSE.id).toDouble)
+   val volume =  ((s:Array[String]) => s(VOLUME.id).toDouble)
+   val volatility = ((s:Array[String]) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
+   val volatilityVol = ((s:Array[String]) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
 }
 
 
