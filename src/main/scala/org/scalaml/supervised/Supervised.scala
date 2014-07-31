@@ -29,4 +29,22 @@ trait Supervised[T] {
    def crossValidation: Array[Double] = null
 }
 
+
+	/**
+	  * <p>Define the configuration trait for the configuration of all the supervised
+	  * learning algorithms.</p>
+	  */
+trait Config
+
+
+	/**
+	  * <p>Define the model for the configuration of all the supervised
+	  * learning algorithms. The trait is used to record any information
+	  * relevant to the training of the model.</p>
+	  */
+trait Model {
+  var status: String = "Ready"
+}
+
+
 // --------------------------------  EOF ------------------------------------------
