@@ -10,8 +10,8 @@ package org.scalaml.app.chap3
 
 import org.scalaml.core.{Types, XTSeries}
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import org.scalaml.trading.PriceVolume
-import PriceVolume._
+import org.scalaml.trading.YahooFinancials
+import YahooFinancials._
 
 
 trait FilteringEval {

@@ -12,7 +12,7 @@ import org.scalaml.core.Types
 import org.scalaml.filtering.{DKalman, QRNoise}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import scala.annotation.implicitNotFound
 
 		/**
@@ -25,11 +25,11 @@ import scala.annotation.implicitNotFound
 		 */
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
 class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
-   import PriceVolume._, Types.ScalaMl._
+   import YahooFinancials._, Types.ScalaMl._
   
 
    implicit val qrNoise = QRNoise((0.7, 0.9), (m: Double) => m* Random.nextGaussian)   
-   val extractor = PriceVolume.adjClose :: List[Array[String] =>Double]()
+   val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
 
    		/**
    		 * Implements the run/evaluation function for the Kalman filter.
@@ -65,7 +65,7 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
       
       val symbol = args(0)
       val source = DataSource("resources/data/chap3/" + symbol + ".csv", false)
-      source |> PriceVolume.adjClose match {
+      source |> YahooFinancials.adjClose match {
           case Some(zt) => {  
 		       val testx1 = Array[Double](0.5)
 		       val testx2 = Array[Double](0.5)

@@ -10,8 +10,8 @@ package org.scalaml.app.chap3
 
 import org.scalaml.core.{Types, XTSeries}
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import org.scalaml.trading.PriceVolume
-import PriceVolume._
+import org.scalaml.trading.YahooFinancials
+import YahooFinancials._
 
 
 		/**
@@ -32,7 +32,7 @@ object MovingAveragesEval extends FilteringEval {
      weights.foreach( x => println( x + ",") )
      val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
      
-	 dataSource |> PriceVolume.adjClose match {
+	 dataSource |> YahooFinancials.adjClose match {
 	    case Some(price) => {  
 	      val sMvAve = SimpleMovingAverage[Double](p)  
 	      val wMvAve = WeightedMovingAverage[Double](weights)
