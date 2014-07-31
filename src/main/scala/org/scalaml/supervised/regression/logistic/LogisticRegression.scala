@@ -20,22 +20,7 @@ import org.apache.commons.math3.optim.ConvergenceChecker
 import LogisticRegression._
 import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
 import org.scalaml.workflow.PipeOperator
-
-
-case class LogisticRegressionOptimizer(val maxIters: Int, 
-		                               val maxEvals: Int, 
-		                               val eps: Double, 
-		                               private val lsOptimizer: LeastSquaresOptimizer) {
-  require(maxIters > 0 && maxIters < maxEvals, 
-			   "Maximum number of iterations " + maxIters + " exceeds maximum number of evaluations" + maxEvals)
-  require( eps > MIN_EPS && eps < MAX_EPS, "eps for the optimization of the logistic regression " + eps + " is out of range")
-  require(lsOptimizer != null, "Least squares optimizer for the logistic regression is undefined")
-  
-  def optimize(lsProblem: LeastSquaresProblem): Optimum = {
-  	  require(lsProblem != null, "Cannot perform a Least Squares optimization with undefined Least square problem")
-  	  lsOptimizer.optimize(lsProblem)
-  }
-}
+import org.scalaml.supervised.regression.RegressionModel
 
 		/**
 		 * <p>Logistic regression for multivariate logistic regression. The implementation
@@ -56,16 +41,17 @@ case class LogisticRegressionOptimizer(val maxIters: Int,
 		 */
 import XTSeries._
 class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]], 
-		                                val y: Array[Int], 
+		                                val labels: Array[Int], 
 										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
 	
 	require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
-	require(xt.size == y.size, "Size of input data " + xt.size + " is different from size of labels " + y.size)
+	require(xt.size == labels.size, "Size of input data " + xt.size + " is different from size of labels " + labels.size)
     require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
 	
-	private val model: Option[(DblVector, Double)] = {
+	private val model: Option[RegressionModel] = {
 		try {
-			Some(train)
+			val weightAcc = train
+			Some(RegressionModel(weightAcc._1, weightAcc._2))
 		}
 		catch {
 			case e: ConvergenceException => println("Algorithm failed to converge " + e.toString); None
@@ -76,18 +62,16 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 		}
 	}
 		
-	
-	
 	def weights: Option[DblVector] = {
 		model match {
-			case Some(wr) => Some(wr._1)
+			case Some(m) => Some(m.weights)
 			case None => None
 		}
 	}
 	
 	def rms: Option[Double] = {
 	    model match {
-			case Some(wr) => Some(wr._2)
+			case Some(m) => Some(m.accuracy)
 			case None => None
 		}
 	}
@@ -100,12 +84,12 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 			 * @exception IllegalArgumentException if the data point is undefined
 			 * @exception DimensionMismatchException if the dimension of the data point x is incorrect
 			 */
-	override def |> (x: Array[T]): Option[Int] = model match {
+	override def |> (feature: Array[T]): Option[Int] = model match {
 	  case Some(m) => {
-		 if( x != null || m._1.size +1 != x.size) 
-			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m._1.size -1))
+		 if( feature != null || m.size +1 != feature.size) 
+			throw new IllegalStateException("Size of input data for prediction " + feature.size + " should be " + (m.size -1))
 				
-		 val z= - x.zip(m._1).foldLeft(0.0)((s,xw) => s + xw._1*xw._2)
+		 val z= - feature.zip(m.weights).foldLeft(0.0)((s,xw) => s + xw._1*xw._2)
 		 Some(if( Math.abs(1.0 - logit(z)) < MARGIN ) 1 else 0)
 	   }
 	   case None => None	
@@ -157,7 +141,7 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 	    val builder = new LeastSquaresBuilder
         val lsp = builder.model(lrJacobian)
                          .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
-                         .target(y)
+                         .target(labels)
                          .checkerPair(exitCheck)
                          .maxEvaluations(optimizer.maxEvals)
                          .start(_weights)
@@ -173,14 +157,12 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 
 object LogisticRegression {
    final val MARGIN = 0.1
-   final val MIN_EPS = 1e-32
-   final val MAX_EPS = 1.0
    
    implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
    implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] = new Pair[RealVector,RealMatrix](pair._1, pair._2)
   	    
-   def apply[T <% Double](xt: XTSeries[Array[T]], y: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
-  	    new LogisticRegression[T](xt, y, optimizer)
+   def apply[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
+  	    new LogisticRegression[T](xt, labels, optimizer)
 }
 
 

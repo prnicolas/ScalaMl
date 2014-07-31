@@ -13,6 +13,7 @@ import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRun
 import org.scalaml.workflow.PipeOperator
 import org.scalaml.core.Types.CommonMath._
 import scala.annotation.implicitNotFound
+import org.scalaml.supervised.regression.RegressionModel
 
 
 
@@ -31,19 +32,20 @@ import scala.annotation.implicitNotFound
 		 * @project Scala for Machine Learning
 		 */
 @implicitNotFound("Implicit conversion of type to Double for MultiLinearRegression is missing")
-final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[Array[T]], val y: XTSeries[T]) 
+final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[Array[T]], val labels: DblVector) 
                     extends OLSMultipleLinearRegression with PipeOperator[Array[T], Double] {
 	
 	require(xt != null && xt.size > 0, "Cannot create perform a Multivariate linear regression on undefined time series")
-	require(y != null && y.size > 0, "Cannot train a Multivariate linear regression with undefined labels")
-    require (xt.size == y.size, "Size of Input data " + xt.size + " and labels " + y.size + " for Multivariate linear regression are difference")
+	require(labels != null && labels.size > 0, "Cannot train a Multivariate linear regression with undefined labels")
+    require (xt.size == labels.size, "Size of Input data " + xt.size + " and labels " + labels.size + " for Multivariate linear regression are difference")
 		
     type Feature = Array[T]
-	private val model: Option[(DblVector, Double)] = {
+	private val model: Option[RegressionModel] = {
 	  try {
 		newXSampleData(xt.toDblMatrix)
-		newYSampleData(y.toDblVector)
-	 	Some(calculateBeta, calculateResidualSumOfSquares)
+		newYSampleData(labels)
+		val weightsResiduals = (calculateBeta, calculateResidualSumOfSquares)
+	 	Some(RegressionModel(weightsResiduals._1, weightsResiduals._2))
 	  }
 	  catch {
 		 case e: MathIllegalArgumentException => println("Cannot compute regression coefficients: " + e.toString); None
@@ -53,12 +55,12 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 	}
 	
 	final def weights: Option[DblVector] = model match {
-		case Some(m) => Some(m._1)
+		case Some(m) => Some(m.weights)
 		case None => None
 	}
 	
 	final def rss: Option[Double] = model match {
-		case Some(m) => Some(m._2)
+		case Some(m) => Some(m.accuracy)
 		case None => None
 	}
 
@@ -71,10 +73,10 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 		 */
 	override def |> (x: Feature): Option[Double] =   model match {
 	   case Some(m) => {
-    	 if( x == null || x.size != m._1.size +1) 
-    		 throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m._1.size -1))
+    	 if( x == null || x.size != m.size +1) 
+    		 throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m.size -1))
     	 
-         Some(x.zip(m._1.drop(1)).foldLeft(m._1(0))((s, z) => s + z._1*z._2))
+         Some(x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2))
        }
        case None => None
 	}
@@ -89,7 +91,7 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 		 * @author Patrick Nicolas
 		 */
 object MultiLinearRegression {
-	def apply[T <% Double](xt: XTSeries[Array[T]], y: XTSeries[T]): MultiLinearRegression[T] = new MultiLinearRegression[T](xt, y)
+	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = new MultiLinearRegression[T](xt, y)
 }
 
 // ------------------------------  EOF ---------------------------------------
