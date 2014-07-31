@@ -70,7 +70,7 @@ object QLLabel {
 		 * The implementation does not assume that every episode (or training cycle) is successful. 
 		 * At completion of the training, the ratio of labels over initial training set is computed.
 		 * The client code is responsible to evaluate the quality of the model by testing the ratio
-		 * against a threshold.</p>
+		 * agammast a threshold.</p>
 		 * @param config configuration for Q-Learning algorithm
 		 * @param qLabels training set input used to build the search space (or model)
 		 * @param numStates total number of states in the search space
