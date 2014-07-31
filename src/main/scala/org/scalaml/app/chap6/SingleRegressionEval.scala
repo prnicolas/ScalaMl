@@ -7,9 +7,9 @@
 package org.scalaml.app.chap6
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import PriceVolume._
+import YahooFinancials._
 import org.scalaml.core.Types.ScalaMl._
 
 

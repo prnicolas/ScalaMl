@@ -7,8 +7,8 @@
 package org.scalaml.app.chap6
 
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import org.scalaml.trading.PriceVolume
-import PriceVolume._
+import org.scalaml.trading.YahooFinancials
+import YahooFinancials._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.supervised.regression.linear.RidgeRegression
@@ -22,9 +22,9 @@ object RidgeRegressionEval {
   	   	println("Evaluation of Ridge regression")
   	   	 
 		val src = DataSource(path, true, true, 1)
-		val price = src |> PriceVolume.adjClose
-		val volatility = src |> PriceVolume.volatility 
-		val volume = src |> PriceVolume.volume
+		val price = src |> YahooFinancials.adjClose
+		val volatility = src |> YahooFinancials.volatility 
+		val volume = src |> YahooFinancials.volume
 		
 		if( price != None && volatility != None && volume != None) {
 			val prices = price.get.toArray

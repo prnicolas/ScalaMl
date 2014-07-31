@@ -12,7 +12,7 @@ import org.scalaml.supervised.regression.logistic._
 import scala.util.Random
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 
 
 object LogisticRegressionEval {
@@ -23,9 +23,9 @@ object LogisticRegressionEval {
   	 println("Evaluation of Binomial Logistic regression")
 		
   	val src = DataSource(path, true, true, 1)
-	val price = src |> PriceVolume.adjClose
-	val volatility = src |> PriceVolume.volatility 
-	val volume = src |> PriceVolume.volume
+	val price = src |> YahooFinancials.adjClose
+	val volatility = src |> YahooFinancials.volatility 
+	val volume = src |> YahooFinancials.volume
 		
 	if( price != None && volatility != None && volume != None) {
 		val prices = price.get.toArray
