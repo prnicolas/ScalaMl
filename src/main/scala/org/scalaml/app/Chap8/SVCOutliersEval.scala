@@ -12,15 +12,6 @@ import org.scalaml.supervised.svm._
 import org.scalaml.core.{XTSeries, Types}
 
 
-
-		/**
-		 * <p>Singleton to evaluate the One-class support vector
-		 * classifiers to predict a significant cut or elimination of
-		 * the pay-out of a dividend on a stock..</p>
-		 * 
-		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 */
 import DividendPayout._
 import Types.ScalaMl._
 object SVCOutliersEval {
@@ -36,6 +27,7 @@ object SVCOutliersEval {
 	                   debtToEquity ::
 	                   dividendCoverage ::
 	                   cashPerShareToPrice ::
+	              //     epsTrend ::
 	                   dividendTrend :: List[Array[String] =>Double]()
 	   	   
 	   DataSource(path, true, false, 1) |> extractor match {

@@ -12,16 +12,6 @@ import org.scalaml.supervised.svm._
 import org.scalaml.core.{XTSeries, Types}
 
 
-
-		/**
-		 * <p>Singleton to evaluate the binary support vector classifier. The
-		 * purpose of the test is to extract the features set (or subset) and
-		 * the 2 classes among the three labels values {-1, 0, +1} that provide
-		 * the best accuracy.</p>
-		 * 
-		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 */
 import DividendPayout._
 import Types.ScalaMl._
 object SVCEval {

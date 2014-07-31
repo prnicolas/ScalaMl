@@ -43,8 +43,6 @@ object Chap8 extends App {
   	 case "all" => runAll
   	 case _ =>  println(cmdDescriptor)
   }
-  
-  SVCEval.run
 }
 	
 

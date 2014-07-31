@@ -71,25 +71,25 @@ object SVCKernelEval {
 	    var testSet = genLabels(0.18, 0.35)
         evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
         evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel())
+        evalKernel(trainingSet, testSet, y, LinearKernel)
         evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
         
         testSet = genLabels(0.25, 0.6)
         evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
         evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel())
+        evalKernel(trainingSet, testSet, y, LinearKernel)
         evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
         
         testSet = genLabels(0.5, 0.5)
         evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
         evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel())
+        evalKernel(trainingSet, testSet, y, LinearKernel)
         evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
           
         testSet = genLabels(0.75, 0.45)
         evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
         evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel())
+        evalKernel(trainingSet, testSet, y, LinearKernel)
         evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
 	}
 	

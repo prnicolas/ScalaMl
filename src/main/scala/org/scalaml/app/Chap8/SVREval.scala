@@ -7,24 +7,17 @@
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.svm._
 import org.scalaml.core.{XTSeries, Types}
-import PriceVolume._
+import YahooFinancials._
 import Types.ScalaMl._
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 
 
 
 
-		/**
-		 * <p>Singleton to evaluate support vector regression using
-		 * the S&P 500 ETF, SPY. The prediction is compared to the original
-		 * labeled observations and the output of the linear regression.</p>
-		 * 
-		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 */
+
 object SVREval {
 
    final val path = "resources/data/chap8/SPY.csv"
