@@ -7,9 +7,9 @@
 package org.scalaml.app.chap4
 
 import org.scalaml.core.{Types, XTSeries}
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import PriceVolume._
+import YahooFinancials._
 
 
 

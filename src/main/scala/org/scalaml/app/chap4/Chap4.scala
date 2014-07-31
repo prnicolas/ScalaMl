@@ -7,9 +7,9 @@
 package org.scalaml.app.chap4
 
 import org.scalaml.core.{Types, XTSeries}
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import PriceVolume._
+import YahooFinancials._
 import Types.ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 
@@ -18,7 +18,7 @@ trait UnsupervisedLearningEval {
    final val path = "resources/data/chap4/"
        
    def run(args: Array[String]): Unit
-   protected val extractor = PriceVolume.adjClose :: List[Array[String] =>Double]()
+   protected val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
    protected def symbols = DataSource.listSymbols(path)
 }
 
