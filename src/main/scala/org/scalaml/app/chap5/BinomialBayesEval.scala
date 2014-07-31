@@ -12,7 +12,7 @@ import scala.collection.immutable.HashSet
 import org.scalaml.supervised.bayes.MultinomialNaiveBayes
 
 trait BayesEval {
-   import org.scalaml.trading.PriceVolume._
+   import org.scalaml.trading.YahooFinancials._
    final val path = "resources/data/chap5/"
        
    def run(args: Array[String]): Unit
