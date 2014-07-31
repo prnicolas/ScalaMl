@@ -10,7 +10,7 @@ import scala.io.Source
 import java.awt.Color
 import org.scalaml.plots._
 import org.scalaml.stats.Stats
-import org.scalaml.trading.{Signal, PriceVolume}
+import org.scalaml.trading.{Signal, YahooFinancials}
 import org.scalaml.core.Types
 import Signal._
 import Types.ScalaMl._
