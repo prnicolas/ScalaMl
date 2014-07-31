@@ -86,6 +86,22 @@ object Types {
 	  implicit def dblPairs2DblRows(x: (Double, Double)): DblMatrix = Array[Array[Double]](Array[Double](x._1, x._2))
 	  implicit def dblPairs2DblCols(x: DblVector): DblMatrix = Array[Array[Double]](Array[Double](x(0)), Array[Double](x(1)))
 	  implicit def dblPairs2DblMatrix2(x: ((Double, Double), (Double, Double))): DblMatrix = Array[Array[Double]](Array[Double](x._1._1, x._1._2), Array[Double](x._2._1, x._2._2))
+  
+      def toText(v: DblVector, index: Boolean): String = {
+	  	 require(v != null && v.size > 0, "Cannot create a textual representation of a undefined vector")
+	  	 if( index)
+	  		v.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(x._2).append(":").append(x._1).append(", ")).toString
+	  	 else
+	  	    v.foldLeft(new StringBuilder)((buf, x) => buf.append(x).append(",")).toString.take(v.size-1)
+	  }
+	  
+	  def toText(m: DblMatrix, index: Boolean): String = {
+	  	 require(m != null && m.size > 0, "Cannot create a textual representation of a undefined vector")
+	  	 if(index)
+	  		  m.zipWithIndex.foldLeft(new StringBuilder)((buf, v) => buf.append(v._2).append(":").append(toText(v._1, true)).append("\n")).toString
+	  	 else 
+	  	      m.foldLeft(new StringBuilder)((buf, v) => buf.append(toText(v, false)).append("\n")).toString
+	  }
   }
 
   		/**

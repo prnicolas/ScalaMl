@@ -198,7 +198,7 @@ object XTSeries {
    @implicitNotFound("Ordering for normalizatoin is undefined")
    def normalize[T <% Double](xt: XTSeries[Array[T]])(implicit order: Ordering[T], m: Manifest[T]): Option[XTSeries[DblVector]] = {
   	 require(xt != null && xt.size > 0, "Cannot normalize an undefined time series of elements")
-  	 require(xt(0).size > 1, "Incorrect function to normalize a single dimension time series")
+  	 require(xt(0).size > 0, "Incorrect function to normalize a single dimension time series")
   	   	   
      var k = 0;
      val res = new Array[Array[T]](xt.size)
