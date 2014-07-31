@@ -28,11 +28,11 @@ trait AkkaEval {
    final val numIters = 6
 
    protected def extractVolatilityVolume: Option[List[XTSeries[Double]]] = {
-      import org.scalaml.trading.PriceVolume
+      import org.scalaml.trading.YahooFinancials
       import org.scalaml.workflow.data.DataSource
         
       val extractors = List[Array[String] => Double](
-      	 PriceVolume.volatility, PriceVolume.volume )	
+      	 YahooFinancials.volatility, YahooFinancials.volume )	
       	 
 	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors match {
 	  	case Some(xs) => Some(xs.map( XTSeries(_) ))
