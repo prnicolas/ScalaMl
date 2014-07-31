@@ -35,7 +35,7 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
   	  try {
 		  var likelihood = frwrdBckwrdLattice
 		  Range(0, params.maxIters) find( _ => {
-		  	  lambda.estimate(params, obs)
+		  	  lambda.estimate(params, labels)
 		  	  val _likelihood = frwrdBckwrdLattice
 		  	  val diff = likelihood - _likelihood
 		  	  likelihood = _likelihood
@@ -53,10 +53,10 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	}
    
    private def frwrdBckwrdLattice: Double  = {
-       val alpha = Alpha(lambda, obs).alpha
-	   Beta(lambda, obs)
+       val alpha = Alpha(lambda, labels).alpha
+	   Beta(lambda, labels)
 	   params.Gamma
-	   params.DiGamma.update(lambda.A, lambda.B, obs)
+	   params.DiGamma.update(lambda.A, lambda.B, labels)
 	   alpha
    }
 }
@@ -70,7 +70,7 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	 */
 object BaumWelchEM {
    final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMParams, obs: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, obs, eps)
-   def apply(lambda: HMMLambda, params: HMMParams, obs: Array[Int])  = new BaumWelchEM(lambda, params, obs, EPS)
+   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
+   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
 }
 // -----------------------------  EOF --------------------------------

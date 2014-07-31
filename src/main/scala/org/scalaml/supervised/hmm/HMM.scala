@@ -48,9 +48,9 @@ case class HMMDim(val _T: Int, val _N: Int, val _M: Int) {
 
 
 
-class HMMAlgorithm(val lambda: HMMLambda, val obs: Array[Int]) {
+class HMMAlgorithm(val lambda: HMMLambda, val labels: Array[Int]) {
    require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
-   require(obs != null && obs.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
+   require(labels != null && labels.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
 }
 
 
@@ -63,7 +63,7 @@ class HMMAlgorithm(val lambda: HMMLambda, val obs: Array[Int]) {
 	 * @author Patrick Nicolas
 	 * @date March 29, 2014
 	 */
-class Pass(val lp: HMMLambda, val obsp: Array[Int]) extends HMMAlgorithm(lp, obsp) { 
+class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMAlgorithm(lp, lbls) { 
    import Types.ScalaMl._
   
    protected var alphaBeta: Matrix[Double] = null
@@ -86,12 +86,12 @@ class Pass(val lp: HMMLambda, val obsp: Array[Int]) extends HMMAlgorithm(lp, obs
 	 * @param lambda Lambda (pi, A, B) model for the HMM
 	 * @param params parameters (alpha, beta, gamma, digamma, q) used in any of the three
 	 * canonical form of the HMM
-	 * @param obs: Array of observations as integer (categorical data)
+	 * @param labels: Array of observations as integer (categorical data)
 	 * @exception IllegalArgumentException if lambda, params and observations are undefined
 	 * @author Patrick Nicolas
 	 * @date March 7, 2014
 	 */
-class HMMInference(val li: HMMLambda, val params: HMMParams, val obsi: Array[Int]) extends HMMAlgorithm(li,  obsi) {
+class HMMInference(val li: HMMLambda, val params: HMMParams, val _labels: Array[Int]) extends HMMAlgorithm(li,  _labels) {
   require(params != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
 }
 

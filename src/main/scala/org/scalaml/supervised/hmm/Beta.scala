@@ -43,7 +43,7 @@ final class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lamb
 	  	
 	private  def updateBeta(t: Int): Unit =
   	   lambda.d.foreachN( i => { 
-  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, obs(t+1)))	
+  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, labels(t+1)))	
   	   })
 }
 
@@ -52,7 +52,7 @@ final class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lamb
 		 * Companion object for the Beta pass that defines the constructor apply
 		 */
 object Beta {
-	def apply(lambda: HMMLambda, obs: Array[Int]): Beta = new Beta(lambda, obs)
+	def apply(lambda: HMMLambda,  _labels: Array[Int]): Beta = new Beta(lambda, _labels)
 }
 
 

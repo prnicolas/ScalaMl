@@ -25,7 +25,7 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
-  val alpha = { alphaBeta = lambda.initAlpha(obs); normalize(0); recurse }
+  val alpha = { alphaBeta = lambda.initAlpha(labels); normalize(0); recurse }
 
   
   	/**
@@ -43,7 +43,7 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
    
   private def updateAlpha(t: Int): Unit = 
   	lambda.d.foreachM( i => { 
-  	   alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, obs(t))) 
+  	   alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, labels(t))) 
     })
 }
 

@@ -44,7 +44,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
    private def initial(ti: (Int, Int)): Double = {
   	 if(ti._1 == 0) {
   	    params.psi += (0, 0, 0)
-  		params.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, obs(ti._2))
+  		params.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, labels(ti._2))
   	 }
   	 else 
   		-1.0
@@ -55,9 +55,9 @@ class ViterbiPath(val lambdaV: HMMLambda,
   	 var maxDelta = initial((t, j))
   	 
   	 if( maxDelta == -1.0) {
-  	    if( t != obs.size) {
+  	    if( t != labels.size) {
             maxDelta = lambda.d.rn.maxBy( s =>  
-  		        recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obs(t)) )	   
+  		        recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, labels(t)) )	   
   		        
   		    val idx = lambda.d.rt.maxBy(i =>recurse(t-1 ,i)*lambda.A(i,j))
   		    params.psi += (t, j, idx)
@@ -85,7 +85,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * @date March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, params: HMMParams, obs: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, obs)
+	def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
 }
 
 
