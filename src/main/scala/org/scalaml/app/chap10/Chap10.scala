@@ -11,9 +11,9 @@ import java.util.BitSet
 import org.scalaml.ga.{Operator, Gene, Chromosome}
 import Operator._
 import scala.collection.mutable.ListBuffer
-import org.scalaml.trading.PriceVolume
+import org.scalaml.trading.YahooFinancials
 import scala.io.Source
-import PriceVolume._
+import YahooFinancials._
 import org.scalaml.core._
 import org.scalaml.plots.{LightPlotTheme, LinePlot, ScatterPlot}
 import org.scalaml.trading.Signal
