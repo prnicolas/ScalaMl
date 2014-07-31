@@ -26,6 +26,13 @@ sealed trait SVMKernel extends SVMConfigItem {
 }
 
 
+object SVMKernel {
+	final val GAMMA_LIMITS = (1e-17, 1e+5)
+	final val DEGREE_LIMITS = (1, 10000)
+}
+
+import SVMKernel._
+
 	    /**
 		 * <p>Definition of the Linear kernel.</p>
 		 * 
@@ -33,7 +40,7 @@ sealed trait SVMKernel extends SVMConfigItem {
 		 * @date April 30, 2014
 		 * @project Scala for Machine Learning
 		 */
-case class LinearKernel() extends SVMKernel {
+object LinearKernel extends SVMKernel {
 	 /**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
@@ -59,7 +66,7 @@ case class LinearKernel() extends SVMKernel {
 		 * @project Scala for Machine Learning
 		 */
 case class RbfKernel(val gamma: Double) extends SVMKernel {
-	require(gamma > 0.0, "Gamma for the RBF kernel " + gamma + " should be > 0")
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the RBF kernel " + gamma + " is out of range")
     
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -87,7 +94,7 @@ case class RbfKernel(val gamma: Double) extends SVMKernel {
 		 * @project Scala for Machine Learning
 		 */
 case class SigmoidKernel(val gamma: Double) extends SVMKernel {
-	require(gamma > 0.0, "Gamma for the Sigmoid kernel " + gamma + " should be >0")
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the Sigmoid kernel " + gamma + " is out of range")
 		
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -103,17 +110,7 @@ case class SigmoidKernel(val gamma: Double) extends SVMKernel {
     
     override def toString: String = "\nSIGMOID " + String.valueOf(gamma)
 }
-/*
-case class LaplacianKernel(val gamma: Double) extends SVMKernel {
-	override def config(param: svm_parameter): Unit = {
-      param.kernel_type = svm_parameter.LAPLACE
-      param.gamma = gamma
-    }
-    
-    override def toString: String = "\nLAPLACE " + String.valueOf(gamma)
-}
-* 
-*/
+
 
 	    /**
 		 * <p>Definition of the polynomial Kernel function.</p>
@@ -127,8 +124,8 @@ case class LaplacianKernel(val gamma: Double) extends SVMKernel {
 		 * @project Scala for Machine Learning
 		 */
 case class PolynomialKernel(val gamma: Double, val coef0: Double, val degree: Int) extends SVMKernel {
-	require(gamma > 0.0, "Gamma for polynomial kernel " + gamma + " should be >= 0")
-	require(degree > 0,  "Degree for the polynomial kernel " + degree + " should be >= 1")	
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the polynomial kernel" + gamma + " is out of range")
+	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, "The degree of the polynomial kernel " + degree + " is out of range")
 	
     /**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>

@@ -31,19 +31,16 @@ import org.scalaml.util.Matrix
 		 * @project Scala for Machine Learning
 		 */
 import XTSeries._
-class SVM[T <% Double](val config: SVMConfig, 
+final protected class SVM[T <% Double](val config: SVMConfig, 
 		               val xt: XTSeries[Array[T]], 
 		               val labels: DblVector) extends PipeOperator[Array[T], Double] {
 	
-  require(config != null, "Configuration of the SVM is undefined")
-  require(xt != null && xt.size > 0, "Features for the SVM are undefined")
-  require(labels != null && labels.size > 0, "Labeled observations for the SVM are undefined")
-  require(xt.size == labels.size, "Number of features " + xt.size + " and number of labels " + labels.size + " differs for SVM")
+  validate(config, xt, labels)
   
   type Feature = Array[T]
   type SVMNodes = Array[Array[svm_node]]
   
-  private val model: Option[(svm_model, Double)] = {
+  private val model: Option[SVMModel] = {
   	 
   	  val prob = new svm_problem
       prob.l = xt.size;
@@ -62,7 +59,7 @@ class SVM[T <% Double](val config: SVMConfig,
 	  	  	    svm_col(xi._2) = node })
 	  	  	 prob.x(xt_i._2) = svm_col
 	      })
-	      Some(svm.svm_train(prob, config.param), accuracy(prob))
+	      Some(new SVMModel(svm.svm_train(prob, config.param), accuracy(prob)))
       }
       catch {
       	case e: RuntimeException => println(e.toString); None
@@ -74,7 +71,7 @@ class SVM[T <% Double](val config: SVMConfig,
   	 * Access the accuracy of the SVM algorithm. 
   	 * @return accuracy value in the range [0, 1] if the model was successfully trained, None otherwise
   	 */
-  final def accuracy: Option[Double] = if( model != None) Some(model.get._2) else None
+  final def accuracy: Option[Double] = if( model != None) Some(model.get.params._2) else None
 
   
 	/**
@@ -85,7 +82,7 @@ class SVM[T <% Double](val config: SVMConfig,
   	case Some(m) => {
   		val z: Double = xt.toArray.zipWithIndex
   		          .foldLeft(0.0)((s, xti) => {
-  		          	val diff = svm.svm_predict(m._1, featurePrediction(xti._1)) - labels(xti._2)
+  		          	val diff = svm.svm_predict(m.params._1, featurePrediction(xti._1)) - labels(xti._2)
   		          	s + diff*diff
   		          })
         Some(Math.sqrt(z))
@@ -99,7 +96,7 @@ class SVM[T <% Double](val config: SVMConfig,
   	 */
   def margin: Option[Double] = model match {
   	case Some(m) => {
-  		val wNorm = m._1.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
+  		val wNorm = m.params._1.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
   		if(wNorm < config.eps)
   			None
   		else
@@ -117,7 +114,7 @@ class SVM[T <% Double](val config: SVMConfig,
   	case Some(m) => {
   	   if(x == null || x.size != dimension(xt))
   			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + dimension(xt))
-  		Some(svm.svm_predict(m._1, featurePrediction(x)))
+  		Some(svm.svm_predict(m.params._1, featurePrediction(x)))
   	}
   	case None => None
   }
@@ -141,6 +138,13 @@ class SVM[T <% Double](val config: SVMConfig,
   			node :: xs
   	  }).toArray.reverse
 
+  
+  private def validate(config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
+	  require(config != null, "Configuration of the SVM is undefined")
+	  require(xt != null && xt.size > 0, "Features for the SVM are undefined")
+	  require(labels != null && labels.size > 0, "Labeled observations for the SVM are undefined")
+	  require(xt.size == labels.size, "Number of features " + xt.size + " and number of labels " + labels.size + " differs for SVM")
+  }
   
   override def toString: String = 
   	 new StringBuilder(config.toString)

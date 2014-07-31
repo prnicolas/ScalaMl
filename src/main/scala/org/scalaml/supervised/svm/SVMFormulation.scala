@@ -19,6 +19,14 @@ sealed trait SVMFormulation extends SVMConfigItem {
   def config(param: svm_parameter): Unit 
 }
 
+object SVMFormulation {
+	final val NU_LIMITS = (0.0, 1.0)
+	final val C_LIMITS = (0.0, 100.0)
+	final val EPSILON_LIMITS = (0.0, 100.0)
+}
+
+import SVMFormulation._
+
 
 	/**
 	 * <p>Class to initialize the type of SVM to a C formulated support vector classifier.</p>
@@ -30,7 +38,7 @@ sealed trait SVMFormulation extends SVMConfigItem {
 	 * @project Scala for Machine Learning
 	 */
 case class CSVCFormulation(val c: Double) extends SVMFormulation {
-  require(c >= 0.0, "C penalty factor " + c + " should be >= 0")
+  require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
   
   	/**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
@@ -58,7 +66,7 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
 	 * @project Scala for Machine Learning
 	 */
 case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
-  require(nu >= 0.0 && nu <= 1.0, "nu penalty factor " + nu + " should be within [0,1]")
+  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
@@ -87,8 +95,7 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
 	 * @project Scala for Machine Learning
 	 */
 case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
-  require(nu >= 0.0 && nu <= 1.0, "nu penalty factor " + nu + " should be within [0,1]")
-  
+  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
@@ -117,9 +124,9 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
 	 * @project Scala for Machine Learning
 	 */
 case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation { 
-  require(c >= 0.0, "C penalty factor " + c + " should be >= 0")
-  require(epsilon >= 0.0, "Epsilon factor " + epsilon + " should be >=0")
-	  
+   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
+   require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, "Epsilon factor " + epsilon + " is out of range") 
+   
      /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize

@@ -7,6 +7,7 @@
 package org.scalaml.supervised.svm
 
 import libsvm._
+import org.scalaml.supervised.Config
 
 
 	/**
@@ -23,10 +24,8 @@ import libsvm._
 	 * @date April 30, 2014
 	 * @project Scala for Machine Learning
 	 */
-class SVMConfig(val formulation: SVMFormulation, val kernel: SVMKernel, val svmParams: SVMExecution) {
-	require(formulation != null, "Formulation in the configuration of SVM is undefined")
-	require(kernel != null, "Kernel function in the configuration of SVM is undefined")
-	require(svmParams != null, "The training execution parameters in the configuration of SVM is undefined")	
+final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVMKernel, val svmParams: SVMExecution) extends Config {
+	validate(formulation, kernel, svmParams)
 	
     val  param = new svm_parameter
     formulation.config(param)
@@ -55,6 +54,12 @@ class SVMConfig(val formulation: SVMFormulation, val kernel: SVMKernel, val svmP
     
     @inline
     def isCrossValidation: Boolean = svmParams.nFolds > 0
+    
+    private def validate(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
+		require(formulation != null, "Formulation in the configuration of SVM is undefined")
+		require(kernel != null, "Kernel function in the configuration of SVM is undefined")
+		require(svmParams != null, "The training execution parameters in the configuration of SVM is undefined")	
+	}
 }
 
 
