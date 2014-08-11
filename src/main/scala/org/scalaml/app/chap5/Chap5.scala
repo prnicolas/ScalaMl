@@ -9,7 +9,7 @@ import Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
 import scala.collection.immutable.HashSet
-import org.scalaml.supervised.bayes.MultinomialNaiveBayes
+import org.scalaml.supervised.bayes.NaiveBayes
 
 
 object Chap5 extends App {
@@ -25,18 +25,18 @@ object Chap5 extends App {
 		  .append(" all: All evaluation").toString
   }
   
-  val argument = if( args == null || args.length == 0) "?" else args(0)
   try {
-	  argument match {
+     if( args == null || args.length == 0) "?" else args(0) match {
 	  	 case "?" => println(cmdDescriptor)
 	  	 case "bayes" => BinomialBayesEval.run(Array[String]("0.5", "8"))
 	  	 case "textBayes" => TextBayesEval.run
 	  	 case "all" => runAll
 	  	 case _ =>  println(cmdDescriptor)
-	  }
+	 }
   }
   catch {
-  	 case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+     case e: IllegalArgumentException => println( "Naive Bayes failed " + e.toString)
+  	 case e: RuntimeException =>  println("Naive Bayes failed " + e.toString)
   }
 }
 

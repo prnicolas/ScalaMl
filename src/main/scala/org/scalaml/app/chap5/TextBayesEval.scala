@@ -9,7 +9,7 @@ import Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
 import scala.collection.immutable.HashSet
-import org.scalaml.supervised.bayes.MultinomialNaiveBayes
+import org.scalaml.supervised.bayes.NaiveBayes
 
 
 
@@ -55,7 +55,7 @@ object TextBayesEval {
 		  	  	                       .zip(diff)
 		  	  	                       .map( x => (x._1._2, x._2))
 		  	  	                       .map( lbl => { (lexicon.values.toArray.map( f => if( lbl._1.contains(f) ) lbl._1.get(f).get else 0.0), lbl._2) })
-			  	  val multiNomialNB = MultinomialNaiveBayes[Double](XTSeries[(Array[Double], Int)](freqLabels))
+			  	  val multiNomialNB = NaiveBayes[Double](XTSeries[(Array[Double], Int)](freqLabels))
 			  	  println(multiNomialNB.toString)
 		  	  	}
 		  	  	case None => println("Naive Bayes failed"); None

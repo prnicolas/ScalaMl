@@ -9,7 +9,7 @@ import Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
 import scala.collection.immutable.HashSet
-import org.scalaml.supervised.bayes.MultinomialNaiveBayes
+import org.scalaml.supervised.bayes.NaiveBayes
 
 trait BayesEval {
    import org.scalaml.trading.YahooFinancials._
@@ -38,14 +38,14 @@ object BinomialBayesEval extends BayesEval {
 		 case Some(input) => {
 			val labels = XTSeries[(Array[Int], Int)](input.map( x => (x._1.toArray, x._2)).toArray)
 			val numObsToTrain  = (trainValidRatio*labels.size).floor.toInt
-			val nb = MultinomialNaiveBayes[Int](labels.take(numObsToTrain))
+			val nb = NaiveBayes[Int](labels.take(numObsToTrain))
 		    validate(labels.drop(numObsToTrain+1), nb)
 		 }
 		 case None => Console.println("Error")
 	   }
 	}
 	
-	private def validate(input:  XTSeries[(Array[Int], Int)], nb: MultinomialNaiveBayes[Int]): Double = nb.validate(input, 0)
+	private def validate(input:  XTSeries[(Array[Int], Int)], nb: NaiveBayes[Int]): Double = nb.validate(input, 0)
 	
 	
 	private def load(args: Array[String], period: Int): Option[List[(List[Int], Int)]] = {
