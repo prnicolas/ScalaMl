@@ -38,7 +38,7 @@ final class Reproduction[T <: Gene](private val config: GAConfig, val fit: Chrom
 	   case None => None   
 	 }
   
-    override def toString : String =new StringBuilder("Replication:\n").append(config.toString).toString
+    override def toString : String = new StringBuilder("Replication:\n").append(config.toString).toString
 
         
 	private[this] def select(population: Population[T]) =  population.size match {
