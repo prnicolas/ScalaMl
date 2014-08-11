@@ -26,18 +26,25 @@ object Chap6 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
-	argument match {
-		case "?" => println(cmdDescriptor)
-		case "singlelinear" =>  SingleLinearRegressionEval.run()
-		case "multilinear" => {
-			MultiLinearRegressionEval.run(Array[String]("trend"))
-			MultiLinearRegressionEval.run(Array[String]("filter"))
-		}
-		case "ridge" => RidgeRegressionEval.run()
-		case "logistic" => LogisticRegressionEval.run()
-		case "all" => runAll
-		case _ =>  println(cmdDescriptor)
+	try {
+       if( args == null || args.length == 0) "?" else args(0) match {
+			case "?" => println(cmdDescriptor)
+			case "singlelinear" =>  SingleLinearRegressionEval.run()
+			case "multilinear" => {
+				MultiLinearRegressionEval.run(Array[String]("trend"))
+				MultiLinearRegressionEval.run(Array[String]("filter"))
+			}
+			case "ridge" => RidgeRegressionEval.run()
+			case "logistic" => LogisticRegressionEval.run()
+			case "all" => runAll
+			case _ =>  println(cmdDescriptor)
+       }
+	}
+	
+	catch {
+	   case e: IllegalArgumentException => println("Regression failed " + e.toString)
+	   case e: RuntimeException => println("Regression failed " + e.toString)
+	   case e: Exception => println("Regression failed " + e.toString)
 	}
 }
 

@@ -37,7 +37,7 @@ object LogisticRegressionEval {
 	    val maxEvals = 100
 		val features = data.take(data.size-1)
 		val lsOptimizer = LogisticRegressionOptimizer(maxIters, maxEvals, 1e-4, new LevenbergMarquardtOptimizer)
-		val logIt = new LogisticRegression[Double](XTSeries[DblVector](features) ,priceChange, lsOptimizer)
+		val logIt = LogisticRegression[Double](XTSeries[DblVector](features) ,priceChange, lsOptimizer)
 		    
 		println("RMS: " +  logIt.rms.get + "\nWeights: ")
 		logIt.weights.get.foreach( println )
