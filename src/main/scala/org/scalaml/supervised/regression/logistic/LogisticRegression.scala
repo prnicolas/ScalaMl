@@ -40,14 +40,11 @@ import org.scalaml.supervised.regression.RegressionModel
 		 * @project Scala for Machine Learning
 		 */
 import XTSeries._
-class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]], 
+final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
 		                                val labels: Array[Int], 
 										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
-	
-	require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
-	require(xt.size == labels.size, "Size of input data " + xt.size + " is different from size of labels " + labels.size)
-    require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
-	
+	validate(xt, labels, optimizer)
+
 	private val model: Option[RegressionModel] = {
 		try {
 			val weightAcc = train
@@ -57,23 +54,23 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
 			case e: ConvergenceException => println("Algorithm failed to converge " + e.toString); None
 			case e: DimensionMismatchException =>  println("Jacobian and data vector mismatched dimension " + e.toString); None
 			case e: TooManyEvaluationsException => println("Too many evaluations " + e.toString); None
-			case e: TooManyIterationsException => println("Too many evaluations " + e.toString); None
+			case e: TooManyIterationsException => println("Too many iterations " + e.toString); None
 			case e: MathRuntimeException =>  println("Run time exception  " + e.toString); None
 		}
 	}
-		
-	def weights: Option[DblVector] = {
-		model match {
-			case Some(m) => Some(m.weights)
-			case None => None
-		}
+	
+		/**
+		 * <p>Access the weights of the logistic regression model.</p>
+		 * @return Vector of weights if the model has been successfully trained, None otherwise.
+		 */
+	final def weights: Option[DblVector] = model match {
+	   case Some(m) => Some(m.weights)
+	   case None => None
 	}
 	
-	def rms: Option[Double] = {
-	    model match {
-			case Some(m) => Some(m.accuracy)
-			case None => None
-		}
+	def rms: Option[Double] = model match {
+	   case Some(m) => Some(m.accuracy)
+	   case None => None
 	}
 			/**
 			 * <p>Binary predictor using the Binomial logistic regression and implemented
@@ -152,9 +149,21 @@ class LogisticRegression[T <% Double](	val xt: XTSeries[Array[T]],
         println("Optimum: ")
         (optimum.getPoint.toArray, optimum.getRMS)
 	}
+	
+    private def validate(xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
+	  require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
+	  require(xt.size == labels.size, "Size of input data " + xt.size + " is different from size of labels " + labels.size)
+      require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
+   }
+	
 }
 
 
+	/**
+	 * <p>Companion object for the logistic regression. The singleton is used
+	 * for conversion between Apache Common Math Pair Scala tuple and vice versa.
+	 * The singleton is also used to define the constructors
+	 */
 object LogisticRegression {
    final val MARGIN = 0.1
    
