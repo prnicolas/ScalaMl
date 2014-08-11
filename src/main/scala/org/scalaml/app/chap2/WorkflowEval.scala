@@ -58,7 +58,7 @@ object TransformExample {
 		 * @author Patrick Nicolas 
 		 * @date January 22, 2014
 		 */
-class Sampler(val samples: Int) extends PipeOperator[Double => Double, DblVector] {
+final class Sampler(val samples: Int) extends PipeOperator[Double => Double, DblVector] {
   require(samples > 0 && samples < 1E+5, "Number of samples " + samples + " is out of range")
 	  	  
    override def |> (f: Double => Double): Option[DblVector] = { 
@@ -75,7 +75,7 @@ class Sampler(val samples: Int) extends PipeOperator[Double => Double, DblVector
 		 * @author Patrick Nicolas 
 		 * @date January 22, 2014
 		 */
-class Normalizer extends PipeOperator[DblVector, DblVector] {
+final class Normalizer extends PipeOperator[DblVector, DblVector] {
 	
    override def |> (data: DblVector): Option[DblVector] = { 
   	 require(data != null && data.size > 1, "Input to normalizer undefined")
@@ -90,7 +90,7 @@ class Normalizer extends PipeOperator[DblVector, DblVector] {
 		 * @author Patrick Nicolas 
 		 * @date January 22, 2014
 		 */
-class Reducer extends PipeOperator[DblVector, Int] {
+final class Reducer extends PipeOperator[DblVector, Int] {
 	   
   override def |> (data: DblVector): Option[Int] = { 
   	 require(data != null && data.size > 1, "Input to normalizer undefined")

@@ -40,18 +40,18 @@ object Chap2 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
 	try {
-		argument match {
-			case "?" => println(cmdDescriptor)
-			case "biasvariance" => BiasVarianceEval.run
-			case "workflow" =>   	 WorkflowEval.run
-			case "all" => runAll
-			case _ =>  println(cmdDescriptor)
-		}	
+	   if( args == null || args.length == 0) "?" else args(0) match {
+		  case "?" => println(cmdDescriptor)
+		  case "biasvariance" => BiasVarianceEval.run
+		  case "workflow" =>   	 WorkflowEval.run
+		  case "all" => runAll
+		  case _ =>  println(cmdDescriptor)
+	   }	
 	}
 	catch {
-	   case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+	   case e: IllegalArgumentException => println("Chapter 2 evaluation failed: " + e.toString)
+	   case e: RuntimeException =>  println("Chapter 2 evaluation failed: " + e.toString)
 	}
 }
 
