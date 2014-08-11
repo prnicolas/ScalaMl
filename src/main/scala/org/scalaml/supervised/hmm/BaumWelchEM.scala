@@ -22,7 +22,7 @@ package org.scalaml.supervised.hmm
 	 *  @project Scala for Machine Learning
 	 */
 class BaumWelchEM(	val lambdaBW: HMMLambda, 
-					val paramsBW: HMMParams, 
+					val paramsBW: HMMConfig, 
 					val obsBW: Array[Int], 
 					val eps: Double) extends HMMInference(lambdaBW, paramsBW, obsBW) {
 	
@@ -70,7 +70,7 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	 */
 object BaumWelchEM {
    final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
-   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
+   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
+   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
 }
 // -----------------------------  EOF --------------------------------

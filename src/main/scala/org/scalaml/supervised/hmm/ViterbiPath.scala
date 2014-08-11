@@ -32,7 +32,7 @@ import Types._
 	 *  @project Scala for Machine Learning
 	 */
 class ViterbiPath(val lambdaV: HMMLambda, 
-				  val paramsV: HMMParams, 
+				  val paramsV: HMMConfig, 
 				  val obsV: Array[Int]) extends HMMInference(lambdaV, paramsV, obsV) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
@@ -85,7 +85,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * @date March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
+	def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
 }
 
 

@@ -87,7 +87,7 @@ final class HMMLambda(val d: HMMDim) {
   	  * @param obs sequence of observations used in the estimate 
   	  * @exception IllegalArgument if the HMM parameters are undefined or the sequence of observatiosn is undefined.
   	  */
-  def estimate(params: HMMParams, obs: Array[Int]): Unit = {
+  def estimate(params: HMMConfig, obs: Array[Int]): Unit = {
   	 require(params != null, "Cannot estimate the log likelihood of HMM with undefined parameters")
   	 require(obs != null && obs.size > 0, "Cannot estimate the log likelihood of HMM for undefined observations")
   	       

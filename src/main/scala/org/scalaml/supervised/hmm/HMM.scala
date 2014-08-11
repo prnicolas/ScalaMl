@@ -91,7 +91,7 @@ class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMAlgorithm(lp, lbl
 	 * @author Patrick Nicolas
 	 * @date March 7, 2014
 	 */
-class HMMInference(val li: HMMLambda, val params: HMMParams, val _labels: Array[Int]) extends HMMAlgorithm(li,  _labels) {
+class HMMInference(val li: HMMLambda, val params: HMMConfig, val _labels: Array[Int]) extends HMMAlgorithm(li,  _labels) {
   require(params != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
 }
 
@@ -134,7 +134,7 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 	require(form != null, "Cannot execute a HMM with undefined canonical form")
 	require( maxIters > 1 && maxIters < 1000, "Maximum number of iterations to train a HMM " + maxIters + " is out of bounds")
 	
-	protected val params = HMMParams(lambda.d, maxIters)
+	protected val params = HMMConfig(lambda.d, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -189,7 +189,7 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 object HMM {
 	type HMMPredictor = (Double, Array[Int])
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int): HMM[T] =  new HMM[T](lambda, form, maxIters)
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMParams.DEFAULT_MAXITERS)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMConfig.DEFAULT_MAXITERS)
 }
 
 

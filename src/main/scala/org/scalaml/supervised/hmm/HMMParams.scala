@@ -21,7 +21,7 @@ import scala.reflect.ClassTag
 	 * @param maxIters maximum number of iterations used in the training of HMM
 	 * @exception if range is undefined or the maximum iterations is out of range
 	 */
-final class HMMParams(val d: HMMDim, val maxIters: Int) {
+final class HMMConfig(val d: HMMDim, val maxIters: Int) {
   require(d != null, "Cannot configure a HMM with undefined dimension")
   require( maxIters > 0 &&  maxIters < 1000, "Maximum number of iterations " + maxIters + " is out of range")
   
@@ -89,10 +89,10 @@ final class HMMParams(val d: HMMDim, val maxIters: Int) {
 }
 
 
-object HMMParams {
+object HMMConfig {
 	final val DEFAULT_MAXITERS = 20
-	def apply(d: HMMDim, maxIters: Int): HMMParams = new HMMParams(d, maxIters)
-	def apply(d: HMMDim): HMMParams = new HMMParams(d, DEFAULT_MAXITERS)
+	def apply(d: HMMDim, maxIters: Int): HMMConfig = new HMMConfig(d, maxIters)
+	def apply(d: HMMDim): HMMConfig = new HMMConfig(d, DEFAULT_MAXITERS)
 }
 
 // ----------------------------------------  EOF ------------------------------------------------------------
