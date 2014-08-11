@@ -37,17 +37,22 @@ object Chap3 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
-	argument match {
-		case "?" => println(cmdDescriptor)
-		case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10"))
-		case "fourier" =>   DFTEval.run(Array[String]("BAC"))
-		case "kalman" => {
-		   implicit def double2String(x: Double): String = x.toString
-	       (new DKalmanEval).run(Array[String]("BAC"))
-		}
-		case "all" => runAll
-		case _ =>  println(cmdDescriptor)
+	try {
+	   if( args == null || args.length == 0) "?" else args(0) match {
+			case "?" => println(cmdDescriptor)
+			case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10"))
+			case "fourier" =>   DFTEval.run(Array[String]("BAC"))
+			case "kalman" => {
+			   implicit def double2String(x: Double): String = x.toString
+		       (new DKalmanEval).run(Array[String]("BAC"))
+			}
+			case "all" => runAll
+			case _ =>  println(cmdDescriptor)
+	   }
+	}
+	catch {
+	  case e: IllegalArgumentException => println("Filtering evaluation failed " + e.toString)
+	  case e: RuntimeException =>  println("Filtering evaluation failed " + e.toString)
 	}
 }
 
