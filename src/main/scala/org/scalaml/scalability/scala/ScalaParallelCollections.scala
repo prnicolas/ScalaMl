@@ -27,7 +27,6 @@ class ParallelCollections[U <: Double](val u: Array[U], numTasks: Int = 1) {
 	require(u != null && u.size > 0, "Cannot evaluate prrformance of Scala parallel collections with undefined data")
 	require(numTasks > 0 && numTasks < 32, "The number of tasks used to evaluate the Scala parallel collections " + numTasks + " is out of range")
 	
-	
 	def map(f: U => U): Unit = {
 	   require(f != null, "Cannot execute a map on the data set with undefined operator" )
 	   
@@ -38,7 +37,7 @@ class ParallelCollections[U <: Double](val u: Array[U], numTasks: Int = 1) {
 	   tpar.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(numTasks))
 		 def run = tpar map f 
 
-	   println(u.size + "," + (midTime - startTime).toString + "," + (System.currentTimeMillis - midTime).toString)
+	   Console.println(u.size + "," + (midTime - startTime).toString + "," + (System.currentTimeMillis - midTime).toString)
 	}
 	
     def reduceLeft(f: (U,U) => U): Unit = {
@@ -51,7 +50,7 @@ class ParallelCollections[U <: Double](val u: Array[U], numTasks: Int = 1) {
 	   tpar.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(numTasks))
 		 def run = tpar reduceLeft f 
 
-	   println(u.size + "," + (midTime - startTime).toString + "," + (System.currentTimeMillis - midTime).toString)
+	   Console.println(u.size + "," + (midTime - startTime).toString + "," + (System.currentTimeMillis - midTime).toString)
     }
 }
 
