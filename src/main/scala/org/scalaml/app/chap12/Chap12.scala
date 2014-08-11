@@ -40,9 +40,8 @@ object Chap12 extends App {
 		   .append(" all: All evaluation").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
 	try {
-		argument match {
+		if( args == null || args.length == 0) "?" else args(0) match {
 			case "?" => println(cmdDescriptor)
 			case "scala" =>  ScalaParallelCollectionEval.run
 			case "akka" => {
@@ -55,6 +54,7 @@ object Chap12 extends App {
 		}	
 	}
 	catch {
+	  	case e: IllegalArgumentException  => println("Execution time out " + e.toString)
 		case e: TimeoutException  => println("Execution time out " + e.toString)
 		case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
 	}
