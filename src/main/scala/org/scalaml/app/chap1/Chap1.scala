@@ -41,18 +41,18 @@ object Chap1 extends App {
 		   .append(" all: All evaluations").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
 	try {
-		argument match {
-			case "?" => println(cmdDescriptor)
-			case "plotter" => PlotterEval.run(args)
-			case "test" =>  LogBinRegressionEval.run(args)
-			case "all" => runAll
-			case _ =>  println(cmdDescriptor)
-		}	
+	  if( args == null || args.length == 0) "?" else args(0) match {
+		  case "?" => println(cmdDescriptor)
+		  case "plotter" => PlotterEval.run(args)
+		  case "test" =>  LogBinRegressionEval.run(args)
+		  case "all" => runAll
+		  case _ =>  println(cmdDescriptor)
+	   }	
 	}
 	catch {
-	   case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+	   case e: IllegalArgumentException => println("Chapter 1 failed " + e.toString)
+	   case e: RuntimeException =>  println("Chapter 1 failed " + e.toString); e.printStackTrace
 	}
 }
 
