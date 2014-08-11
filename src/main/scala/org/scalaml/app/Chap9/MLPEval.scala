@@ -23,7 +23,7 @@ object MLPEval {
   final val THRESHOLD = 0.35
   final val ACTIVATION = (x:Double) => Math.tanh(x) 	
   
-  val symbols = Array[String]("FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB")
+  final val symbols = Array[String]("FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB")
   	 
   val index: Map[String, Int] = {
   	 import scala.collection.mutable.HashMap
@@ -34,11 +34,11 @@ object MLPEval {
 
   	
   def run(args: Array[String]): Unit =  {
+     Console.println("Evaluation of MLP classifier evaluation without SoftMax conversion")
+       
   	 val prices = symbols.map(s => DataSource(path + s +".csv", true, true, 1))
   	                   .map( _ |> GoogleFinancials.close )
   	                   .map( _.get.toArray)
-
-   //  val obs = (prices.toArray, Array[DblVector](prices(0)))
     
      setNoSoftmax
      var hiddenLayers = Array[Int](4)
@@ -93,10 +93,7 @@ object MLPEval {
 
   
   
-  private def accuracy(symbols: Array[String], prices: DblMatrix, config: MLPConfig): Option[Double] = {
-  	 println(toString(symbols))
-  	 
-//     val idx: Array[Int] = symbols.map( sym => index.get(sym).get).
+  private def accuracy(symbols: Array[String], prices: DblMatrix, config: MLPConfig): Option[Double] = {  	 
      val obs: Array[DblVector] = symbols.map( sym => index.get(sym).get).map( prices( _ ) )
 
      val features = obs.drop(1).transpose

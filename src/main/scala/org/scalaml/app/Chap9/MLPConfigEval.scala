@@ -26,6 +26,8 @@ object MLPConfigEval {
    final val CLASSIFICATION = false
    
    def run(args: Array[String]): Unit =  {
+     Console.println("Evaluation of MLP configuration parameters for " + args(1))
+     
  	 def f1(x: Double): DblVector = Array[Double](x*(1.0 + NOISE_RATIO*Random.nextDouble), NOISE_RATIO*Random.nextDouble, x*x*(1.0 +  NOISE_RATIO*Random.nextDouble), NOISE_RATIO*Random.nextDouble)
  	 def f2(x: Double): DblVector = Array[Double](NOISE_RATIO*Random.nextDouble, NOISE_RATIO*Random.nextDouble)
  	 

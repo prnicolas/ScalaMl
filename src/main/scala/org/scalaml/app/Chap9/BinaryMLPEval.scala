@@ -18,9 +18,6 @@ import org.scalaml.supervised.nnet.MLPConnection.setNoSoftmax
  *  @date Jul 20, 2014
  *  @project Book
  */
-
-
-
 object BinaryMLPEval {
    final val ALPHA = 0.85
    final val ETA = 0.005
@@ -33,6 +30,8 @@ object BinaryMLPEval {
    
    def run() {
   	  import scala.util.Random
+  	  
+  	  Console.println("Evaluation of Binary MLP evaluation")
   
   	  val HALF_TEST_SIZE = (TEST_SIZE>>1)
   	  def function1(x: Double): DblVector = Array[Double](0.1 + 0.2*Random.nextDouble, 0.1  +  0.2*Random.nextDouble)
@@ -59,12 +58,5 @@ object BinaryMLPEval {
       
    }
 }
-
-object BinaryMLPEvalApp extends App  {
-	BinaryMLPEval.run
-}
-
-
-
 
 // --------------------------------- EOF -----------------------------
