@@ -8,7 +8,7 @@ package org.scalaml.app.chap7
 
 import org.scalaml.util.Matrix
 import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
-import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, CrfLinearChain}
+import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
 import java.io.IOException
 
 
@@ -21,7 +21,7 @@ import java.io.IOException
 		 * @date March 28, 2014
 		 * @project Scala for Machine Learning
 		 */
-object CRFEval {
+object CrfEval {
   def run: Unit = {
     Console.println("Evaluation of Conditional Random Fields")
     
@@ -31,9 +31,8 @@ object CRFEval {
 	val delimiters = CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
 	try {
-	   val crf = new CrfLinearChain(nLabels, config, delimiters, "resources/data/chap7/rating")
-	   crf.weights match {
-	  	 case Some(weights) => weights.foreach( println )
+	   Crf(nLabels, config, delimiters, "resources/data/chap7/rating").weights match {
+	  	 case Some(model) => model.weights.foreach( println )
 	  	 case None =>  println("Count not train the CRF model")
 	   }
 	 }
