@@ -8,6 +8,7 @@ package org.scalaml.scalability.spark
 
 
 import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
+import org.apache.spark.mllib.linalg.DenseVector
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 
@@ -67,7 +68,7 @@ final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig,
 		   * @exception IllegalArgumentException if the data point is not defined
 		   * @return the id of the cluster if succeeds, None otherwise.
 		   */
-  def |> (values: DblVector): Option[Int] = Some(model.predict(values))
+  def |> (values: DblVector): Option[Int] = Some(model.predict(new DenseVector(values)))
 
   
   private def train: KMeansModel = {
