@@ -24,10 +24,11 @@ import org.scalaml.stats.ClassValidation
 
     
     /**
-     * <p>Generic Multinomial Naive Bayes classification class. The class is used for both training
-     * and run-time classification.
+     * <p>Generic Multi-nomial Naive Bayes classification class. The class is used for both training
+     * and run-time classification.</p>
+     * 
      */
-class MultinomialNaiveBayes[T <% Double](val smoothing: Double, val lblSeries: XTSeries[(Array[T], Int)], val density: Density)
+final class NaiveBayes[T <% Double](val smoothing: Double, val lblSeries: XTSeries[(Array[T], Int)], val density: Density)
                               extends PipeOperator[XTSeries[Array[T]], Array[Int]]
                                  with Supervised[T] {
 	import XTSeries._, Types.ScalaMl._
@@ -57,9 +58,11 @@ class MultinomialNaiveBayes[T <% Double](val smoothing: Double, val lblSeries: X
 }
 
 
-object MultinomialNaiveBayes {
-	def apply[T <% Double](smoothing: Double, labelSeries: XTSeries[(Array[T], Int)], density: Density) = new MultinomialNaiveBayes[T](smoothing, labelSeries, density)
-    def apply[T <% Double](labelSeries: XTSeries[(Array[T], Int)]) = new MultinomialNaiveBayes[T](1.0, labelSeries, gauss)
+object NaiveBayes {
+	def apply[T <% Double](smoothing: Double, labelSeries: XTSeries[(Array[T], Int)], density: Density): NaiveBayes[T] 
+	          = new NaiveBayes[T](smoothing, labelSeries, density)
+    def apply[T <% Double](labelSeries: XTSeries[(Array[T], Int)]): NaiveBayes[T] 
+	          = new NaiveBayes[T](1.0, labelSeries, gauss)
 }
 
 

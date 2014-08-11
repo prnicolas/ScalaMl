@@ -10,7 +10,7 @@ import org.scalaml.stats.Stats
 
 
 import NaiveBayesModel._
-
+import org.scalaml.supervised.Model
 
 		/**
 		 * <p>Class that represents a prior statistics for Naive Bayes classifier.<br>
@@ -66,7 +66,7 @@ case class Prior[T <% Double](val label: Int, val muSigma: Array[(Double, Double
 	 * classify a new set of observations.
 	 * @param density Probabiliy density function used in computing the conditional probability p(C|x)
 	 */
-sealed abstract class NaiveBayesModel[T <% Double](val density: Density) {
+sealed abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
 	def classify(values: Array[T]): Int
 }
