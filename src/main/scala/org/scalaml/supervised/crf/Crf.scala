@@ -14,36 +14,13 @@ import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.workflow.PipeOperator
-import org.scalaml.supervised.Supervised
+import org.scalaml.supervised.{Supervised, Model}
 import java.io.IOException
 import org.scalaml.core.Types.ScalaMl._
 
-	/**
-	 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
-	 * description of the configuration of CRF used by iitb library </p>
-	 * @param initLambda  initial values for the CRF weights/factors (lambdas)
-	 * @param maxIters  Maximum number of iterations to be used for the training of CRF
-	 * @param l2Penalty L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
-	 * @param eps Covergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
-	 * @param debug Optional debugging flag 
-	 * 
-	 * @author Patrick Nicolas
-	 * @date April 3, 2014
-	 */
-case class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, val eps:Double, val debug: Int = 0) {
-	require( initW > -1.0 && initW < 2.5, "Initialization of the CRF weights " + initW + " is out of range")
-	require( maxIters > 10 && maxIters < 250, "Maximum number of iterations for CRF training " + maxIters + " is out of range")
-	require( lambda >= 0.0 && lambda <= 1.5, "The factor for the L2 penalty for CRF" + lambda + " is out of range")
-	require( eps > 1e-5 && eps<= 0.1, "The convergence criteria for the CRF training " + eps + " is out of range")
-	
-		// textual description of the CRF configuration
-	val params = new StringBuilder().append("initValue ").append(String.valueOf(initW))
-		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" lambda ")
-		              .append(String.valueOf(lambda)).append( " scale ")
-		                 .append(" true" ).append(" epsForConvergence ").append(String.valueOf(eps) )
-		                   .append(" debugLvl ").append(debug).toString
-}
 
+import CrfConfig._
+import Crf._
 
 
 	/**
@@ -61,23 +38,21 @@ case class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, v
 	 * @author Patrick Nicolas
 	 * @data April 3, 2014
 	 */
-class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
+final class Crf(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
                                                extends PipeOperator[String, Double] with Supervised[String] {
 	
-  require(nLabels > 0 && nLabels < 1000, "Number of labels for generating tags for CRF " + nLabels + " is out of range")
-  require(config != null, "Configuration of the linear Chain CRF is undefined")
-  require(delims != null, "delimiters used in the CRF training files are undefined")
-
-  class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
+  validate(nLabels, config, delims, taggedObs)
+  
+  protected class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
 	
   private[this] val features = new TaggingGenerator(nLabels)
   private[this] lazy val crf = new CRF(nLabels, features, config.params)
   
-  private val model = {
+  private val model: Option[CrfModel] = {
   	 val seqIter = CrfSeqIter(nLabels: Int, taggedObs, delims)
   	 try {
 	  	 features.train(seqIter)
-	  	 Some(crf.train(seqIter))
+	  	 Some(new CrfModel(crf.train(seqIter)))
   	 }
   	 catch {
   		 case e: IOException => Console.println(e.toString); None
@@ -86,20 +61,45 @@ class CrfLinearChain(val nLabels: Int, val config: CrfConfig, val delims: CrfSeq
   }
   
   		/**
-  		 * Main training method for the CRF
+  		 * <p>Predictive method for the conditional random field.</p>
   		 */
 
   override def |> (obs: String): Option[Double] = model match {
-  	case Some(w) => {
-	  	 val dataSeq =  new CrfRecommendation(nLabels, obs, delims.dObs)
-	  	 Some(crf.apply(dataSeq))
-  	}
-  	case None => None
+  	 case Some(w) => {
+  	     require( obs != null && obs.length > 1, "Argument for CRF prediction is undefined")
+	  	 Some(crf.apply(new CrfRecommendation(nLabels, obs, delims.dObs)))
+  	 }
+  	 case None => None
   }
   
-  def weights: Option[DblVector] = model
+  final def weights: Option[CrfModel] = model
   
   override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
+  
+  private def validate(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Unit = {
+	 require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, "Number of labels for generating tags for CRF " + nLabels + " is out of range")
+	 require(config != null, "Configuration of the linear Chain CRF is undefined")
+	 require(delims != null, "delimiters used in the CRF training files are undefined")
+	 require(taggedObs != null, "Tagged observations used in the CRF training files are undefined")
+  }
+}
+
+
+class CrfModel(val weights: DblVector)  extends Model {
+	
+}
+
+
+	/**
+	 * Companion object for the Linear chained Conditional random field. The singleton is used
+	 * to define the constructors.
+	 */
+object Crf {
+  final val NUM_LABELS_LIMITS = (1, 200)
+ // type CrfModel = DblVector
+	
+  def apply(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Crf = 
+		           new Crf(nLabels, config, delims, taggedObs)
 }
 
 

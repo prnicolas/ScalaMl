@@ -32,7 +32,9 @@ import org.scalaml.core.Types.ScalaMl._
 	 */
 import CrfConfig._
 class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, val eps:Double, val debug: Int) {
-		// textual description of the CRF configuration
+    validate(initW, maxIters, lambda, eps)
+    
+    // textual description of the CRF configuration
 	val params = new StringBuilder().append("initValue ").append(String.valueOf(initW))
 		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" lambda ")
 		              .append(String.valueOf(lambda)).append( " scale ")
