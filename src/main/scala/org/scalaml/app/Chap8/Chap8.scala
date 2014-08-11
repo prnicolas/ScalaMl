@@ -32,16 +32,21 @@ object Chap8 extends App {
 		  .append(" all: All test cases").toString
   }
   
-  val argument = if(args == null || args.length == 0) "?" else args(0)
-
-  argument match {
-  	 case "?" => println(cmdDescriptor)
-  	 case "margin" => SVCMarginEval.run
-  	 case "kernel" => SVCKernelEval.run
-  	 case "svc" => SVCEval.run
-  	 case "outliers" => SVCOutliersEval.run
-  	 case "all" => runAll
-  	 case _ =>  println(cmdDescriptor)
+  try {
+    if(args == null || args.length == 0) "?" else args(0) match {
+  	   case "?" => println(cmdDescriptor)
+  	   case "margin" => SVCMarginEval.run
+  	   case "kernel" => SVCKernelEval.run
+  	   case "svc" => SVCEval.run
+  	   case "outliers" => SVCOutliersEval.run
+  	   case "all" => runAll
+  	   case _ =>  println(cmdDescriptor)
+    }
+  }
+  catch {
+     case e: IllegalArgumentException => println("Evaluation of SVM failed: " + e.toString)
+     case e: RuntimeException => println("Evaluation of SVM failed: " + e.toString)
+     case e: Exception => println("Evaluation of SVM failed: " + e.toString)
   }
 }
 	

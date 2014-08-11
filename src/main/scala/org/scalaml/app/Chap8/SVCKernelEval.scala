@@ -96,7 +96,7 @@ object SVCKernelEval {
 	private def evalKernel(features: DblMatrix, eval: DblMatrix, lbl: DblVector, kF: SVMKernel): Unit = {
 		val config = SVMConfig(CSVCFormulation(C), kF)
 	    val ft = XTSeries[DblVector](features)
-		val svc = new SVM[Double](config,  ft, lbl)
+		val svc = SVM[Double](config,  ft, lbl)
 		var vote = Array[Int](0,0)
 		
 		eval.zipWithIndex.foreach(zi => svc |> zi._1 match {

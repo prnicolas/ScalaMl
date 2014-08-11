@@ -15,9 +15,6 @@ import Types.ScalaMl._
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 
 
-
-
-
 object SVREval {
 
    final val path = "resources/data/chap8/SPY.csv"
@@ -25,12 +22,11 @@ object SVREval {
    final val GAMMA = 0.8
    final val EPS = 1e-1
    final val EPSILON = 0.1
-
+   type SVM_Double = SVM[Double]
    
    def run: Unit = {
 	   Console.println("Evaluation of Support Vector Regression")
 
-	   
 	   DataSource(path, false, true, 1) |> adjClose match {	   
 	  	  case Some(price) => {	
 	  	  	 val lin = SingleLinearRegression(price)  	  	
@@ -38,7 +34,7 @@ object SVREval {
 	  	     val config = SVMConfig(SVRFormulation(C, EPSILON), RbfKernel(GAMMA))
 	  	     val labels = price.toArray
              val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
-             val svr = new SVM[Double](config, features, labels)
+             val svr = SVM[Double](config, features, labels)
              
              display("Support Vector vs. Linear Regression", 
             		  collect(svr, lin, price).toList,
@@ -48,8 +44,7 @@ object SVREval {
 	   }
    }
    
-   
-   private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
+   private def collect(svr: SVM_Double, lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
   	   import scala.collection.mutable.ArrayBuffer
 
   	   Range(1, price.size-2).foldLeft(Array.fill(3)(new ArrayBuffer[XY]))( (xs, n) => {
@@ -69,26 +64,6 @@ object SVREval {
    //    val xxs = Array[XY]((0, 1), (3,7), (11,5))  :: Array[XY]((3, 1), (1,5), (12,8)) ::  Array[XY]((8, 1), (4,5), (2,10)) :: List[XYTSeries]()
        plotter.display(xs, lbls, 250, 340)
 	}
-   /*
-   def validate(features: DblMatrix, svr: SVC[Double]): Unit = {
-       features.zipWithIndex.toArray
-  		         .foreach( xti => {
-  		            val predicted = svr |> xti._1
-  		            println("predicted: " + predicted.get) })              
-  }
-   
-   private def predict(stock: DblVector, svr: SVC[Double]) {
-  	 XTSeries.normalize(stock) match {
-	  	case Some(normalizedStock) =>   
-	  	   svr |> normalizedStock  match {
-	  		 case Some(prob) => println("prediction: " + prob)
-	  		 case None => println("Could not validate the training set")
-	  	   }
-	  	case None => println("Failed to normalize new feature")
-	 }
-   }
-   * 
-   */
 }
 
 
