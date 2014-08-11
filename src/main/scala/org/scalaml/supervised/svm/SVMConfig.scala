@@ -24,13 +24,13 @@ import org.scalaml.supervised.Config
 	 * @date April 30, 2014
 	 * @project Scala for Machine Learning
 	 */
-final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVMKernel, val svmParams: SVMExecution) extends Config {
-	validate(formulation, kernel, svmParams)
+final protected class SVMConfig(val formula: SVMFormulation, val kernel: SVMKernel, val exec: SVMExecution) extends Config {
+	validate(formula, kernel, exec)
 	
     val  param = new svm_parameter
-    formulation.config(param)
+    formula.config(param)
     kernel.config(param)
-    svmParams.config(param)
+    exec.config(param)
     
     override def toString: String = {
        val buf = new StringBuilder("\nSVM Formulation: ")
@@ -50,10 +50,10 @@ final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVM
       buf.toString
     }
     
-    @inline def eps: Double = svmParams.eps
+    @inline def eps: Double = exec.eps
     
     @inline
-    def isCrossValidation: Boolean = svmParams.nFolds > 0
+    def isCrossValidation: Boolean = exec.nFolds > 0
     
     private def validate(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
 		require(formulation != null, "Formulation in the configuration of SVM is undefined")

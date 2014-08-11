@@ -31,7 +31,7 @@ import org.scalaml.util.Matrix
 		 * @project Scala for Machine Learning
 		 */
 import XTSeries._
-final protected class SVM[T <% Double](val config: SVMConfig, 
+final class SVM[T <% Double](val config: SVMConfig, 
 		               val xt: XTSeries[Array[T]], 
 		               val labels: DblVector) extends PipeOperator[Array[T], Double] {
 	
@@ -159,8 +159,9 @@ final protected class SVM[T <% Double](val config: SVMConfig,
 		 * the parameterized class SVM
 		 */
 object SVM {
-	def apply[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, xt, labels)
-	def apply[T <% Double](config: SVMConfig, ft: Array[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, XTSeries[Array[T]](ft), labels)
+  
+  def apply[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, xt, labels)
+  def apply[T <% Double](config: SVMConfig, ft: Array[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, XTSeries[Array[T]](ft), labels)
 }
 
 // ----------------------------------  EOF ------------------------------------
