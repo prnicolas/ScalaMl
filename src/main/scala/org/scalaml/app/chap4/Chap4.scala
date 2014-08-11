@@ -32,17 +32,17 @@ object Chap4 extends App {
 		PCAEval.run(null)
 	}
 		
-		final val cmdDescriptor: String = {
+    final val cmdDescriptor: String = {
 		new StringBuilder("Command line: Chap 4 arg\n")
 		   .append(" kmeans: Evaluation Kmeans clustering\n")
 		   .append(" em:  Evaluation Expectation Maximization\n")
 		   .append(" pca: Evaluation Principal Components Analysis\n")
-		   .append(" all: All evaluation").toString
+		   .append(" all: All evaluation\n")
+           .append(" ?: help)").toString
 	}
 	
-	val argument = if( args == null || args.length == 0) "?" else args(0)
-	try {
-		argument match {
+    try {
+	   if( args == null || args.length == 0) "?" else args(0) match {
 			case "?" => println(cmdDescriptor)
 			case "kmeans" => KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
 			case "em" => {
@@ -56,7 +56,8 @@ object Chap4 extends App {
 		}
 	 }
 	 catch {
-  	  case e: RuntimeException =>  println("Runtime error " + e.toString); e.printStackTrace
+	    case e: IllegalArgumentException => println("Unsupervised learning failed " + e.toString)
+  	    case e: RuntimeException =>  println("Unsupervised learning failed " + e.toString)
     }
 }
 
