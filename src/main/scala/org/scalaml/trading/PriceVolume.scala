@@ -30,6 +30,8 @@ object YahooFinancials extends Enumeration {
    def %(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try { s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => s.foreach(println); 1.0} 
    def +(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
    def *(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
+   def vol: Array[String] => Double = (s: Array[String]) => try { (s(HIGH.id).toDouble/s(LOW.id).toDouble - 1.0)*s(VOLUME.id).toDouble } catch { case e: NumberFormatException => s.foreach(println); 1.0}
+
 }
 
 
