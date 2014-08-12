@@ -26,8 +26,8 @@ import org.scalaml.unsupervised.pca.PCA
 		 * OM: Operational margin.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 25, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 25, 2014
+		 * @note Scala for Machine Learning
 		 */
 object PCAEval extends UnsupervisedLearningEval {
 	// Symbol, PE/PS/PB/ROE/OM
