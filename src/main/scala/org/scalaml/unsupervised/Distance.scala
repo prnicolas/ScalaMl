@@ -11,7 +11,7 @@ package org.scalaml.unsupervised
 		 * <p>Singleton which defines the different distances used by 
 		 * unsupervised machine learning techniques.</p>
 		 * @author Patrick Nicolas
-		 * @date February 16, 2014
+		 * @since February 16, 2014
 		 */
 object Distance {
 	
@@ -20,7 +20,7 @@ object Distance {
 		 * array (vectors ) of values.</p>
 		 * @param x first array/vector/data point
 		 * @param y second array/vector/data point
-		 * @exception IllegalArgumentException if the input array are undefined or have different size
+		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
   def manhattan[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
@@ -35,7 +35,7 @@ object Distance {
 		 * array (vectors ) of values.</p>
 		 * @param x first array/vector/data point
 		 * @param y second array/vector/data point
-		 * @exception IllegalArgumentException if the input array are undefined or have different size
+		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
   def euclidean[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
@@ -51,7 +51,7 @@ object Distance {
 		 * array (vectors ) of values.</p>
 		 * @param x first array/vector/data point
 		 * @param y second array/vector/data point
-		 * @exception IllegalArgumentException if the input array are undefined or have different size
+		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
   def cosine[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
