@@ -20,10 +20,10 @@ import scala.reflect.ClassTag
 	 * @param _T number of observations used in the training of the HMM
 	 * @param _N number of hidden states in the HMM model
 	 * @param _M number of symbols (or labels) in the HMM
-	 * @exception IllegalArgumentException if the number of observations, hidden states or symbols
+	 * @throws IllegalArgumentException if the number of observations, hidden states or symbols
 	 * is out-of bounds
 	 * @author Patrick Nicolas
-	 * @date March 6, 2014
+	 * @since March 6, 2014
 	 */
 final class HMMLambda(val d: HMMDim) {
   require(d != null, "Cannot create a HMM lambda model with undefined dimension")
@@ -53,7 +53,7 @@ final class HMMLambda(val d: HMMDim) {
   	 * <p>Initialize the Alpha value in the forward algorithm. Exceptions are caught
   	 * by the client code.</p>
   	 * @param obsSeqNum array of sequence number for the observations
-  	 * @exception IllegalArgumentException if obsSeqNum is undefined
+  	 * @throws IllegalArgumentException if obsSeqNum is undefined
   	 */
   def initAlpha(obsSeqNum: Array[Int]): Matrix[Double] = {
   	require( obsSeqNum != null && obsSeqNum.size > 0, "Cannot initialize HMM alpha with undefined obs sequence index")
@@ -67,7 +67,7 @@ final class HMMLambda(val d: HMMDim) {
   	 * @param i index of the column of the transition and emission probabilities matrix.
   	 * @param obsIndex index in the observation in the sequence
   	 * @return updated alpha value
-  	 * @exception IllegalArgumentException if index i or obsIndex are out of range.
+  	 * @throws IllegalArgumentException if index i or obsIndex are out of range.
   	 */
   def alpha(a: Double, i: Int, obsIndex: Int): Double = {
   	 require( i >= 0 && i < d._N, "Row index in transition and emission probabilities " + i + " matrix is out of bounds")
@@ -85,9 +85,9 @@ final class HMMLambda(val d: HMMDim) {
   	  * iteration. Arithmetic exception are caught by client code.</p>
   	  * @param params HMM parameters 
   	  * @param obs sequence of observations used in the estimate 
-  	  * @exception IllegalArgument if the HMM parameters are undefined or the sequence of observatiosn is undefined.
+  	  * @throws IllegalArgument if the HMM parameters are undefined or the sequence of observatiosn is undefined.
   	  */
-  def estimate(params: HMMConfig, obs: Array[Int]): Unit = {
+  def estimate(params: HMMParams, obs: Array[Int]): Unit = {
   	 require(params != null, "Cannot estimate the log likelihood of HMM with undefined parameters")
   	 require(obs != null && obs.size > 0, "Cannot estimate the log likelihood of HMM for undefined observations")
   	       

@@ -27,10 +27,10 @@ import org.scalaml.util.Matrix
 		 * most of papers and technical books on HMM as well as the book</p>
 		 * @param _T number of observations
 		 * @param _N number of hidden states in the HMM
-		 * @param _N number of symbols (or model dimension) for the HMM
-		 * @exception IllegalArgumenException if any of the argument is out of range [1, 1000]
+		 * @param _M number of symbols (or model dimension) for the HMM
+		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
 		 * @author Patrick Nicolas
-		 * @date March 27, 2014
+		 * @since March 27, 2014
 		 */
 case class HMMDim(val _T: Int, val _N: Int, val _M: Int) {
   require( _T > 0 && _T < 1000, "Number of observations " + _T + " in HMM lambda model is out of bounds")
@@ -59,9 +59,9 @@ class HMMAlgorithm(val lambda: HMMLambda, val labels: Array[Int]) {
 	 * the evaluation form of the HMM.</p>
 	 * @param lambda Lambda (pi, A, B) model for the HMM
 	 * @param obs: Array of observations as integer (categorical data)
-	 * @exception IllegalArgumentException if lambda, params and observations are undefined
+	 * @throws IllegalArgumentException if lambda, params and observations are undefined
 	 * @author Patrick Nicolas
-	 * @date March 29, 2014
+	 * @since March 29, 2014
 	 */
 class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMAlgorithm(lp, lbls) { 
    import Types.ScalaMl._
@@ -87,11 +87,11 @@ class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMAlgorithm(lp, lbl
 	 * @param params parameters (alpha, beta, gamma, digamma, q) used in any of the three
 	 * canonical form of the HMM
 	 * @param labels: Array of observations as integer (categorical data)
-	 * @exception IllegalArgumentException if lambda, params and observations are undefined
+	 * @throws IllegalArgumentException if lambda, params and observations are undefined
 	 * @author Patrick Nicolas
-	 * @date March 7, 2014
+	 * @since March 7, 2014
 	 */
-class HMMInference(val li: HMMLambda, val params: HMMConfig, val _labels: Array[Int]) extends HMMAlgorithm(li,  _labels) {
+class HMMInference(val li: HMMLambda, val params: HMMParams, val _labels: Array[Int]) extends HMMAlgorithm(li,  _labels) {
   require(params != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
 }
 
@@ -103,7 +103,7 @@ class HMMInference(val li: HMMLambda, val params: HMMConfig, val _labels: Array[
 	/**
 	 * <p>Enumeration class to specify the canonical form of the HMM</p>
 	 * @author Patrick Nicolas
-	 * @date March 9, 2014
+	 * @since March 9, 2014
 	 */
 object HMMForm extends Enumeration {
   type HMMForm = Value
@@ -118,11 +118,11 @@ object HMMForm extends Enumeration {
 	 * @param lambda lambda (pi, A, B) model for the HMM 
 	 * @param form canonical form used in HMM (Evaluation or Decoding form)
 	 * @param maxIter maximum number of iterations for training a HMM
-	 * @exception IllegalArgumentException if lambda, form are undefined or if the maximum number of
+	 * @throws IllegalArgumentException if lambda, form are undefined or if the maximum number of
 	 * iterations is out of bounds
 	 * @see org.scalaml.workflow.PipeOperator
 	 * @author Patrick Nicolas
-	 * @date March 11, 2014
+	 * @since March 11, 2014
 	 */
 
 import HMMForm._
@@ -134,7 +134,7 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 	require(form != null, "Cannot execute a HMM with undefined canonical form")
 	require( maxIters > 1 && maxIters < 1000, "Maximum number of iterations to train a HMM " + maxIters + " is out of bounds")
 	
-	protected val params = HMMConfig(lambda.d, maxIters)
+	protected val params = HMMParams(lambda.d, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -163,8 +163,8 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 		 * <p>Train HMM with a set of observations to extract the Lambda model.</p>
 		 * @param  obs set of observation of type bounded by Array[Int]
 		 * @return maximum log likelihood if no arithmetic function occurs, None otherwise
-		 * @exception IllegalArgumentException if the set of observations is not defined
-		 * @exception RuntimeException for computation error such as divide by zero
+		 * @throws IllegalArgumentException if the set of observations is not defined
+		 * @throws RuntimeException for computation error such as divide by zero
 		 */
 	def train(obs: T): Option[Double] = {
 		require(obs != null, "Cannot train a HMM with undefined observations")
@@ -184,12 +184,12 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 	 * <p>Companion object for the HMM that defines a HMMPredictor type and the constructor 
 	 * apply for the HMM.</p>
 	 * @author Patrick Nicolas
-	 * @date March 11, 2014
+	 * @since March 11, 2014
 	 */
 object HMM {
 	type HMMPredictor = (Double, Array[Int])
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int): HMM[T] =  new HMM[T](lambda, form, maxIters)
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMConfig.DEFAULT_MAXITERS)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMParams.DEFAULT_MAXITERS)
 }
 
 

@@ -25,14 +25,14 @@ import Types._
 	 *  @param lambdaV Lambda (pi, A, B) model for the HMM
 	 *  @param paramsV parameters used in any of the three canonical form of the HMM
      *  @param  obsV Array of observations as integer (categorical data)
-     *  @exception IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+     *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
      *  @see org.scalaml.hmm.DynamicAlgorithm
 	 *  @author Patrick Nicolas
-	 *  @date March 17, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since March 17, 2014
+	 *  @note Scala for Machine Learning
 	 */
 class ViterbiPath(val lambdaV: HMMLambda, 
-				  val paramsV: HMMConfig, 
+				  val paramsV: HMMParams, 
 				  val obsV: Array[Int]) extends HMMInference(lambdaV, paramsV, obsV) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
@@ -82,10 +82,10 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * Object companion for the Viterbi algorithm for the extraction of 
 	 * best sequences. Implements the constructor - apply
 	 * @author Patrick Nicolas
-	 * @date March 17, 2014
+	 * @since March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
+	def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
 }
 
 

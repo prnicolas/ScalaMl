@@ -19,9 +19,9 @@ import org.scalaml.core.Types
 		 * @param lambdaB Lambda (pi, A, B) model for the HMM
 		 * @param parms parameters used in any of the three canonical form of the HMM
 		 * @param obsB: Array of observations as integer (categorical data)
-		 * @exception IllegalArgumentException if lmbda, params and observations are undefined
+		 * @throws IllegalArgumentException if lmbda, params and observations are undefined
 		 * @author Patrick Nicolas
-		 * @date March 14, 2014
+		 * @since March 14, 2014
 		 */
 final class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
 	val complete = {

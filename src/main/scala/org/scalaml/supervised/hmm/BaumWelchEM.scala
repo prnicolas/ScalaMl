@@ -16,13 +16,13 @@ package org.scalaml.supervised.hmm
 	 *  @param lambdaBW Lambda (pi, A, B) model for the HMM
 	 *  @param _params parameters used in any of the three canonical form of the HMM
      *  @param _obs Array of observations as integer (categorical data)
-     *  @exception IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+     *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
 	 *  @author Patrick Nicolas
-	 *  @date March 15, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since March 15, 2014
+	 *  @note Scala for Machine Learning
 	 */
 class BaumWelchEM(	val lambdaBW: HMMLambda, 
-					val paramsBW: HMMConfig, 
+					val paramsBW: HMMParams, 
 					val obsBW: Array[Int], 
 					val eps: Double) extends HMMInference(lambdaBW, paramsBW, obsBW) {
 	
@@ -66,11 +66,11 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	/**
 	 * Object companion for Baum_Welch algorithm that defines the constructors for BaumWelchEM
 	 * @author Patrick Nicolas
-	 * @date March 15, 2014
+	 * @since March 15, 2014
 	 */
 object BaumWelchEM {
    final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
-   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
+   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
+   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
 }
 // -----------------------------  EOF --------------------------------

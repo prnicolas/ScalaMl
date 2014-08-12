@@ -17,9 +17,9 @@ import org.scalaml.core.Types
 		 * @param lambdaA Lambda (pi, A, B) model for the HMM
 		 * @param params parameters used in any of the three canonical form of the HMM
 		 * @param obsA: Array of observations as integer (categorical data)
-		 * @exception IllegalArgumentException if lambda, params and observations are undefined
+		 * @throws IllegalArgumentException if lambda, params and observations are undefined
 		 * @author Patrick Nicolas
-		 * @date March 13, 2014
+		 * @since March 13, 2014
 		 */
 final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lambdaA, obsA) {
 	/**
@@ -51,7 +51,7 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
 		/**
 		 * Companion object for the Alpha pass that defines the constructor applhy
 		 * @author Patrick Nicolas
-		 * @date March 13, 2014
+		 * @since March 13, 2014
 		 */
 object Alpha {
   def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
