@@ -20,8 +20,8 @@ import scala.annotation.implicitNotFound
 		 * @param f implicit conversion of a double to a string
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 10, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 10, 2014
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
 class DKalmanEval(implicit f: Double=> String) extends FilteringEval {

@@ -18,8 +18,8 @@ import YahooFinancials._
 		 * <p>Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 8, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 8, 2014
+		 * @note Scala for Machine Learning
 		 */
 object DFTEval extends FilteringEval {
    import Types.ScalaMl._
