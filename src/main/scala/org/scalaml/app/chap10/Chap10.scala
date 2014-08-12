@@ -6,13 +6,31 @@
  */
 package org.scalaml.app.chap10
 
-import org.scalaml.plots._
+
+import java.util.BitSet
+import org.scalaml.ga.{Operator, Gene, Chromosome}
+import Operator._
+import scala.collection.mutable.ListBuffer
+import org.scalaml.trading.YahooFinancials
+import scala.io.Source
+import YahooFinancials._
+import org.scalaml.core._
+import org.scalaml.plots.{LightPlotTheme, LinePlot, ScatterPlot}
+import org.scalaml.trading.Signal
 
 
 
+import Types.ScalaMl._
 object Chap10 extends App {
-//	GAEval.run
 	
+	/*
+   val tradingStrategy = new TradingStrategy("resources/data/chap10/SP500.csv")
+   tradingStrategy += Signal("Rel volume", Operator.LESS_THAN, 0.20F)
+   tradingStrategy += Signal("Rel volatility", Operator.GREATER_THAN, 0.60F)
+   tradingStrategy += Signal("Rel volatility", Operator.GREATER_THAN, 0.20F)
+   println(tradingStrategy.toString)
+   */
+ //  tradingStrategy.extractData
    
    	val theme1 = new LightPlotTheme
     val plotter1 = new LinePlot(("Predictor", "January 2014 Trading days", "Probability"), theme1)
@@ -63,11 +81,13 @@ object Chap10 extends App {
     actual(20) = -0.26
     
     
-    val plotter3 = new ScatterPlot(("January 2014 S&P 500", "Normalized price change", "probability"), theme1)
-    plotter3.display(actual.zip(results), 160, 140)
+    
+    val theme3 = new LightPlotTheme
+    val plotter3 = new ScatterPlot(("January 2014 S&P 500", "Normalized price change", "probability"), theme3)
+    plotter3.display(actual.zip(results), 200, 200)
    
    val encodingList = List()
-   /*
+   
    implicit def double2Int(x: Double): Int  = x*1e+4.toInt
    implicit def intToDouble(n: Int): Double  = n*1e-4
    
@@ -79,8 +99,6 @@ object Chap10 extends App {
   	   })
   	   signals.zip(values).foldLeft(0.0) ((fit, s) => fit + s._1.score(s._2, delta))
    }
-   * 
-   */
 
 }
 
