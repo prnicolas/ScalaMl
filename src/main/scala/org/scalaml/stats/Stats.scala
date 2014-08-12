@@ -14,10 +14,10 @@ import org.scalaml.core.Types
 	 *  standard deviation) for any set of observations for which the
 	 *  type can be converted to a Double. 
 	 *  @param values vector or array of elements of type T
-	 *  @exception IllegalArgumentException if values is either undefined or have no elements
+	 *  @throws IllegalArgumentException if values is either undefined or have no elements
 	 *  @author Patrick Nicolas
-	 *  @date Jan 24, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since Jan 24, 2014
+	 *  @note Scala for Machine Learning
 	 */
 import Stats._
 import Types.ScalaMl._
@@ -55,7 +55,7 @@ class Stats[T <% Double](val values: DVector[T]) {
 		 * Compute the Lidsstone smoothing factor for a set of values
 		 * @param smoothing smoothing values ]0, 1] for Lidstone smoothing function
 		 * @param dim Dimension of the model
-		 * @exception IllegalArgumentException if either the smoothing or dimension of the model is out of range
+		 * @throws IllegalArgumentException if either the smoothing or dimension of the model is out of range
 		 */
 	def lidstoneMean(smoothing: Double, dim: Int): Double = {
     	require( smoothing >0.0 && smoothing <= 1.0, "Lidstone smoothing factor " + smoothing + " is out of range")
@@ -68,13 +68,13 @@ class Stats[T <% Double](val values: DVector[T]) {
     	/**
 		 * Compute the Laplace smoothing factor for a set of values
 		 * @param smoothing smoothing values ]0, 1] for Laplace smoothing function
-		 * @exception IllegalArgumentException if the smoothing factor is out of range
+		 * @throws IllegalArgumentException if the smoothing factor is out of range
 		 */
     def laplaceMean(dim: Int): Double = (counters._3 + 1.0)/(values.size + dim)
 
 		/**
 		 * Fast normalization of values within a range of [0, 1]
-		 * @exception throw a Aritmetic exception if the min and max have identical values
+		 * @throws throw a Aritmetic exception if the min and max have identical values
 		 */
 	def normalize: DblVector = {
 	   val range = max - min
@@ -93,7 +93,7 @@ class Stats[T <% Double](val values: DVector[T]) {
     	 * Normalize the data within a range [l, h]
     	 * @param l lower bound for the normalization
     	 * @param h higher bound for the normalization
-    	 * @exception IllegalArgumentException of h <= l
+    	 * @throws IllegalArgumentException of h <= l
     	 */
     def normalize(l: Double, h: Double): DblVector = {
     	require(h > l + ZERO_EPS, "Cannot normalized on undefined range " + l + ", " +h)
@@ -104,7 +104,7 @@ class Stats[T <% Double](val values: DVector[T]) {
 	   /**
 	    * Normalize the data set using the mean and standard deviation. It is assumed
 	    * that the data (values) follows a Gaussian distribution
-	    * @exception  ArithmeticException in case of a divide by zero
+	    * @throws  ArithmeticException in case of a divide by zero
 	    */
     def zScore: DblVector = {
        val factor = (max - min)*stdDev
@@ -119,8 +119,8 @@ class Stats[T <% Double](val values: DVector[T]) {
 		 * Companion object to the Statistics class that define the main constructor
 		 * apply and the Gaussian distributions
 		 * @author Patrick Nicolas
-		 * @date January 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since January 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 object Stats {
@@ -134,7 +134,7 @@ object Stats {
    		 * @param mean mean values of the Gauss pdf
    		 * @param stdDev standard deviation of the Gauss pdf'
    		 * @param values  array of variables for which the Gauss pdf has to be computed
-   		 * @exception IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
+   		 * @throws IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
    		 */
    def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
       require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")
@@ -148,7 +148,7 @@ object Stats {
    		 * @param mean mean values of the Gauss pdf
    		 * @param stdDev standard deviation of the Gauss pdf'
    		 * @param value  value for which the Gauss pdf has to be computed
-   		 * @exception IllegalArgumentExeption if stdDev is close t zero
+   		 * @throws IllegalArgumentExeption if stdDev is close t zero
    		 */
    def gauss(mean: Double, stdDev: Double, x:Double) : Double = {
   	  require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")

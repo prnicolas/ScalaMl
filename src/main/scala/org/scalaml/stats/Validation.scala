@@ -20,8 +20,8 @@ object Label extends Enumeration {
 	 * <p>Generic trait for the validation method, f1 to compute the F1-measure
 	 * and the precision, recall tuple.</p>
 	 * @author Patrick Nicolas
-	 * @date January 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since January 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 trait Validation {
 		/**
@@ -42,10 +42,10 @@ trait Validation {
 		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).</p>
 		 * @param actualExpected array of pair (actual value, labeled/expected value)
 		 * @param tpClass that defined the true positive results
-		 * @exception IllegalArgumentException if actualExpected is undefined or has no elements
+		 * @throws IllegalArgumentException if actualExpected is undefined or has no elements
 		 * @author Patrick Nicolas
-		 * @date February 1, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 1, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Label._
 class ClassValidation(val actualExpected: Array[(Int, Int)], val tpClass: Int) extends Validation {
@@ -87,8 +87,8 @@ class ClassValidation(val actualExpected: Array[(Int, Int)], val tpClass: Int) e
 		/**
 		 * Companion object to the Class validation class that implement the constructors apply
 		 * @author Patrick Nicolas
-		 * @date February 1, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 1, 2014
+		 * @note Scala for Machine Learning
 		 */
 object ClassValidation {
   def apply(data: Array[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data, tpClass)

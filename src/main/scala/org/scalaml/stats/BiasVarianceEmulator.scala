@@ -16,10 +16,10 @@ import org.scalaml.core.Types.ScalaMl.{DblVector, XYTSeries}
 	 *  training sets are identical in size.</p>
 	 *  @param emul  target model that generates both training and validation data sets.
 	 *  @param nValues number of data points in each training sets.
-	 *  @exception IllegalArgumentException if the emulation model, emul, is undefined or the number of training samples is too small
+	 *  @throws IllegalArgumentException if the emulation model, emul, is undefined or the number of training samples is too small
 	 *  @author Patrick Nicolas
-	 *  @date April 3, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since April 3, 2014
+	 *  @note Scala for Machine Learning
 	 */
 
 import BiasVarianceEmulator._
@@ -32,8 +32,8 @@ class BiasVarianceEmulator[T <% Double](val emul: Double => Double, val nValues:
     	 * training data.</p>
     	 * @param fEst list of model estimators
     	 * @return An array of tuple (Variance, Bias) for each model estimators
-    	 * @exception IllegalArgumentException if the model estimators are undefined
-    	 * @exception RuntimeException if a computation error occurs
+    	 * @throws IllegalArgumentException if the model estimators are undefined
+    	 * @throws RuntimeException if a computation error occurs
     	 */
 	def fit(fEst: List[Double => Double]): Option[XYTSeries] = {
 		require(fEst != null && fEst.size > 0, "Cannot test the fitness of an undefined function")
@@ -62,8 +62,8 @@ class BiasVarianceEmulator[T <% Double](val emul: Double => Double, val nValues:
 	/**
 	 * Object companion to BiasVarianceEmulator that defines the constructor apply
 	 * @author Patrick Nicolas
-	 * @date April 3, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 3, 2014
+	 * @note Scala for Machine Learning
 	 */
 object BiasVarianceEmulator {
 	final val minNValues = 20
