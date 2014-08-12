@@ -9,8 +9,8 @@ package org.scalaml.plots
 import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
 /**
  *  @author Patrick Nicolas
- *  @date Feb 9, 2014
- *  @project Book
+ *  @since Feb 9, 2014
+ *  @note Book
  */
 
 trait PlotTheme {

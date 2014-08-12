@@ -186,6 +186,16 @@ class ScatterPlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_co
       	  seriesCollection.addSeries(series)
       	  seriesCollection :: xs
       })
+      /*
+      val seriesCollection1 = new XYSeriesCollection
+      val seriesCollection2 = new XYSeriesCollection
+	  val series1 = x.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series2 = y.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  seriesCollection1.addSeries(series1)
+	  seriesCollection2.addSeries(series2)
+	  * 
+	  */
+	  
 	  val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, PlotOrientation.VERTICAL, true, false, false)
       val plot = chart.getPlot.asInstanceOf[XYPlot]
   	  
