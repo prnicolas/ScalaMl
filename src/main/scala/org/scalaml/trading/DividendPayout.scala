@@ -12,8 +12,8 @@ package org.scalaml.trading
 		 * Object methods are implemented to load the appropriate field and perform the type conversion</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 3, 2014
-		 * @project Scala for Machine Learning
+		 * @since May 3, 2014
+		 * @note Scala for Machine Learning
 		 */
 object DividendPayout extends Enumeration {
    type DividendPayout = Value

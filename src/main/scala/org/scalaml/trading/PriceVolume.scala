@@ -13,8 +13,8 @@ package org.scalaml.trading
 	 *  finances historical data. The data is loaded from a CSV file.
 	 *  
 	 *  @author Patrick Nicolas
-	 *  @date Feb 17, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since Feb 17, 2014
+	 *  @note Scala for Machine Learning
 	 */
 object YahooFinancials extends Enumeration {
    type YahooFinancials = Value
@@ -30,8 +30,6 @@ object YahooFinancials extends Enumeration {
    def %(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try { s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => s.foreach(println); 1.0} 
    def +(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
    def *(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
-   def vol: Array[String] => Double = (s: Array[String]) => try { (s(HIGH.id).toDouble/s(LOW.id).toDouble - 1.0)*s(VOLUME.id).toDouble } catch { case e: NumberFormatException => s.foreach(println); 1.0}
-
 }
 
 

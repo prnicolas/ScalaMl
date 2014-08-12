@@ -20,12 +20,12 @@ import scala.annotation.implicitNotFound
 		 * @param id  The label for the trading signal
 		 * @param op The operator that is used to defined the condition such as greater than, equals....
 		 * @param targetValue value threshold defined by the signal
-		 * @exception IllegalArgumentException if the operator or id is not defined
+		 * @throws IllegalArgumentException if the operator or id is not defined
 		 * @see org.scalaml.ga.Gene
 		 * 
 		 * @author Patrick Nicolas
-		 * @project Scala for Machine Learning
-		 * @date Mar 4, 2014
+		 * @note Scala for Machine Learning
+		 * @since Mar 4, 2014
 		 */
 
 import Operator._
