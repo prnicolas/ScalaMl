@@ -21,11 +21,11 @@ import org.scalaml.core.Types
 			 * @param id optional label or identifier for the state. The label is used as a key
 			 * @param distribution normalized distribution of values per categories
 			 * @param cost default cost function used to compute the V value of the state
-			 * @exception IllegalArgument is the normalized distribution is not defined
+			 * @throws IllegalArgument is the normalized distribution is not defined
 			 * 
 			 * @author Patrick Nicolas
-			 * @date January 17, 2014
-			 * @project Scala for Machine Learning
+			 * @since January 17, 2014
+			 * @note Scala for Machine Learning
 			 */
 
 import Types.ScalaMl._
@@ -39,7 +39,7 @@ class QLState[T <% Double](val id: Int, val distribution: DblVector, val cost: (
   		/**
   		 * Compute the value of the state V using the distribution
   		 * @param data observations used to compute the value V of this state
-  		 * @exception IllegalArgumentException if the observations is undefined or the number 
+  		 * @throws IllegalArgumentException if the observations is undefined or the number 
   		 * of observations is different from the dimension of the model (distribution)
   		 * @return V-value of the state
   		 */
@@ -79,10 +79,10 @@ object QLState {
 		 * destination states.</p>
 		 * @param from Source state
 		 * @param to list of destination states
-		 * @exception IllegalArgumentException if the source or destination states are undefined.
+		 * @throws IllegalArgumentException if the source or destination states are undefined.
 		 * 
 		 * @author Patrick Nicolas
-		 * @date January, 22, 2014
+		 * @since January, 22, 2014
 		 */
 class QLAction[T <% Double](val from: QLState[T], val to: List[QLState[T]]) {
    require(from != null, "Cannot create an action for Q-Learning with indefined source state")	

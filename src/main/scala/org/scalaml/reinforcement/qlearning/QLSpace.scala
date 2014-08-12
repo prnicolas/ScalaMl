@@ -19,11 +19,11 @@ import QLearning._
 	 * automatically created by providing the number of states.</p>
 	 * @param states list of states for the search space
 	 * @param actions list of actions for the search space
-	 * @exception IllegalArgument if states or actions list are not well defined
+	 * @throws IllegalArgument if states or actions list are not well defined
 	 * 
 	 * @author Patrick Nicolsa
-	 * @date January 17, 2014
-	 * @project Scala for Machine Learning
+	 * @since January 17, 2014
+	 * @note Scala for Machine Learning
 	 */
 class QLSpace[T <% Double](val states: List[QLState[T]], val actions: List[QLAction[T]]) {
    require(states != null && states.size > 1, "States list is undefined")
@@ -38,7 +38,7 @@ class QLSpace[T <% Double](val states: List[QLState[T]], val actions: List[QLAct
 	 * automatically the search space by randomizing the distribution of each state.</p>
 	 * 
 	 * @author Patrick Nicolas
-	 * @date January 22, 2014
+	 * @since January 22, 2014
 	 */
 object QLSpace {
 	  final val SCALE_FACTOR = 1000

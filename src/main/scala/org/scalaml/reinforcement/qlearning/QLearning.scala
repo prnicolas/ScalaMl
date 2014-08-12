@@ -20,11 +20,11 @@ import org.scalaml.workflow.PipeOperator
 		 * @param alpha alpha or learning rate for the Q-Learning algorithm
 		 * @param gamma gamma or discount rate for the Q-Learning algorithm
 		 * @param maxIters maximum number of iterations allowed during training of Q-Learning
-		 * @exception IllegalArgumentException if alpha, gamma or maximum iteration are out of range
+		 * @throws IllegalArgumentException if alpha, gamma or maximum iteration are out of range
 		 * 
 		 * @author Patrick Nicolas
-		 * @date January 19, 2014
-		 * @project Scala for Machine Learning
+		 * @since January 19, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class QLConfig(val alpha: Double, val gamma: Double, val maxIters: Int) {
 	require(alpha > 0.0 && alpha < 1.0, "Cannot configure QLearning with incorrect alpha " + alpha)
@@ -37,10 +37,10 @@ case class QLConfig(val alpha: Double, val gamma: Double, val maxIters: Int) {
 	/**
 		 * Parameterized class that defines the training labels for Q-Learning
 		 * @param labels List of tuples or episodes (Observations, Goal/state) used in the training phase.
-		 * @exception IllegalArgumentException if the list of labels is either undefined or empty
+		 * @throws IllegalArgumentException if the list of labels is either undefined or empty
 		 * 
 		 * @author Patrick Nicolas
-		 * @date January 20, 2014
+		 * @since January 20, 2014
 		 */
 
 import QLLabel._
@@ -74,11 +74,11 @@ object QLLabel {
 		 * @param config configuration for Q-Learning algorithm
 		 * @param qLabels training set input used to build the search space (or model)
 		 * @param numStates total number of states in the search space
-		 * @exception IllegalArgumentException if the configuration or labels are undefined
+		 * @throws IllegalArgumentException if the configuration or labels are undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date January 22, 2014
-		 * @project Scala for Machine Learning
+		 * @since January 22, 2014
+		 * @note Scala for Machine Learning
 		 */
 class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val numStates: Int) 
                                    extends PipeOperator[Episode[T], (QLState[T], Double)]  {
@@ -102,7 +102,7 @@ class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val 
    		 * @param data One or several entry as tuple (observations, state)
    		 * @return A tuple (new state, reward) if the training was originally successful and all 
    		 * the rewards associated to the action from the current state can be computed, None otherwise
-   		 * @exception IllegalArgumenException if the entry is undefined.
+   		 * @throws IllegalArgumenException if the entry is undefined.
    		 */
    override def |>(episode: Episode[T]): Option[(QLState[T], Double)] = {
   	 require(episode != null, "Cannot predict next state with undefined input")
