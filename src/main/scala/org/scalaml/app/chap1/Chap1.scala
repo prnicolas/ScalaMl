@@ -25,8 +25,8 @@ import org.scalaml.supervised.regression.logistic.LogBinRegression
 		 *   <li>Logistic Binary classifier</li>
 		 * </ul></p>
 		 * @author Patrick Nicolas
-		 * @data December 11, 2013
-		 * @project Scala for Machine Learning.
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning.
 		 */
 object Chap1 extends App {
 	private def runAll = {

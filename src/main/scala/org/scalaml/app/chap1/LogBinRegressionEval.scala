@@ -21,9 +21,9 @@ import org.scalaml.supervised.regression.logistic.LogBinRegression
 		/**
 		 * <p>Test driver for the Logistic two-class Regression presented in Chapter 1.</p>
 		 * @author Patrick Nicolas
-		 * @date December 22, 2013
-		 * @project Scala for Machine Learning
-		 * @project Scala for Machine Learning.
+		 * @since December 22, 2013
+		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning.
 		 */
 object LogBinRegressionEval  {
 	import YahooFinancials._

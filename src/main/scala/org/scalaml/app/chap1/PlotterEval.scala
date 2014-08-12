@@ -17,8 +17,8 @@ import org.scalaml.plots._
 		 * the library.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date December 22, 2013
-		 * @project Scala for Machine Learning
+		 * @since December 22, 2013
+		 * @note Scala for Machine Learning
 		 */
 object PlotterEval {
 	final val CSV_DELIM = ","
