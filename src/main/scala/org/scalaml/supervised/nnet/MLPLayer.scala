@@ -19,11 +19,11 @@ import scala.collection.mutable.ListBuffer
 		 * input layer having id = 0 and the output layer having id = number of layers -1.</p>
 		 * @param id id or rank of the MLP layer in the network
 		 * @param len number of elements or neuron in the MLP layer
-		 * @exception IllegalArgumentException if the class parameters are incorrect
+		 * @throws IllegalArgumentException if the class parameters are incorrect
 		 * 
 		 * @author Patrick Nicoloas
-		 * @date May 6, 2014
-		 * @project Scala for Machine Learning
+		 * @since May 6, 2014
+		 * @note Scala for Machine Learning
 		 */
 import ScalaMl._
 import MLP._
@@ -39,7 +39,7 @@ protected class MLPLayer(val id: Int, val len: Int) {
    		/**
    		 * <p>Initialize the value of the input for this MLP layer.</p>
    		 * @param _input input vector for this layer. 
-   		 * @exception IllegalArgumentException if the input vector is undefined
+   		 * @throws IllegalArgumentException if the input vector is undefined
    		 */
    @inline
    def setInput(_input: DblVector): Unit = {
@@ -88,7 +88,7 @@ protected class MLPLayer(val id: Int, val len: Int) {
 		/**
 		 * Companion object for the MLP layer used to define a default constructor
 		 * @author Patrick Nicolas
-		 * @date May 5, 2014
+		 * @since May 5, 2014
 		 */
 object MLPLayer {
   def apply(id: Int, len: Int): MLPLayer = new MLPLayer(id, len)

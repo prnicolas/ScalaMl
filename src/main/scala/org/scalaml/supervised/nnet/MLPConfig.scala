@@ -26,11 +26,11 @@ import org.scalaml.supervised.Config
 		 * @param eps convergence criteria used as exit condition of the convergence toward optimumn weights that minimize the mean squares error
 		 * @param classification boolean that specifies if this MLP is used for classification or regression (true for classification, false for regression)
 		 * @param activation activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
-		 * @exception IllegalArgumentException if one of the class parameters is either out of bounds or undefined
+		 * @throws IllegalArgumentException if one of the class parameters is either out of bounds or undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 7, 2014
-		 * @project Scala for Machine Learning
+		 * @since May 7, 2014
+		 * @note Scala for Machine Learning
 		 */
 import MLPConfig._
 class MLPConfig(val alpha: Double, 
@@ -67,7 +67,7 @@ class MLPConfig(val alpha: Double,
 		 * values for the parameters of the class and the different variation of constructors.</p
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 4, 2014
+		 * @since May 4, 2014
 		 */
 object MLPConfig {
    final val EPS: Double = 1e-17

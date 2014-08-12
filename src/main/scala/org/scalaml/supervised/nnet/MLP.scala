@@ -24,11 +24,11 @@ import org.scalaml.workflow.PipeOperator
 		 * @param xt time series of features in the training set
 		 * @param labels labeled or target observations used for training
 		 * @param objective Objective of the model (classification or regression)
-		 * @exception IllegalArgumentException if the any of the class parameters is undefined
+		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 8, 2-14
-		 * @project Scala for Machine Learning
+		 * @since May 8, 2-14
+		 * @note Scala for Machine Learning
 		 */
 import XTSeries._
 final protected class MLP[T <% Double](val config: MLPConfig, 

@@ -21,11 +21,11 @@ import scala.collection.mutable.ListBuffer
 		 * @param config configuration for the Multi-layer Perceptron
 		 * @param src source or ingress layer for the network
 		 * @param dst destination of egress layer for the network
-		 * @exception IllegalArgumenException if either the configuration or any of the Neural Network layer is defined
+		 * @throws IllegalArgumenException if either the configuration or any of the Neural Network layer is defined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 5, 2014
-		 * @project Scala for Machine Learning
+		 * @since May 5, 2014
+		 * @note Scala for Machine Learning
 		 */
 import ScalaMl._
 import MLPConnection._
@@ -114,7 +114,7 @@ protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst:
 		 * <p>Companion object for MLP connections. The singleton is used to implicitly
 		 * defined the softmax and identity function fo the conversion of the output values.
 		 * @author Patrick Nicolas
-		 * @date May 6, 2014
+		 * @since May 6, 2014
 		 */
 object MLPConnection {
 	final val beta = 0.6

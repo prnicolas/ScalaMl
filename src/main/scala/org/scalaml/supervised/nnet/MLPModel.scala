@@ -25,11 +25,11 @@ import scala.collection.mutable.ListBuffer
 		 * @param config Configuration parameters for the MLP
 		 * @param input Input value for the Network, that is the initial value of the input layer
 		 * @param numOutputs Size of the output vector
-		 * @exception IllegalArgumentException if the class parameters are either undefined or out-of-range
+		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
 		 * 
 		 * @author Patrick Nicolas
-		 * @date May 8, 2014
-		 * @project Scala for Machine Learning
+		 * @since May 8, 2014
+		 * @note Scala for Machine Learning
 		 */
 import ScalaMl._
 import MLPLayer._
@@ -62,7 +62,7 @@ final protected class MLPModel(val config: MLPConfig, val input: DblVector, val 
 		 * of error and the re-computation of the weight and gradient of the synapses.<br>
 		 * It is assumed that the method argument has been validated in the container class MLP.
 		 * @param feature new feature or data point used in the training (online or batch training)
-		 * @exception IllegalArgumentException if the feature is either undefined or has incorrect size.
+		 * @throws IllegalArgumentException if the feature is either undefined or has incorrect size.
 		 */
 	def trainEpoch(feature: DblVector): Unit = {
 	   inputLayer.setInput(feature)
