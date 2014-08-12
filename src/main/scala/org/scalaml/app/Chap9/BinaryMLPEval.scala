@@ -15,8 +15,8 @@ import org.scalaml.supervised.nnet.MLPConnection.setNoSoftmax
 
 /**
  *  @author Patrick Nicolas
- *  @date Jul 20, 2014
- *  @project Book
+ *  @since Jul 20, 2014
+ *  @note Book
  */
 object BinaryMLPEval {
    final val ALPHA = 0.85

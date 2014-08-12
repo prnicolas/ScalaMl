@@ -89,10 +89,6 @@ object MLPEval {
   	 } 
   }
  
- 
-
-  
-  
   private def accuracy(symbols: Array[String], prices: DblMatrix, config: MLPConfig): Option[Double] = {  	 
      val obs: Array[DblVector] = symbols.map( sym => index.get(sym).get).map( prices( _ ) )
 
@@ -106,11 +102,6 @@ object MLPEval {
   	 new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s).append(" ")).toString)
   	     .append("=> ")
   	       .append(symbols(0)).toString
-}
-
-
-object MLPEvalApp extends App {
-	MLPEval.run(null)
 }
 
 // -------------------------------------  EOF ----------------------------------------------------------
