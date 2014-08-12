@@ -18,8 +18,8 @@ import java.io.IOException
 		 * presented in chapter 7
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 28, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 28, 2014
+		 * @note Scala for Machine Learning
 		 */
 object CrfEval {
   def run: Unit = {
@@ -27,12 +27,12 @@ object CrfEval {
     
 	val lambda = 0.5
 	val nLabels = 9
-	val config = CrfConfig(0.7, 100, lambda, 0.01)
+	val config = CrfConfig(0.5, 100, lambda, 0.01)
 	val delimiters = CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
 	try {
 	   Crf(nLabels, config, delimiters, "resources/data/chap7/rating").weights match {
-	  	 case Some(model) => model.weights.foreach( println )
+	  	 case Some(weights) => weights.foreach( println )
 	  	 case None =>  println("Count not train the CRF model")
 	   }
 	 }

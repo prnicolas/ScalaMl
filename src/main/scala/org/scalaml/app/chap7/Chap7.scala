@@ -17,10 +17,12 @@ import java.io.IOException
 	 * Singleton to execute the test cases presented in Chapter7
 	 * 
 	 * @author Patrick Nicolas
-	 * @date March 25, 2014
-	 * @project Scala for Machine Learning
+	 * @since March 25, 2014
+	 * @note Scala for Machine Learning
 	 */
 object Chap7 extends App {
+		 CrfEval.run
+		 
    private def runAll = {
 	 HMMEval.run
 	 CrfEval.run

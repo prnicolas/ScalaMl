@@ -14,8 +14,8 @@ import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
 		 * Singleton for the evaluation of Hidden Markov Models presented in chapter 7
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 28, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 28, 2014
+		 * @note Scala for Machine Learning
 		 */
 object HMMEval {
   def run: Unit = {
