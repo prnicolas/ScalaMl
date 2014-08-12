@@ -68,7 +68,7 @@ trait ClassifierModule[T] {
 		 * in the array as from index 1, to observations.size -1. The value in index 0 is the label
 		 * 
 		 * @observations array of array of floating point values
-		 * @exception IllegalArgumentException if the observations set is undefined or its size < 2
+		 * @throws IllegalArgumentException if the observations set is undefined or its size < 2
 		 */
 	def train(labels: Array[Int], gradient: (T, Array[Double]) => Array[Double]): Unit = {
        	
@@ -88,7 +88,7 @@ trait ClassifierModule[T] {
 		 * Classify a new observation with the logistic regression model. The size
 		 * of the observation should be equal to the number of the features
 		 * @param input observation to classify
-		 * @exception IllegalArgumentException if the input has not the proper size
+		 * @throws IllegalArgumentException if the input has not the proper size
 		 */
     override def |> : Double = logit
    
@@ -112,27 +112,6 @@ class PolynomialFit[T](val degree: Int)(implicit val _fc: T => DblVector) extend
 }
 * 
 */
-
-
-
-object ClassifierModuleApp extends App {
-	val values = Array[Double](0.0, 1.0, 4.0, 5.0, 7.0, 1.2, 12.8, 11.9, 4.8)
-	val labels = Array[Int](1, 0, 1, 1, 1, 0, 1, 1, 0)
-	val predicted = 1.0
-	val slope = 0.002
-	
-	var k = 0;
-	val gradient = (x: Array[Double], y: Array[Double]) => {
-	   val z = x.zip(y)
-	   z map( e => e._1 + slope*(labels(k) - predicted)*e._2 )
-	}
-	
-	implicit val dot = (x: Array[Double], y: Array[Double]) => {
-	  x.zip(y) map( x => x._1*x._2)
-	}
-		
-}
-
 
 
 // -----------------------  EOF -----------------------------------------------

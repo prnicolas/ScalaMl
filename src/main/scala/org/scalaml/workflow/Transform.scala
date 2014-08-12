@@ -14,7 +14,7 @@ import org.scalaml.stats.Validation
 	 * a T as input type and U as output type. The trait implements the F# pipe
 	 * operator |>.</p>
 	 * @author Patrick Nicolas
-	 * @date December, 15, 2013
+	 * @since December, 15, 2013
 	 */
 trait PipeOperator[-T, +U] {
   def |> (data: T): Option[U]
@@ -32,10 +32,10 @@ object PipeOperator {
 	 * applying the transform function. A transform function can be a filtering,
 	 * smoothing function, a moving average, a classifier.....</p>
 	 * @param op pipe operator implementing the function that transform data
-	 * @exception IllegalArgumentException if the transform function is undefined
+	 * @throws IllegalArgumentException if the transform function is undefined
 	 * @see org.scalaml.core._FCT
 	 * @author Patrick Nicolas
-	 * @date December 19, 2013
+	 * @since December 19, 2013
 	 */
 class Transform[-T, +U](val op: PipeOperator[T, U]) extends _FCT[Function[T, Option[U]]](op.|>)  {
 	require(op != null, "Cannot create a monadic transform with undefined transform function")

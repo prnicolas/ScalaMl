@@ -22,11 +22,11 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @param normalize flag to normalize data within the range [0,1]
 		 * @param reverseOrder flag to re-order/index the data from the last entry to the first entry
 		 * @param headerLines number of header lines in the file
-		 * @exception IllegalArgumentException if the path name is undefined
+		 * @throws IllegalArgumentException if the path name is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date December 11, 2013
-		 * @project Scala for Machine Learning
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning
 		 */
 final class DataSource(val pathName: String, 
 				       val normalize: Boolean, 
@@ -97,7 +97,7 @@ final class DataSource(val pathName: String,
    			 * @param ext function to extract and convert a list of comma delimited fields into a double
    			 * @return list of array of values or an empty list if either the input file is not found or the extraction and
    			 * conversion of some of the text fields failed.
-   			 * @exception IllegalArgumentException if the extraction function is undefined
+   			 * @throws IllegalArgumentException if the extraction function is undefined
    			 */
    override def |> (extr: List[TxtFields => Double]): Option[List[DblVector]] = {
      require(extr != null && extr.size > 0, "Cannot extracts fields with undefined extractors")
