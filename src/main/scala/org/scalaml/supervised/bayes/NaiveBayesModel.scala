@@ -10,7 +10,7 @@ import org.scalaml.stats.Stats
 
 
 import NaiveBayesModel._
-import org.scalaml.supervised.Model
+
 
 		/**
 		 * <p>Class that represents a prior statistics for Naive Bayes classifier.<br>
@@ -21,12 +21,12 @@ import org.scalaml.supervised.Model
 		 * @param label for a specific class or prior
 		 * @param muSigma  array of (mean, standard deviation) of the prior observations for the model
 		 * @param classLikelihood probability of occurrence for the class specified by the label.
-		 * @exception IllegalArgumentException if the array of mean and standard deviation of the prior is undefined 
+		 * @throws IllegalArgumentException if the array of mean and standard deviation of the prior is undefined 
 		 * of if the class likelihood is out of range ]0,1]
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 11, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 11, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class Prior[T <% Double](val label: Int, val muSigma: Array[(Double, Double)], val classLikelihood: Double) {
   import Stats._
@@ -39,7 +39,7 @@ case class Prior[T <% Double](val label: Int, val muSigma: Array[(Double, Double
   		 * a probability density distribution.</p>
   		 * @param obs parameterized observation 
   		 * @param density probability density function (default Gauss)
-  		 * @exception IllegalArgumentException if the density is undefined or the observations are undefined
+  		 * @throws IllegalArgumentException if the density is undefined or the observations are undefined
   		 * @return log of the conditional probability p(C|x)
   		 */
   def score(obs: Array[T], density: Density): Double = {
@@ -66,7 +66,7 @@ case class Prior[T <% Double](val label: Int, val muSigma: Array[(Double, Double
 	 * classify a new set of observations.
 	 * @param density Probabiliy density function used in computing the conditional probability p(C|x)
 	 */
-sealed abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model {
+sealed abstract class NaiveBayesModel[T <% Double](val density: Density) {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
 	def classify(values: Array[T]): Int
 }
@@ -76,7 +76,7 @@ sealed abstract class NaiveBayesModel[T <% Double](val density: Density) extends
 	 * @param positives Prior for the class of positive outcomes
 	 * @param negatives Prior for the class of negatives outcomes
 	 * @param density Probability density function used in computing the conditional probability p(C|x)
-	 * @exception IllegalArgumentException if any of the class parameters is undefined.
+	 * @throws IllegalArgumentException if any of the class parameters is undefined.
 	 * @author Patrick Nicolas
 	 */
 case class BinNaiveBayesModel[T <% Double](val positives: Prior[T], val negatives: Prior[T], val _density: Density) extends NaiveBayesModel[T](_density) {
@@ -87,7 +87,7 @@ case class BinNaiveBayesModel[T <% Double](val positives: Prior[T], val negative
     	 * Classify a new observation
     	 * @param values new observation
     	 * @return 1 if the observation belongs to the positive class, 0 otherwise
-    	 * @exception IllegalArgumentException if any of the observation is undefined.
+    	 * @throws IllegalArgumentException if any of the observation is undefined.
     	 */
 	override def classify(values: Array[T]): Int = {
 		require(values != null && values.size > 0, "Cannot NB classify an undefined observation")
@@ -104,7 +104,7 @@ case class BinNaiveBayesModel[T <% Double](val positives: Prior[T], val negative
 	 * Defines a Multiclass Naive Bayes model
 	 * @param classes list of prior for all the classes
 	 * @param _density Probability density function used in computing the conditional probability p(C|x)
-	 * @exception IllegalArgumentException if any of the class parameters is undefined.
+	 * @throws IllegalArgumentException if any of the class parameters is undefined.
 	 * @author Patrick Nicolas
 	 */
 case class MultiNaiveBayesModel[T <% Double](val classes: List[Prior[T]], val _density: Density) extends NaiveBayesModel[T](_density) {

@@ -14,8 +14,8 @@ import org.scalaml.core.XTSeries
 	 * The trait requires developers to create a validation routine for parameterized
 	 * multidimensional time series of tuple (observation, class label).</p>
 	 * @author Patrick Nicolas
-	 * @date March 4, 2014
-	 * @project Scala for Machine Learning
+	 * @since March 4, 2014
+	 * @note Scala for Machine Learning
 	 */
 trait Supervised[T] {
 	
