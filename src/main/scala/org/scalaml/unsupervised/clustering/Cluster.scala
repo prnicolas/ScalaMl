@@ -20,11 +20,11 @@ import org.scalaml.unsupervised.Distance.euclidean
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
 		 * contains two data points with the same index.</p>
 		 * @param center data point acting as the center of the cluster
-		 * @exception IllegalArgumenException if the center is undefined (null)
+		 * @throws IllegalArgumenException if the center is undefined (null)
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 22, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 22, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 import XTSeries._
@@ -44,7 +44,7 @@ class Cluster[T <% Double](val center: DblVector) {
    	/**
    	 * <p>Recompute the coordinates for the center of this cluster.</p>
    	 * @param xt Time series of observations used in the re-computation of the center
-   	 * @exception IllegalArgumentException if the time series argument is undefined
+   	 * @throws IllegalArgumentException if the time series argument is undefined
    	 * @return a new cluster with the recomputed center.
    	 */
    final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
@@ -60,7 +60,7 @@ class Cluster[T <% Double](val center: DblVector) {
     * <p>Compute the standard deviation of the members of this cluster from its center.</p>
     * @param xt time series used in the computation of the center
     * @param distance metric used to measure the distance between the center and any of the member of the cluster.
-    * @exception IllegalArgumentException if the time series argument is undefined
+    * @throws IllegalArgumentException if the time series argument is undefined
     * @return standard deviation of all the members from the center of the cluster.
     */
    final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double =  {

@@ -24,13 +24,13 @@ import org.scalaml.unsupervised.Distance
 		 * @param m implicit declaration of manifest of type T to overcome Java erasure of type when
 		 * converting Array of T to Array of double and vice versa
 		 * 
-		 * @exception IllegalArgumentException if the number of clusters or the maximum number of 
+		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 
 		 * iterations is out of range or if the distance metric is undefined.
-		 * @exception implicitNotFoundExceptin if the ordering instance is not implicitly defined.
+		 * @throws implicitNotFoundExceptin if the ordering instance is not implicitly defined.
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 23, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 23, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 import KMeans._
