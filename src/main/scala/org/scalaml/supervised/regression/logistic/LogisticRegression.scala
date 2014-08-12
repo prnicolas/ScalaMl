@@ -33,11 +33,11 @@ import org.scalaml.supervised.regression.RegressionModel
 		 * @param y observed/labelled data related to the time series {0, 1}
 		 * @param maxIters maximum number of iterations
 		 * @param maxEvals maximum number of evaluations
-		 * @exception IllegalArgumentException if the arguments are improperly defined
+		 * @throws IllegalArgumentException if the arguments are improperly defined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XTSeries._
 final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
@@ -78,8 +78,8 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 			 * error to associated to the outcome 0 or 1.</p>
 			 * @param x new data point to classify as 0 or 1
 			 * @return 0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained
-			 * @exception IllegalArgumentException if the data point is undefined
-			 * @exception DimensionMismatchException if the dimension of the data point x is incorrect
+			 * @throws IllegalArgumentException if the data point is undefined
+			 * @throws DimensionMismatchException if the dimension of the data point x is incorrect
 			 */
 	override def |> (feature: Array[T]): Option[Int] = model match {
 	  case Some(m) => {

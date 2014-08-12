@@ -17,8 +17,8 @@ import org.apache.commons.math3.optim.PointValuePair
 
 /**
  *  @author Patrick Nicolas
- *  @date Jun 21, 2014
- *  @project Book
+ *  @since Jun 21, 2014
+ *  @note Book
  */
 class CurveFitting[T <% Double](val x: DblVector, val y: Array[Double], val maxIters: Int, val maxEval: Int, val lambda: Double ) {
 	

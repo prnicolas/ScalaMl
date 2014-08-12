@@ -60,7 +60,7 @@ final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val labels:
     	/**
 		 * <p>Data transformation that predicts the value of a vector input using the Ridge regression.</p>
 		 * @param x Array of parameterized values
-		 * @exception IllegalStateException if the size of the input vector is incorrect
+		 * @throws IllegalStateException if the size of the input vector is incorrect
 		 * @return predicted value if the model has been successfully trained, None otherwise
 		 */
     override def |> (x: Feature): Option[Double] = model match {

@@ -17,12 +17,12 @@ import scala.annotation.implicitNotFound
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
 		 * of instances.</p>
 		 * @param xt single parameterized variable time series
-		 * @exception IllegalArgumentException if the time series is undefined
-		 * @exception implicitNotFound if conversion from type to Double is not implicitely defined
+		 * @throws IllegalArgumentException if the time series is undefined
+		 * @throws implicitNotFound if conversion from type to Double is not implicitely defined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 27, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 27, 2014
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
 class SingleLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[T])(implicit g: Double => T)  

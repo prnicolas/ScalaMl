@@ -21,9 +21,9 @@ import Types.ScalaMl._
 	 * @param maxIters maximum number of iterations used during training
 	 * @param eta slope used in the computation of the gradient
 	 * @param eps convergence criteria used to exit the training loop
-	 * @exception IllegalArgumentException if labels are undefined, or the values of maxIters, eta or eps are out of range
+	 * @throws IllegalArgumentException if labels are undefined, or the values of maxIters, eta or eps are out of range
 	 * @author Patrick Nicolas
-	 * @date January 11, 2014
+	 * @since January 11, 2014
 	 */
 final class LogBinRegression(val labels: DVector[(XY, Double)], val maxIters: Int, val eta: Double, val eps: Double) {
 	require(maxIters > 10 && maxIters < 10000, "Maximum number of iteration " + maxIters + " is out of bounds")

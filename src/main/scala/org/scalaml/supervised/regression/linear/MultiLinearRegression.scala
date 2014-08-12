@@ -25,11 +25,11 @@ import org.scalaml.supervised.regression.RegressionModel
 		 * initialized as None if the training fails.</p>
 		 * @param xt input multi-dimensional time series for which regression is to be computed
 		 * @param y labeled data for the Multivariate linear regression
-		 * @exception IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
+		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
 		 * 
 		 * @author Patrick Nicolas
-		 * @data April 19, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 19, 2014
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Implicit conversion of type to Double for MultiLinearRegression is missing")
 final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSeries[Array[T]], val labels: DblVector) 
@@ -68,10 +68,10 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 		/**
 		 * <p>Data transformation that predicts the value of a vector input.</p>
 		 * @param x Array of parameterized values
-		 * @exception IllegalStateException if the input array is undefined
+		 * @throws IllegalStateException if the input array is undefined
 		 * @return predicted value if the model has been successfully trained, None otherwise
 		 */
-	override def |> (x: Feature): Option[Double] =   model match {
+	override def |> (x: Feature): Option[Double] = model match {
 	   case Some(m) => {
     	 if( x == null || x.size != m.size +1) 
     		 throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m.size -1))
@@ -89,6 +89,7 @@ final class MultiLinearRegression[@specialized(Double) T <% Double](val xt: XTSe
 		 * constructor for the class MultiLinearRegression.</p>
 		 * 
 		 * @author Patrick Nicolas
+		 * @since April 19, 2014
 		 */
 object MultiLinearRegression {
 	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = new MultiLinearRegression[T](xt, y)
