@@ -12,8 +12,8 @@ import libsvm._
 	/**
 	 * <p>Trait for type or formulation of Support Vector Machine algorithms.</p>
 	 * @author Patrick Nicolas
-	 * @date April 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 sealed trait SVMFormulation extends SVMConfigItem {
   def config(param: svm_parameter): Unit 
@@ -31,11 +31,11 @@ import SVMFormulation._
 	/**
 	 * <p>Class to initialize the type of SVM to a C formulated support vector classifier.</p>
 	 * @param c C-penalty or inverse regularization factor
-	 * @exception IllegalArgumentException if c is negative
+	 * @throws IllegalArgumentException if c is negative
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 case class CSVCFormulation(val c: Double) extends SVMFormulation {
   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
@@ -43,7 +43,7 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
   	/**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def config(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
@@ -59,11 +59,11 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
 	 * <p>Class to initialize the type of SVM to a Nu formulated support vector classifier.</p>
 	 * @param nu normalized penalty factor
 	 * @param rho rho factor for the Nu formulation of the Nu support vector classifiers
-	 * @exception IllegalArgumentException if nu is out of range [0,1]
+	 * @throws IllegalArgumentException if nu is out of range [0,1]
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
@@ -71,7 +71,7 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
     /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def config(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
@@ -88,11 +88,11 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
 	/**
 	 * <p>Class to initialize the type of SVM to a one class support vector classifier for outliers.</p>
 	 * @param nu normalized penalty factor
-	 * @exception IllegalArgumentException if nu is out of range [0,1]
+	 * @throws IllegalArgumentException if nu is out of range [0,1]
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
@@ -100,7 +100,7 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
     /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def config(param: svm_parameter): Unit = {
 	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
@@ -117,11 +117,11 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
 	 * <p>Class to initialize the type of SVM to the epsilon formulation of the support vector regressions.</p>
 	 * @param c C-penalty (regularization) factor
 	 * @param epsilon epsilon factor for the support vector regression
-	 * @exception IllegalArgumentException if nu is out of range [0,1]
+	 * @throws IllegalArgumentException if nu is out of range [0,1]
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 29, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 29, 2014
+	 * @note Scala for Machine Learning
 	 */
 case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation { 
    require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
@@ -130,7 +130,7 @@ case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormula
      /**
   	 * <p>Initialize the LIBSVM parameters configuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def config(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")

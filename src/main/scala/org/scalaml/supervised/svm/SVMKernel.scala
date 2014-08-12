@@ -18,8 +18,8 @@ trait SVMConfigItem {
 		 * <p>Generic trait for Kernel functions used for Support Vector Machine.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 30, 2014
+		 * @note Scala for Machine Learning
 		 */
 sealed trait SVMKernel extends SVMConfigItem {
    def config(param: svm_parameter): Unit
@@ -37,14 +37,14 @@ import SVMKernel._
 		 * <p>Definition of the Linear kernel.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 30, 2014
+		 * @note Scala for Machine Learning
 		 */
 object LinearKernel extends SVMKernel {
 	 /**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
    override def config(param: svm_parameter): Unit = {
    	  require(param != null, "Cannot configure undefined LIBSVM svm parameter class with kernel")
@@ -59,11 +59,11 @@ object LinearKernel extends SVMKernel {
 		 * <p>Definition of the Radial Basis Kernel function. The radial basis function is implemented
 		 * as a Gaussian function.</p>
 		 * @param gamma gamma or scaling parameter for the RBF kernel
-		 * @exception IllegalArgumentException if gamma is negative or null
+		 * @throws IllegalArgumentException if gamma is negative or null
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 30, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class RbfKernel(val gamma: Double) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the RBF kernel " + gamma + " is out of range")
@@ -71,7 +71,7 @@ case class RbfKernel(val gamma: Double) extends SVMKernel {
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
     override def config(param: svm_parameter): Unit = {
       require(param != null, "Cannot configure undefined LIBSVM svm parameter class with kernel") 
@@ -87,11 +87,11 @@ case class RbfKernel(val gamma: Double) extends SVMKernel {
 	    /**
 		 * <p>Definition of the Sigmoid Kernel function.</p>
 		 * @param gamma gamma or scaling parameter for the Sigmoid kernel
-		 * @exception IllegalArgumentException if gamma is negative or null
+		 * @throws IllegalArgumentException if gamma is negative or null
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 30, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class SigmoidKernel(val gamma: Double) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the Sigmoid kernel " + gamma + " is out of range")
@@ -99,7 +99,7 @@ case class SigmoidKernel(val gamma: Double) extends SVMKernel {
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
 	override def config(param: svm_parameter): Unit = {
 	  require(param != null, "Cannot configure undefined LIBSVM svm parameter class with kernel")
@@ -117,11 +117,11 @@ case class SigmoidKernel(val gamma: Double) extends SVMKernel {
 		 * @param gamma gamma or scaling parameter for the polynomial kernel
 		 * @param coef0 b coefficient (order 0) for the polynomial kernel
 		 * @param degree degree or power of the polynomial kernel
-		 * @exception IllegalArgumentException if gamma is negative or null or if degree < 1
+		 * @throws IllegalArgumentException if gamma is negative or null or if degree < 1
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 30, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 30, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class PolynomialKernel(val gamma: Double, val coef0: Double, val degree: Int) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the polynomial kernel" + gamma + " is out of range")
@@ -130,7 +130,7 @@ case class PolynomialKernel(val gamma: Double, val coef0: Double, val degree: In
     /**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
-  	 * @exception IllegalArgumentException if param is undefined.
+  	 * @throws IllegalArgumentException if param is undefined.
   	 */
    override def config(param: svm_parameter): Unit = {
   	  require(param != null, "Cannot configure undefined LIBSVM svm parameter class with kernel")

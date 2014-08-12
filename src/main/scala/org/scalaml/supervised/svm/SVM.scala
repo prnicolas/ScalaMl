@@ -23,12 +23,12 @@ import org.scalaml.util.Matrix
 		 * @param config configuration of the SVM 
 		 * @param xt features used for the training of the SVC or SVR model
 		 * @param labels labeled observations used in the training of the model
-		 * @exception IllegalArgumentException thrown for any of the class parameters being null or the size of the features
+		 * @throws IllegalArgumentException thrown for any of the class parameters being null or the size of the features
 		 * does not match the size of the observations.
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 29, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 29, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XTSeries._
 final class SVM[T <% Double](val config: SVMConfig, 
@@ -108,7 +108,7 @@ final class SVM[T <% Double](val config: SVMConfig,
   	/**
   	 * Data transformation that implements the prediction value using SVM
   	 * @param x feature used as input to the prediction
-  	 * @exception IllegalStateException if the features vector is undefined or have an incorrect size
+  	 * @throws IllegalStateException if the features vector is undefined or have an incorrect size
   	 */
   override def |> (x: Feature): Option[Double] = model match {
   	case Some(m) => {
