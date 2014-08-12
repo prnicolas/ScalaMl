@@ -13,11 +13,11 @@ package org.scalaml.ga
 		 *  fitness values, cross-over within a pair of chromomsomes and mutation</p>
 		 *  @param config configuration parameters of the genetic algorithm
 		 *  @param f fitness function for a chromosome
-		 *  @exception IllegalArgumentException if the configuration or the fitness function is undefined
+		 *  @throws IllegalArgumentException if the configuration or the fitness function is undefined
 		 *  		 
 		 *  @author Patrick Nicolas
-		 *  @date August 28, 2013
-		 *  @project Scalal for Machine Learning
+		 *  @since August 28, 2013
+		 *  @note Scalal for Machine Learning
 		 */
 import Chromosome._
 import scala.collection.mutable.ArrayBuffer
@@ -38,7 +38,7 @@ final class Reproduction[T <: Gene](private val config: GAConfig, val fit: Chrom
 	   case None => None   
 	 }
   
-    override def toString : String = new StringBuilder("Replication:\n").append(config.toString).toString
+    override def toString : String =new StringBuilder("Replication:\n").append(config.toString).toString
 
         
 	private[this] def select(population: Population[T]) =  population.size match {

@@ -14,16 +14,16 @@ package org.scalaml.ga
 	 * genetic algorithm optimizer. Mutation and/or Cross-over parameters may be computed using an attenuator using the
 	 * formula  newValue = oldValue*currentIteration/maximumIterations.</p>
 	 * 
-	 * @author Patrick Nicolas
-	 * @date August 28, 2013
-	 * @project Scala for Machine Learning
-	 * 
 	 * @param maxPopulationSize  maximum size of the population (number of chromosomes) allowed during the optimization
 	 * @param xover value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over	 * @attribute rejectionRate  rate of rejection in the range [0.2,0.95] used in the select the most fit chromosomes after a selection - cross-over and mutation cycle
 	 * @param mutate value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome.
 	 * @param maxNumIters maximum number of iterations allowed in the optimization
-	 * @attribute attenuatorType  type of attenuation (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along
-	 * @exception throw IllegalArgumentException if some of the parameters are out of bounds such as maxPopulationSize > 1 or rejection rate < 0.95
+	 * @param attenuatorType  type of attenuation (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along
+	 * @throws throw IllegalArgumentException if some of the parameters are out of bounds such as maxPopulationSize > 1 or rejection rate < 0.95
+	 * 	 
+	 * @author Patrick Nicolas
+	 * @since August 28, 2013
+	 * @note Scala for Machine Learning
 	 */
 final class GAConfig(val maxPopulationSize: Int,
                      val xover: Double,

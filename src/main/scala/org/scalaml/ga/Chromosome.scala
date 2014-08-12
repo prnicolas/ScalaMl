@@ -13,10 +13,10 @@ import scala.annotation.implicitNotFound
 			 * an objective/fitness function. A chromosome is a container or list of Gene that
 			 * represents candidate solution to a problem or candidate model to a dataset.</p>
 			 * @param code genetic code or list of Gene that is to be encoded with 0,1 bits
-			 * @exception if the genetic code is undefined or empty
+			 * @throws if the genetic code is undefined or empty
 			 * @author Patrick Nicolas
-			 * @date August 27, 2013
-			 * @project Scala for Machine Learning
+			 * @since August 27, 2013
+			 * @note Scala for Machine Learning
 			 */
 import Gene._
 import Chromosome._
@@ -33,7 +33,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * are added to the current population along with the parents.</p>
    		 * @param that other parent chromosome
    		 * @param xOver cross-over factor [0, 1]
-   		 * @exception IllegalArgumentException if the other chromosome is undefined, or have a different size 
+   		 * @throws IllegalArgumentException if the other chromosome is undefined, or have a different size 
    		 * or if the cross-over factor is out of range.
    		 * @return the pair of offspring.
    		 */
@@ -60,7 +60,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * <p>Mutation operator that flip a gene selected through a mutation index.
    		 * The mutated gene is added to the population (gene pool).</p>
    		 * @param mu mutation factor [0, 1]
-   		 * @exception IllegalArgumentException if mu is out of range
+   		 * @throws IllegalArgumentException if mu is out of range
    		 * @return a mutated chromosome
    		 */
     def ^ (mu: Double): Chromosome[T] = {         
@@ -79,8 +79,8 @@ final class Chromosome[T <: Gene](val code: List[T]) {
     	/**
     	 * <p>Normalize the fitness of this chromosome with a factor. This 
     	 * operation is required by the selection algorithm.</p>
-    	 * @oaram normalizedFactor normalization factor
-    	 * @exception IllegalArgumentException if the normalization factor is less than EPS
+    	 * @param normalizedFactor normalization factor
+    	 * @throws IllegalArgumentException if the normalization factor is less than EPS
     	 */
     def /= (normalizeFactor: Double): Unit = {
     	require( normalizeFactor > Chromosome.EPS, "Cannot normalize with " + normalizeFactor)
@@ -116,7 +116,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 	/**
 	 * Companion object to a Chromosome used to define the constructors
 	 * @author Patrick Nicolas
-	 * @date September 2, 2013
+	 * @since September 2, 2013
 	 */
 object Chromosome {
   import scala.collection.mutable.ListBuffer

@@ -25,11 +25,11 @@ object GAState extends Enumeration {
 	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
 	 * @param config Configuration parameters for the GA algorithm
 	 * @param population initialized population of chromosomes (solution candidates)
-	 * @exception IllegalArgumenException if the configuration is undefined or the population is not initialized
+	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
 	 * 
 	 * @author Patrick Nicolas
-	 * @date August 29, 2013
-	 * @project Scala for Machine Learning
+	 * @since August 29, 2013
+	 * @note Scala for Machine Learning
 	 * /
 	 */
 import Chromosome._
@@ -42,7 +42,7 @@ final class GASolver[T <: Gene](private val config: GAConfig, val population: Po
 	 * <p>Method to resolve any optimization problem using an initial genes pool 
 	 * (population of Chromosomes. The minimum size of the population is 2</p>
 	 * @param fitness fitness Function used to rank and select a chromosome.
-	 * @exception IllegalArgumenException if the fitness function is not provided.
+	 * @throws IllegalArgumenException if the fitness function is not provided.
 	 */
    def search(fit: Chromosome[T] => Double): GAState = {	
       require(fit != null, "Cannot search with an undefined fitness Function")

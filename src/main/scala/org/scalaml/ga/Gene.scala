@@ -15,7 +15,7 @@ import scala.annotation.implicitNotFound
 	 * <p>Enumerator for the Boolean operator used as component of a gene. A gene is defined
 	 * as a predicate by a value and an operator.</p>
 	 * @author Patrick Nicolas
-	 * @date August 28, 2013
+	 * @since August 28, 2013
 	 */
 object Operator extends Enumeration  {
   type Operator = Value
@@ -34,12 +34,12 @@ object Operator extends Enumeration  {
 	 * @param value Floating point value to be digitized as integer
 	 * @param 2-bit boolean operator of type Operator
 	 * @param f  implicit discretization function from Floating point value to integer
-	 * @exception IllegalArgumentException if operator is undefined
-	 * @exception ImplicitNotFound if the conversion from double to integer (digitize) is not provided
+	 * @throws IllegalArgumentException if operator is undefined
+	 * @throws ImplicitNotFound if the conversion from double to integer (digitize) is not provided
 	 * 
 	 * @author Patrick Nicolas
-	 * @date August 28, 2013
-	 * @project Scala for Machine Learning
+	 * @since August 28, 2013
+	 * @note Scala for Machine Learning
 	 */
 import Gene._
 import Operator._
@@ -69,7 +69,7 @@ class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   
      	/**
      	 * <p>Method to decode a gene as a bit sets into a tuple (value, operator).</p>\
-     	 * @exception mplicitNotFound if the conversion from integer to double is not provided
+     	 * @throws mplicitNotFound if the conversion from integer to double is not provided
      	 * @return Tuple (Value, Operator)
      	 */
   @implicitNotFound("Gene decoding requires Integer to double conversion") 
@@ -86,7 +86,7 @@ class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   		 * @param index index of the bit to apply the cross-over
   		 * @param that other gene used in the cross-over
   		 * @return a single Gene as cross-over of two parents.
-  		 * @exception IllegalArgumenException if the argument are undefined or the index is out of range
+  		 * @throws IllegalArgumenException if the argument are undefined or the index is out of range
   		 */
   def +- (index: Int, that: Gene): Gene = {
   	 require(that != null, "Cannot cross over this gene with undefined gene")
@@ -101,7 +101,7 @@ class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   		 * <p>Implements the mutation operator on this gene</p>
   		 * @param index index of the bit to mutate
   		 * @return a single mutated gene
-  		 * @exception IllegalArgumenException if the mutation index is out of range
+  		 * @throws IllegalArgumenException if the mutation index is out of range
   		 */
   def ^ (index: Int): Unit = {
   	 require(index >= 0 && index < GENE_SIZE, "Index " + index + " for gene cross-over is out of range")

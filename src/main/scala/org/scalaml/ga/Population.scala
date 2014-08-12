@@ -18,11 +18,11 @@ import java.util.{HashSet, Arrays}
 		 * explosion of candidates/chromosomes..</p>
 		 * @param limit maximum number of chromosomes allowed in this populatoin
 		 * @param chromosomes current pool of chromosomes
-		 * @exception IllegalArgumenException if the limit is out of range or the pool of chromosomes is undefined
+		 * @throws IllegalArgumenException if the limit is out of range or the pool of chromosomes is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date August 25, 2013
-		 * @project Scala for Machine Learning
+		 * @since August 25, 2013
+		 * @note Scala for Machine Learning
 		 */
 import Population._
 final class Population[T <: Gene](val limit: Int, 
@@ -34,7 +34,7 @@ final class Population[T <: Gene](val limit: Int,
 		 * <p>Add an array of chromosomes to the existing population. The new chromosomes are
 		 * appended to the existing ones, after removal of duplicates</p>
 		 * @param xyList array of chromosomes to be added to the existing population
-		 * @exception IllegalArgumentException if the array of chromosomes is undefined.
+		 * @throws IllegalArgumentException if the array of chromosomes is undefined.
 		 */
 	def + (that: Population[T]): Population[T] = {
 	    require(that != null, "Cannot add an undefined list of chromosomes to this population")
@@ -60,7 +60,7 @@ final class Population[T <: Gene](val limit: Int,
     	 * @param cutOff cutoff ratio ]0, 1[ used in the selection
     	 * @param fit function used in the selection 
     	 * @return a new population
-    	 * @exception IllegalArgumenException if the cutoff is out of bounds or the fitness function is undefined
+    	 * @throws IllegalArgumenException if the cutoff is out of bounds or the fitness function is undefined
     	 */
     def select(cutOff: Double, fit: Chromosome[T] => Double): Population[T] = {
     	require(cutOff > 0.0 && cutOff < 1.0, "cannot select chromosomes with a cutoff" + cutOff + " out of range")
@@ -84,7 +84,7 @@ final class Population[T <: Gene](val limit: Int,
     	 * the half most fit chromosomes with the half least fit chromosomes.</p>
     	 * @param xOver cross-over factor [0, 1]
     	 * @return a new population with most likely a different size
-    	 * @exception IllegalArgumentException if xOver is out of range.
+    	 * @throws IllegalArgumentException if xOver is out of range.
     	 */
     def +- (xOver: Double): Population[T] = {
     	require(xOver > 0.0 && xOver < 1.0, "Cross-over factor " + xOver + " on the population is out of range")
@@ -106,7 +106,7 @@ final class Population[T <: Gene](val limit: Int,
     	 * chromosomes that are mutated using the mutate operator ^ on chromosome.</p>
     	 * @param mu mutation factor
     	 * @return Population with original chromosomes and mutated counter-part
-    	 * @exception IllegalArgumenException if mu is out of range.
+    	 * @throws IllegalArgumenException if mu is out of range.
     	 */
     def ^ (mu: Double): Population[T] = {
         require(mu > 0.0 && mu < 1.0, "Mutation factor " + mu + " on the population is out of range")
