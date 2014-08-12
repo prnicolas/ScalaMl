@@ -28,7 +28,7 @@ import org.scalaml.core.Types.ScalaMl._
 	 * @param debug Optional debugging flag 
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 3, 2014
+	 * @since April 3, 2014
 	 */
 import CrfConfig._
 class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, val eps:Double, val debug: Int) {
@@ -59,7 +59,7 @@ class CrfConfig(val initW: Double, val maxIters: Int, val lambda: Double, val ep
 		 * singleton is used to define constructors and boundaries for the class parameters..</p>
 		 */
 object CrfConfig {
-	final val INIT_WEIGHTS_LIMITS = (1.0, 2.5)
+	final val INIT_WEIGHTS_LIMITS = (0.1, 2.5)
 	final val MAX_ITERS_LIMITS = (10, 250)
 	final val LAMBDA_LIMITS = (1e-15, 1.5)
 	final val EPS_LIMITS = (1e-5, 0.2)

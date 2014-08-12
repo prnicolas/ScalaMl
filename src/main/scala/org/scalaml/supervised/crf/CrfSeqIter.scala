@@ -20,10 +20,10 @@ import iitb.Segment.{DataCruncher, LabelMap}
 	 * @param nLabels Number of labels (or tags) used in the training of CRF
 	 * @param entry recommendation or observation as a sequence of words
 	 * @param delim delimiter of segments in the sequence
-	 * @exception IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
+	 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
 	 * @see ittb.CRF.DataSequence
 	 * @author Patrick Nicolas
-	 * @date April 2, 2014
+	 * @since April 2, 2014
 	 */
 class CrfRecommendation(val nLabels: Int, val entry: String, val delim: String) extends DataSequence {
     private val words: Array[String] = entry.split(delim)
@@ -46,9 +46,9 @@ class CrfRecommendation(val nLabels: Int, val entry: String, val delim: String) 
 	 * @param dObs delimiters for observation as a sequence of N-grams or words
 	 * @param dLabel delimiter between observations string and tag/label
 	 * @param dSeq delimiter between training sequences
-	 * @exception IllegalArgumentException if dObs, dLabel or dSeq are null (undefined)
+	 * @throws IllegalArgumentException if dObs, dLabel or dSeq are null (undefined)
 	 * @author Patrick Nicolas
-	 * @date April 5, 2014
+	 * @since April 5, 2014
 	 */
 case class CrfSeqDelimiter(val dObs: String, val dLabel: String, val dSeq:String) {
 	require(dObs != null, "Delimiter for observations in CRF training sequence is undefined")
@@ -64,10 +64,10 @@ case class CrfSeqDelimiter(val dObs: String, val dLabel: String, val dSeq:String
 	 * @param nLabels number of labels used in the CRF  model
 	 * @param input identifier for the training or tagged files
 	 * @param delim delimiter instances used to break down the training data as sequence, observations and labels
-	 * @exception IllegalArgumentException if nLabel is out of range or the input or delim is undefined
-	 * @exception IOException if the training file '*.tagged' is not found
+	 * @throws IllegalArgumentException if nLabel is out of range or the input or delim is undefined
+	 * @throws IOException if the training file '*.tagged' is not found
 	 * @author Patrick Nicolas
-	 * @date April 5, 2014
+	 * @since April 5, 2014
 	 */
 class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter) extends DataIter {
    require(nLabels > 0 && nLabels < 1000, "Number of labels for the CRF model " + nLabels + " is out of range")

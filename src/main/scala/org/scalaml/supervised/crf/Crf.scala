@@ -14,7 +14,7 @@ import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.workflow.PipeOperator
-import org.scalaml.supervised.{Supervised, Model}
+import org.scalaml.supervised.Supervised
 import java.io.IOException
 import org.scalaml.core.Types.ScalaMl._
 
@@ -32,18 +32,19 @@ import Crf._
 	 * @param delims delimiters used in extracting labels and data from the training files
 	 * @param taggedObs identifier for the training data set. The training set of sequences is defined by the raw observations
 	 * and its associated tagged file    taggedObs.raw and taggedObs.tagged files.
-	 * @exception IllegalArgumentException if nLabels, config, delims and taggedObs are either undefined or out of range.
+	 * @throws IllegalArgumentException if nLabels, config, delims and taggedObs are either undefined or out of range.
 	 * @see org.scalaml.workflow.PipeOperator
 	 * 
 	 * @author Patrick Nicolas
-	 * @data April 3, 2014
+	 * @since April 3, 2014
+	 * @note Scala for Machine Learning
 	 */
 final class Crf(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
                                                extends PipeOperator[String, Double] with Supervised[String] {
 	
   validate(nLabels, config, delims, taggedObs)
   
-  protected class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
+  class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
 	
   private[this] val features = new TaggingGenerator(nLabels)
   private[this] lazy val crf = new CRF(nLabels, features, config.params)
@@ -52,7 +53,7 @@ final class Crf(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelim
   	 val seqIter = CrfSeqIter(nLabels: Int, taggedObs, delims)
   	 try {
 	  	 features.train(seqIter)
-	  	 Some(new CrfModel(crf.train(seqIter)))
+	  	 Some(crf.train(seqIter))
   	 }
   	 catch {
   		 case e: IOException => Console.println(e.toString); None
@@ -67,11 +68,14 @@ final class Crf(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelim
   override def |> (obs: String): Option[Double] = model match {
   	 case Some(w) => {
   	     require( obs != null && obs.length > 1, "Argument for CRF prediction is undefined")
-	  	 Some(crf.apply(new CrfRecommendation(nLabels, obs, delims.dObs)))
+  	     
+	  	 val dataSeq =  new CrfRecommendation(nLabels, obs, delims.dObs)
+	  	 Some(crf.apply(dataSeq))
   	 }
   	 case None => None
   }
   
+  @inline
   final def weights: Option[CrfModel] = model
   
   override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
@@ -85,10 +89,6 @@ final class Crf(val nLabels: Int, val config: CrfConfig, val delims: CrfSeqDelim
 }
 
 
-class CrfModel(val weights: DblVector)  extends Model {
-	
-}
-
 
 	/**
 	 * Companion object for the Linear chained Conditional random field. The singleton is used
@@ -96,7 +96,7 @@ class CrfModel(val weights: DblVector)  extends Model {
 	 */
 object Crf {
   final val NUM_LABELS_LIMITS = (1, 200)
- // type CrfModel = DblVector
+  type CrfModel = DblVector
 	
   def apply(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Crf = 
 		           new Crf(nLabels, config, delims, taggedObs)
