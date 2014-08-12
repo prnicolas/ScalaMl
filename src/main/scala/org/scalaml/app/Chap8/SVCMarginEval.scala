@@ -21,7 +21,7 @@ import org.scalaml.plots.BlackPlotTheme
 		 * support vector classifier using synthetic features.</p>
 		 * 
 		 * @author Patrick Nicolsa
-		 * @date April 23, 2014
+		 * @since April 23, 2014
 		 * #project Scala for Machine Learning
 		 */
 import XTSeries._

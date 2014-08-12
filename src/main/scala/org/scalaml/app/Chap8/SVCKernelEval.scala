@@ -22,8 +22,8 @@ import org.scalaml.plots.BlackPlotTheme
 		 * from </p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date April 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since April 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 object SVCKernelEval {
 	import scala.util.Random

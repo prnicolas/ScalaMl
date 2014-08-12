@@ -48,23 +48,4 @@ object SVCOutliersEval {
 }
 
 
-object SVCOutliersEvalApp extends App {
-	SVCOutliersEval.run
-	/*
-	val x1 = Array[Double](2,0, 5,0, 6,0, 7.0)
-    val x2 = Array[Double](67,0, 15,0, 36,0, 27.0)
-    val x3 = Array[Double](167,0, 115,0, 136,0, 127.0)
-    
-    val xs1 = x1 :: x2 :: x3 :: List[DblVector]()
-    println("Original Matrix")
-    xs1.foreach( v => println( v.foldLeft(new StringBuilder)((s, x) => s.append(x).append(","))))
-    
-    val result: Array[DblVector] = XTSeries.transpose(xs1)
-    
-        println("\nTranspose Matrix")
-    result.foreach( v => println( v.foldLeft(new StringBuilder)((s, x) => s.append(x).append(","))))
-    * 
-    */
-}
-
 // --------------------------  EOF -----------------------------------------------

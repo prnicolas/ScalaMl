@@ -12,8 +12,8 @@ package org.scalaml.app.chap8
 	 * <p>Singleton to run the test cases presented in chapter 8
 	 * 
 	 *  @author Patrick Nicolas
-	 *  @date May 7. 2014
-	 *  @project Scala for Machine Learning
+	 *  @since May 7. 2014
+	 *  @note Scala for Machine Learning
 	 */
 object Chap8 extends App {
    private def runAll = {
