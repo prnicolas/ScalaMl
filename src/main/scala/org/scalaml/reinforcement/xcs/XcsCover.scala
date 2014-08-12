@@ -17,8 +17,8 @@ import scala.util.Random
 		 * generate random, or pseudo-random rules.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 25, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 25, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XcsRule._
 object XcsCover {  
@@ -27,7 +27,7 @@ object XcsCover {
    		 * to generates is the size of the chromosome representing a trading strategy.</p>
    		 * @param signal (or rule predicate) used to generate a set of new rules
    		 * @param number of rules to generated.
-   		 * @exception IllegalArgumenException if the signal is undefined
+   		 * @throws IllegalArgumenException if the signal is undefined
    		 * @return list of new XCS rules. 
    		 */
    def create(signal: Signal, numRules: Int): List[XcsRule[Double]] = {

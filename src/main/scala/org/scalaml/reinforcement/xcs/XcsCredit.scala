@@ -21,12 +21,12 @@ import org.scalaml.core.Types.ScalaMl._
 		 * The class inherits the QLState class so credit can be computed using historical
 		 * data fed to the Q-Learning algorithm.</p>
 		 * @param fitnesses array of fitness for the chromosomes which one or more rules have been fired
-		 * @exception IllegalArgumentException if the array of the fitness of the matching chromosomes is undefined
+		 * @throws IllegalArgumentException if the array of the fitness of the matching chromosomes is undefined
 		 * @see org.scalaml.reinforcement.qlearning.QLState
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 25, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 25, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XcsCredit._
 class XcsCredit(val fitnesses: DblVector) extends QLState[Double](-1, fitnesses, CREDIT ) {
@@ -37,7 +37,7 @@ class XcsCredit(val fitnesses: DblVector) extends QLState[Double](-1, fitnesses,
 		 * Q_Value is a simple factor to be applied to the chromosomes fitness.</p>
 		 * @param  data factor (data(0)) applied to the chromosome fitness to reward (factor >0) 
 		 * or punish (factor <0) the chromosomes that have been fired
-		 * @exception IllegalArgumenException if the input data is undefined.
+		 * @throws IllegalArgumenException if the input data is undefined.
 		 */
 	override  def V(data: DblVector): Double =  {
 	   require(data != null && data.size > 0, "Cannot compute value of this state with undefined")

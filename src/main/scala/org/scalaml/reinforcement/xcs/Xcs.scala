@@ -26,11 +26,11 @@ import org.scalaml.workflow.PipeOperator
 		 * previous set of actions on the system are collected at the same time.</p>
 		 * @param config configuration for the XCS algorithm (GA and Q-Learning parameters)
 		 * @param qLabels training episodes used to create the Q-Learning model
-		 * @exception IllegalArgumenException if the configuration, input information or training episodes is undefined
+		 * @throws IllegalArgumenException if the configuration, input information or training episodes is undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @data March 26, 2014
-		 * @project Scala for Machine Learning
+		 * @note Scala for Machine Learning
 		 */
 import Xcs._
 final class Xcs(val config: XcsConfig) extends PipeOperator[XcsInput, List[XcsAction[Double]]] {
@@ -48,7 +48,7 @@ final class Xcs(val config: XcsConfig) extends PipeOperator[XcsInput, List[XcsAc
          * @return list of actions to be performed if the credit can be computed and 
          * distributed across the fittest chromosomes and the population can be updated, 
          * None otherwise. 
-         * @exception IllegalArgumentException if xcsInput is undefined.
+         * @throws IllegalArgumentException if xcsInput is undefined.
          */
    override def |> (xcsInput: XcsInput): Option[List[XcsAction[Double]]] = {
   	  require(xcsInput != null,  "Cannot extract next set of XCS action for undefined signal or reward input" )

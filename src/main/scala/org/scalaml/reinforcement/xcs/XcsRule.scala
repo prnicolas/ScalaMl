@@ -21,11 +21,11 @@ import org.scalaml.core.Types.ScalaMl._
 		 * assigned a label to each signal/predicate.</p>
 		 * @param signal  signal or predicated of the rule
 		 * @param action action of the rule
-		 * @exception IllegalArgumenException if the predicate or the action of the rule is undefined
+		 * @throws IllegalArgumenException if the predicate or the action of the rule is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XcsRule._
 class XcsRule[T <% Double](val signal: Signal, val action: XcsAction[T]) extends Gene(signal.value, signal.op)(DIGITIZE) {
@@ -44,8 +44,8 @@ class XcsRule[T <% Double](val signal: Signal, val action: XcsAction[T]) extends
 			 * Creationof random action required by the covering process.</p>
 			 * 
 			 * @author Patrick Nicolas
-			 * @date March 24, 2014
-		     * @project Scala for Machine Learning
+			 * @since March 24, 2014
+		     * @note Scala for Machine Learning
 			 */
 import Operator._
 object XcsRule {

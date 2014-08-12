@@ -21,12 +21,12 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 		 * @param gaConfig configuration of the genetic algorithm
 		 * @param qConfig configuration of the Q-Learning algorithm. 
 		 * @param init function to initialize the population of rules (Boost) 			
-		 * @exception IllegalArgumentException if the maximum population is out of range or one of the
+		 * @throws IllegalArgumentException if the maximum population is out of range or one of the
 		 * configuration class is undefined.
 		 *  
 		 * @author Patrick Nicolas
-	     * @date March 22, 2014
-		 * @project Scala for Machine Learning
+	     * @since March 22, 2014
+		 * @note Scala for Machine Learning
 		 */
 import XcsConfig._
 class XcsConfig(val maxPopulationSize: Int, val gaConfig: GAConfig, val qConfig: QLConfig, val init: () => Population[XcsRule[Double]]) {
