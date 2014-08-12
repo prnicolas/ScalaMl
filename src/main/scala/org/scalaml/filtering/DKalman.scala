@@ -25,10 +25,10 @@ import scala.annotation.implicitNotFound
 	 * instance (DKalman).</p>
 	 * @param qr  tuples that define the mean values of the process and measurement noise
 	 * @paran white scalar function that specify the white noise distribution
-	 * @exception IllegalArgumentException if the white noise generator is undefined
+	 * @throws IllegalArgumentException if the white noise generator is undefined
 	 * @author Patrick Nicolas
-	 * @date February 12, 2014
-	 * @project Scala for Machine Learning
+	 * @since February 12, 2014
+	 * @note Scala for Machine Learning
 	 */
 import Types.ScalaMl._
 case class QRNoise(val qr: XY, val white: Double=> Double) {
@@ -51,10 +51,10 @@ case class QRNoise(val qr: XY, val white: Double=> Double) {
 		 * @param H matrix that defines the dependency of the measurement on the state of the system
 		 * @param P error matrix
 		 * @param qrNoise implicit value representing the white noise for the process Q and the measurement P
-		 * @exception IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
+		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
 		 * @author Patrick Nicolas
-		 * @date February 11, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 11, 2014
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("White noise, QRNoise, has to be implicitly defined for Kalman filter")
 class DKalman(val A: DblMatrix,  val B: DblMatrix,  val H: DblMatrix, val P: DblMatrix)(implicit val qrNoise: QRNoise) 
@@ -79,7 +79,7 @@ class DKalman(val A: DblMatrix,  val B: DblMatrix,  val H: DblMatrix, val P: Dbl
 		  * computational failure and the data transformation return None.</p>
 		  * @param xt time series of tuple of type XY =(Double, Double) for {x,y} values
 		  * @return the time series {x,y} filtered by the Kalman algorithm if no exception throw, None otherwise.
-		  * @exception IllegalArgumentException if the input time series is undefined.
+		  * @throws IllegalArgumentException if the input time series is undefined.
 		  */
   override def |> (xt: XTSeries[XY]): Option[XTSeries[XY]] = {
   	require(xt != null && xt.size > 0, "Cannot apply Kalman filter to undefined time series")

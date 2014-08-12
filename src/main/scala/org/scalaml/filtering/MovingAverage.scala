@@ -15,8 +15,8 @@ import scala.annotation.implicitNotFound
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>
 		 * @author Patrick Nicolas
-		 * @date February 7, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 7, 2014
+		 * @note Scala for Machine Learning
 		 */
 abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSeries[Double]] 
 
@@ -26,10 +26,10 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
 		 * arithmetic operation on elements of the time series.</p>
 		 * @param period period of the window in the moving average
-		 * @exception IllegalArgumentExceptionif period is non positive
+		 * @throws IllegalArgumentExceptionif period is non positive
 		 * @author Patrick Nicolas
-		 * @date February 7, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 7, 2014
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Numeric bound has to be implicitly defined for the Simple moving average")
 class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
@@ -39,7 +39,7 @@ class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(imp
    		/**
    		 * <p>Implementation of the data transformation by overloading the pipe operator.</p>
    		 * @param xt time series for which the simple moving average has to be computed.
-   		 * @exception IllegalArgumentException if the input time series is undefined
+   		 * @throws IllegalArgumentException if the input time series is undefined
    		 * @return Time series of element type double if computation succeeds, None otherwise
    		 */
    override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
@@ -62,7 +62,7 @@ class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(imp
    	     /**
    		 * <p>Implementation of the data transformation by overloading the pipe operator.</p>
    		 * @param data data sets for which the simple moving average has to be computed.
-   		 * @exception IllegalArgumentException if the input time series is undefined
+   		 * @throws IllegalArgumentException if the input time series is undefined
    		 * @return Time series of element type double if computation succeeds, None otherwise
    		 */
    def |> (data: DblVector): Option[DblVector] = {
@@ -80,8 +80,8 @@ class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(imp
 	/**
 	 * Companion object for the Simple moving average to define the constructor apply
 	 * @author Patrick Nicolas
-	 * @date February 7, 2014
-	 * @project Scala for Machine Learning
+	 * @since February 7, 2014
+	 * @note Scala for Machine Learning
 	 */
 object SimpleMovingAverage {
    def apply[T <% Double](period: Int)(implicit num: Numeric[T]): SimpleMovingAverage[T] = new SimpleMovingAverage[T](period)
@@ -91,10 +91,10 @@ object SimpleMovingAverage {
 		 * <p>Parameterized exponential average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
 		 * @param period period of the window in the moving average
-		 * @exception IllegalArgumentException if period is non positive or alpha is out of range [0,1]
+		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
-		 * @date February 7, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 7, 2014
+		 * @note Scala for Machine Learning
 		 */
 class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val alpha: Double) extends MovingAverage[T]  {
   require( period > 0, "Cannot initialize exponential moving average with a null or negative period " + period)
@@ -105,7 +105,7 @@ class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val al
 		 /**
    		 * <p>Implementation of the data transformation, exponential moving average by overloading the pipe operator.</p>
    		 * @param xt time series for which the exponential moving average has to be computed.
-   		 * @exception IllegalArgumentException if the input time series is undefined
+   		 * @throws IllegalArgumentException if the input time series is undefined
    		 * @return Time series of element type double if computation succeeds, None otherwise
    		 */
   override def |> (data: XTSeries[T]): Option[XTSeries[Double]] = {
@@ -119,8 +119,8 @@ class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val al
 	/**
 	 * Companion object for the Exponential moving average to define the constructors apply
 	 * @author Patrick Nicolas
-	 * @date February 7, 2014
-	 * @project Scala for Machine Learning
+	 * @since February 7, 2014
+	 * @note Scala for Machine Learning
 	 */
 object ExpMovingAverage {
    def apply[T <% Double](period: Int, alpha: Double): ExpMovingAverage[T] = new ExpMovingAverage[T](period, alpha)
@@ -132,10 +132,10 @@ object ExpMovingAverage {
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
 		 * @param weights weights used in the time window
-		 * @exception IllegalArgumentException if the weights are undefined or not normalized
+		 * @throws IllegalArgumentException if the weights are undefined or not normalized
 		 * @author Patrick Nicolas
-		 * @date February 7, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 7, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVector) extends MovingAverage[T]  {
@@ -144,7 +144,7 @@ class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVe
    		/**
    		 * <p>Implementation of the data transformation, weighted moving average by overloading the pipe operator.</p>
    		 * @param xt time series for which the weighted moving average has to be computed.
-   		 * @exception IllegalArgumentException if the input time series is undefined
+   		 * @throws IllegalArgumentException if the input time series is undefined
    		 * @return Time series of element type double if computation succeeds, None otherwise
    		 */
     override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
@@ -162,8 +162,8 @@ class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVe
 	/**
 	 * Companion object for the Weighed moving average to define the constructor apply
 	 * @author Patrick Nicolas
-	 * @date February 7, 2014
-	 * @project Scala for Machine Learning
+	 * @since February 7, 2014
+	 * @note Scala for Machine Learning
 	 */
 object WeightedMovingAverage {
   def apply[T <% Double](weights: DblVector): WeightedMovingAverage[T] = new WeightedMovingAverage[T](weights)

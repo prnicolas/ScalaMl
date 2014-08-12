@@ -21,8 +21,8 @@ import Types.ScalaMl._
 			 * to the next power to 2.</p>
 			 * 
 			 * @author Patrick Nicolas
-			 * @date February 9, 2014
-			 * @project Scala for Machine Learning
+			 * @since February 9, 2014
+			 * @note Scala for Machine Learning
 			 */
 trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 
@@ -71,8 +71,8 @@ object DTransform {
 		 * The class uses the Apache Commons Math library</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 9, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 9, 2014
+		 * @note Scala for Machine Learning
 		 */
 import DFT._
 class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
@@ -83,8 +83,8 @@ class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
 		 * or not (Cosine transform).</p>
 		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 * @return The times series of the frequencies
-		 * @exception IllegalArgumentException if the time series is not defined
-		 * @exception MathIllegalArgumentException if the transform fails.
+		 * @throws IllegalArgumentException if the time series is not defined
+		 * @throws MathIllegalArgumentException if the transform fails.
 		 */
    override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
   	 try {
@@ -127,10 +127,10 @@ object DFT {
 			 * implements the convolution of the filter function and the input time series class.<br>
 			 * The class uses the Apache Commons Math library</p>
 			 * @param g filtering function used in the convolution
-			 * @exception IllegalArgumentException if the filtering function g is undefined.
+			 * @throws IllegalArgumentException if the filtering function g is undefined.
 			 * @author Patrick Nicolas
-			 * @date February 9, 2014
-			 * @project Scala for Machine Learning
+			 * @since February 9, 2014
+			 * @note Scala for Machine Learning
 			 */
 class DFTFir[T <% Double](val g: Double=>Double) extends DFT[T] {
    require(g != null, "Cannot apply a band pass filter with undefined filter function")
@@ -141,8 +141,8 @@ class DFTFir[T <% Double](val g: Double=>Double) extends DFT[T] {
 		 * or not (Cosine transform).</p>
 		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 * @return The times series of the frequencies if transform succeeds, None otherwise
-		 * @exception IllegalArgumentException if the time series is not defined
-		 * @exception MathIllegalArgumentException if the transform fails.
+		 * @throws IllegalArgumentException if the time series is not defined
+		 * @throws MathIllegalArgumentException if the transform fails.
 		 */
    override def |> (xt: XTSeries[T]) : Option[XTSeries[Double]] = {
   	 try {
