@@ -24,8 +24,8 @@ import org.scalaml.plots.LightPlotTheme
 		 * </ul></p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @data February 1, 201t
-		 * @project Scala for Machine Learning.
+		 * @since February 1, 201t
+		 * @note Scala for Machine Learning.
 		 */
 object Chap2 extends App {
    private def runAll = {

@@ -15,8 +15,8 @@ import org.scalaml.core.Types.ScalaMl._
 	 * <p>Singleton to evaluate the Bias-Variance validation class.</p>
 	 * 
 	 * @author Patrick Nicolas
-	 * @date February 1, 2014
-	 * @project Scala for Machine Learning
+	 * @since February 1, 2014
+	 * @note Scala for Machine Learning
 	 */
 object BiasVarianceEval {
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
