@@ -15,8 +15,8 @@ package org.scalaml.core
 	 * project. Internal types conversion are defined by the Primitives singleton. The type conversion
 	 * related to each specific libraries are defined by their respective singleton (i.e CommonsMath)
 	 *  @author Patrick Nicolas
-	 *  @date Feb 23, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since Feb 23, 2014
+	 *  @note Scala for Machine Learning
 	 */
 object Types {  
 
@@ -24,8 +24,8 @@ object Types {
 	/**
 	 * <p>Singleton that define the types and conversion between ScalaML types and native Scala types</p>
 	 *  @author Patrick Nicolas
-	 *  @date Feb 23, 2014
-	 *  @project Scala for Machine Learning
+	 *  @since Feb 23, 2014
+	 *  @note Scala for Machine Learning
 	 */
   object ScalaMl {	  
   	  type XY = (Double, Double)
@@ -42,7 +42,7 @@ object Types {
   			 * @param v first operand of the operation
   			 * @param w second operand
   			 * @param op operator/function on elements of the vectors
-  			 * @exception IllegalArgumentException if the operands and operator are undefined or the vectors have different length
+  			 * @throws IllegalArgumentException if the operands and operator are undefined or the vectors have different length
   			 */
 	  def Op[T <% Double](v: DVector[T], w: DblVector, op: (T, Double) => Double): DblVector = {
   	  	 require( v != null && w != null, "Cannot apply operator on undefined vectors")
@@ -56,7 +56,7 @@ object Types {
 	  		 * a vector of double.</p>
 	  		 * @param v first operand of the operation
   			 * @param w second operand
-  			 * @exception IllegalArgumentException if the arguments are undefined or the vectors have different length
+  			 * @throws IllegalArgumentException if the arguments are undefined or the vectors have different length
 	  		 */
 	  def dot[T <% Double](v: DVector[T], w: DblVector): Double = {
 	     require( v != null && w != null, "Cannot apply dot product on undefined vectors")
@@ -108,7 +108,7 @@ object Types {
   		 * <p>Implicity conversion from internal primitive types DblVector and DblMatrix to Apache 
   		 * Commons Math types.</p>
   		 * @author Patrick Nicolas
-  		 * @date January 23, 2014
+  		 * @since January 23, 2014
   		 */
   object CommonMath {
   	 import org.apache.commons.math3.linear._

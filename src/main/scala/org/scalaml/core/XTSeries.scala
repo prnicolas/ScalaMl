@@ -20,12 +20,12 @@ import scala.annotation.implicitNotFound
 		 * The class is parameterized so it can take primitive types to create vector for single
 		 * variable time series or arrays/list to create matrix for multiple variables time series. </p>
 		 * @param label optional name for the time series
-		 * @param: arr array of values of parameterized types
-		 * @exception IllegalArgumentException if the array of values, arr is undefined
+		 * @param arr array of values of parameterized types
+		 * @throws IllegalArgumentException if the array of values, arr is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date January, 22, 2014
-		 * @project Scala for Machine Learning
+		 * @since January, 22, 2014
+		 * @note Scala for Machine Learning
 		 */
 class XTSeries[@specialized(Double) T](val label: String, protected val arr: Array[T]) { 
   require(arr != null && arr.size > 0, "Cannot create a times series from undefined values")
@@ -41,7 +41,7 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   	 * Test if a time series is identical to this time series. The label is not included
   	 * in the comparison.
   	 * @param that other series  this series is compared to
-  	 * @exception IllegalArgumenException if the argument is null
+  	 * @throws IllegalArgumenException if the argument is null
   	 * @return true if the series are identical, false if the other time series, 'that' is null or is different from this time series
   	 */
   def == (that: XTSeries[T]): Boolean = {
@@ -54,8 +54,8 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   	 * <p>Convert a this time series into a vector of Double floating point values.</p>
   	 * @param f  implicit conversion of type T to Double
   	 * @return Vector of double values (DblVector)
-  	 * @exception IllegalArgumentException if the implicit conversion T to DblMatrix is explicitly provided as a null function
-  	 * @exception implicitNotFound if the implicit conversion is undefined
+  	 * @throws IllegalArgumentException if the implicit conversion T to DblMatrix is explicitly provided as a null function
+  	 * @throws implicitNotFound if the implicit conversion is undefined
   	 */
   @implicitNotFound("Conversion from type T to DblVector undefined")
   def toDblVector(implicit f: T => Double): DblVector = {
@@ -67,8 +67,8 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   	 * <p>Convert a this time series into a matrix of Double floating point values.</p>
   	 * @param f  implicit conversion of type T to DblVector
   	 * @return Matrix of double values (DblMatrix)
-  	 * @exception IllegalArgumentException if the implicit conversion T to DblVector is explicitly provided as a null function.
-  	 * @exception implicitNotFound if the implicit conversion is undefined
+  	 * @throws IllegalArgumentException if the implicit conversion T to DblVector is explicitly provided as a null function.
+  	 * @throws implicitNotFound if the implicit conversion is undefined
   	 */
   @implicitNotFound("Conversion from type T to DblMatrix undefined")
   def toDblMatrix(implicit fv: T => DblVector): DblMatrix = {
@@ -124,7 +124,8 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
 		/**
 		 * <p>Class that defines a time series for multi-dimensional variables. The class is created
 		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.</p>
-		 * @param 
+		 * @param _label label for the multi-dimensional time series
+		 * @param _arr Array of vectors
 		 * 
 		 */
 @implicitNotFound("Conversion from type T to Double undefined")
@@ -167,7 +168,7 @@ object XTSeries {
    		/**
    		 * Implements the normalization of a parameterized single dimension time series within [0, 1]
    		 * @param xt single dimension parameterized time series
-   		 * @exception IllegalArgumentException if the time series is undefined
+   		 * @throws IllegalArgumentException if the time series is undefined
    		 * @return normalized time series as double elements if max > min, None otherwise
    		 */
    @implicitNotFound("Ordering for normalizatoin is undefined")
@@ -192,7 +193,7 @@ object XTSeries {
          /**
    		 * Implements the normalization of a parameterized multi-dimension time series within [0, 1]
    		 * @param xt multi-dimension parameterized time series
-   		 * @exception IllegalArgumentException if the time series is undefined
+   		 * @throws IllegalArgumentException if the time series is undefined
    		 * @return normalized time series as double elements if max > min, None otherwise
    		 */
    @implicitNotFound("Ordering for normalizatoin is undefined")
@@ -243,7 +244,7 @@ object XTSeries {
    		 * <p>transform time series of parameterized array into a array of double vector
    		 * by applying the Z score transform to each element of the time series.</p>
    		 * @param xt multi-dimensional parameterized time series
-   		 * @exception IllegalArgumentException if the time series is undefined
+   		 * @throws IllegalArgumentException if the time series is undefined
    		 * @return Time series of double array if the function succeeds, None otherwise
    		 */
    def zScoring[T <% Double](xt: XTSeries[Array[T]]): Option[XTSeries[DblVector]] = {

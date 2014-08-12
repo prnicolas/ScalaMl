@@ -10,7 +10,7 @@ package org.scalaml.core
 	/**
 	 * <p>Generic definition of a Monad used as a template for creating transforms.</p>
 	 * @author Patrick Nicolas
-	 * @date December 21, 2013
+	 * @since December 21, 2013
 	 */
 trait Monad[M[_]] {
   def apply[T](t: T): M[T]
@@ -25,7 +25,7 @@ trait Monad[M[_]] {
 	 * do not validate any method argument and internal state..</p>
 	 * @param _fct element contained and managed by the monadic class
 	 * @author Patrick Nicolas
-	 * @date December 23, 2013
+	 * @since December 23, 2013
 	 */
 import _FCT._
 class _FCT[+T](val _fct: T) {
