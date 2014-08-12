@@ -21,10 +21,10 @@ import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsT
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
 		 * Commons Math library.</p>
 		 * @param K number of Clusters used in the EM algorithm
-		 * @exception IllegalArgumentException if K is out of range
+		 * @throws IllegalArgumentException if K is out of range
 		 * @author Patrick Nicolas
-		 * @date February 25, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 25, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 import MultivariateEM._
@@ -37,7 +37,7 @@ final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSerie
 		/**
 		 * <p>Implement the Expectation-Maximization algorithm as a data transformation.</p>
 		 * @param xt time series of vectors (array) of parameterized type
-		 * @exception IllegalArgumentException if the input time series is undefined or has zero dimension
+		 * @throws IllegalArgumentException if the input time series is undefined or has zero dimension
 		 * @return a list of tuple (key, vector of means, vector of standard deviation for each cluster/components 
 		 * if no error is detected, None if any of the following Apache Commons math exceptions, DimensionMismatchException,
 		 * NumberIsTooSmallException, NumberIsTooLargeException or NotStrictlyPositiveException is caught
@@ -75,7 +75,7 @@ final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSerie
 	 * <p>Companion object for the Multivariate Expectation-Maximization algorithm that defines
 	 * internal types EM and EMOutput, the constructor apply and the computation of estimate.</p>
 	 * @author Patrick Nicolas
-	 * @date February 24, 2014
+	 * @since February 24, 2014
 	 */
 object MultivariateEM { 
 	final val MAX_K = 500
@@ -90,7 +90,7 @@ object MultivariateEM {
 		 * client code MultivariateEM.|>.</p>
 		 * @param data input matrix for the estimate
 		 * @param K number of clusters
-		 * @exception IllegalArgumenException if the input is not defined or K is out of range.
+		 * @throws IllegalArgumenException if the input is not defined or K is out of range.
 		 */
 	protected def estimate(data: DblMatrix, K: Int): MixtureMultivariateNormalDistribution = {
 		require(data != null && data.size > 0, "Cannot eximate the Gaussian mixture distribution for undefined input")
