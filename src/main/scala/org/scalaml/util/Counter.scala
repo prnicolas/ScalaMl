@@ -10,8 +10,8 @@ import scala.collection.mutable.HashMap
 
 /**
  *  @author Patrick Nicolas
- *  @date Feb 3, 2014
- *  @project Book
+ *  @since Feb 3, 2014
+ *  @note Book
  */
 class Counter[T] extends HashMap[T, Int] { 
    def += (t: T): Unit = put(t, getOrElse(t, 0)+1) 

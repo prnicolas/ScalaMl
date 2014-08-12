@@ -10,8 +10,8 @@ import scala.collection.mutable.HashMap
 
 /**
  *  @author Patrick Nicolas
- *  @date Mar 1, 2014
- *  @project Book
+ *  @since Mar 1, 2014
+ *  @note Book
  */
 class Accumulator[T] extends HashMap[T, List[T]] {
   

@@ -13,8 +13,8 @@ import org.scalaml.core.Types.ScalaMl._
 
 		/**
 		 *  @author Patrick Nicolas
-		 *  @date Feb 23, 2014
-		 *  @project Book
+		 *  @since Feb 23, 2014
+		 *  @note Book
 		 */
 
 class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nCols: Int, val data: Array[T])(implicit f: T => Double) {
