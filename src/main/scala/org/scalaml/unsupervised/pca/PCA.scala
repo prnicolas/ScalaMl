@@ -24,8 +24,8 @@ import org.scalaml.workflow.PipeOperator
 		 * of the model and the complexity of any future supervised learning algorithm.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date February 26, 2014
-		 * @project Scala for Machine Learning
+		 * @since February 26, 2014
+		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
 final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix, DblVector)] {
@@ -37,7 +37,7 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 		 * eigenvectors and eigenvalues. All the exceptions thrown by the Math library during 
 		 * the manipulation of matrices are caught in the method.</p>
 		 * @param xt time series of dimension > 1 
-		 * @exception IllegalArgumentException if the time series is undefined or has a dimension of 1
+		 * @throws IllegalArgumentException if the time series is undefined or has a dimension of 1
 		 * @return tuple Covariance matrix and vector of eigen values if the computation succeeds, None otherwise.
 		 */
 	override def |> (xt: XTSeries[Array[T]]): Option[(DblMatrix, DblVector)] = {
