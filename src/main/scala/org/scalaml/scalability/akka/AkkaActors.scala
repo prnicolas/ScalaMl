@@ -20,8 +20,8 @@ import org.scalaml.stats.Stats
 		 * The computation is initiated by the Master or workflow controller.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 final class WorkerActor extends Actor {
 	
@@ -51,12 +51,12 @@ final class WorkerActor extends Actor {
 		 * @param workers List of reference to the worker or slave actors.
 		 * @param data Data set to be processed by the worker actors
 		 * @param numIters Maximum number of iterations allowed to the works to 
-		 * @exception IllegalArgumenException if worker actors are undefined, 
+		 * @throws IllegalArgumenException if worker actors are undefined, 
 		 * the data is undefined or the maximum number of iterations is out of range
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 24, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning
 		 */
 class MasterActor(val workers: List[ActorRef], val data: XYTSeries, val numIters: Int) extends Actor {
    require(workers != null && workers.size > 0 && workers.size < 32, "Cannot create a master actor with undefined workers")	

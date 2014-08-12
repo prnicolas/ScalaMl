@@ -17,11 +17,11 @@ import scala.Array.fallbackCanBuildFrom
 		 * class override the map, reduceLeft methods to collect timing information</p>
 		 * @param t  Array of elements of type inherited from Double.
 		 * @param numTasks  Number of concurrent task allocated to the high order method.
-		 * @exception IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
+		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 17, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 17, 2014
+		 * @note Scala for Machine Learning
 		 */
 class ParallelCollections[U <: Double](val u: Array[U], numTasks: Int = 1) {
 	require(u != null && u.size > 0, "Cannot evaluate prrformance of Scala parallel collections with undefined data")

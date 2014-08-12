@@ -21,11 +21,11 @@ import scala.util.Random
 		 * @param data Time series (x,y) of floating point values
 		 * @param weights weight factor used in the computation
 		 * @param reference to the actor which sent the message
-		 * @exception IllegalArgumenException if data, weights or sender are undefined
+		 * @throws IllegalArgumenException if data, weights or sender are undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 27, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 27, 2014
+		 * @note Scala for Machine Learning
 		 */
 case class Execute(val _id: Int, 
 		           val data: XYTSeries, 

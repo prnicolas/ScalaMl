@@ -27,12 +27,12 @@ case class Launch(val id: Int = 0)
 		 *  Callback the caller.</p>
 		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
 		 *  @param numFutures number of futures used in the parallelization of the computation
-		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @see org.scalaml.app.chap12.FoldsNormalizer
 		 *  @author Patrick Nicolas
-		 *  @data March 30, 2014
-		 *  @project Scala for Machine Learning
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning
 		 */
 abstract class GroupsNormalizerActor(val data: XYTSeries,
                       			 val numFutures: Int) extends Actor {
@@ -85,11 +85,11 @@ abstract class GroupsNormalizerActor(val data: XYTSeries,
 		 *  the variance for each assigned fold..</p>
 		 *  @param data time series {x, y} used in the cross validation and to be broken down into normalized groups
 		 *  @param numFutures number of futures used in the parallelization of the computation
-		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @data March 30, 2014
-		 *  @project Scala for Machine Learning
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning
 		 */			
 final class GroupsNormalizerBlocking(val _data: XYTSeries,
                       				  val _numFutures: Int) extends GroupsNormalizerActor(_data, _numFutures) {
@@ -98,7 +98,7 @@ final class GroupsNormalizerBlocking(val _data: XYTSeries,
 		 * <p>Delegates the computation of the variance of each group
 		 * to their respective future. The execution blocks using Await.</p>
 		 * @param futures set of futures used to compute the variance of each grou[
-		 * @exception IllegalArgumentException if futures are undefined
+		 * @throws IllegalArgumentException if futures are undefined
 		 */
    override def execute(futures: Array[Future[Double]]): Double = {
   	  require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
@@ -115,11 +115,11 @@ final class GroupsNormalizerBlocking(val _data: XYTSeries,
 		 * get notified of the completion of each future by call back..</p>
 		 *  @param data time series {x, y} used in the cross validation and to be broken down into balance folds
 		 *  @param numFutures number of futures used in the parallelization of the computation
-		 *  @exception IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @data March 30, 2014
-		 *  @project Scala for Machine Learning
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning
 		 */	
 final class GroupsNormalizerCallback(val _data: XYTSeries,
                       			 val _numFutures: Int) extends GroupsNormalizerActor(_data, _numFutures) {
@@ -129,7 +129,7 @@ final class GroupsNormalizerCallback(val _data: XYTSeries,
 		 * <p>Delegates the computation of the variance of each group
 		 * to their respective future. The execution get notified through callbacks.</p>
 		 * @param futures set of futures used to compute the variance of each group
-		 * @exception IllegalArgumentException if futures are undefined
+		 * @throws IllegalArgumentException if futures are undefined
 		 */
    override def execute(futures: Array[Future[Double]]): Double = {
   	 require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")

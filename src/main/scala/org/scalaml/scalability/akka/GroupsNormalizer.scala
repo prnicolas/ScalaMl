@@ -22,11 +22,11 @@ import org.scalaml.stats.Stats
 		 * between these segments in such a way that the variance between the groups or segments is minimal/</p>
 		 * @param workers List of reference to the worker or slave actors.
 		 * @param data Data set to be processed by the worker actors
-		 * @exception IllegalArgumenException if the number of iterations or the number of workers is out of range
+		 * @throws IllegalArgumenException if the number of iterations or the number of workers is out of range
 		 * 
 		 * @author Patrick Nicolas
-		 * @date March 23, 2014
-		 * @project Scala for Machine Learning
+		 * @since March 23, 2014
+		 * @note Scala for Machine Learning
 		 */
 protected class GroupsNormalizer(val numGroups: Int, val data: XYTSeries) {  
    require(numGroups > 0 && numGroups < 64, "Number of groups group normalizer is out of range")

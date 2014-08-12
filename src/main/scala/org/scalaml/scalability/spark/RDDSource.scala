@@ -30,11 +30,11 @@ case class RDDConfig(val cache: Boolean, val persist: StorageLevel)
 	 * @param suffix suffix for the data files
 	 * @param reversedOrder specify that the order of the data in the CSV file has to be revered before processing
 	 * @param header number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
-	 * @exception IllegalArgumentException if the pathName or the file suffix is undefined.
+	 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
 	 * 
 	 * @author Patrick Nicolas
-	 * @date April 1, 2014
-	 * @project Scala for Machine Learning
+	 * @since April 1, 2014
+	 * @note Scala for Machine Learning
 	 */
 @implicitNotFound("Spark context is implicitly undefined")
 final class RDDSource(	val pathName: String, 
@@ -52,7 +52,7 @@ final class RDDSource(	val pathName: String,
    		 * Load, extracts, convert and normalize a list of fields using an extractors.
    		 * @param ext function to extract and convert a list of comma delimited fields into a double vector
    		 * @return a RDD of DblVector if succeed, None otherwise
-   		 * @exception IllegalArgumentException if the extraction function is undefined
+   		 * @throws IllegalArgumentException if the extraction function is undefined
    		 */   
    override def |> (extr: Array[String] => DblVector): Option[RDD[DblVector]] = src.load(extr) match {
       case Some(xt) => {

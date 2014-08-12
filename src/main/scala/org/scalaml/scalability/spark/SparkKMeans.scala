@@ -25,11 +25,11 @@ import org.scalaml.workflow.PipeOperator
 			 * @param K number of clusters used in Spark KMeans
 			 * @param numIters maximum number of iterations allowed for Spark KMeans
 			 * @param numRuns number of runs to be executed by Spark KMeans
-			 * @exception IllegalArgumentException if any of the parameters is out of range
+			 * @throws IllegalArgumentException if any of the parameters is out of range
 			 * 
 			 * @author Patrick Nicolas
-			 * @date April, 2, 2014
-			 * @project Scala for Machine Learning
+			 * @since April, 2, 2014
+			 * @note Scala for Machine Learning
 			 */
 case class SparkKMeansConfig(val K: Int, val numIters: Int, val numRuns: Int) {
   require( K > 0 && K  < 500, "Number of clusters K " + K + " is out of range")
@@ -46,11 +46,11 @@ case class SparkKMeansConfig(val K: Int, val numIters: Int, val numRuns: Int) {
 			 * @param cache flag to specify if the RDD has to be cache after training
 			 * @param xt Time series used for the training of the Spark KMeans 
 			 * @param sc implicit spark context
-			 * @exception IllegalArgumentException if the configuration or the time series is undefined.
+			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
 			 * 
 			 * @author Patrick Nicolas
-			 * @date April 2, 2014
-			 * @project Scala for Machine Learning
+			 * @since April 2, 2014
+			 * @note Scala for Machine Learning
 			 */
 @implicitNotFound("Spark context is implicitely undefined")
 final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig, val xt: XTSeries[DblVector])(implicit sc: SparkContext) 
@@ -65,7 +65,7 @@ final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig,
 		  /**
 		   * <p>Method that classify a new data point in any of the cluster.</p>
 		   * @param values data point to be classify
-		   * @exception IllegalArgumentException if the data point is not defined
+		   * @throws IllegalArgumentException if the data point is not defined
 		   * @return the id of the cluster if succeeds, None otherwise.
 		   */
   def |> (values: DblVector): Option[Int] = Some(model.predict(new DenseVector(values)))
