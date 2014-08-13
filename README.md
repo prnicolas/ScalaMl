@@ -17,6 +17,8 @@ The examples are related to investment portfolio management and trading strategi
 The real-world examples, related to financial and market analysis, used for the sole purpose of illustrating the machine learning techniques. They do not constitute a recommendation or endorsement of any specific investment management or trading techniques.<br>
 
 <h1>Project Components</h1>
+Scala for Machine Learning source code library:<br>
+<img src="images/8742OS_libsource.png"><br>
 /<i>build.sbt</i>  Build script<br>
 /<i>src/main/scala/*</i> Source code for the project<br>
 /<i>src/main/scala/org/scalaml/ap/*</i> Examples of financial or trading applications used in the library<br>
