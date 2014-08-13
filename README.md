@@ -4,7 +4,7 @@ ScalaMl
 Source code, data files and utilities related to "Scala for Machine Learning"
 
 
-Version 0.8 Copyright Patrick Nicolas All rights reserved 2013-2014
+Version 0.90 Copyright Patrick Nicolas All rights reserved 2013-2014
 
 <h1>Overview</h1>
 The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br><br>
@@ -18,7 +18,7 @@ The real-world examples, related to financial and market analysis, used for the 
 
 <h1>Project Components</h1>
 Scala for Machine Learning source code library:<br>
-<img src="images/8742OS_libsource.png"><br>
+<img src="images/8742OS_libsourcecode.png" alt="Source code"><br>
 /<i>build.sbt</i>  Build script<br>
 /<i>src/main/scala/*</i> Source code for the project<br>
 /<i>src/main/scala/org/scalaml/ap/*</i> Examples of financial or trading applications used in the library<br>
