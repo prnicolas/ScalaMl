@@ -7,7 +7,7 @@ Source code, data files and utilities related to "Scala for Machine Learning"
 Version 0.90 Copyright Patrick Nicolas All rights reserved 2013-2014
 
 <h2>Overview</h2>
-The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br><br>
+The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br>
 
 The examples are related to investment portfolio management and trading strategies. For the readers interested either in mathematics or the techniques implemented in this library, I strongly recommend the following readings:
 <ul>
@@ -33,7 +33,7 @@ Directory structure of the source code of the examples for <i>Scala for Machine 
 Library components for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_lib.png" alt="Libraries"><br>
 <br>
-Build script for <i>Scala for Machine Learning</i>:<br>
+Build script for <i>Scala for Machine Learning</i>:
 /<i>build.sbt</i>
 <br>
 
