@@ -8,6 +8,7 @@ package org.scalaml.workflow.data
 
 
 import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.workflow.PipeOperator
 import java.io.{FileNotFoundException, IOException, PrintWriter}
 
@@ -48,6 +49,31 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
       }
    }
    
+   def |> (v: DblVector): Option[Int] = {
+  	 import java.io.{PrintWriter, IOException, FileNotFoundException}
+     
+     var printWriter: PrintWriter = null
+     try {
+    	 val content = v.foldLeft(new StringBuilder)((b, x) => b.append(x).append(CSV_DELIM))
+    	 content.setCharAt(content.size-1, ' ')
+    	 write(content.toString.trim)
+    	 Some(1)
+     }
+     catch {
+       case e: IOException => Console.println(e.toString); None
+       case e: FileNotFoundException => Console.println(e.toString); None
+     }
+     finally {
+        if( printWriter != null) 
+          try {
+            printWriter.close
+          }
+          catch {
+           case e: IOException => Console.println(e.toString)
+           case e: FileNotFoundException => Console.println(e.toString)
+         }
+      }
+   }
     
    override def |> (xs: List[XTSeries[T]]): Option[Int] = {
      import java.io.{PrintWriter, IOException, FileNotFoundException}
