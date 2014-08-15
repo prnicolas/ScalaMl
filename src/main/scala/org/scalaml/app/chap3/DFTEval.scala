@@ -26,10 +26,25 @@ object DFTEval extends FilteringEval {
    import org.scalaml.filtering.DFT
    
    def run(args: Array[String]): Unit = {
-     require(args != null && args.length > 0, "Incorrect argument: required DFTEval.run symbolName")
+  	  if( args == null && args.length ==0) 
+  	  	runSimulation
+  	  else runFinancial(args(0))
+   }
+   
+   private def runSimulation: Unit = {
+  	 val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) + Math.cos(Math.PI*0.05*x) + 0.5*Math.cos(Math.PI*0.2*x)
+  	 
+  	 val values = Array.tabulate(1025)(x => h(x/1025))
+     DataSink[Double]("output/chap3/values.csv") |> values
      
-     Console.println("Evaluation of Discrete Fourier series")
-     val symbol = args(0)
+     DFT[Double] |> XTSeries[Double](values) match {
+    	case Some(smoothed) => DataSink[Double]("output/chap3/smoothed.csv") |> smoothed
+    	case None => println("Filter failed")
+     }
+  }
+     
+   private def runFinancial(symbol: String): Unit  = {
+     Console.println("Evaluation of Discrete Fourier series with financial data")
      val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
      
      src |> YahooFinancials.adjClose match {

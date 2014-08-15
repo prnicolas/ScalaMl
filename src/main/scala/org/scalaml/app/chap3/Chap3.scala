@@ -23,6 +23,7 @@ trait FilteringEval {
 object Chap3 extends App {
 	private def runAll = {
       MovingAveragesEval.run(Array[String]("BAC", "10"))
+      DFTEval.run(null)
 	  DFTEval.run(Array[String]("BAC"))
 	  
 	  implicit def double2String(x: Double): String = x.toString
@@ -32,7 +33,7 @@ object Chap3 extends App {
 	final val cmdDescriptor: String = {
 		new StringBuilder("Command line: Chap 3 arg\n")
 		   .append(" mvaverage: Evaluation of moving average\n")
-		   .append(" fourier:  Evaluation of Discrete Fourier\n")
+		   .append(" fourier:  Evaluation of Discrete Fourier with financial data\n")
 		   .append(" kalman: Evaluation of Kalman filter\n")
 		   .append(" all: All evaluation").toString
 	}
@@ -41,7 +42,10 @@ object Chap3 extends App {
 	   if( args == null || args.length == 0) "?" else args(0) match {
 			case "?" => println(cmdDescriptor)
 			case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10"))
-			case "fourier" =>   DFTEval.run(Array[String]("BAC"))
+			case "fourier" =>   {
+				DFTEval.run(null)
+				DFTEval.run(Array[String]("BAC"))
+			}
 			case "kalman" => {
 			   implicit def double2String(x: Double): String = x.toString
 		       (new DKalmanEval).run(Array[String]("BAC"))
