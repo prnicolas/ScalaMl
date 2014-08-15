@@ -54,11 +54,8 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 		 * <p>Companion object to the class DTransform that define the sinc and sinc2 function.
 		 */
 object DTransform { 
-  @implicitNotFound("fC threshold has to be defined for sinc")
-  def sinc(f: Double)(implicit fC:Double): Double = if(Math.abs(f) < fC) 1.0 else 0.0
-  
-  @implicitNotFound("fC threshold has to be defined for sinc2")
-  def sinc2(f: Double)(implicit fC:Double): Double = if(f*f < fC) 1.0 else 0.0
+  def sinc(f: Double, fC: Double): Double = if(Math.abs(f) < fC) 1.0 else 0.0
+  def sinc2(f: Double, fC: Double): Double = if(f*f < fC) 1.0 else 0.0
 }
 
 
@@ -88,7 +85,7 @@ class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
 		 */
    override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
   	 try {
-  		 Some(XTSeries[Double](compute(xt)._2))
+  		 Some(XTSeries[Double](fwrd(xt)._2))
   	 }
   	 catch {
   		 case e: MathIllegalArgumentException => println(e.toString); None
@@ -99,7 +96,7 @@ class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
    		 * Extraction of frequencies from a time series using the Discrete
    		 * Sine and Cosine transform
    		 */
-   protected def compute(xt: XTSeries[T]) : (RealTransformer, DblVector) = {
+   protected def fwrd(xt: XTSeries[T]): (RealTransformer, DblVector) = {
   	 require(xt != null, "Cannot execute the Discrete Fourier transform on undefined time series")
   	 
   	 val rdt =  if( Math.abs(xt.head) < DFT_EPS)
@@ -107,7 +104,7 @@ class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
      else 
         new FastCosineTransformer(DctNormalization.STANDARD_DCT_I)
    
-     (rdt, rdt.transform( pad(xt, xt.head == 0.0),TransformType.FORWARD))
+     (rdt, rdt.transform(pad(xt, xt.head == 0.0),TransformType.FORWARD))
    }
 }
 
@@ -132,7 +129,7 @@ object DFT {
 			 * @since February 9, 2014
 			 * @note Scala for Machine Learning
 			 */
-class DFTFir[T <% Double](val g: Double=>Double) extends DFT[T] {
+class DFTFir[T <% Double](val g: (Double, Double)=>Double, val fC: Double) extends DFT[T] {
    require(g != null, "Cannot apply a band pass filter with undefined filter function")
    
 	   /**
@@ -142,13 +139,12 @@ class DFTFir[T <% Double](val g: Double=>Double) extends DFT[T] {
 		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 * @return The times series of the frequencies if transform succeeds, None otherwise
 		 * @throws IllegalArgumentException if the time series is not defined
-		 * @throws MathIllegalArgumentException if the transform fails.
 		 */
    override def |> (xt: XTSeries[T]) : Option[XTSeries[Double]] = {
   	 try {
-	  	  val rdtFreq = compute(xt)
-	      val filtered = Array.tabulate(rdtFreq._2.size)(x =>g(x)).zip(rdtFreq._2).map( x => x._1 * x._2)
-	      Some(XTSeries[Double](rdtFreq._1.transform(filtered, TransformType.INVERSE) ))
+	  	  val spectrum = fwrd(xt)
+	  	  val filtered = spectrum._2.map( x => x*g(x, fC))
+	      Some(XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) ))
   	 }
   	 catch {
   		 case e: MathIllegalArgumentException => println(e.toString); None

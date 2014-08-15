@@ -96,7 +96,7 @@ object SimpleMovingAverage {
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val alpha: Double) extends MovingAverage[T]  {
+final class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val alpha: Double) extends MovingAverage[T]  {
   require( period > 0, "Cannot initialize exponential moving average with a null or negative period " + period)
   require( alpha > 0 && alpha <= 1.0, "Cannot initialize exponential with alpha " + alpha + " value")
    
@@ -138,7 +138,7 @@ object ExpMovingAverage {
 		 * @note Scala for Machine Learning
 		 */
 import Types.ScalaMl._
-class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVector) extends MovingAverage[T]  {
+final class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVector) extends MovingAverage[T]  {
    require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, "Weights are not defined or normalized")
      
    		/**

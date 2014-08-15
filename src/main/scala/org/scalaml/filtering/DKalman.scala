@@ -130,9 +130,7 @@ class DKalman(val A: DblMatrix,  val B: DblMatrix,  val H: DblMatrix, val P: Dbl
 	    }
 		 k += 1
 	  }
-      val y = filter.getStateEstimation
-      println ("y = " + y(0) + "," + y(1))
-      y
+      filter.getStateEstimation
   }
 
 }
