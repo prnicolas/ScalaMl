@@ -108,8 +108,8 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @note Scala for Machine Learning
 	 */
 object WorkflowEval {
-	def run: Unit = {
-		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
+   def run: Unit = {
+	  val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
 		                         with PreprocModule[Double => Double, DblVector] 
 		                                  with ProcModule[DblVector, DblVector] 
 		                                        with PostprocModule[DblVector, Int] {
