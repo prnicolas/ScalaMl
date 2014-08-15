@@ -55,7 +55,6 @@ object GAEval  {
 	   strategies.append(Chromosome[Signal](signals2))
 	   strategies.append(Chromosome[Signal](signals3))
 	       
-
 	   
 	   val initialPopulation = new Population[Signal](MAX_POPULATION_SIZE, strategies)
 	   val gaSolver = GASolver[Signal](GAConfig(MAX_POPULATION_SIZE, XOVER, MUTATE, MAX_NUM_ITERS), initialPopulation)
