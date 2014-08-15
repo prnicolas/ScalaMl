@@ -7,26 +7,41 @@
 package org.scalaml.workflow.module
 
 import scala.Array.fallbackCanBuildFrom
+import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl._
 
 
-	/**
-	 * Module or factory for furniture of type Furniture or sub-types. This trait 
-	 * illustrates the first option of creating dynamic component dynamically using class
-	 * inheritance(i.e. Furniture <- PatioFurniture
-	 */
+
 trait PreprocessingModule[T] {
+  implicit val convert = (t: T) => Double
   val preprocessor: Preprocessing[T]
   
-  class Preprocessing[T](val f: T =>T, val errorTolerance: Double) {
-     def process(values: Array[T]): Array[T] = values.map( f ).asInstanceOf[Array[T]]
+  abstract class Preprocessing[T] {
+  	  def execute(xt: XTSeries[T]): Unit
   }
   
-  class Filtering[T](val g: T => T, val decay: (Int, T) => T, val rate: Int) 
-                                                  extends Preprocessing(g, 1e-3) {
-     override def process(values: Array[T]): Array[T] = super.process(values).map( decay(rate, _)).asInstanceOf[Array[T]]
+  abstract class MovingAverage[T] extends Preprocessing[T] with PipeOperator[XTSeries[T], XTSeries[Double]]  {
+  	  override def execute(xt: XTSeries[T]): Unit = this |> xt match {
+  	  	case Some(filteredData) => filteredData.foreach(println)
+  	  	case None => println("Filtering algorithm failed")
+  	  }
   }
-}
 
+  class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
+	   override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = None
+  }
+  
+  class DFTFir[T <% Double](val g: Double=>Double) extends Preprocessing[T] with PipeOperator[XTSeries[T], XTSeries[Double]]  {
+
+	  override def |> (xt: XTSeries[T]) : Option[XTSeries[Double]] = None
+	  override def execute(xt: XTSeries[T]): Unit = this |> xt match {
+  	  	case Some(filteredData) => filteredData.foreach(println)
+  	  	case None => println("Filtering algorithm failed")
+  	  }
+  }
+  
+}
 
 
 // ----------------------------------  EOF -------------------------------------
