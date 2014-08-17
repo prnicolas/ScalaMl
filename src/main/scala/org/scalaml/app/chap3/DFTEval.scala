@@ -15,7 +15,7 @@ import YahooFinancials._
 
 
 		/**
-		 * <p>Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
+		 * <p>Command line application. Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 8, 2014

@@ -53,12 +53,10 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
          val dKalman = new DKalman(A, B, H, P0)
          val zt_1 = zSeries.drop(1)
          val zt = zSeries.take(zSeries.size-1)
+         val output = "output/chap3/kalman2_" + index + ".csv"
          
 	     dKalman |> XTSeries[(Double, Double)](zt_1.zip(zt)) match {
-	        case Some(filtered) => {      
-	           val sink = new DataSink[Double]("output/chap3/kalman2_" + index + ".csv")
-	           sink |> filtered.map(_._2) :: List[XTSeries[Double]]() 
-	        }
+	        case Some(filtered) => DataSink[Double](output) |> filtered.map(_._1) :: List[XTSeries[Double]]() 
 	        case None => Console.println("Kalman filter failed")
 	     }
       }
