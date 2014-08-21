@@ -1,0 +1,48 @@
+04.09.2014
+Tesla Motors Inc Not The Next Netflix, Inc. – Whitney Tilson
+
+The following is from an email which Whitney Tilson sent to investors on April 9th 2014. We excerpted a part about why he thinks Tesla Motors Inc (TSLA) is not the next Netflix, Inc. (NFLX)
+In a project that is befuddling industry experts and competitors, Tesla Motors Inc. TSLA +1.28% is looking for possible sites for a giant electric-car battery factory in four Southwestern states.
+The plant, dubbed a “gigafactory” by Tesla Chief Executive Elon Musk, would be the world’s largest factory by a long shot. Mr. Musk has outlined a proposal to spend $5 billion on it, hiring up to 6,500 workers and creating thousands of ancillary jobs. He compares the undertaking to auto-industry pioneer Henry Ford’s early 20th century Rouge complex. It took in iron ore and other raw materials at one end and rolled out completed Model Ts at the other, aiming to control and cut costs at every stage of production.
+Mr. Musk wants to begin making batteries at the plant in 2017, a timeline that puts pressure on the company to break ground this year. Tesla executives say they need the Gigafactory to guarantee the supply of millions of battery cells and to cut costs through scale and logistics savings.
+You know, I gotta admire Musk’s cojones. This reminds me of Reed Hastings a couple of years ago when he said, “The hell with current profitability” and tripled NFLX’s balance sheet in a single year licensing content, in the belief that it would drive huge subscriber growth. Sometimes, if you build it, they will come.
+But there are a couple of key differences:
+
+A) Netflix’s market cap at the time was only $3-4 billion and today is still “only” $21 billion vs. Tesla Motors Inc (NASDAQ:TSLA) at $31 billion today (using the fully diluted share count). In other words, you were paying almost nothing to take a flyer on NFLX being successful and if it failed, there were likely plenty of buyers at the then-depressed share price, whereas it’s exactly the opposite with Tesla Motors Inc (NASDAQ:TSLA)  today, given its absurd share price (yes, I’m short it – and, no, I’m not going to confess to the price at which I first shorted it!);
+
+B) Netflix’s streaming service has incredible economic characteristics: once NFLX has licensed the content in a particular country/region, each incremental customer is pure profit – and there are no shipping/logistical issues; NFLX can instantly and cheaply sell to every person on earth (with a broadband connection). In contrast, auto manufacturing is a low-margin, hugely labor- and capital-intensive business (not to mention costs of shipping cars over the world).
+
+I’ve looked for stocks that turned out to be a good investment from the point at which they were trading a more than 10x trailing revenues and had at least a $10B market cap (much less Tesla’s 15x revenues and $31B market cap today). Here’s what I found (an excerpt from what I posted on the DDD message board on ValueInvestorsClub on 1/4/14, with the stock at $96.42):
+
+I used to think that it’s mathematically impossible for a company with a $10B market cap and more than 10x sales (much less 21x) to ever be a good investment, but a few companies have proved me wrong. They all have three characteristics:
+
+1) They serve rapidly growing global markets;
+
+2) They have winner-take-all (or at least most) business models; and
+
+3) They have extremely “light” business models — meaning they can scale globally with very little capital required.
+
+The stocks of such companies can actually be cheap – even with big market caps and P/S multiples. Examples of stocks that have done well subsequent to periods at which they were trading above 10x TTM sales and had market caps in excess of $10B include Microsoft and Yahoo in the late 1990s (and Yahoo again in 2003-04), Amgen and Biogen prior to around 2003-05, Adobe in 2000, Google, priceline.com and Infosys in the few years after their IPOs, Qualcomm from 2001-2006, Salesforce.com at various points, as well as LinkedIn, Facebook, Baidu, Tencent, Gilead Sciences for their entire existences. (Incidentally, Netflix, which I still own, has all of these characteristics I believe – and trades at “only” 5.2x revenues; it was 1x revenues when I pitched it at the Value Investing Congress 15 months – and a 7-bagger – ago.)
+
+Note that every one of these 15 companies falls into two categories:
+
+1) 11 are software/internet companies that don’t deliver a physical product – the lightest business models imaginable; or
+
+2) Four have intellectual property (three have patented drugs) that allows them to earn supersize profits (gross margin in the 70-90% range and net margin of 20-30%).
+
+So now let’s apply this framework to Tesla Motors Inc (NASDAQ:TSLA). Re. #1, I’ll grant that electric cars are a rapidly growing global market, but the company utterly fails characteristics #2 and #3. It’s a highly competitive market with no winner-take-all characteristics and it’s hard to think of a more capital-intensive business than auto manufacturing.
+
+Musk either going down in history as one of the all-time great entrepreneurs or end up like Icarus. As an American, I hope he’s successful, but as an investor, I think odds are VERY low that the stock is a good investment from here and there’s a good chance it declines dramatically.
+
+PS—One important point in the WSJ article that I haven’t seen anyone talking about: all the “analysts” are assuming that the scale of the gigafactory will lead to Tesla Motors Inc (NASDAQ:TSLA)’s battery costs going way down (which is critical to Tesla Motors Inc (NASDAQ:TSLA)’s future mass-market models, priced at half the cost of the Model S), but as this cobalt supplier points out, TSLA’s demand, which dwarfs the entire worldwide demand today, could lead to shortages of raw materials and prices going UP!
+
+Mr. Musk’s vision for lowering costs at the plant includes tying up sources for the primary metals and materials that go into batteries, such as cobalt.
+
+Erin Chutters, the chief executive of Global Cobalt Corp., a mining company with plans to open a mine in Russia, says the “Gigafactory” demand, even if it reaches only a third of the anticipated size, would either lead to a sharp rise in cobalt prices or force several new mines to be opened.
+
+What’s Musk’s move then? A cobalt gigamine?
+
+8) Speaking of electric cars, massive hype, and a CEO that everyone falls all over themselves to worship, this is a very insightful piece of investigative journalism about the implosion of Israeli electric car company Better Place, which raised $1 BILLION – and incinerated every penny.
+I remember visiting the company in Nov. 2010 as part of a week-long Israel Innovation Summit I attended (an awesome trip, by the way – according to my cousin, a Silicon-Valley entrepreneur, Israel is the only other place in the world “that does innovation right”). Better Place founder and CEO Shai Agassi presented the business to us and took questions – and I confess he had me snowed. I thought it was a brilliant idea and would be very successful. Little did I know that Agassi had gone off the deep end. This is a very interesting description of him – hmmm, reminds me of some other CEOs I’ve seen…
+Agassi had long seen himself as a Steve Jobs–like figure; now the most prominent writer at The New York Times had decreed it so. The failure of GM, and the public reaction to it, “made him think he was a prophet,” says someone who was close to Agassi at the time.
+…”That was around the time he started to go nuts,” says a person with knowledge of the machinations of the board. Employees left behind in Palo Alto were horrified by Agassi’s behavior. Efforts to diagnose him were something of a secret parlor game among certain disgruntled workers. One told me that he later sought out excerpts from the DSM, the psychiatric manual, in an effort to categorize Agassi’s state. He decided that his absentee boss suffered from a narcissistic personality disorder. “Every box was ticked,” he says. The DSM’s clinical definition of narcissism includes “has a grandiose sense of self-importance,” “is preoccupied with fantasies of unlimited success,” and “shows arrogant, haughty behaviors or attitudes.”

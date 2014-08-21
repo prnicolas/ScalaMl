@@ -1,0 +1,23 @@
+04.03.2014
+
+Tesla Needs To Capture 14% U.S. Market Share To Justify Valuation
+
+
+    2014E U.S. Vehicles sales is 15.3 million units.
+    Tesla is currently expected to sell 35,000-40,000 units in 2014E (0.3% U.S. Market Share).
+    Average industry multiple of Market Cap per Unit is around $13,000 per unit.
+    Tesla would need to sell 2.1mm cars per year (14% U.S. market share), to justify current $28 billion market cap.
+
+Tesla Motors (TSLA) is a highly debated, big momentum stock that has been on an absolute tear. The stock is up 428% in the past 52 weeks. Bulls that have held on for the ride have been handsomely rewarded. Bears that have attempted to short the stock has been absolutely crushed. Whether you're a bull or a bear (I have no position), it's interesting to dig into the numbers and see just how much upside is needed to justify TSLA's current valuation of $28 billion. Based on the below analysis, it appears that Tesla would need to capture approximately 14% of total U.S. vehicle market share per year.
+
+Let's first look at TSLA's current valuations. As shown in the table below, TSLA currently has a market cap of $28 billion (higher if including fully diluted shares), 7x 2014E sales of $4 billion, 274x 2014E GAAP P/E, 140x 2014E Non-GAAP P/E, and 42x P/B.
+
+Bulls will say that TSLA grew revenues 55% in 2013 and are projected to grow 60% in 2014. Bears will say that even with that growth, these types of sky-high valuation multiples are only seen on speculative tech companies, not an auto manufacturer.
+
+A far simpler way to view TSLA's valuation, is to take the current market cap of TSLA, and see what that implies in terms of units they need to sell per year, and the implied market share that represents of total U.S. vehicle sales.
+
+According to the company's Q413 earnings release on February 19, 2014, Tesla currently expects to deliver 35,000 units in 2014, which would represent approximately 0.2% of U.S. market share.
+
+As mentioned above, there are numerous valuation multiples (P/S, P/B, P/E, P/units sold, etc.) we can look at to see what competitors are valued at in the automotive manufacturing industry. And company specifics such as size, growth potential, gross margins, net profitability, leverage, etc. are all factor in when considering which multiples make the most sense to value a specific company. However, to help simply the thought process (and it maybe overly simplified) and not get into "analysis paralysis", let's look at the metric of market cap to units sold.
+
+As shown above, the top 5 global auto manufacturers trade at an average market cap per unit of around $13,000. TSLA currently trades at $800,000. Obviously, TSLA's growth potential is much higher than OTCQX:VLKAY, TM, GM, F and HMC, and as the units sold per year increases (again it increased 55% in 2013), that $800,000 multiple will decrease over time. However, the key question is how much growth is need and how many total units does TSLA need to sell per year to support its current $28 billion market cap?

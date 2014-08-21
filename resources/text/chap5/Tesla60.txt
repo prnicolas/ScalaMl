@@ -1,0 +1,38 @@
+03.10.2014
+
+Tesla: We've Got Some Numbers For February
+
+
+    The thesis that U.S. deliveries of the Model S have peaked remains unchanged.
+    New data for February 2014 European sales confirms European sales are running sluggish as well.
+    Barring a Chinese surprise, Tesla seems on track to have trouble beating its Q1 2014 deliveries guidance.
+
+In tracking my own prediction that Tesla (TSLA) Model S deliveries have peaked in the U.S., it's useful to track sales as they come along, month by month. Tesla does not report these sales, but various national bodies do track the registrations, so we can have a measure of confidence in looking at these numbers a bit ahead of time.
+
+The scoreboard
+
+Tesla is making this harder and harder. First, Tesla stopped divulging the order rates. And in the latest quarter, Tesla stopped divulging the geographical breakdown of deliveries. I believe Tesla did this because as U.S. deliveries started lapping 2013, the year-on-year comparisons turned negative. And Tesla does not want to report negative growth numbers, for obvious reasons.
+
+Anyway, with some work and the help of countless blogs, we're still able to reconstruct deliveries for the U.S. and other geographies. For the U.S. (in fact, North America, since it includes minor Canadian deliveries), deliveries have looked like this:
+
+
+The 4000 are a result of overall deliveries reported by the company (6900) minus European deliveries (2900). The Q4 2013 European deliveries (2900) are inferred from 2013 European deliveries (3900) minus Q3 2013 European deliveries (1000).
+
+** Q1 2014 3500-3750 U.S. deliveries are estimated from overall deliveries guidance (6400) minus a flat Europe (2900). At this point, however, and as we'll see, Europe is looking worse than flat, so some allowance was made for slightly higher U.S. deliveries to remain compatible with the overall deliveries guidance.
+
+As we can see, the overall thesis that U.S. deliveries have peaked continues to be compatible with the numbers we have. This brings us to the most recent data.
+
+As I said, tracking U.S. deliveries requires us to get a feel for European deliveries. Tesla is now reporting it all together, so to get U.S. deliveries, we need to subtract what's sold and delivered in Europe. During 2012, the largest European markets by far were Norway and the Netherlands. This was due to local fiscal policies, which made the Model S much more attractive in those markets. Of the 2900 cars delivered in Europe in Q4 2013, around 79.3% were delivered in either Norway or the Netherlands, which sold around 1150 cars each in the quarter.
+
+Back in one of my previous articles, I already showed how January was tracking for these important markets. Norway saw 132 sales, whereas the Netherlands saw just 7 sales. Now, we have a bit more data for February 
+
+There are a couple more markets where we have data, but they're minor when compared to the two above. These include France at 33 sales year-to-date; Italy at 9 sales year-to-date; Sweden at 1 sale year-to-date. Germany is at 96 sales year-to-date and now getting a bit more relevance in Europe, as expected given the size of the market.
+
+Still, what is clear from these numbers is that the totals are running well below what's needed to even be flat with Q4 2013. 2900 cars requires nearly 1000 deliveries per month, and neither January nor February were anything close to that. Even February seemed to be just around 500 deliveries. And as we are 2/3rds of the quarter in, it looks like European deliveries are running at less than 800, overall.
+
+What these observations imply is:
+
+    The thesis regarding peaked U.S. deliveries remains in place;
+    Europe Q1 2014 deliveries seem to be tracking well below Q4 2013 as well;
+    Barring a significant surprise with Chinese deliveries, where there is sure to be pent-up demand, Tesla seems on a course to have trouble with the already lower Q1 2014 deliveries guidance;
+    And finally, given the increased production capacity, it's getting harder and harder to believe that lower sales are due to production constraints. How does one explain flat-to-lower U.S. deliveries, sluggish European sales, and the capacity to build a lot more cars than were built in Q4 2013, all at the same time?
