@@ -33,8 +33,9 @@ Directory structure of the source code of the examples for <i>Scala for Machine 
 Library components for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_lib.png" alt="Libraries"><br>
 <br>
-Build script for <i>Scala for Machine Learning</i>:
-/<i>build.sbt</i>
+Build script for <i>Scala for Machine Learning</i>:<br>
+To build the library: <i>$(ROOT)/sbt clean compile publish-local</i><br>
+To build the library and examples: <i>$(ROOT)/sbt build-all.sbt clean compile publish-local</i><br>
 <br>
 
 
