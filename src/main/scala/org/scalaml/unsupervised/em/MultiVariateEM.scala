@@ -50,7 +50,8 @@ final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSerie
 		
 	  try {
 		val multivariateEM = new EM(data)
-		multivariateEM.fit(estimate(data, K))
+		val est = MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
+		multivariateEM.fit(est)
 			 
 		val newMixture = multivariateEM.getFittedModel
 	    val components = newMixture.getComponents.toList
