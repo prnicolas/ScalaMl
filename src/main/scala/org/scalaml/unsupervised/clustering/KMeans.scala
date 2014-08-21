@@ -35,7 +35,9 @@ import org.scalaml.unsupervised.Distance
 import Types.ScalaMl._
 import KMeans._
 @implicitNotFound("Ordering not implicitly defined for K-means")
-final class KMeans[T <% Double](val K: Int, val maxIters: Int, val distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
+final class KMeans[T <% Double](val K: Int, 
+		                        val maxIters: Int, 
+		                        val distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
                                    extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
     import XTSeries._, Types.ScalaMl._
     
@@ -85,15 +87,16 @@ final class KMeans[T <% Double](val K: Int, val maxIters: Int, val distance: (Db
         import Types.ScalaMl._
         
 	    val stats = statistics(xt)   // step 1
-		val maxSDevIdx = Range(0, stats.size).maxBy (stats( _ ).stdDev )
-	    val maxStdDev = xt.zipWithIndex.map( x=> (x._1(maxSDevIdx), x._2) ).sortWith( _._1  < _._1).toArray // 3
-	    val halfSegSize = (maxStdDev.size*0.5/K).floor.toInt
+		val maxSDevDim = Range(0, stats.size).maxBy (stats( _ ).stdDev )
+	    val rankedObs = xt.zipWithIndex.map( x=> (x._1(maxSDevDim), x._2) ).sortWith( _._1  < _._1).toArray // 3
+	    val halfSegSize = ((rankedObs.size>>1)/K).floor.toInt
 
-	    val centroids = maxStdDev.filter(screen( _, halfSegSize, maxStdDev.size) ).map( x => xt( x._2))
+	    val centroids = rankedObs.filter(isContained( _, halfSegSize, rankedObs .size) )
+	                             .map( x => xt( x._2))
 		Range(0, K).foldLeft(List[Cluster[T]]())((xs, i) => Cluster[T](centroids(i)) :: xs)
 	}
     
-    private def screen(t: (T,Int), hSz: Int, dim: Int): Boolean = 
+    final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = 
        ((t._2 % hSz == 0 && t._2 %(hSz<<1) != 0) || t._2 == dim -1)
   
 
