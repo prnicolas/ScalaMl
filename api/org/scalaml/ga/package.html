@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>ga - org.scalaml.ga</title>
+          <meta name="description" content="ga - org.scalaml.ga" />
+          <meta name="keywords" content="ga org.scalaml.ga" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.scalaml.ga.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a></p>
+        <h1>ga</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ga</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.ga.Chromosome" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Chromosome[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
+      <a id="Chromosome[T&lt;:Gene]:Chromosome[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Chromosome.html"><span class="name">Chromosome</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.ga.GAConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GAConfigextendsAnyRef"></a>
+      <a id="GAConfig:GAConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="GAConfig.html"><span class="name">GAConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Configuration class that define the key parameters for the execution of the
+genetic algorithm optimizer.</p>
+    </li><li name="org.scalaml.ga.GASolver" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GASolver[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
+      <a id="GASolver[T&lt;:Gene]:GASolver[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="GASolver.html"><span class="name">GASolver</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.ga.Gene" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GeneextendsAnyRef"></a>
+      <a id="Gene:Gene"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Gene.html"><span class="name">Gene</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Gene encoding requires double to integer conversion&quot;">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.scalaml.ga.Population" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Population[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
+      <a id="Population[T&lt;:Gene]:Population[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Population.html"><span class="name">Population</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.ga.Reproduction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Reproduction[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
+      <a id="Reproduction[T&lt;:Gene]:Reproduction[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Reproduction.html"><span class="name">Reproduction</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalaml.ga.Chromosome" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Chromosome"></a>
+      <a id="Chromosome:Chromosome"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Chromosome$.html"><span class="name">Chromosome</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object to a Chromosome used to define the constructors</p>
+    </li><li name="org.scalaml.ga.GAConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GAConfig"></a>
+      <a id="GAConfig:GAConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="GAConfig$.html"><span class="name">GAConfig</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Singleton that define the attenuator function for computing the cross-over or mutation index
+of chromosomes, according the number of iterations in the genetic algorithm optimization.</p>
+    </li><li name="org.scalaml.ga.GASolver" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GASolver"></a>
+      <a id="GASolver:GASolver"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="GASolver$.html"><span class="name">GASolver</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Object companion for the Solve that defines the two constructors
+</p>
+    </li><li name="org.scalaml.ga.GAState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GAState"></a>
+      <a id="GAState:GAState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="GAState$.html"><span class="name">GAState</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.ga.Gene" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Gene"></a>
+      <a id="Gene:Gene"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Gene$.html"><span class="name">Gene</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the Gene class to define constants and constructors.</p>
+    </li><li name="org.scalaml.ga.Operator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Operator"></a>
+      <a id="Operator:Operator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Operator$.html"><span class="name">Operator</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Enumerator for the Boolean operator used as component of a gene.</p>
+    </li><li name="org.scalaml.ga.Population" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Population"></a>
+      <a id="Population:Population"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Population$.html"><span class="name">Population</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the Population class that defines its constructor.</p>
+    </li><li name="org.scalaml.ga.Reproduction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Reproduction"></a>
+      <a id="Reproduction:Reproduction"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Reproduction$.html"><span class="name">Reproduction</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+    </body>
+      </html>

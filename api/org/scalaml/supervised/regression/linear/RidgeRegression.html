@@ -1,0 +1,824 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>RidgeRegression - org.scalaml.supervised.regression.linear.RidgeRegression</title>
+          <meta name="description" content="RidgeRegression - org.scalaml.supervised.regression.linear.RidgeRegression" />
+          <meta name="keywords" content="RidgeRegression org.scalaml.supervised.regression.linear.RidgeRegression" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../index.html';
+            var hash = 'org.scalaml.supervised.regression.linear.RidgeRegression';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img src="../../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised.regression">regression</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.regression.linear">linear</a></p>
+        <h1>RidgeRegression</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RidgeRegression</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span> with <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Implicit conversion of type to Double for SingleLinearRegression is missing&quot;">...</span>
+    </span>)</span>
+              
+        </dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>], <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span>, <span class="extype" name="org.apache.commons.math3.stat.regression.MultipleLinearRegression">MultipleLinearRegression</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.scalaml.supervised.regression.linear.RidgeRegression"><span>RidgeRegression</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression"><span>AbstractMultipleLinearRegression</span></li><li class="in" name="org.apache.commons.math3.stat.regression.MultipleLinearRegression"><span>MultipleLinearRegression</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.scalaml.supervised.regression.linear.RidgeRegression#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblVector,lambda:Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.regression.linear.RidgeRegression[T]"></a>
+      <a id="&lt;init&gt;:RidgeRegression[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RidgeRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]]</span>, <span name="labels">labels: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>, <span name="lambda">lambda: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.supervised.regression.linear.RidgeRegression.Feature" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Feature=Array[T]"></a>
+      <a id="Feature:Feature"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Feature</span><span class="result"> = <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#calculateBeta" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="calculateBeta():org.apache.commons.math3.linear.RealVector"></a>
+      <a id="calculateBeta():RealVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">calculateBeta</span><span class="params">()</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealVector">RealVector</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression">RidgeRegression</a> → AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#calculateBetaVariance" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="calculateBetaVariance():org.apache.commons.math3.linear.RealMatrix"></a>
+      <a id="calculateBetaVariance():RealMatrix"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">calculateBetaVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealMatrix">RealMatrix</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression">RidgeRegression</a> → AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#calculateErrorVariance" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="calculateErrorVariance():Double"></a>
+      <a id="calculateErrorVariance():Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">calculateErrorVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#calculateResiduals" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="calculateResiduals():org.apache.commons.math3.linear.RealVector"></a>
+      <a id="calculateResiduals():RealVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">calculateResiduals</span><span class="params">()</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealVector">RealVector</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#calculateYVariance" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="calculateYVariance():Double"></a>
+      <a id="calculateYVariance():Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">calculateYVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateErrorVariance" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateErrorVariance():Double"></a>
+      <a id="estimateErrorVariance():Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateErrorVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateRegressandVariance" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateRegressandVariance():Double"></a>
+      <a id="estimateRegressandVariance():Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateRegressandVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression → MultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateRegressionParameters" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateRegressionParameters():Array[Double]"></a>
+      <a id="estimateRegressionParameters():Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateRegressionParameters</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression → MultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateRegressionParametersStandardErrors" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateRegressionParametersStandardErrors():Array[Double]"></a>
+      <a id="estimateRegressionParametersStandardErrors():Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateRegressionParametersStandardErrors</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression → MultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateRegressionParametersVariance" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateRegressionParametersVariance():Array[Array[Double]]"></a>
+      <a id="estimateRegressionParametersVariance():Array[Array[Double]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateRegressionParametersVariance</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression → MultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateRegressionStandardError" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateRegressionStandardError():Double"></a>
+      <a id="estimateRegressionStandardError():Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateRegressionStandardError</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#estimateResiduals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="estimateResiduals():Array[Double]"></a>
+      <a id="estimateResiduals():Array[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">estimateResiduals</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression → MultipleLinearRegression</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#getX" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getX():org.apache.commons.math3.linear.RealMatrix"></a>
+      <a id="getX():RealMatrix"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getX</span><span class="params">()</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealMatrix">RealMatrix</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#getY" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getY():org.apache.commons.math3.linear.RealVector"></a>
+      <a id="getY():RealVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getY</span><span class="params">()</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealVector">RealVector</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#isNoIntercept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isNoIntercept():Boolean"></a>
+      <a id="isNoIntercept():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isNoIntercept</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#labels" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="labels:org.scalaml.core.Types.ScalaMl.DblVector"></a>
+      <a id="labels:DblVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">labels</span><span class="result">: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#lambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambda:Double"></a>
+      <a id="lambda:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lambda</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#newSampleData" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newSampleData(x$1:Array[Double],x$2:Int,x$3:Int):Unit"></a>
+      <a id="newSampleData(Array[Double],Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newSampleData</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>, <span name="arg2">arg2: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#newXSampleData" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newXSampleData(x:org.scalaml.core.Types.ScalaMl.DblMatrix):Unit"></a>
+      <a id="newXSampleData(DblMatrix):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newXSampleData</span><span class="params">(<span name="x">x: <a href="../../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression">RidgeRegression</a> → AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#newYSampleData" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newYSampleData(x$1:Array[Double]):Unit"></a>
+      <a id="newYSampleData(Array[Double]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newYSampleData</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#rss" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="rss:Option[Double]"></a>
+      <a id="rss:Option[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rss</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#setNoIntercept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="setNoIntercept(x$1:Boolean):Unit"></a>
+      <a id="setNoIntercept(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setNoIntercept</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#validateCovarianceData" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="validateCovarianceData(x$1:Array[Array[Double]],x$2:Array[Array[Double]]):Unit"></a>
+      <a id="validateCovarianceData(Array[Array[Double]],Array[Array[Double]]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateCovarianceData</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
+    </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#validateSampleData" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="validateSampleData(x$1:Array[Array[Double]],x$2:Array[Double]):Unit"></a>
+      <a id="validateSampleData(Array[Array[Double]],Array[Double]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateSampleData</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../apache$commons$math3$stat$regression.html" class="extype" name="org.apache.commons.math3.stat.regression">org.apache.commons.math3.stat.regression</a>] </dd><dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[org.apache.commons.math3.exception.MathIllegalArgumentException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#weights" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="weights:Option[org.scalaml.core.Types.ScalaMl.DblVector]"></a>
+      <a id="weights:Option[DblVector]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">weights</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="xt:org.scalaml.core.XTSeries[Array[T]]"></a>
+      <a id="xt:XTSeries[Array[T]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xt</span><span class="result">: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="|&gt;(x:RidgeRegression.this.Feature):Option[Double]"></a>
+      <a id="|&gt;(Feature):Option[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="x">x: <a href="#Feature=Array[T]" class="extmbr" name="org.scalaml.supervised.regression.linear.RidgeRegression.Feature">Feature</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Data transformation that predicts the value of a vector input using the Ridge regression.</p><div class="fullcomment"><div class="comment cmt"><p>Data transformation that predicts the value of a vector input using the Ridge regression.</p></div><dl class="paramcmts block"><dt class="param">x</dt><dd class="cmt"><p>Array of parameterized values</p></dd><dt>returns</dt><dd class="cmt"><p>predicted value if the model has been successfully trained, None otherwise
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression">RidgeRegression</a> → <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalStateException<p>if the size of the input vector is incorrect</p></span></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="org.scalaml.workflow.PipeOperator">
+              <h3>Inherited from <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</h3>
+            </div><div class="parent" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">
+              <h3>Inherited from <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span></h3>
+            </div><div class="parent" name="org.apache.commons.math3.stat.regression.MultipleLinearRegression">
+              <h3>Inherited from <span class="extype" name="org.apache.commons.math3.stat.regression.MultipleLinearRegression">MultipleLinearRegression</span></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+    </body>
+      </html>

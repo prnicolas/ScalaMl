@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>bayes - org.scalaml.supervised.bayes</title>
+          <meta name="description" content="bayes - org.scalaml.supervised.bayes" />
+          <meta name="keywords" content="bayes org.scalaml.supervised.bayes" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.scalaml.supervised.bayes.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a></p>
+        <h1>bayes</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bayes</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BinNaiveBayesModel[T]extendsNaiveBayesModel[T]withProductwithSerializable"></a>
+      <a id="BinNaiveBayesModel[T]:BinNaiveBayesModel[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="BinNaiveBayesModel.html"><span class="name">BinNaiveBayesModel</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="positives">positives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="negatives">negatives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="_density">_density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$3">evidence$3: (<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Defines a 2-class Naive Bayes model</p>
+    </li><li name="org.scalaml.supervised.bayes.MultiNaiveBayesModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MultiNaiveBayesModel[T]extendsNaiveBayesModel[T]withProductwithSerializable"></a>
+      <a id="MultiNaiveBayesModel[T]:MultiNaiveBayesModel[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MultiNaiveBayesModel.html"><span class="name">MultiNaiveBayesModel</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="classes">classes: <span class="extype" name="scala.List">List</span>[<a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.T">T</span>]]</span>, <span name="_density">_density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$4">evidence$4: (<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Defines a Multiclass Naive Bayes model</p>
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayes" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NaiveBayes[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],Array[Int]]withSupervised[T]"></a>
+      <a id="NaiveBayes[T]:NaiveBayes[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayes.html"><span class="name">NaiveBayes</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]] with <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Generic Multi-nomial Naive Bayes classification class.</p>
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayesModel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NaiveBayesModel[T]extendsAnyRef"></a>
+      <a id="NaiveBayesModel[T]:NaiveBayesModel[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayesModel.html"><span class="name">NaiveBayesModel</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Abstract class for all the Naive Bayes model.</p>
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayesTextScoring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NaiveBayesTextScoring[T]extendsAnyRef"></a>
+      <a id="NaiveBayesTextScoring[T]:NaiveBayesTextScoring[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayesTextScoring.html"><span class="name">NaiveBayesTextScoring</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Ordering not explicitly defined for NaiveBayesTextScoring class&quot;">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.scalaml.supervised.bayes.NewsTerms" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NewsTerms[T]extendsAnyRef"></a>
+      <a id="NewsTerms[T]:NewsTerms[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NewsTerms.html"><span class="name">NewsTerms</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Ordering not explicitly defined for NewsTerm class&quot;">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.scalaml.supervised.bayes.Prior" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Prior[T]extendsProductwithSerializable"></a>
+      <a id="Prior[T]:Prior[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Prior.html"><span class="name">Prior</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="label">label: <span class="extype" name="scala.Int">Int</span></span>, <span name="muSigma">muSigma: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]</span>, <span name="classLikelihood">classLikelihood: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: (<span class="extype" name="org.scalaml.supervised.bayes.Prior.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that represents a prior statistics for Naive Bayes classifier.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalaml.supervised.bayes.NaiveBayes" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NaiveBayes"></a>
+      <a id="NaiveBayes:NaiveBayes"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayes$.html"><span class="name">NaiveBayes</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayesModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NaiveBayesModel"></a>
+      <a id="NaiveBayesModel:NaiveBayesModel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayesModel$.html"><span class="name">NaiveBayesModel</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayesTextScoring" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NaiveBayesTextScoring"></a>
+      <a id="NaiveBayesTextScoring:NaiveBayesTextScoring"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NaiveBayesTextScoring$.html"><span class="name">NaiveBayesTextScoring</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.bayes.NewsTerms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NewsTerms"></a>
+      <a id="NewsTerms:NewsTerms"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NewsTerms$.html"><span class="name">NewsTerms</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+    </body>
+      </html>

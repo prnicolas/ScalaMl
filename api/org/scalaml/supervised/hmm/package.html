@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>hmm - org.scalaml.supervised.hmm</title>
+          <meta name="description" content="hmm - org.scalaml.supervised.hmm" />
+          <meta name="keywords" content="hmm org.scalaml.supervised.hmm" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.scalaml.supervised.hmm.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a></p>
+        <h1>hmm</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hmm</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AlphaextendsPass"></a>
+      <a id="Alpha:Alpha"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Alpha.html"><span class="name">Alpha</span></a><span class="result"> extends <a href="Pass.html" class="extype" name="org.scalaml.supervised.hmm.Pass">Pass</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Implementation of the Alpha pass (forward algorithm).</p>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BaumWelchEMextendsHMMInference"></a>
+      <a id="BaumWelchEM:BaumWelchEM"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BaumWelchEM.html"><span class="name">BaumWelchEM</span></a><span class="result"> extends <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that update the backward-forward lattice of observations and
+hidden states for HMM using the Baum-Welch algorithm.</p>
+    </li><li name="org.scalaml.supervised.hmm.Beta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BetaextendsPass"></a>
+      <a id="Beta:Beta"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Beta.html"><span class="name">Beta</span></a><span class="result"> extends <a href="Pass.html" class="extype" name="org.scalaml.supervised.hmm.Pass">Pass</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Implementation of the Beta or backward pass of the
+HMM algorithm to compute the probability of a sequence of observations.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMM[T]extendsPipeOperator[T,(Double,Array[Int])]withSupervised[T]"></a>
+      <a id="HMM[T]:HMM[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMM.html"><span class="name">HMM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])] with <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMAlgorithmextendsAnyRef"></a>
+      <a id="HMMAlgorithm:HMMAlgorithm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMAlgorithm.html"><span class="name">HMMAlgorithm</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMDim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMDimextendsProductwithSerializable"></a>
+      <a id="HMMDim:HMMDim"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMDim.html"><span class="name">HMMDim</span></a><span class="params">(<span name="_T">_T: <span class="extype" name="scala.Int">Int</span></span>, <span name="_N">_N: <span class="extype" name="scala.Int">Int</span></span>, <span name="_M">_M: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Utility class that defined the dimemsion of the matrix
+used in the Hidden Markov Model.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMInferenceextendsHMMAlgorithm"></a>
+      <a id="HMMInference:HMMInference"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMInference.html"><span class="name">HMMInference</span></a><span class="result"> extends <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Generic class for the Dynamic Programming algorithms used in the Hidden
+Markov Model.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMLambdaextendsAnyRef"></a>
+      <a id="HMMLambda:HMMLambda"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMLambda.html"><span class="name">HMMLambda</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that defines the Lambda model (pi, A, B) for the HMM.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMParams" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMParamsextendsAnyRef"></a>
+      <a id="HMMParams:HMMParams"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMParams.html"><span class="name">HMMParams</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that encapsulates the execution parameters for the three
+canonical forms of the HMM.</p>
+    </li><li name="org.scalaml.supervised.hmm.Pass" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PassextendsHMMAlgorithm"></a>
+      <a id="Pass:Pass"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Pass.html"><span class="name">Pass</span></a><span class="result"> extends <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Generic class for the alpha (forward) pass and beta (backward) passes used in
+the evaluation form of the HMM.</p>
+    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ViterbiPathextendsHMMInference"></a>
+      <a id="ViterbiPath:ViterbiPath"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ViterbiPath.html"><span class="name">ViterbiPath</span></a><span class="result"> extends <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that implements the Viterbi algorithm to extract the best sequence
+of hidden states in a HMM given a lambda model and a sequence of integer
+observations.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Alpha"></a>
+      <a id="Alpha:Alpha"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Alpha$.html"><span class="name">Alpha</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the Alpha pass that defines the constructor applhy</p>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BaumWelchEM"></a>
+      <a id="BaumWelchEM:BaumWelchEM"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BaumWelchEM$.html"><span class="name">BaumWelchEM</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Object companion for Baum_Welch algorithm that defines the constructors for BaumWelchEM</p>
+    </li><li name="org.scalaml.supervised.hmm.Beta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Beta"></a>
+      <a id="Beta:Beta"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Beta$.html"><span class="name">Beta</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the Beta pass that defines the constructor apply
+</p>
+    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMM"></a>
+      <a id="HMM:HMM"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMM$.html"><span class="name">HMM</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the HMM that defines a HMMPredictor type and the constructor
+apply for the HMM.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMForm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMForm"></a>
+      <a id="HMMForm:HMMForm"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMForm$.html"><span class="name">HMMForm</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Enumeration class to specify the canonical form of the HMM</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMLambda"></a>
+      <a id="HMMLambda:HMMLambda"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMLambda$.html"><span class="name">HMMLambda</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion for the HMMLambda class to define the constructors apply.</p>
+    </li><li name="org.scalaml.supervised.hmm.HMMParams" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMParams"></a>
+      <a id="HMMParams:HMMParams"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMParams$.html"><span class="name">HMMParams</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ViterbiPath"></a>
+      <a id="ViterbiPath:ViterbiPath"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ViterbiPath$.html"><span class="name">ViterbiPath</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Object companion for the Viterbi algorithm for the extraction of
+best sequences.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+    </body>
+      </html>
