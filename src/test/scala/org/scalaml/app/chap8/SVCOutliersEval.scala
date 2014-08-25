@@ -7,12 +7,12 @@
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.DividendPayout
+import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm._
 import org.scalaml.core.{XTSeries, Types}
 
 
-import DividendPayout._
+import Fundamentals._
 import Types.ScalaMl._
 object SVCOutliersEval {
    final val path = "resources/data/chap8/dividends2.csv"	
