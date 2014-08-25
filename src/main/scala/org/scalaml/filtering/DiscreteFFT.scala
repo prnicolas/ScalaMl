@@ -13,6 +13,10 @@ import org.apache.commons.math3.exception.MathIllegalArgumentException
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import Types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import DFT._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 
 			/**
@@ -57,22 +61,8 @@ object DTransform {
   def sinc(f: Double, fC: Double): Double = if(Math.abs(f) < fC) 1.0 else 0.0
   def sinc2(f: Double, fC: Double): Double = if(f*f < fC) 1.0 else 0.0
 }
-
-
-
-
-		/**
-		 * <p>Fast Discrete Fourier Sine and Cosine transformation. The class is a data transformation
-		 * (implements PipeOperator) and a Fourier Transform (implements DTransform). The class has a 
-		 * specialized version for the type Double for faster computation.<br>
-		 * The class uses the Apache Commons Math library</p>
-		 * 
-		 * @author Patrick Nicolas
-		 * @since February 9, 2014
-		 * @note Scala for Machine Learning
-		 */
-import DFT._
 class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
+	private val logger = Logger.getLogger("DFT")
 	
 		/**
 		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform (time series
@@ -84,11 +74,10 @@ class DFT[@specialized(Double) T <% Double] extends DTransform[T] {
 		 * @throws MathIllegalArgumentException if the transform fails.
 		 */
    override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
-  	 try {
-  		 Some(XTSeries[Double](fwrd(xt)._2))
-  	 }
-  	 catch {
-  		 case e: MathIllegalArgumentException => println(e.toString); None
+  	 Try(XTSeries[Double](fwrd(xt)._2))
+  	 match {
+  		 case Success(xt) => Some(xt)
+  		 case Failure(e) => Display.error("DFT.|> ", logger, e); None
   	 }
    }
 
@@ -132,6 +121,8 @@ object DFT {
 class DFTFir[T <% Double](val g: (Double, Double)=>Double, val fC: Double) extends DFT[T] {
    require(g != null, "Cannot apply a band pass filter with undefined filter function")
    
+   private val logger = Logger.getLogger("DFTFir")
+   
 	   /**
 		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform (time series
 		 * of frequency values). The type of transform is define at run-time the first value is close to zero (Sine transform)
@@ -141,14 +132,13 @@ class DFTFir[T <% Double](val g: (Double, Double)=>Double, val fC: Double) exten
 		 * @throws IllegalArgumentException if the time series is not defined
 		 */
    override def |> (xt: XTSeries[T]) : Option[XTSeries[Double]] = {
-  	 try {
+  	 Try {
 	  	  val spectrum = fwrd(xt)
 	  	  val filtered = spectrum._2.map( x => x*g(x, fC))
-	      Some(XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) ))
-  	 }
-  	 catch {
-  		 case e: MathIllegalArgumentException => println(e.toString); None
-  		 case e: RuntimeException => println(e.toString); None
+	      XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) )
+  	 } match {
+  		 case Success(xt) => Some(xt)
+  		 case Failure(e) => Display.error("DFTFir.|> ", logger, e); None
   	 }
    }
 }
