@@ -22,7 +22,9 @@ object Display {
   		// Dump debugging message and exception in standard output or logger
   final def error[T](t: T): Unit = println("Error: " + t.toString)
   final def error[T](t: T, e: Throwable): Unit =  println("Error: " + t.toString + e.toString)
+  final def error[T](t: T, logger: Logger): Unit = logger.debug(t.toString)
   final def error[T](t: T, logger: Logger, e: Throwable): Unit = logger.debug(t.toString + " - " + e.toString)
+
 }
 
 
