@@ -14,6 +14,9 @@ import scala.Array.canBuildFrom
 import org.scalaml.workflow.PipeOperator
 import scala.io.Source
 import org.scalaml.core.Types.ScalaMl._
+import org.apache.log4j.Logger
+import scala.util.{Try, Failure, Success}
+import org.scalaml.util.Display
 
 
 		/**
@@ -39,6 +42,7 @@ final class DataSource(val pathName: String,
    
    import scala.io.Source
    
+   private val logger = Logger.getLogger("DataSource")
    final val CSV_DELIM = ","
    type TxtFields = Array[String]
    
@@ -58,7 +62,7 @@ final class DataSource(val pathName: String,
    private def load: Option[(TxtFields, Array[TxtFields])] = {
      import java.io.{IOException, FileNotFoundException}
      
-     try {
+     Try {
     	 val src = Source.fromFile(pathName)
 	  	 val rawFields = src.getLines.map( _.split(CSV_DELIM)).toArray.drop(headerLines)
 	  	 
@@ -66,29 +70,24 @@ final class DataSource(val pathName: String,
 	  	 val results = if( reverseOrder ) fields.reverse else  fields
 	  	 val textFields = (fields(0), results)
 	  	 src.close
-	     Some(textFields)
-     }
-     catch {
-        case e: IOException => { Console.println(e.toString); None }
-        case e: FileNotFoundException => { Console.println(e.toString); None }
-        case e: Exception => { Console.println(e.toString); None }
-        case e: ArrayIndexOutOfBoundsException =>  {Console.println(e.toString); None }
+	     textFields
+     } match {
+    	 case Success(textFields) => Some(textFields)
+    	 case Failure(e) => Display.error("DataSource.load ", logger, e); None
      }
    }
    
    
    import scala.collection.mutable.ArraySeq
    def loadConvert[T](implicit c: String => T): Option[List[ArraySeq[T]]] = {
-  	  try {
+  	  Try {
     	 val src = Source.fromFile(pathName)
 	  	 val fields = src.getLines.map( _.split(CSV_DELIM).map(c(_))).toList
 	     src.close
-	     Some(fields)
-     }
-     catch {
-        case e: IOException => { Console.println(e.toString); None }
-        case e: FileNotFoundException => { Console.println(e.toString); None }
-        case e: Exception => { Console.println(e.toString); None }
+	     fields
+     } match {
+    	 case Success(fields) => Some(fields)
+    	 case Failure(e) => Display.error("DataSource.loadConvert ", logger, e); None
      }
    }
    
@@ -111,7 +110,7 @@ final class DataSource(val pathName: String,
           else
              Some(extr map {t => data._2.map(t(_) ) })
        }
-       case None => None
+       case None => Display.error("DataSource.|> ", logger); None
      }
    }
    
@@ -128,7 +127,7 @@ final class DataSource(val pathName: String,
           else 
              Some(XTSeries[Double](data._2.map( extr(_))))
        }
-       case None => None
+       case None => Display.error("DataSource.|> ", logger); None
      }
    }
 
@@ -143,7 +142,7 @@ final class DataSource(val pathName: String,
           else 
              Some(XTSeries[DblVector](data._2.map( extr(_))))
        }
-       case None => None
+       case None => Display.error("DataSource.load ", logger); None
      }
    }
 }

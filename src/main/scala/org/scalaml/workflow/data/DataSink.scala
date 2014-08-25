@@ -11,6 +11,9 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.workflow.PipeOperator
 import java.io.{FileNotFoundException, IOException, PrintWriter}
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 
 		/**
@@ -21,6 +24,7 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
    import XTSeries._
    import scala.io.Source
    
+   private val logger = Logger.getLogger("DataSink")
    final val CSV_DELIM = ","
    type TxtFields = Array[String]
     
@@ -28,58 +32,59 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
      import java.io.{PrintWriter, IOException, FileNotFoundException}
      
      var printWriter: PrintWriter = null
-     try {
+     Try {
 	     printWriter = new PrintWriter(path)
 	     printWriter.write(content)
 	     true
-     }
-     catch {
-       case e: IOException => Console.println(e.toString); false
-       case e: FileNotFoundException => Console.println(e.toString); false
-     }
-     finally {
-        if( printWriter != null) 
-          try {
-            printWriter.close
+     } match {
+    	 case Success(res) => res
+    	 case Failure(e) => {
+    		 Display.error("DataSink.write ", logger, e)
+    		 
+    		 if( printWriter != null) {
+	             Try { printWriter.close; false }
+	             match {
+	    		    case Success(res) => false
+	    	        case Failure(e) =>  Display.error("DataSink.write ", logger, e); false
+	    		 }
+    		 }
+    		 else false
           }
-          catch {
-           case e: IOException => Console.println(e.toString)
-           case e: FileNotFoundException => Console.println(e.toString)
-         }
-      }
+     }
    }
+
    
    def |> (v: DblVector): Option[Int] = {
   	 import java.io.{PrintWriter, IOException, FileNotFoundException}
      
      var printWriter: PrintWriter = null
-     try {
+     Try {
     	 val content = v.foldLeft(new StringBuilder)((b, x) => b.append(x).append(CSV_DELIM))
     	 content.setCharAt(content.size-1, ' ')
     	 write(content.toString.trim)
-    	 Some(1)
+    	 1
+     } match {
+    	 case Success(res) => Some(res)
+    	 case Failure(e) => {
+    		 Display.error("DataSink.|> ", logger, e)
+    		  
+    		 if( printWriter != null) {
+    		    Try {printWriter.close; 0 }
+    		    match {
+    		    	case Success(res) => Some(res)
+    		    	case Failure(e) => Display.error("DataSink.|> ", logger, e); None
+    		    }
+    		  }
+    		 else None
+    	 }
      }
-     catch {
-       case e: IOException => Console.println(e.toString); None
-       case e: FileNotFoundException => Console.println(e.toString); None
-     }
-     finally {
-        if( printWriter != null) 
-          try {
-            printWriter.close
-          }
-          catch {
-           case e: IOException => Console.println(e.toString)
-           case e: FileNotFoundException => Console.println(e.toString)
-         }
-      }
    }
     
    override def |> (xs: List[XTSeries[T]]): Option[Int] = {
      import java.io.{PrintWriter, IOException, FileNotFoundException}
      
      var printWriter: PrintWriter = null
-     try {
+     Try {
          val content = new StringBuilder
          val numValues = xs(0).size-1
          val last = xs.size-1
@@ -93,22 +98,22 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
    
 	     printWriter = new PrintWriter(path)
 	     printWriter.write(content.toString)
-	     Some(k)
+	     k
+     } match {
+    	 case Success(k) => Some(k)
+    	 case Failure(e) => {
+    		  Display.error("DataSink.|> ", logger, e)
+    		  
+    		 if( printWriter != null) {
+    		    Try {printWriter.close; 0 }
+    		    match {
+    		    	case Success(res) => Some(res)
+    		    	case Failure(e) => Display.error("DataSink.|> ", logger, e); None
+    		    }
+    		  }
+    		 else None
+    	 }
      }
-     catch {
-       case e: IOException => Console.println(e.toString); None
-       case e: FileNotFoundException => Console.println(e.toString); None
-     }
-     finally {
-        if( printWriter != null) 
-          try {
-            printWriter.close
-          }
-          catch {
-           case e: IOException => Console.println(e.toString)
-           case e: FileNotFoundException => Console.println(e.toString)
-         }
-      }
    }
 }
 
