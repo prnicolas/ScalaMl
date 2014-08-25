@@ -1,3 +1,9 @@
+/**
+ * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the only purpose of illustrating the 
+ * concepts and algorithms presented in Scala for Machine Learning.
+ */
 package org.scalaml.app.chap5
 
 
@@ -30,9 +36,8 @@ object Chap5 extends App with ScalaMlApp {
 	  	 case _ => cmdDescriptor
 	 }
   }
-  
-  process(args)
 
+  process(args)
 }
 
 // -----------------------------  EOF ------------------------------------

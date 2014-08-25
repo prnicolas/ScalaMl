@@ -1,15 +1,26 @@
+/**
+ * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the only purpose of illustrating the 
+ * concepts and algorithms presented in Scala for Machine Learning.
+ */
 package org.scalaml.app.chap5
 
 
 import org.scalaml.supervised.bayes._
 import org.scalaml.core.{Types, XTSeries}
-import org.scalaml.workflow.data.{DataSource,TextSource}
+import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import scala.collection.mutable.ArrayBuffer
 import Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
 import scala.collection.immutable.HashSet
 import org.scalaml.supervised.bayes.NaiveBayes
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
+
 
 trait BayesEval {
    import org.scalaml.trading.YahooFinancials._
@@ -27,6 +38,7 @@ trait BayesEval {
 
 
 object BinomialBayesEval extends BayesEval {
+	private val logger = Logger.getLogger("BinomialBayesEval")
 	
 	override def run(args: Array[String]): Unit = {
 	   println("Evaluation Multinomial Naive Bayes")	
@@ -51,16 +63,16 @@ object BinomialBayesEval extends BayesEval {
 	private def load(args: Array[String], period: Int): Option[List[(List[Int], Int)]] = {
 	  val symbol = args(0)
 	  
-      try {
+      Try {
 		 DataSource(symbol, path, true) |> extractor match {
 	  
 	       case Some(xs) => {
-	          val em = SimpleMovingAverage[Double](period)
+	          val mv = SimpleMovingAverage[Double](period)
      
-	          val ratios: List[Array[Int]] = xs.map(values => 
-	             em |> values match { 
+	          val ratios: List[Array[Int]] = xs.map(x => 
+	             mv |> x match { 
 	                case Some(xt) => 
-	                	values.drop(period).zip(xt.drop(period)).map( z => if( z._1 > z._2) 1 else 0).toArray
+	                	x.drop(period).zip(xt.drop(period)).map( z => if( z._1 > z._2) 1 else 0).toArray
 	            	case None => throw new IllegalStateException("Moving Average failed") 
 	           })
 	          
@@ -74,13 +86,13 @@ object BinomialBayesEval extends BayesEval {
 	          	  y
 	           }).toArray 
 	             // Transpose the list of ratios and zip with the label
-	           Some(ratios.transpose.take(label.size).zip(label))
+	           ratios.transpose.take(label.size).zip(label)
 	       }
 	       case None => throw new IllegalStateException("Moving Average failed") 
 	    }  
-      }
-      catch {
-      	 case e: IllegalStateException => None
+      } match  {
+      	case Success(res) => Some(res)
+      	case Failure(e) => Display.error("BinomialBayesEval ", logger, e); None
       }
 	}
 }
