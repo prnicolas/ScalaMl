@@ -136,7 +136,7 @@ object Stats {
    		 * @param values  array of variables for which the Gauss pdf has to be computed
    		 * @throws IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
    		 */
-   def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
+   final def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
       require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")
       require(values != null, "Values for the Gauss distribution is undefined")
       
@@ -150,11 +150,18 @@ object Stats {
    		 * @param value  value for which the Gauss pdf has to be computed
    		 * @throws IllegalArgumentExeption if stdDev is close t zero
    		 */
-   def gauss(mean: Double, stdDev: Double, x:Double) : Double = {
+   final def gauss(mean: Double, stdDev: Double, x:Double): Double = {
   	  require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")
   	  val y = x - mean
   	  INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y/stdDev)
    }
+   
+   final def gauss(x: Double*): Double = gauss(x(0), x(1), x(2))
+
+   final def bernouilli(mean: Double, p: Int): Double = mean*p + (1-mean)*(1-p)
+   
+   @inline
+   final def bernouilli(x: Double*): Double = bernouilli(x(0), x(1).toInt)
 }
 
 // -------------------------  EOF -----------------------------------------
