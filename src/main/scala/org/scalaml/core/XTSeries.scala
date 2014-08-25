@@ -11,7 +11,9 @@ import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 
 		/**
@@ -147,6 +149,8 @@ class VTSeries[T](val _label: String, val _arr: Array[DVector[T]])(implicit val 
 		 * common implicit conversions.
 		 */
 object XTSeries {  
+  private val logger = Logger.getLogger("XTSeries")	
+	
    final val EPS = 1-20
    def apply[T](label: String, arr: Array[T]): XTSeries[T] = new XTSeries[T](label, arr)
    def apply[T](arr: Array[T]): XTSeries[T] = new XTSeries[T]("", arr)
@@ -223,7 +227,7 @@ object XTSeries {
      val arr = new DblMatrix(xt.size)
      k = 0
      
-     try {
+     Try {
 	     while( k < xt.size) {
 	    	var j = 0
 	    	arr(k) = new Array[Double](dimension)
@@ -233,10 +237,10 @@ object XTSeries {
 	    	}
 	    	k += 1
 	     }
-	  	 Some(new XTSeries[DblVector](xt.label, arr))
-     }
-     catch {
-    	 case e: RuntimeException => None
+	  	 new XTSeries[DblVector](xt.label, arr)
+     } match {
+    	 case Success(xt) => Some(xt)
+    	 case Failure(e) => Display.error("Normalize ", logger, e); None
      }
    }
    
@@ -255,7 +259,7 @@ object XTSeries {
   	  val dimension = xt(0).size
   	       
   	  val arr = new Array[DblVector](xt.size)
-  	  try {
+  	  Try {
 	      while( k < xt.size) {
 	    	var j = 0
 	    	arr(k) = new Array[Double](dimension)
@@ -265,10 +269,10 @@ object XTSeries {
 	    	}
 	    	k += 1
 	     }
-	      Some(new XTSeries[DblVector](xt.label, arr))
-  	  }
-  	  catch {
-  	  	case e: RuntimeException => println(e.toString); None
+	     new XTSeries[DblVector](xt.label, arr)
+  	  } match {
+  	  	case Success(xt) => Some(xt)
+  	  	case Failure(e) => Display.error("zScoring ", logger, e); None
   	  }
    }
    
