@@ -14,7 +14,7 @@ import Types.ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-
+import XTSeries._
 
 
 		/**
@@ -32,7 +32,7 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning
 		 */
 object PCAEval extends UnsupervisedLearningEval {
-   val logger = Logger.getLogger("PCAEval")	
+   private val logger = Logger.getLogger("PCAEval")	
 	
 	// Symbol, PE/PS/PB/ROE/OM
   val data = Array[(String, Array[Double])] (
@@ -74,7 +74,6 @@ object PCAEval extends UnsupervisedLearningEval {
   override def run(args: Array[String]): Unit = {
   	  println("Evaluation of Principal Component Analysis")
   	  
-  	  import XTSeries._
   	  import scala.util.{Try, Success, Failure}
 	  val pca = new PCA[Double]
 		  
