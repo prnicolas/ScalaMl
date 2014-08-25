@@ -103,7 +103,6 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
   	  	xyLineRenderer.setSeriesPaint(n, colors(n>>1 % colors.size))
   	  	xyLineRenderer.setSeriesShapesVisible(n, true)
   	  	xyLineRenderer.setSeriesShape(n, shapes(n % shapes.size))
-  	  	println(n)
   	  })
   	  xyLineRenderer.setSeriesLinesVisible(0, false)
   	  
