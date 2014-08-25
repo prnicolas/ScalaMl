@@ -8,25 +8,18 @@ package org.scalaml.stats
 
 
 import org.scalaml.core.Types.ScalaMl.{DblVector, XYTSeries}
-
-
-	/**
-	 * <p>Parameterized class to emulate the Bias-Variance computation for a target model
-	 *  using a list of model estimates generated during training. It is assumed that the
-	 *  training sets are identical in size.</p>
-	 *  @param emul  target model that generates both training and validation data sets.
-	 *  @param nValues number of data points in each training sets.
-	 *  @throws IllegalArgumentException if the emulation model, emul, is undefined or the number of training samples is too small
-	 *  @author Patrick Nicolas
-	 *  @since April 3, 2014
-	 *  @note Scala for Machine Learning
-	 */
-
+import scala.util.{Try, Success, Failure}
 import BiasVarianceEmulator._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
+
+
 class BiasVarianceEmulator[T <% Double](val emul: Double => Double, val nValues: Int) {
     require( emul != null,  "Target or emulation model for Bias-Variance is undefined")
     require( nValues > minNValues,  "Size of training sets " + nValues + " for Bias Variance emulator is out of range")
     
+    private val logger = Logger.getLogger("BiasVarianceEmulator")
     	/**
     	 * <p>Compute the Bias and Variance for a list of model estimate extracted from 
     	 * training data.</p>
@@ -39,21 +32,18 @@ class BiasVarianceEmulator[T <% Double](val emul: Double => Double, val nValues:
 		require(fEst != null && fEst.size > 0, "Cannot test the fitness of an undefined function")
 
 		val rf = Range(0, fEst.size)
-		try {
+		Try {
 			val meanFEst = Array.tabulate(nValues)( x => rf.foldLeft(0.0)((s, n) => s + fEst(n)(x))/fEst.size)  
 			
 			val r = Range(0, nValues)
-			Some(fEst.map( estF => {
+			fEst.map( estF => {
 				r.foldLeft(0.0, 0.0)((s, x) => { 
 					val diff = (estF(x) - meanFEst(x))/fEst.size 
 					(s._1 + diff*diff, s._2 + Math.abs(estF(x) - emul(x) ))} )
-			}).toArray)
-		}
-		catch {
-			case e: RuntimeException => {
-				Console.println("Failed to fit a list of models for Bias Validation emulator " + e.toString)
-				None
-			}
+			}).toArray
+		} match {
+			case Success(xySeries) => Some(xySeries)
+			case Failure(e) => Display.error("BiasVariance.fit ", logger, e); None
 		}
 	}
 }
@@ -67,7 +57,8 @@ class BiasVarianceEmulator[T <% Double](val emul: Double => Double, val nValues:
 	 */
 object BiasVarianceEmulator {
 	final val minNValues = 20
-	def apply[T <% Double](emul: Double => Double, nValues: Int): BiasVarianceEmulator[T] = new BiasVarianceEmulator[T](emul, nValues)
+	def apply[T <% Double](emul: Double => Double, nValues: Int): BiasVarianceEmulator[T] 
+	          = new BiasVarianceEmulator[T](emul, nValues)
 }
 
 // -----------------------  EOF --------------------------------------
