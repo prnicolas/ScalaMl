@@ -13,7 +13,7 @@ import scala.collection.mutable.HashMap
  *  @since Feb 3, 2014
  *  @note Book
  */
-class Counter[T] extends HashMap[T, Int] { 
+final class Counter[T] extends HashMap[T, Int] { 
    def += (t: T): Unit = put(t, getOrElse(t, 0)+1) 
    def + (t: T): Counter[T] = { put(t, getOrElse(t, 0)+1); this }
    def ++ (cnt: Counter[T]): Counter[T] = { cnt.foldLeft(this)((c, t) => c + t._1); this}
@@ -25,14 +25,5 @@ class Counter[T] extends HashMap[T, Int] {
 }
 
 
-
-object CounterApp extends App {
-  val counter = new Counter[Int] 
-  counter += 1
-  counter += 2
-  counter += 4
-  
-  counter foreach( kv => println( kv._1 + "," + kv._2))
-}
 
 // --------------------------  EOF ------------------------------------------------
