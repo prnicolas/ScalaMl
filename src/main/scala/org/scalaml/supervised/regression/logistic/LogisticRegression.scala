@@ -1,8 +1,10 @@
 /**
  * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the only purpose of illustrating the 
- * concepts and algorithms presented in Scala for Machine Learning.
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -21,41 +23,25 @@ import LogisticRegression._
 import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
 import org.scalaml.workflow.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
-
-		/**
-		 * <p>Logistic regression for multivariate logistic regression. The implementation
-		 * used the GaussNewton optimizer to extract the weights or coefficient of the
-		 * logistic regression. The generic form of the logistic regression is<br>
-		 * y 1/(1 + exp(-(w0 + w1.x0 + w2.x1 ..)).<br>
-		 * The class relies on the optimization routine implemented in the Apache Commons
-		 * Math library math3.optim and math3.fitting.leastsquares packages.</p>
-		 * @param xt multi-dimensional time series 
-		 * @param y observed/labelled data related to the time series {0, 1}
-		 * @param maxIters maximum number of iterations
-		 * @param maxEvals maximum number of evaluations
-		 * @throws IllegalArgumentException if the arguments are improperly defined
-		 * 
-		 * @author Patrick Nicolas
-		 * @since April 24, 2014
-		 * @note Scala for Machine Learning
-		 */
+import scala.util.{Try, Success, Failure}
 import XTSeries._
-final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+import org.apache.commons.math3.linear.DiagonalMatrix
+
+
+protected class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
 		                                val labels: Array[Int], 
 										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
+	type Feature = Array[T]
 	validate(xt, labels, optimizer)
-
-	private val model: Option[RegressionModel] = {
-		try {
-			val weightAcc = train
-			Some(RegressionModel(weightAcc._1, weightAcc._2))
-		}
-		catch {
-			case e: ConvergenceException => println("Algorithm failed to converge " + e.toString); None
-			case e: DimensionMismatchException =>  println("Jacobian and data vector mismatched dimension " + e.toString); None
-			case e: TooManyEvaluationsException => println("Too many evaluations " + e.toString); None
-			case e: TooManyIterationsException => println("Too many iterations " + e.toString); None
-			case e: MathRuntimeException =>  println("Run time exception  " + e.toString); None
+    
+	private val logger = Logger.getLogger("LogisticRegression")
+	private[this] val model: Option[RegressionModel] = {
+	    Try(train)
+		match {
+			case Success(m) => Some(m)
+			case Failure(e) => Display.error("LogisticRegression", logger, e); None
 		}
 	}
 	
@@ -68,8 +54,8 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 	   case None => None
 	}
 	
-	def rms: Option[Double] = model match {
-	   case Some(m) => Some(m.accuracy)
+	final def rss: Option[Double] = model match {
+	   case Some(m) => Some(m.rss)
 	   case None => None
 	}
 			/**
@@ -81,13 +67,17 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 			 * @throws IllegalArgumentException if the data point is undefined
 			 * @throws DimensionMismatchException if the dimension of the data point x is incorrect
 			 */
-	override def |> (feature: Array[T]): Option[Int] = model match {
-	  case Some(m) => {
-		 if( feature != null || m.size +1 != feature.size) 
-			throw new IllegalStateException("Size of input data for prediction " + feature.size + " should be " + (m.size -1))
+	override def |> (x: Feature): Option[Int] = model match {
+	  case Some(_model) => {
+		 if(x == null || _model.size -1 != x.size) 
+			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (_model.size -1))
 				
-		 val z= - feature.zip(m.weights).foldLeft(0.0)((s,xw) => s + xw._1*xw._2)
-		 Some(if( Math.abs(1.0 - logit(z)) < MARGIN ) 1 else 0)
+		 val w = _model.weights
+		 val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
+	//	  println("(" + m.weights(0) + "," + m.weights(1) + "," + m.weights(2) + ")")
+//		 println("(" + x(0) + "," + x(1) + ")")
+		 println("value: " + z + " & " + logit(z))
+		 Some(if( logit(z) > 0.5 + MARGIN) 1 else 0)
 	   }
 	   case None => None	
 	}
@@ -96,8 +86,9 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 	private def logit(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
 	
 	
-	private def train: (DblVector, Double) = {
-        val _weights = Array.fill(xt(0).size +1)(0.5)
+	final val initWeight = 0.5
+	private def train: RegressionModel = {
+        val weights0 = Array.fill(xt(0).size +1)(initWeight)
           
         		/**
         		 * <p>Anonymous Class that defines the computation of the value of
@@ -108,46 +99,51 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
             override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
 		  	  require(w != null && w.toArray.length == dimension(xt)+1, "Incorrect size of weight for computing the Jacobian matrix")
 		  	  
-		  	  val nW = w.toArray 	  
+		  	  val _w = w.toArray 	  
 		  			  // computes the pair (function value, derivative value)
 		  	  val gradient = xt.toArray.map( g => {  
-		  	  	 val exponent = g.zip(nW.drop(0)).foldLeft(nW(0))((s,z) => s + z._1*z._2)
+		  	  	 val exponent = g.zip(_w.drop(1))
+		  	  	                 .foldLeft(_w(0))((s,z) => s + z._1*z._2)
 		  	  	 val f = logit(exponent)
-		  	  	 (f, f*(1-f))
+		  	  	 (f, f*(1.0-f))
 		  	  })
 		  	  
-		  	 val jacobian = Array.ofDim[Double](xt.size, _weights.size)
+		  	 val jacobian = Array.ofDim[Double](xt.size, weights0.size)
 	         xt.toArray.zipWithIndex.foreach(xi => {    // 1
 	        	 val df: Double = gradient(xi._2)._2
 	        	 Range(0, xi._1.size).foreach(j => jacobian(xi._2)(j+1) = xi._1(j)*df)
 	        	 jacobian(xi._2)(0) = 1.0
-	          })
+	         })
 	          
-		      (new ArrayRealVector(gradient.map(_._1)), new Array2DRowRealMatrix(jacobian))
+		     (new ArrayRealVector(gradient.map(_._1)), new Array2DRowRealMatrix(jacobian))
 		   }
 		}
 
         	
 	    val exitCheck = new ConvergenceChecker[PointVectorValuePair] {
 	    	override def converged(iteration: Int, prev: PointVectorValuePair, current: PointVectorValuePair): Boolean =  {
-	    	  val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { val diff = z._1 - z._2;  s + diff*diff} )
-	    	  Math.sqrt(delta) < optimizer.eps &&  iteration >= optimizer.maxIters
+	    	  val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
+	    	  	  val diff = z._1 - z._2
+	    	  	  s + diff*diff 
+	    	  })
+	    	  Math.sqrt(delta) < optimizer.eps && iteration >= optimizer.maxIters
 	    	}
 	    }
 
 	    val builder = new LeastSquaresBuilder
         val lsp = builder.model(lrJacobian)
-                         .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
+                        .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
+     //   .weight(new DiagonalMatrix(weights0)) 
                          .target(labels)
                          .checkerPair(exitCheck)
                          .maxEvaluations(optimizer.maxEvals)
-                         .start(_weights)
+                         .start(weights0)
                          .maxIterations(optimizer.maxIters)
                          .build
                                  
         val optimum = optimizer.optimize(lsp)
         println("Optimum: ")
-        (optimum.getPoint.toArray, optimum.getRMS)
+        RegressionModel(optimum.getPoint.toArray, optimum.getRMS)
 	}
 	
     private def validate(xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
@@ -165,7 +161,7 @@ final class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 	 * The singleton is also used to define the constructors
 	 */
 object LogisticRegression {
-   final val MARGIN = 0.1
+   final val MARGIN = 0.01
    
    implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
    implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] = new Pair[RealVector,RealMatrix](pair._1, pair._2)

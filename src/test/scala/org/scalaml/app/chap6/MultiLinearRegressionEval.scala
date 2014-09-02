@@ -1,8 +1,10 @@
 /**
  * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the only purpose of illustrating the 
- * concepts and algorithms presented in Scala for Machine Learning.
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.app.chap6
 
@@ -14,10 +16,14 @@ import org.scalaml.workflow.data.DataSink
 import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+import scala.collection.mutable.ListBuffer
 
 
 object MultiLinearRegressionEval {
-
+   private val logger = Logger.getLogger("MultiLinearRegressionEval")
+   
    def run(args: Array[String] = null) {
   	  if( args != null && args.size > 0 && args(0).equals("trend")) 
   	  	inference
@@ -25,13 +31,14 @@ object MultiLinearRegressionEval {
         filter  	  	
    }	 
    
-   private[this] def inference: Unit = {
-  	  println("Evaluation of ordinary least squares regression inference")
+   def inference: Unit = {
+  	  Display.show("Evaluation of ordinary least squares regression inference")
   	  
-  	  val path = "resources/data/chap7/"
-  	  val output = "output/chap7/CNY_output.csv"
+  	  val path = "resources/data/chap6/"
+  	  val output = "output/chap6/CNY_output.csv"
   	  val symbols = Array[String]("CNY", "GLD", "SPY", "TLT")
-  	  val movAvg = SimpleMovingAverage[Double](16)
+  	  val smoothingPeriod = 16
+  	  val movAvg = SimpleMovingAverage[Double](smoothingPeriod)
 
   	  val input = symbols.map(s => DataSource(path + s +".csv", true, true, 1))
   	                     .map( _ |> YahooFinancials.adjClose )
@@ -41,66 +48,83 @@ object MultiLinearRegressionEval {
   	  
   	  		// Retrieve the input variables by removing the first 
   	  		// time series (labeled dataset) and transpose the array
-  	  val allVariables = input.drop(1)
-  	  var variables = allVariables.map( _.toArray).transpose
-  	  println("CNY = f(SPY, GLD, TLT)" )
-  	  rss(XTSeries[DblVector](variables), input(0))
+  	  val features = input.drop(1)
+  	  val featuresList = List[(String, DblMatrix)](
+  	  		("CNY = f(SPY, GLD, TLT)\n", features.map( _.toArray).transpose),
+  	  		("CNY = f(GLD, TLT)\n", features.drop(1).map( _.toArray).transpose),
+  	  		("CNY = f(SPY, GLD)\n", features.take(2).map( _.toArray).transpose),
+  	  		("CNY = f(SPY, TLT)\n", features.zipWithIndex.filter( _._2 != 1).map( _._1.toArray).transpose),
+  	  		("CNY = f(GLD)\n", features.slice(1,2).map( _.toArray).transpose)
+  	  )
+  	  		
+  	  featuresList.foreach(x =>  Display.show(x._1 + getRss(XTSeries[DblVector](x._2), input(0)), logger ))  	  
   	  
-  	  println("CNY = f(GLD, TLT)" )
-  	  variables = allVariables.drop(1).map( _.toArray).transpose
-  	  rss(XTSeries[DblVector](variables), input(0))
+  	  var xsRss = new ListBuffer[Double]()
+  	  val tss = featuresList.foldLeft(0.0)((s, x) => {
+  	  	 val _tss = rssSum(XTSeries[DblVector](x._2), input(0))
+  	  	 xsRss.append(_tss._1)
+  	  	 s + _tss._2
+  	  })/xsRss.size
+  	  val r2 = xsRss.map( 1.0 - _/tss)
   	  
-  	  println("CNY = f(SPY, GLD)" )
-  	  variables = allVariables.take(2).map( _.toArray).transpose
-  	  rss(XTSeries[DblVector](variables), input(0))
-  	  
-  	  println("CNY = f(SPY, TLT)" )
-  	  variables = allVariables.zipWithIndex.filter( _._2 != 1).map( _._1.toArray).transpose
-  	  rss(XTSeries[DblVector](variables), input(0))
-  	  
-  	  println("CNY = f(GLD)" )
-  	  variables = allVariables.slice(1,2).map( _.toArray).transpose
-  	  rss(XTSeries[DblVector](variables), input(0))
-
    }
   	  
-   private def rss(xt: XTSeries[DblVector], y: XTSeries[Double]): Unit = {
+   private def getRss(xt: XTSeries[DblVector], y: DblVector): String = {
   	  val regression = MultiLinearRegression[Double](xt, y)
   	  val buf = new StringBuilder
   	  regression.weights
   	            .get
   	            .zipWithIndex
   	            .foreach(w => {
-  	            	 if( w._2 == 0) buf.append(w._1)
-  	            	 else buf.append(" + ").append(w._1).append(".X").append(w._2)
+  	               if( w._2 == 0) buf.append(w._1)
+  	               else buf.append(" + ").append(w._1).append(".x").append(w._2)
   	            })
-  	  println(buf.toString)
-  	  println( "RSS: " + regression.rss.get )
+  	  buf.append("RSS: ").append(regression.rss.get).toString
   }
+   
+  
+   
+  private def rssSum(xt: XTSeries[DblVector], y: DblVector): (Double, Double) = {
+  	  val regression = MultiLinearRegression[Double](xt, y)
+  	  
+  	  (regression.rss.get, xt.toArray.foldLeft(0.0)((s, x) => s + (regression |> x).get))
+  }
+  
   	 
-   private[this] def filter: Unit = {
-  	 println("Evaluation of ordinary least squares regression filtering")
+   private def filter: Unit = {
+  	 Display.show("Evaluation of ordinary least squares regression filtering", logger)
   	   	 
-  	 val path = "resources/data/chap7/CU.csv"
-     val dataInput = "output/chap7/CU_input.csv"
+  	 val path = "resources/data/chap6/CU.csv"
+     val output = "output/chap6/CU_output.csv"
   	 
 	 val src = DataSource(path, true, true, 1)
-	 val price = src |> YahooFinancials.adjClose
+	 val prices = src |> YahooFinancials.adjClose 
 	 val volatility = src |> YahooFinancials.volatility 
 	 val volume = src |> YahooFinancials.volume
-		
-	 if( price != None && volatility != None && volume != None) {
-		val prices = price.get.toArray
-	    val deltaPrice = XTSeries[Double](prices.drop(1).zip(prices.take(prices.size -1)).map( z => z._1 - z._2))
-		
-		DataSink[Double](dataInput) |> deltaPrice :: volatility.get :: volume.get :: List[XTSeries[Double]]()
+	
+	 if( prices != None && volatility != None && volume != None) {
+		val _prices = prices.get.toArray
+		val deltaPrice = _prices.drop(1)
+		                       .zip(_prices.take(_prices.size -1))
+		                       .map(z => z._1 - z._2)
+		val deltaPricet = XTSeries[Double](deltaPrice)
+	    
+		DataSink[Double](output) |>  deltaPricet ::
+                                    volatility.get :: 
+                                    volume.get :: 
+                                    List[XTSeries[Double]]()
+                                   
 		val data =  volatility.get.zip(volume.get).map(z => Array[Double](z._1, z._2))
 		    
 		val features = XTSeries[DblVector](data.take(data.size-1))
 		val regression = MultiLinearRegression[Double](features, deltaPrice)
 	    regression.weights match {
-	       case Some(w) => w.zipWithIndex.foreach( wi => println(wi._1 +": " + wi._2))
-		   case None => println("The multivariate regression could not be trained")
+	       case Some(w) => {
+	      	   val buf = new StringBuilder("MultiLinearRegressionEval: ")
+	      	   w.zipWithIndex.foreach( wi => buf.append(wi._1).append(": ").append(wi._2).append("\n"))
+	      	   Display.show(buf.toString, logger)
+	       }
+		   case None => Display.error("The multivariate regression could not be trained", logger)
 		}
 	  }
    }

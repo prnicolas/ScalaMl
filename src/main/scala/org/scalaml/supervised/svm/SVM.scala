@@ -1,8 +1,10 @@
 /**
  * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the only purpose of illustrating the 
- * concepts and algorithms presented in Scala for Machine Learning.
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.supervised.svm
 
@@ -11,30 +13,19 @@ import libsvm.{svm_problem, svm_node, svm, svm_model}
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.workflow.PipeOperator
 import org.scalaml.util.Matrix
-
-
-
-		/**
-		 * <p>Class that encapsulates the different formulation and routines of LIBSVM. SVM are 
-		 * defined as data transformation by implementing the PipeOperator trait. As with any
-		 * classifiers or regression models, the model is trained during the instantiation of the 
-		 * class in order to reduce the number of possible states for the classifier.<br>
-		 * The model of the SVM is defined as the tuple of (LIBSVM model, accuracy in cross validation)</p>
-		 * @param config configuration of the SVM 
-		 * @param xt features used for the training of the SVC or SVR model
-		 * @param labels labeled observations used in the training of the model
-		 * @throws IllegalArgumentException thrown for any of the class parameters being null or the size of the features
-		 * does not match the size of the observations.
-		 * 
-		 * @author Patrick Nicolas
-		 * @since April 29, 2014
-		 * @note Scala for Machine Learning
-		 */
+import scala.util.{Try, Success, Failure}
 import XTSeries._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
+
+
+
 final class SVM[T <% Double](val config: SVMConfig, 
 		               val xt: XTSeries[Array[T]], 
 		               val labels: DblVector) extends PipeOperator[Array[T], Double] {
 	
+  private val logger = Logger.getLogger("SVM")
   validate(config, xt, labels)
   
   type Feature = Array[T]
@@ -48,7 +39,7 @@ final class SVM[T <% Double](val config: SVMConfig,
       prob.x = new SVMNodes(xt.size)
       
       val dim = dimension(xt)
-      try {
+      Try {
 	  	  xt.zipWithIndex.foreach( xt_i => {  
 	  		 
 	  		 val svm_col = new Array[svm_node](dim)
@@ -59,10 +50,10 @@ final class SVM[T <% Double](val config: SVMConfig,
 	  	  	    svm_col(xi._2) = node })
 	  	  	 prob.x(xt_i._2) = svm_col
 	      })
-	      Some(new SVMModel(svm.svm_train(prob, config.param), accuracy(prob)))
-      }
-      catch {
-      	case e: RuntimeException => println(e.toString); None
+	      SVMModel(svm.svm_train(prob, config.param), accuracy(prob))
+      } match {
+      	case Success(m) => Some(m)
+      	case Failure(e) => Display.error("SVM.model ", logger, e); None
       }
   }
   

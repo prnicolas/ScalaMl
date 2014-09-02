@@ -1,8 +1,10 @@
 /**
  * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the only purpose of illustrating the 
- * concepts and algorithms presented in Scala for Machine Learning.
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -13,7 +15,7 @@ import org.scalaml.core.Types.ScalaMl._
 
 
 import LogisticRegressionOptimizer._
-class LogisticRegressionOptimizer(val maxIters: Int, 
+protected class LogisticRegressionOptimizer(val maxIters: Int, 
 		                          val maxEvals: Int, 
 		                          val eps: Double, 
 		                          private val lsOptimizer: LeastSquaresOptimizer) {
@@ -40,8 +42,8 @@ class LogisticRegressionOptimizer(val maxIters: Int,
 
 object LogisticRegressionOptimizer {
 	final val EPS_LIMITS =  (1e-32,  1.0)
-	final val NUM_ITERS_LIMITS = (2, 1000)
-	final val NUM_EVALS_LIMITS = (2, 2000)
+	final val NUM_ITERS_LIMITS = (10, 1000)
+	final val NUM_EVALS_LIMITS = (100, 10000)
 	
 	final val DEFAULT_NUM_ITERS = 50
 	final val DEFAULT_NUM_EVALS = 100
