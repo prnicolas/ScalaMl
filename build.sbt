@@ -21,5 +21,5 @@ libraryDependencies ++= Seq(
 
 
 // Options for the Scala compiler should be customize
-scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings", "-feature")
+scalacOptions ++= Seq("-unchecked", "-optimize")
 
