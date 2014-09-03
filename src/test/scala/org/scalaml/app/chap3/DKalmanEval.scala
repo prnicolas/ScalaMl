@@ -78,5 +78,9 @@ class DKalmanEval(implicit f: Double=> String) extends FilteringEval {
    }
 }
 
+object DKalmanEval {
+	def apply(implicit f: Double=> String): DKalmanEval = new DKalmanEval
+}
+
 
 // --------------------------------------  EOF -------------------------------

@@ -23,7 +23,7 @@ object RidgeRegressionEval {
    final val dataInput = "output/chap6/CU_input.csv"
   	 
    private val logger = Logger.getLogger("RidgeRegressionEval")	 
-	def run(args: Array[String] = null): Unit = {
+	def run: Unit = {
   	   	Display.show("Evaluation of Ridge regression")
   	   	 
 		val src = DataSource(path, true, true, 1)
@@ -72,12 +72,6 @@ object RidgeRegressionEval {
 				                                   deltaPrice, lambda)
 	  features.foldLeft(0.0)((s, x) => s + (regression |> x).get)
    }
-   
-}
-
-
-object RidgeApp extends App {
-	 RidgeRegressionEval.run(null)
 }
 
 

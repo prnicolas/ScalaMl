@@ -11,6 +11,10 @@ package org.scalaml.app.chap2
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import scala.util.Random
 import org.scalaml.core.Types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
 
 
 	/**
@@ -23,6 +27,7 @@ import org.scalaml.core.Types.ScalaMl._
 object BiasVarianceEval {
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 			
+	private val logger = Logger.getLogger("BiasVarianceEval")
 	def run: Unit = {
 		println("Evaluation of Bias Variance decomposition")
 		
@@ -37,18 +42,18 @@ object BiasVarianceEval {
         
 		display(fEst, testData)
 		
-		try {
+		Try {
 			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
 			modelFit.fit(fEst.map( _._1)) match {
 		    	case Some(varBias) => {
-		    		println("Variance, bias, MSE")
-		    		varBias.foreach( vb => println(vb._1 + ", " + vb._2 + ", " + (vb._1 + vb._2*vb._2)) )
+		    		varBias.foreach( vb => Display.show(vb._1 + ", " + vb._2 + ", " + (vb._1 + vb._2*vb._2), logger) )
+		    		true
 		    	}
-		    	case None => println("failed")
+		    	case None => false
 		    }
-		}
-		catch {
-			case e: RuntimeException => println("Uncaught computation error")
+		} match {
+			case Success(succeed) => Display.show("BiasVarianceEval completed ", logger)
+			case Failure(e) => Display.error("BiasVarianceEval ", logger, e)
 		}
 	}
 	

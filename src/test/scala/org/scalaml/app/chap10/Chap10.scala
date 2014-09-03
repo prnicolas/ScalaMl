@@ -8,31 +8,13 @@
  */
 package org.scalaml.app.chap10
 
-import org.scalaml.app.ScalaMlApp
+import org.scalatest.FunSuite
 
 
-
-object Chap10 extends App with ScalaMlApp  {
-	private def runAll = {
-  	  GAEval.run
-   }
-	
-   final val cmdDescriptor: String = {
-	  new StringBuilder("Command line: Chap 10 arg\n")
-		   .append(" gaeval: Evaluation of genetic algorithm\n")
-		   .append(" all: All evaluation").toString
-	}
-	
-  override protected def execute(args: Array[String]): String = {
-	 if( args == null || args.length == 0) "?" else args(0) match {
-		case "?" => cmdDescriptor
-		case "ga" => GAEval.run; args(0)
-		case "all" => runAll; args(0)
-		case _ => cmdDescriptor
-	   }	
-   }
-  
-   process(args)
+final class Chap10 extends FunSuite  {
+  test("Genetic Algorithm") {
+	 GAEval.run
+  }
 }
 
 

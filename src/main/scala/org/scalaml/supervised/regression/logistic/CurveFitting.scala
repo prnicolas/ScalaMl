@@ -77,7 +77,7 @@ object CurveFitting {
 	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
 }
 
-
+/*
 object CurveFittingApp extends App {
 	val xV: DblVector = Range(1, 20).map(_.toDouble).toArray
 	val yV: DblVector = xV.map( x=> 1.0 - 2.0*x + x*x+ 0.1*Random.nextDouble )
@@ -85,3 +85,4 @@ object CurveFittingApp extends App {
 	val logIt = new CurveFitting[Double](xV ,yV, 300, 500, 0.5)
 	logIt.train
 }
+*/

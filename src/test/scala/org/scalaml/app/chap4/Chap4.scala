@@ -9,10 +9,9 @@
 package org.scalaml.app.chap4
 
 
-import org.scalaml.app.ScalaMlApp
+import org.scalatest.FunSuite
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.DataSource
-
 
 trait UnsupervisedLearningEval {
    final val path = "resources/data/chap4/"
@@ -23,44 +22,20 @@ trait UnsupervisedLearningEval {
 }
 
 
-object Chap4 extends App with ScalaMlApp { 
-	private def runAll = {
-		KMeansEval.run(null)
+final class Chap4 extends FunSuite { 
+	test("K-means evaluation") {
+	   KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
+	}
+	
+	test("Expectation-Maximization evaluation") {
 		EMEval.run(Array[String]("2", "40"))
         EMEval.run(Array[String]("3", "25"))
         EMEval.run(Array[String]("4", "15"))
-		PCAEval.run(null)
-	}
-		
-    final val cmdDescriptor: String = {
-		new StringBuilder("Command line: Chap 4 arg\n")
-		   .append(" kmeans: Evaluation Kmeans clustering\n")
-		   .append(" em:  Evaluation Expectation Maximization\n")
-		   .append(" pca: Evaluation Principal Components Analysis\n")
-		   .append(" all: All evaluation\n")
-           .append(" ?: help)").toString
 	}
 	
-    override protected def execute(args: Array[String]): String = {
-	   if( args == null || args.length == 0) "?" else args(0) match {
-			case "?" => cmdDescriptor
-			case "kmeans" => {
-				KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
-				args(0)
-			}
-			case "em" => {
-			    EMEval.run(Array[String]("2", "40"))
-	            EMEval.run(Array[String]("3", "25"))
-	            EMEval.run(Array[String]("4", "15"))
-	            args(0)
-			}
-			case "pca" =>  PCAEval.run(null); args(0)
-			case "all" => runAll; args(0)
-			case _ => cmdDescriptor
-		}
-	 }
-    
-     process(args)
+	test("Principal Components Evaluation") {
+	   PCAEval.run(null)
+	}
 }
 
 

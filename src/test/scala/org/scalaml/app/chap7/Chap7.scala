@@ -8,42 +8,25 @@
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.app.ScalaMlApp
 
-
+import org.scalatest.FunSuite
 
 	/**
-	 * Singleton to execute the test cases presented in Chapter7
+	 * Test class to execute the test cases presented in Chapter7
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 25, 2014
 	 * @note Scala for Machine Learning
 	 */
-object Chap7 extends App with ScalaMlApp {
+final class Chap7 extends FunSuite {
 		 
-   private def runAll = {
-	 HMMEval.run
-	 CrfEval.run
-  }
-	
-  final val cmdDescriptor: String = {
-	new StringBuilder("Command line: Chap 7 arg\n")
-		  .append(" hmm: Hidden Markov Model test case\n")
-		     .append(" crf:  Conditional random fields test case\n")
-		        .append(" all: All test cases").toString
-  }
-  
-  override protected def execute(args: Array[String]): String = {
-	  if( args == null || args.length == 0) "?" else args(0) match {
-	  	 case "?" => cmdDescriptor
-	  	 case "hmm" => HMMEval.run; args(0)
-	  	 case "crf" => CrfEval.run; args(0)
-	  	 case "all" => runAll; args(0)
-	  	 case _ => cmdDescriptor
-	  }
-  }
-
-  process(args)
+   test("Hidden Markov Model evaluation") {
+  	   HMMEval.run
+   }
+   
+   test("Conditional Random Fields evaluation") {
+  	  CrfEval.run
+   }
 }
 
 // --------------------------------  EOF -------------------------------

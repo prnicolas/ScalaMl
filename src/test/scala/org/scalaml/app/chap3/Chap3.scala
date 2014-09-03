@@ -8,7 +8,8 @@
  */
 package org.scalaml.app.chap3
 
-import org.scalaml.app.ScalaMlApp
+
+import org.scalatest.FunSuite
 
 
 trait FilteringEval {
@@ -17,46 +18,23 @@ trait FilteringEval {
 
 
 
-object Chap3 extends App with ScalaMlApp {
-	
-	private def runAll = {
-      MovingAveragesEval.run(Array[String]("BAC", "10"))
-      DFTEval.run(null)
-	  DFTEval.run(Array[String]("BAC"))
-	  
-	  implicit def double2String(x: Double): String = x.toString
-	  (new DKalmanEval).run(Array[String]("BAC"))
-	}
-		
-	final val cmdDescriptor: String = {
-		new StringBuilder("Command line: Chap 3 arg\n")
-		   .append(" mvaverage: Evaluation of moving average\n")
-		   .append(" fourier:  Evaluation of Discrete Fourier with financial data\n")
-		   .append(" kalman: Evaluation of Kalman filter\n")
-		   .append(" all: All evaluation").toString
+final class Chap3 extends FunSuite {
+	test("Moving averages evaluation") {
+		 MovingAveragesEval.run(Array[String]("BAC", "10"))
 	}
 	
-	
-   override protected def execute(args: Array[String]): String = {
-	   if( args == null || args.length == 0) "?" else args(0) match {
-			case "?" => cmdDescriptor
-			case "maverage" => MovingAveragesEval.run(Array[String]("BAC", "10")); args(0)
-			case "fourier" =>   {
-				DFTEval.run(null)
-				DFTEval.run(Array[String]("BAC"))
-				args(0)
-			}
-			case "kalman" => {
-			   implicit def double2String(x: Double): String = x.toString
-		       (new DKalmanEval).run(Array[String]("BAC"))
-		       args(0)
-			}
-			case "all" => runAll; args(0)
-			case _ =>  cmdDescriptor
-	   }
+	test("Discrete Fourier Series synthetic evaluation") {
+		 DFTEval.run(null)
 	}
 	
-	process(args)
+	test("Discrete Fourier Series evaluation on stock") {
+		 DFTEval.run(Array[String]("BAC"))
+	}
+	
+	test("Kalman filter evaluation") {
+        implicit def double2String(x: Double): String = x.toString
+	   (new DKalmanEval).run(Array[String]("BAC"))
+	}
 }
 
 

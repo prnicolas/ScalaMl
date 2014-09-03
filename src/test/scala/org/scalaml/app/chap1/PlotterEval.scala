@@ -31,7 +31,7 @@ object PlotterEval {
 	final val LOW_INDEX = 3
     final val pathName = "resources/data/chap1/CSCO.csv"
 				
-	def run(args: Array[String]) {
+	def run {
 
 		val src = Source.fromFile(pathName)
 		val fields = src.getLines.map( _.split(CSV_DELIM)).toArray	   

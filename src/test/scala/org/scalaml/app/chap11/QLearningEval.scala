@@ -15,6 +15,8 @@ import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
 import YahooFinancials._
 import org.scalaml.core.Types.ScalaMl.DblVector
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 
 
@@ -29,6 +31,8 @@ object QLearningEval {
 			
 	final val path = "resources/data/chap11/"
 	final val etfs = Array[String]("TLT", "ICF", "SPY", "VWO", "USO", "IWC")
+	
+	private val logger = Logger.getLogger("QLearningEval")
 
 	final val states = Array[QLState[Double]](
 	   QLState[Double](0, Array[Double](0.2, 0.2, 0.2, 0.0, 0.2, 0.0)),
@@ -67,7 +71,7 @@ object QLearningEval {
 		  	  val qLabels = QLLabel[Double](labels)
 		  	  val qLearning = QLearning[Double](qConfig, qLabels, states.size)
 		   }
-		   case None => Console.println("Failed to extract all input data")
+		   case None => Display.error("Failed to extract all input data", logger)
 	   }
     }
 }

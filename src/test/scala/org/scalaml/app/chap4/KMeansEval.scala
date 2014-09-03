@@ -13,6 +13,7 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
 import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 
@@ -30,12 +31,13 @@ object KMeansEval extends UnsupervisedLearningEval {
    
    final val START_INDEX = 80
    final val NUM_SAMPLES = 50
+   
+   private val logger = Logger.getLogger("KMeansEval")
   
    override def run(args: Array[String]): Unit = {
       import Types.CommonMath._
-      require(args != null && args.length > 0, "Cannot evaluate K-Means with undefined arguments")
-      
-      println("Evaluation of K-means clustering")
+        
+      Display.show("Evaluation of K-means clustering", logger)
       
       		// nested function to generate K clusters from a set of observations observations
             // obs. The condition on the argument are caught by the K-means constructor.
@@ -47,20 +49,20 @@ object KMeansEval extends UnsupervisedLearningEval {
   		     val descriptor = clusters.foldLeft(new StringBuilder)((b, c) => 
 		        b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => b2.append(symbols(mbr)).append(", ")).toString).append("\n")
 		     )
-		     Display.show(descriptor.toString + "\nmeans:\n")		    	                
-		     clusters.foreach( _.center.foreach( Display.show( _ )))
+		     Display.show(descriptor.toString + "\nmeans:\n", logger)		    	                
+		     clusters.foreach( _.center.foreach( Display.show( _ , logger)))
 
 		     Display.show("\nCluster standard deviation:\n")
-		     clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean)).foreach( Display.show( _ ) )
+		     clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean)).foreach( Display.show( _ , logger) )
 		  } 
-		  case None => Display.error("error for K-means run")
+		  case None => Display.error("error for K-means run", logger)
         }
       }
 
       val normalize = true
       val obsList = symbols.map( s => DataSource(s, path, normalize) |> extractor)
       obsList.find ( _ == None) match {
-      	 case Some(nullObsList) => Console.println("Could not load data")
+      	 case Some(nullObsList) => Display.error("Could not load data", logger)
       	 case None => {
       		 val values = obsList.head.get.head.drop(START_INDEX).take(NUM_SAMPLES)
       		 args.map(_.toInt) foreach(run(_, values))

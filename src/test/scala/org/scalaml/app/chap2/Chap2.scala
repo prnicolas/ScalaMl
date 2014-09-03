@@ -8,16 +8,8 @@
  */
 package org.scalaml.app.chap2
 
-import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
-import org.scalaml.stats.{Stats, BiasVarianceEmulator}
-import org.scalaml.workflow._
-import scala.util.Random
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.plots.LightPlotTheme
-import org.apache.log4j.Logger
-import org.scalaml.app.ScalaMlApp
 
+import org.scalatest.FunSuite
 
 
 
@@ -32,31 +24,14 @@ import org.scalaml.app.ScalaMlApp
 		 * @since February 1, 201t
 		 * @note Scala for Machine Learning.
 		 */
-object Chap2 extends App with ScalaMlApp {
-
-   private def runAll = {
-  	 BiasVarianceEval.run
-  	 WorkflowEval.run
+final class Chap2 extends FunSuite {
+   test("Workflow evaluation") {
+  	 WorkflowEval
    }
-		
-   final val cmdDescriptor: String = {
-	  new StringBuilder("Command line: Chap 2 arg\n")
-		   .append(" biasvariance: Evaluation of Bias-Variance decomposition\n")
-		   .append(" workflow:  Evaluation of workflow\n")
-		   .append(" all: All evaluation").toString
-	}
-	
-  override protected def execute(args: Array[String]): String = {
-	 if( args == null || args.length == 0) "?" else args(0) match {
-		case "?" => cmdDescriptor
-		case "biasvariance" => BiasVarianceEval.run; args(0)
-		case "workflow" =>  WorkflowEval.run; args(0)
-		case "all" => runAll; args(0)
-		case _ => cmdDescriptor
-	   }	
+   
+   test("Variance - Bias decomposition evaluation") {
+  	  	 BiasVarianceEval.run
    }
-  
-   process(args)
 }
 
      

@@ -75,32 +75,4 @@ object DocumentsSource {
 }
 
 
-object DocumentsSourceApp extends App {
-  def iterate(iter: Iterator[String]): Option[String] = {
-  	 iter.find( s=> (s != null && s .length > 1))
-  	 /*
-  	 var line: String = null
-  	 while( iter.hasNext && (line == null || line.length == 0) )
-  		line = iter.next.trim
-     line
-     * 
-     */
-  }
-	
-  import scala.io.Source
-  final val pathName = "resources/text/chap5/tesla8.txt"
-  	
-  val src = Source.fromFile(pathName)	
-	  	  val fieldIter = src.getLines
-	  	  	  
- val date = iterate(fieldIter)
-   val title = iterate(fieldIter)
-val content = fieldIter.foldLeft(new StringBuilder)((b, str) => b.append(str.trim))
-  if( date != None && title != None && content != None)
-  	  println(date.get.toString)
-  	  println(title.toString)
-
-	  	  	 
-}
-
 // ---------------------------------  EOF --------------------------------------------------
