@@ -34,8 +34,9 @@ Library components for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_lib.png" alt="Libraries"><br>
 <br>
 Build script for <i>Scala for Machine Learning</i>:<br>
-To build the library: <i>$(ROOT)/sbt clean compile publish-local</i><br>
-To build the library and examples: <i>$(ROOT)/sbt build-all.sbt clean compile publish-local</i><br>
+To build the library and tests: <i>$(ROOT)/sbt clean compile publish-local</i><br>
+To run all tests
+To build the library and examples: <i>$(ROOT)/sbt clean test</i><br>
 <br>
 
 
