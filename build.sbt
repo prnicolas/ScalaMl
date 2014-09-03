@@ -2,13 +2,9 @@ organization := "Patrick Nicolas"
 
 name := "scalaml"
 
-version := "0.9"
+version := "0.91"
 
 scalaVersion := "2.10.3"
-
-// Build org.scalaml library without examples/apps
-sourceDirectories in Compile := Seq(file("src/main/scala/"))
-
 
 // The build script assumes that the following jar file are
 // included in the lib
@@ -19,10 +15,11 @@ libraryDependencies ++= Seq(
   "org.jfree" % "jfreechart" % "1.0.17",
   "com.typesafe.akka" %% "akka-actor" % "2.1.0",
   "org.apache.spark" %% "spark-core" % "1.0.0",
-  "org.apache.spark" %% "spark-mllib" % "1.0.0"
+  "org.apache.spark" %% "spark-mllib" % "1.0.0",
+  "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
 )
 
 
 // Options for the Scala compiler should be customize
-scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline")
+scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings", "-feature")
 
