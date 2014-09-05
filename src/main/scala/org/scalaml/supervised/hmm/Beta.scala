@@ -12,6 +12,9 @@ package org.scalaml.supervised.hmm
 
 import org.scalaml.util.Matrix
 import org.scalaml.core.Types
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 		/**
 		 * <p>Implementation of the Beta or backward pass of the 
@@ -24,26 +27,30 @@ import org.scalaml.core.Types
 		 * @author Patrick Nicolas
 		 * @since March 14, 2014
 		 */
-final class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
+protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
+	private val logger = Logger.getLogger("Beta")
+	
 	val complete = {
-		try {
-		    alphaBeta = Matrix[Double](lambda.d._T, lambda.d._N)	
+		Try {
+		    alphaBeta = Matrix[Double](lambda.dim._T, lambda.dim._N)	
 		    alphaBeta += (lambda.d_1, 1.0)
 		    normalize(lambda.d_1)
-		    recurse
+		    sumUp
 		    true
-		}
-		catch {
-			case e: ArithmeticException => println("Failed beta computation " + e.toString()); false
-			case e: RuntimeException => println("Failed beta computation " + e.toString()); false
+		} match {
+			case Success(t) => t
+			case Failure(e) => Display.error("Failed beta computation ", logger, e); false
 		}
 	}
 	
-    private def recurse: Unit = 
-	   (lambda.d._T-2 to 0 by -1).foreach( t =>{updateBeta(t); normalize(t) })
+    private def sumUp: Unit = 
+	   (lambda.dim._T-2 to 0 by -1).foreach( t =>{
+	  	  updateBeta(t)
+	  	  normalize(t) 
+	   })
 	  	
-	private  def updateBeta(t: Int): Unit =
-  	   lambda.d.foreachN( i => { 
+	private def updateBeta(t: Int): Unit =
+  	   HMMDim.foreach(lambda.dim._N, i => { 
   	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, labels(t+1)))	
   	   })
 }

@@ -33,19 +33,19 @@ import Types._
 	 *  @note Scala for Machine Learning
 	 */
 class ViterbiPath(val lambdaV: HMMLambda, 
-				  val paramsV: HMMParams, 
-				  val obsV: Array[Int]) extends HMMInference(lambdaV, paramsV, obsV) {
+				  val configV: HMMConfig, 
+				  val obsV: Array[Int]) extends HMMInference(lambdaV, configV, obsV) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
 	   * throws a Arithmetic or Runtime exception that is to be caught by
 	   * the client code
 	   */
-   val maxDelta = recurse(lambda.d._T, 0)
+   val maxDelta = recurse(lambda.dim._T, 0)
 
    private def initial(ti: (Int, Int)): Double = {
   	 if(ti._1 == 0) {
-  	    params.psi += (0, 0, 0)
-  		params.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, labels(ti._2))
+  	    config.psi += (0, 0, 0)
+  		config.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, labels(ti._2))
   	 }
   	 else 
   		-1.0
@@ -57,21 +57,19 @@ class ViterbiPath(val lambdaV: HMMLambda,
   	 
   	 if( maxDelta == -1.0) {
   	    if( t != labels.size) {
-            maxDelta = lambda.d.rn.maxBy( s =>  
-  		        recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, labels(t)) )	   
-  		        
-  		    val idx = lambda.d.rt.maxBy(i =>recurse(t-1 ,i)*lambda.A(i,j))
-  		    params.psi += (t, j, idx)
-            params.delta += (t, j, maxDelta)
+  	    	maxDelta = HMMDim.maxBy(lambda.dim._N, s => recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, labels(t)) )
+  		    val idx = HMMDim.maxBy(lambda.dim._T, i =>recurse(t-1 ,i)*lambda.A(i,j))
+  		    config.psi += (t, j, idx)
+            config.delta += (t, j, maxDelta)
   	     }
   	     else {
   		   maxDelta = 0.0  		   
-  		   val index = lambda.d.rn.maxBy( i => { 
+  		   val index = HMMDim.maxBy(lambda.dim._N, i => { 
   		  	   val delta = recurse(t-1 ,i)
   		  	   if( delta > maxDelta) maxDelta = delta
   		  	   delta
   		   })
-  		    params.QStar.update(t, index)
+  		    config.QStar.update(t, index)
   	     }
   	 }
   	 maxDelta
@@ -86,7 +84,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * @since March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, params, _labels)
+	def apply(lambda: HMMLambda, config: HMMConfig, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, config, _labels)
 }
 
 

@@ -9,6 +9,9 @@
  */
 package org.scalaml.supervised.hmm
 
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 	
 	/**
 	 * <p>Class that update the backward-forward lattice of observations and
@@ -24,41 +27,40 @@ package org.scalaml.supervised.hmm
 	 *  @note Scala for Machine Learning
 	 */
 class BaumWelchEM(	val lambdaBW: HMMLambda, 
-					val paramsBW: HMMParams, 
+					val configBW: HMMConfig, 
 					val obsBW: Array[Int], 
-					val eps: Double) extends HMMInference(lambdaBW, paramsBW, obsBW) {
+					val eps: Double) extends HMMInference(lambdaBW, configBW, obsBW) {
 	
+  private val logger = Logger.getLogger("BaumWelchEM")
   require( eps > 1E-5 && eps < 0.1, "Convergence criteria for HMM Baum_Welch " + eps + " is out of range")
 
   	/**
   	 * Maximum likelihood (maximum log of the conditional probability) extracted from the training 
   	 */
   val maxLikelihood: Option[Double] = {
-  	  try {
+  	  Try {
 		  var likelihood = frwrdBckwrdLattice
-		  Range(0, params.maxIters) find( _ => {
-		  	  lambda.estimate(params, labels)
+		  Range(0, config.maxIters) find( _ => {
+		  	  lambda.estimate(config, labels)
 		  	  val _likelihood = frwrdBckwrdLattice
 		  	  val diff = likelihood - _likelihood
 		  	  likelihood = _likelihood
 		  	  diff < eps
 		  }) match {
-		  	case Some(index) => Some(likelihood)
-		  	case None => None
+		  	case Some(index) => likelihood
+		  	case None => throw new IllegalStateException("Likelihood failed")
 		  }
-  	  }
-  	  catch {
-  	  	case e: ArithmeticException => Console.println("BaumWelchEM.likelihood " + e.toString); None
-  	  	case e: ArrayIndexOutOfBoundsException  => Console.println("BaumWelchEM.likelihood " + e.toString); None
-  	  	case e: RuntimeException => Console.println("BaumWelchEM.likelihood " + e.toString); None
+  	  } match {
+  	  	case Success(likelihood) => Some(likelihood)
+  	  	case Failure(e) => Display.error("BaumWelchEM ", logger, e); None
   	  }
 	}
    
    private def frwrdBckwrdLattice: Double  = {
        val alpha = Alpha(lambda, labels).alpha
 	   Beta(lambda, labels)
-	   params.Gamma
-	   params.DiGamma.update(lambda.A, lambda.B, labels)
+	   config.Gamma
+	   config.DiGamma.update(lambda.A, lambda.B, labels)
 	   alpha
    }
 }
@@ -72,7 +74,7 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	 */
 object BaumWelchEM {
    final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
-   def apply(lambda: HMMLambda, params: HMMParams, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
+   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
+   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
 }
 // -----------------------------  EOF --------------------------------

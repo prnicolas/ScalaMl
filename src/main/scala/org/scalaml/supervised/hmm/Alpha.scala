@@ -19,7 +19,7 @@ import org.scalaml.core.Types
 		 * @param lambdaA Lambda (pi, A, B) model for the HMM
 		 * @param params parameters used in any of the three canonical form of the HMM
 		 * @param obsA: Array of observations as integer (categorical data)
-		 * @throws IllegalArgumentException if lambda, params and observations are undefined
+		 * @throws IllegalArgumentException if lambda, or  observations are undefined
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
 		 */
@@ -27,7 +27,11 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
-  val alpha = { alphaBeta = lambda.initAlpha(labels); normalize(0); recurse }
+  val alpha = { 
+  	alphaBeta = lambda.initAlpha(labels)
+  	normalize(0)
+  	sumUp
+  }
 
   
   	/**
@@ -35,18 +39,21 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
   	 * thrown during the comptutation are caught in the client code.</p>
   	 * @return sum of the logarithm of the conditional probability p(xi|Y)
   	 */
-  def logProb: Double = lambda.d.rt.foldLeft(Math.log(alpha))((s, t) => s + Math.log(ct(t)))
+  def logProb: Double = HMMDim.foldLeft(lambda.dim._T, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
   
-  private def recurse: Double = {	 
-	 lambda.d.foreachT(t => {updateAlpha(t); normalize(t)})
-	 lambda.d.rn.foldLeft(0.0)((s, k) => s + alphaBeta(lambda.d_1, k))
+  private def sumUp: Double = {	 
+	 HMMDim.foreach(lambda.dim._T, t => {
+		updateAlpha(t)
+		normalize(t)
+	 })
+	 HMMDim.foldLeft(lambda.dim._N, (s, k) => s + alphaBeta(lambda.d_1, k))
   }
 
    
   private def updateAlpha(t: Int): Unit = 
-  	lambda.d.foreachM( i => { 
+  	HMMDim.foreach(lambda.dim._N, i => 
   	   alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, labels(t))) 
-    })
+    )
 }
 
 

@@ -11,6 +11,7 @@ package org.scalaml.supervised.hmm
 
 import org.scalaml.core.Types
 import org.scalaml.util.Matrix
+import org.scalaml.supervised.Config
 import Types._
 import scala.reflect.ClassTag
 
@@ -22,17 +23,17 @@ import scala.reflect.ClassTag
 	 * @param maxIters maximum number of iterations used in the training of HMM
 	 * @throws if range is undefined or the maximum iterations is out of range
 	 */
-final class HMMParams(val d: HMMDim, val maxIters: Int) {
-  require(d != null, "Cannot configure a HMM with undefined dimension")
+final class HMMConfig(val dim: HMMDim, val maxIters: Int) extends Config {
+  require(dim != null, "Cannot configure a HMM with undefined dimension")
   require( maxIters > 0 &&  maxIters < 1000, "Maximum number of iterations " + maxIters + " is out of range")
   
-  val alpha = Matrix[Double](d._T, d._N)
-  val beta = Matrix[Double](d._T, d._N)
-  val delta = Matrix[Double](d._T, d._N)
-  val psi = Matrix[Int](d._T, d._N)
+  val alpha = Matrix[Double](dim._T, dim._N)
+  val beta = Matrix[Double](dim._T, dim._N)
+  val delta = Matrix[Double](dim._T, dim._N)
+  val psi = Matrix[Int](dim._T, dim._N)
   
   object QStar {
-  	private val qStar = Array.fill(d._T)(0)
+  	private val qStar = Array.fill(dim._T)(0)
   	
   	def update(t: Int, index: Int): Unit = {
   	   qStar(t-1) = index
@@ -42,21 +43,20 @@ final class HMMParams(val d: HMMDim, val maxIters: Int) {
   }
   
   object DiGamma {
-  	private val diGamma = Array.fill(d._T-1)(Matrix[Double](d._N, d._N))
+  	private val diGamma = Array.fill(dim._T-1)(Matrix[Double](dim._N, dim._N))
   	
   	def update(A: Matrix[Double], B: Matrix[Double], obs: Array[Int]): Unit = {
        try {
-      	  val rn1 = Range(0, d._N+1)
-	       (0 until d._T-1).foreach( t => {     	
-	           val sum =  d.rn.foldLeft(0.0)( (sst, i) => {
-	               sst + rn1.foldLeft(0.0)( (s, j) => {
+	      HMMDim.foreach(dim._T-1, t => {     	
+	           val sum =  HMMDim.foldLeft(dim._N, (sst, i) => {
+	               sst + HMMDim.foldLeft(dim._N+1, (s, j) => {
 	            	  diGamma(t) += (i, j, A(t,i)*beta(t+1, i)* A(i,j)*B(j, obs(t+1)))
 	            	  s + diGamma(t)(i, j)
 	               })
 	           })
-	           
-	           d.rt.foreach( i => {
-	              rn1.foreach(j => 
+	            
+	           HMMDim.foreach(dim._T, i => {
+	              HMMDim.foreach(dim._N+1, j => 
 	                 diGamma(t) += (i, j,  diGamma(t)(i,j)/sum) )
 	            })
 	        })
@@ -66,34 +66,39 @@ final class HMMParams(val d: HMMDim, val maxIters: Int) {
        }
   	 }
   	
-  	def fold(t: Int, i: Int, j: Int): Double = (0 until t).foldLeft(0.0)((s, k) => s + diGamma(k)(i,j) )
+  	def fold(t: Int, i: Int, j: Int): Double = HMMDim.foldLeft(t, (s, k) => s + diGamma(k)(i,j) )
   }
   
   
   
   object Gamma {
   	private[this] val values = {
-  	   val gamma = Matrix[Double](d._T, d._N)
+  	   val gamma = Matrix[Double](dim._T, dim._N)
 
-  	   d.rt.foreach( t => {
-  	      val sum = d.rn.foldLeft(0.0)((s, i) => {gamma += (t, i, alpha(t,i)*beta(t,i));  s + gamma(t,i) } )
+  	   HMMDim.foreach(dim._T, t => {
+  	      val sum = HMMDim.foldLeft(dim._N, (s, i) => {
+  	      	 gamma += (t, i, alpha(t,i)*beta(t,i))
+  	      	 s + gamma(t,i) 
+  	      })
   	      gamma.cols(t).map( _ / sum)
   	   })
   	   gamma
   	}
   	
-  	def fold(t: Int, i: Int): Double = (0 until t).foldLeft(0.0)((s, n) => s + values(n, i))
-  	def fold(t: Int, i: Int, k: Int, obs: Array[Int]): Double = (0 until t).foldLeft(0.0)((s, n) => s + { if(obs(n) ==k) values(n, i) else 0.0} )
+  	def fold(t: Int, i: Int): Double = HMMDim.foldLeft(t, (s, n) => s + values(n, i))
+  	def fold(t: Int, i: Int, k: Int, obs: Array[Int]): Double = 
+  		 HMMDim.foldLeft(t, (s, n) => s + { if(obs(n) ==k) values(n, i) else 0.0} )
+  	 
   	
   	def apply(i: Int, j: Int): Double = values(i,j)
   }
 }
 
 
-object HMMParams {
+object HMMConfig {
 	final val DEFAULT_MAXITERS = 20
-	def apply(d: HMMDim, maxIters: Int): HMMParams = new HMMParams(d, maxIters)
-	def apply(d: HMMDim): HMMParams = new HMMParams(d, DEFAULT_MAXITERS)
+	def apply(dim: HMMDim, maxIters: Int): HMMConfig = new HMMConfig(dim, maxIters)
+	def apply(dim: HMMDim): HMMConfig = new HMMConfig(dim, DEFAULT_MAXITERS)
 }
 
 // ----------------------------------------  EOF ------------------------------------------------------------
