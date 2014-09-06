@@ -1,8 +1,12 @@
 /**
  * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the only purpose of illustrating the 
- * concepts and algorithms presented in Scala for Machine Learning.
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * Version 0.92
  */
 package org.scalaml.trading
 
@@ -53,7 +57,7 @@ class Signal(val id: String, val targetValue: Double, val op: Operator)(implicit
    		 * @param that  other trading signal
    		 * @return true if the two trading signals share the same operator and threshold value
    		 */
-   def == (that: Signal): Boolean = op == that.op && Math.abs(value - that.value) < EPS
+   final def == (that: Signal): Boolean = op == that.op && Math.abs(value - that.value) < EPS
    
    override def toString: String = {
       new StringBuilder(id)

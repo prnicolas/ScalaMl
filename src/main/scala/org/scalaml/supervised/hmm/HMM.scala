@@ -5,6 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * Version 0.92
  */
 package org.scalaml.supervised.hmm
 
@@ -85,9 +87,20 @@ class HMMInference(val li: HMMLambda, val config: HMMConfig, val _labels: Array[
 
 
 
-
+		/**
+		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
+		 * three canonical forms (Decoding, training and evaluation).</p>
+		 * @param lambda  lambda model generated through training or used as input for the evaluation and decoding phase
+		 * @param form define the form (evaluation or decoding) used in the prediction of sequence
+		 * @param maxIters  maximum number of iterations used in the Baum-Welch algorithm
+		 * @throws IllegalArgumentException if the any of the class parameters is undefined
+		 * 
+		 * @author Patrick Nicolas
+		 * @since March 2014
+		 * @note Scala for Machine Learning
+		 */
 import HMMForm._
-class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm, val maxIters: Int)  
+protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm, val maxIters: Int)  
                            extends PipeOperator[T, HMMPredictor] {
 
 	private val logger = Logger.getLogger("HMM")
@@ -130,9 +143,19 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 	    BaumWelchEM(lambda, config, obs).maxLikelihood
 	}
 		
-	def decode(obs: Array[Int]): HMMPredictor = (ViterbiPath(lambda, config, obs).maxDelta, config.QStar())
+		/**
+		 * <p>Implements the 3rd canonical form of the HMM</p>
+		 * @param obs given sequence of observations
+		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
+		 */
+	def decode(obsIndx: Array[Int]): HMMPredictor = (ViterbiPath(lambda, config, obsIndx).maxDelta, config.QStar())
 	
-	def evaluate(obs: Array[Int]): HMMPredictor = (-Alpha(lambda, obs).logProb, obs)
+		/**
+		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>
+		 * @param obs index of the observation O in a sequence
+		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
+		 */
+	def evaluate(obsIndx: Array[Int]): HMMPredictor = (-Alpha(lambda, obsIndx).logProb, obsIndx)
 }
 
 
@@ -144,6 +167,10 @@ class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm
 	 * @since March 11, 2014
 	 */
 object HMM {
+		/**
+		 * <p>Define the result of the prediction (decoding or evaluation) as a
+		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
+		 */
 	type HMMPredictor = (Double, Array[Int])
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int): HMM[T] =  new HMM[T](lambda, form, maxIters)
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMConfig.DEFAULT_MAXITERS)

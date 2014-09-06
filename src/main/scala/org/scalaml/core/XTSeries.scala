@@ -4,7 +4,9 @@
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
+ * 
+ * Version 0.92
  */
 package org.scalaml.core
 
@@ -23,6 +25,7 @@ import org.scalaml.util.Display
 		 * this generic type to avoid multiple conversion between numerous types.<br>
 		 * The class is parameterized so it can take primitive types to create vector for single
 		 * variable time series or arrays/list to create matrix for multiple variables time series. </p>
+		 * @constructor create a new parameterized time series XTSeries{T} with a label(id) and an array of values.
 		 * @param label optional name for the time series
 		 * @param arr array of values of parameterized types
 		 * @throws IllegalArgumentException if the array of values, arr is undefined
