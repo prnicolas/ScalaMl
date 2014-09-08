@@ -20,7 +20,7 @@ import org.scalaml.workflow.PipeOperator
 
 
 		/**
-		 * Parameterized class that defines the configuration parameters for the Q-Learning
+		 * Parameterized class that defines the stateuration parameters for the Q-Learning
 		 * @param alpha alpha or learning rate for the Q-Learning algorithm
 		 * @param gamma gamma or discount rate for the Q-Learning algorithm
 		 * @param maxIters maximum number of iterations allowed during training of Q-Learning
@@ -31,12 +31,14 @@ import org.scalaml.workflow.PipeOperator
 		 * @note Scala for Machine Learning
 		 */
 case class QLConfig(val alpha: Double, val gamma: Double, val maxIters: Int) {
-	require(alpha > 0.0 && alpha < 1.0, "Cannot configure QLearning with incorrect alpha " + alpha)
-	require(gamma > 0.0 && gamma < 1.0, "Cannot configure QLearning with incorrect gamma " + gamma)
-    require(maxIters > 0 && maxIters < QLearning.MAX_ITERS, "Cannot configure QLearning maxIters " + alpha + " is out of bounds")
+	require(alpha > 0.0 && alpha < 1.0, "Cannot stateure QLearning with incorrect alpha " + alpha)
+	require(gamma > 0.0 && gamma < 1.0, "Cannot stateure QLearning with incorrect gamma " + gamma)
+    require(maxIters > 0 && maxIters < QLearning.MAX_ITERS, "Cannot stateure QLearning maxIters " + alpha + " is out of bounds")
 }
 
 
+
+import QLLabel._
 
 	/**
 		 * Parameterized class that defines the training labels for Q-Learning
@@ -47,7 +49,6 @@ case class QLConfig(val alpha: Double, val gamma: Double, val maxIters: Int) {
 		 * @since January 20, 2014
 		 */
 
-import QLLabel._
 class QLLabel[T <% Double](val labels: List[Episode[T]]) {
    require(labels != null && labels.size > 0, "Cannot traing Q-Learning with undefine labels")	
 	
@@ -75,10 +76,10 @@ object QLLabel {
 		 * At completion of the training, the ratio of labels over initial training set is computed.
 		 * The client code is responsible to evaluate the quality of the model by testing the ratio
 		 * agammast a threshold.</p>
-		 * @param config configuration for Q-Learning algorithm
+		 * @param state stateuration for Q-Learning algorithm
 		 * @param qLabels training set input used to build the search space (or model)
 		 * @param numStates total number of states in the search space
-		 * @throws IllegalArgumentException if the configuration or labels are undefined
+		 * @throws IllegalArgumentException if the stateuration or labels are undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
@@ -87,7 +88,7 @@ object QLLabel {
 class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val numStates: Int) 
                                    extends PipeOperator[Episode[T], (QLState[T], Double)]  {
                                   	 
-   require(config != null, "Cannot traing Q-Learning with undefined configuration")
+   require(config != null, "Cannot traing Q-Learning with undefined stateuration")
    require(qLabels != null, "Cannot traing Q-Learning with undefined training labels")
    		// Q-Value matrix
    private val Q = Matrix[Double](numStates, numStates)
@@ -192,7 +193,7 @@ class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val 
 		 * Companion object to the Q-Learning class used to define constants and constructor
 		 */
 object QLearning {
-  def apply[T <% Double](config: QLConfig, qLabels: QLLabel[T], numStates: Int): QLearning[T] = new QLearning(config, qLabels, numStates)
+  def apply[T <% Double](state: QLConfig, qLabels: QLLabel[T], numStates: Int): QLearning[T] = new QLearning(state, qLabels, numStates)
 
   final val MAX_ITERS = 5000
   final val MIN_TRAINING_QUALITY = 0.85

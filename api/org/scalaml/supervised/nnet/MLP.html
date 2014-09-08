@@ -39,7 +39,14 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Implementation of the Multi-layer Perceptron as a Feed-foward
+Neural Network. The class uses the standard pattern of machine
+learning algorithm:<br>
+Model are created through training during instantiation of the class<br>
+The classifier is implemented as a data transformation and extends the PipeOperator trait.Br&gt;
+This MLP uses the online training strategy suitable for time series.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>May 8, 2-14</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the any of the class parameters is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>], <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,8 +86,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.nnet.MLP#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(config:org.scalaml.supervised.nnet.MLPConfig,xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblMatrix,objective:org.scalaml.supervised.nnet.MLP.MLPObjective)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.nnet.MLP[T]"></a>
+              <ol><li name="org.scalaml.supervised.nnet.MLP#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(state:org.scalaml.supervised.nnet.MLPConfig,xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblMatrix,objective:org.scalaml.supervised.nnet.MLP.MLPObjective)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.nnet.MLP[T]"></a>
       <a id="&lt;init&gt;:MLP[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +95,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">MLP</span><span class="params">(<span name="config">config: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="objective">objective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">MLP</span><span class="params">(<span name="state">state: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="objective">objective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">state</dt><dd class="cmt"><p>stateuration parameters class for the MLP</p></dd><dt class="param">xt</dt><dd class="cmt"><p>time series of features in the training set</p></dd><dt class="param">labels</dt><dd class="cmt"><p>labeled or target observations used for training</p></dd><dt class="param">objective</dt><dd class="cmt"><p>Objective of the model (classification or regression)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the any of the class parameters is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -214,19 +222,6 @@ the sum of squares error, normalized by the size of the  training set exceed a p
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLP#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="config:org.scalaml.supervised.nnet.MLPConfig"></a>
-      <a id="config:MLPConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">config</span><span class="result">: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>
-      </span>
-      </h4>
-      
     </li><li name="org.scalaml.supervised.nnet.MLP#converged" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="converged:Boolean"></a>
       <a id="converged:Boolean"></a>
@@ -336,7 +331,7 @@ the sum of squares error, normalized by the size of the  training set exceed a p
         <span class="name">labels</span><span class="result">: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">labeled or target observations used for training</p>
     </li><li name="org.scalaml.supervised.nnet.MLP#model" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="model:Option[org.scalaml.supervised.nnet.MLPModel]"></a>
       <a id="model:Option[MLPModel]"></a>
@@ -401,7 +396,20 @@ the sum of squares error, normalized by the size of the  training set exceed a p
         <span class="name">objective</span><span class="result">: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Objective of the model (classification or regression)</p>
+    </li><li name="org.scalaml.supervised.nnet.MLP#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state:org.scalaml.supervised.nnet.MLPConfig"></a>
+      <a id="state:MLPConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">stateuration parameters class for the MLP</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -497,7 +505,7 @@ the sum of squares error, normalized by the size of the  training set exceed a p
         <span class="name">xt</span><span class="result">: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.T">T</span>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">time series of features in the training set</p>
     </li><li name="org.scalaml.supervised.nnet.MLP#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="|&gt;(feature:Array[T]):Option[org.scalaml.core.Types.ScalaMl.DblVector]"></a>
       <a id="|&gt;(Array[T]):Option[DblVector]"></a>

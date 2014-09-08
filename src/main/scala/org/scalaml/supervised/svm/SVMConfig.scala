@@ -15,11 +15,11 @@ import org.scalaml.supervised.Config
 
 
 	/**
-	 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
+	 * <p>Generic stateuration manager for any category of SVM algorithm. The stateuration of a SVM has
 	 * three elements:<br>
 	 * - Type and parameters of the formulation of the SVM algorithm<br>
 	 * - Type and parameter(s) of the Kernel function used for non-linear problems<br>
-	 * - Execution (training) configuration parameters.</p>
+	 * - Execution (training) stateuration parameters.</p>
 	 * @param formulation formulation of the SVM problem
 	 * @param kernel kernel function used for non-separable training sets
 	 * @param svmParms parameters for the training of the SVM model
@@ -32,9 +32,9 @@ final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVM
 	validate(formulation, kernel, svmParams)
 	
     val  param = new svm_parameter
-    formulation.config(param)
-    kernel.config(param)
-    svmParams.config(param)
+    formulation.state(param)
+    kernel.state(param)
+    svmParams.state(param)
     
     override def toString: String = {
        val buf = new StringBuilder("\nSVM Formulation: ")
@@ -60,15 +60,15 @@ final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVM
     def isCrossValidation: Boolean = svmParams.nFolds > 0
     
     private def validate(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
-		require(formulation != null, "Formulation in the configuration of SVM is undefined")
-		require(kernel != null, "Kernel function in the configuration of SVM is undefined")
-		require(svmParams != null, "The training execution parameters in the configuration of SVM is undefined")	
+		require(formulation != null, "Formulation in the stateuration of SVM is undefined")
+		require(kernel != null, "Kernel function in the stateuration of SVM is undefined")
+		require(svmParams != null, "The training execution parameters in the stateuration of SVM is undefined")	
 	}
 }
 
 
 		/**
-		 * <p>Companion object for SVM configuration manager used for defining the constructors of SVMConfig class.</p>
+		 * <p>Companion object for SVM stateuration manager used for defining the constructors of SVMConfig class.</p>
 		 */
 object SVMConfig {
    final val DEFAULT_CACHE = 25000

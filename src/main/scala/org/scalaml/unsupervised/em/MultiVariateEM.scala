@@ -17,7 +17,9 @@ import org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureEx
 import org.apache.commons.math3.distribution.{MixtureMultivariateNormalDistribution, MultivariateNormalDistribution}
 import scala.collection.JavaConversions._
 import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsTooSmallException, NumberIsTooLargeException, NotStrictlyPositiveException}
-
+import Types.ScalaMl._
+import MultivariateEM._
+import XTSeries._
 
 		/**
 		 * <p>Class that implements the Multivariate Expectation-Maximization algorithm with 
@@ -30,9 +32,6 @@ import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsT
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
-import MultivariateEM._
-import XTSeries._
 final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
 	require( K > 0 && K < MAX_K, "Number K of clusters for EM " + K + " is out of range")
 	

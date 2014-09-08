@@ -35,7 +35,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">CrfSeqDelimiter</span><span class="params">(<span name="dObs">dObs: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dLabel">dLabel: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dSeq">dSeq: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">CrfSeqDelimiter</span><span class="params">(<span name="obsDelim">obsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="labelsDelim">labelsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="trainingDelim">trainingDelim: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -44,8 +44,8 @@ and sequences in the training files '*.tagged'.
 example in training file<br>
 word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
 [dSeq]<br>
-</p></div><dl class="paramcmts block"><dt class="param">dObs</dt><dd class="cmt"><p>delimiters for observation as a sequence of N-grams or words</p></dd><dt class="param">dLabel</dt><dd class="cmt"><p>delimiter between observations string and tag/label</p></dd><dt class="param">dSeq</dt><dd class="cmt"><p>delimiter between training sequences</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>April 5, 2014
-</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if dObs, dLabel or dSeq are null (undefined)</p></span></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="param">obsDelim</dt><dd class="cmt"><p>delimiters for observation as a sequence of N-grams or words</p></dd><dt class="param">labelsDelim</dt><dd class="cmt"><p>delimiter between observations string and tag/label</p></dd><dt class="param">trainingDelim</dt><dd class="cmt"><p>delimiter between training sequences</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>April 5, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the delimiter is undefined</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -86,7 +86,7 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(dObs:String,dLabel:String,dSeq:String):org.scalaml.supervised.crf.CrfSeqDelimiter"></a>
+      <a id="&lt;init&gt;(obsDelim:String,labelsDelim:String,trainingDelim:String):org.scalaml.supervised.crf.CrfSeqDelimiter"></a>
       <a id="&lt;init&gt;:CrfSeqDelimiter"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -94,10 +94,10 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">CrfSeqDelimiter</span><span class="params">(<span name="dObs">dObs: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dLabel">dLabel: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dSeq">dSeq: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">CrfSeqDelimiter</span><span class="params">(<span name="obsDelim">obsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="labelsDelim">labelsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="trainingDelim">trainingDelim: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">dObs</dt><dd class="cmt"><p>delimiters for observation as a sequence of N-grams or words</p></dd><dt class="param">dLabel</dt><dd class="cmt"><p>delimiter between observations string and tag/label</p></dd><dt class="param">dSeq</dt><dd class="cmt"><p>delimiter between training sequences</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if dObs, dLabel or dSeq are null (undefined)</p></span></dd></dl></div>
+      <p class="shortcomment cmt">Creates a delimiters set for the raw and tagged input (training) for the CRF.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a delimiters set for the raw and tagged input (training) for the CRF. [obsDelim]: Delimiters for observation as a sequence of N-grams or words, [labelsDelim] Delimiter between observations string and tag/label, [trainingDelim]: Delimiter between training sequences</p></div><dl class="paramcmts block"><dt class="param">obsDelim</dt><dd class="cmt"><p>delimiters for observation as a sequence of N-grams or words</p></dd><dt class="param">labelsDelim</dt><dd class="cmt"><p>delimiter between observations string and tag/label</p></dd><dt class="param">trainingDelim</dt><dd class="cmt"><p>delimiter between training sequences</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the delimiter is undefined</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -204,45 +204,6 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#dLabel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dLabel:String"></a>
-      <a id="dLabel:String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dLabel</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">delimiter between observations string and tag/label</p>
-    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#dObs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dObs:String"></a>
-      <a id="dObs:String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dObs</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">delimiters for observation as a sequence of N-grams or words</p>
-    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#dSeq" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dSeq:String"></a>
-      <a id="dSeq:String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dSeq</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">delimiter between training sequences</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -301,6 +262,19 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#labelsDelim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="labelsDelim:String"></a>
+      <a id="labelsDelim:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">labelsDelim</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">delimiter between observations string and tag/label</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -340,6 +314,19 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#obsDelim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="obsDelim:String"></a>
+      <a id="obsDelim:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">obsDelim</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">delimiters for observation as a sequence of N-grams or words</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -353,6 +340,19 @@ word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter#trainingDelim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="trainingDelim:String"></a>
+      <a id="trainingDelim:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">trainingDelim</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">delimiter between training sequences</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

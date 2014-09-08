@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>TextSource - org.scalaml.workflow.data.TextSource</title>
-          <meta name="description" content="TextSource - org.scalaml.workflow.data.TextSource" />
-          <meta name="keywords" content="TextSource org.scalaml.workflow.data.TextSource" />
+          <title>HMMState - org.scalaml.supervised.hmm.HMMState</title>
+          <meta name="description" content="HMMState - org.scalaml.supervised.hmm.HMMState" />
+          <meta name="keywords" content="HMMState org.scalaml.supervised.hmm.HMMState" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.workflow.data.TextSource';
+            var hash = 'org.scalaml.supervised.hmm.HMMState';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -24,22 +24,24 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="TextSource$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.workflow">workflow</a>.<a href="package.html" class="extype" name="org.scalaml.workflow.data">data</a></p>
-        <h1><a href="TextSource$.html" title="Go to companion">TextSource</a></h1>
+        <a href="HMMState$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a></p>
+        <h1><a href="HMMState$.html" title="Go to companion">HMMState</a></h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">TextSource</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">HMMState</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that encapsulates the execution parameters for the three
+canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>range is undefined or the maximum iterations is out of range
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -59,7 +61,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.workflow.data.TextSource"><span>TextSource</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.hmm.HMMState"><span>HMMState</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -79,19 +81,20 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.workflow.data.TextSource#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(pathName:String):org.scalaml.workflow.data.TextSource"></a>
-      <a id="&lt;init&gt;:TextSource"></a>
+              <ol><li name="org.scalaml.supervised.hmm.HMMState#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(config:org.scalaml.supervised.hmm.HMMConfig,maxIters:Int):org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="&lt;init&gt;:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">TextSource</span><span class="params">(<span name="pathName">pathName: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">HMMState</span><span class="params">(<span name="config">config: <a href="HMMConfig.html" class="extype" name="org.scalaml.supervised.hmm.HMMConfig">HMMConfig</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations used in the training of HMM</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>range is undefined or the maximum iterations is out of range
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -166,6 +169,58 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMState.DiGamma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DiGamma"></a>
+      <a id="DiGamma:DiGamma"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMState$DiGamma$.html"><span class="name">DiGamma</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMState.Gamma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Gamma"></a>
+      <a id="Gamma:Gamma"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMState$Gamma$.html"><span class="name">Gamma</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMState.QStar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="QStar"></a>
+      <a id="QStar:QStar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMState$QStar$.html"><span class="name">QStar</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMState#alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="alpha:org.scalaml.util.Matrix[Double]"></a>
+      <a id="alpha:Matrix[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">alpha</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -179,6 +234,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMState#beta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="beta:org.scalaml.util.Matrix[Double]"></a>
+      <a id="beta:Matrix[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">beta</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -198,6 +266,32 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMState#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="config:org.scalaml.supervised.hmm.HMMConfig"></a>
+      <a id="config:HMMConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">config</span><span class="result">: <a href="HMMConfig.html" class="extype" name="org.scalaml.supervised.hmm.HMMConfig">HMMConfig</a></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMState#delta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="delta:org.scalaml.util.Matrix[Double]"></a>
+      <a id="delta:Matrix[Double]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">delta</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -224,19 +318,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.workflow.data.TextSource#filesList" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="filesList:Array[String]"></a>
-      <a id="filesList:Array[String]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">filesList</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -295,19 +376,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.workflow.data.TextSource#load" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="load:Option[org.scalaml.workflow.data.TextSource.Corpus]"></a>
-      <a id="load:Option[Corpus]"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMState#maxIters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="maxIters:Int"></a>
+      <a id="maxIters:Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">load</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="TextSource$.html#Corpus=Array[(String,String,String)]" class="extmbr" name="org.scalaml.workflow.data.TextSource.Corpus">Corpus</a>]</span>
+        <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">maximum number of iterations used in the training of HMM</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -347,16 +428,16 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.workflow.data.TextSource#pathName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="pathName:String"></a>
-      <a id="pathName:String"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMState#psi" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="psi:org.scalaml.util.Matrix[Int]"></a>
+      <a id="psi:Matrix[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">pathName</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">psi</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4>
       

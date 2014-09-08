@@ -96,7 +96,7 @@ formula  newValue = oldValue*currentIteration/maximumIterations.
         <span class="name">GAConfig</span><span class="params">(<span name="maxPopulationSize">maxPopulationSize: <span class="extype" name="scala.Int">Int</span></span>, <span name="xover">xover: <span class="extype" name="scala.Double">Double</span></span>, <span name="mutate">mutate: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxNumIters">maxNumIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="attenuatorType">attenuatorType: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">GAConfig.LINEAR</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">maxPopulationSize</dt><dd class="cmt"><p>maximum size of the population (number of chromosomes) allowed during the optimization</p></dd><dt class="param">xover</dt><dd class="cmt"><p>value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over	 * @attribute rejectionRate  rate of rejection in the range [0.2,0.95] used in the select the most fit chromosomes after a selection - cross-over and mutation cycle</p></dd><dt class="param">mutate</dt><dd class="cmt"><p>value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome.</p></dd><dt class="param">maxNumIters</dt><dd class="cmt"><p>maximum number of iterations allowed in the optimization</p></dd><dt class="param">attenuatorType</dt><dd class="cmt"><p>type of attenuation (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">throw<p>IllegalArgumentException if some of the parameters are out of bounds such as maxPopulationSize &gt; 1 or rejection rate &lt; 0.95
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">xover</dt><dd class="cmt"><p>Value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over</p></dd><dt class="param">mutate</dt><dd class="cmt"><p>value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome.</p></dd><dt class="param">maxNumIters</dt><dd class="cmt"><p>maximum number of iterations allowed in the optimization</p></dd><dt class="param">attenuatorType</dt><dd class="cmt"><p>type of attenuation (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">throw<p>IllegalArgumentException if some of the parameters are out of bounds such as maxPopulationSize &gt; 1 or rejection rate &lt; 0.95
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -326,7 +326,7 @@ formula  newValue = oldValue*currentIteration/maximumIterations.
         <span class="name">maxPopulationSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">maximum size of the population (number of chromosomes) allowed during the optimization</p>
+      
     </li><li name="org.scalaml.ga.GAConfig#mutate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="mutate:Double"></a>
       <a id="mutate:Double"></a>
@@ -476,7 +476,7 @@ formula  newValue = oldValue*currentIteration/maximumIterations.
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.ga.GAConfig#xover" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.ga.GAConfig#xover" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="xover:Double"></a>
       <a id="xover:Double"></a>
       <h4 class="signature">
@@ -488,7 +488,7 @@ formula  newValue = oldValue*currentIteration/maximumIterations.
         <span class="name">xover</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over	 * @attribute rejectionRate  rate of rejection in the range [0.</p><div class="fullcomment"><div class="comment cmt"><p>value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over	 * @attribute rejectionRate  rate of rejection in the range [0.2,0.95] used in the select the most fit chromosomes after a selection - cross-over and mutation cycle</p></div></div>
+      <p class="shortcomment cmt">Value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over</p>
     </li></ol>
             </div>
 

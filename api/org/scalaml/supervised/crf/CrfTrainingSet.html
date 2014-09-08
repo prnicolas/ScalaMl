@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>HMMParams - org.scalaml.supervised.hmm.HMMParams</title>
-          <meta name="description" content="HMMParams - org.scalaml.supervised.hmm.HMMParams" />
-          <meta name="keywords" content="HMMParams org.scalaml.supervised.hmm.HMMParams" />
+          <title>CrfTrainingSet - org.scalaml.supervised.crf.CrfTrainingSet</title>
+          <meta name="description" content="CrfTrainingSet - org.scalaml.supervised.crf.CrfTrainingSet" />
+          <meta name="keywords" content="CrfTrainingSet org.scalaml.supervised.crf.CrfTrainingSet" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.hmm.HMMParams$';
+            var hash = 'org.scalaml.supervised.crf.CrfTrainingSet';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -22,26 +22,27 @@
    	  </script>
     
         </head>
-        <body class="value">
+        <body class="type">
       <div id="definition">
-        <a href="HMMParams.html" title="Go to companion"><img src="../../../../lib/object_to_class_big.png" /></a>
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a></p>
-        <h1><a href="HMMParams.html" title="Go to companion">HMMParams</a></h1>
+        <img src="../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.crf">crf</a></p>
+        <h1>CrfTrainingSet</h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">HMMParams</span>
+        <span class="name">CrfTrainingSet</span><span class="result"> extends <span class="extype" name="iitb.CRF.DataSequence">DataSequence</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines a Recommendation as a data sequence.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 2, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the arguments nLabels, entry and delim are either undefined or out of range</p></span></dd><dt>See also</dt><dd><span class="cmt"><p>ittb.CRF.DataSequence</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="iitb.CRF.DataSequence">DataSequence</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +60,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.HMMParams"><span>HMMParams</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.crf.CrfTrainingSet"><span>CrfTrainingSet</span></li><li class="in" name="iitb.CRF.DataSequence"><span>DataSequence</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -77,7 +78,23 @@
 
       <div id="template">
         <div id="allMembers">
-        
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.scalaml.supervised.crf.CrfTrainingSet#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(nLabels:Int,entry:String,delim:String):org.scalaml.supervised.crf.CrfTrainingSet"></a>
+      <a id="&lt;init&gt;:CrfTrainingSet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">CrfTrainingSet</span><span class="params">(<span name="nLabels">nLabels: <span class="extype" name="scala.Int">Int</span></span>, <span name="entry">entry: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="delim">delim: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">nLabels</dt><dd class="cmt"><p>Number of labels (or tags) used in the training of CRF</p></dd><dt class="param">entry</dt><dd class="cmt"><p>recommendation or observation as a sequence of words</p></dd><dt class="param">delim</dt><dd class="cmt"><p>delimiter of segments in the sequence</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the arguments nLabels, entry and delim are either undefined or out of range</p></span></dd></dl></div>
+    </li></ol>
+            </div>
 
         
 
@@ -150,45 +167,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#DEFAULT_MAXITERS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DEFAULT_MAXITERS:Int(20)"></a>
-      <a id="DEFAULT_MAXITERS:Int(20)"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">DEFAULT_MAXITERS</span><span class="result">: Int(20)</span>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(d:org.scalaml.supervised.hmm.HMMDim):org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="apply(HMMDim):HMMParams"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="d">d: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>)</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(d:org.scalaml.supervised.hmm.HMMDim,maxIters:Int):org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="apply(HMMDim,Int):HMMParams"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="d">d: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -221,6 +199,32 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#delim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="delim:String"></a>
+      <a id="delim:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">delim</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">delimiter of segments in the sequence</p>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#entry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="entry:String"></a>
+      <a id="entry:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">entry</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">recommendation or observation as a sequence of words</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -305,6 +309,32 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#length" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="length():Int"></a>
+      <a id="length():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">length</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.crf.CrfTrainingSet">CrfTrainingSet</a> → DataSequence</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#nLabels" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nLabels:Int"></a>
+      <a id="nLabels:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nLabels</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Number of labels (or tags) used in the training of CRF</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -344,6 +374,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#set_y" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="set_y(k:Int,label:Int):Unit"></a>
+      <a id="set_y(Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">set_y</span><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="label">label: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.crf.CrfTrainingSet">CrfTrainingSet</a> → DataSequence</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -427,6 +470,32 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#x" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="x(k:Int):Object"></a>
+      <a id="x(Int):AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">x</span><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.crf.CrfTrainingSet">CrfTrainingSet</a> → DataSequence</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet#y" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="y(k:Int):Int"></a>
+      <a id="y(Int):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">y</span><span class="params">(<span name="k">k: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.crf.CrfTrainingSet">CrfTrainingSet</a> → DataSequence</dd></dl></div>
     </li></ol>
             </div>
 
@@ -436,7 +505,11 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="iitb.CRF.DataSequence">
+              <h3>Inherited from <span class="extype" name="iitb.CRF.DataSequence">DataSequence</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

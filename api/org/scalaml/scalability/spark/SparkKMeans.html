@@ -47,7 +47,7 @@ The algorithm implements the default data transformation interface, PipeOperator
       <span class="defval" name="&quot;Spark context is implicitely undefined&quot;">...</span>
     </span>)</span>
               
-        </dd><dt>Since</dt><dd><p>April 2, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the configuration or the time series is undefined.
+        </dd><dt>Since</dt><dd><p>April 2, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or the time series is undefined.
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -90,7 +90,7 @@ The algorithm implements the default data transformation interface, PipeOperator
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.scalability.spark.SparkKMeans#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(config:org.scalaml.scalability.spark.SparkKMeansConfig,rddConfig:org.scalaml.scalability.spark.RDDConfig,xt:org.scalaml.core.XTSeries[org.scalaml.core.Types.ScalaMl.DblVector])(implicitsc:org.apache.spark.SparkContext):org.scalaml.scalability.spark.SparkKMeans"></a>
+      <a id="&lt;init&gt;(state:org.scalaml.scalability.spark.SparkKMeansConfig,rddConfig:org.scalaml.scalability.spark.RDDConfig,xt:org.scalaml.core.XTSeries[org.scalaml.core.Types.ScalaMl.DblVector])(implicitsc:org.apache.spark.SparkContext):org.scalaml.scalability.spark.SparkKMeans"></a>
       <a id="&lt;init&gt;:SparkKMeans"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -98,10 +98,10 @@ The algorithm implements the default data transformation interface, PipeOperator
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SparkKMeans</span><span class="params">(<span name="config">config: <a href="SparkKMeansConfig.html" class="extype" name="org.scalaml.scalability.spark.SparkKMeansConfig">SparkKMeansConfig</a></span>, <span name="rddConfig">rddConfig: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>)</span>
+        <span class="name">SparkKMeans</span><span class="params">(<span name="state">state: <a href="SparkKMeansConfig.html" class="extype" name="org.scalaml.scalability.spark.SparkKMeansConfig">SparkKMeansConfig</a></span>, <span name="rddConfig">rddConfig: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">config</dt><dd class="cmt"><p>configuration of the Spark KMeans</p></dd><dt class="param">xt</dt><dd class="cmt"><p>Time series used for the training of the Spark KMeans</p></dd><dt class="param">sc</dt><dd class="cmt"><p>implicit spark context</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the configuration or the time series is undefined.
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">state</dt><dd class="cmt"><p>stateuration of the Spark KMeans</p></dd><dt class="param">xt</dt><dd class="cmt"><p>Time series used for the training of the Spark KMeans</p></dd><dt class="param">sc</dt><dd class="cmt"><p>implicit spark context</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or the time series is undefined.
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -209,19 +209,6 @@ The algorithm implements the default data transformation interface, PipeOperator
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.scalability.spark.SparkKMeans#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="config:org.scalaml.scalability.spark.SparkKMeansConfig"></a>
-      <a id="config:SparkKMeansConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">config</span><span class="result">: <a href="SparkKMeansConfig.html" class="extype" name="org.scalaml.scalability.spark.SparkKMeansConfig">SparkKMeansConfig</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">configuration of the Spark KMeans</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -358,6 +345,19 @@ The algorithm implements the default data transformation interface, PipeOperator
       </span>
       </h4>
       
+    </li><li name="org.scalaml.scalability.spark.SparkKMeans#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state:org.scalaml.scalability.spark.SparkKMeansConfig"></a>
+      <a id="state:SparkKMeansConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <a href="SparkKMeansConfig.html" class="extype" name="org.scalaml.scalability.spark.SparkKMeansConfig">SparkKMeansConfig</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">stateuration of the Spark KMeans</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

@@ -35,14 +35,14 @@ trait Supervised[T] {
 
 
 	/**
-	  * <p>Define the configuration trait for the configuration of all the supervised
+	  * <p>Define the stateuration trait for the stateuration of all the supervised
 	  * learning algorithms.</p>
 	  */
 trait Config
 
 
 	/**
-	  * <p>Define the model for the configuration of all the supervised
+	  * <p>Define the model for the stateuration of all the supervised
 	  * learning algorithms. The trait is used to record any information
 	  * relevant to the training of the model.</p>
 	  */

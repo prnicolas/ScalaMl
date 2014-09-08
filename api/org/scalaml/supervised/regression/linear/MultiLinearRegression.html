@@ -46,7 +46,7 @@ Apache commons Math library. THe regression coefficients are
 initialized as None if the training fails.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
-      <span class="defval" name="&quot;Implicit conversion of type to Double for MultiLinearRegression is missing&quot;">...</span>
+      <span class="defval" name="&quot;Implicit conversion to Double for MultiLinearRegression is missing&quot;">...</span>
     </span>)</span>
               
         </dd><dt>Since</dt><dd><p>April 19, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the input time series or the labeled data are undefined or have different sizes
@@ -699,7 +699,7 @@ initialized as None if the training fails.</p></div><dl class="attributes block"
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression#rss" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression#rss" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="rss:Option[Double]"></a>
       <a id="rss:Option[Double]"></a>
       <h4 class="signature">
@@ -711,7 +711,10 @@ initialized as None if the training fails.</p></div><dl class="attributes block"
         <span class="name">rss</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Retrieve the residual sum of squares for this multi-variable linear regression
+if model has been successfully trained, None otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>Retrieve the residual sum of squares for this multi-variable linear regression
+if model has been successfully trained, None otherwise.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>residual sum of squares if model is successfully created, None otherwise
+</p></dd></dl></div>
     </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#setNoIntercept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="setNoIntercept(x$1:Boolean):Unit"></a>
       <a id="setNoIntercept(Boolean):Unit"></a>
@@ -840,7 +843,7 @@ initialized as None if the training fails.</p></div><dl class="attributes block"
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression#weights" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression#weights" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="weights:Option[org.scalaml.core.Types.ScalaMl.DblVector]"></a>
       <a id="weights:Option[DblVector]"></a>
       <h4 class="signature">
@@ -852,7 +855,10 @@ initialized as None if the training fails.</p></div><dl class="attributes block"
         <span class="name">weights</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Retrieve the weight of the multi-variable linear regression
+if model has been successfully trained, None otherwise.</p><div class="fullcomment"><div class="comment cmt"><p>Retrieve the weight of the multi-variable linear regression
+if model has been successfully trained, None otherwise.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>weights if model is successfully created, None otherwise
+</p></dd></dl></div>
     </li><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="xt:org.scalaml.core.XTSeries[Array[T]]"></a>
       <a id="xt:XTSeries[Array[T]]"></a>

@@ -41,7 +41,9 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Generic class for the linear chained CRF for tagging words, N-Grams or regular expression. The class
 define a Feature generator class that inherits the default implementation FeatureGenImpl of iitb features generator.
-The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 3, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nLabels, config, delims and taggedObs are either undefined or out of range.</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
+The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 3, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nLabels, state, delims and taggedObs are either undefined or out of range.</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.workflow.PipeOperator
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -84,7 +86,7 @@ The class assumes the training sequences are loaded from file with *.raw and *.t
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.crf.Crf#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(nLabels:Int,config:org.scalaml.supervised.crf.CrfConfig,delims:org.scalaml.supervised.crf.CrfSeqDelimiter,taggedObs:String):org.scalaml.supervised.crf.Crf"></a>
+      <a id="&lt;init&gt;(nLabels:Int,state:org.scalaml.supervised.crf.CrfConfig,delims:org.scalaml.supervised.crf.CrfSeqDelimiter,taggedObs:String):org.scalaml.supervised.crf.Crf"></a>
       <a id="&lt;init&gt;:Crf"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,11 +94,11 @@ The class assumes the training sequences are loaded from file with *.raw and *.t
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Crf</span><span class="params">(<span name="nLabels">nLabels: <span class="extype" name="scala.Int">Int</span></span>, <span name="config">config: <a href="CrfConfig.html" class="extype" name="org.scalaml.supervised.crf.CrfConfig">CrfConfig</a></span>, <span name="delims">delims: <a href="CrfSeqDelimiter.html" class="extype" name="org.scalaml.supervised.crf.CrfSeqDelimiter">CrfSeqDelimiter</a></span>, <span name="taggedObs">taggedObs: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">Crf</span><span class="params">(<span name="nLabels">nLabels: <span class="extype" name="scala.Int">Int</span></span>, <span name="state">state: <a href="CrfConfig.html" class="extype" name="org.scalaml.supervised.crf.CrfConfig">CrfConfig</a></span>, <span name="delims">delims: <a href="CrfSeqDelimiter.html" class="extype" name="org.scalaml.supervised.crf.CrfSeqDelimiter">CrfSeqDelimiter</a></span>, <span name="taggedObs">taggedObs: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">nLabels</dt><dd class="cmt"><p>Number of labels (or tags) used in tagging training sequences of observations.</p></dd><dt class="param">config</dt><dd class="cmt"><p>minimalist set of configuration parameters used in the CRF</p></dd><dt class="param">delims</dt><dd class="cmt"><p>delimiters used in extracting labels and data from the training files</p></dd><dt class="param">taggedObs</dt><dd class="cmt"><p>identifier for the training data set. The training set of sequences is defined by the raw observations
-and its associated tagged file    taggedObs.raw and taggedObs.tagged files.</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nLabels, config, delims and taggedObs are either undefined or out of range.</p></span></dd></dl></div>
+      <p class="shortcomment cmt">Create a Linear chain conditional random fields.</p><div class="fullcomment"><div class="comment cmt"><p>Create a Linear chain conditional random fields. [nLabels]: Number of labels (or tags) used in tagging training sequences of observations, [state]: Minimum set of stateuration parameters used in the CRF, [delims]: Delimiters used in extracting labels and data from the training files, [taggedObs] identifier for the training data set.</p></div><dl class="paramcmts block"><dt class="param">nLabels</dt><dd class="cmt"><p>Number of labels (or tags) used in tagging training sequences of observations.</p></dd><dt class="param">state</dt><dd class="cmt"><p>minimum set of stateuration parameters used in the CRF</p></dd><dt class="param">delims</dt><dd class="cmt"><p>delimiters used in extracting labels and data from the training files</p></dd><dt class="param">taggedObs</dt><dd class="cmt"><p>identifier for the training data set. The training set of sequences is defined by the raw observations
+and its associated tagged file    taggedObs.raw and taggedObs.tagged files.</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nLabels, state, delims and taggedObs are either undefined or out of range.</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -219,19 +221,6 @@ and its associated tagged file    taggedObs.raw and taggedObs.tagged files.</p><
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.crf.Crf#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="config:org.scalaml.supervised.crf.CrfConfig"></a>
-      <a id="config:CrfConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">config</span><span class="result">: <a href="CrfConfig.html" class="extype" name="org.scalaml.supervised.crf.CrfConfig">CrfConfig</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">minimalist set of configuration parameters used in the CRF</p>
     </li><li name="org.scalaml.supervised.Supervised#crossValidation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="crossValidation:Array[Double]"></a>
       <a id="crossValidation:Array[Double]"></a>
@@ -394,6 +383,19 @@ and its associated tagged file    taggedObs.raw and taggedObs.tagged files.</p><
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.Crf#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state:org.scalaml.supervised.crf.CrfConfig"></a>
+      <a id="state:CrfConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <a href="CrfConfig.html" class="extype" name="org.scalaml.supervised.crf.CrfConfig">CrfConfig</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">minimum set of stateuration parameters used in the CRF</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -505,22 +507,19 @@ and its associated tagged file    taggedObs.raw and taggedObs.tagged files.</p><
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.crf.Crf#weights" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="weights:Option[org.scalaml.supervised.crf.Crf.CrfModel]"></a>
-      <a id="weights:Option[CrfModel]"></a>
+    </li><li name="org.scalaml.supervised.crf.Crf#weights" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="weights:Option[org.scalaml.core.Types.ScalaMl.DblVector]"></a>
+      <a id="weights:Option[DblVector]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">weights</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="Crf$.html#CrfModel=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.supervised.crf.Crf.CrfModel">CrfModel</a>]</span>
+        <span class="name">weights</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
-        </dd></dl></div>
+      
     </li><li name="org.scalaml.supervised.crf.Crf#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="|&gt;(obs:String):Option[Double]"></a>
       <a id="|&gt;(String):Option[Double]"></a>

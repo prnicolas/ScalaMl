@@ -14,19 +14,20 @@ import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
 import org.scalaml.supervised.Model
 import scala.collection.mutable.ListBuffer
-
+import ScalaMl._
+import MLPLayer._
 
 
 		/**
 		 * <p>Class that define and manage the components of the MLP model. A MLP model
-		 * is fully initialized with a configuration, the input and the number of output values.<br>
+		 * is fully initialized with a stateuration, the input and the number of output values.<br>
 		 * The components of a MLP model are:<br>
 		 * MLPLayer: Layer or array of neuron or elements<br>
 		 * MLPSynapse: Synapse or connection between neurons of two consecutive layers<br>
 		 * MLPConnection: Container for all the synapses between two layers<br>
 		 * The parameters of the class and the arguments of its methods are not validated as the class 
 		 * has package scope (protected)</p>
-		 * @param config Configuration parameters for the MLP
+		 * @param state Configuration parameters for the MLP
 		 * @param input Input value for the Network, that is the initial value of the input layer
 		 * @param numOutputs Size of the output vector
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
@@ -35,16 +36,15 @@ import scala.collection.mutable.ListBuffer
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning
 		 */
-import ScalaMl._
-import MLPLayer._
-final protected class MLPModel(val config: MLPConfig, val input: DblVector, val numOutputs: Int) extends Model {
-	private val topology = if( config.hiddenLayers == null )
+
+final protected class MLPModel(val state: MLPConfig, val input: DblVector, val numOutputs: Int) extends Model {
+	private val topology = if( state.hiddenLayers == null )
 	                          Array[Int](input.size, numOutputs) 
 	                       else 
-	                          Array[Int](input.size) ++ config.hiddenLayers ++ Array[Int](numOutputs)
+	                          Array[Int](input.size) ++ state.hiddenLayers ++ Array[Int](numOutputs)
 	
 	private val layers = topology.zipWithIndex.map(t => MLPLayer(t._2, t._1+1))
-	private val connections  = Range(0, layers.size-1).map(n => new MLPConnection(config, layers(n), layers(n+1))).toArray
+	private val connections  = Range(0, layers.size-1).map(n => new MLPConnection(state, layers(n), layers(n+1))).toArray
 
 		/**
 		 * Alias for the input or first layer in the network
@@ -88,7 +88,7 @@ final protected class MLPModel(val config: MLPConfig, val input: DblVector, val 
 		 * @return sum of the mean squares error of the output layer.
 		 */
 	@inline
-	def mse(label: DblVector, objective: MLP.MLPObjective): Double = outputLayer.mse(label, objective, config.gamma)
+	def mse(label: DblVector, objective: MLP.MLPObjective): Double = outputLayer.mse(label, objective, state.gamma)
 
     
 		/**

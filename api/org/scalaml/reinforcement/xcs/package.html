@@ -70,7 +70,10 @@
         <a href="Xcs.html"><span class="name">Xcs</span></a><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>), <span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]]</span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Example of implementation of the XCS algorithm with a predefined
+stateuration and a set of training episode for the Q-Learning algorithm used to assign
+credit to individual rules that improve the performance (or objective
+function) of a system.</p>
     </li><li name="org.scalaml.reinforcement.xcs.XcsConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="XcsConfigextendsAnyRef"></a>
       <a id="XcsConfig:XcsConfig"></a>
@@ -83,7 +86,7 @@
         <a href="XcsConfig.html"><span class="name">XcsConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Class that defined the stateuration	parameters for the XCS algorithm.</p>
     </li><li name="org.scalaml.reinforcement.xcs.XcsCredit" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="XcsCreditextendsQLState[Double]"></a>
       <a id="XcsCredit:XcsCredit"></a>
@@ -96,7 +99,9 @@
         <a href="XcsCredit.html"><span class="name">XcsCredit</span></a><span class="result"> extends <a href="../qlearning/QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Definition of the credit to be assigned to &quot;deserving&quot; chromosomes
+and the rules it contains,  after receiving feedback from the system monitored
+by the XCS algorithm.</p>
     </li><li name="org.scalaml.reinforcement.xcs.XcsRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="XcsRule[T]extendsGene"></a>
       <a id="XcsRule[T]:XcsRule[T]"></a>
@@ -109,7 +114,7 @@
         <a href="XcsRule.html"><span class="name">XcsRule</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../ga/Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Class that define a rule or policy in XCS algorithm.</p>
     </li></ol>
             </div>
 

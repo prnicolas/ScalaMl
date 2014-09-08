@@ -23,25 +23,25 @@ import org.scalaml.workflow.PipeOperator
 
 		/**
 		 * <p>Example of implementation of the XCS algorithm with a predefined
-		 * configuration and a set of training episode for the Q-Learning algorithm used to assign
+		 * stateuration and a set of training episode for the Q-Learning algorithm used to assign
 		 * credit to individual rules that improve the performance (or objective
 		 * function) of a system.<br>
 		 * This implementation assumes that the new data (Signal) and reward following the
 		 * previous set of actions on the system are collected at the same time.</p>
-		 * @param config configuration for the XCS algorithm (GA and Q-Learning parameters)
+		 * @param state stateuration for the XCS algorithm (GA and Q-Learning parameters)
 		 * @param qLabels training episodes used to create the Q-Learning model
-		 * @throws IllegalArgumenException if the configuration, input information or training episodes is undefined
+		 * @throws IllegalArgumenException if the stateuration, input information or training episodes is undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @data March 26, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Xcs._
-final class Xcs(val config: XcsConfig) extends PipeOperator[XcsInput, List[XcsAction[Double]]] {
 
-   require(config != null, "Cannot create XCS with undefined configuration")
+final class Xcs(val state: XcsConfig) extends PipeOperator[XcsInput, List[XcsAction[Double]]] {
+
+   require(state != null, "Cannot create XCS with undefined stateuration")
    	
-   val gaSolver = GASolver[XcsRule[Double]](config.gaConfig, config.init)
+   val gaSolver = GASolver[XcsRule[Double]](state.gaConfig, state.init)
    var history = List[(DblVector, XcsCredit)](); 
    
         /**
@@ -79,7 +79,7 @@ final class Xcs(val config: XcsConfig) extends PipeOperator[XcsInput, List[XcsAc
   	  
   	private def assignCredit(reward: XcsReward, matchingChromosomes: List[Chromosome[XcsRule[Double]]]): Unit = {
   		  	  		// intializes the Q-Learning algorithm
-  	    val qLearning = QLearning[Double](config.qConfig, QLLabel[Double](history), XcsRule.rulesCount)
+  	    val qLearning = QLearning[Double](state.qConfig, QLLabel[Double](history), XcsRule.rulesCount)
   	        // Compute the credit to be assigned to the matching chromosomes.
   	    val newCredit = XcsCredit( matchingChromosomes.map(_.fitness ) )
   	  	

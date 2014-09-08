@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>Gamma - org.scalaml.supervised.hmm.HMMParams.Gamma</title>
-          <meta name="description" content="Gamma - org.scalaml.supervised.hmm.HMMParams.Gamma" />
-          <meta name="keywords" content="Gamma org.scalaml.supervised.hmm.HMMParams.Gamma" />
+          <title>Likelihood - org.scalaml.supervised.bayes.Likelihood</title>
+          <meta name="description" content="Likelihood - org.scalaml.supervised.bayes.Likelihood" />
+          <meta name="keywords" content="Likelihood org.scalaml.supervised.bayes.Likelihood" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.hmm.HMMParams$Gamma$';
+            var hash = 'org.scalaml.supervised.bayes.Likelihood$';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -25,8 +25,8 @@
         <body class="value">
       <div id="definition">
         <img src="../../../../lib/object_big.png" />
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a>.<a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></p>
-        <h1>Gamma</h1>
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
+        <h1>Likelihood</h1>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,11 +35,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">Gamma</span>
+        <span class="name">Likelihood</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Companion object for the Naive Bayes Likelihood class. The singleton
+is used to define the constructor apply for the class.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 11, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -59,7 +61,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.HMMParams.Gamma"><span>Gamma</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.Likelihood"><span>Likelihood</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -150,16 +152,16 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.Gamma#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(i:Int,j:Int):Double"></a>
-      <a id="apply(Int,Int):Double"></a>
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[T](label:Int,muSigma:Array[(Double,Double)],prior:Double)(implicitevidence$2:T=&gt;Double):org.scalaml.supervised.bayes.Likelihood[T]"></a>
+      <a id="apply[T](Int,Array[(Double,Double)],Double)((T)⇒Double):Likelihood[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="i">i: <span class="extype" name="scala.Int">Int</span></span>, <span name="j">j: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="label">label: <span class="extype" name="scala.Int">Int</span></span>, <span name="muSigma">muSigma: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]</span>, <span name="prior">prior: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.Likelihood.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.Likelihood.apply.T">T</span>]</span>
       </span>
       </h4>
       
@@ -240,32 +242,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.Gamma#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fold(t:Int,i:Int,k:Int,obs:Array[Int]):Double"></a>
-      <a id="fold(Int,Int,Int,Array[Int]):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fold</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Int">Int</span></span>, <span name="i">i: <span class="extype" name="scala.Int">Int</span></span>, <span name="k">k: <span class="extype" name="scala.Int">Int</span></span>, <span name="obs">obs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.Gamma#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fold(t:Int,i:Int):Double"></a>
-      <a id="fold(Int,Int):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fold</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Int">Int</span></span>, <span name="i">i: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>

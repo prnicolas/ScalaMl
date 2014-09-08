@@ -10,25 +10,26 @@
  */
 package org.scalaml.ga
 
+import Chromosome._
+import scala.collection.mutable.ArrayBuffer
+import scala.util.Random  
 
 		/**
 		 * <p>Define a replication phase in the execution of the genetic algorithm optimizer. The
 		 *  A replication sequence consists of a selection of chromosomes according to their 
 		 *  fitness values, cross-over within a pair of chromomsomes and mutation</p>
-		 *  @param config configuration parameters of the genetic algorithm
-		 *  @param f fitness function for a chromosome
-		 *  @throws IllegalArgumentException if the configuration or the fitness function is undefined
+		 *  @constructor Create a reproduction workflow for the genetic algorithm. [state]: Configuration parameters of the genetic algorithm, [fit] Fitness function for a chromosome
+		 *  @param state stateuration parameters of the genetic algorithm
+		 *  @param fit fitness function for a chromosome
+		 *  @throws IllegalArgumentException if the stateuration or the fitness function is undefined
 		 *  		 
 		 *  @author Patrick Nicolas
 		 *  @since August 28, 2013
 		 *  @note Scalal for Machine Learning
 		 */
-import Chromosome._
-import scala.collection.mutable.ArrayBuffer
-    import scala.util.Random  
-    
-final class Reproduction[T <: Gene](private val config: GAConfig, val fit: Chromosome[T] => Double) { 	   
-    require(config != null, "Configuration of GA is undefined")
+
+final class Reproduction[T <: Gene](private val state: GAConfig, val fit: Chromosome[T] => Double) { 	   
+    require(state != null, "Configuration of GA is undefined")
     require(fit != null, "The chromosome fitness function of GA is undefined")
     
     		/**
@@ -38,11 +39,11 @@ final class Reproduction[T <: Gene](private val config: GAConfig, val fit: Chrom
     		 * @return mutable array of chromosomes if the selection succeeds, None otherwise.
     		 */    
     def mate(population: Population[T]): Option[Population[T]] = select(population) match  {
-	   case Some(pop) =>  Some(pop +- config.xover ^ config.mutate)
+	   case Some(pop) =>  Some(pop +- state.xover ^ state.mutate)
 	   case None => None   
 	 }
   
-    override def toString : String =new StringBuilder("Replication:\n").append(config.toString).toString
+    override def toString : String =new StringBuilder("Replication:\n").append(state.toString).toString
 
         
 	private[this] def select(population: Population[T]) =  population.size match {

@@ -50,11 +50,7 @@ case class QRNoise(val qr: XY, val white: Double=> Double) {
 		 * time independent state transition t to t+1, the input matrix B. the measurement dependency matrix, H
 		 * and the error matrix P. This implementation uses the Apache Commons math library. The process and
 		 * measurement white noise is provided as an implicit value.</p>
-		 * @param A  State transition matrix
-		 * @param B input state matrix
-		 * @param H matrix that defines the dependency of the measurement on the state of the system
-		 * @param P error matrix
-		 * @param qrNoise implicit value representing the white noise for the process Q and the measurement P
+		 * @constructor Create a scalar Kalman filter: [A] State transition matrix,  [B] Tnput state matrix, [H] Matrix that defines the dependency of the measurement on the state of the system, [P] Error matrix,  [qrNoise] Implicit value representing the white noise for the process Q and the measurement P
 		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014

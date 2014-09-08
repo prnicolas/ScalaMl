@@ -19,7 +19,7 @@ import org.scalaml.util.Display
 	 * <p>Class that update the backward-forward lattice of observations and
 	 * hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to 
 	 * compute the likelihood of the conditional probability p(Y|X) during training. The
-	 * computation is performeda as part of the instantiation of the class (type Option[Double] )
+	 * computation is performed as part of the instantiation of the class (type Option[Double] )
 	 *  @param lambdaBW Lambda (pi, A, B) model for the HMM
 	 *  @param _params parameters used in any of the three canonical form of the HMM
      *  @param _obs Array of observations as integer (categorical data)
@@ -28,10 +28,10 @@ import org.scalaml.util.Display
 	 *  @since March 15, 2014
 	 *  @note Scala for Machine Learning
 	 */
-class BaumWelchEM(	val lambdaBW: HMMLambda, 
-					val configBW: HMMConfig, 
-					val obsBW: Array[Int], 
-					val eps: Double) extends HMMInference(lambdaBW, configBW, obsBW) {
+class BaumWelchEM(val lambdaBW: HMMLambda, 
+					val stateBW: HMMState, 
+					val obsIdxBw: Array[Int], 
+					val eps: Double) extends HMMInference(lambdaBW, stateBW, obsIdxBw) {
 	
   private val logger = Logger.getLogger("BaumWelchEM")
   require( eps > 1E-5 && eps < 0.1, "Convergence criteria for HMM Baum_Welch " + eps + " is out of range")
@@ -42,8 +42,8 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
   val maxLikelihood: Option[Double] = {
   	  Try {
 		  var likelihood = frwrdBckwrdLattice
-		  Range(0, config.maxIters) find( _ => {
-		  	  lambda.estimate(config, labels)
+		  Range(0, state.maxIters) find( _ => {
+		  	  lambda.estimate(state, obsIdx)
 		  	  val _likelihood = frwrdBckwrdLattice
 		  	  val diff = likelihood - _likelihood
 		  	  likelihood = _likelihood
@@ -59,10 +59,10 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	}
    
    private def frwrdBckwrdLattice: Double  = {
-       val alpha = Alpha(lambda, labels).alpha
-	   Beta(lambda, labels)
-	   config.Gamma
-	   config.DiGamma.update(lambda.A, lambda.B, labels)
+       val alpha = Alpha(lambda, obsIdx).alpha
+	   Beta(lambda, obsIdx)
+	   state.Gamma
+	   state.DiGamma.update(lambda.A, lambda.B, obsIdx)
 	   alpha
    }
 }
@@ -76,7 +76,7 @@ class BaumWelchEM(	val lambdaBW: HMMLambda,
 	 */
 object BaumWelchEM {
    final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
-   def apply(lambda: HMMLambda, params: HMMConfig, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
+   def apply(lambda: HMMLambda, params: HMMState, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
+   def apply(lambda: HMMLambda, params: HMMState, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
 }
 // -----------------------------  EOF --------------------------------

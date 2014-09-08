@@ -39,7 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines a population of chromosomes. The size of the population varies
+over time following successive, iterative selection but is bounded to avoid a potential
+explosion of candidates/chromosomes.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>August 25, 2013</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the limit is out of range or the pool of chromosomes is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +83,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.ga.Population#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.ga.Population#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(limit:Int,chromosomes:org.scalaml.ga.Chromosome.Pool[T]):org.scalaml.ga.Population[T]"></a>
       <a id="&lt;init&gt;:Population[T]"></a>
       <h4 class="signature">
@@ -91,7 +95,8 @@
         <span class="name">Population</span><span class="params">(<span name="limit">limit: <span class="extype" name="scala.Int">Int</span></span>, <span name="chromosomes">chromosomes: <a href="Chromosome$.html#Pool[T&lt;:org.scalaml.ga.Gene]=scala.collection.mutable.ListBuffer[org.scalaml.ga.Chromosome[T]]" class="extmbr" name="org.scalaml.ga.Chromosome.Pool">Pool</a>[<span class="extype" name="org.scalaml.ga.Population.T">T</span>]</span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Create a population of chromosome.</p><div class="fullcomment"><div class="comment cmt"><p>Create a population of chromosome. [limit]: Maximum number of chromosomes allowed in this population, [chromosomes] Current pool of chromosomes</p></div><dl class="paramcmts block"><dt class="param">limit</dt><dd class="cmt"><p>maximum number of chromosomes allowed in this population</p></dd><dt class="param">chromosomes</dt><dd class="cmt"><p>current pool of chromosomes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the limit is out of range or the pool of chromosomes is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -250,7 +255,7 @@ chromosomes that are mutated using the mutate operator ^ on chromosome.</p></div
         <span class="name">chromosomes</span><span class="result">: <a href="Chromosome$.html#Pool[T&lt;:org.scalaml.ga.Gene]=scala.collection.mutable.ListBuffer[org.scalaml.ga.Chromosome[T]]" class="extmbr" name="org.scalaml.ga.Chromosome.Pool">Pool</a>[<span class="extype" name="org.scalaml.ga.Population.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">current pool of chromosomes</p>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -379,7 +384,7 @@ chromosomes that are mutated using the mutate operator ^ on chromosome.</p></div
         <span class="name">limit</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">maximum number of chromosomes allowed in this population</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

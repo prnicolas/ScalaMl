@@ -18,6 +18,7 @@ import scala.annotation.implicitNotFound
 
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>
+		 * @constructor Abstract moving average
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
@@ -29,7 +30,7 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		 * <p>Parameterized simple moving average data transformation. The computation is implemented
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
 		 * arithmetic operation on elements of the time series.</p>
-		 * @param period period of the window in the moving average
+		 * @constructor Create a simple moving average: [period] Period or duration of the window in the moving average
 		 * @throws IllegalArgumentExceptionif period is non positive
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
@@ -94,13 +95,13 @@ object SimpleMovingAverage {
 		/**
 		 * <p>Parameterized exponential average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
-		 * @param period period of the window in the moving average
+		 * @constructor Create an exponential moving average: [period] Period of the window in the moving average, [alpha] Decary factor
 		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-final class ExpMovingAverage[@specialized(Double) T <% Double](val period: Int, val alpha: Double) extends MovingAverage[T]  {
+final class ExpMovingAverage[@specialized(Double) T <% Double](private val period: Int, private val alpha: Double) extends MovingAverage[T]  {
   require( period > 0, "Cannot initialize exponential moving average with a null or negative period " + period)
   require( alpha > 0 && alpha <= 1.0, "Cannot initialize exponential with alpha " + alpha + " value")
    
@@ -132,17 +133,17 @@ object ExpMovingAverage {
 }
 
 
+import Types.ScalaMl._
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
-		 * @param weights weights used in the time window
+		 * @constructor Create a weighted moving average: [weights] Weights (or coefficients) used in the time window
 		 * @throws IllegalArgumentException if the weights are undefined or not normalized
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
-final class WeightedMovingAverage[@specialized(Double) T <% Double](val weights: DblVector) extends MovingAverage[T]  {
+final class WeightedMovingAverage[@specialized(Double) T <% Double](private val weights: DblVector) extends MovingAverage[T]  {
    require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, "Weights are not defined or normalized")
      
    		/**

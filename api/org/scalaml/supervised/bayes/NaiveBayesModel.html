@@ -31,7 +31,7 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">sealed abstract </span>
+        <span class="modifier">abstract </span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
@@ -40,7 +40,8 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Abstract class for all the Naive Bayes model. The purpose of the model is to
-classify a new set of observations.</p></div><div class="toggleContainer block">
+classify a new set of observations.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 8, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -84,7 +85,7 @@ classify a new set of observations.</p></div><div class="toggleContainer block">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.bayes.NaiveBayesModel#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(density:(Double,Double,Double)=&gt;Double)(implicitevidence$2:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayesModel[T]"></a>
+      <a id="&lt;init&gt;(density:Double*=&gt;Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayesModel[T]"></a>
       <a id="&lt;init&gt;:NaiveBayesModel[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,7 +93,7 @@ classify a new set of observations.</p></div><div class="toggleContainer block">
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">NaiveBayesModel</span><span class="params">(<span name="density">density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">NaiveBayesModel</span><span class="params">(<span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">density</dt><dd class="cmt"><p>Probabiliy density function used in computing the conditional probability p(C|x)
@@ -220,15 +221,15 @@ classify a new set of observations.</p></div><div class="toggleContainer block">
               
         </dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayesModel#density" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="density:(Double,Double,Double)=&gt;Double"></a>
-      <a id="density:(Double,Double,Double)⇒Double"></a>
+      <a id="density:Double*=&gt;Double"></a>
+      <a id="density:(Double*)⇒Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Probabiliy density function used in computing the conditional probability p(C|x)

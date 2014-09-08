@@ -39,7 +39,12 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that define a rule or policy in XCS algorithm. The rule is encoded as a gene so
+it can be manipulated by the Genetic Algorithm. A rule is defined by the format:<br>
+IF signal THEN action.<br> The constructor increase a global rules count used to automatically
+assigned a label to each signal/predicate.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 24, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the predicate or the action of the rule is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../ga/Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +84,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.reinforcement.xcs.XcsRule#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.reinforcement.xcs.XcsRule#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(signal:org.scalaml.trading.Signal,action:org.scalaml.reinforcement.xcs.XcsRule.XcsAction[T])(implicitevidence$1:T=&gt;Double):org.scalaml.reinforcement.xcs.XcsRule[T]"></a>
       <a id="&lt;init&gt;:XcsRule[T]"></a>
       <h4 class="signature">
@@ -91,7 +96,8 @@
         <span class="name">XcsRule</span><span class="params">(<span name="signal">signal: <a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a></span>, <span name="action">action: <a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="org.scalaml.reinforcement.xcs.XcsRule.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.reinforcement.xcs.XcsRule.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">signal</dt><dd class="cmt"><p>signal or predicated of the rule</p></dd><dt class="param">action</dt><dd class="cmt"><p>action of the rule</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the predicate or the action of the rule is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -208,7 +214,7 @@ parent gene.</p></div><dl class="paramcmts block"><dt class="param">index</dt><d
         <span class="name">action</span><span class="result">: <a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="org.scalaml.reinforcement.xcs.XcsRule.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">action of the rule</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -405,7 +411,7 @@ is executed as part of the instantiation of a gene class.
         <span class="name">signal</span><span class="result">: <a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">signal or predicated of the rule</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

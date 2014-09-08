@@ -15,12 +15,13 @@ import Chromosome._
 import java.util.{HashSet, Arrays}
 
 
-
+import Population._
 		/**
 		 * <p>Class that defines a population of chromosomes. The size of the population varies
 		 * over time following successive, iterative selection but is bounded to avoid a potential
-		 * explosion of candidates/chromosomes..</p>
-		 * @param limit maximum number of chromosomes allowed in this populatoin
+		 * explosion of candidates/chromosomes.</p>
+		 * @constructor Create a population of chromosome. [limit]: Maximum number of chromosomes allowed in this population, [chromosomes] Current pool of chromosomes
+		 * @param limit maximum number of chromosomes allowed in this population
 		 * @param chromosomes current pool of chromosomes
 		 * @throws IllegalArgumenException if the limit is out of range or the pool of chromosomes is undefined
 		 * 
@@ -28,7 +29,6 @@ import java.util.{HashSet, Arrays}
 		 * @since August 25, 2013
 		 * @note Scala for Machine Learning
 		 */
-import Population._
 final class Population[T <: Gene](val limit: Int, 
 						          val chromosomes: Pool[T]) {
     require(chromosomes != null, "Population has undefined initial set of chromosomes")

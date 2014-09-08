@@ -11,19 +11,20 @@
 package org.scalaml.ga
 
 import scala.annotation.implicitNotFound
+import Gene._
+import Chromosome._
 
 			/**
 			 * <p>Class that implements a parameterized chromosome using an encoding scheme and
 			 * an objective/fitness function. A chromosome is a container or list of Gene that
 			 * represents candidate solution to a problem or candidate model to a dataset.</p>
-			 * @param code genetic code or list of Gene that is to be encoded with 0,1 bits
+			 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
 			 * @throws if the genetic code is undefined or empty
+			 * 
 			 * @author Patrick Nicolas
 			 * @since August 27, 2013
 			 * @note Scala for Machine Learning
 			 */
-import Gene._
-import Chromosome._
 final class Chromosome[T <: Gene](val code: List[T]) {  
    require(code != null && code.size > 1, "Cannot create a chromosome from undefined genetic code")
    var fitness: Double = 1e+10

@@ -15,7 +15,8 @@ import org.scalaml.workflow.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import org.scalaml.unsupervised.Distance
-
+import Types.ScalaMl._
+import KMeans._
 
 		/**
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids
@@ -36,8 +37,6 @@ import org.scalaml.unsupervised.Distance
 		 * @since February 23, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
-import KMeans._
 @implicitNotFound("Ordering not implicitly defined for K-means")
 final class KMeans[T <% Double](val K: Int, 
 		                        val maxIters: Int, 

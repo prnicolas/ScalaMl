@@ -14,7 +14,8 @@ import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
 import org.scalaml.supervised.Model
 import scala.collection.mutable.ListBuffer
-
+import ScalaMl._
+import MLPConnection._
 
 
 		/**
@@ -22,19 +23,17 @@ import scala.collection.mutable.ListBuffer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
 		 * or variable of each layer.<br>
 		 * The Synapse is defined as a nested class</p>
-		 * @param config configuration for the Multi-layer Perceptron
+		 * @param state stateuration for the Multi-layer Perceptron
 		 * @param src source or ingress layer for the network
 		 * @param dst destination of egress layer for the network
-		 * @throws IllegalArgumenException if either the configuration or any of the Neural Network layer is defined
+		 * @throws IllegalArgumenException if either the stateuration or any of the Neural Network layer is defined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
 		 * @note Scala for Machine Learning
 		 */
-import ScalaMl._
-import MLPConnection._
-protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst: MLPLayer)  {
-	require(config != null, "Configuration for the MLP connection is undefined")
+protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: MLPLayer)  {
+	require(state != null, "Configuration for the MLP connection is undefined")
 	require(src != null && dst != null, "The source or destination layer for this connection is undefined")
 	
     type MLPSynapse = (Double, Double)
@@ -49,7 +48,7 @@ protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst:
 	def inputForwardPropagation: Unit =  {
 	  val _output = synapses.drop(1).map(x => {
 	  	 val sum = x.zip(src.output).foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
-	  	  config.activation(sum)
+	  	  state.activation(sum)
 	  })
 	  if( isOutputLayer ) 
 	  	 conversion(_output, dst.output)
@@ -64,7 +63,7 @@ protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst:
 	def errorBackpropagation: Unit =  
 	   Range(1, src.len).foreach(i => {
 	  	   val err = Range(1, dst.len).foldLeft(0.0)((s, j) => s + synapses(j)(i)._1*dst.errors(j) )
-	  	   src.errors(i) =  config.gamma*src.output(i)* (1.0- src.output(i))*err
+	  	   src.errors(i) =  state.gamma*src.output(i)* (1.0- src.output(i))*err
 	   })
 
 	  	  
@@ -80,8 +79,8 @@ protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst:
 	  	  Range(0, src.len).foreach(j => { 
 	  	  	 val out = src.output(j)
 	  	  	 val dWeight = synapses(i)(j)._2
-	  	  	 val grad = config.eta*msError*out
-	  	  	 val deltaWeight = grad + config.alpha*dWeight
+	  	  	 val grad = state.eta*msError*out
+	  	  	 val deltaWeight = grad + state.alpha*dWeight
 	  	  	 update(i,j, deltaWeight, grad)
 	  	  })
 	   }) 
@@ -108,7 +107,7 @@ protected class MLPConnection(val config: MLPConfig, val src: MLPLayer, val dst:
    }
    
    @inline
-   private def isOutputLayer: Boolean = dst.id == config.outputLayerId
+   private def isOutputLayer: Boolean = dst.id == state.outputLayerId
 }
 
 

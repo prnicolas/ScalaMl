@@ -27,6 +27,9 @@ object Operator extends Enumeration  {
 }
 
 
+import Gene._
+import Operator._
+
 	/**
 	 * <p>Implementation of a gene as a tuple (value, operator) for example the
 	 * of tje rule IF( _ operator value) THEN action.
@@ -35,9 +38,10 @@ object Operator extends Enumeration  {
 	 * 32 bits allocated to the value. The floating point value(min, max) is
 	 * digitized as integer [0, 2^32-1]. The discretization function is provided
 	 * implicitly. The bits are implemented by the Java BitSet class.</p>
+	 * @constructor Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer
 	 * @param value Floating point value to be digitized as integer
-	 * @param 2-bit boolean operator of type Operator
-	 * @param f  implicit discretization function from Floating point value to integer
+	 * @param op logical operator of type Operator
+	 * @param discr  implicit discretization function from Floating point value to integer
 	 * @throws IllegalArgumentException if operator is undefined
 	 * @throws ImplicitNotFound if the conversion from double to integer (digitize) is not provided
 	 * 
@@ -45,9 +49,6 @@ object Operator extends Enumeration  {
 	 * @since August 28, 2013
 	 * @note Scala for Machine Learning
 	 */
-import Gene._
-import Operator._
-
 @implicitNotFound("Gene encoding requires double to integer conversion") 
 class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   require(op != null, "Cannot create a gene/predicate with undefined operator")

@@ -39,7 +39,10 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Immutable class that implements the Validation variables on a results
+of a test run. The counters for TP, TN, FP and FN are computed during instantiation
+to the class, Accuracy, precision and recall are computed at run-time (lazy values).</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 1, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if actualExpected is undefined or has no elements</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="Validation.html" class="extype" name="org.scalaml.stats.Validation">Validation</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +82,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.stats.ClassValidation#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.stats.ClassValidation#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(actualExpected:Array[(Int,Int)],tpClass:Int):org.scalaml.stats.ClassValidation"></a>
       <a id="&lt;init&gt;:ClassValidation"></a>
       <h4 class="signature">
@@ -91,7 +94,7 @@
         <span class="name">ClassValidation</span><span class="params">(<span name="actualExpected">actualExpected: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="tpClass">tpClass: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">actualExpected</dt><dd class="cmt"><p>array of pair (actual value, labeled/expected value)</p></dd><dt class="param">tpClass</dt><dd class="cmt"><p>that defined the true positive results</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if actualExpected is undefined or has no elements</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -191,7 +194,7 @@
         <span class="name">actualExpected</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Int">Int</span>)]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">array of pair (actual value, labeled/expected value)</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -442,7 +445,7 @@ True positive, true negative, False positive and false negatives results
         <span class="name">tpClass</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">that defined the true positive results</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

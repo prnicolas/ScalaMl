@@ -38,8 +38,8 @@ object ChartType extends Enumeration {
 	type ChartType = Value
 	val LINE, TIME_SERIES, SCATTER, BAR = Value
 }
-abstract class Plot(val config: PlotInfo, val theme: PlotTheme) {
-   require(config != null, "Cannot create a plot with undefined configuration")
+abstract class Plot(val state: PlotInfo, val theme: PlotTheme) {
+   require(state != null, "Cannot create a plot with undefined stateuration")
    require(theme != null, "Cannot create a plot with undefined theme")
    
    def display(xy: XYTSeries, w: Int, h: Int): Unit
@@ -54,7 +54,7 @@ abstract class Plot(val config: PlotInfo, val theme: PlotTheme) {
 }
 
 
-class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_config, _theme)	{
+class LinePlot(val _state: PlotInfo, val _theme: PlotTheme) extends Plot(_state, _theme)	{
    private val colors: Array[Color] = Array[Color](Color.gray, Color.black)
    private val shapes: Array[Shape] = Array[Shape](ShapeUtilities.createDiamond(1.0F), 
   		                                          ShapeUtilities.createRegularCross(1.0F, 1.0F),
@@ -66,7 +66,7 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
       require( h > 60 && h < 1260, "height " + h + " is out of range")
        
   	  val catDataset = new DefaultCategoryDataset
-  	  xy.foreach( x => catDataset.addValue(x._1, config._2, String.valueOf(x._2.toInt) ))
+  	  xy.foreach( x => catDataset.addValue(x._1, state._2, String.valueOf(x._2.toInt) ))
       draw(catDataset, w, h)
    }		 
    
@@ -76,7 +76,7 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
       require( h > 60 && h < 1260, "height " + h + " is out of range")
       
   	  val catDataset = new DefaultCategoryDataset
-  	  y.zipWithIndex.foreach( x =>catDataset.addValue(x._1, config._2, String.valueOf(x._2)))
+  	  y.zipWithIndex.foreach( x =>catDataset.addValue(x._1, state._2, String.valueOf(x._2)))
       draw(catDataset, w, h)
    }
 
@@ -89,12 +89,12 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
   	 
       val seriesCollection = new XYSeriesCollection
   	  xys.foreach( xy => {   
-  	  	 val xSeries = new XYSeries(config._1 + xy._2)
+  	  	 val xSeries = new XYSeries(state._1 + xy._2)
   	  	 xy._1.zipWithIndex.foreach(z => xSeries.add(z._2.toDouble, z._1))
   	  	 seriesCollection.addSeries(xSeries)
   	  })
 
-  	  val chart = ChartFactory.createXYLineChart(config._2, config._2, config._3, seriesCollection, PlotOrientation.VERTICAL, true, true, false)
+  	  val chart = ChartFactory.createXYLineChart(state._2, state._2, state._3, seriesCollection, PlotOrientation.VERTICAL, true, true, false)
 
   	  
   	  val plot = chart.getXYPlot
@@ -114,7 +114,7 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
    }
 	  
    private[this] def draw(catDataset: CategoryDataset, w: Int, h: Int): Unit = {
-	 val chart = ChartFactory.createLineChart(config._2, config._2, config._3, catDataset, PlotOrientation.VERTICAL, false, false, false)
+	 val chart = ChartFactory.createLineChart(state._2, state._2, state._3, catDataset, PlotOrientation.VERTICAL, false, false, false)
 	 val plot = chart.getPlot.asInstanceOf[CategoryPlot]
 	    
 	 val renderer = new LineAndShapeRenderer {
@@ -133,14 +133,14 @@ class LinePlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_confi
 
 
 
-class ScatterPlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_config, _theme) {
+class ScatterPlot(val _state: PlotInfo, val _theme: PlotTheme) extends Plot(_state, _theme) {
 	
    override def display(xy: XYTSeries, w: Int, h : Int): Unit  = {
       require( xy != null && xy.size > 0, "Cannot display an undefined series")
       require( w > 60 && w < 1260, "Width " + w + " is out of range")
       require( h > 60 && h < 1260, "height " + h + " is out of range")
           
-	  val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series =  xy.foldLeft(new XYSeries(state._1))((s, xy) => {s.add(xy._1, xy._2); s})
 	  val seriesCollection = new XYSeriesCollection
 	  seriesCollection.addSeries(series)
 	  draw(seriesCollection, w, h)
@@ -153,12 +153,12 @@ class ScatterPlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_co
           
       val seriesCollection1 = new XYSeriesCollection
        val seriesCollection2 = new XYSeriesCollection
-	  val series1 = xy1.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-	  val series2 = xy2.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series1 = xy1.foldLeft(new XYSeries(state._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series2 = xy2.foldLeft(new XYSeries(state._1))((s, xy) => {s.add(xy._1, xy._2); s})
 	  seriesCollection1.addSeries(series1)
 	  seriesCollection2.addSeries(series2)
 	  
-	  val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection1, PlotOrientation.VERTICAL, true, false, false)
+	  val chart = ChartFactory.createScatterPlot(state._2, state._2, state._3, seriesCollection1, PlotOrientation.VERTICAL, true, false, false)
       val plot = chart.getPlot.asInstanceOf[XYPlot]
       val renderer1 = new XYDotRenderer
       plot.setRenderer(0, renderer1)
@@ -192,14 +192,14 @@ class ScatterPlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_co
       /*
       val seriesCollection1 = new XYSeriesCollection
       val seriesCollection2 = new XYSeriesCollection
-	  val series1 = x.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-	  val series2 = y.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series1 = x.foldLeft(new XYSeries(state._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	  val series2 = y.foldLeft(new XYSeries(state._1))((s, xy) => {s.add(xy._1, xy._2); s})
 	  seriesCollection1.addSeries(series1)
 	  seriesCollection2.addSeries(series2)
 	  * 
 	  */
 	  
-	  val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, PlotOrientation.VERTICAL, true, false, false)
+	  val chart = ChartFactory.createScatterPlot(state._2, state._2, state._3, seriesCollectionsList.last, PlotOrientation.VERTICAL, true, false, false)
       val plot = chart.getPlot.asInstanceOf[XYPlot]
   	  
       val renderer1 = new XYDotRenderer
@@ -225,7 +225,7 @@ class ScatterPlot(val _config: PlotInfo, val _theme: PlotTheme) extends Plot(_co
    
    	    
     private def draw(seriesCollection: XYSeriesCollection, w: Int, h : Int) {
-      val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection, PlotOrientation.VERTICAL, true, false, false)
+      val chart = ChartFactory.createScatterPlot(state._2, state._2, state._3, seriesCollection, PlotOrientation.VERTICAL, true, false, false)
       val plot = chart.getPlot.asInstanceOf[XYPlot]
       val renderer = new XYDotRenderer
       plot.setRenderer(renderer)

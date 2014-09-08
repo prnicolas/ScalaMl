@@ -39,13 +39,18 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that implements the KMeans++ algorithm for which the centroids
+are initialized at mid point of K segments of data points after the data points
+are ordered by their variance.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Ordering not implicitly defined for K-means&quot;">...</span>
     </span>)</span>
               
-        </dd></dl><div class="toggleContainer block">
+        </dd><dt>Since</dt><dd><p>February 23, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of clusters or the maximum number of
+iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundExceptin<p>if the ordering instance is not implicitly defined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -85,7 +90,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.unsupervised.clustering.KMeans#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.clustering.KMeans#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(K:Int,maxIters:Int,distance:(org.scalaml.core.Types.ScalaMl.DblVector,Array[T])=&gt;Double)(implicitevidence$1:T=&gt;Double,implicitorder:Ordering[T],implicitm:Manifest[T]):org.scalaml.unsupervised.clustering.KMeans[T]"></a>
       <a id="&lt;init&gt;:KMeans[T]"></a>
       <h4 class="signature">
@@ -97,7 +102,11 @@
         <span class="name">KMeans</span><span class="params">(<span name="K">K: <span class="extype" name="scala.Int">Int</span></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="distance">distance: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="order">order: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>, <span name="m">m: <span class="extype" name="scala.Predef.Manifest">Manifest</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">K</dt><dd class="cmt"><p>number of clusters</p></dd><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations allowed for the generation of clusters (default: 5000)</p></dd><dt class="param">distance</dt><dd class="cmt"><p>metric used in computing distance between data points.</p></dd><dt class="param">order</dt><dd class="cmt"><p>implicit ordering used in the initialization of of centroids</p></dd><dt class="param">m</dt><dd class="cmt"><p>implicit declaration of manifest of type T to overcome Java erasure of type when
+converting Array of T to Array of double and vice versa
+</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of clusters or the maximum number of
+iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundExceptin<p>if the ordering instance is not implicitly defined.
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -184,7 +193,7 @@
         <span class="name">K</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">number of clusters</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -229,7 +238,7 @@
         <span class="name">distance</span><span class="result">: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">metric used in computing distance between data points.</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -326,7 +335,7 @@
         <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">maximum number of iterations allowed for the generation of clusters (default: 5000)</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

@@ -70,7 +70,8 @@
         <a href="Chromosome.html"><span class="name">Chromosome</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Class that implements a parameterized chromosome using an encoding scheme and
+an objective/fitness function.</p>
     </li><li name="org.scalaml.ga.GAConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="GAConfigextendsAnyRef"></a>
       <a id="GAConfig:GAConfig"></a>
@@ -97,8 +98,10 @@ genetic algorithm optimizer.</p>
         <a href="GASolver.html"><span class="name">GASolver</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
-    </li><li name="org.scalaml.ga.Gene" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <p class="comment cmt">Class to select the best solution or Chromosome from an initial population
+or genes pool using a set of policies for selection, mutation and crossover of
+chomosomes.</p>
+    </li><li name="org.scalaml.ga.Gene" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="GeneextendsAnyRef"></a>
       <a id="Gene:Gene"></a>
       <h4 class="signature">
@@ -110,13 +113,8 @@ genetic algorithm optimizer.</p>
         <a href="Gene.html"><span class="name">Gene</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@implicitNotFound</span><span class="args">(<span>
-      
-      <span class="defval" name="&quot;Gene encoding requires double to integer conversion&quot;">...</span>
-    </span>)</span>
-              
-        </dd></dl></div>
+      <p class="comment cmt">Implementation of a gene as a tuple (value, operator) for example the
+of tje rule IF( _ operator value) THEN action.</p>
     </li><li name="org.scalaml.ga.Population" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Population[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
       <a id="Population[T&lt;:Gene]:Population[T]"></a>
@@ -129,7 +127,7 @@ genetic algorithm optimizer.</p>
         <a href="Population.html"><span class="name">Population</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Class that defines a population of chromosomes.</p>
     </li><li name="org.scalaml.ga.Reproduction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Reproduction[T&lt;:org.scalaml.ga.Gene]extendsAnyRef"></a>
       <a id="Reproduction[T&lt;:Gene]:Reproduction[T]"></a>
@@ -142,7 +140,7 @@ genetic algorithm optimizer.</p>
         <a href="Reproduction.html"><span class="name">Reproduction</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
+      <p class="comment cmt">Define a replication phase in the execution of the genetic algorithm optimizer.</p>
     </li></ol>
             </div>
 

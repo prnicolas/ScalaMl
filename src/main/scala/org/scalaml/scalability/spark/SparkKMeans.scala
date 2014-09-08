@@ -25,7 +25,7 @@ import org.scalaml.workflow.PipeOperator
 
 
 			/**
-			 * <p>Define the configuration of the Spark KMeans wrapper.</p>
+			 * <p>Define the stateuration of the Spark KMeans wrapper.</p>
 			 * @param K number of clusters used in Spark KMeans
 			 * @param numIters maximum number of iterations allowed for Spark KMeans
 			 * @param numRuns number of runs to be executed by Spark KMeans
@@ -46,22 +46,22 @@ case class SparkKMeansConfig(val K: Int, val numIters: Int, val numRuns: Int) {
 			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
 			 * training during instantiation of objects in order to reduce their life-cycle.<br>
 			 * The algorithm implements the default data transformation interface, PipeOperator.</p>
-			 * @param config configuration of the Spark KMeans
+			 * @param state stateuration of the Spark KMeans
 			 * @param cache flag to specify if the RDD has to be cache after training
 			 * @param xt Time series used for the training of the Spark KMeans 
 			 * @param sc implicit spark context
-			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
+			 * @throws IllegalArgumentException if the stateuration or the time series is undefined.
 			 * 
 			 * @author Patrick Nicolas
 			 * @since April 2, 2014
 			 * @note Scala for Machine Learning
 			 */
 @implicitNotFound("Spark context is implicitely undefined")
-final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig, val xt: XTSeries[DblVector])(implicit sc: SparkContext) 
+final class SparkKMeans(val state: SparkKMeansConfig, val rddConfig: RDDConfig, val xt: XTSeries[DblVector])(implicit sc: SparkContext) 
           extends PipeOperator[DblVector, Int] {
   
-  require(config != null, "Cannot a K-means model without a configuration")
-  require(rddConfig != null, "Cannot execute a K-means on non-configured RDD")
+  require(state != null, "Cannot a K-means model without a stateuration")
+  require(rddConfig != null, "Cannot execute a K-means on non-stateured RDD")
   require(xt != null && xt.size > 0, "Cannot execute a K-means on undefined input time series")
     
   private val model = train
@@ -79,9 +79,9 @@ final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig,
   	 val data = RDDSource.convert(xt, rddConfig)
      val kmean = new KMeans
 		     
-	 kmean.setK(config.K)
-	 kmean.setMaxIterations(config.numIters)
-	 kmean.setRuns(config.numRuns)
+	 kmean.setK(state.K)
+	 kmean.setMaxIterations(state.numIters)
+	 kmean.setRuns(state.numRuns)
 	 kmean.run(data)
   }
 }
@@ -89,7 +89,7 @@ final class SparkKMeans(val config: SparkKMeansConfig, val rddConfig: RDDConfig,
 
 
 object SparkKMeans {
-   def apply(config: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext): SparkKMeans = new SparkKMeans(config, rddConfig, xt)
+   def apply(state: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext): SparkKMeans = new SparkKMeans(state, rddConfig, xt)
 }
 
 // --------------------------------------  EOF ---------------------------------------------------

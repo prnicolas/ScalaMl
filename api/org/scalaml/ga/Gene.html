@@ -39,13 +39,21 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Implementation of a gene as a tuple (value, operator) for example the
+of tje rule IF( _ operator value) THEN action.
+(i.e. IF (RSI &gt; 0.8 THEN Stock over-bought ). The gene has a fixed size
+of bits with in this case, two bits allocated to the operator and
+32 bits allocated to the value. The floating point value(min, max) is
+digitized as integer [0, 2^32-1]. The discretization function is provided
+implicitly. The bits are implemented by the Java BitSet class.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Gene encoding requires double to integer conversion&quot;">...</span>
     </span>)</span>
               
-        </dd></dl><div class="toggleContainer block">
+        </dd><dt>Since</dt><dd><p>August 28, 2013</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if operator is undefined</p></span><span class="cmt">ImplicitNotFound<p>if the conversion from double to integer (digitize) is not provided
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -88,7 +96,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.ga.Gene#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.ga.Gene#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(value:Double,op:org.scalaml.ga.Operator.Operator)(implicitdiscr:Double=&gt;Int):org.scalaml.ga.Gene"></a>
       <a id="&lt;init&gt;:Gene"></a>
       <h4 class="signature">
@@ -100,7 +108,8 @@
         <span class="name">Gene</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>, <span name="op">op: <a href="Operator$.html#Operator=org.scalaml.ga.Operator.Value" class="extmbr" name="org.scalaml.ga.Operator.Operator">Operator</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="discr">discr: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Create a gene instance.</p><div class="fullcomment"><div class="comment cmt"><p>Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer</p></div><dl class="paramcmts block"><dt class="param">value</dt><dd class="cmt"><p>Floating point value to be digitized as integer</p></dd><dt class="param">op</dt><dd class="cmt"><p>logical operator of type Operator</p></dd><dt class="param">discr</dt><dd class="cmt"><p>implicit discretization function from Floating point value to integer</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if operator is undefined</p></span><span class="cmt">ImplicitNotFound<p>if the conversion from double to integer (digitize) is not provided
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -427,7 +436,7 @@ is executed as part of the instantiation of a gene class.
         <span class="name">value</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Floating point value to be digitized as integer</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

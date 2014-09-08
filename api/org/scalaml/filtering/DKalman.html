@@ -101,7 +101,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">DKalman</span><span class="params">(<span name="A">A: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="B">B: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="H">H: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="P">P: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="qrNoise">qrNoise: <a href="QRNoise.html" class="extype" name="org.scalaml.filtering.QRNoise">QRNoise</a></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">A</dt><dd class="cmt"><p>State transition matrix</p></dd><dt class="param">B</dt><dd class="cmt"><p>input state matrix</p></dd><dt class="param">H</dt><dd class="cmt"><p>matrix that defines the dependency of the measurement on the state of the system</p></dd><dt class="param">P</dt><dd class="cmt"><p>error matrix</p></dd><dt class="param">qrNoise</dt><dd class="cmt"><p>implicit value representing the white noise for the process Q and the measurement P</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the input matrices are undefined or have inconsistent dimension</p></span></dd></dl></div>
+      <p class="shortcomment cmt">Create a scalar Kalman filter: [A] State transition matrix,  [B] Tnput state matrix, [H] Matrix that defines the dependency of the measurement on the state of the system, [P] Error matrix,  [qrNoise] Implicit value representing the white noise for the process Q and the measurement P</p><div class="fullcomment"><div class="comment cmt"><p>Create a scalar Kalman filter: [A] State transition matrix,  [B] Tnput state matrix, [H] Matrix that defines the dependency of the measurement on the state of the system, [P] Error matrix,  [qrNoise] Implicit value representing the white noise for the process Q and the measurement P</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the input matrices are undefined or have inconsistent dimension</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -188,7 +188,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">A</span><span class="result">: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">State transition matrix</p>
+      
     </li><li name="org.scalaml.filtering.DKalman#B" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="B:org.scalaml.core.Types.ScalaMl.DblMatrix"></a>
       <a id="B:DblMatrix"></a>
@@ -201,7 +201,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">B</span><span class="result">: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">input state matrix</p>
+      
     </li><li name="org.scalaml.filtering.DKalman#H" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="H:org.scalaml.core.Types.ScalaMl.DblMatrix"></a>
       <a id="H:DblMatrix"></a>
@@ -214,7 +214,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">H</span><span class="result">: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">matrix that defines the dependency of the measurement on the state of the system</p>
+      
     </li><li name="org.scalaml.filtering.DKalman#P" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="P:org.scalaml.core.Types.ScalaMl.DblMatrix"></a>
       <a id="P:DblMatrix"></a>
@@ -227,7 +227,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">P</span><span class="result">: <a href="../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">error matrix</p>
+      
     </li><li name="org.scalaml.filtering.DKalman#Q" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Q:Array[Array[Double]]"></a>
       <a id="Q:Array[Array[Double]]"></a>
@@ -421,7 +421,7 @@ measurement white noise is provided as an implicit value.</p></div><dl class="at
         <span class="name">qrNoise</span><span class="result">: <a href="QRNoise.html" class="extype" name="org.scalaml.filtering.QRNoise">QRNoise</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">implicit value representing the white noise for the process Q and the measurement P</p>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

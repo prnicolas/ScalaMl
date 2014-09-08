@@ -39,7 +39,12 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>:Class that defines a MLP layer. A MLP layer is built using the
+input vector and add an extra element (or neuron) to account for the intercept
+weight w0. The MLP layer is fully defined by its rank in the Neuron Network with
+input layer having id = 0 and the output layer having id = number of layers -1.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>May 6, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the class parameters are incorrect
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +84,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.nnet.MLPLayer#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.nnet.MLPLayer#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(id:Int,len:Int):org.scalaml.supervised.nnet.MLPLayer"></a>
       <a id="&lt;init&gt;:MLPLayer"></a>
       <h4 class="signature">
@@ -91,7 +96,8 @@
         <span class="name">MLPLayer</span><span class="params">(<span name="id">id: <span class="extype" name="scala.Int">Int</span></span>, <span name="len">len: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id or rank of the MLP layer in the network</p></dd><dt class="param">len</dt><dd class="cmt"><p>number of elements or neuron in the MLP layer</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the class parameters are incorrect
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -294,7 +300,7 @@
         <span class="name">id</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">id or rank of the MLP layer in the network</p>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -336,7 +342,7 @@
         <span class="name">len</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">number of elements or neuron in the MLP layer</p>
     </li><li name="org.scalaml.supervised.nnet.MLPLayer#mse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="mse(labels:org.scalaml.core.Types.ScalaMl.DblVector,objective:org.scalaml.supervised.nnet.MLP.MLPObjective,gamma:Double):Double"></a>
       <a id="mse(DblVector,MLPObjective,Double):Double"></a>

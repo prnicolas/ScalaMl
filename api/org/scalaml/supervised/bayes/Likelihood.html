@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>DiGamma - org.scalaml.supervised.hmm.HMMParams.DiGamma</title>
-          <meta name="description" content="DiGamma - org.scalaml.supervised.hmm.HMMParams.DiGamma" />
-          <meta name="keywords" content="DiGamma org.scalaml.supervised.hmm.HMMParams.DiGamma" />
+          <title>Likelihood - org.scalaml.supervised.bayes.Likelihood</title>
+          <meta name="description" content="Likelihood - org.scalaml.supervised.bayes.Likelihood" />
+          <meta name="keywords" content="Likelihood org.scalaml.supervised.bayes.Likelihood" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.hmm.HMMParams$DiGamma$';
+            var hash = 'org.scalaml.supervised.bayes.Likelihood';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -22,24 +22,31 @@
    	  </script>
     
         </head>
-        <body class="value">
+        <body class="type">
       <div id="definition">
-        <img src="../../../../lib/object_big.png" />
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a>.<a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></p>
-        <h1>DiGamma</h1>
+        <a href="Likelihood$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
+        <h1><a href="Likelihood$.html" title="Go to companion">Likelihood</a></h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">DiGamma</span>
+        <span class="name">Likelihood</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that represents a likelihood for each featurefor Naive Bayes classifier.<br>
+The prior consists of a label (index), the mean of the prior of each dimension of the model,
+the standard deviation of the prior of each dimension of the model and the class likelyHood.
+The Naive Bayes assume that the dimension of the model are independent, making the log of
+the prior additive.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>March 11, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the array of mean and standard deviation of the likelihood is undefined
+of if the class likelihood is out of range ]0,1]
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -59,7 +66,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.HMMParams.DiGamma"><span>DiGamma</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.Likelihood"><span>Likelihood</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -77,7 +84,25 @@
 
       <div id="template">
         <div id="allMembers">
-        
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.scalaml.supervised.bayes.Likelihood#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(label:Int,muSigma:Array[(Double,Double)],prior:Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.Likelihood[T]"></a>
+      <a id="&lt;init&gt;:Likelihood[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Likelihood</span><span class="params">(<span name="label">label: <span class="extype" name="scala.Int">Int</span></span>, <span name="muSigma">muSigma: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]</span>, <span name="prior">prior: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.Likelihood.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">label</dt><dd class="cmt"><p>for a specific class or prior</p></dd><dt class="param">muSigma</dt><dd class="cmt"><p>array of (mean, standard deviation) of the prior observations for the model</p></dd><dt class="param">prior</dt><dd class="cmt"><p>probability of occurrence for the class specified by the label.</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the array of mean and standard deviation of the likelihood is undefined
+of if the class likelihood is out of range ]0,1]
+</p></span></dd></dl></div>
+    </li></ol>
+            </div>
 
         
 
@@ -227,19 +252,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.DiGamma#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fold(t:Int,i:Int,j:Int):Double"></a>
-      <a id="fold(Int,Int,Int):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fold</span><span class="params">(<span name="t">t: <span class="extype" name="scala.Int">Int</span></span>, <span name="i">i: <span class="extype" name="scala.Int">Int</span></span>, <span name="j">j: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -279,6 +291,32 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#label" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="label:Int"></a>
+      <a id="label:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">label</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">for a specific class or prior</p>
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#muSigma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="muSigma:Array[(Double,Double)]"></a>
+      <a id="muSigma:Array[(Double,Double)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">muSigma</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">array of (mean, standard deviation) of the prior observations for the model</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -318,6 +356,35 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#prior" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="prior:Double"></a>
+      <a id="prior:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">prior</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">probability of occurrence for the class specified by the label.</p>
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#score" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="score(obs:Array[T],density:Double*=&gt;Double):Double"></a>
+      <a id="score(Array[T],(Double*)⇒Double):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">score</span><span class="params">(<span name="obs">obs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.Likelihood.T">T</span>]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
+a probability density distribution.</p><div class="fullcomment"><div class="comment cmt"><p>Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
+a probability density distribution.</p></div><dl class="paramcmts block"><dt class="param">obs</dt><dd class="cmt"><p>parameterized observation</p></dd><dt class="param">density</dt><dd class="cmt"><p>probability density function (default Gauss)</p></dd><dt>returns</dt><dd class="cmt"><p>log of the conditional probability p(C|x)
+</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the density is undefined or the observations are undefined</p></span></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -331,7 +398,7 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.bayes.Likelihood#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
       <h4 class="signature">
@@ -340,23 +407,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.DiGamma#update" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="update(A:org.scalaml.util.Matrix[Double],B:org.scalaml.util.Matrix[Double],obs:Array[Int]):Unit"></a>
-      <a id="update(Matrix[Double],Matrix[Double],Array[Int]):Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">update</span><span class="params">(<span name="A">A: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="B">B: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>, <span name="obs">obs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

@@ -14,7 +14,7 @@ import org.scalaml.core.Types.ScalaMl._
 import scala.util.Random
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.PipeOperator
-
+import XTSeries._
 
 
 		/**
@@ -24,7 +24,7 @@ import org.scalaml.workflow.PipeOperator
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.Br>
 		 * This MLP uses the online training strategy suitable for time series.</p>
-		 * @param config configuration parameters class for the MLP
+		 * @param state stateuration parameters class for the MLP
 		 * @param xt time series of features in the training set
 		 * @param labels labeled or target observations used for training
 		 * @param objective Objective of the model (classification or regression)
@@ -34,26 +34,25 @@ import org.scalaml.workflow.PipeOperator
 		 * @since May 8, 2-14
 		 * @note Scala for Machine Learning
 		 */
-import XTSeries._
-final protected class MLP[T <% Double](val config: MLPConfig, 
+final protected class MLP[T <% Double](val state: MLPConfig, 
 		                     val xt: XTSeries[Array[T]], 
 		                     val labels: DblMatrix,
 		                     val objective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
-   validate(config, xt, labels, objective)
+   validate(state, xt, labels, objective)
    
    var converged = false
    val model: Option[MLPModel] = {
   	 try {
-	  	val _model = new MLPModel(config, xt(0), labels(0).size)
+	  	val _model = new MLPModel(state, xt(0), labels(0).size)
 	  	  	// Scaling or normalization factor for the Mean Squares error
 	  	val errScale = 1.0/(labels(0).size*xt.size)
 	  	
 	  		// Apply the exit condition for this online training strategy
-	  	converged = Range(0, config.numEpochs).find( _ => {
+	  	converged = Range(0, state.numEpochs).find( _ => {
 		   xt.toArray.zip(labels).foldLeft(0.0)( (s, xtlbl) => {
 		  	  _model.trainEpoch(xtlbl._1)
 		  	  s +  _model.mse(xtlbl._2, objective)
-		   })*errScale < config.eps		  	 
+		   })*errScale < state.eps		  	 
 	  	}) != None
 	  	Some(_model)   
   	 }
@@ -107,8 +106,8 @@ final protected class MLP[T <% Double](val config: MLPConfig,
   }
 
   
-  private def validate(config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLP.MLPObjective): Unit = {
-	   require(config != null, "Cannot train a multilayer perceptron without configuration parameters")
+  private def validate(state: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLP.MLPObjective): Unit = {
+	   require(state != null, "Cannot train a multilayer perceptron without stateuration parameters")
 	   require(xt != null && xt.size > 0, "Features for the MLP are undefined")
 	   require(labels != null && labels.size > 0, "Labeled observations for the MLP are undefined")
 	   require(xt.size == labels.size, "Number of features for MLP " + xt.size + " is different from number of labels " + labels.size)
@@ -190,14 +189,14 @@ object MLP {
       	    .map(o => (o._1 - min(o._2))/(max(o._2) - min(o._2)))
 	}
 	
-	def apply[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] = 
-		    new MLP[T](config, xt, labels, objective)
+	def apply[T <% Double](state: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] = 
+		    new MLP[T](state, xt, labels, objective)
 		    
-    def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] =
-            new MLP[T](config, XTSeries[Array[T]](features), labels, objective)
+    def apply[T <% Double](state: MLPConfig, features: Array[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] =
+            new MLP[T](state, XTSeries[Array[T]](features), labels, objective)
     
-    def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblVector, objective: MLPObjective): MLP[T] =
-            new MLP[T](config, XTSeries[Array[T]](features), Array[DblVector](labels), objective)
+    def apply[T <% Double](state: MLPConfig, features: Array[Array[T]], labels: DblVector, objective: MLPObjective): MLP[T] =
+            new MLP[T](state, XTSeries[Array[T]](features), Array[DblVector](labels), objective)
 }
 
 

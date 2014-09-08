@@ -13,7 +13,9 @@ package org.scalaml.app.chap7
 import org.scalaml.util.Matrix
 import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
 import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
-import java.io.IOException
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 
 
@@ -26,23 +28,30 @@ import java.io.IOException
 		 * @note Scala for Machine Learning
 		 */
 object CrfEval {
+  final val LAMBDA = 0.5
+  final val NLABELS = 9
+  final val MAX_ITERS = 100
+  final val W0 = 0.7
+  final val EPS = 1e-3
+  final val PATH = "resources/data/chap7/rating"
+  
+  private val logger = Logger.getLogger("CrfEval")
+  
   def run: Unit = {
-    Console.println("Evaluation of Conditional Random Fields")
+    Display.show("Evaluation of Conditional Random Fields", logger)
     
-	val lambda = 0.5
-	val nLabels = 9
-	val config = CrfConfig(0.5, 100, lambda, 0.01)
+
+	val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
 	val delimiters = CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
-	try {
-	   Crf(nLabels, config, delimiters, "resources/data/chap7/rating").weights match {
-	  	 case Some(weights) => weights.foreach( println )
-	  	 case None =>  println("Count not train the CRF model")
+	Try {
+	   Crf(NLABELS, state, delimiters, PATH).weights match {
+	  	 case Some(weights) => weights
+	  	 case None => throw new IllegalStateException("Count not train the CRF model")
 	   }
-	 }
-     catch {
-		case e: IllegalArgumentException => Console.println(e.toString)
-		case e: IOException => Console.println(e.toString)
+	 } match {
+		case Success(weights) => Display.show("CrfEval " + weights, logger)
+		case Failure(e) => Display.error("CrfEval ", logger, e)
 	 }
   }
 }

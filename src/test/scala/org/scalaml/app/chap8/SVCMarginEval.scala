@@ -56,8 +56,8 @@ object SVCMarginEval {
 
 	private def computeMargin(features: DblMatrix, lbl: DblVector, c: Double): Unit = {
 	
-		val config = SVMConfig(CSVCFormulation(c), RbfKernel(GAMMA))
-		val svc = SVM[Double](config, XTSeries[DblVector](features),lbl)
+		val state = SVMConfig(CSVCFormulation(c), RbfKernel(GAMMA))
+		val svc = SVM[Double](state, XTSeries[DblVector](features),lbl)
 		svc.margin match {
 			case Some(mrgn) => 	println( "\nMargin: " + mrgn )
 			case None => println("training failed")

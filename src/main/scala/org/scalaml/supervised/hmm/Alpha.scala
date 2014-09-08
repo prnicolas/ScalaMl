@@ -12,7 +12,7 @@ package org.scalaml.supervised.hmm
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.Types
+import org.scalaml.core.Types.ScalaMl._
 
 
 		/**
@@ -25,12 +25,12 @@ import org.scalaml.core.Types
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
 		 */
-final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lambdaA, obsA) {
+final class Alpha(val lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lambdaA, obsIdxA) {
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
   val alpha = { 
-  	alphaBeta = lambda.initAlpha(labels)
+  	alphaBeta = lambda.initAlpha(obsIdx)
   	normalize(0)
   	sumUp
   }
@@ -41,20 +41,20 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
   	 * thrown during the comptutation are caught in the client code.</p>
   	 * @return sum of the logarithm of the conditional probability p(xi|Y)
   	 */
-  def logProb: Double = HMMDim.foldLeft(lambda.dim._T, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
+  def logProb: Double = HMMConfig.foldLeft(lambda.config._T, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
   
   private def sumUp: Double = {	 
-	 HMMDim.foreach(lambda.dim._T, t => {
+	 HMMConfig.foreach(lambda.config._T, t => {
 		updateAlpha(t)
 		normalize(t)
 	 })
-	 HMMDim.foldLeft(lambda.dim._N, (s, k) => s + alphaBeta(lambda.d_1, k))
+	 HMMConfig.foldLeft(lambda.config._N, (s, k) => s + alphaBeta(lambda.d_1, k))
   }
 
    
   private def updateAlpha(t: Int): Unit = 
-  	HMMDim.foreach(lambda.dim._N, i => 
-  	   alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, labels(t))) 
+  	HMMConfig.foreach(lambda.config._N, i => 
+  	   alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, obsIdx(t))) 
     )
 }
 
@@ -65,7 +65,7 @@ final class Alpha(val lambdaA: HMMLambda, val obsA: Array[Int]) extends Pass(lam
 		 * @since March 13, 2014
 		 */
 object Alpha {
-  def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
+  def apply(lambda: HMMLambda, obsIdx: Array[Int]): Alpha = new Alpha(lambda,obsIdx)
 }
 
 

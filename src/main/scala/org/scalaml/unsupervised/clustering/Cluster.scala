@@ -14,7 +14,8 @@ import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.stats.Stats
 import scala.collection.mutable.ListBuffer
 import org.scalaml.unsupervised.Distance.euclidean
-
+import Types.ScalaMl._
+import XTSeries._
 
 
 		/**
@@ -30,8 +31,7 @@ import org.scalaml.unsupervised.Distance.euclidean
 		 * @since February 22, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
-import XTSeries._
+
 class Cluster[T <% Double](val center: DblVector) {
    require(center != null && center.size > 0, "Cannot create a cluster with undefined centers")
    

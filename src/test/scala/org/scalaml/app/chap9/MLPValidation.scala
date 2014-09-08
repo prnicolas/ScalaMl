@@ -36,8 +36,8 @@ object MLPValidation {
   	 
   	 setNoSoftmax
   	 
-  	 val config = MLPConfig(ALPHA, ETA, GAMMA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
-  	 if( MLP[Double](config, x, y, new MLP.MLPRegression).model == None)
+  	 val state = MLPConfig(ALPHA, ETA, GAMMA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
+  	 if( MLP[Double](state, x, y, new MLP.MLPRegression).model == None)
 	     throw new IllegalStateException("Failed to train the model for alpha = " + ALPHA) 
    }
 }

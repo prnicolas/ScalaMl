@@ -16,12 +16,12 @@ import scala.util.Random
 import org.scalaml.core.XTSeries
 import MLPConfig._
 import org.scalaml.supervised.Config
-
+import MLPConfig._
 
 
 		/**
-		 * <p>Class that defines the configuration for the Multi-layer Perceptron. The validation
-		 * of the configuration/tuning parameters for the MLP is defined in this class. The softmax
+		 * <p>Class that defines the stateuration for the Multi-layer Perceptron. The validation
+		 * of the stateuration/tuning parameters for the MLP is defined in this class. The softmax
 		 * output conversion is defined implicitly and is not a parameter for the class.</p>
 		 * @param alpha momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
 		 * @param eta learning rate ]0, 1] used in the computation of the gradient of the weights during training
@@ -36,7 +36,6 @@ import org.scalaml.supervised.Config
 		 * @since May 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-import MLPConfig._
 class MLPConfig(val alpha: Double, 
 		        val eta: Double, 
 		        val gamma: Double, 

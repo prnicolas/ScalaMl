@@ -51,7 +51,7 @@ object QLearningEval {
 	
     def run: Unit = {	
     	println("Evaluation Q-Learning algorithm")
-    		// configuration of QLearning algorithm
+    		// stateuration of QLearning algorithm
 	  	val qConfig = QLConfig(alpha, gamma, maxIters)
 	  	
 	  		// extract the input values for each symbol (stock time series)

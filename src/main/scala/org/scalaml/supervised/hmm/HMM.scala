@@ -11,8 +11,7 @@
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types
-import Types._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.supervised.Supervised
 import org.scalaml.workflow.PipeOperator
 import org.scalaml.core.XTSeries
@@ -35,9 +34,9 @@ object HMMForm extends Enumeration {
 
 
 
-class HMMModel(val lambda: HMMLambda, val labels: Array[Int]) extends Model {
+class HMMModel(val lambda: HMMLambda, val obsIdx: Array[Int]) extends Model {
    require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
-   require(labels != null && labels.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
+   require(obsIdx != null && obsIdx.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
 }
 
 
@@ -50,15 +49,13 @@ class HMMModel(val lambda: HMMLambda, val labels: Array[Int]) extends Model {
 	 * @author Patrick Nicolas
 	 * @since March 29, 2014
 	 */
-class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMModel(lp, lbls) { 
-   import Types.ScalaMl._
-  
-   protected var alphaBeta: Matrix[Double] = null
-   protected val ct = Array.fill(lambda.dim._T)(0.0)
+class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd, _obsIdx) { 
+   protected var alphaBeta: Matrix[Double] = _
+   protected val ct = Array.fill(lambda.config._T)(0.0)
 
    protected def normalize(t: Int): Unit = {
-  	  require(t >= 0 && t < lambda.dim._N, "Incorrect argument " + t + " for normalization")
-  	  ct.update(t, HMMDim.foldLeft(lambda.dim._N, (s, n) => s + alphaBeta(t, n)))
+  	  require(t >= 0 && t < lambda.config._N, "Incorrect argument " + t + " for normalization")
+  	  ct.update(t, HMMConfig.foldLeft(lambda.config._N, (s, n) => s + alphaBeta(t, n)))
   	  alphaBeta /= (t, ct(t))
    }
 }
@@ -78,15 +75,15 @@ class Pass(val lp: HMMLambda, val lbls: Array[Int]) extends HMMModel(lp, lbls) {
 	 * @author Patrick Nicolas
 	 * @since March 7, 2014
 	 */
-class HMMInference(val li: HMMLambda, val config: HMMConfig, val _labels: Array[Int]) 
-                                                    extends HMMModel(li,  _labels) {
-  require(config != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
+class HMMInference(val lmdb: HMMLambda, val state: HMMState, val _obsIndx: Array[Int]) 
+                                                    extends HMMModel(lmdb,  _obsIndx) {
+  require(state != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
 }
 
 
 
 
-
+import HMMForm._
 		/**
 		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
 		 * three canonical forms (Decoding, training and evaluation).</p>
@@ -99,16 +96,15 @@ class HMMInference(val li: HMMLambda, val config: HMMConfig, val _labels: Array[
 		 * @since March 2014
 		 * @note Scala for Machine Learning
 		 */
-import HMMForm._
-protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm, val maxIters: Int)  
-                           extends PipeOperator[T, HMMPredictor] {
+protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm, val maxIters: Int)(implicit f: DblVector => T)  
+                           extends PipeOperator[DblVector, HMMPredictor] {
 
 	private val logger = Logger.getLogger("HMM")
 	require(lambda != null, "Cannot execute a HMM with undefined lambda model")
 	require(form != null, "Cannot execute a HMM with undefined canonical form")
 	require( maxIters > 1 && maxIters < 1000, "Maximum number of iterations to train a HMM " + maxIters + " is out of bounds")
 	
-	protected val config = HMMConfig(lambda.dim, maxIters)
+	protected val state = HMMState(lambda.config, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -117,9 +113,9 @@ protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val for
 		 * @param obs set of observation of type bounded by Array[Int]
 		 * @return HMMPredictor instance if no computation error occurs, NONE otherwise
 		 */
-	def |> (obs: T): Option[HMMPredictor] = {
+	def |> (obs: DblVector): Option[HMMPredictor] = {
 		require(obs != null, "Cannot perform an evaluaton or decoding of HMM with undefined observations")
-		
+
 		Try { 
 		   form match {
 		     case EVALUATION => evaluate(obs)
@@ -133,29 +129,29 @@ protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val for
 
 		/**
 		 * <p>Train HMM with a set of observations to extract the Lambda model.</p>
-		 * @param  obs set of observation of type bounded by Array[Int]
+		 * @param  obsIdx set of observation of type bounded by Array[Int]
 		 * @return maximum log likelihood if no arithmetic function occurs, None otherwise
 		 * @throws IllegalArgumentException if the set of observations is not defined
 		 * @throws RuntimeException for computation error such as divide by zero
 		 */
-	def train(obs: T): Option[Double] = {
-		require(obs != null, "Cannot train a HMM with undefined observations")
-	    BaumWelchEM(lambda, config, obs).maxLikelihood
+	def train(obsIdx: T): Option[Double] = {
+		require(obsIdx != null, "Cannot train a HMM with undefined observations")
+	    BaumWelchEM(lambda, state, obsIdx).maxLikelihood
 	}
 		
 		/**
 		 * <p>Implements the 3rd canonical form of the HMM</p>
-		 * @param obs given sequence of observations
+		 * @param obsIdx given sequence of observations
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
 		 */
-	def decode(obsIndx: Array[Int]): HMMPredictor = (ViterbiPath(lambda, config, obsIndx).maxDelta, config.QStar())
+	def decode(obsIdx: T): HMMPredictor = (ViterbiPath(lambda, state, obsIdx).maxDelta, state.QStar())
 	
 		/**
 		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>
-		 * @param obs index of the observation O in a sequence
+		 * @param obsIdx index of the observation O in a sequence
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
 		 */
-	def evaluate(obsIndx: Array[Int]): HMMPredictor = (-Alpha(lambda, obsIndx).logProb, obsIndx)
+	def evaluate(obsIdx: T): HMMPredictor = (-Alpha(lambda, obsIdx).logProb, obsIdx)
 }
 
 
@@ -172,8 +168,8 @@ object HMM {
 		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
 		 */
 	type HMMPredictor = (Double, Array[Int])
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int): HMM[T] =  new HMM[T](lambda, form, maxIters)
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm): HMM[T] =  new HMM[T](lambda, form, HMMConfig.DEFAULT_MAXITERS)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, maxIters)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
 }
 
 

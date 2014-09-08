@@ -35,13 +35,13 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">SingleLinearRegression</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <span class="name">SingleLinearRegression</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines the linear regression for a single variable. The model (w,r),
 (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Implicit conversion of type to Double for SingleLinearRegression is missing&quot;">...</span>
@@ -51,7 +51,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -90,7 +90,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(xt:org.scalaml.core.XTSeries[T])(implicitevidence$1:T=&gt;Double,implicitg:Double=&gt;T):org.scalaml.supervised.regression.linear.SingleLinearRegression[T]"></a>
+      <a id="&lt;init&gt;(xt:org.scalaml.core.XTSeries[(T,T)])(implicitevidence$1:T=&gt;Double,implicitg:Double=&gt;T):org.scalaml.supervised.regression.linear.SingleLinearRegression[T]"></a>
       <a id="&lt;init&gt;:SingleLinearRegression[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -98,7 +98,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SingleLinearRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="g">g: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span></span>)</span>
+        <span class="name">SingleLinearRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="g">g: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span></span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">xt</dt><dd class="cmt"><p>single parameterized variable time series</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the time series is undefined</p></span><span class="cmt">implicitNotFound<p>if conversion from type to Double is not implicitely defined
@@ -106,7 +106,23 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
     </li></ol>
             </div>
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression.XY" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XY=(Double,Double)"></a>
+      <a id="XY:(Double,Double)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">XY</span><span class="result"> = (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -285,7 +301,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
       <a id="intercept:Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
@@ -350,7 +366,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
       <a id="slope:Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
@@ -442,34 +458,34 @@ of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
               
         </dd></dl></div>
     </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="xt:org.scalaml.core.XTSeries[T]"></a>
-      <a id="xt:XTSeries[T]"></a>
+      <a id="xt:org.scalaml.core.XTSeries[(T,T)]"></a>
+      <a id="xt:XTSeries[(T,T)]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">xt</span><span class="result">: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <span class="name">xt</span><span class="result">: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>)]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">single parameterized variable time series</p>
     </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(index:Int):Option[T]"></a>
-      <a id="|&gt;(Int):Option[T]"></a>
+      <a id="|&gt;(x:Double):Option[T]"></a>
+      <a id="|&gt;(Double):Option[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Data transformation that computes the predictive value of a time series
 using a single variable linear regression model.</p><div class="fullcomment"><div class="comment cmt"><p>Data transformation that computes the predictive value of a time series
 using a single variable linear regression model. The model is initialized
-during instantiation of a class.</p></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>of the time series n</p></dd><dt>returns</dt><dd class="cmt"><p>new predictive value for index index
+during instantiation of a class.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>new predictive value for index index
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression">SingleLinearRegression</a> → <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd></dl></div>
     </li></ol>
             </div>
@@ -481,7 +497,7 @@ during instantiation of a class.</p></div><dl class="paramcmts block"><dt class=
 
         <div id="inheritedMembers">
         <div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</h3>
+              <h3>Inherited from <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

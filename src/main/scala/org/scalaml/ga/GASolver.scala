@@ -18,7 +18,8 @@ object GAState extends Enumeration {
    val SUCCEED, FAILED, NO_CONVERGE, RUNNING = Value
 }
 
-
+import Chromosome._
+import GAState._
 
 	/**
 	 * <p>Class to select the best solution or Chromosome from an initial population
@@ -27,19 +28,18 @@ object GAState extends Enumeration {
 	 * population or a function () => Population{T] that initialize the population. THe
 	 * class has only one public method search.<br>
 	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
-	 * @param config Configuration parameters for the GA algorithm
+	 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
+	 * @param state Configuration parameters for the GA algorithm
 	 * @param population initialized population of chromosomes (solution candidates)
-	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
+	 * @throws IllegalArgumenException if the stateuration is undefined or the population is not initialized
 	 * 
 	 * @author Patrick Nicolas
 	 * @since August 29, 2013
 	 * @note Scala for Machine Learning
 	 * /
 	 */
-import Chromosome._
-import GAState._
 final class GASolver[T <: Gene](private val config: GAConfig, val population: Population[T]) {
-   require(config != null, "GA configuration is undefined")
+   require(config != null, "GA stateuration is undefined")
    require(population != null && population.size > 1, "Population for the GA solver is undefined")
 
 	/**
@@ -87,8 +87,8 @@ final class GASolver[T <: Gene](private val config: GAConfig, val population: Po
 		 * Object companion for the Solve that defines the two constructors
 		 */
 object GASolver {
-  def apply[T <: Gene](config: GAConfig, pop: Population[T]): GASolver[T] = new GASolver[T](config, pop)
-  def apply[T <: Gene](config: GAConfig, initialize: () => Population[T]): GASolver[T] = new GASolver[T](config, initialize())
+  def apply[T <: Gene](state: GAConfig, pop: Population[T]): GASolver[T] = new GASolver[T](state, pop)
+  def apply[T <: Gene](state: GAConfig, initialize: () => Population[T]): GASolver[T] = new GASolver[T](state, initialize())
 }
 
 // ---------------------------  EOF -----------------------------------------------

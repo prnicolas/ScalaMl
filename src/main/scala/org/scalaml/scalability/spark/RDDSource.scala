@@ -45,10 +45,10 @@ final class RDDSource(	val pathName: String,
 		        		val normalize: Boolean, 
 		        		val reverseOrder: Boolean, 
 		        		val headerLines: Int,
-		        		val config: RDDConfig)(implicit sc: SparkContext)  
+		        		val state: RDDConfig)(implicit sc: SparkContext)  
 		          extends PipeOperator[Array[String] =>DblVector, RDD[DblVector]] {
 
-   validate(pathName, headerLines, config)
+   validate(pathName, headerLines, state)
    private val src = DataSource(pathName, normalize, reverseOrder, headerLines)
   
    
@@ -61,8 +61,8 @@ final class RDDSource(	val pathName: String,
    override def |> (extr: Array[String] => DblVector): Option[RDD[DblVector]] = src.load(extr) match {
       case Some(xt) => {
          val rdd = sc.parallelize(xt.toArray)
-      	 rdd.persist(config.persist)
-         if( config.cache)
+      	 rdd.persist(state.persist)
+         if( state.cache)
            rdd.cache
          Some(rdd) 
       }
@@ -70,10 +70,10 @@ final class RDDSource(	val pathName: String,
    }
    
    
-   private def validate(pathName: String, headerLines: Int, config: RDDConfig) {
+   private def validate(pathName: String, headerLines: Int, state: RDDConfig) {
       require(pathName != null && pathName.length > 2, "Cannot create a RDD source with undefined path name")
       require(headerLines >= 0, "Cannot generate a RDD from an input file with " + headerLines + " header lines")
-      require(config != null, "Cannot create a RDD source for undefined configuration")
+      require(state != null, "Cannot create a RDD source for undefined stateuration")
    }
 }
 
@@ -87,13 +87,13 @@ object RDDSource {
    import org.apache.spark.mllib.linalg.{Vector, DenseVector}
    
    final val DefaultRDDConfig = new RDDConfig(true, StorageLevel.MEMORY_ONLY)
-   def apply(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int, config: RDDConfig)(implicit sc: SparkContext): RDDSource  = new RDDSource(pathName, normalize, reverseOrder, headerLines, config: RDDConfig)
+   def apply(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int, state: RDDConfig)(implicit sc: SparkContext): RDDSource  = new RDDSource(pathName, normalize, reverseOrder, headerLines, state: RDDConfig)
    def apply(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int)(implicit sc: SparkContext): RDDSource  = new RDDSource(pathName, normalize, reverseOrder, headerLines, DefaultRDDConfig)
    
    @implicitNotFound("Spark context is implicitly undefined")
    def convert(xt: XTSeries[DblVector], rddConfig: RDDConfig)(implicit sc: SparkContext): RDD[Vector] = {
   	 require(xt != null && xt.size > 0, "Cannot generate a RDD from undefined time series")
-     require(rddConfig != null, "Cannot generate a RDD from a time series without an RDD configuration")
+     require(rddConfig != null, "Cannot generate a RDD from a time series without an RDD stateuration")
      
      val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map( x => new DenseVector(x)))
      rdd.persist(rddConfig.persist)

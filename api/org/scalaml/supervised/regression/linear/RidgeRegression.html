@@ -39,13 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@implicitNotFound</span><span class="args">(<span>
-      
-      <span class="defval" name="&quot;Implicit conversion of type to Double for SingleLinearRegression is missing&quot;">...</span>
-    </span>)</span>
-              
-        </dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Definition of the Ridge regression (linear least squares regression
+with a L2 penalty form). The training is executed during the instantiation
+of the class.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 14, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the class parameters are undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>], <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span>, <span class="extype" name="org.apache.commons.math3.stat.regression.MultipleLinearRegression">MultipleLinearRegression</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -85,8 +83,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.regression.linear.RidgeRegression#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblVector,lambda:Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.regression.linear.RidgeRegression[T]"></a>
+              <ol><li name="org.scalaml.supervised.regression.linear.RidgeRegression#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(xt:org.scalaml.core.XTSeries[Array[T]],y:org.scalaml.core.Types.ScalaMl.DblVector,lambda:Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.regression.linear.RidgeRegression[T]"></a>
       <a id="&lt;init&gt;:RidgeRegression[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -94,10 +92,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">RidgeRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]]</span>, <span name="labels">labels: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>, <span name="lambda">lambda: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">RidgeRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]]</span>, <span name="y">y: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>, <span name="lambda">lambda: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">xt</dt><dd class="cmt"><p>Time series of features observations</p></dd><dt class="param">y</dt><dd class="cmt"><p>target or labeled output values</p></dd><dt class="param">lambda</dt><dd class="cmt"><p>L2 penalty factor</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the class parameters are undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -499,19 +498,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AbstractMultipleLinearRegression</dd></dl></div>
-    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#labels" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="labels:org.scalaml.core.Types.ScalaMl.DblVector"></a>
-      <a id="labels:DblVector"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">labels</span><span class="result">: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
-      </span>
-      </h4>
-      
     </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#lambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambda:Double"></a>
       <a id="lambda:Double"></a>
@@ -524,7 +510,7 @@
         <span class="name">lambda</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">L2 penalty factor</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -603,19 +589,21 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#rss" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#rss" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="rss:Option[Double]"></a>
       <a id="rss:Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">rss</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Retrieve the residuals sum of squares RSS of this Ridge regression model.</p><div class="fullcomment"><div class="comment cmt"><p>Retrieve the residuals sum of squares RSS of this Ridge regression model. The RSS
+value is returned if the model has been successfully created (trained).</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>rss option if the model was successfully trained, None otherwise
+</p></dd></dl></div>
     </li><li name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression#setNoIntercept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="setNoIntercept(x$1:Boolean):Unit"></a>
       <a id="setNoIntercept(Boolean):Unit"></a>
@@ -744,19 +732,21 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#weights" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#weights" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="weights:Option[org.scalaml.core.Types.ScalaMl.DblVector]"></a>
       <a id="weights:Option[DblVector]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">weights</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Retrieve the weights of this Ridge regression model.</p><div class="fullcomment"><div class="comment cmt"><p>Retrieve the weights of this Ridge regression model. The vector of the
+weights is returned if the model has been successfully created (trained).</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>weight vector option if the model was successfully trained, None otherwise
+</p></dd></dl></div>
     </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="xt:org.scalaml.core.XTSeries[Array[T]]"></a>
       <a id="xt:XTSeries[Array[T]]"></a>
@@ -769,7 +759,20 @@
         <span class="name">xt</span><span class="result">: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>]]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Time series of features observations</p>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#y" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="y:org.scalaml.core.Types.ScalaMl.DblVector"></a>
+      <a id="y:DblVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">y</span><span class="result">: <a href="../../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">target or labeled output values</p>
     </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="|&gt;(x:RidgeRegression.this.Feature):Option[Double]"></a>
       <a id="|&gt;(Feature):Option[Double]"></a>

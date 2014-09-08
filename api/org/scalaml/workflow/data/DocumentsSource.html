@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>NewsTerms - org.scalaml.supervised.bayes.NewsTerms</title>
-          <meta name="description" content="NewsTerms - org.scalaml.supervised.bayes.NewsTerms" />
-          <meta name="keywords" content="NewsTerms org.scalaml.supervised.bayes.NewsTerms" />
+          <title>DocumentsSource - org.scalaml.workflow.data.DocumentsSource</title>
+          <meta name="description" content="DocumentsSource - org.scalaml.workflow.data.DocumentsSource" />
+          <meta name="keywords" content="DocumentsSource org.scalaml.workflow.data.DocumentsSource" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.bayes.NewsTerms';
+            var hash = 'org.scalaml.workflow.data.DocumentsSource';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -24,9 +24,9 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="NewsTerms$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1><a href="NewsTerms$.html" title="Go to companion">NewsTerms</a></h1>
+        <a href="DocumentsSource$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.workflow">workflow</a>.<a href="package.html" class="extype" name="org.scalaml.workflow.data">data</a></p>
+        <h1><a href="DocumentsSource$.html" title="Go to companion">DocumentsSource</a></h1>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,17 +35,15 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">NewsTerms</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">DocumentsSource</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@implicitNotFound</span><span class="args">(<span>
-      
-      <span class="defval" name="&quot;Ordering not explicitly defined for NewsTerm class&quot;">...</span>
-    </span>)</span>
-              
-        </dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that define the extraction of a document from a corpus
+or a list of text file using the following format.</p><ul><li>date</li><li>Title</li><li>Content
+</li></ul></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 15, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the path is not defined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -65,7 +63,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.bayes.NewsTerms"><span>NewsTerms</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.workflow.data.DocumentsSource"><span>DocumentsSource</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -85,19 +83,20 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.bayes.NewsTerms#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;()(implicitevidence$1:T=&gt;Long,implicitorder:Ordering[T]):org.scalaml.supervised.bayes.NewsTerms[T]"></a>
-      <a id="&lt;init&gt;:NewsTerms[T]"></a>
+              <ol><li name="org.scalaml.workflow.data.DocumentsSource#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(pathName:String):org.scalaml.workflow.data.DocumentsSource"></a>
+      <a id="&lt;init&gt;:DocumentsSource"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">NewsTerms</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span>) ⇒ <span class="extype" name="scala.Long">Long</span></span>, <span name="order">order: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span>]</span>)</span>
+        <span class="name">DocumentsSource</span><span class="params">(<span name="pathName">pathName: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">pathName</dt><dd class="cmt"><p>relative path for the directory containing the corpus</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the path is not defined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -146,19 +145,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#+=" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="+=(date:T,weightedTerms:Map[String,Double]):Unit"></a>
-      <a id="+=(T,Map[String,Double]):Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $plus$eq" class="name">+=</span><span class="params">(<span name="date">date: <span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span></span>, <span name="weightedTerms">weightedTerms: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:AnyRef):Boolean"></a>
       <a id="==(AnyRef):Boolean"></a>
@@ -217,32 +203,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#display" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="display(labels:Iterable[String]):String"></a>
-      <a id="display(Iterable[String]):String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">display</span><span class="params">(<span name="labels">labels: <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#display" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="display(labels:Iterable[String],el:(T,Map[String,Double])):String"></a>
-      <a id="display(Iterable[String],(T,Map[String,Double])):String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">display</span><span class="params">(<span name="labels">labels: <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="el">el: (<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span>, <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Double">Double</span>])</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -366,19 +326,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#order" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="order:Ordering[T]"></a>
-      <a id="order:Ordering[T]"></a>
+    </li><li name="org.scalaml.workflow.data.DocumentsSource#pathName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="pathName:String"></a>
+      <a id="pathName:String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier">implicit </span>
+        <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">order</span><span class="result">: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span>]</span>
+        <span class="name">pathName</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">relative path for the directory containing the corpus</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -392,19 +352,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#toOrderedArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="toOrderedArray:Array[(T,Map[String,Double])]"></a>
-      <a id="toOrderedArray:Array[(T,Map[String,Double])]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toOrderedArray</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.T">T</span>, <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Double">Double</span>])]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -475,6 +422,19 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.workflow.data.DocumentsSource#|&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="|&gt;:Option[org.scalaml.workflow.data.DocumentsSource.Corpus]"></a>
+      <a id="|&gt;:Option[Corpus]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="DocumentsSource$.html#Corpus=Array[(String,String,String)]" class="extmbr" name="org.scalaml.workflow.data.DocumentsSource.Corpus">Corpus</a>]</span>
+      </span>
+      </h4>
+      
     </li></ol>
             </div>
 

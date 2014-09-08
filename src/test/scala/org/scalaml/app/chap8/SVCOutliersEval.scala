@@ -36,9 +36,9 @@ object SVCOutliersEval {
 	   	   
 	   DataSource(path, true, false, 1) |> extractor match {
 	  	 case Some(xs) => {	  	
-	  		 val config = SVMConfig(OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	  		 val state = SVMConfig(OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
 	  		 val features = XTSeries.transpose(xs.take(xs.size-1))
-		     val svc = SVM[Double](config, features, xs.last.map(x => if( x == 0.0) -1.0 else 1.0))
+		     val svc = SVM[Double](state, features, xs.last.map(x => if( x == 0.0) -1.0 else 1.0))
           
 		     svc.accuracy match {
 	  			 case Some(acc) => println("Accuracy: " + acc)

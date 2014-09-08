@@ -45,8 +45,8 @@ object BinaryMLPEval {
       val y = Array.tabulate(TEST_SIZE)(n => if( n < HALF_TEST_SIZE) Array[Double](0.0) else Array[Double](1.0) )
       
   	  setNoSoftmax
-      val config = MLPConfig(ALPHA, ETA, GAMMA,  SIZE_HIDDEN_LAYER, NUM_EPOCHS, EPS, ACTIVATION)
-      val mlpClassifier = MLP[Double](config, x, y, new MLP.MLPClassification(y))
+      val state = MLPConfig(ALPHA, ETA, GAMMA,  SIZE_HIDDEN_LAYER, NUM_EPOCHS, EPS, ACTIVATION)
+      val mlpClassifier = MLP[Double](state, x, y, new MLP.MLPClassification(y))
       
       val correct = x.zip(y).foldLeft(0)((s, xy) => {
 	      val output = (mlpClassifier |> xy._1).get

@@ -36,10 +36,10 @@ object SVREval {
 	  	  	 val xy = price.zipWithIndex.map( x => (x._1.toDouble, x._2.toDouble))
 	  	  	 val lin = SingleLinearRegression(xy)  	  	
 	  	  	 
-	  	     val config = SVMConfig(SVRFormulation(C, EPSILON), RbfKernel(GAMMA))
+	  	     val state = SVMConfig(SVRFormulation(C, EPSILON), RbfKernel(GAMMA))
 	  	     val labels = price.toArray
              val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
-             val svr = SVM[Double](config, features, labels)
+             val svr = SVM[Double](state, features, labels)
              
              display("Support Vector vs. Linear Regression", 
             		  collect(svr, lin, price).toList,

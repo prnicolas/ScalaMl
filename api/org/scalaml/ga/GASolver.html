@@ -39,7 +39,15 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class to select the best solution or Chromosome from an initial population
+or genes pool using a set of policies for selection, mutation and crossover of
+chomosomes. The client code initialize the GA solver with either an initialized
+population or a function () =&gt; Population{T] that initialize the population. THe
+class has only one public method search.<br>
+Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>August 29, 2013</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the stateuration is undefined or the population is not initialized
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+/
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +87,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.ga.GASolver#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.ga.GASolver#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(config:org.scalaml.ga.GAConfig,population:org.scalaml.ga.Population[T]):org.scalaml.ga.GASolver[T]"></a>
       <a id="&lt;init&gt;:GASolver[T]"></a>
       <h4 class="signature">
@@ -91,7 +99,8 @@
         <span class="name">GASolver</span><span class="params">(<span name="config">config: <a href="GAConfig.html" class="extype" name="org.scalaml.ga.GAConfig">GAConfig</a></span>, <span name="population">population: <a href="Population.html" class="extype" name="org.scalaml.ga.Population">Population</a>[<span class="extype" name="org.scalaml.ga.GASolver.T">T</span>]</span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Create a generic GA-based solver.</p><div class="fullcomment"><div class="comment cmt"><p>Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)</p></div><dl class="paramcmts block"><dt class="param">population</dt><dd class="cmt"><p>initialized population of chromosomes (solution candidates)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the stateuration is undefined or the population is not initialized
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -349,7 +358,7 @@
         <span class="name">population</span><span class="result">: <a href="Population.html" class="extype" name="org.scalaml.ga.Population">Population</a>[<span class="extype" name="org.scalaml.ga.GASolver.T">T</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">initialized population of chromosomes (solution candidates)</p>
     </li><li name="org.scalaml.ga.GASolver#populationSize" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="populationSize:Int"></a>
       <a id="populationSize:Int"></a>

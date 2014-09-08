@@ -39,9 +39,9 @@ object SVCEval {
 	   
 	   DataSource(path, true, false, 1, filter) |> extractor match {
 	  	 case Some(xs) => {	  	
-	  		 val config = SVMConfig(CSVCFormulation(C), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	  		 val state = SVMConfig(CSVCFormulation(C), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
 	  		 val features = XTSeries.transpose(xs.take(xs.size-1))
-		     val svc = SVM[Double](config, features, xs.last)
+		     val svc = SVM[Double](state, features, xs.last)
 		     
 		     svc.accuracy match {
 	  			 case Some(acc) => println("Accuracy: " + acc)

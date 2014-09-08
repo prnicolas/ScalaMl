@@ -18,8 +18,8 @@ package org.scalaml.ga
 	 * genetic algorithm optimizer. Mutation and/or Cross-over parameters may be computed using an attenuator using the
 	 * formula  newValue = oldValue*currentIteration/maximumIterations.</p>
 	 * 
-	 * @param maxPopulationSize  maximum size of the population (number of chromosomes) allowed during the optimization
-	 * @param xover value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over	 * @attribute rejectionRate  rate of rejection in the range [0.2,0.95] used in the select the most fit chromosomes after a selection - cross-over and mutation cycle
+	 * @Constructor Create a stateuration for the genetic algorithm. [maxPopulationSize]: maximum size of the population (number of chromosomes) allowed during the optimization, [xover] Value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over, [mutate] Value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome, [maxNumIters]: Maximum number of iterations allowed in the optimization, [attenuatorType]: Type of attenuation function (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along. 
+	 * @param xover Value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over
 	 * @param mutate value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome.
 	 * @param maxNumIters maximum number of iterations allowed in the optimization
 	 * @param attenuatorType  type of attenuation (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along

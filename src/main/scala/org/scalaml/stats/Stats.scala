@@ -12,7 +12,8 @@ package org.scalaml.stats
 
 import scala.Array.canBuildFrom
 import org.scalaml.core.Types
-
+import Stats._
+import Types.ScalaMl._
 	/**
 	 *  Parameterized class (view bound) that compute and update the statistics (mean,
 	 *  standard deviation) for any set of observations for which the
@@ -23,8 +24,7 @@ import org.scalaml.core.Types
 	 *  @since Jan 24, 2014
 	 *  @note Scala for Machine Learning
 	 */
-import Stats._
-import Types.ScalaMl._
+
 class Stats[T <% Double](val values: DVector[T]) {
     require( values != null && values.size > 1, "Cannot initialize stats with undefined data")
 	 

@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>NaiveBayesTextScoring - org.scalaml.supervised.bayes.NaiveBayesTextScoring</title>
-          <meta name="description" content="NaiveBayesTextScoring - org.scalaml.supervised.bayes.NaiveBayesTextScoring" />
-          <meta name="keywords" content="NaiveBayesTextScoring org.scalaml.supervised.bayes.NaiveBayesTextScoring" />
+          <title>MultiNaiveBayesModel - org.scalaml.supervised.bayes.MultiNaiveBayesModel</title>
+          <meta name="description" content="MultiNaiveBayesModel - org.scalaml.supervised.bayes.MultiNaiveBayesModel" />
+          <meta name="keywords" content="MultiNaiveBayesModel org.scalaml.supervised.bayes.MultiNaiveBayesModel" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.bayes.NaiveBayesTextScoring$';
+            var hash = 'org.scalaml.supervised.bayes.MultiNaiveBayesModel$';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -24,9 +24,9 @@
         </head>
         <body class="value">
       <div id="definition">
-        <a href="NaiveBayesTextScoring.html" title="Go to companion"><img src="../../../../lib/object_to_class_big.png" /></a>
+        <img src="../../../../lib/object_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1><a href="NaiveBayesTextScoring.html" title="Go to companion">NaiveBayesTextScoring</a></h1>
+        <h1>MultiNaiveBayesModel</h1>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,11 +35,14 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">NaiveBayesTextScoring</span>
+        <span class="name">MultiNaiveBayesModel</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Companion object for the Multinomial Naive Bayes Model. The singleton
+is used to define the constructor of MultiNaiveBayesModel
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 10, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -59,7 +62,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring"><span>NaiveBayesTextScoring</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel"><span>MultiNaiveBayesModel</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -79,23 +82,7 @@
         <div id="allMembers">
         
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.CorpusType" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CorpusType[T]=Array[(T,String,String)]"></a>
-      <a id="CorpusType[T]:CorpusType[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">CorpusType</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> = <span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.CorpusType.T">T</span>, <span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>
-      </span>
-      </h4>
-      
-    </li></ol>
-            </div>
+        
 
         
 
@@ -166,16 +153,16 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NaiveBayesTextScoring#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](tStamp:String=&gt;T,words:String=&gt;Array[String],dict:Map[String,String])(implicitevidence$4:T=&gt;Long,implicitordering:Ordering[T]):org.scalaml.supervised.bayes.NaiveBayesTextScoring[T]"></a>
-      <a id="apply[T]((String)⇒T,(String)⇒Array[String],Map[String,String])((T)⇒Long,Ordering[T]):NaiveBayesTextScoring[T]"></a>
+    </li><li name="org.scalaml.supervised.bayes.MultiNaiveBayesModel#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[T](likelihoodSet:List[org.scalaml.supervised.bayes.Likelihood[T]],density:Double*=&gt;Double)(implicitevidence$5:T=&gt;Double):org.scalaml.supervised.bayes.MultiNaiveBayesModel[T]"></a>
+      <a id="apply[T](List[Likelihood[T]],(Double*)⇒Double)((T)⇒Double):MultiNaiveBayesModel[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="tStamp">tStamp: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.apply.T">T</span></span>, <span name="words">words: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="dict">dict: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.apply.T">T</span>) ⇒ <span class="extype" name="scala.Long">Long</span></span>, <span name="ordering">ordering: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.apply.T">T</span>]</span>)</span><span class="result">: <a href="NaiveBayesTextScoring.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring">NaiveBayesTextScoring</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayesTextScoring.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="likelihoodSet">likelihoodSet: <span class="extype" name="scala.List">List</span>[<a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.apply.T">T</span>]]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="MultiNaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel">MultiNaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.MultiNaiveBayesModel.apply.T">T</span>]</span>
       </span>
       </h4>
       

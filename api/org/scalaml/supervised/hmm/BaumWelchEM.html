@@ -42,10 +42,10 @@
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that update the backward-forward lattice of observations and
 hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to
 compute the likelihood of the conditional probability p(Y|X) during training. The
-computation is performeda as part of the instantiation of the class (type Option[Double] )</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 15, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+computation is performed as part of the instantiation of the class (type Option[Double] )</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 15, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a>, <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a>, <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a>, <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -63,7 +63,7 @@ computation is performeda as part of the instantiation of the class (type Option
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.BaumWelchEM"><span>BaumWelchEM</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMInference"><span>HMMInference</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMAlgorithm"><span>HMMAlgorithm</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.hmm.BaumWelchEM"><span>BaumWelchEM</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMInference"><span>HMMInference</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMModel"><span>HMMModel</span></li><li class="in" name="org.scalaml.supervised.Model"><span>Model</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -84,7 +84,7 @@ computation is performeda as part of the instantiation of the class (type Option
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.hmm.BaumWelchEM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(lambdaBW:org.scalaml.supervised.hmm.HMMLambda,paramsBW:org.scalaml.supervised.hmm.HMMParams,obsBW:Array[Int],eps:Double):org.scalaml.supervised.hmm.BaumWelchEM"></a>
+      <a id="&lt;init&gt;(lambdaBW:org.scalaml.supervised.hmm.HMMLambda,stateBW:org.scalaml.supervised.hmm.HMMState,obsIdxBw:Array[Int],eps:Double):org.scalaml.supervised.hmm.BaumWelchEM"></a>
       <a id="&lt;init&gt;:BaumWelchEM"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,7 +92,7 @@ computation is performeda as part of the instantiation of the class (type Option
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">BaumWelchEM</span><span class="params">(<span name="lambdaBW">lambdaBW: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="paramsBW">paramsBW: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>, <span name="obsBW">obsBW: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">BaumWelchEM</span><span class="params">(<span name="lambdaBW">lambdaBW: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="stateBW">stateBW: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>, <span name="obsIdxBw">obsIdxBw: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">lambdaBW</dt><dd class="cmt"><p>Lambda (pi, A, B) model for the HMM</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd></dl></div>
@@ -170,16 +170,16 @@ computation is performeda as part of the instantiation of the class (type Option
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#_labels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="_labels:Array[Int]"></a>
-      <a id="_labels:Array[Int]"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#_obsIndx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_obsIndx:Array[Int]"></a>
+      <a id="_obsIndx:Array[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">_labels</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">_obsIndx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
@@ -312,20 +312,7 @@ computation is performeda as part of the instantiation of the class (type Option
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#labels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="labels:Array[Int]"></a>
-      <a id="labels:Array[Int]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">labels</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambda:org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="lambda:HMMLambda"></a>
       <h4 class="signature">
@@ -337,7 +324,7 @@ computation is performeda as part of the instantiation of the class (type Option
         <span class="name">lambda</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.BaumWelchEM#lambdaBW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambdaBW:org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="lambdaBW:HMMLambda"></a>
@@ -351,16 +338,16 @@ computation is performeda as part of the instantiation of the class (type Option
       </span>
       </h4>
       <p class="shortcomment cmt">Lambda (pi, A, B) model for the HMM</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#li" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="li:org.scalaml.supervised.hmm.HMMLambda"></a>
-      <a id="li:HMMLambda"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#lmdb" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="lmdb:org.scalaml.supervised.hmm.HMMLambda"></a>
+      <a id="lmdb:HMMLambda"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">li</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
+        <span class="name">lmdb</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
@@ -417,45 +404,71 @@ computation is performeda as part of the instantiation of the class (type Option
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM#obsBW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="obsBW:Array[Int]"></a>
-      <a id="obsBW:Array[Int]"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#obsIdx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="obsIdx:Array[Int]"></a>
+      <a id="obsIdx:Array[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">obsBW</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">obsIdx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM#obsIdxBw" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="obsIdxBw:Array[Int]"></a>
+      <a id="obsIdxBw:Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">obsIdxBw</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4>
       
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#params" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="params:org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="params:HMMParams"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#state" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="state:org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="state:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">params</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
+        <span class="name">state</span><span class="result">: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM#paramsBW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="paramsBW:org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="paramsBW:HMMParams"></a>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM#stateBW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stateBW:org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="stateBW:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">paramsBW</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
+        <span class="name">stateBW</span><span class="result">: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>
       </span>
       </h4>
       
+    </li><li name="org.scalaml.supervised.Model#status" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="status:String"></a>
+      <a id="status:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">status</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -550,8 +563,10 @@ computation is performeda as part of the instantiation of the class (type Option
         <div id="inheritedMembers">
         <div class="parent" name="org.scalaml.supervised.hmm.HMMInference">
               <h3>Inherited from <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></h3>
-            </div><div class="parent" name="org.scalaml.supervised.hmm.HMMAlgorithm">
-              <h3>Inherited from <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></h3>
+            </div><div class="parent" name="org.scalaml.supervised.hmm.HMMModel">
+              <h3>Inherited from <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></h3>
+            </div><div class="parent" name="org.scalaml.supervised.Model">
+              <h3>Inherited from <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

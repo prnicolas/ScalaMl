@@ -34,7 +34,7 @@ protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(
 	
 	val complete = {
 		Try {
-		    alphaBeta = Matrix[Double](lambda.dim._T, lambda.dim._N)	
+		    alphaBeta = Matrix[Double](lambda.config._T, lambda.config._N)	
 		    alphaBeta += (lambda.d_1, 1.0)
 		    normalize(lambda.d_1)
 		    sumUp
@@ -46,14 +46,14 @@ protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(
 	}
 	
     private def sumUp: Unit = 
-	   (lambda.dim._T-2 to 0 by -1).foreach( t =>{
+	   (lambda.config._T-2 to 0 by -1).foreach( t =>{
 	  	  updateBeta(t)
 	  	  normalize(t) 
 	   })
 	  	
 	private def updateBeta(t: Int): Unit =
-  	   HMMDim.foreach(lambda.dim._N, i => { 
-  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, labels(t+1)))	
+  	   HMMConfig.foreach(lambda.config._N, i => { 
+  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, obsIdx(t+1)))	
   	   })
 }
 
@@ -62,7 +62,7 @@ protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(
 		 * Companion object for the Beta pass that defines the constructor apply
 		 */
 object Beta {
-	def apply(lambda: HMMLambda,  _labels: Array[Int]): Beta = new Beta(lambda, _labels)
+	def apply(lambda: HMMLambda,  obsIdx: Array[Int]): Beta = new Beta(lambda, obsIdx)
 }
 
 

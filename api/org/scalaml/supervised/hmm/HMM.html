@@ -35,13 +35,16 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">HMM</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])] with <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>]</span>
+        <span class="name">HMM</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
+three canonical forms (Decoding, training and evaluation).</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>March 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the any of the class parameters is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>], <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +62,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.HMM"><span>HMM</span></li><li class="in" name="org.scalaml.supervised.Supervised"><span>Supervised</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.hmm.HMM"><span>HMM</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -79,8 +82,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.hmm.HMM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm,maxIters:Int)(implicitevidence$1:T=&gt;Array[Int]):org.scalaml.supervised.hmm.HMM[T]"></a>
+              <ol><li name="org.scalaml.supervised.hmm.HMM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm,maxIters:Int)(implicitevidence$1:T=&gt;Array[Int],implicitf:org.scalaml.core.Types.ScalaMl.DblVector=&gt;T):org.scalaml.supervised.hmm.HMM[T]"></a>
       <a id="&lt;init&gt;:HMM[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +91,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">HMM</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
+        <span class="name">HMM</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="f">f: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>) ⇒ <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">lambda</dt><dd class="cmt"><p>lambda model generated through training or used as input for the evaluation and decoding phase</p></dd><dt class="param">form</dt><dd class="cmt"><p>define the form (evaluation or decoding) used in the prediction of sequence</p></dd><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations used in the Baum-Welch algorithm</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the any of the class parameters is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -198,19 +202,20 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.Supervised#crossValidation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="crossValidation:Array[Double]"></a>
-      <a id="crossValidation:Array[Double]"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMM#decode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="decode(obsIdx:T):(Double,Array[Int])"></a>
+      <a id="decode(T):(Double,Array[Int])"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">crossValidation</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">decode</span><span class="params">(<span name="obsIdx">obsIdx: <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])</span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a></dd></dl></div>
+      <p class="shortcomment cmt">Implements the 3rd canonical form of the HMM</p><div class="fullcomment"><div class="comment cmt"><p>Implements the 3rd canonical form of the HMM</p></div><dl class="paramcmts block"><dt class="param">obsIdx</dt><dd class="cmt"><p>given sequence of observations</p></dd><dt>returns</dt><dd class="cmt"><p>HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -237,6 +242,20 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMM#evaluate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="evaluate(obsIdx:T):(Double,Array[Int])"></a>
+      <a id="evaluate(T):(Double,Array[Int])"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">evaluate</span><span class="params">(<span name="obsIdx">obsIdx: <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Implements the 'Evaluation' canonical form of the HMM</p><div class="fullcomment"><div class="comment cmt"><p>Implements the 'Evaluation' canonical form of the HMM</p></div><dl class="paramcmts block"><dt class="param">obsIdx</dt><dd class="cmt"><p>index of the observation O in a sequence</p></dd><dt>returns</dt><dd class="cmt"><p>HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -268,7 +287,7 @@
         <span class="name">form</span><span class="result">: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">define the form (evaluation or decoding) used in the prediction of sequence</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -320,7 +339,7 @@
         <span class="name">lambda</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">lambda model generated through training or used as input for the evaluation and decoding phase</p>
     </li><li name="org.scalaml.supervised.hmm.HMM#maxIters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="maxIters:Int"></a>
       <a id="maxIters:Int"></a>
@@ -333,7 +352,7 @@
         <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">maximum number of iterations used in the Baum-Welch algorithm</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -373,16 +392,16 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMM#params" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="params:org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="params:HMMParams"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMM#state" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="state:org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="state:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">params</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
+        <span class="name">state</span><span class="result">: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
@@ -413,7 +432,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMM#train" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="train(obs:T):Option[Double]"></a>
+      <a id="train(obsIdx:T):Option[Double]"></a>
       <a id="train(T):Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -421,25 +440,11 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">train</span><span class="params">(<span name="obs">obs: <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">train</span><span class="params">(<span name="obsIdx">obsIdx: <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Train HMM with a set of observations to extract the Lambda model.</p><div class="fullcomment"><div class="comment cmt"><p>Train HMM with a set of observations to extract the Lambda model.</p></div><dl class="paramcmts block"><dt class="param">obs</dt><dd class="cmt"><p>set of observation of type bounded by Array[Int]</p></dd><dt>returns</dt><dd class="cmt"><p>maximum log likelihood if no arithmetic function occurs, None otherwise</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the set of observations is not defined</p></span><span class="cmt">RuntimeException<p>for computation error such as divide by zero
+      <p class="shortcomment cmt">Train HMM with a set of observations to extract the Lambda model.</p><div class="fullcomment"><div class="comment cmt"><p>Train HMM with a set of observations to extract the Lambda model.</p></div><dl class="paramcmts block"><dt class="param">obsIdx</dt><dd class="cmt"><p>set of observation of type bounded by Array[Int]</p></dd><dt>returns</dt><dd class="cmt"><p>maximum log likelihood if no arithmetic function occurs, None otherwise</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the set of observations is not defined</p></span><span class="cmt">RuntimeException<p>for computation error such as divide by zero
 </p></span></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMM#validate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="validate(output:org.scalaml.core.XTSeries[(Array[T],Int)],index:Int):Double"></a>
-      <a id="validate(XTSeries[(Array[T],Int)],Int):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">validate</span><span class="params">(<span name="output">output: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">validation method for supervised learning algorithm</p><div class="fullcomment"><div class="comment cmt"><p>validation method for supervised learning algorithm</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>F1 measure
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.hmm.HMM">HMM</a> → <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -498,15 +503,15 @@
               
         </dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMM#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(obs:T):Option[(Double,Array[Int])]"></a>
-      <a id="|&gt;(T):Option[(Double,Array[Int])]"></a>
+      <a id="|&gt;(obs:org.scalaml.core.Types.ScalaMl.DblVector):Option[(Double,Array[Int])]"></a>
+      <a id="|&gt;(DblVector):Option[(Double,Array[Int])]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="obs">obs: <span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="obs">obs: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Classifier for the Hidden Markov Model.</p><div class="fullcomment"><div class="comment cmt"><p>Classifier for the Hidden Markov Model. The pipe operator evaluates the
@@ -522,10 +527,8 @@ set of observations obs and a lambda model.</p></div><dl class="paramcmts block"
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.supervised.Supervised">
-              <h3>Inherited from <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>]</h3>
-            </div><div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.T">T</span>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</h3>
+        <div class="parent" name="org.scalaml.workflow.PipeOperator">
+              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

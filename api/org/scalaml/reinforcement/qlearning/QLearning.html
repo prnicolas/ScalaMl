@@ -46,7 +46,7 @@ two states successfully trained and failed training.<br>
 The implementation does not assume that every episode (or training cycle) is successful.
 At completion of the training, the ratio of labels over initial training set is computed.
 The client code is responsible to evaluate the quality of the model by testing the ratio
-agammast a threshold.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the configuration or labels are undefined
+agammast a threshold.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or labels are undefined
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -100,7 +100,7 @@ agammast a threshold.</p></div><dl class="attributes block"> <dt>Since</dt><dd><
         <span class="name">QLearning</span><span class="params">(<span name="config">config: <a href="QLConfig.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLConfig">QLConfig</a></span>, <span name="qLabels">qLabels: <a href="QLLabel.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLLabel">QLLabel</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLearning.T">T</span>]</span>, <span name="numStates">numStates: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.reinforcement.qlearning.QLearning.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">config</dt><dd class="cmt"><p>configuration for Q-Learning algorithm</p></dd><dt class="param">qLabels</dt><dd class="cmt"><p>training set input used to build the search space (or model)</p></dd><dt class="param">numStates</dt><dd class="cmt"><p>total number of states in the search space</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the configuration or labels are undefined
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">qLabels</dt><dd class="cmt"><p>training set input used to build the search space (or model)</p></dd><dt class="param">numStates</dt><dd class="cmt"><p>total number of states in the search space</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or labels are undefined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -220,7 +220,7 @@ agammast a threshold.</p></div><dl class="attributes block"> <dt>Since</dt><dd><
         <span class="name">config</span><span class="result">: <a href="QLConfig.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLConfig">QLConfig</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">configuration for Q-Learning algorithm</p>
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>

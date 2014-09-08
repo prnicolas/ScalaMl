@@ -24,24 +24,25 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img src="../../../../lib/class_big.png" />
+        <a href="BinNaiveBayesModel$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1>BinNaiveBayesModel</h1>
+        <h1><a href="BinNaiveBayesModel$.html" title="Go to companion">BinNaiveBayesModel</a></h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">BinNaiveBayesModel</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="positives">positives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="negatives">negatives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="_density">_density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$3">evidence$3: (<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">BinNaiveBayesModel</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Defines a 2-class Naive Bayes model</p></div><dl class="paramcmts block"><dt class="param">positives</dt><dd class="cmt"><p>Prior for the class of positive outcomes</p></dd><dt class="param">negatives</dt><dd class="cmt"><p>Prior for the class of negatives outcomes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the class parameters is undefined.</p></span></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Defines a 2-class Naive Bayes model</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>February 11, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the class parameters is undefined</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.supervised.bayes.NaiveBayesModel</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -59,7 +60,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.bayes.BinNaiveBayesModel"><span>BinNaiveBayesModel</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="org.scalaml.supervised.bayes.NaiveBayesModel"><span>NaiveBayesModel</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.BinNaiveBayesModel"><span>BinNaiveBayesModel</span></li><li class="in" name="org.scalaml.supervised.bayes.NaiveBayesModel"><span>NaiveBayesModel</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -80,7 +81,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(positives:org.scalaml.supervised.bayes.Prior[T],negatives:org.scalaml.supervised.bayes.Prior[T],_density:(Double,Double,Double)=&gt;Double)(implicitevidence$3:T=&gt;Double):org.scalaml.supervised.bayes.BinNaiveBayesModel[T]"></a>
+      <a id="&lt;init&gt;(positives:org.scalaml.supervised.bayes.Likelihood[T],negatives:org.scalaml.supervised.bayes.Likelihood[T],_density:Double*=&gt;Double)(implicitevidence$2:T=&gt;Double):org.scalaml.supervised.bayes.BinNaiveBayesModel[T]"></a>
       <a id="&lt;init&gt;:BinNaiveBayesModel[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +89,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">BinNaiveBayesModel</span><span class="params">(<span name="positives">positives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="negatives">negatives: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="_density">_density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">BinNaiveBayesModel</span><span class="params">(<span name="positives">positives: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="negatives">negatives: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>, <span name="_density">_density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">positives</dt><dd class="cmt"><p>Prior for the class of positive outcomes</p></dd><dt class="param">negatives</dt><dd class="cmt"><p>Prior for the class of negatives outcomes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the class parameters is undefined.</p></span></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">positives</dt><dd class="cmt"><p>Prior for the class of positive outcomes</p></dd><dt class="param">negatives</dt><dd class="cmt"><p>Prior for the class of negatives outcomes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the class parameters is undefined</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -167,15 +168,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#_density" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="_density:(Double,Double,Double)=&gt;Double"></a>
-      <a id="_density:(Double,Double,Double)⇒Double"></a>
+      <a id="_density:Double*=&gt;Double"></a>
+      <a id="_density:(Double*)⇒Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">_density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">_density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
       
@@ -193,7 +194,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#classify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="classify(values:Array[T]):Int"></a>
+      <a id="classify(x:Array[T]):Int"></a>
       <a id="classify(Array[T]):Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -201,10 +202,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">classify</span><span class="params">(<span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">classify</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Classify a new observation</p><div class="fullcomment"><div class="comment cmt"><p>Classify a new observation</p></div><dl class="paramcmts block"><dt class="param">values</dt><dd class="cmt"><p>new observation</p></dd><dt>returns</dt><dd class="cmt"><p>1 if the observation belongs to the positive class, 0 otherwise</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel">BinNaiveBayesModel</a> → <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the observation is undefined.
+      <p class="shortcomment cmt">Classify a new observation (or vector)</p><div class="fullcomment"><div class="comment cmt"><p>Classify a new observation (or vector)</p></div><dl class="paramcmts block"><dt class="param">x</dt><dd class="cmt"><p>new observation</p></dd><dt>returns</dt><dd class="cmt"><p>1 if the observation belongs to the positive class, 0 otherwise</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel">BinNaiveBayesModel</a> → <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the observation is undefined.
 </p></span></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -226,15 +227,15 @@
               
         </dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayesModel#density" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="density:(Double,Double,Double)=&gt;Double"></a>
-      <a id="density:(Double,Double,Double)⇒Double"></a>
+      <a id="density:Double*=&gt;Double"></a>
+      <a id="density:(Double*)⇒Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Probability density function used in computing the conditional probability p(C|x)</p><div class="fullcomment"><div class="comment cmt"><p>Probability density function used in computing the conditional probability p(C|x)</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a></dd></dl></div>
@@ -251,6 +252,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -283,6 +297,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -310,15 +337,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#negatives" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="negatives:org.scalaml.supervised.bayes.Prior[T]"></a>
-      <a id="negatives:Prior[T]"></a>
+      <a id="negatives:org.scalaml.supervised.bayes.Likelihood[T]"></a>
+      <a id="negatives:Likelihood[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">negatives</span><span class="result">: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>
+        <span class="name">negatives</span><span class="result">: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Prior for the class of negatives outcomes</p>
@@ -349,15 +376,15 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#positives" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="positives:org.scalaml.supervised.bayes.Prior[T]"></a>
-      <a id="positives:Prior[T]"></a>
+      <a id="positives:org.scalaml.supervised.bayes.Likelihood[T]"></a>
+      <a id="positives:Likelihood[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">positives</span><span class="result">: <a href="Prior.html" class="extype" name="org.scalaml.supervised.bayes.Prior">Prior</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>
+        <span class="name">positives</span><span class="result">: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Prior for the class of positive outcomes</p>
@@ -453,15 +480,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="org.scalaml.supervised.bayes.NaiveBayesModel">
+        <div class="parent" name="org.scalaml.supervised.bayes.NaiveBayesModel">
               <h3>Inherited from <a href="NaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.NaiveBayesModel">NaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.T">T</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>

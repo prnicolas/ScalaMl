@@ -22,13 +22,11 @@ import org.scalaml.util.Display
 
 		/**
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
-		 * this generic type to avoid multiple conversion between numerous types.<br>
+		 * this generic type to avoid multiple conversion between numerous types.
 		 * The class is parameterized so it can take primitive types to create vector for single
 		 * variable time series or arrays/list to create matrix for multiple variables time series. </p>
-		 * @constructor create a new parameterized time series XTSeries{T} with a label(id) and an array of values.
-		 * @param label optional name for the time series
-		 * @param arr array of values of parameterized types
-		 * @throws IllegalArgumentException if the array of values, arr is undefined
+		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types
+		 * @throws IllegalArgumentException If the array of values, [arr] is undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014

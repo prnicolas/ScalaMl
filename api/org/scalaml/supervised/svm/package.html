@@ -148,7 +148,7 @@
         <a href="SVMConfig.html"><span class="name">SVMConfig</span></a><span class="result"> extends <a href="../Config.html" class="extype" name="org.scalaml.supervised.Config">Config</a></span>
       </span>
       </h4>
-      <p class="comment cmt">Generic configuration manager for any category of SVM algorithm.</p>
+      <p class="comment cmt">Generic stateuration manager for any category of SVM algorithm.</p>
     </li><li name="org.scalaml.supervised.svm.SVMConfigItem" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="SVMConfigItemextendsAnyRef"></a>
       <a id="SVMConfigItem:SVMConfigItem"></a>
@@ -202,15 +202,15 @@
       </h4>
       <p class="comment cmt">Generic trait for Kernel functions used for Support Vector Machine.</p>
     </li><li name="org.scalaml.supervised.svm.SVMModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SVMModelextendsModel"></a>
+      <a id="SVMModelextendsModelwithProductwithSerializable"></a>
       <a id="SVMModel:SVMModel"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="SVMModel.html"><span class="name">SVMModel</span></a><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></span>
+        <a href="SVMModel.html"><span class="name">SVMModel</span></a><span class="params">(<span name="params">params: (<span class="extype" name="libsvm.svm_model">svm_model</span>, <span class="extype" name="scala.Double">Double</span>)</span>)</span><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt"></p>
@@ -285,7 +285,7 @@
         <a href="SVMConfig$.html"><span class="name">SVMConfig</span></a>
       </span>
       </h4>
-      <p class="comment cmt">Companion object for SVM configuration manager used for defining the constructors of SVMConfig class.</p>
+      <p class="comment cmt">Companion object for SVM stateuration manager used for defining the constructors of SVMConfig class.</p>
     </li><li name="org.scalaml.supervised.svm.SVMExecution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVMExecution"></a>
       <a id="SVMExecution:SVMExecution"></a>

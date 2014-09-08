@@ -88,7 +88,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.scalability.spark.RDDSource#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(pathName:String,normalize:Boolean,reverseOrder:Boolean,headerLines:Int,config:org.scalaml.scalability.spark.RDDConfig)(implicitsc:org.apache.spark.SparkContext):org.scalaml.scalability.spark.RDDSource"></a>
+      <a id="&lt;init&gt;(pathName:String,normalize:Boolean,reverseOrder:Boolean,headerLines:Int,state:org.scalaml.scalability.spark.RDDConfig)(implicitsc:org.apache.spark.SparkContext):org.scalaml.scalability.spark.RDDSource"></a>
       <a id="&lt;init&gt;:RDDSource"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -96,7 +96,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">RDDSource</span><span class="params">(<span name="pathName">pathName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="normalize">normalize: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="reverseOrder">reverseOrder: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="headerLines">headerLines: <span class="extype" name="scala.Int">Int</span></span>, <span name="config">config: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>)</span>
+        <span class="name">RDDSource</span><span class="params">(<span name="pathName">pathName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="normalize">normalize: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="reverseOrder">reverseOrder: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="headerLines">headerLines: <span class="extype" name="scala.Int">Int</span></span>, <span name="state">state: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">pathName</dt><dd class="cmt"><p>relative path for data sources</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the pathName or the file suffix is undefined.
@@ -207,19 +207,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.scalability.spark.RDDSource#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="config:org.scalaml.scalability.spark.RDDConfig"></a>
-      <a id="config:RDDConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">config</span><span class="result">: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -392,6 +379,19 @@
       </span>
       <span class="symbol">
         <span class="name">reverseOrder</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.scalability.spark.RDDSource#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state:org.scalaml.scalability.spark.RDDConfig"></a>
+      <a id="state:RDDConfig"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>
       </span>
       </h4>
       

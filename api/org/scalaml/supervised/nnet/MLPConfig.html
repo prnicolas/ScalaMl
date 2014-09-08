@@ -39,7 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines the stateuration for the Multi-layer Perceptron. The validation
+of the stateuration/tuning parameters for the MLP is defined in this class. The softmax
+output conversion is defined implicitly and is not a parameter for the class.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>May 7, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is either out of bounds or undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../Config.html" class="extype" name="org.scalaml.supervised.Config">Config</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +83,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.nnet.MLPConfig#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.nnet.MLPConfig#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(alpha:Double,eta:Double,gamma:Double,hiddenLayers:Array[Int],numEpochs:Int,eps:Double,activation:Double=&gt;Double):org.scalaml.supervised.nnet.MLPConfig"></a>
       <a id="&lt;init&gt;:MLPConfig"></a>
       <h4 class="signature">
@@ -91,7 +95,8 @@
         <span class="name">MLPConfig</span><span class="params">(<span name="alpha">alpha: <span class="extype" name="scala.Double">Double</span></span>, <span name="eta">eta: <span class="extype" name="scala.Double">Double</span></span>, <span name="gamma">gamma: <span class="extype" name="scala.Double">Double</span></span>, <span name="hiddenLayers">hiddenLayers: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="numEpochs">numEpochs: <span class="extype" name="scala.Int">Int</span></span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span></span>, <span name="activation">activation: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">alpha</dt><dd class="cmt"><p>momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)</p></dd><dt class="param">eta</dt><dd class="cmt"><p>learning rate ]0, 1] used in the computation of the gradient of the weights during training</p></dd><dt class="param">gamma</dt><dd class="cmt"><p>gain of the sigmoid function is used as activation function of hidden layers</p></dd><dt class="param">numEpochs</dt><dd class="cmt"><p>number of epochs or iterations allowed to train the weights/model</p></dd><dt class="param">eps</dt><dd class="cmt"><p>convergence criteria used as exit condition of the convergence toward optimumn weights that minimize the mean squares error</p></dd><dt class="param">activation</dt><dd class="cmt"><p>activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is either out of bounds or undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -178,7 +183,7 @@
         <span class="name">activation</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation</p>
     </li><li name="org.scalaml.supervised.nnet.MLPConfig#alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="alpha:Double"></a>
       <a id="alpha:Double"></a>
@@ -191,7 +196,7 @@
         <span class="name">alpha</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -236,7 +241,7 @@
         <span class="name">eps</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">convergence criteria used as exit condition of the convergence toward optimumn weights that minimize the mean squares error</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -275,7 +280,7 @@
         <span class="name">eta</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">learning rate ]0, 1] used in the computation of the gradient of the weights during training</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -307,7 +312,7 @@
         <span class="name">gamma</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">gain of the sigmoid function is used as activation function of hidden layers</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -411,7 +416,7 @@
         <span class="name">numEpochs</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">number of epochs or iterations allowed to train the weights/model</p>
     </li><li name="org.scalaml.supervised.nnet.MLPConfig#outputLayerId" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="outputLayerId:Int"></a>
       <a id="outputLayerId:Int"></a>

@@ -29,7 +29,7 @@ import iitb.Segment.{DataCruncher, LabelMap}
 	 * @author Patrick Nicolas
 	 * @since April 2, 2014
 	 */
-class CrfRecommendation(val nLabels: Int, val entry: String, val delim: String) extends DataSequence {
+class CrfTrainingSet(val nLabels: Int, val entry: String, val delim: String) extends DataSequence {
     private val words: Array[String] = entry.split(delim)
     private val map: Array[Int] = new Array[Int](nLabels)
    
@@ -47,17 +47,18 @@ class CrfRecommendation(val nLabels: Int, val entry: String, val delim: String) 
 	 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
 	 * [dSeq]<br>
 	 * </p>
-	 * @param dObs delimiters for observation as a sequence of N-grams or words
-	 * @param dLabel delimiter between observations string and tag/label
-	 * @param dSeq delimiter between training sequences
-	 * @throws IllegalArgumentException if dObs, dLabel or dSeq are null (undefined)
+	 * @constructor Creates a delimiters set for the raw and tagged input (training) for the CRF. [obsDelim]: Delimiters for observation as a sequence of N-grams or words, [labelsDelim] Delimiter between observations string and tag/label, [trainingDelim]: Delimiter between training sequences
+	 * @param obsDelim delimiters for observation as a sequence of N-grams or words
+	 * @param labelsDelim delimiter between observations string and tag/label
+	 * @param trainingDelim delimiter between training sequences
+	 * @throws IllegalArgumentException if any of the delimiter is undefined
 	 * @author Patrick Nicolas
 	 * @since April 5, 2014
 	 */
-case class CrfSeqDelimiter(val dObs: String, val dLabel: String, val dSeq:String) {
-	require(dObs != null, "Delimiter for observations in CRF training sequence is undefined")
-	require(dLabel != null, "Delimiter for labels in CRF training sequence is undefined")
-	require(dSeq != null, "Delimiter for training sequences in CRF training sequence is undefined")
+case class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
+	require(obsDelim != null && obsDelim.length > 0, "Delimiter for observations in CRF training sequence is undefined")
+	require(labelsDelim != null && labelsDelim.length > 0, "Delimiter for labels in CRF training sequence is undefined")
+	require(trainingDelim != null && trainingDelim.length > 0, "Delimiter for training sequences in CRF training sequence is undefined")
 }
 
 
@@ -81,7 +82,7 @@ class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter
    	/**
    	 * Training data set extracted from file and to be used by the CRF model
    	 */
-   lazy val trainData =  DataCruncher.readTagged(nLabels, input, input, delim.dObs, delim.dLabel, delim.dSeq, new LabelMap)
+   lazy val trainData =  DataCruncher.readTagged(nLabels, input, input, delim.obsDelim, delim.labelsDelim, delim.trainingDelim, new LabelMap)
    
    	/**
    	 * Override the DataIter.hasNext interface method. Delegate the call to DataCruncher

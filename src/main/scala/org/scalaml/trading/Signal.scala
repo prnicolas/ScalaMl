@@ -13,6 +13,8 @@ package org.scalaml.trading
 import org.scalaml.ga.{Operator, Gene}
 import scala.annotation.implicitNotFound
 
+import Operator._
+import Signal._
 
 		/**
 		 * <p>Define a trading signal as used in technical analysis of financial markets. A partial
@@ -32,8 +34,6 @@ import scala.annotation.implicitNotFound
 		 * @since Mar 4, 2014
 		 */
 
-import Operator._
-import Signal._
 @implicitNotFound("Signal does not have a dicretization function implicitly defined")
 class Signal(val id: String, val targetValue: Double, val op: Operator)(implicit discr: Double => Int) extends Gene(targetValue, op) {
    require( id != null && id.length > 0, "Cannot create a signal with undefined id")

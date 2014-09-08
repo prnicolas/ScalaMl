@@ -39,7 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that implements the Multivariate Expectation-Maximization algorithm with
+K number of clusters. The class uses the Multivariate Normal distribution, Mixture
+of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
+Commons Math library.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 25, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if K is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.T">T</span>]], <a href="MultivariateEM$.html#EMOutput=List[(Double,org.scalaml.core.Types.ScalaMl.DblVector,org.scalaml.core.Types.ScalaMl.DblVector)]" class="extmbr" name="org.scalaml.unsupervised.em.MultivariateEM.EMOutput">EMOutput</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +83,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(K:Int)(implicitevidence$1:T=&gt;Double):org.scalaml.unsupervised.em.MultivariateEM[T]"></a>
       <a id="&lt;init&gt;:MultivariateEM[T]"></a>
       <h4 class="signature">
@@ -91,7 +95,7 @@
         <span class="name">MultivariateEM</span><span class="params">(<span name="K">K: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">K</dt><dd class="cmt"><p>number of Clusters used in the EM algorithm</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if K is out of range</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -194,7 +198,7 @@
         <span class="name">K</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">number of Clusters used in the EM algorithm</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>

@@ -39,7 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>State defines as a label and a normalized values or frequency disribution across a set
+of categories or symbols. The main purpose of the state class is to compute its
+Value V.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>is the normalized distribution is not defined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -82,7 +86,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.reinforcement.qlearning.QLState#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.reinforcement.qlearning.QLState#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(id:Int,distribution:org.scalaml.core.Types.ScalaMl.DblVector,cost:(T,Double)=&gt;Double)(implicitevidence$1:T=&gt;Double):org.scalaml.reinforcement.qlearning.QLState[T]"></a>
       <a id="&lt;init&gt;:QLState[T]"></a>
       <h4 class="signature">
@@ -94,7 +98,8 @@
         <span class="name">QLState</span><span class="params">(<span name="id">id: <span class="extype" name="scala.Int">Int</span></span>, <span name="distribution">distribution: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>, <span name="cost">cost: (<span class="extype" name="org.scalaml.reinforcement.qlearning.QLState.T">T</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.reinforcement.qlearning.QLState.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>optional label or identifier for the state. The label is used as a key</p></dd><dt class="param">distribution</dt><dd class="cmt"><p>normalized distribution of values per categories</p></dd><dt class="param">cost</dt><dd class="cmt"><p>default cost function used to compute the V value of the state</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>is the normalized distribution is not defined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -254,7 +259,7 @@ of observations is different from the dimension of the model (distribution)</p><
         <span class="name">cost</span><span class="result">: (<span class="extype" name="org.scalaml.reinforcement.qlearning.QLState.T">T</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">default cost function used to compute the V value of the state</p>
     </li><li name="org.scalaml.reinforcement.qlearning.QLState#distribution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="distribution:org.scalaml.core.Types.ScalaMl.DblVector"></a>
       <a id="distribution:DblVector"></a>
@@ -267,7 +272,7 @@ of observations is different from the dimension of the model (distribution)</p><
         <span class="name">distribution</span><span class="result">: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">normalized distribution of values per categories</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -339,7 +344,7 @@ of observations is different from the dimension of the model (distribution)</p><
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.reinforcement.qlearning.QLState#id" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.reinforcement.qlearning.QLState#id" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="id:Int"></a>
       <a id="id:Int"></a>
       <h4 class="signature">
@@ -351,7 +356,7 @@ of observations is different from the dimension of the model (distribution)</p><
         <span class="name">id</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">optional label or identifier for the state.</p><div class="fullcomment"><div class="comment cmt"><p>optional label or identifier for the state. The label is used as a key</p></div></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>

@@ -14,7 +14,7 @@ import libsvm._
 
 
 class SVMExecution(val cacheSize: Int, val eps: Double, val nFolds: Int) extends SVMConfigItem {
-	override def config(param: svm_parameter): Unit = {
+	override def state(param: svm_parameter): Unit = {
 		param.cache_size = cacheSize
         param.eps = eps
 	}

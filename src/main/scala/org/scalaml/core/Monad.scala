@@ -15,6 +15,7 @@ package org.scalaml.core
 	 * <p>Generic definition of a Monad used as a template for creating transforms.</p>
 	 * @author Patrick Nicolas
 	 * @since December 21, 2013
+	 * @note Scala for Machine Learning
 	 */
 trait Monad[M[_]] {
   def apply[T](t: T): M[T]
@@ -23,15 +24,15 @@ trait Monad[M[_]] {
 }
 
 
+import _FCT._
 	/**
 	 * <p>Monadic container which implements/adapter the most commonly used
 	 * Scala higher order methods.This class should not be used directly as they
 	 * do not validate any method argument and internal state..</p>
-	 * @param _fct element contained and managed by the monadic class
+	 * @constructor [_fct] element contained and managed by the monadic class
 	 * @author Patrick Nicolas
 	 * @since December 23, 2013
 	 */
-import _FCT._
 class _FCT[+T](val _fct: T) {
 	
   def apply: T = _fct

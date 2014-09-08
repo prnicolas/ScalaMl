@@ -47,7 +47,7 @@ The recursion throws a Arithmetic or Runtime exception that is to be caught by
 the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.hmm.DynamicAlgorithm</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a>, <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a>, <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a>, <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -65,7 +65,7 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.ViterbiPath"><span>ViterbiPath</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMInference"><span>HMMInference</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMAlgorithm"><span>HMMAlgorithm</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.hmm.ViterbiPath"><span>ViterbiPath</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMInference"><span>HMMInference</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMModel"><span>HMMModel</span></li><li class="in" name="org.scalaml.supervised.Model"><span>Model</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -86,7 +86,7 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.hmm.ViterbiPath#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(lambdaV:org.scalaml.supervised.hmm.HMMLambda,paramsV:org.scalaml.supervised.hmm.HMMParams,obsV:Array[Int]):org.scalaml.supervised.hmm.ViterbiPath"></a>
+      <a id="&lt;init&gt;(lambdaV:org.scalaml.supervised.hmm.HMMLambda,stateV:org.scalaml.supervised.hmm.HMMState,obsV:Array[Int]):org.scalaml.supervised.hmm.ViterbiPath"></a>
       <a id="&lt;init&gt;:ViterbiPath"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -94,10 +94,10 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ViterbiPath</span><span class="params">(<span name="lambdaV">lambdaV: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="paramsV">paramsV: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>, <span name="obsV">obsV: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
+        <span class="name">ViterbiPath</span><span class="params">(<span name="lambdaV">lambdaV: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="stateV">stateV: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>, <span name="obsV">obsV: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">lambdaV</dt><dd class="cmt"><p>Lambda (pi, A, B) model for the HMM</p></dd><dt class="param">paramsV</dt><dd class="cmt"><p>parameters used in any of the three canonical form of the HMM</p></dd><dt class="param">obsV</dt><dd class="cmt"><p>Array of observations as integer (categorical data)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">lambdaV</dt><dd class="cmt"><p>Lambda (pi, A, B) model for the HMM</p></dd><dt class="param">obsV</dt><dd class="cmt"><p>Array of observations as integer (categorical data)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -172,16 +172,16 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#_labels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="_labels:Array[Int]"></a>
-      <a id="_labels:Array[Int]"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#_obsIndx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_obsIndx:Array[Int]"></a>
+      <a id="_obsIndx:Array[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">_labels</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">_obsIndx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
@@ -301,20 +301,7 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#labels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="labels:Array[Int]"></a>
-      <a id="labels:Array[Int]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">labels</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambda:org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="lambda:HMMLambda"></a>
       <h4 class="signature">
@@ -326,7 +313,7 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
         <span class="name">lambda</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.ViterbiPath#lambdaV" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lambdaV:org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="lambdaV:HMMLambda"></a>
@@ -340,16 +327,16 @@ the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Marc
       </span>
       </h4>
       <p class="shortcomment cmt">Lambda (pi, A, B) model for the HMM</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#li" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="li:org.scalaml.supervised.hmm.HMMLambda"></a>
-      <a id="li:HMMLambda"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#lmdb" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="lmdb:org.scalaml.supervised.hmm.HMMLambda"></a>
+      <a id="lmdb:HMMLambda"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">li</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
+        <span class="name">lmdb</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
@@ -408,6 +395,19 @@ the client code
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#obsIdx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="obsIdx:Array[Int]"></a>
+      <a id="obsIdx:Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">obsIdx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.ViterbiPath#obsV" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="obsV:Array[Int]"></a>
       <a id="obsV:Array[Int]"></a>
@@ -421,32 +421,45 @@ the client code
       </span>
       </h4>
       <p class="shortcomment cmt">Array of observations as integer (categorical data)</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference#params" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="params:org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="params:HMMParams"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference#state" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="state:org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="state:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">params</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
+        <span class="name">state</span><span class="result">: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.ViterbiPath#paramsV" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="paramsV:org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="paramsV:HMMParams"></a>
+    </li><li name="org.scalaml.supervised.hmm.ViterbiPath#stateV" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="stateV:org.scalaml.supervised.hmm.HMMState"></a>
+      <a id="stateV:HMMState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">paramsV</span><span class="result">: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>
+        <span class="name">stateV</span><span class="result">: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">parameters used in any of the three canonical form of the HMM</p>
+      
+    </li><li name="org.scalaml.supervised.Model#status" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="status:String"></a>
+      <a id="status:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">status</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -541,8 +554,10 @@ the client code
         <div id="inheritedMembers">
         <div class="parent" name="org.scalaml.supervised.hmm.HMMInference">
               <h3>Inherited from <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></h3>
-            </div><div class="parent" name="org.scalaml.supervised.hmm.HMMAlgorithm">
-              <h3>Inherited from <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></h3>
+            </div><div class="parent" name="org.scalaml.supervised.hmm.HMMModel">
+              <h3>Inherited from <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></h3>
+            </div><div class="parent" name="org.scalaml.supervised.Model">
+              <h3>Inherited from <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

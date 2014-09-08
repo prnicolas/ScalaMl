@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>HMMParams - org.scalaml.supervised.hmm.HMMParams</title>
-          <meta name="description" content="HMMParams - org.scalaml.supervised.hmm.HMMParams" />
-          <meta name="keywords" content="HMMParams org.scalaml.supervised.hmm.HMMParams" />
+          <title>CrfModel - org.scalaml.supervised.crf.CrfModel</title>
+          <meta name="description" content="CrfModel - org.scalaml.supervised.crf.CrfModel" />
+          <meta name="keywords" content="CrfModel org.scalaml.supervised.crf.CrfModel" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.hmm.HMMParams';
+            var hash = 'org.scalaml.supervised.crf.CrfModel';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -24,26 +24,24 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="HMMParams$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
-        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a></p>
-        <h1><a href="HMMParams$.html" title="Go to companion">HMMParams</a></h1>
+        <img src="../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.crf">crf</a></p>
+        <h1>CrfModel</h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">class</span>
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">HMMParams</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">CrfModel</span><span class="params">(<span name="weights">weights: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that encapsulates the execution parameters for the three
-canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>range is undefined or the maximum iterations is out of range
-</p></span></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -61,7 +59,7 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.HMMParams"><span>HMMParams</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.crf.CrfModel"><span>CrfModel</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="org.scalaml.supervised.Model"><span>Model</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -81,20 +79,19 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.hmm.HMMParams#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(d:org.scalaml.supervised.hmm.HMMDim,maxIters:Int):org.scalaml.supervised.hmm.HMMParams"></a>
-      <a id="&lt;init&gt;:HMMParams"></a>
+              <ol><li name="org.scalaml.supervised.crf.CrfModel#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(weights:org.scalaml.core.Types.ScalaMl.DblVector):org.scalaml.supervised.crf.CrfModel"></a>
+      <a id="&lt;init&gt;:CrfModel"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">HMMParams</span><span class="params">(<span name="d">d: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">CrfModel</span><span class="params">(<span name="weights">weights: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">d</dt><dd class="cmt"><p>dimension for the HMM</p></dd><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations used in the training of HMM</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>range is undefined or the maximum iterations is out of range
-</p></span></dd></dl></div>
+      
     </li></ol>
             </div>
 
@@ -169,58 +166,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.DiGamma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DiGamma"></a>
-      <a id="DiGamma:DiGamma"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="HMMParams$DiGamma$.html"><span class="name">DiGamma</span></a>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.Gamma" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Gamma"></a>
-      <a id="Gamma:Gamma"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="HMMParams$Gamma$.html"><span class="name">Gamma</span></a>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams.QStar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="QStar"></a>
-      <a id="QStar:QStar"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="HMMParams$QStar$.html"><span class="name">QStar</span></a>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="alpha:org.scalaml.util.Matrix[Double]"></a>
-      <a id="alpha:Matrix[Double]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">alpha</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -234,19 +179,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#beta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="beta:org.scalaml.util.Matrix[Double]"></a>
-      <a id="beta:Matrix[Double]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">beta</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -266,32 +198,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="d:org.scalaml.supervised.hmm.HMMDim"></a>
-      <a id="d:HMMDim"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">d</span><span class="result">: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">dimension for the HMM</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#delta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="delta:org.scalaml.util.Matrix[Double]"></a>
-      <a id="delta:Matrix[Double]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">delta</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -305,19 +211,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a>
-      <a id="equals(Any):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -350,19 +243,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <a id="hashCode():Int"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -376,19 +256,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#maxIters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="maxIters:Int"></a>
-      <a id="maxIters:Int"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">maximum number of iterations used in the training of HMM</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -428,19 +295,19 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMParams#psi" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="psi:org.scalaml.util.Matrix[Int]"></a>
-      <a id="psi:Matrix[Int]"></a>
+    </li><li name="org.scalaml.supervised.Model#status" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="status:String"></a>
+      <a id="status:String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">var</span>
       </span>
       <span class="symbol">
-        <span class="name">psi</span><span class="result">: <a href="../../util/Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">status</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -454,19 +321,6 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <a id="toString():String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -524,6 +378,19 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfModel#weights" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="weights:org.scalaml.core.Types.ScalaMl.DblVector"></a>
+      <a id="weights:DblVector"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">weights</span><span class="result">: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
+      </span>
+      </h4>
+      
     </li></ol>
             </div>
 
@@ -533,7 +400,17 @@ canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exception
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="org.scalaml.supervised.Model">
+              <h3>Inherited from <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

@@ -16,7 +16,7 @@ import org.apache.commons.math3.stat.correlation.Covariance
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MaxCountExceededException, MathArithmeticException, DimensionMismatchException}
 import org.scalaml.core.Types
 import org.scalaml.workflow.PipeOperator
-
+import Types.ScalaMl._
 
 
 		/**
@@ -31,7 +31,6 @@ import org.scalaml.workflow.PipeOperator
 		 * @since February 26, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
 final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix, DblVector)] {
 	import Types.ScalaMl._, Types.CommonMath._, XTSeries._
 		   

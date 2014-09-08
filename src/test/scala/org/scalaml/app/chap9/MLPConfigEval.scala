@@ -30,7 +30,7 @@ object MLPConfigEval {
    final val CLASSIFICATION = false
    
    def run(args: Array[String]): Unit =  {
-     Console.println("Evaluation of MLP configuration parameters for " + args(1))
+     Console.println("Evaluation of MLP stateuration parameters for " + args(1))
      
  	 def f1(x: Double): DblVector = Array[Double](x*(1.0 + NOISE_RATIO*Random.nextDouble), NOISE_RATIO*Random.nextDouble, x*x*(1.0 +  NOISE_RATIO*Random.nextDouble), NOISE_RATIO*Random.nextDouble)
  	 def f2(x: Double): DblVector = Array[Double](NOISE_RATIO*Random.nextDouble, NOISE_RATIO*Random.nextDouble)
@@ -63,9 +63,9 @@ object MLPConfigEval {
         	val _alpha = if(alpha < 0.0)  x else ALPHA
         	val _eta = if(eta < 0.0) x else ETA
         	println("eta  " + _eta + " alpha: " + _alpha)
-  	        val config = MLPConfig(_alpha, _eta, GAMMA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
+  	        val state = MLPConfig(_alpha, _eta, GAMMA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
      
-	        if( MLP[Double](config, features, labels, new MLP.MLPRegression).model == None)
+	        if( MLP[Double](state, features, labels, new MLP.MLPRegression).model == None)
 	        	throw new IllegalStateException("Failed to train the model for alpha = " + alpha) })
        }
        catch {

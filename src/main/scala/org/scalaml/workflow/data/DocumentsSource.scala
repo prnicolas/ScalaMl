@@ -26,7 +26,7 @@ import org.apache.log4j.Logger
 		 * <li>Content</li>
 		 * </ul>
 		 * @param pathName relative path for the directory containing the corpus
-		 * @throw IllegalArgumentException if the path is not defined
+		 * @throws IllegalArgumentException if the path is not defined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 15, 2014

@@ -151,7 +151,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.util.Matrix#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](xy:Array[Array[T]])(implicitevidence$4:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
+      <a id="apply[T](xy:Array[Array[T]])(implicitevidence$5:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
       <a id="apply[T](Array[Array[T]])(ClassTag[T],(T)⇒Double):Matrix[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -164,7 +164,7 @@
       </h4>
       
     </li><li name="org.scalaml.util.Matrix#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](nRows:Int,nCols:Int)(implicitevidence$3:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
+      <a id="apply[T](nRows:Int,nCols:Int)(implicitevidence$4:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
       <a id="apply[T](Int,Int)(ClassTag[T],(T)⇒Double):Matrix[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -177,7 +177,7 @@
       </h4>
       
     </li><li name="org.scalaml.util.Matrix#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](nRows:Int,nCols:Int,data:Array[T])(implicitevidence$2:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
+      <a id="apply[T](nRows:Int,nCols:Int,data:Array[T])(implicitevidence$3:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
       <a id="apply[T](Int,Int,Array[T])(ClassTag[T],(T)⇒Double):Matrix[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -186,6 +186,19 @@
       </span>
       <span class="symbol">
         <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="nRows">nRows: <span class="extype" name="scala.Int">Int</span></span>, <span name="nCols">nCols: <span class="extype" name="scala.Int">Int</span></span>, <span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>]</span>, <span name="f">f: (<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.util.Matrix#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[T](nRows:Int)(implicitevidence$2:scala.reflect.ClassTag[T],implicitf:T=&gt;Double):org.scalaml.util.Matrix[T]"></a>
+      <a id="apply[T](Int)(ClassTag[T],(T)⇒Double):Matrix[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="nRows">nRows: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>]</span>, <span name="f">f: (<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="org.scalaml.util.Matrix.apply.T">T</span>]</span>
       </span>
       </h4>
       
@@ -305,19 +318,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.util.Matrix#matrix2RealMatrix" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="matrix2RealMatrix(m:org.scalaml.util.Matrix[Double]):org.apache.commons.math3.linear.RealMatrix"></a>
-      <a id="matrix2RealMatrix(Matrix[Double]):RealMatrix"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">matrix2RealMatrix</span><span class="params">(<span name="m">m: <a href="Matrix.html" class="extype" name="org.scalaml.util.Matrix">Matrix</a>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="org.apache.commons.math3.linear.RealMatrix">RealMatrix</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

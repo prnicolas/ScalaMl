@@ -15,7 +15,7 @@ import org.scalaml.util.Matrix
 import org.scalaml.core.Types
 
 
-import Types._
+import Types.ScalaMl._
 
 
 	/**
@@ -35,19 +35,19 @@ import Types._
 	 *  @note Scala for Machine Learning
 	 */
 class ViterbiPath(val lambdaV: HMMLambda, 
-				  val configV: HMMConfig, 
-				  val obsV: Array[Int]) extends HMMInference(lambdaV, configV, obsV) {
+				  val stateV: HMMState, 
+				  val obsV: Array[Int]) extends HMMInference(lambdaV, stateV, obsV) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
 	   * throws a Arithmetic or Runtime exception that is to be caught by
 	   * the client code
 	   */
-   val maxDelta = recurse(lambda.dim._T, 0)
+   val maxDelta = recurse(lambda.config._T, 0)
 
    private def initial(ti: (Int, Int)): Double = {
   	 if(ti._1 == 0) {
-  	    config.psi += (0, 0, 0)
-  		config.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, labels(ti._2))
+  	    state.psi += (0, 0, 0)
+  		state.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, obsIdx(ti._2))
   	 }
   	 else 
   		-1.0
@@ -58,20 +58,20 @@ class ViterbiPath(val lambdaV: HMMLambda,
   	 var maxDelta = initial((t, j))
   	 
   	 if( maxDelta == -1.0) {
-  	    if( t != labels.size) {
-  	    	maxDelta = HMMDim.maxBy(lambda.dim._N, s => recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, labels(t)) )
-  		    val idx = HMMDim.maxBy(lambda.dim._T, i =>recurse(t-1 ,i)*lambda.A(i,j))
-  		    config.psi += (t, j, idx)
-            config.delta += (t, j, maxDelta)
+  	    if( t != obsIdx.size) {
+  	    	maxDelta = HMMConfig.maxBy(lambda.config._N, s => recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obsIdx(t)) )
+  		    val idx = HMMConfig.maxBy(lambda.config._T, i =>recurse(t-1 ,i)*lambda.A(i,j))
+  		    state.psi += (t, j, idx)
+            state.delta += (t, j, maxDelta)
   	     }
   	     else {
   		   maxDelta = 0.0  		   
-  		   val index = HMMDim.maxBy(lambda.dim._N, i => { 
+  		   val index = HMMConfig.maxBy(lambda.config._N, i => { 
   		  	   val delta = recurse(t-1 ,i)
   		  	   if( delta > maxDelta) maxDelta = delta
   		  	   delta
   		   })
-  		    config.QStar.update(t, index)
+  		    state.QStar.update(t, index)
   	     }
   	 }
   	 maxDelta
@@ -86,7 +86,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * @since March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, config: HMMConfig, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, config, _labels)
+	def apply(lambda: HMMLambda, state: HMMState, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, state, _labels)
 }
 
 

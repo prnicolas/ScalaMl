@@ -31,7 +31,7 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
+        <span class="modifier"></span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
@@ -39,7 +39,7 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression.T">T</span>], <span class="extype" name="scala.Int">Int</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -95,7 +95,23 @@
     </li></ol>
             </div>
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalaml.supervised.regression.logistic.LogisticRegression.Feature" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Feature=Array[T]"></a>
+      <a id="Feature:Feature"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Feature</span><span class="result"> = <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression.T">T</span>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -269,6 +285,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression#initWeight" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="initWeight:Double(0.5)"></a>
+      <a id="initWeight:Double(0.5)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">initWeight</span><span class="result">: Double(0.5)</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -347,16 +376,16 @@
       </span>
       </h4>
       
-    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression#rms" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="rms:Option[Double]"></a>
-      <a id="rms:Option[Double]"></a>
+    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression#rss" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="rss:Option[Double]"></a>
+      <a id="rss:Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rms</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">rss</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
       </h4>
       
@@ -471,21 +500,21 @@
       </h4>
       
     </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(feature:Array[T]):Option[Int]"></a>
-      <a id="|&gt;(Array[T]):Option[Int]"></a>
+      <a id="|&gt;(x:LogisticRegression.this.Feature):Option[Int]"></a>
+      <a id="|&gt;(Feature):Option[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="feature">feature: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="x">x: <a href="#Feature=Array[T]" class="extmbr" name="org.scalaml.supervised.regression.logistic.LogisticRegression.Feature">Feature</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Binary predictor using the Binomial logistic regression and implemented
 as a data transformation (PipeOperator).</p><div class="fullcomment"><div class="comment cmt"><p>Binary predictor using the Binomial logistic regression and implemented
 as a data transformation (PipeOperator). The predictor relies on a margin
-error to associated to the outcome 0 or 1.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression">LogisticRegression</a> → <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">DimensionMismatchException<p>if the dimension of the data point x is incorrect
+error to associated to the outcome 0 or 1.</p></div><dl class="paramcmts block"><dt class="param">x</dt><dd class="cmt"><p>new data point to classify as 0 or 1</p></dd><dt>returns</dt><dd class="cmt"><p>0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression">LogisticRegression</a> → <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">DimensionMismatchException<p>if the dimension of the data point x is incorrect
 </p></span><span class="cmt">IllegalArgumentException<p>if the data point is undefined</p></span></dd></dl></div>
     </li></ol>
             </div>

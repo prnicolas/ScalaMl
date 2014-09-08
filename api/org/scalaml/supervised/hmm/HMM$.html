@@ -24,9 +24,9 @@
         </head>
         <body class="value">
       <div id="definition">
-        <a href="HMM.html" title="Go to companion"><img src="../../../../lib/object_to_class_big.png" /></a>
+        <img src="../../../../lib/object_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.hmm">hmm</a></p>
-        <h1><a href="HMM.html" title="Go to companion">HMM</a></h1>
+        <h1>HMM</h1>
       </div>
 
       <h4 id="signature" class="signature">
@@ -95,7 +95,8 @@ apply for the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>M
         <span class="name">HMMPredictor</span><span class="result"> = (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Define the result of the prediction (decoding or evaluation) as a
+a tuple of (likelihood, sequence (array) of observations indexes).</p>
     </li></ol>
             </div>
 
@@ -169,28 +170,28 @@ apply for the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>M
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMM#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm)(implicitevidence$3:T=&gt;Array[Int]):org.scalaml.supervised.hmm.HMM[T]"></a>
-      <a id="apply[T](HMMLambda,HMMForm)((T)⇒Array[Int]):HMM[T]"></a>
+      <a id="apply[T](lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm)(implicitevidence$3:T=&gt;Array[Int],implicitf:org.scalaml.core.Types.ScalaMl.DblVector=&gt;T):org.scalaml.supervised.hmm.HMM[T]"></a>
+      <a id="apply[T](HMMLambda,HMMForm)((T)⇒Array[Int],(DblVector)⇒T):HMM[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <a href="HMM.html" class="extype" name="org.scalaml.supervised.hmm.HMM">HMM</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="f">f: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>) ⇒ <span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span></span>)</span><span class="result">: <a href="HMM.html" class="extype" name="org.scalaml.supervised.hmm.HMM">HMM</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>]</span>
       </span>
       </h4>
       
     </li><li name="org.scalaml.supervised.hmm.HMM#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm,maxIters:Int)(implicitevidence$2:T=&gt;Array[Int]):org.scalaml.supervised.hmm.HMM[T]"></a>
-      <a id="apply[T](HMMLambda,HMMForm,Int)((T)⇒Array[Int]):HMM[T]"></a>
+      <a id="apply[T](lambda:org.scalaml.supervised.hmm.HMMLambda,form:org.scalaml.supervised.hmm.HMMForm.HMMForm,maxIters:Int)(implicitevidence$2:T=&gt;Array[Int],implicitf:org.scalaml.core.Types.ScalaMl.DblVector=&gt;T):org.scalaml.supervised.hmm.HMM[T]"></a>
+      <a id="apply[T](HMMLambda,HMMForm,Int)((T)⇒Array[Int],(DblVector)⇒T):HMM[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <a href="HMM.html" class="extype" name="org.scalaml.supervised.hmm.HMM">HMM</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="lambda">lambda: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="form">form: <a href="HMMForm$.html#HMMForm=org.scalaml.supervised.hmm.HMMForm.Value" class="extmbr" name="org.scalaml.supervised.hmm.HMMForm.HMMForm">HMMForm</a></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>) ⇒ <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="f">f: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>) ⇒ <span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span></span>)</span><span class="result">: <a href="HMM.html" class="extype" name="org.scalaml.supervised.hmm.HMM">HMM</a>[<span class="extype" name="org.scalaml.supervised.hmm.HMM.apply.T">T</span>]</span>
       </span>
       </h4>
       

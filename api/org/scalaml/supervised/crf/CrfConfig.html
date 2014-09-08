@@ -39,7 +39,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines the basic stateuration of the CRF algorithm. The class generates a textual
+description of the stateuration of CRF used by iitb library</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>April 3, 2014
+</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,8 +81,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.crf.CrfConfig#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(initW:Double,maxIters:Int,lambda:Double,eps:Double,debug:Int):org.scalaml.supervised.crf.CrfConfig"></a>
+              <ol><li name="org.scalaml.supervised.crf.CrfConfig#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(w0:Double,maxIters:Int,lambda:Double,eps:Double,debug:Int):org.scalaml.supervised.crf.CrfConfig"></a>
       <a id="&lt;init&gt;:CrfConfig"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +90,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">CrfConfig</span><span class="params">(<span name="initW">initW: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="lambda">lambda: <span class="extype" name="scala.Double">Double</span></span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span></span>, <span name="debug">debug: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">CrfConfig</span><span class="params">(<span name="w0">w0: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="lambda">lambda: <span class="extype" name="scala.Double">Double</span></span>, <span name="eps">eps: <span class="extype" name="scala.Double">Double</span></span>, <span name="debug">debug: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">maxIters</dt><dd class="cmt"><p>Maximum number of iterations to be used for the training of CRF</p></dd><dt class="param">lambda</dt><dd class="cmt"><p>L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)</p></dd><dt class="param">eps</dt><dd class="cmt"><p>Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration</p></dd><dt class="param">debug</dt><dd class="cmt"><p>Optional debugging flag
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -210,7 +213,8 @@
         <span class="name">debug</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Optional debugging flag
+</p>
     </li><li name="org.scalaml.supervised.crf.CrfConfig#eps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="eps:Double"></a>
       <a id="eps:Double"></a>
@@ -223,7 +227,7 @@
         <span class="name">eps</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -295,19 +299,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.crf.CrfConfig#initW" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="initW:Double"></a>
-      <a id="initW:Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">initW</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -333,7 +324,7 @@
         <span class="name">lambda</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)</p>
     </li><li name="org.scalaml.supervised.crf.CrfConfig#maxIters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="maxIters:Int"></a>
       <a id="maxIters:Int"></a>
@@ -346,7 +337,7 @@
         <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Maximum number of iterations to be used for the training of CRF</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -425,6 +416,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.crf.CrfConfig#w0" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="w0:Double"></a>
+      <a id="w0:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">w0</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>

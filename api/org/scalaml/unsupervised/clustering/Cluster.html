@@ -39,7 +39,13 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that define a cluster used in the KMeans++ clustering algorithm.
+A cluster is defined by its center (scalar or vector) and its members (data point)
+it contains. The membership of data points to this cluster is done through their index.
+It is assumed that each data point has a unique index and therefore a cluster will never
+contains two data points with the same index.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the center is undefined (null)
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,7 +85,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.unsupervised.clustering.Cluster#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.clustering.Cluster#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(center:org.scalaml.core.Types.ScalaMl.DblVector)(implicitevidence$1:T=&gt;Double):org.scalaml.unsupervised.clustering.Cluster[T]"></a>
       <a id="&lt;init&gt;:Cluster[T]"></a>
       <h4 class="signature">
@@ -91,7 +97,8 @@
         <span class="name">Cluster</span><span class="params">(<span name="center">center: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.clustering.Cluster.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">center</dt><dd class="cmt"><p>data point acting as the center of the cluster</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the center is undefined (null)
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -207,7 +214,7 @@ or any other clusters.
         <span class="name">center</span><span class="result">: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">data point acting as the center of the cluster</p>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>

@@ -14,7 +14,8 @@ import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
 import org.scalaml.supervised.Model
 import scala.collection.mutable.ListBuffer
-
+import ScalaMl._
+import MLP._
 
 		/**
 		 * <p>:Class that defines a MLP layer. A MLP layer is built using the
@@ -29,8 +30,7 @@ import scala.collection.mutable.ListBuffer
 		 * @since May 6, 2014
 		 * @note Scala for Machine Learning
 		 */
-import ScalaMl._
-import MLP._
+
 protected class MLPLayer(val id: Int, val len: Int) {
    require(id >= 0, "Create a MLP layer with incorrect id: " + id)
    require(len > 0, "Create a MLP layer with zero element")

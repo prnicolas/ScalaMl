@@ -82,7 +82,7 @@ is out-of bounds</p></span></dd></dl><div class="toggleContainer block">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.hmm.HMMLambda#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(d:org.scalaml.supervised.hmm.HMMDim):org.scalaml.supervised.hmm.HMMLambda"></a>
+      <a id="&lt;init&gt;(states:Seq[Array[Double]],symbols:Seq[Array[Double]]):org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="&lt;init&gt;:HMMLambda"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -90,7 +90,7 @@ is out-of bounds</p></span></dd></dl><div class="toggleContainer block">
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">HMMLambda</span><span class="params">(<span name="d">d: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>)</span>
+        <span class="name">HMMLambda</span><span class="params">(<span name="states">states: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>, <span name="symbols">symbols: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of observations, hidden states or symbols
@@ -198,7 +198,7 @@ is out-of bounds</p></span></dd></dl></div>
       <p class="shortcomment cmt">Matrix B of emission probabilities for N states and M symbols
 </p>
     </li><li name="org.scalaml.supervised.hmm.HMMLambda#alpha" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="alpha(a:Double,i:Int,obsIndex:Int):Double"></a>
+      <a id="alpha(a:Double,i:Int,obsIdx:Int):Double"></a>
       <a id="alpha(Double,Int,Int):Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -206,10 +206,10 @@ is out-of bounds</p></span></dd></dl></div>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">alpha</span><span class="params">(<span name="a">a: <span class="extype" name="scala.Double">Double</span></span>, <span name="i">i: <span class="extype" name="scala.Int">Int</span></span>, <span name="obsIndex">obsIndex: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">alpha</span><span class="params">(<span name="a">a: <span class="extype" name="scala.Double">Double</span></span>, <span name="i">i: <span class="extype" name="scala.Int">Int</span></span>, <span name="obsIdx">obsIdx: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Update the value alpha by summation on a row of the transition matrix.</p><div class="fullcomment"><div class="comment cmt"><p>Update the value alpha by summation on a row of the transition matrix.</p></div><dl class="paramcmts block"><dt class="param">a</dt><dd class="cmt"><p>value of the transition probability between state i and i +1</p></dd><dt class="param">i</dt><dd class="cmt"><p>index of the column of the transition and emission probabilities matrix.</p></dd><dt class="param">obsIndex</dt><dd class="cmt"><p>index in the observation in the sequence</p></dd><dt>returns</dt><dd class="cmt"><p>updated alpha value</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if index i or obsIndex are out of range.
+      <p class="shortcomment cmt">Update the value alpha by summation on a row of the transition matrix.</p><div class="fullcomment"><div class="comment cmt"><p>Update the value alpha by summation on a row of the transition matrix.</p></div><dl class="paramcmts block"><dt class="param">a</dt><dd class="cmt"><p>value of the transition probability between state i and i +1</p></dd><dt class="param">i</dt><dd class="cmt"><p>index of the column of the transition and emission probabilities matrix.</p></dd><dt>returns</dt><dd class="cmt"><p>updated alpha value</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if index i or obsIndex are out of range.
 </p></span></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -256,16 +256,16 @@ is out-of bounds</p></span></dd></dl></div>
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMLambda#d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="d:org.scalaml.supervised.hmm.HMMDim"></a>
-      <a id="d:HMMDim"></a>
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda#config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="config:org.scalaml.supervised.hmm.HMMConfig"></a>
+      <a id="config:HMMConfig"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">d</span><span class="result">: <a href="HMMDim.html" class="extype" name="org.scalaml.supervised.hmm.HMMDim">HMMDim</a></span>
+        <span class="name">config</span><span class="result">: <a href="HMMConfig.html" class="extype" name="org.scalaml.supervised.hmm.HMMConfig">HMMConfig</a></span>
       </span>
       </h4>
       
@@ -309,20 +309,20 @@ is out-of bounds</p></span></dd></dl></div>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMMLambda#estimate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="estimate(params:org.scalaml.supervised.hmm.HMMParams,obs:Array[Int]):Unit"></a>
-      <a id="estimate(HMMParams,Array[Int]):Unit"></a>
+      <a id="estimate(state:org.scalaml.supervised.hmm.HMMState,obsIdx:Array[Int]):Unit"></a>
+      <a id="estimate(HMMState,Array[Int]):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">estimate</span><span class="params">(<span name="params">params: <a href="HMMParams.html" class="extype" name="org.scalaml.supervised.hmm.HMMParams">HMMParams</a></span>, <span name="obs">obs: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">estimate</span><span class="params">(<span name="state">state: <a href="HMMState.html" class="extype" name="org.scalaml.supervised.hmm.HMMState">HMMState</a></span>, <span name="obsIdx">obsIdx: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Compute a new estimate of the log of the conditional probabilities for a given
 iteration.</p><div class="fullcomment"><div class="comment cmt"><p>Compute a new estimate of the log of the conditional probabilities for a given
-iteration. Arithmetic exception are caught by client code.</p></div><dl class="paramcmts block"><dt class="param">params</dt><dd class="cmt"><p>HMM parameters</p></dd><dt class="param">obs</dt><dd class="cmt"><p>sequence of observations used in the estimate</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if the HMM parameters are undefined or the sequence of observatiosn is undefined.
+iteration. Arithmetic exception are caught by client code.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if the HMM parameters are undefined or the sequence of observatiosn is undefined.
 </p></span></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -437,19 +437,45 @@ by the client code.</p></div><dl class="paramcmts block"><dt class="param">obsSe
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMMLambda#pi" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="pi:Array[Double]"></a>
-      <a id="pi:Array[Double]"></a>
+      <a id="pi:org.scalaml.core.Types.ScalaMl.DblVector"></a>
+      <a id="pi:DblVector"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">var</span>
       </span>
       <span class="symbol">
-        <span class="name">pi</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
+        <span class="name">pi</span><span class="result">: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Vector of hidden states length for the initial probability of the sequence
 </p>
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda#states" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="states:Seq[Array[Double]]"></a>
+      <a id="states:Seq[Array[Double]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">states</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
+      </span>
+      </h4>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda#symbols" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="symbols:Seq[Array[Double]]"></a>
+      <a id="symbols:Seq[Array[Double]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbols</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>

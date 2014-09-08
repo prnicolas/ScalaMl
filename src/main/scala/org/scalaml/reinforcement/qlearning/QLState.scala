@@ -14,7 +14,7 @@ import org.scalaml.util.Matrix
 import scala.collection.mutable.HashMap
 import org.scalaml.util.Accumulator
 import org.scalaml.core.Types
-
+import Types.ScalaMl._
 
 			/**
 			 * <p>State defines as a label and a normalized values or frequency disribution across a set
@@ -29,8 +29,6 @@ import org.scalaml.core.Types
 			 * @since January 17, 2014
 			 * @note Scala for Machine Learning
 			 */
-
-import Types.ScalaMl._
 class QLState[T <% Double](val id: Int, val distribution: DblVector, val cost: (T, Double) => Double) {
   require(distribution != null && distribution.size > 0, "Cannot create a state with undefined distribution")
   require(cost != null, "Cannot evaluate this state with undefined cost function")

@@ -12,7 +12,7 @@ package org.scalaml.reinforcement.xcs
 
 import org.scalaml.reinforcement.qlearning.QLState
 import org.scalaml.core.Types.ScalaMl._
-
+import XcsCredit._
 
 
 		/**
@@ -32,7 +32,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @since March 25, 2014
 		 * @note Scala for Machine Learning
 		 */
-import XcsCredit._
+
 class XcsCredit(val fitnesses: DblVector) extends QLState[Double](-1, fitnesses, CREDIT ) {
 	
 		/**

@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>NewsTerms - org.scalaml.supervised.bayes.NewsTerms</title>
-          <meta name="description" content="NewsTerms - org.scalaml.supervised.bayes.NewsTerms" />
-          <meta name="keywords" content="NewsTerms org.scalaml.supervised.bayes.NewsTerms" />
+          <title>BinNaiveBayesModel - org.scalaml.supervised.bayes.BinNaiveBayesModel</title>
+          <meta name="description" content="BinNaiveBayesModel - org.scalaml.supervised.bayes.BinNaiveBayesModel" />
+          <meta name="keywords" content="BinNaiveBayesModel org.scalaml.supervised.bayes.BinNaiveBayesModel" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'org.scalaml.supervised.bayes.NewsTerms$';
+            var hash = 'org.scalaml.supervised.bayes.BinNaiveBayesModel$';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -24,9 +24,9 @@
         </head>
         <body class="value">
       <div id="definition">
-        <a href="NewsTerms.html" title="Go to companion"><img src="../../../../lib/object_to_class_big.png" /></a>
+        <img src="../../../../lib/object_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1><a href="NewsTerms.html" title="Go to companion">NewsTerms</a></h1>
+        <h1>BinNaiveBayesModel</h1>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,11 +35,13 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">NewsTerms</span>
+        <span class="name">BinNaiveBayesModel</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Companion object for the Binomial Naive Bayes Model. This singleton is used
+to define the constructor of the BinNaiveBayesModel class.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -59,7 +61,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.bayes.NewsTerms"><span>NewsTerms</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.BinNaiveBayesModel"><span>BinNaiveBayesModel</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -79,23 +81,7 @@
         <div id="allMembers">
         
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.bayes.NewsTerms.TimeStamp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TimeStamp=Int"></a>
-      <a id="TimeStamp:TimeStamp"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">TimeStamp</span><span class="result"> = <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4>
-      
-    </li></ol>
-            </div>
+        
 
         
 
@@ -166,16 +152,16 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NewsTerms#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](implicitevidence$2:T=&gt;Long,implicitorder:Ordering[T]):org.scalaml.supervised.bayes.NewsTerms[T]"></a>
-      <a id="apply[T]((T)⇒Long,Ordering[T]):NewsTerms[T]"></a>
+    </li><li name="org.scalaml.supervised.bayes.BinNaiveBayesModel#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[T](positives:org.scalaml.supervised.bayes.Likelihood[T],negatives:org.scalaml.supervised.bayes.Likelihood[T],density:Double*=&gt;Double)(implicitevidence$3:T=&gt;Double):org.scalaml.supervised.bayes.BinNaiveBayesModel[T]"></a>
+      <a id="apply[T](Likelihood[T],Likelihood[T],(Double*)⇒Double)((T)⇒Double):BinNaiveBayesModel[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.apply.T">T</span>) ⇒ <span class="extype" name="scala.Long">Long</span></span>, <span name="order">order: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.apply.T">T</span>]</span>)</span><span class="result">: <a href="NewsTerms.html" class="extype" name="org.scalaml.supervised.bayes.NewsTerms">NewsTerms</a>[<span class="extype" name="org.scalaml.supervised.bayes.NewsTerms.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="positives">positives: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.apply.T">T</span>]</span>, <span name="negatives">negatives: <a href="Likelihood.html" class="extype" name="org.scalaml.supervised.bayes.Likelihood">Likelihood</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.apply.T">T</span>]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="BinNaiveBayesModel.html" class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel">BinNaiveBayesModel</a>[<span class="extype" name="org.scalaml.supervised.bayes.BinNaiveBayesModel.apply.T">T</span>]</span>
       </span>
       </h4>
       

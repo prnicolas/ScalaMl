@@ -40,9 +40,9 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Generic class for time series. Any type from different libraries are converted into
-this generic type to avoid multiple conversion between numerous types.<br>
+this generic type to avoid multiple conversion between numerous types.
 The class is parameterized so it can take primitive types to create vector for single
-variable time series or arrays/list to create matrix for multiple variables time series.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January, 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the array of values, arr is undefined
+variable time series or arrays/list to create matrix for multiple variables time series.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January, 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>If the array of values, [arr] is undefined
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -99,7 +99,7 @@ variable time series or arrays/list to create matrix for multiple variables time
         <span class="name">XTSeries</span><span class="params">(<span name="label">label: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="arr">arr: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>)</span>
       </span>
       </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">label</dt><dd class="cmt"><p>optional name for the time series</p></dd><dt class="param">arr</dt><dd class="cmt"><p>array of values of parameterized types</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the array of values, arr is undefined
+      <p class="shortcomment cmt">Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types</p><div class="fullcomment"><div class="comment cmt"><p>Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>If the array of values, [arr] is undefined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -228,7 +228,7 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
         <span class="name">arr</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">array of values of parameterized types</p><div class="fullcomment"><div class="comment cmt"><p>array of values of parameterized types</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -412,7 +412,7 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
         <span class="name">label</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">optional name for the time series</p>
+      
     </li><li name="org.scalaml.core.XTSeries#last" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="last:T"></a>
       <a id="last:T"></a>

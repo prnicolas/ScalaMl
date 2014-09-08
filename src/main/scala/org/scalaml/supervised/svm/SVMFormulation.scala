@@ -20,7 +20,7 @@ import libsvm._
 	 * @note Scala for Machine Learning
 	 */
 sealed trait SVMFormulation extends SVMConfigItem {
-  def config(param: svm_parameter): Unit 
+  def state(param: svm_parameter): Unit 
 }
 
 object SVMFormulation {
@@ -45,12 +45,12 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
   
   	/**
-  	 * <p>Initialize the LIBSVM parameters configuration</p>
+  	 * <p>Initialize the LIBSVM parameters stateuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def config(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
+  override def state(param: svm_parameter): Unit = {
+  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.C_SVC
      param.C = c
@@ -73,12 +73,12 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
-  	 * <p>Initialize the LIBSVM parameters configuration</p>
+  	 * <p>Initialize the LIBSVM parameters stateuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def config(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
+  override def state(param: svm_parameter): Unit = {
+  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 	 
      param.svm_type = svm_parameter.NU_SVC
      param.nu = nu
@@ -102,12 +102,12 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
-  	 * <p>Initialize the LIBSVM parameters configuration</p>
+  	 * <p>Initialize the LIBSVM parameters stateuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def config(param: svm_parameter): Unit = {
-	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
+  override def state(param: svm_parameter): Unit = {
+	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.ONE_CLASS
      param.nu = nu
@@ -132,12 +132,12 @@ case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormula
    require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, "Epsilon factor " + epsilon + " is out of range") 
    
      /**
-  	 * <p>Initialize the LIBSVM parameters configuration</p>
+  	 * <p>Initialize the LIBSVM parameters stateuration</p>
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def config(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot configure undefined LIBSVM svm parameter class")
+  override def state(param: svm_parameter): Unit = {
+  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.EPSILON_SVR
      param.C = c

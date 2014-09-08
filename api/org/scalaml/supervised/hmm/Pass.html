@@ -35,7 +35,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Pass</span><span class="result"> extends <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></span>
+        <span class="name">Pass</span><span class="result"> extends <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></span>
       </span>
       </h4>
       
@@ -43,7 +43,7 @@
 the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 29, 2014
 </p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a>, <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
           <div class="subClasses hiddenContent"><a href="Alpha.html" class="extype" name="org.scalaml.supervised.hmm.Alpha">Alpha</a>, <a href="Beta.html" class="extype" name="org.scalaml.supervised.hmm.Beta">Beta</a></div>
@@ -64,7 +64,7 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.hmm.Pass"><span>Pass</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMAlgorithm"><span>HMMAlgorithm</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.hmm.Pass"><span>Pass</span></li><li class="in" name="org.scalaml.supervised.hmm.HMMModel"><span>HMMModel</span></li><li class="in" name="org.scalaml.supervised.Model"><span>Model</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -85,7 +85,7 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.hmm.Pass#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(lp:org.scalaml.supervised.hmm.HMMLambda,lbls:Array[Int]):org.scalaml.supervised.hmm.Pass"></a>
+      <a id="&lt;init&gt;(lambd:org.scalaml.supervised.hmm.HMMLambda,_obsIdx:Array[Int]):org.scalaml.supervised.hmm.Pass"></a>
       <a id="&lt;init&gt;:Pass"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -93,7 +93,7 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Pass</span><span class="params">(<span name="lp">lp: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="lbls">lbls: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
+        <span class="name">Pass</span><span class="params">(<span name="lambd">lambd: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>, <span name="_obsIdx">_obsIdx: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
       </span>
       </h4>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined</p></span></dd></dl></div>
@@ -171,6 +171,19 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.Pass#_obsIdx" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="_obsIdx:Array[Int]"></a>
+      <a id="_obsIdx:Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_obsIdx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="org.scalaml.supervised.hmm.Pass#alphaBeta" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="alphaBeta:org.scalaml.util.Matrix[Double]"></a>
       <a id="alphaBeta:Matrix[Double]"></a>
@@ -313,20 +326,20 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#labels" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="labels:Array[Int]"></a>
-      <a id="labels:Array[Int]"></a>
+    </li><li name="org.scalaml.supervised.hmm.Pass#lambd" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="lambd:org.scalaml.supervised.hmm.HMMLambda"></a>
+      <a id="lambd:HMMLambda"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">labels</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">lambd</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.HMMAlgorithm#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#lambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="lambda:org.scalaml.supervised.hmm.HMMLambda"></a>
       <a id="lambda:HMMLambda"></a>
       <h4 class="signature">
@@ -338,33 +351,7 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
         <span class="name">lambda</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Lambda (pi, A, B) model for the HMM</p><div class="fullcomment"><div class="comment cmt"><p>Lambda (pi, A, B) model for the HMM</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.hmm.Pass#lbls" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lbls:Array[Int]"></a>
-      <a id="lbls:Array[Int]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">lbls</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.hmm.Pass#lp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lp:org.scalaml.supervised.hmm.HMMLambda"></a>
-      <a id="lp:HMMLambda"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">lp</span><span class="result">: <a href="HMMLambda.html" class="extype" name="org.scalaml.supervised.hmm.HMMLambda">HMMLambda</a></span>
-      </span>
-      </h4>
-      
+      <p class="shortcomment cmt">Lambda (pi, A, B) model for the HMM</p><div class="fullcomment"><div class="comment cmt"><p>Lambda (pi, A, B) model for the HMM</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -417,6 +404,32 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMModel#obsIdx" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="obsIdx:Array[Int]"></a>
+      <a id="obsIdx:Array[Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">obsIdx</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></dd></dl></div>
+    </li><li name="org.scalaml.supervised.Model#status" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="status:String"></a>
+      <a id="status:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">status</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -509,8 +522,10 @@ the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.supervised.hmm.HMMAlgorithm">
-              <h3>Inherited from <a href="HMMAlgorithm.html" class="extype" name="org.scalaml.supervised.hmm.HMMAlgorithm">HMMAlgorithm</a></h3>
+        <div class="parent" name="org.scalaml.supervised.hmm.HMMModel">
+              <h3>Inherited from <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></h3>
+            </div><div class="parent" name="org.scalaml.supervised.Model">
+              <h3>Inherited from <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

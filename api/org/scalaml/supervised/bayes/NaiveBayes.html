@@ -40,7 +40,12 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Generic Multi-nomial Naive Bayes classification class. The class is used for both training
-and run-time classification.</p></div><div class="toggleContainer block">
+and run-time classification. The training of the model is executed during the instantiation
+of the class to avoid having an uninitialized model.<br>
+As a classifier, the method implement the generic data transformation PipeOperator and the
+Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>February 13, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -80,8 +85,8 @@ and run-time classification.</p></div><div class="toggleContainer block">
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.supervised.bayes.NaiveBayes#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(smoothing:Double,lblSeries:org.scalaml.core.XTSeries[(Array[T],Int)],density:(Double,Double,Double)=&gt;Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayes[T]"></a>
+              <ol><li name="org.scalaml.supervised.bayes.NaiveBayes#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(smoothing:Double,xt:org.scalaml.core.XTSeries[(Array[T],Int)],density:Double*=&gt;Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayes[T]"></a>
       <a id="&lt;init&gt;:NaiveBayes[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -89,10 +94,11 @@ and run-time classification.</p></div><div class="toggleContainer block">
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">NaiveBayes</span><span class="params">(<span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="lblSeries">lblSeries: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">NaiveBayes</span><span class="params">(<span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">smoothing</dt><dd class="cmt"><p>Laplace or Lidstone smoothing factor</p></dd><dt class="param">xt</dt><dd class="cmt"><p>Input labeled time series used for training</p></dd><dt class="param">density</dt><dd class="cmt"><p>Density function used to compute the discriminant</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -213,18 +219,18 @@ and run-time classification.</p></div><div class="toggleContainer block">
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a></dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayes#density" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="density:(Double,Double,Double)=&gt;Double"></a>
-      <a id="density:(Double,Double,Double)⇒Double"></a>
+      <a id="density:Double*=&gt;Double"></a>
+      <a id="density:(Double*)⇒Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Density function used to compute the discriminant</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -309,19 +315,6 @@ and run-time classification.</p></div><div class="toggleContainer block">
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NaiveBayes#lblSeries" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lblSeries:org.scalaml.core.XTSeries[(Array[T],Int)]"></a>
-      <a id="lblSeries:XTSeries[(Array[T],Int)]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">lblSeries</span><span class="result">: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -373,7 +366,7 @@ and run-time classification.</p></div><div class="toggleContainer block">
         <span class="name">smoothing</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Laplace or Lidstone smoothing factor</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -471,6 +464,19 @@ and run-time classification.</p></div><div class="toggleContainer block">
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.scalaml.supervised.bayes.NaiveBayes#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="xt:org.scalaml.core.XTSeries[(Array[T],Int)]"></a>
+      <a id="xt:XTSeries[(Array[T],Int)]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xt</span><span class="result">: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Input labeled time series used for training</p>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayes#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="|&gt;(xt:org.scalaml.core.XTSeries[Array[T]]):Option[Array[Int]]"></a>
       <a id="|&gt;(XTSeries[Array[T]]):Option[Array[Int]]"></a>
@@ -483,8 +489,8 @@ and run-time classification.</p></div><div class="toggleContainer block">
         <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Run-time classifier
-</p><div class="fullcomment"><div class="comment cmt"><p>Run-time classifier
+      <p class="shortcomment cmt">Run-time classification of a time series using the Naive Bayes model
+</p><div class="fullcomment"><div class="comment cmt"><p>Run-time classification of a time series using the Naive Bayes model
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.NaiveBayes">NaiveBayes</a> → <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd></dl></div>
     </li></ol>
             </div>

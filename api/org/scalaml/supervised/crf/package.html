@@ -71,7 +71,7 @@
       </span>
       </h4>
       <p class="comment cmt">Generic class for the linear chained CRF for tagging words, N-Grams or regular expression.</p>
-    </li><li name="org.scalaml.supervised.crf.CrfConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.crf.CrfConfig" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CrfConfigextendsAnyRef"></a>
       <a id="CrfConfig:CrfConfig"></a>
       <h4 class="signature">
@@ -83,20 +83,20 @@
         <a href="CrfConfig.html"><span class="name">CrfConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      
-    </li><li name="org.scalaml.supervised.crf.CrfRecommendation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CrfRecommendationextendsDataSequence"></a>
-      <a id="CrfRecommendation:CrfRecommendation"></a>
+      <p class="comment cmt">Class that defines the basic stateuration of the CRF algorithm.</p>
+    </li><li name="org.scalaml.supervised.crf.CrfModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CrfModelextendsModelwithProductwithSerializable"></a>
+      <a id="CrfModel:CrfModel"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="CrfRecommendation.html"><span class="name">CrfRecommendation</span></a><span class="result"> extends <span class="extype" name="iitb.CRF.DataSequence">DataSequence</span></span>
+        <a href="CrfModel.html"><span class="name">CrfModel</span></a><span class="params">(<span name="weights">weights: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
-      <p class="comment cmt">Class that defines a Recommendation as a data sequence.</p>
+      
     </li><li name="org.scalaml.supervised.crf.CrfSeqDelimiter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CrfSeqDelimiterextendsProductwithSerializable"></a>
       <a id="CrfSeqDelimiter:CrfSeqDelimiter"></a>
@@ -106,7 +106,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="CrfSeqDelimiter.html"><span class="name">CrfSeqDelimiter</span></a><span class="params">(<span name="dObs">dObs: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dLabel">dLabel: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="dSeq">dSeq: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="CrfSeqDelimiter.html"><span class="name">CrfSeqDelimiter</span></a><span class="params">(<span name="obsDelim">obsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="labelsDelim">labelsDelim: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="trainingDelim">trainingDelim: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       <p class="comment cmt">Class that specifies the regular expressions used to delineates labels, observations
@@ -124,6 +124,19 @@ and sequences in the training files '*.</p>
       </span>
       </h4>
       <p class="comment cmt">Generic class that implements the iterator for sequences (training or validation).</p>
+    </li><li name="org.scalaml.supervised.crf.CrfTrainingSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CrfTrainingSetextendsDataSequence"></a>
+      <a id="CrfTrainingSet:CrfTrainingSet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CrfTrainingSet.html"><span class="name">CrfTrainingSet</span></a><span class="result"> extends <span class="extype" name="iitb.CRF.DataSequence">DataSequence</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Class that defines a Recommendation as a data sequence.</p>
     </li></ol>
             </div>
 
@@ -156,7 +169,7 @@ and sequences in the training files '*.</p>
         <a href="CrfConfig$.html"><span class="name">CrfConfig</span></a>
       </span>
       </h4>
-      <p class="comment cmt">Companion object for the configuration of the conditional random field.</p>
+      <p class="comment cmt">Companion object for the stateuration of the conditional random field.</p>
     </li><li name="org.scalaml.supervised.crf.CrfSeqIter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CrfSeqIter"></a>
       <a id="CrfSeqIter:CrfSeqIter"></a>

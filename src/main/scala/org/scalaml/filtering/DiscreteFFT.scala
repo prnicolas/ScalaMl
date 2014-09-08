@@ -27,7 +27,7 @@ import org.scalaml.util.Display
 			 * <p>Generic Data transformation trait for the Fast Discrete Fourier. The main
 			 * function of the trait is to pad time series to resize the original data set
 			 * to the next power to 2.</p>
-			 * 
+			 * @constructor Create a generic Fourier transform as a data transformation
 			 * @author Patrick Nicolas
 			 * @since February 9, 2014
 			 * @note Scala for Machine Learning
@@ -116,7 +116,7 @@ object DFT {
 			 * <p>Pass-band Filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
 			 * implements the convolution of the filter function and the input time series class.<br>
 			 * The class uses the Apache Commons Math library</p>
-			 * @param g filtering function used in the convolution
+			 * @constructor Create a low-pass, band-pass or high-pass filter using the discrete Fourier transform: [g] filtering function used in the convolution
 			 * @throws IllegalArgumentException if the filtering function g is undefined.
 			 * @author Patrick Nicolas
 			 * @since February 9, 2014

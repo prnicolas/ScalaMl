@@ -14,7 +14,7 @@ import org.scalaml.trading.Signal
 import org.scalaml.ga.{Operator, Gene}
 import org.scalaml.reinforcement.qlearning.QLState
 import org.scalaml.core.Types.ScalaMl._
-
+import XcsRule._
 
 		/**
 		 * <p>Class that define a rule or policy in XCS algorithm. The rule is encoded as a gene so
@@ -29,7 +29,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning
 		 */
-import XcsRule._
+
 class XcsRule[T <% Double](val signal: Signal, val action: XcsAction[T]) extends Gene(signal.value, signal.op)(DIGITIZE) {
    require(signal != null, "Cannot create an XCS rule with undefined signal/predicate")
    require(action != null, "Cannot create an XCS rule with undefined action")

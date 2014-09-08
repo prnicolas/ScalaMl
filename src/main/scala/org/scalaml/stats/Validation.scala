@@ -39,6 +39,7 @@ trait Validation {
 	def precisionRecall: (Double, Double)
 }
 
+import Label._
 
 		/**
 		 * <p>Immutable class that implements the Validation variables on a results
@@ -51,7 +52,6 @@ trait Validation {
 		 * @since February 1, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Label._
 class ClassValidation(val actualExpected: Array[(Int, Int)], val tpClass: Int) extends Validation {
    require(actualExpected != null && actualExpected.size > 0, "Cannot validate undefined results")
    require(tpClass >= 0, "Cannot validate a model with negative index for the target class") 

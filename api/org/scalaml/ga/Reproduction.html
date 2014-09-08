@@ -39,7 +39,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Define a replication phase in the execution of the genetic algorithm optimizer. The
+ A replication sequence consists of a selection of chromosomes according to their
+ fitness values, cross-over within a pair of chromomsomes and mutation</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>August 28, 2013</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or the fitness function is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scalal for Machine Learning
+</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -79,8 +83,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.ga.Reproduction#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(config:org.scalaml.ga.GAConfig,fit:org.scalaml.ga.Chromosome[T]=&gt;Double):org.scalaml.ga.Reproduction[T]"></a>
+              <ol><li name="org.scalaml.ga.Reproduction#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(state:org.scalaml.ga.GAConfig,fit:org.scalaml.ga.Chromosome[T]=&gt;Double):org.scalaml.ga.Reproduction[T]"></a>
       <a id="&lt;init&gt;:Reproduction[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -88,10 +92,11 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Reproduction</span><span class="params">(<span name="config">config: <a href="GAConfig.html" class="extype" name="org.scalaml.ga.GAConfig">GAConfig</a></span>, <span name="fit">fit: (<a href="Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Reproduction.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">Reproduction</span><span class="params">(<span name="state">state: <a href="GAConfig.html" class="extype" name="org.scalaml.ga.GAConfig">GAConfig</a></span>, <span name="fit">fit: (<a href="Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Reproduction.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Create a reproduction workflow for the genetic algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Create a reproduction workflow for the genetic algorithm. [state]: Configuration parameters of the genetic algorithm, [fit] Fitness function for a chromosome</p></div><dl class="paramcmts block"><dt class="param">state</dt><dd class="cmt"><p>stateuration parameters of the genetic algorithm</p></dd><dt class="param">fit</dt><dd class="cmt"><p>fitness function for a chromosome</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or the fitness function is undefined
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -255,7 +260,7 @@
         <span class="name">fit</span><span class="result">: (<a href="Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Reproduction.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">fitness function for a chromosome</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
