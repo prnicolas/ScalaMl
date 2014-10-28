@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>MultivariateEM - org.scalaml.unsupervised.em.MultivariateEM</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="MultivariateEM.html" title="Go to companion"><img src="../../../../lib/object_to_class_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.unsupervised">unsupervised</a>.<a href="package.html" class="extype" name="org.scalaml.unsupervised.em">em</a></p>
-        <h1><a href="MultivariateEM.html" title="Go to companion">MultivariateEM</a></h1>
+        <h1><a href="MultivariateEM.html" title="Go to companion">MultivariateEM</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -84,7 +92,7 @@ internal types EM and EMOutput, the constructor apply and the computation of est
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="org.scalaml.unsupervised.em.MultivariateEM.EMOutput" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="EMOutput=List[(Double,org.scalaml.core.Types.ScalaMl.DblVector,org.scalaml.core.Types.ScalaMl.DblVector)]"></a>
+      <a id="EMOutput=List[(Double,org.scalaml.core.types.ScalaMl.DblVector,org.scalaml.core.types.ScalaMl.DblVector)]"></a>
       <a id="EMOutput:EMOutput"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,10 +100,14 @@ internal types EM and EMOutput, the constructor apply and the computation of est
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">EMOutput</span><span class="result"> = <span class="extype" name="scala.collection.immutable.List">List</span>[(<span class="extype" name="scala.Double">Double</span>, <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>)]</span>
+        <span class="name">EMOutput</span><span class="result"> = <span class="extype" name="scala.collection.immutable.List">List</span>[(<span class="extype" name="scala.Double">Double</span>, <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>)]</span>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@EMOutput=List[(Double,org.scalaml.core.types.ScalaMl.DblVector,org.scalaml.core.types.ScalaMl.DblVector)]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Type EMOutput as a list of tuple (key, array of means, array of standard deviation.</p>
     </li></ol>
             </div>
 
@@ -104,19 +116,6 @@ internal types EM and EMOutput, the constructor apply and the computation of est
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -127,8 +126,12 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -140,22 +143,13 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -166,8 +160,12 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.unsupervised.em.MultivariateEM#MAX_K" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MAX_K:Int(500)"></a>
       <a id="MAX_K:Int(500)"></a>
@@ -179,7 +177,11 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">MAX_K</span><span class="result">: Int(500)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@MAX_K:Int(500)" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.unsupervised.em.MultivariateEM#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="apply[T](numComponents:Int)(implicitevidence$2:T=&gt;Double):org.scalaml.unsupervised.em.MultivariateEM[T]"></a>
@@ -192,7 +194,11 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="numComponents">numComponents: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="MultivariateEM.html" class="extype" name="org.scalaml.unsupervised.em.MultivariateEM">MultivariateEM</a>[<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.apply.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@apply[T](numComponents:Int)(implicitevidence$2:T=&gt;Double):org.scalaml.unsupervised.em.MultivariateEM[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -205,7 +211,11 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -218,7 +228,11 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -237,7 +251,11 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -250,10 +268,14 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.unsupervised.em.MultivariateEM#estimate" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="estimate(data:org.scalaml.core.Types.ScalaMl.DblMatrix,K:Int):org.apache.commons.math3.distribution.MixtureMultivariateNormalDistribution"></a>
+      <a id="estimate(data:org.scalaml.core.types.ScalaMl.DblMatrix,K:Int):org.apache.commons.math3.distribution.MixtureMultivariateNormalDistribution"></a>
       <a id="estimate(DblMatrix,Int):MixtureMultivariateNormalDistribution"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -261,9 +283,13 @@ internal types EM and EMOutput, the constructor apply and the computation of est
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">estimate</span><span class="params">(<span name="data">data: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="K">K: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="org.apache.commons.math3.distribution.MixtureMultivariateNormalDistribution">MixtureMultivariateNormalDistribution</span></span>
+        <span class="name">estimate</span><span class="params">(<span name="data">data: <a href="../../core/types/ScalaMl$.html#DblMatrix=org.scalaml.core.types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="K">K: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="org.apache.commons.math3.distribution.MixtureMultivariateNormalDistribution">MixtureMultivariateNormalDistribution</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@estimate(data:org.scalaml.core.types.ScalaMl.DblMatrix,K:Int):org.apache.commons.math3.distribution.MixtureMultivariateNormalDistribution" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Help method to retrieve the estimate for the Multivariate Gaussian mixture model.</p><div class="fullcomment"><div class="comment cmt"><p>Help method to retrieve the estimate for the Multivariate Gaussian mixture model. The
 method has protected access so it cannot be used outside the EM package and therefore
 does not have to catch Apache Commons Math exception. Those exceptions are caught by the
@@ -280,7 +306,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -299,7 +329,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -312,7 +346,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -325,7 +363,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -338,7 +380,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -351,7 +397,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -364,7 +414,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -377,7 +431,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -390,7 +448,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -403,7 +465,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -422,7 +488,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -441,7 +511,11 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.MultivariateEM$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -478,6 +552,7 @@ client code MultivariateEM.|&gt;.</p></div><dl class="paramcmts block"><dt class
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

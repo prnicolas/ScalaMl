@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>Xcs - org.scalaml.reinforcement.xcs.Xcs</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -24,9 +28,13 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="Xcs$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
+        <img src="../../../../lib/class_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.reinforcement">reinforcement</a>.<a href="package.html" class="extype" name="org.scalaml.reinforcement.xcs">xcs</a></p>
-        <h1><a href="Xcs$.html" title="Go to companion">Xcs</a></h1>
+        <h1>Xcs</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,20 +43,13 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Xcs</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>), <span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]]</span>
+        <span class="name">Xcs</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="XcsSensor.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsSensor">XcsSensor</a>, <span class="extype" name="scala.List">List</span>[<a href="XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a>]]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Example of implementation of the XCS algorithm with a predefined
-stateuration and a set of training episode for the Q-Learning algorithm used to assign
-credit to individual rules that improve the performance (or objective
-function) of a system.<br>
-This implementation assumes that the new data (Signal) and reward following the
-previous set of actions on the system are collected at the same time.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the stateuration, input information or training episodes is undefined
-</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
-</p></span></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>), <span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="XcsSensor.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsSensor">XcsSensor</a>, <span class="extype" name="scala.List">List</span>[<a href="XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -66,7 +67,7 @@ previous set of actions on the system are collected at the same time.</p></div><
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.reinforcement.xcs.Xcs"><span>Xcs</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.reinforcement.xcs.Xcs"><span>Xcs</span></li><li class="in" name="org.scalaml.core.design.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -86,8 +87,8 @@ previous set of actions on the system are collected at the same time.</p></div><
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="org.scalaml.reinforcement.xcs.Xcs#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(state:org.scalaml.reinforcement.xcs.XcsConfig):org.scalaml.reinforcement.xcs.Xcs"></a>
+              <ol><li name="org.scalaml.reinforcement.xcs.Xcs#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(config:org.scalaml.reinforcement.xcs.XcsConfig,population:org.scalaml.ga.Population[org.scalaml.trading.Signal],score:org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]=&gt;Unit,input:Array[org.scalaml.reinforcement.qlearning.QLInput]):org.scalaml.reinforcement.xcs.Xcs"></a>
       <a id="&lt;init&gt;:Xcs"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -95,11 +96,14 @@ previous set of actions on the system are collected at the same time.</p></div><
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Xcs</span><span class="params">(<span name="state">state: <a href="XcsConfig.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsConfig">XcsConfig</a></span>)</span>
+        <span class="name">Xcs</span><span class="params">(<span name="config">config: <a href="XcsConfig.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsConfig">XcsConfig</a></span>, <span name="population">population: <a href="../../ga/Population.html" class="extype" name="org.scalaml.ga.Population">Population</a>[<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>]</span>, <span name="score">score: (<a href="../../ga/Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>, <span name="input">input: <span class="extype" name="scala.Array">Array</span>[<a href="../qlearning/QLInput.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLInput">QLInput</a>]</span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">state</dt><dd class="cmt"><p>stateuration for the XCS algorithm (GA and Q-Learning parameters)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the stateuration, input information or training episodes is undefined
-</p></span></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@&lt;init&gt;(config:org.scalaml.reinforcement.xcs.XcsConfig,population:org.scalaml.ga.Population[org.scalaml.trading.Signal],score:org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]=&gt;Unit,input:Array[org.scalaml.reinforcement.qlearning.QLInput]):org.scalaml.reinforcement.xcs.Xcs" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li></ol>
             </div>
 
@@ -110,19 +114,6 @@ previous set of actions on the system are collected at the same time.</p></div><
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -133,8 +124,12 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -146,22 +141,13 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -172,8 +158,12 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -185,7 +175,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -198,7 +192,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -217,7 +215,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -230,8 +232,29 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.xcs.Xcs#featuresSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="featuresSet:Set[org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]]"></a>
+      <a id="featuresSet:Set[Chromosome[Signal]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">featuresSet</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../../ga/Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@featuresSet:Set[org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -243,7 +266,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -252,17 +279,21 @@ previous set of actions on the system are collected at the same time.</p></div><
               
         </dd></dl></div>
     </li><li name="org.scalaml.reinforcement.xcs.Xcs#gaSolver" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="gaSolver:org.scalaml.ga.GASolver[org.scalaml.reinforcement.xcs.XcsRule[Double]]"></a>
-      <a id="gaSolver:GASolver[XcsRule[Double]]"></a>
+      <a id="gaSolver:org.scalaml.ga.GASolver[org.scalaml.trading.Signal]"></a>
+      <a id="gaSolver:GASolver[Signal]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">gaSolver</span><span class="result">: <a href="../../ga/GASolver.html" class="extype" name="org.scalaml.ga.GASolver">GASolver</a>[<a href="XcsRule.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsRule">XcsRule</a>[<span class="extype" name="scala.Double">Double</span>]]</span>
+        <span class="name">gaSolver</span><span class="result">: <a href="../../ga/GASolver.html" class="extype" name="org.scalaml.ga.GASolver">GASolver</a>[<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@gaSolver:org.scalaml.ga.GASolver[org.scalaml.trading.Signal]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
@@ -275,7 +306,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -288,21 +323,12 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.reinforcement.xcs.Xcs#history" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="history:List[(org.scalaml.core.Types.ScalaMl.DblVector,org.scalaml.reinforcement.xcs.XcsCredit)]"></a>
-      <a id="history:List[(DblVector,XcsCredit)]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">history</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[(<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <a href="XcsCredit.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsCredit">XcsCredit</a>)]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -314,7 +340,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -327,7 +357,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -340,7 +374,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -353,21 +391,29 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.reinforcement.xcs.Xcs#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="state:org.scalaml.reinforcement.xcs.XcsConfig"></a>
-      <a id="state:XcsConfig"></a>
+    </li><li name="org.scalaml.reinforcement.xcs.Xcs#qLearner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="qLearner:org.scalaml.reinforcement.qlearning.QLearning[org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]]"></a>
+      <a id="qLearner:QLearning[Chromosome[Signal]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">state</span><span class="result">: <a href="XcsConfig.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsConfig">XcsConfig</a></span>
+        <span class="name">qLearner</span><span class="result">: <a href="../qlearning/QLearning.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLearning">QLearning</a>[<a href="../../ga/Chromosome.html" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>]]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">stateuration for the XCS algorithm (GA and Q-Learning parameters)</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@qLearner:org.scalaml.reinforcement.qlearning.QLearning[org.scalaml.ga.Chromosome[org.scalaml.trading.Signal]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -379,7 +425,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -392,7 +442,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -405,7 +459,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -424,7 +482,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -443,7 +505,11 @@ previous set of actions on the system are collected at the same time.</p></div><
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -452,25 +518,22 @@ previous set of actions on the system are collected at the same time.</p></div><
               
         </dd></dl></div>
     </li><li name="org.scalaml.reinforcement.xcs.Xcs#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(xcsInput:(org.scalaml.trading.Signal,org.scalaml.reinforcement.xcs.Xcs.XcsReward)):Option[List[org.scalaml.reinforcement.xcs.XcsRule.XcsAction[Double]]]"></a>
-      <a id="|&gt;((Signal,XcsReward)):Option[List[XcsAction[Double]]]"></a>
+      <a id="|&gt;:PartialFunction[org.scalaml.reinforcement.xcs.XcsSensor,List[org.scalaml.reinforcement.xcs.XcsAction]]"></a>
+      <a id="|&gt;:PartialFunction[XcsSensor,List[XcsAction]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="xcsInput">xcsInput: (<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>)</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="XcsSensor.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsSensor">XcsSensor</a>, <span class="extype" name="scala.List">List</span>[<a href="XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a>]]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Method that updates the existing population of rules or policies
-following an input from the system and generates a list of XcsAction to be
-performed on a system.</p><div class="fullcomment"><div class="comment cmt"><p>Method that updates the existing population of rules or policies
-following an input from the system and generates a list of XcsAction to be
-performed on a system.</p></div><dl class="paramcmts block"><dt class="param">xcsInput</dt><dd class="cmt"><p>(signal, reward) data</p></dd><dt>returns</dt><dd class="cmt"><p>list of actions to be performed if the credit can be computed and
-distributed across the fittest chromosomes and the population can be updated,
-None otherwise.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.reinforcement.xcs.Xcs">Xcs</a> → <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if xcsInput is undefined.
-</p></span></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.Xcs@|&gt;:PartialFunction[org.scalaml.reinforcement.xcs.XcsSensor,List[org.scalaml.reinforcement.xcs.XcsAction]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.reinforcement.xcs.Xcs">Xcs</a> → <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -480,8 +543,8 @@ None otherwise.</p></dd></dl><dl class="attributes block"> <dt>Definition Classe
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>), <span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]]</h3>
+        <div class="parent" name="org.scalaml.core.design.PipeOperator">
+              <h3>Inherited from <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="XcsSensor.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsSensor">XcsSensor</a>, <span class="extype" name="scala.List">List</span>[<a href="XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -502,6 +565,7 @@ None otherwise.</p></dd></dl><dl class="attributes block"> <dt>Definition Classe
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

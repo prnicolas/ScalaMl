@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>clustering - org.scalaml.unsupervised.clustering</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.unsupervised">unsupervised</a></p>
-        <h1>clustering</h1>
+        <h1>clustering</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.unsupervised.clustering.Cluster" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.clustering.Cluster" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Cluster[T]extendsAnyRef"></a>
       <a id="Cluster[T]:Cluster[T]"></a>
       <h4 class="signature">
@@ -69,9 +77,19 @@
       <span class="symbol">
         <a href="Cluster.html"><span class="name">Cluster</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that define a cluster used in the KMeans++ clustering algorithm.</p>
-    </li><li name="org.scalaml.unsupervised.clustering.KMeans" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.package@Cluster[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that define a cluster used in the KMeans++ clustering algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Class that define a cluster used in the KMeans++ clustering algorithm.
+A cluster is defined by its center (scalar or vector) and its members (data point)
+it contains. The membership of data points to this cluster is done through their index.
+It is assumed that each data point has a unique index and therefore a cluster will never
+contains two data points with the same index.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the center is undefined (null)
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.unsupervised.clustering.KMeans" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="KMeans[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],List[org.scalaml.unsupervised.clustering.Cluster[T]]]"></a>
       <a id="KMeans[T]:KMeans[T]"></a>
       <h4 class="signature">
@@ -80,12 +98,27 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="KMeans.html"><span class="name">KMeans</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
+        <a href="KMeans.html"><span class="name">KMeans</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that implements the KMeans++ algorithm for which the centroids
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.package@KMeans[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],List[org.scalaml.unsupervised.clustering.Cluster[T]]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that implements the KMeans++ algorithm for which the centroids
 are initialized at mid point of K segments of data points after the data points
-are ordered by their variance.</p>
+are ordered by their variance.</p><div class="fullcomment"><div class="comment cmt"><p>Class that implements the KMeans++ algorithm for which the centroids
+are initialized at mid point of K segments of data points after the data points
+are ordered by their variance.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Ordering not implicitly defined for K-means&quot;">...</span>
+    </span>)</span>
+              
+        </dd><dt>Since</dt><dd><p>February 23, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of clusters or the maximum number of
+iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundException<p>if the ordering instance is not implicitly defined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning: Chapter 4 Unsupervised learning $Clustering
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -104,8 +137,13 @@ are ordered by their variance.</p>
       <span class="symbol">
         <a href="Cluster$.html"><span class="name">Cluster</span></a>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.package@Cluster" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object used to define the constructor for this cluster
+</p>
     </li><li name="org.scalaml.unsupervised.clustering.KMeans" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="KMeans"></a>
       <a id="KMeans:KMeans"></a>
@@ -117,8 +155,12 @@ are ordered by their variance.</p>
       <span class="symbol">
         <a href="KMeans$.html"><span class="name">KMeans</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object to KMeans define the constructors for the K-means algorithm and
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.package@KMeans" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object to KMeans define the constructors for the K-means algorithm and
 compute the variance of a cluster
 </p>
     </li></ol>
@@ -146,6 +188,7 @@ compute the variance of a cluster
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

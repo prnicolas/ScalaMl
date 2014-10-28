@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>RDDSource - org.scalaml.scalability.spark.RDDSource</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="RDDSource$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.scalability">scalability</a>.<a href="package.html" class="extype" name="org.scalaml.scalability.spark">spark</a></p>
-        <h1><a href="RDDSource$.html" title="Go to companion">RDDSource</a></h1>
+        <h1><a href="RDDSource$.html" title="Go to companion">RDDSource</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,7 +43,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">RDDSource</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]]</span>
+        <span class="name">RDDSource</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>]]</span>
       </span>
       </h4>
       
@@ -49,7 +57,7 @@
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +75,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.scalability.spark.RDDSource"><span>RDDSource</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.scalability.spark.RDDSource"><span>RDDSource</span></li><li class="in" name="org.scalaml.core.design.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -98,7 +106,11 @@
       <span class="symbol">
         <span class="name">RDDSource</span><span class="params">(<span name="pathName">pathName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="normalize">normalize: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="reverseOrder">reverseOrder: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="headerLines">headerLines: <span class="extype" name="scala.Int">Int</span></span>, <span name="state">state: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sc">sc: <span class="extype" name="org.apache.spark.SparkContext">SparkContext</span></span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@&lt;init&gt;(pathName:String,normalize:Boolean,reverseOrder:Boolean,headerLines:Int,state:org.scalaml.scalability.spark.RDDConfig)(implicitsc:org.apache.spark.SparkContext):org.scalaml.scalability.spark.RDDSource" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">pathName</dt><dd class="cmt"><p>relative path for data sources</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the pathName or the file suffix is undefined.
 </p></span></dd></dl></div>
     </li></ol>
@@ -111,19 +123,6 @@
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -134,8 +133,12 @@
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -147,22 +150,13 @@
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -173,8 +167,12 @@
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -186,7 +184,11 @@
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -199,7 +201,11 @@
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -218,7 +224,11 @@
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -231,7 +241,11 @@
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -244,7 +258,11 @@
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -263,7 +281,11 @@
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -276,7 +298,11 @@
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.scalability.spark.RDDSource#headerLines" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="headerLines:Int"></a>
@@ -289,7 +315,11 @@
       <span class="symbol">
         <span class="name">headerLines</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@headerLines:Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -302,7 +332,11 @@
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -315,7 +349,11 @@
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.scalability.spark.RDDSource#normalize" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="normalize:Boolean"></a>
@@ -328,7 +366,11 @@
       <span class="symbol">
         <span class="name">normalize</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@normalize:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -341,7 +383,11 @@
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -354,7 +400,11 @@
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.scalability.spark.RDDSource#pathName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="pathName:String"></a>
@@ -367,7 +417,11 @@
       <span class="symbol">
         <span class="name">pathName</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@pathName:String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">relative path for data sources</p>
     </li><li name="org.scalaml.scalability.spark.RDDSource#reverseOrder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="reverseOrder:Boolean"></a>
@@ -380,7 +434,11 @@
       <span class="symbol">
         <span class="name">reverseOrder</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@reverseOrder:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.scalability.spark.RDDSource#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="state:org.scalaml.scalability.spark.RDDConfig"></a>
@@ -393,7 +451,11 @@
       <span class="symbol">
         <span class="name">state</span><span class="result">: <a href="RDDConfig.html" class="extype" name="org.scalaml.scalability.spark.RDDConfig">RDDConfig</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@state:org.scalaml.scalability.spark.RDDConfig" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -406,7 +468,11 @@
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -419,7 +485,11 @@
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -432,7 +502,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -451,7 +525,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -470,7 +548,11 @@
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -479,18 +561,22 @@
               
         </dd></dl></div>
     </li><li name="org.scalaml.scalability.spark.RDDSource#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(extr:Array[String]=&gt;org.scalaml.core.Types.ScalaMl.DblVector):Option[org.apache.spark.rdd.RDD[org.scalaml.core.Types.ScalaMl.DblVector]]"></a>
-      <a id="|&gt;((Array[String])⇒DblVector):Option[RDD[DblVector]]"></a>
+      <a id="|&gt;:PartialFunction[Array[String]=&gt;org.scalaml.core.types.ScalaMl.DblVector,org.apache.spark.rdd.RDD[org.scalaml.core.types.ScalaMl.DblVector]]"></a>
+      <a id="|&gt;:PartialFunction[(Array[String])⇒DblVector,RDD[DblVector]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="extr">extr: (<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>]]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Load, extracts, convert and normalize a list of fields using an extractors.</p><div class="fullcomment"><div class="comment cmt"><p>Load, extracts, convert and normalize a list of fields using an extractors.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a RDD of DblVector if succeed, None otherwise</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.scalability.spark.RDDSource">RDDSource</a> → <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the extraction function is undefined
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.RDDSource@|&gt;:PartialFunction[Array[String]=&gt;org.scalaml.core.types.ScalaMl.DblVector,org.apache.spark.rdd.RDD[org.scalaml.core.types.ScalaMl.DblVector]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Load, extracts, convert and normalize a list of fields using an extractors.</p><div class="fullcomment"><div class="comment cmt"><p>Load, extracts, convert and normalize a list of fields using an extractors.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a RDD of DblVector if succeed, None otherwise</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.scalability.spark.RDDSource">RDDSource</a> → <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the extraction function is undefined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -501,8 +587,8 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]]</h3>
+        <div class="parent" name="org.scalaml.core.design.PipeOperator">
+              <h3>Inherited from <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -523,6 +609,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>pca - org.scalaml.unsupervised.pca</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.unsupervised">unsupervised</a></p>
-        <h1>pca</h1>
+        <h1>pca</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.pca.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,8 +66,8 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.unsupervised.pca.PCA" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PCA[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],(org.scalaml.core.Types.ScalaMl.DblMatrix,org.scalaml.core.Types.ScalaMl.DblVector)]"></a>
+              <ol><li name="org.scalaml.unsupervised.pca.PCA" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PCA[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],(org.scalaml.core.types.ScalaMl.DblMatrix,org.scalaml.core.types.ScalaMl.DblVector)]"></a>
       <a id="PCA[T]:PCA[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -67,10 +75,20 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="PCA.html"><span class="name">PCA</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.pca.PCA.T">T</span>]], (<a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a>, <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>)]</span>
+        <a href="PCA.html"><span class="name">PCA</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.pca.PCA.T">T</span>]], (<a href="../../core/types/ScalaMl$.html#DblMatrix=org.scalaml.core.types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblMatrix">DblMatrix</a>, <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>)]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic class that implements the Principal Component Analysis technique.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.pca.package@PCA[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],(org.scalaml.core.types.ScalaMl.DblMatrix,org.scalaml.core.types.ScalaMl.DblVector)]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic class that implements the Principal Component Analysis technique.</p><div class="fullcomment"><div class="comment cmt"><p>Generic class that implements the Principal Component Analysis technique. The
+extraction of the principal components (Eigenvectors). The class is parameterized
+as a view bound to Double. The purpose of the class is to compute the covariance
+matrix and the eigenvalues (normalized values ordered by decreasing order). The features
+(or variables) associated with a low eigenvalue are eliminated, reducing the dimension
+of the model and the complexity of any future supervised learning algorithm.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 26, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -100,6 +118,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

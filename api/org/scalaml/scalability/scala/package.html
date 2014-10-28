@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>scala - org.scalaml.scalability.scala</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.scalability">scalability</a></p>
-        <h1>scala</h1>
+        <h1>scala</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.scala.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,25 +66,86 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.scalability.scala.ParallelCollections" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ParallelCollections[U&lt;:Double]extendsAnyRef"></a>
-      <a id="ParallelCollections[U&lt;:Double]:ParallelCollections[U]"></a>
+              <ol><li name="org.scalaml.scalability.scala.ParArrayBenchmark" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ParArrayBenchmark[U]extendsParBenchmark[U]"></a>
+      <a id="ParArrayBenchmark[U]:ParArrayBenchmark[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="ParallelCollections.html"><span class="name">ParallelCollections</span></a><span class="tparams">[<span name="U">U &lt;: <span class="extype" name="scala.Double">Double</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="ParArrayBenchmark.html"><span class="name">ParArrayBenchmark</span></a><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <a href="ParBenchmark.html" class="extype" name="org.scalaml.scalability.scala.ParBenchmark">ParBenchmark</a>[<span class="extype" name="org.scalaml.scalability.scala.ParArrayBenchmark.U">U</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class to evaluate the performance of Scala parallel collections.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.scala.package@ParArrayBenchmark[U]extendsParBenchmark[U]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to evaluate the performance of Scala parallel collections.</p><div class="fullcomment"><div class="comment cmt"><p>Class to evaluate the performance of Scala parallel collections. The
+class override the map, reduceLeft methods to collect timing information</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the array of elements is undefined or the number of tasks is out of range
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.scalability.scala.ParBenchmark" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ParBenchmark[U]extendsAnyRef"></a>
+      <a id="ParBenchmark[U]:ParBenchmark[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParBenchmark.html"><span class="name">ParBenchmark</span></a><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.scala.package@ParBenchmark[U]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.scalability.scala.ParMapBenchmark" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParMapBenchmark[U]extendsParBenchmark[U]"></a>
+      <a id="ParMapBenchmark[U]:ParMapBenchmark[U]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParMapBenchmark.html"><span class="name">ParMapBenchmark</span></a><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <a href="ParBenchmark.html" class="extype" name="org.scalaml.scalability.scala.ParBenchmark">ParBenchmark</a>[<span class="extype" name="org.scalaml.scalability.scala.ParMapBenchmark.U">U</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.scala.package@ParMapBenchmark[U]extendsParBenchmark[U]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li></ol>
             </div>
 
         
 
-        
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalaml.scalability.scala.ParBenchmarkApp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParBenchmarkApp"></a>
+      <a id="ParBenchmarkApp:ParBenchmarkApp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParBenchmarkApp$.html"><span class="name">ParBenchmarkApp</span></a><span class="result"> extends <span class="extype" name="scala.App">App</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.scala.package@ParBenchmarkApp" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -100,6 +169,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

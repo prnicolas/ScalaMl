@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>spark - org.scalaml.scalability.spark</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.scalability">scalability</a></p>
-        <h1>spark</h1>
+        <h1>spark</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -69,10 +77,14 @@
       <span class="symbol">
         <a href="RDDConfig.html"><span class="name">RDDConfig</span></a><span class="params">(<span name="cache">cache: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="persist">persist: <span class="extype" name="org.apache.spark.storage.StorageLevel">StorageLevel</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@RDDConfigextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.scalability.spark.RDDSource" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="RDDSourceextendsPipeOperator[Array[String]=&gt;org.scalaml.core.Types.ScalaMl.DblVector,org.apache.spark.rdd.RDD[org.scalaml.core.Types.ScalaMl.DblVector]]"></a>
+    </li><li name="org.scalaml.scalability.spark.RDDSource" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RDDSourceextendsPipeOperator[Array[String]=&gt;org.scalaml.core.types.ScalaMl.DblVector,org.apache.spark.rdd.RDD[org.scalaml.core.types.ScalaMl.DblVector]]"></a>
       <a id="RDDSource:RDDSource"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -80,12 +92,24 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="RDDSource.html"><span class="name">RDDSource</span></a><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>]]</span>
+        <a href="RDDSource.html"><span class="name">RDDSource</span></a><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]) ⇒ <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="org.apache.spark.rdd.RDD">RDD</span>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>]]</span>
       </span>
-      </h4>
-      <p class="comment cmt">&lt;P&gt;Data extractor used to load and consolidate multiple data source (CSV files).</p>
-    </li><li name="org.scalaml.scalability.spark.SparkKMeans" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SparkKMeansextendsPipeOperator[org.scalaml.core.Types.ScalaMl.DblVector,Int]"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@RDDSourceextendsPipeOperator[Array[String]=&gt;org.scalaml.core.types.ScalaMl.DblVector,org.apache.spark.rdd.RDD[org.scalaml.core.types.ScalaMl.DblVector]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">&lt;P&gt;Data extractor used to load and consolidate multiple data source (CSV files).</p><div class="fullcomment"><div class="comment cmt"><p>&lt;P&gt;Data extractor used to load and consolidate multiple data source (CSV files).</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Spark context is implicitly undefined&quot;">...</span>
+    </span>)</span>
+              
+        </dd><dt>Since</dt><dd><p>April 1, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the pathName or the file suffix is undefined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.scalability.spark.SparkKMeans" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SparkKMeansextendsPipeOperator[org.scalaml.core.types.ScalaMl.DblVector,Int]"></a>
       <a id="SparkKMeans:SparkKMeans"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -93,23 +117,43 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SparkKMeans.html"><span class="name">SparkKMeans</span></a><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Int">Int</span>]</span>
+        <a href="SparkKMeans.html"><span class="name">SparkKMeans</span></a><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Int">Int</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class wrapper for the Spark KMeans implementation.</p>
-    </li><li name="org.scalaml.scalability.spark.SparkKMeansConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SparkKMeansConfigextendsProductwithSerializable"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@SparkKMeansextendsPipeOperator[org.scalaml.core.types.ScalaMl.DblVector,Int]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class wrapper for the Spark KMeans implementation.</p><div class="fullcomment"><div class="comment cmt"><p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
+training during instantiation of objects in order to reduce their life-cycle.<br>
+The algorithm implements the default data transformation interface, PipeOperator.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Spark context is implicitely undefined&quot;">...</span>
+    </span>)</span>
+              
+        </dd><dt>Since</dt><dd><p>April 2, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the stateuration or the time series is undefined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.scalability.spark.SparkKMeansConfig" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SparkKMeansConfigextendsAnyRef"></a>
       <a id="SparkKMeansConfig:SparkKMeansConfig"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SparkKMeansConfig.html"><span class="name">SparkKMeansConfig</span></a><span class="params">(<span name="K">K: <span class="extype" name="scala.Int">Int</span></span>, <span name="numIters">numIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="numRuns">numRuns: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="SparkKMeansConfig.html"><span class="name">SparkKMeansConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Define the stateuration of the Spark KMeans wrapper.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@SparkKMeansConfigextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Define the stateuration of the Spark KMeans wrapper.</p><div class="fullcomment"><div class="comment cmt"><p>Define the stateuration of the Spark KMeans wrapper.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April, 2, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if any of the parameters is out of range
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -128,8 +172,12 @@
       <span class="symbol">
         <a href="RDDSource$.html"><span class="name">RDDSource</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object to RDDSource used to defines several version of constructors
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@RDDSource" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object to RDDSource used to defines several version of constructors
 and the conversion from time series to RDD
 </p>
     </li><li name="org.scalaml.scalability.spark.SparkKMeans" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
@@ -143,7 +191,11 @@ and the conversion from time series to RDD
       <span class="symbol">
         <a href="SparkKMeans$.html"><span class="name">SparkKMeans</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.scalability.spark.package@SparkKMeans" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -170,6 +222,7 @@ and the conversion from time series to RDD
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>core - org.scalaml.core</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../lib/package_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a></p>
-        <h1>core</h1>
+        <h1>core</h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.core.Monad" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.core.Monad" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="Monad[M[_]]extendsAnyRef"></a>
       <a id="Monad[M[_]]:Monad[M]"></a>
       <h4 class="signature">
@@ -69,9 +77,14 @@
       <span class="symbol">
         <a href="Monad.html"><span class="name">Monad</span></a><span class="tparams">[<span name="M">M<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic definition of a Monad used as a template for creating transforms.</p>
-    </li><li name="org.scalaml.core.VTSeries" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@Monad[M[_]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic definition of a Monad used as a template for creating transforms.</p><div class="fullcomment"><div class="comment cmt"><p>Generic definition of a Monad used as a template for creating transforms.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>December 21, 2013</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.core.VTSeries" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="VTSeries[T]extendsXTSeries[Array[T]]"></a>
       <a id="VTSeries[T]:VTSeries[T]"></a>
       <h4 class="signature">
@@ -82,9 +95,20 @@
       <span class="symbol">
         <a href="VTSeries.html"><span class="name">VTSeries</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.VTSeries.T">T</span>]]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that defines a time series for multi-dimensional variables.</p>
-    </li><li name="org.scalaml.core.XTSeries" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@VTSeries[T]extendsXTSeries[Array[T]]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that defines a time series for multi-dimensional variables.</p><div class="fullcomment"><div class="comment cmt"><p>Class that defines a time series for multi-dimensional variables. The class is created
+for the purpose to encapsulate the normalization of the multi-dimensional time series.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Conversion from type T to Double undefined&quot;">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="org.scalaml.core.XTSeries" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="XTSeries[T]extendsAnyRef"></a>
       <a id="XTSeries[T]:XTSeries[T]"></a>
       <h4 class="signature">
@@ -95,9 +119,18 @@
       <span class="symbol">
         <a href="XTSeries.html"><span class="name">XTSeries</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic class for time series.</p>
-    </li><li name="org.scalaml.core._FCT" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@XTSeries[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic class for time series.</p><div class="fullcomment"><div class="comment cmt"><p>Generic class for time series. Any type from different libraries are converted into
+this generic type to avoid multiple conversion between numerous types.
+The class is parameterized so it can take primitive types to create vector for single
+variable time series or arrays/list to create matrix for multiple variables time series.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January, 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>If the array of values, [arr] is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.core._FCT" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="_FCT[+T]extendsAnyRef"></a>
       <a id="_FCT[+T]:_FCT[T]"></a>
       <h4 class="signature">
@@ -108,9 +141,17 @@
       <span class="symbol">
         <a href="_FCT.html"><span class="name">_FCT</span></a><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Monadic container which implements/adapter the most commonly used
-Scala higher order methods.</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@_FCT[+T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Monadic container which implements/adapter the most commonly used
+Scala higher order methods.This class should not be used directly as they
+do not validate any method argument and internal state..</p><div class="fullcomment"><div class="comment cmt"><p>Monadic container which implements/adapter the most commonly used
+Scala higher order methods.This class should not be used directly as they
+do not validate any method argument and internal state..</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>December 23, 2013
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -118,20 +159,23 @@ Scala higher order methods.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.core.Types" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Types"></a>
-      <a id="Types:Types"></a>
+              <ol><li name="org.scalaml.core.TypesApp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TypesApp"></a>
+      <a id="TypesApp:TypesApp"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Types$.html"><span class="name">Types</span></a>
+        <a href="TypesApp$.html"><span class="name">TypesApp</span></a><span class="result"> extends <span class="extype" name="scala.App">App</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Singleton that define the types and conversion used in the Scala for Machine learning
-project.</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@TypesApp" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.core.XTSeries" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="XTSeries"></a>
       <a id="XTSeries:XTSeries"></a>
@@ -143,8 +187,12 @@ project.</p>
       <span class="symbol">
         <a href="XTSeries$.html"><span class="name">XTSeries</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for time series, that define constructors and most
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@XTSeries" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for time series, that define constructors and most
 common implicit conversions.</p>
     </li><li name="org.scalaml.core._FCT" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="_FCT"></a>
@@ -157,9 +205,47 @@ common implicit conversions.</p>
       <span class="symbol">
         <a href="_FCT$.html"><span class="name">_FCT</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for _FCT that define the constructor apply and the zero
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@_FCT" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for _FCT that define the constructor apply and the zero
 value.</p>
+    </li><li name="org.scalaml.core.design" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="design"></a>
+      <a id="design:design"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="design/package.html"><span class="name">design</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@design" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.core.types" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="types"></a>
+      <a id="types:types"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="types/package.html"><span class="name">types</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.package@types" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li></ol>
             </div>
 
@@ -185,6 +271,7 @@ value.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

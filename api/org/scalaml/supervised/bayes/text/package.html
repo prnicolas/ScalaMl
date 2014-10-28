@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>text - org.scalaml.supervised.bayes.text</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1>text</h1>
+        <h1>text</h1> <span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.bayes.text.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -69,14 +77,22 @@
       <span class="symbol">
         <a href="NewsArticles.html"><span class="name">NewsArticles</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.bayes.text.package@NewsArticles[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to organize news articles as map of relative frequency of specific keywords extracted from those
+articles.</p><div class="fullcomment"><div class="comment cmt"><p>Class to organize news articles as map of relative frequency of specific keywords extracted from those
+articles. The tuple (keywords, rel. frequency) are ranked by their date. Dates are implemented as <b>Long</b> for simplicity's sake.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;NewsArticle. Ordering not explicitly defined&quot;">...</span>
     </span>)</span>
               
-        </dd></dl></div>
+        </dd><dt>Since</dt><dd><p>February 16, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">ImplicitNotFound<p>exception is ordering is not defined prior instantiating this class
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.text.TermsScore" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TermsScore[T]extendsAnyRef"></a>
       <a id="TermsScore[T]:TermsScore[T]"></a>
@@ -88,14 +104,20 @@
       <span class="symbol">
         <a href="TermsScore.html"><span class="name">TermsScore</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.bayes.text.package@TermsScore[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to extract and score terms extracted from a set of news articles.</p><div class="fullcomment"><div class="comment cmt"><p>Class to extract and score terms extracted from a set of news articles.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Ordering not explicitly defined for NaiveBayesTextScoring class&quot;">...</span>
     </span>)</span>
               
-        </dd></dl></div>
+        </dd><dt>Since</dt><dd><p>April 6, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined</p></span><span class="cmt">ImplicitNotFoundException<p>if ordering is not defined prior the instantiation of this class
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -114,8 +136,13 @@
       <span class="symbol">
         <a href="NewsArticles$.html"><span class="name">NewsArticles</span></a>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.bayes.text.package@NewsArticles" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the NewsArticle Container
+</p>
     </li><li name="org.scalaml.supervised.bayes.text.TermsScore" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="TermsScore"></a>
       <a id="TermsScore:TermsScore"></a>
@@ -127,7 +154,11 @@
       <span class="symbol">
         <a href="TermsScore$.html"><span class="name">TermsScore</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.bayes.text.package@TermsScore" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -154,6 +185,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+
+
     </body>
       </html>

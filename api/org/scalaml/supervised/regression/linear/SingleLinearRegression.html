@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>SingleLinearRegression - org.scalaml.supervised.regression.linear.SingleLinearRegression</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="SingleLinearRegression$.html" title="Go to companion"><img src="../../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised.regression">regression</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.regression.linear">linear</a></p>
-        <h1><a href="SingleLinearRegression$.html" title="Go to companion">SingleLinearRegression</a></h1>
+        <h1><a href="SingleLinearRegression$.html" title="Go to companion">SingleLinearRegression</a></h1> <span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,13 +43,13 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">SingleLinearRegression</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <span class="name">SingleLinearRegression</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines the linear regression for a single variable. The model (w,r),
 (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Annotations</dt><dd>
+of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Implicit conversion of type to Double for SingleLinearRegression is missing&quot;">...</span>
@@ -51,7 +59,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -69,7 +77,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.regression.linear.SingleLinearRegression"><span>SingleLinearRegression</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.regression.linear.SingleLinearRegression"><span>SingleLinearRegression</span></li><li class="in" name="org.scalaml.core.design.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -100,7 +108,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">SingleLinearRegression</span><span class="params">(<span name="xt">xt: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="g">g: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span></span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@&lt;init&gt;(xt:org.scalaml.core.XTSeries[(T,T)])(implicitevidence$1:T=&gt;Double,implicitg:Double=&gt;T):org.scalaml.supervised.regression.linear.SingleLinearRegression[T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">xt</dt><dd class="cmt"><p>single parameterized variable time series</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the time series is undefined</p></span><span class="cmt">implicitNotFound<p>if conversion from type to Double is not implicitely defined
 </p></span></dd></dl></div>
     </li></ol>
@@ -110,7 +122,7 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
               <h3>Type Members</h3>
               <ol><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression.XY" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="XY=(Double,Double)"></a>
-      <a id="XY:(Double,Double)"></a>
+      <a id="XY:XY"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
@@ -119,7 +131,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">XY</span><span class="result"> = (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@XY=(Double,Double)" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -129,19 +145,6 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -152,8 +155,12 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -165,22 +172,13 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@##():Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -191,8 +189,12 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -204,7 +206,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -217,7 +223,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -236,7 +246,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -249,7 +263,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -262,7 +280,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -281,7 +303,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -294,7 +320,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#intercept" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="intercept:Option[Double]"></a>
@@ -307,7 +337,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">intercept</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@intercept:Option[Double]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -320,7 +354,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -333,7 +371,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -346,7 +388,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -359,7 +405,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#slope" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="slope:Option[Double]"></a>
@@ -372,7 +422,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">slope</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@slope:Option[Double]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -385,7 +439,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -398,7 +456,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@toString():String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -411,7 +473,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -430,7 +496,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -449,7 +519,11 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -468,25 +542,33 @@ of instances.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>prot
       <span class="symbol">
         <span class="name">xt</span><span class="result">: <a href="../../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>)]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@xt:org.scalaml.core.XTSeries[(T,T)]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">single parameterized variable time series</p>
     </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(x:Double):Option[T]"></a>
-      <a id="|&gt;(Double):Option[T]"></a>
+      <a id="|&gt;:PartialFunction[Double,T]"></a>
+      <a id="|&gt;:PartialFunction[Double,T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.SingleLinearRegression@|&gt;:PartialFunction[Double,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Data transformation that computes the predictive value of a time series
 using a single variable linear regression model.</p><div class="fullcomment"><div class="comment cmt"><p>Data transformation that computes the predictive value of a time series
 using a single variable linear regression model. The model is initialized
 during instantiation of a class.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>new predictive value for index index
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression">SingleLinearRegression</a> → <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd></dl></div>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression">SingleLinearRegression</a> → <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -496,8 +578,8 @@ during instantiation of a class.</p></div><dl class="paramcmts block"><dt>return
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</h3>
+        <div class="parent" name="org.scalaml.core.design.PipeOperator">
+              <h3>Inherited from <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -518,6 +600,7 @@ during instantiation of a class.</p></div><dl class="paramcmts block"><dt>return
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+
+
     </body>
       </html>

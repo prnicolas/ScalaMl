@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>QLSpace - org.scalaml.reinforcement.qlearning.QLSpace</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="QLSpace$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.reinforcement">reinforcement</a>.<a href="package.html" class="extype" name="org.scalaml.reinforcement.qlearning">qlearning</a></p>
-        <h1><a href="QLSpace$.html" title="Go to companion">QLSpace</a></h1>
+        <h1><a href="QLSpace$.html" title="Go to companion">QLSpace</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -41,7 +49,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
 The search space can be provided by the end user with a list of states and actions or
-automatically created by providing the number of states.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if states or actions list are not well defined
+automatically created by providing the number of states.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>January 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if states or actions list are not well defined
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -84,7 +92,7 @@ automatically created by providing the number of states.</p></div><dl class="att
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.reinforcement.qlearning.QLSpace#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(states:List[org.scalaml.reinforcement.qlearning.QLState[T]],actions:List[org.scalaml.reinforcement.qlearning.QLAction[T]])(implicitevidence$1:T=&gt;Double):org.scalaml.reinforcement.qlearning.QLSpace[T]"></a>
+      <a id="&lt;init&gt;(states:Array[org.scalaml.reinforcement.qlearning.QLState[T]],goalIds:Array[Int]):org.scalaml.reinforcement.qlearning.QLSpace[T]"></a>
       <a id="&lt;init&gt;:QLSpace[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,10 +100,14 @@ automatically created by providing the number of states.</p></div><dl class="att
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">QLSpace</span><span class="params">(<span name="states">states: <span class="extype" name="scala.List">List</span>[<a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>, <span name="actions">actions: <span class="extype" name="scala.List">List</span>[<a href="QLAction.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLAction">QLAction</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">QLSpace</span><span class="params">(<span name="states">states: <span class="extype" name="scala.Array">Array</span>[<a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>, <span name="goalIds">goalIds: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">states</dt><dd class="cmt"><p>list of states for the search space</p></dd><dt class="param">actions</dt><dd class="cmt"><p>list of actions for the search space</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if states or actions list are not well defined
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@&lt;init&gt;(states:Array[org.scalaml.reinforcement.qlearning.QLState[T]],goalIds:Array[Int]):org.scalaml.reinforcement.qlearning.QLSpace[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">states</dt><dd class="cmt"><p>list of states for the search space</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgument<p>if states or actions list are not well defined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -107,19 +119,6 @@ automatically created by providing the number of states.</p></div><dl class="att
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -130,8 +129,12 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -143,22 +146,13 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -169,21 +163,12 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#actions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="actions:List[org.scalaml.reinforcement.qlearning.QLAction[T]]"></a>
-      <a id="actions:List[QLAction[T]]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">actions</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="QLAction.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLAction">QLAction</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">list of actions for the search space</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -195,7 +180,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -208,7 +197,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -227,7 +220,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -240,7 +237,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -253,7 +254,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -272,7 +277,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -285,8 +294,46 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#init" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="init(r:scala.util.Random):org.scalaml.reinforcement.qlearning.QLState[T]"></a>
+      <a id="init(Random):QLState[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">init</span><span class="params">(<span name="r">r: <span class="extype" name="scala.util.Random">Random</span></span>)</span><span class="result">: <a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@init(r:scala.util.Random):org.scalaml.reinforcement.qlearning.QLState[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#isGoal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isGoal(state:org.scalaml.reinforcement.qlearning.QLState[T]):Boolean"></a>
+      <a id="isGoal(QLState[T]):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isGoal</span><span class="params">(<span name="state">state: <a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@isGoal(state:org.scalaml.reinforcement.qlearning.QLState[T]):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -298,8 +345,29 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#maxQ" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="maxQ(state:org.scalaml.reinforcement.qlearning.QLState[T],policy:org.scalaml.reinforcement.qlearning.QLPolicy[T]):Double"></a>
+      <a id="maxQ(QLState[T],QLPolicy[T]):Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">maxQ</span><span class="params">(<span name="state">state: <a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]</span>, <span name="policy">policy: <a href="QLPolicy.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLPolicy">QLPolicy</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@maxQ(state:org.scalaml.reinforcement.qlearning.QLState[T],policy:org.scalaml.reinforcement.qlearning.QLPolicy[T]):Double" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -311,8 +379,29 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#nextStates" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nextStates(st:org.scalaml.reinforcement.qlearning.QLState[T]):List[org.scalaml.reinforcement.qlearning.QLState[T]]"></a>
+      <a id="nextStates(QLState[T]):List[QLState[T]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nextStates</span><span class="params">(<span name="st">st: <a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@nextStates(st:org.scalaml.reinforcement.qlearning.QLState[T]):List[org.scalaml.reinforcement.qlearning.QLState[T]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -324,7 +413,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -337,34 +430,12 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#states" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="states:List[org.scalaml.reinforcement.qlearning.QLState[T]]"></a>
-      <a id="states:List[QLState[T]]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">states</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]]</span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">list of states for the search space</p>
-    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#statesActions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="statesActions:(List[org.scalaml.reinforcement.qlearning.QLState[T]],List[org.scalaml.reinforcement.qlearning.QLAction[T]])"></a>
-      <a id="statesActions:(List[QLState[T]],List[QLAction[T]])"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">statesActions</span><span class="result">: (<span class="extype" name="scala.List">List</span>[<a href="QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="QLAction.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLAction">QLAction</a>[<span class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace.T">T</span>]])</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -376,9 +447,13 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.reinforcement.qlearning.QLSpace#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
       <h4 class="signature">
@@ -387,10 +462,14 @@ automatically created by providing the number of states.</p></div><dl class="att
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.reinforcement.qlearning.QLSpace">QLSpace</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -402,7 +481,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -421,7 +504,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -440,7 +527,11 @@ automatically created by providing the number of states.</p></div><dl class="att
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.qlearning.QLSpace@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -477,6 +568,7 @@ automatically created by providing the number of states.</p></div><dl class="att
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

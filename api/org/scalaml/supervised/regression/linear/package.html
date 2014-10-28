@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>linear - org.scalaml.supervised.regression.linear</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised.regression">regression</a></p>
-        <h1>linear</h1>
+        <h1>linear</h1> <span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="MultiLinearRegression[T]extendsOLSMultipleLinearRegressionwithPipeOperator[Array[T],Double]"></a>
       <a id="MultiLinearRegression[T]:MultiLinearRegression[T]"></a>
       <h4 class="signature">
@@ -67,11 +75,27 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="MultiLinearRegression.html"><span class="name">MultiLinearRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression">OLSMultipleLinearRegression</span> with <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.MultiLinearRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
+        <a href="MultiLinearRegression.html"><span class="name">MultiLinearRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression">OLSMultipleLinearRegression</span> with <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.MultiLinearRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that defines a Multivariate linear regression.</p>
-    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package@MultiLinearRegression[T]extendsOLSMultipleLinearRegressionwithPipeOperator[Array[T],Double]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that defines a Multivariate linear regression.</p><div class="fullcomment"><div class="comment cmt"><p>Class that defines a Multivariate linear regression. The regression
+coefficients or weights are computed during the instantiation of the
+class. The computation of the regression coefficients uses the
+Apache commons Math library. THe regression coefficients are
+initialized as None if the training fails.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Implicit conversion to Double for MultiLinearRegression is missing&quot;">...</span>
+    </span>)</span>
+              
+        </dd><dt>Since</dt><dd><p>April 19, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the input time series or the labeled data are undefined or have different sizes
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.RidgeRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="RidgeRegression[T]extendsAbstractMultipleLinearRegressionwithPipeOperator[Array[T],Double]"></a>
       <a id="RidgeRegression[T]:RidgeRegression[T]"></a>
       <h4 class="signature">
@@ -80,12 +104,20 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="RidgeRegression.html"><span class="name">RidgeRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span> with <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
+        <a href="RidgeRegression.html"><span class="name">RidgeRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression">AbstractMultipleLinearRegression</span> with <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.linear.RidgeRegression.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the Ridge regression (linear least squares regression
-with a L2 penalty form).</p>
-    </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package@RidgeRegression[T]extendsAbstractMultipleLinearRegressionwithPipeOperator[Array[T],Double]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Definition of the Ridge regression (linear least squares regression
+with a L2 penalty form).</p><div class="fullcomment"><div class="comment cmt"><p>Definition of the Ridge regression (linear least squares regression
+with a L2 penalty form). The training is executed during the instantiation
+of the class.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 14, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the class parameters are undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SingleLinearRegression[T]extendsPipeOperator[Double,T]"></a>
       <a id="SingleLinearRegression[T]:SingleLinearRegression[T]"></a>
       <h4 class="signature">
@@ -94,10 +126,24 @@ with a L2 penalty form).</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SingleLinearRegression.html"><span class="name">SingleLinearRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
+        <a href="SingleLinearRegression.html"><span class="name">SingleLinearRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="org.scalaml.supervised.regression.linear.SingleLinearRegression.T">T</span>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that defines the linear regression for a single variable.</p>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package@SingleLinearRegression[T]extendsPipeOperator[Double,T]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that defines the linear regression for a single variable.</p><div class="fullcomment"><div class="comment cmt"><p>Class that defines the linear regression for a single variable. The model (w,r),
+(slope, intercept) is created during instantiation of the class to reduce the life-cycle
+of instances.</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      
+      <span class="defval" name="&quot;Implicit conversion of type to Double for SingleLinearRegression is missing&quot;">...</span>
+    </span>)</span>
+              
+        </dd><dt>Since</dt><dd><p>April 27, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the time series is undefined</p></span><span class="cmt">implicitNotFound<p>if conversion from type to Double is not implicitely defined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -105,7 +151,7 @@ with a L2 penalty form).</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.regression.linear.MultiLinearRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="MultiLinearRegression"></a>
       <a id="MultiLinearRegression:MultiLinearRegression"></a>
       <h4 class="signature">
@@ -116,10 +162,17 @@ with a L2 penalty form).</p>
       <span class="symbol">
         <a href="MultiLinearRegression$.html"><span class="name">MultiLinearRegression</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object that defines the
-constructor for the class MultiLinearRegression.</p>
-    </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package@MultiLinearRegression" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object that defines the
+constructor for the class MultiLinearRegression.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object that defines the
+constructor for the class MultiLinearRegression.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 19, 2014
+</p></dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.linear.SingleLinearRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SingleLinearRegression"></a>
       <a id="SingleLinearRegression:SingleLinearRegression"></a>
       <h4 class="signature">
@@ -130,8 +183,14 @@ constructor for the class MultiLinearRegression.</p>
       <span class="symbol">
         <a href="SingleLinearRegression$.html"><span class="name">SingleLinearRegression</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the single variable linear regression.</p>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.linear.package@SingleLinearRegression" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the single variable linear regression.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the single variable linear regression. This
+singleton is used to define the constructor for the class SingleLinearRegression.
+</p></div></div>
     </li></ol>
             </div>
 
@@ -157,6 +216,7 @@ constructor for the class MultiLinearRegression.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+
+
     </body>
       </html>

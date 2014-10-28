@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>em - org.scalaml.unsupervised.em</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.unsupervised">unsupervised</a></p>
-        <h1>em</h1>
+        <h1>em</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="MultivariateEM[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],org.scalaml.unsupervised.em.MultivariateEM.EMOutput]"></a>
       <a id="MultivariateEM[T]:MultivariateEM[T]"></a>
       <h4 class="signature">
@@ -67,11 +75,19 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="MultivariateEM.html"><span class="name">MultivariateEM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.T">T</span>]], <a href="MultivariateEM$.html#EMOutput=List[(Double,org.scalaml.core.Types.ScalaMl.DblVector,org.scalaml.core.Types.ScalaMl.DblVector)]" class="extmbr" name="org.scalaml.unsupervised.em.MultivariateEM.EMOutput">EMOutput</a>]</span>
+        <a href="MultivariateEM.html"><span class="name">MultivariateEM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.em.MultivariateEM.T">T</span>]], <a href="MultivariateEM$.html#EMOutput=List[(Double,org.scalaml.core.types.ScalaMl.DblVector,org.scalaml.core.types.ScalaMl.DblVector)]" class="extmbr" name="org.scalaml.unsupervised.em.MultivariateEM.EMOutput">EMOutput</a>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that implements the Multivariate Expectation-Maximization algorithm with
-K number of clusters.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.package@MultivariateEM[T]extendsPipeOperator[org.scalaml.core.XTSeries[Array[T]],org.scalaml.unsupervised.em.MultivariateEM.EMOutput]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that implements the Multivariate Expectation-Maximization algorithm with
+K number of clusters.</p><div class="fullcomment"><div class="comment cmt"><p>Class that implements the Multivariate Expectation-Maximization algorithm with
+K number of clusters. The class uses the Multivariate Normal distribution, Mixture
+of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
+Commons Math library.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 25, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if K is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -79,7 +95,7 @@ K number of clusters.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.unsupervised.em.MultivariateEM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="MultivariateEM"></a>
       <a id="MultivariateEM:MultivariateEM"></a>
       <h4 class="signature">
@@ -90,9 +106,15 @@ K number of clusters.</p>
       <span class="symbol">
         <a href="MultivariateEM$.html"><span class="name">MultivariateEM</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the Multivariate Expectation-Maximization algorithm that defines
-internal types EM and EMOutput, the constructor apply and the computation of estimate.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.em.package@MultivariateEM" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the Multivariate Expectation-Maximization algorithm that defines
+internal types EM and EMOutput, the constructor apply and the computation of estimate.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the Multivariate Expectation-Maximization algorithm that defines
+internal types EM and EMOutput, the constructor apply and the computation of estimate.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 24, 2014
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -118,6 +140,7 @@ internal types EM and EMOutput, the constructor apply and the computation of est
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>svm - org.scalaml.supervised.svm</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a></p>
-        <h1>svm</h1>
+        <h1>svm</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,46 +66,64 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.svm.CSVCFormulation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CSVCFormulationextendsSVMFormulationwithProductwithSerializable"></a>
+              <ol><li name="org.scalaml.supervised.svm.CSVCFormulation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CSVCFormulationextendsSVMFormulation"></a>
       <a id="CSVCFormulation:CSVCFormulation"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="CSVCFormulation.html"><span class="name">CSVCFormulation</span></a><span class="params">(<span name="c">c: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="CSVCFormulation.html"><span class="name">CSVCFormulation</span></a><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class to initialize the type of SVM to a C formulated support vector classifier.</p>
-    </li><li name="org.scalaml.supervised.svm.NuSVCFormulation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="NuSVCFormulationextendsSVMFormulationwithProductwithSerializable"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@CSVCFormulationextendsSVMFormulation" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to initialize the type of SVM to a C formulated support vector classifier.</p><div class="fullcomment"><div class="comment cmt"><p>Class to initialize the type of SVM to a C formulated support vector classifier.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 29, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if c is negative
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.NuSVCFormulation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NuSVCFormulationextendsSVMFormulation"></a>
       <a id="NuSVCFormulation:NuSVCFormulation"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="NuSVCFormulation.html"><span class="name">NuSVCFormulation</span></a><span class="params">(<span name="nu">nu: <span class="extype" name="scala.Double">Double</span></span>, <span name="rho">rho: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="NuSVCFormulation.html"><span class="name">NuSVCFormulation</span></a><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class to initialize the type of SVM to a Nu formulated support vector classifier.</p>
-    </li><li name="org.scalaml.supervised.svm.OneSVCFormulation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="OneSVCFormulationextendsSVMFormulationwithProductwithSerializable"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@NuSVCFormulationextendsSVMFormulation" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to initialize the type of SVM to a Nu formulated support vector classifier.</p><div class="fullcomment"><div class="comment cmt"><p>Class to initialize the type of SVM to a Nu formulated support vector classifier.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 29, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nu is out of range [0,1]
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.OneSVCFormulation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="OneSVCFormulationextendsSVMFormulation"></a>
       <a id="OneSVCFormulation:OneSVCFormulation"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="OneSVCFormulation.html"><span class="name">OneSVCFormulation</span></a><span class="params">(<span name="nu">nu: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="OneSVCFormulation.html"><span class="name">OneSVCFormulation</span></a><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class to initialize the type of SVM to a one class support vector classifier for outliers.</p>
-    </li><li name="org.scalaml.supervised.svm.PolynomialKernel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@OneSVCFormulationextendsSVMFormulation" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to initialize the type of SVM to a one class support vector classifier for outliers.</p><div class="fullcomment"><div class="comment cmt"><p>Class to initialize the type of SVM to a one class support vector classifier for outliers.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 29, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nu is out of range [0,1]
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.PolynomialKernel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PolynomialKernelextendsSVMKernelwithProductwithSerializable"></a>
       <a id="PolynomialKernel:PolynomialKernel"></a>
       <h4 class="signature">
@@ -108,9 +134,15 @@
       <span class="symbol">
         <a href="PolynomialKernel.html"><span class="name">PolynomialKernel</span></a><span class="params">(<span name="gamma">gamma: <span class="extype" name="scala.Double">Double</span></span>, <span name="coef0">coef0: <span class="extype" name="scala.Double">Double</span></span>, <span name="degree">degree: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="SVMKernel.html" class="extype" name="org.scalaml.supervised.svm.SVMKernel">SVMKernel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the polynomial Kernel function.</p>
-    </li><li name="org.scalaml.supervised.svm.RbfKernel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@PolynomialKernelextendsSVMKernelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Definition of the polynomial Kernel function.</p><div class="fullcomment"><div class="comment cmt"><p>Definition of the polynomial Kernel function.</p></div><dl class="paramcmts block"><dt class="param">gamma</dt><dd class="cmt"><p>gamma or scaling parameter for the polynomial kernel</p></dd><dt class="param">coef0</dt><dd class="cmt"><p>b coefficient (order 0) for the polynomial kernel</p></dd><dt class="param">degree</dt><dd class="cmt"><p>degree or power of the polynomial kernel</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if gamma is negative or null or if degree &lt; 1
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.RbfKernel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="RbfKernelextendsSVMKernelwithProductwithSerializable"></a>
       <a id="RbfKernel:RbfKernel"></a>
       <h4 class="signature">
@@ -121,8 +153,15 @@
       <span class="symbol">
         <a href="RbfKernel.html"><span class="name">RbfKernel</span></a><span class="params">(<span name="gamma">gamma: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMKernel.html" class="extype" name="org.scalaml.supervised.svm.SVMKernel">SVMKernel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the Radial Basis Kernel function.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@RbfKernelextendsSVMKernelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Definition of the Radial Basis Kernel function.</p><div class="fullcomment"><div class="comment cmt"><p>Definition of the Radial Basis Kernel function. The radial basis function is implemented
+as a Gaussian function.</p></div><dl class="paramcmts block"><dt class="param">gamma</dt><dd class="cmt"><p>gamma or scaling parameter for the RBF kernel</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if gamma is negative or null
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li><li name="org.scalaml.supervised.svm.SVM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVM[T]extendsPipeOperator[Array[T],Double]"></a>
       <a id="SVM[T]:SVM[T]"></a>
@@ -132,11 +171,15 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SVM.html"><span class="name">SVM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.svm.SVM.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
+        <a href="SVM.html"><span class="name">SVM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.svm.SVM.T">T</span>], <span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVM[T]extendsPipeOperator[Array[T],Double]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.svm.SVMConfig" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.svm.SVMConfig" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SVMConfigextendsConfig"></a>
       <a id="SVMConfig:SVMConfig"></a>
       <h4 class="signature">
@@ -145,10 +188,19 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SVMConfig.html"><span class="name">SVMConfig</span></a><span class="result"> extends <a href="../Config.html" class="extype" name="org.scalaml.supervised.Config">Config</a></span>
+        <a href="SVMConfig.html"><span class="name">SVMConfig</span></a><span class="result"> extends <a href="../../core/design/Config.html" class="extype" name="org.scalaml.core.design.Config">Config</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic stateuration manager for any category of SVM algorithm.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMConfigextendsConfig" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic configuration manager for any category of SVM algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
+three elements:<br>
+- Type and parameters of the formulation of the SVM algorithm<br>
+- Type and parameter(s) of the Kernel function used for non-linear problems<br>
+- Execution (training) configuration parameters.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li><li name="org.scalaml.supervised.svm.SVMConfigItem" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="SVMConfigItemextendsAnyRef"></a>
       <a id="SVMConfigItem:SVMConfigItem"></a>
@@ -160,9 +212,13 @@
       <span class="symbol">
         <a href="SVMConfigItem.html"><span class="name">SVMConfigItem</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMConfigItemextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.svm.SVMExecution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.svm.SVMExecution" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SVMExecutionextendsSVMConfigItem"></a>
       <a id="SVMExecution:SVMExecution"></a>
       <h4 class="signature">
@@ -173,9 +229,14 @@
       <span class="symbol">
         <a href="SVMExecution.html"><span class="name">SVMExecution</span></a><span class="result"> extends <a href="SVMConfigItem.html" class="extype" name="org.scalaml.supervised.svm.SVMConfigItem">SVMConfigItem</a></span>
       </span>
-      </h4>
-      
-    </li><li name="org.scalaml.supervised.svm.SVMFormulation" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMExecutionextendsSVMConfigItem" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Protected class that encapsulates the execution parameters for SVM training.</p><div class="fullcomment"><div class="comment cmt"><p>Protected class that encapsulates the execution parameters for SVM training. The
+class are instantiated by the companion object.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SVMFormulation" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SVMFormulationextendsSVMConfigItem"></a>
       <a id="SVMFormulation:SVMFormulation"></a>
       <h4 class="signature">
@@ -186,9 +247,14 @@
       <span class="symbol">
         <a href="SVMFormulation.html"><span class="name">SVMFormulation</span></a><span class="result"> extends <a href="SVMConfigItem.html" class="extype" name="org.scalaml.supervised.svm.SVMConfigItem">SVMConfigItem</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Trait for type or formulation of Support Vector Machine algorithms.</p>
-    </li><li name="org.scalaml.supervised.svm.SVMKernel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMFormulationextendsSVMConfigItem" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait for type or formulation of Support Vector Machine algorithms.</p><div class="fullcomment"><div class="comment cmt"><p>Trait for type or formulation of Support Vector Machine algorithms.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 29, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SVMKernel" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SVMKernelextendsSVMConfigItem"></a>
       <a id="SVMKernel:SVMKernel"></a>
       <h4 class="signature">
@@ -199,9 +265,15 @@
       <span class="symbol">
         <a href="SVMKernel.html"><span class="name">SVMKernel</span></a><span class="result"> extends <a href="SVMConfigItem.html" class="extype" name="org.scalaml.supervised.svm.SVMConfigItem">SVMConfigItem</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic trait for Kernel functions used for Support Vector Machine.</p>
-    </li><li name="org.scalaml.supervised.svm.SVMModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMKernelextendsSVMConfigItem" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic trait for Kernel functions used for Support Vector Machine.</p><div class="fullcomment"><div class="comment cmt"><p>Generic trait for Kernel functions used for Support Vector Machine.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SVMModel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SVMModelextendsModelwithProductwithSerializable"></a>
       <a id="SVMModel:SVMModel"></a>
       <h4 class="signature">
@@ -210,24 +282,35 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="SVMModel.html"><span class="name">SVMModel</span></a><span class="params">(<span name="params">params: (<span class="extype" name="libsvm.svm_model">svm_model</span>, <span class="extype" name="scala.Double">Double</span>)</span>)</span><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="SVMModel.html"><span class="name">SVMModel</span></a><span class="params">(<span name="svmmodel">svmmodel: <span class="extype" name="libsvm.svm_model">svm_model</span></span>, <span name="accuracy">accuracy: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="../../core/design/Model.html" class="extype" name="org.scalaml.core.design.Model">Model</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt"></p>
-    </li><li name="org.scalaml.supervised.svm.SVRFormulation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SVRFormulationextendsSVMFormulationwithProductwithSerializable"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMModelextendsModelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 19, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SVRFormulation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SVRFormulationextendsSVMFormulation"></a>
       <a id="SVRFormulation:SVRFormulation"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SVRFormulation.html"><span class="name">SVRFormulation</span></a><span class="params">(<span name="c">c: <span class="extype" name="scala.Double">Double</span></span>, <span name="epsilon">epsilon: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="SVRFormulation.html"><span class="name">SVRFormulation</span></a><span class="result"> extends <a href="SVMFormulation.html" class="extype" name="org.scalaml.supervised.svm.SVMFormulation">SVMFormulation</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class to initialize the type of SVM to the epsilon formulation of the support vector regressions.</p>
-    </li><li name="org.scalaml.supervised.svm.SigmoidKernel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVRFormulationextendsSVMFormulation" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to initialize the type of SVM to the epsilon formulation of the support vector regressions.</p><div class="fullcomment"><div class="comment cmt"><p>Class to initialize the type of SVM to the epsilon formulation of the support vector regressions.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 29, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if nu is out of range [0,1]
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SigmoidKernel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SigmoidKernelextendsSVMKernelwithProductwithSerializable"></a>
       <a id="SigmoidKernel:SigmoidKernel"></a>
       <h4 class="signature">
@@ -238,8 +321,14 @@
       <span class="symbol">
         <a href="SigmoidKernel.html"><span class="name">SigmoidKernel</span></a><span class="params">(<span name="gamma">gamma: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="SVMKernel.html" class="extype" name="org.scalaml.supervised.svm.SVMKernel">SVMKernel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the Sigmoid Kernel function.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SigmoidKernelextendsSVMKernelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Definition of the Sigmoid Kernel function.</p><div class="fullcomment"><div class="comment cmt"><p>Definition of the Sigmoid Kernel function.</p></div><dl class="paramcmts block"><dt class="param">gamma</dt><dd class="cmt"><p>gamma or scaling parameter for the Sigmoid kernel</p></dd></dl><dl class="attributes block"> <dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if gamma is negative or null
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -247,7 +336,7 @@
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.supervised.svm.LinearKernel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.svm.LinearKernel" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LinearKernel"></a>
       <a id="LinearKernel:LinearKernel"></a>
       <h4 class="signature">
@@ -258,9 +347,15 @@
       <span class="symbol">
         <a href="LinearKernel$.html"><span class="name">LinearKernel</span></a><span class="result"> extends <a href="SVMKernel.html" class="extype" name="org.scalaml.supervised.svm.SVMKernel">SVMKernel</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the Linear kernel.</p>
-    </li><li name="org.scalaml.supervised.svm.SVM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@LinearKernel" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Definition of the Linear kernel.</p><div class="fullcomment"><div class="comment cmt"><p>Definition of the Linear kernel.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 30, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.svm.SVM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SVM"></a>
       <a id="SVM:SVM"></a>
       <h4 class="signature">
@@ -271,8 +366,14 @@
       <span class="symbol">
         <a href="SVM$.html"><span class="name">SVM</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the SVM algorithms.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVM" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the SVM algorithms.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the SVM algorithms. It is used to defined the constructors for
+the parameterized class SVM
+</p></div></div>
     </li><li name="org.scalaml.supervised.svm.SVMConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVMConfig"></a>
       <a id="SVMConfig:SVMConfig"></a>
@@ -284,8 +385,12 @@
       <span class="symbol">
         <a href="SVMConfig$.html"><span class="name">SVMConfig</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for SVM stateuration manager used for defining the constructors of SVMConfig class.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMConfig" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for SVM configuration manager used for defining the constructors of SVMConfig class.</p>
     </li><li name="org.scalaml.supervised.svm.SVMExecution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVMExecution"></a>
       <a id="SVMExecution:SVMExecution"></a>
@@ -297,7 +402,11 @@
       <span class="symbol">
         <a href="SVMExecution$.html"><span class="name">SVMExecution</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMExecution" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.svm.SVMFormulation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVMFormulation"></a>
@@ -310,7 +419,11 @@
       <span class="symbol">
         <a href="SVMFormulation$.html"><span class="name">SVMFormulation</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMFormulation" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.svm.SVMKernel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SVMKernel"></a>
@@ -323,7 +436,11 @@
       <span class="symbol">
         <a href="SVMKernel$.html"><span class="name">SVMKernel</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.svm.package@SVMKernel" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -350,6 +467,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

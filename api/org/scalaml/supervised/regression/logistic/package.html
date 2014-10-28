@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>logistic - org.scalaml.supervised.regression.logistic</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../../package.html" class="extype" name="org">org</a>.<a href="../../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised.regression">regression</a></p>
-        <h1>logistic</h1>
+        <h1>logistic</h1> <span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.regression.logistic.CurveFitting" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.regression.logistic.CurveFitting" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="CurveFitting[T]extendsAnyRef"></a>
       <a id="CurveFitting[T]:CurveFitting[T]"></a>
       <h4 class="signature">
@@ -69,9 +77,14 @@
       <span class="symbol">
         <a href="CurveFitting.html"><span class="name">CurveFitting</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt"></p>
-    </li><li name="org.scalaml.supervised.regression.logistic.LogBinRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@CurveFitting[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Since</dt><dd><p>Jun 21, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Book
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.logistic.LogBinRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LogBinRegressionextendsAnyRef"></a>
       <a id="LogBinRegression:LogBinRegression"></a>
       <h4 class="signature">
@@ -82,9 +95,19 @@
       <span class="symbol">
         <a href="LogBinRegression.html"><span class="name">LogBinRegression</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Logistic regression for a binary (2-class) classifier.</p>
-    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@LogBinRegressionextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Logistic regression for a binary (2-class) classifier.</p><div class="fullcomment"><div class="comment cmt"><p>Logistic regression for a binary (2-class) classifier. The number of weights (model) is defined
+by the number of classifiers + 1. The likelihood (conditional probability is computed as
+1/(1 + exp(-(w0 + w1.x1 + w2.x2)).<br>
+The training (extraction of the weights) is computed as part of the instantiation of the class so
+the model is either complete or undefined so classification is never done on incomplete (or
+poorly trained) model (computation error, maximum number of iterations exceeded).</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 11, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if labels are undefined, or the values of maxIters, eta or eps are out of range</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LogisticRegression[T]extendsPipeOperator[Array[T],Int]"></a>
       <a id="LogisticRegression[T]:LogisticRegression[T]"></a>
       <h4 class="signature">
@@ -93,10 +116,14 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="LogisticRegression.html"><span class="name">LogisticRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression.T">T</span>], <span class="extype" name="scala.Int">Int</span>]</span>
+        <a href="LogisticRegression.html"><span class="name">LogisticRegression</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.regression.logistic.LogisticRegression.T">T</span>], <span class="extype" name="scala.Int">Int</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@LogisticRegression[T]extendsPipeOperator[Array[T],Int]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegressionOptimizer" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LogisticRegressionOptimizerextendsAnyRef"></a>
       <a id="LogisticRegressionOptimizer:LogisticRegressionOptimizer"></a>
@@ -108,7 +135,11 @@
       <span class="symbol">
         <a href="LogisticRegressionOptimizer.html"><span class="name">LogisticRegressionOptimizer</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@LogisticRegressionOptimizerextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li></ol>
             </div>
@@ -128,9 +159,13 @@
       <span class="symbol">
         <a href="CurveFitting$.html"><span class="name">CurveFitting</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@CurveFitting" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LogisticRegression"></a>
       <a id="LogisticRegression:LogisticRegression"></a>
       <h4 class="signature">
@@ -141,8 +176,15 @@
       <span class="symbol">
         <a href="LogisticRegression$.html"><span class="name">LogisticRegression</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the logistic regression.</p>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@LogisticRegression" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the logistic regression.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the logistic regression. The singleton is used
+for conversion between Apache Common Math Pair Scala tuple and vice versa.
+The singleton is also used to define the constructors
+</p></div></div>
     </li><li name="org.scalaml.supervised.regression.logistic.LogisticRegressionOptimizer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LogisticRegressionOptimizer"></a>
       <a id="LogisticRegressionOptimizer:LogisticRegressionOptimizer"></a>
@@ -154,7 +196,11 @@
       <span class="symbol">
         <a href="LogisticRegressionOptimizer$.html"><span class="name">LogisticRegressionOptimizer</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#org.scalaml.supervised.regression.logistic.package@LogisticRegressionOptimizer" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -181,6 +227,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+
+
     </body>
       </html>

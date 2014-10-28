@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>xcs - org.scalaml.reinforcement.xcs</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.reinforcement">reinforcement</a></p>
-        <h1>xcs</h1>
+        <h1>xcs</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -59,7 +67,7 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="org.scalaml.reinforcement.xcs.Xcs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="XcsextendsPipeOperator[(org.scalaml.trading.Signal,org.scalaml.reinforcement.xcs.Xcs.XcsReward),List[org.scalaml.reinforcement.xcs.XcsRule.XcsAction[Double]]]"></a>
+      <a id="XcsextendsPipeOperator[org.scalaml.reinforcement.xcs.XcsSensor,List[org.scalaml.reinforcement.xcs.XcsAction]]"></a>
       <a id="Xcs:Xcs"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -67,14 +75,32 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Xcs.html"><span class="name">Xcs</span></a><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[(<a href="../../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="Xcs$.html#XcsReward=org.scalaml.core.Types.ScalaMl.DblVector" class="extmbr" name="org.scalaml.reinforcement.xcs.Xcs.XcsReward">XcsReward</a>), <span class="extype" name="scala.List">List</span>[<a href="XcsRule$.html#XcsAction[T]=org.scalaml.reinforcement.qlearning.QLState[T]" class="extmbr" name="org.scalaml.reinforcement.xcs.XcsRule.XcsAction">XcsAction</a>[<span class="extype" name="scala.Double">Double</span>]]]</span>
+        <a href="Xcs.html"><span class="name">Xcs</span></a><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="XcsSensor.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsSensor">XcsSensor</a>, <span class="extype" name="scala.List">List</span>[<a href="XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a>]]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Example of implementation of the XCS algorithm with a predefined
-stateuration and a set of training episode for the Q-Learning algorithm used to assign
-credit to individual rules that improve the performance (or objective
-function) of a system.</p>
-    </li><li name="org.scalaml.reinforcement.xcs.XcsConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsextendsPipeOperator[org.scalaml.reinforcement.xcs.XcsSensor,List[org.scalaml.reinforcement.xcs.XcsAction]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.reinforcement.xcs.XcsAction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XcsActionextendsGene"></a>
+      <a id="XcsAction:XcsAction"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="XcsAction.html"><span class="name">XcsAction</span></a><span class="result"> extends <a href="../../ga/Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsActionextendsGene" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.reinforcement.xcs.XcsConfig" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="XcsConfigextendsAnyRef"></a>
       <a id="XcsConfig:XcsConfig"></a>
       <h4 class="signature">
@@ -85,36 +111,66 @@ function) of a system.</p>
       <span class="symbol">
         <a href="XcsConfig.html"><span class="name">XcsConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that defined the stateuration	parameters for the XCS algorithm.</p>
-    </li><li name="org.scalaml.reinforcement.xcs.XcsCredit" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="XcsCreditextendsQLState[Double]"></a>
-      <a id="XcsCredit:XcsCredit"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsConfigextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that defined the stateuration	parameters for the XCS algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Class that defined the stateuration	parameters for the XCS algorithm.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 22, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the maximum population is out of range or one of the
+stateuration class is undefined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.xcs.XcsRule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XcsRuleextendsAnyRef"></a>
+      <a id="XcsRule:XcsRule"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="XcsCredit.html"><span class="name">XcsCredit</span></a><span class="result"> extends <a href="../qlearning/QLState.html" class="extype" name="org.scalaml.reinforcement.qlearning.QLState">QLState</a>[<span class="extype" name="scala.Double">Double</span>]</span>
+        <a href="XcsRule.html"><span class="name">XcsRule</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Definition of the credit to be assigned to &quot;deserving&quot; chromosomes
-and the rules it contains,  after receiving feedback from the system monitored
-by the XCS algorithm.</p>
-    </li><li name="org.scalaml.reinforcement.xcs.XcsRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="XcsRule[T]extendsGene"></a>
-      <a id="XcsRule[T]:XcsRule[T]"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsRuleextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that define a rule or policy in XCS algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Class that define a rule or policy in XCS algorithm. The rule is encoded as a gene so
+it can be manipulated by the Genetic Algorithm. A rule is defined by the format:<br>
+IF signal THEN action.<br> The constructor increase a global rules count used to automatically
+assigned a label to each signal/predicate.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 24, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the predicate or the action of the rule is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.xcs.XcsSensor" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XcsSensorextendsProductwithSerializable"></a>
+      <a id="XcsSensor:XcsSensor"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="XcsRule.html"><span class="name">XcsRule</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../ga/Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
+        <a href="XcsSensor.html"><span class="name">XcsSensor</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that define a rule or policy in XCS algorithm.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsSensorextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Example of implementation of the XCS algorithm with a predefined
+stateuration and a set of training episode for the Q-Learning algorithm used to assign
+credit to individual rules that improve the performance (or objective
+function) of a system.<br>
+This implementation assumes that the new data (Signal) and reward following the
+previous set of actions on the system are collected at the same time.</p><div class="fullcomment"><div class="comment cmt"><p>Example of implementation of the XCS algorithm with a predefined
+stateuration and a set of training episode for the Q-Learning algorithm used to assign
+credit to individual rules that improve the performance (or objective
+function) of a system.<br>
+This implementation assumes that the new data (Signal) and reward following the
+previous set of actions on the system are collected at the same time.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the stateuration, input information or training episodes is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -122,33 +178,24 @@ by the XCS algorithm.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.reinforcement.xcs.Xcs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Xcs"></a>
-      <a id="Xcs:Xcs"></a>
+              <ol><li name="org.scalaml.reinforcement.xcs.XcsAction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XcsAction"></a>
+      <a id="XcsAction:XcsAction"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Xcs$.html"><span class="name">Xcs</span></a>
+        <a href="XcsAction$.html"><span class="name">XcsAction</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsAction" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.reinforcement.xcs.XcsConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="XcsConfig"></a>
-      <a id="XcsConfig:XcsConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="XcsConfig$.html"><span class="name">XcsConfig</span></a>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.reinforcement.xcs.XcsCover" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.reinforcement.xcs.XcsCover" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="XcsCover"></a>
       <a id="XcsCover:XcsCover"></a>
       <h4 class="signature">
@@ -159,23 +206,17 @@ by the XCS algorithm.</p>
       <span class="symbol">
         <a href="XcsCover$.html"><span class="name">XcsCover</span></a>
       </span>
-      </h4>
-      
-    </li><li name="org.scalaml.reinforcement.xcs.XcsCredit" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="XcsCredit"></a>
-      <a id="XcsCredit:XcsCredit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="XcsCredit$.html"><span class="name">XcsCredit</span></a>
-      </span>
-      </h4>
-      <p class="comment cmt">Companion object that defines the constructors for the XcsCredit and
-the default credit computation function, CREDIT.</p>
-    </li><li name="org.scalaml.reinforcement.xcs.XcsRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsCover" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implementation of basic covering algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of basic covering algorithm. This covering is invoked
+when no rule has a signal or predicate that match the input data. The process
+generate random, or pseudo-random rules.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 25, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.reinforcement.xcs.XcsRule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="XcsRule"></a>
       <a id="XcsRule:XcsRule"></a>
       <h4 class="signature">
@@ -186,8 +227,22 @@ the default credit computation function, CREDIT.</p>
       <span class="symbol">
         <a href="XcsRule$.html"><span class="name">XcsRule</span></a>
       </span>
-      </h4>
-      
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.reinforcement.xcs.package@XcsRule" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion singleton for the XCS rule, The object defines the following element:<br>
+Default discretization method, DIGITIZE<br>
+XcsAction type as a Q-Learning state<br>
+Global rule counter, rulesCount<br>
+Creationof random action required by the covering process.</p><div class="fullcomment"><div class="comment cmt"><p>Companion singleton for the XCS rule, The object defines the following element:<br>
+Default discretization method, DIGITIZE<br>
+XcsAction type as a Q-Learning state<br>
+Global rule counter, rulesCount<br>
+Creationof random action required by the covering process.
+</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 24, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -213,6 +268,7 @@ the default credit computation function, CREDIT.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

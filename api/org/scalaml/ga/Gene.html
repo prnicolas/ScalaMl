@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>Gene - org.scalaml.ga.Gene</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="Gene$.html" title="Go to companion"><img src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="package.html" class="extype" name="org.scalaml.ga">ga</a></p>
-        <h1><a href="Gene$.html" title="Go to companion">Gene</a></h1>
+        <h1><a href="Gene$.html" title="Go to companion">Gene</a></h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -57,9 +65,9 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
-          <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a href="../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="../reinforcement/xcs/XcsRule.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsRule">XcsRule</a></div>
-        </div></div>
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="../trading/Signal.html" class="extype" name="org.scalaml.trading.Signal">Signal</a>, <a href="../reinforcement/xcs/XcsAction.html" class="extype" name="org.scalaml.reinforcement.xcs.XcsAction">XcsAction</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -97,7 +105,7 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.ga.Gene#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(value:Double,op:org.scalaml.ga.Operator.Operator)(implicitdiscr:Double=&gt;Int):org.scalaml.ga.Gene"></a>
+      <a id="&lt;init&gt;(id:String,target:Double,op:org.scalaml.ga.Operator)(implicitdiscr:org.scalaml.ga.Discretization):org.scalaml.ga.Gene"></a>
       <a id="&lt;init&gt;:Gene"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -105,10 +113,14 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Gene</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>, <span name="op">op: <a href="Operator$.html#Operator=org.scalaml.ga.Operator.Value" class="extmbr" name="org.scalaml.ga.Operator.Operator">Operator</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="discr">discr: (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">Gene</span><span class="params">(<span name="id">id: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="target">target: <span class="extype" name="scala.Double">Double</span></span>, <span name="op">op: <a href="Operator.html" class="extype" name="org.scalaml.ga.Operator">Operator</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="discr">discr: <a href="Discretization.html" class="extype" name="org.scalaml.ga.Discretization">Discretization</a></span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Create a gene instance.</p><div class="fullcomment"><div class="comment cmt"><p>Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer</p></div><dl class="paramcmts block"><dt class="param">value</dt><dd class="cmt"><p>Floating point value to be digitized as integer</p></dd><dt class="param">op</dt><dd class="cmt"><p>logical operator of type Operator</p></dd><dt class="param">discr</dt><dd class="cmt"><p>implicit discretization function from Floating point value to integer</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if operator is undefined</p></span><span class="cmt">ImplicitNotFound<p>if the conversion from double to integer (digitize) is not provided
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@&lt;init&gt;(id:String,target:Double,op:org.scalaml.ga.Operator)(implicitdiscr:org.scalaml.ga.Discretization):org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a gene instance.</p><div class="fullcomment"><div class="comment cmt"><p>Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer</p></div><dl class="paramcmts block"><dt class="param">op</dt><dd class="cmt"><p>logical operator of type Operator</p></dd><dt class="param">discr</dt><dd class="cmt"><p>implicit discretization function from Floating point value to integer</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if operator is undefined</p></span><span class="cmt">ImplicitNotFound<p>if the conversion from double to integer (digitize) is not provided
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -120,19 +132,6 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -143,8 +142,12 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -156,38 +159,33 @@ implicitly. The bits are implemented by the Java BitSet class.</p></div><dl clas
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.ga.Gene#+-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="+-(index:Int,that:org.scalaml.ga.Gene):org.scalaml.ga.Gene"></a>
-      <a id="+-(Int,Gene):Gene"></a>
+      <a id="+-(that:org.scalaml.ga.Gene,idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Gene"></a>
+      <a id="+-(Gene,GeneticIndices):Gene"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $plus$minus" class="name">+-</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>, <span name="that">that: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
+        <span title="gt4s: $plus$minus" class="name">+-</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>, <span name="idx">idx: <a href="GeneticIndices.html" class="extype" name="org.scalaml.ga.GeneticIndices">GeneticIndices</a></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@+-(that:org.scalaml.ga.Gene,idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Implements the cross-over operator between this gene and another
 parent gene.</p><div class="fullcomment"><div class="comment cmt"><p>Implements the cross-over operator between this gene and another
-parent gene.</p></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>index of the bit to apply the cross-over</p></dd><dt class="param">that</dt><dd class="cmt"><p>other gene used in the cross-over</p></dd><dt>returns</dt><dd class="cmt"><p>a single Gene as cross-over of two parents.</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the argument are undefined or the index is out of range
+parent gene.</p></div><dl class="paramcmts block"><dt class="param">that</dt><dd class="cmt"><p>other gene used in the cross-over</p></dd><dt>returns</dt><dd class="cmt"><p>a single Gene as cross-over of two parents.</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the argument are undefined or the index is out of range
 </p></span></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -198,21 +196,46 @@ parent gene.</p></div><dl class="paramcmts block"><dt class="param">index</dt><d
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.ga.Gene#^" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="^(index:Int):Unit"></a>
-      <a id="^(Int):Unit"></a>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.ga.Gene#^" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="^(idx:Int):org.scalaml.ga.Gene"></a>
+      <a id="^(Int):Gene"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $up" class="name">^</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span title="gt4s: $up" class="name">^</span><span class="params">(<span name="idx">idx: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Implements the mutation operator on this gene</p><div class="fullcomment"><div class="comment cmt"><p>Implements the mutation operator on this gene</p></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>index of the bit to mutate</p></dd><dt>returns</dt><dd class="cmt"><p>a single mutated gene</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the mutation index is out of range
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@^(idx:Int):org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.ga.Gene#^" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="^(idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Gene"></a>
+      <a id="^(GeneticIndices):Gene"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $up" class="name">^</span><span class="params">(<span name="idx">idx: <a href="GeneticIndices.html" class="extype" name="org.scalaml.ga.GeneticIndices">GeneticIndices</a></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@^(idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implements the mutation operator on this gene</p><div class="fullcomment"><div class="comment cmt"><p>Implements the mutation operator on this gene</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a single mutated gene</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the mutation index is out of range
 </p></span></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -225,7 +248,11 @@ parent gene.</p></div><dl class="paramcmts block"><dt class="param">index</dt><d
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.ga.Gene#bits" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="bits:java.util.BitSet"></a>
@@ -238,7 +265,11 @@ parent gene.</p></div><dl class="paramcmts block"><dt class="param">index</dt><d
       <span class="symbol">
         <span class="name">bits</span><span class="result">: <span class="extype" name="java.util.BitSet">BitSet</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@bits:java.util.BitSet" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Bits encoding of the tuple (value, operator) into bits.</p><div class="fullcomment"><div class="comment cmt"><p>Bits encoding of the tuple (value, operator) into bits. The encoding
 is executed as part of the instantiation of a gene class.
 </p></div></div>
@@ -253,28 +284,46 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@clone():org.scalaml.ga.Gene" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a> → AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.ga.Gene#decode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="decode(implicitf_1:Int=&gt;Double):(Double,org.scalaml.ga.Operator.Operator)"></a>
-      <a id="decode((Int)⇒Double):(Double,Operator)"></a>
+    </li><li name="org.scalaml.ga.Gene#decode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="decode(bits:java.util.BitSet):(Double,org.scalaml.ga.Operator)"></a>
+      <a id="decode(BitSet):(Double,Operator)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">decode</span><span class="params">(<span class="implicit">implicit </span><span name="f_1">f_1: (<span class="extype" name="scala.Int">Int</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <a href="Operator$.html#Operator=org.scalaml.ga.Operator.Value" class="extmbr" name="org.scalaml.ga.Operator.Operator">Operator</a>)</span>
+        <span class="name">decode</span><span class="params">(<span name="bits">bits: <span class="extype" name="java.util.BitSet">BitSet</span></span>)</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>, <a href="Operator.html" class="extype" name="org.scalaml.ga.Operator">Operator</a>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Method to decode a gene as a bit sets into a tuple (value, operator).</p><div class="fullcomment"><div class="comment cmt"><p>Method to decode a gene as a bit sets into a tuple (value, operator).\</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>Tuple (Value, Operator)
-</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@implicitNotFound</span><span class="args">(<span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@decode(bits:java.util.BitSet):(Double,org.scalaml.ga.Operator)" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
-      <span class="defval" name="&quot;Gene decoding requires Integer to double conversion&quot;">...</span>
-    </span>)</span>
-              
-        </dd><dt>Exceptions thrown</dt><dd><span class="cmt">mplicitNotFound<p>if the conversion from integer to double is not provided</p></span></dd></dl></div>
+    </li><li name="org.scalaml.ga.Gene#discr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="discr:org.scalaml.ga.Discretization"></a>
+      <a id="discr:Discretization"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">discr</span><span class="result">: <a href="Discretization.html" class="extype" name="org.scalaml.ga.Discretization">Discretization</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@discr:org.scalaml.ga.Discretization" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">implicit discretization function from Floating point value to integer</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -286,7 +335,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -299,7 +352,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -312,7 +369,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -331,7 +392,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -344,8 +409,29 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.ga.Gene#id" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="id:String"></a>
+      <a id="id:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">id</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@id:String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -357,7 +443,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -370,7 +460,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -383,7 +477,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -396,8 +494,83 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.ga.Gene#op" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="op:org.scalaml.ga.Operator"></a>
+      <a id="op:Operator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">op</span><span class="result">: <a href="Operator.html" class="extype" name="org.scalaml.ga.Operator">Operator</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@op:org.scalaml.ga.Operator" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">logical operator of type Operator</p>
+    </li><li name="org.scalaml.ga.Gene#score" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="score:Double"></a>
+      <a id="score:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">score</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@score:Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.ga.Gene#show" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="show:String"></a>
+      <a id="show:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">show</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@show:String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.ga.Gene#size" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="size:Int"></a>
+      <a id="size:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">size</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@size:Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -409,8 +582,29 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.ga.Gene#target" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="target:Double"></a>
+      <a id="target:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">target</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@target:Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.ga.Gene#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -422,21 +616,12 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.ga.Gene">Gene</a> → AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.ga.Gene#value" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="value:Double"></a>
-      <a id="value:Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Floating point value to be digitized as integer</p>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -448,7 +633,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -467,7 +656,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -486,7 +679,11 @@ is executed as part of the instantiation of a gene class.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Gene@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -523,6 +720,7 @@ is executed as part of the instantiation of a gene class.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

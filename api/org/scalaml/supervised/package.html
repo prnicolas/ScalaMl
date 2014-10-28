@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>supervised - org.scalaml.supervised</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../lib/package_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a></p>
-        <h1>supervised</h1>
+        <h1>supervised</h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,35 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.Config" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ConfigextendsAnyRef"></a>
-      <a id="Config:Config"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Config.html"><span class="name">Config</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      <p class="comment cmt">Define the stateuration trait for the stateuration of all the supervised
-learning algorithms.</p>
-    </li><li name="org.scalaml.supervised.Model" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ModelextendsAnyRef"></a>
-      <a id="Model:Model"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Model.html"><span class="name">Model</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      <p class="comment cmt">Define the model for the stateuration of all the supervised
-learning algorithms.</p>
-    </li><li name="org.scalaml.supervised.Supervised" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.Supervised" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="Supervised[T]extendsAnyRef"></a>
       <a id="Supervised[T]:Supervised[T]"></a>
       <h4 class="signature">
@@ -97,8 +77,15 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="Supervised.html"><span class="name">Supervised</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Trait that defined the interface to supervised learning algorithm.</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@Supervised[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait that defined the interface to supervised learning algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Trait that defined the interface to supervised learning algorithm.
+The trait requires developers to create a validation routine for parameterized
+multidimensional time series of tuple (observation, class label).</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 4, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -117,7 +104,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="bayes/package.html"><span class="name">bayes</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@bayes" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.crf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="crf"></a>
@@ -130,7 +121,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="crf/package.html"><span class="name">crf</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@crf" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.hmm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="hmm"></a>
@@ -143,7 +138,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="hmm/package.html"><span class="name">hmm</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@hmm" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.nnet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="nnet"></a>
@@ -156,7 +155,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="nnet/package.html"><span class="name">nnet</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@nnet" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.regression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="regression"></a>
@@ -169,7 +172,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="regression/package.html"><span class="name">regression</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@regression" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.svm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="svm"></a>
@@ -182,7 +189,11 @@ learning algorithms.</p>
       <span class="symbol">
         <a href="svm/package.html"><span class="name">svm</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.supervised.package@svm" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -209,6 +220,7 @@ learning algorithms.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

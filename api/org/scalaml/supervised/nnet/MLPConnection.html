@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>MLPConnection - org.scalaml.supervised.nnet.MLPConnection</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="MLPConnection$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.nnet">nnet</a></p>
-        <h1><a href="MLPConnection$.html" title="Go to companion">MLPConnection</a></h1>
+        <h1><a href="MLPConnection$.html" title="Go to companion">MLPConnection</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -85,7 +93,7 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.nnet.MLPConnection#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(state:org.scalaml.supervised.nnet.MLPConfig,src:org.scalaml.supervised.nnet.MLPLayer,dst:org.scalaml.supervised.nnet.MLPLayer):org.scalaml.supervised.nnet.MLPConnection"></a>
+      <a id="&lt;init&gt;(config:org.scalaml.supervised.nnet.MLPConfig,src:org.scalaml.supervised.nnet.MLPLayer,dst:org.scalaml.supervised.nnet.MLPLayer)(implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLPConnection"></a>
       <a id="&lt;init&gt;:MLPConnection"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -93,10 +101,14 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">MLPConnection</span><span class="params">(<span name="state">state: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="src">src: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>, <span name="dst">dst: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>)</span>
+        <span class="name">MLPConnection</span><span class="params">(<span name="config">config: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="src">src: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>, <span name="dst">dst: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="mlpObjective">mlpObjective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">state</dt><dd class="cmt"><p>stateuration for the Multi-layer Perceptron</p></dd><dt class="param">src</dt><dd class="cmt"><p>source or ingress layer for the network</p></dd><dt class="param">dst</dt><dd class="cmt"><p>destination of egress layer for the network</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if either the stateuration or any of the Neural Network layer is defined
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@&lt;init&gt;(config:org.scalaml.supervised.nnet.MLPConfig,src:org.scalaml.supervised.nnet.MLPLayer,dst:org.scalaml.supervised.nnet.MLPLayer)(implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLPConnection" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">src</dt><dd class="cmt"><p>source or ingress layer for the network</p></dd><dt class="param">dst</dt><dd class="cmt"><p>destination of egress layer for the network</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if either the stateuration or any of the Neural Network layer is defined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -105,7 +117,7 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
               <h3>Type Members</h3>
               <ol><li name="org.scalaml.supervised.nnet.MLPConnection.MLPSynapse" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MLPSynapse=(Double,Double)"></a>
-      <a id="MLPSynapse:(Double,Double)"></a>
+      <a id="MLPSynapse:MLPSynapse"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
@@ -114,7 +126,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">MLPSynapse</span><span class="result"> = (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@MLPSynapse=(Double,Double)" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -124,19 +140,6 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -147,8 +150,12 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -160,22 +167,13 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -186,8 +184,12 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -199,7 +201,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -212,7 +218,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -220,19 +230,63 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#dst" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dst:org.scalaml.supervised.nnet.MLPLayer"></a>
-      <a id="dst:MLPLayer"></a>
+    </li><li name="org.scalaml.supervised.nnet.MLPConnection#connectionBackpropagation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="connectionBackpropagation:Unit"></a>
+      <a id="connectionBackpropagation:Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">dst</span><span class="result">: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>
+        <span class="name">connectionBackpropagation</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">destination of egress layer for the network</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@connectionBackpropagation:Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implement the back propagation of output error (target - output).</p>
+    </li><li name="org.scalaml.supervised.nnet.MLPConnection#connectionForwardPropagation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="connectionForwardPropagation:Unit"></a>
+      <a id="connectionForwardPropagation:Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">connectionForwardPropagation</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@connectionForwardPropagation:Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implement the forward propagation of input value.</p><div class="fullcomment"><div class="comment cmt"><p>Implement the forward propagation of input value. The output
+value depends on the conversion selected for the output (ratio
+or softmax).
+</p></div></div>
+    </li><li name="org.scalaml.supervised.nnet.MLPConnection#connectionUpdate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="connectionUpdate:Unit"></a>
+      <a id="connectionUpdate:Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">connectionUpdate</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@connectionUpdate:Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implement the update of the synapse (weight, grad weight) following the
+back propagation of output error.</p><div class="fullcomment"><div class="comment cmt"><p>Implement the update of the synapse (weight, grad weight) following the
+back propagation of output error. This method is called during training.
+</p></div></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -244,7 +298,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -257,21 +315,12 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#errorBackpropagation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="errorBackpropagation:Unit"></a>
-      <a id="errorBackpropagation:Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">errorBackpropagation</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Implement the back propagation of output error (target - output).</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -283,7 +332,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -302,7 +355,11 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -315,24 +372,12 @@ The Synapse is defined as a nested class</p></div><dl class="attributes block"> 
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#inputForwardPropagation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="inputForwardPropagation:Unit"></a>
-      <a id="inputForwardPropagation:Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">inputForwardPropagation</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Implement the forward propagation of input value.</p><div class="fullcomment"><div class="comment cmt"><p>Implement the forward propagation of input value. The output
-value depends on the conversion selected for the output (identity
-or softmax).
-</p></div></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -344,8 +389,29 @@ or softmax).
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.scalaml.supervised.nnet.MLPConnection#mlpObjective" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective"></a>
+      <a id="mlpObjective:MLPObjective"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mlpObjective</span><span class="result">: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@mlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -357,7 +423,11 @@ or softmax).
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -370,7 +440,11 @@ or softmax).
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -383,46 +457,28 @@ or softmax).
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#src" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="src:org.scalaml.supervised.nnet.MLPLayer"></a>
-      <a id="src:MLPLayer"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">src</span><span class="result">: <a href="MLPLayer.html" class="extype" name="org.scalaml.supervised.nnet.MLPLayer">MLPLayer</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">source or ingress layer for the network</p>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="state:org.scalaml.supervised.nnet.MLPConfig"></a>
-      <a id="state:MLPConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">state</span><span class="result">: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">stateuration for the Multi-layer Perceptron</p>
     </li><li name="org.scalaml.supervised.nnet.MLPConnection#synapses" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="synapses:Array[Array[(Double,Double)]]"></a>
-      <a id="synapses:Array[Array[(Double,Double)]]"></a>
+      <a id="synapses:Array[Array[MLPConnection.this.MLPSynapse]]"></a>
+      <a id="synapses:Array[Array[MLPSynapse]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">synapses</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[(<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)]]</span>
+        <span class="name">synapses</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<a href="#MLPSynapse=(Double,Double)" class="extmbr" name="org.scalaml.supervised.nnet.MLPConnection.MLPSynapse">MLPSynapse</a>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@synapses:Array[Array[MLPConnection.this.MLPSynapse]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -435,7 +491,11 @@ or softmax).
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.nnet.MLPConnection#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -448,24 +508,12 @@ or softmax).
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.nnet.MLPConnection">MLPConnection</a> → AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.supervised.nnet.MLPConnection#updateSynapses" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="updateSynapses:Unit"></a>
-      <a id="updateSynapses:Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">updateSynapses</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Implement the update of the synapse (weight, grad weight) following the
-back propagation of output error.</p><div class="fullcomment"><div class="comment cmt"><p>Implement the update of the synapse (weight, grad weight) following the
-back propagation of output error. This method is called during training.
-</p></div></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -477,7 +525,11 @@ back propagation of output error. This method is called during training.
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -496,7 +548,11 @@ back propagation of output error. This method is called during training.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -515,7 +571,11 @@ back propagation of output error. This method is called during training.
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLPConnection@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -552,6 +612,7 @@ back propagation of output error. This method is called during training.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

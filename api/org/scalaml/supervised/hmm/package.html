@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>hmm - org.scalaml.supervised.hmm</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a></p>
-        <h1>hmm</h1>
+        <h1>hmm</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AlphaextendsPass"></a>
       <a id="Alpha:Alpha"></a>
       <h4 class="signature">
@@ -69,9 +77,15 @@
       <span class="symbol">
         <a href="Alpha.html"><span class="name">Alpha</span></a><span class="result"> extends <a href="Pass.html" class="extype" name="org.scalaml.supervised.hmm.Pass">Pass</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Implementation of the Alpha pass (forward algorithm).</p>
-    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@AlphaextendsPass" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implementation of the Alpha pass (forward algorithm).</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter
+is computed during instantiation.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 13, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, or  observations are undefined</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BaumWelchEMextendsHMMInference"></a>
       <a id="BaumWelchEM:BaumWelchEM"></a>
       <h4 class="signature">
@@ -82,10 +96,18 @@
       <span class="symbol">
         <a href="BaumWelchEM.html"><span class="name">BaumWelchEM</span></a><span class="result"> extends <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that update the backward-forward lattice of observations and
-hidden states for HMM using the Baum-Welch algorithm.</p>
-    </li><li name="org.scalaml.supervised.hmm.Beta" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@BaumWelchEMextendsHMMInference" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that update the backward-forward lattice of observations and
+hidden states for HMM using the Baum-Welch algorithm.</p><div class="fullcomment"><div class="comment cmt"><p>Class that update the backward-forward lattice of observations and
+hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to
+compute the likelihood of the conditional probability p(Y|X) during training. The
+computation is performed as part of the instantiation of the class (type Option[Double] )</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 15, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.Beta" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BetaextendsPass"></a>
       <a id="Beta:Beta"></a>
       <h4 class="signature">
@@ -96,11 +118,18 @@ hidden states for HMM using the Baum-Welch algorithm.</p>
       <span class="symbol">
         <a href="Beta.html"><span class="name">Beta</span></a><span class="result"> extends <a href="Pass.html" class="extype" name="org.scalaml.supervised.hmm.Pass">Pass</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Implementation of the Beta or backward pass of the
-HMM algorithm to compute the probability of a sequence of observations.</p>
-    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="prt" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="HMM[T]extendsPipeOperator[org.scalaml.core.Types.ScalaMl.DblVector,(Double,Array[Int])]"></a>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@BetaextendsPass" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implementation of the Beta or backward pass of the
+HMM algorithm to compute the probability of a sequence of observations.</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of the Beta or backward pass of the
+HMM algorithm to compute the probability of a sequence of observations. The beta
+matrix is computed as part of the instantiation of the class.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>March 14, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lmbda, params and observations are undefined</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="HMM[T]extendsPipeOperator[org.scalaml.core.types.ScalaMl.DblVector,org.scalaml.supervised.hmm.HMM.HMMPredictor]"></a>
       <a id="HMM[T]:HMM[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -108,11 +137,18 @@ HMM algorithm to compute the probability of a sequence of observations.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="HMM.html"><span class="name">HMM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>])]</span>
+        <a href="HMM.html"><span class="name">HMM</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <a href="HMM$.html#HMMPredictor=(Double,Array[Int])" class="extmbr" name="org.scalaml.supervised.hmm.HMM.HMMPredictor">HMMPredictor</a>]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Implementation of the Hidden Markov Model (HMM).</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMM[T]extendsPipeOperator[org.scalaml.core.types.ScalaMl.DblVector,org.scalaml.supervised.hmm.HMM.HMMPredictor]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implementation of the Hidden Markov Model (HMM).</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
+three canonical forms (Decoding, training and evaluation).</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>March 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the any of the class parameters is undefined
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMConfig" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMMConfigextendsConfig"></a>
       <a id="HMMConfig:HMMConfig"></a>
       <h4 class="signature">
@@ -121,12 +157,42 @@ HMM algorithm to compute the probability of a sequence of observations.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="HMMConfig.html"><span class="name">HMMConfig</span></a><span class="result"> extends <a href="../Config.html" class="extype" name="org.scalaml.supervised.Config">Config</a></span>
+        <a href="HMMConfig.html"><span class="name">HMMConfig</span></a><span class="result"> extends <a href="../../core/design/Config.html" class="extype" name="org.scalaml.core.design.Config">Config</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Utility class that defined the dimemsion of the matrix
-used in the Hidden Markov Model.</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMInference" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMConfigextendsConfig" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Utility class that defined the dimemsion of the matrix
+used in the Hidden Markov Model.</p><div class="fullcomment"><div class="comment cmt"><p>Utility class that defined the dimemsion of the matrix
+used in the Hidden Markov Model. The terminology used in the code follows
+the naming convention used in the mathematical expressions presented in
+most of papers and technical books on HMM as well as the book</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 27, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if any of the argument is out of range [1, 1000]</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMDim" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="HMMDimextendsAnyRef"></a>
+      <a id="HMMDim:HMMDim"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMDim.html"><span class="name">HMMDim</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMDimextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Utility class that defined the dimemsion of the matrix
+used in the Hidden Markov Model.</p><div class="fullcomment"><div class="comment cmt"><p>Utility class that defined the dimemsion of the matrix
+used in the Hidden Markov Model. The terminology used in the code follows
+the naming convention used in the mathematical expressions presented in
+most of papers and technical books on HMM as well as the book</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 27, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if any of the argument is out of range [1, 1000]</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMInference" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMMInferenceextendsHMMModel"></a>
       <a id="HMMInference:HMMInference"></a>
       <h4 class="signature">
@@ -137,10 +203,18 @@ used in the Hidden Markov Model.</p>
       <span class="symbol">
         <a href="HMMInference.html"><span class="name">HMMInference</span></a><span class="result"> extends <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic class for the Dynamic Programming algorithms used in the Hidden
-Markov Model.</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMLambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMInferenceextendsHMMModel" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic class for the Dynamic Programming algorithms used in the Hidden
+Markov Model.</p><div class="fullcomment"><div class="comment cmt"><p>Generic class for the Dynamic Programming algorithms used in the Hidden
+Markov Model. The sub-classes are the alpha (forward) pass, beta (backward) pass,
+Viterbi algorithm the compute the best sequence of hidden states and the Baum-Welch
+algorithm used in training a HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 7, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMLambda" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMMLambdaextendsAnyRef"></a>
       <a id="HMMLambda:HMMLambda"></a>
       <h4 class="signature">
@@ -151,22 +225,32 @@ Markov Model.</p>
       <span class="symbol">
         <a href="HMMLambda.html"><span class="name">HMMLambda</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that defines the Lambda model (pi, A, B) for the HMM.</p>
-    </li><li name="org.scalaml.supervised.hmm.HMMModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMLambdaextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that defines the Lambda model (pi, A, B) for the HMM.</p><div class="fullcomment"><div class="comment cmt"><p>Class that defines the Lambda model (pi, A, B) for the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 6, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of observations, hidden states or symbols
+is out-of bounds</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.HMMModel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="HMMModelextendsModel"></a>
       <a id="HMMModel:HMMModel"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">abstract </span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="HMMModel.html"><span class="name">HMMModel</span></a><span class="result"> extends <a href="../Model.html" class="extype" name="org.scalaml.supervised.Model">Model</a></span>
+        <a href="HMMModel.html"><span class="name">HMMModel</span></a><span class="result"> extends <a href="../../core/design/Model.html" class="extype" name="org.scalaml.core.design.Model">Model</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMModelextendsModel" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.hmm.HMMState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.HMMState" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMMStateextendsAnyRef"></a>
       <a id="HMMState:HMMState"></a>
       <h4 class="signature">
@@ -177,10 +261,16 @@ Markov Model.</p>
       <span class="symbol">
         <a href="HMMState.html"><span class="name">HMMState</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that encapsulates the execution parameters for the three
-canonical forms of the HMM.</p>
-    </li><li name="org.scalaml.supervised.hmm.Pass" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMStateextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that encapsulates the execution parameters for the three
+canonical forms of the HMM.</p><div class="fullcomment"><div class="comment cmt"><p>Class that encapsulates the execution parameters for the three
+canonical forms of the HMM.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>range is undefined or the maximum iterations is out of range
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.Pass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PassextendsHMMModel"></a>
       <a id="Pass:Pass"></a>
       <h4 class="signature">
@@ -191,10 +281,16 @@ canonical forms of the HMM.</p>
       <span class="symbol">
         <a href="Pass.html"><span class="name">Pass</span></a><span class="result"> extends <a href="HMMModel.html" class="extype" name="org.scalaml.supervised.hmm.HMMModel">HMMModel</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic class for the alpha (forward) pass and beta (backward) passes used in
-the evaluation form of the HMM.</p>
-    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@PassextendsHMMModel" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic class for the alpha (forward) pass and beta (backward) passes used in
+the evaluation form of the HMM.</p><div class="fullcomment"><div class="comment cmt"><p>Generic class for the alpha (forward) pass and beta (backward) passes used in
+the evaluation form of the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 29, 2014
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined</p></span></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ViterbiPathextendsHMMInference"></a>
       <a id="ViterbiPath:ViterbiPath"></a>
       <h4 class="signature">
@@ -205,10 +301,20 @@ the evaluation form of the HMM.</p>
       <span class="symbol">
         <a href="ViterbiPath.html"><span class="name">ViterbiPath</span></a><span class="result"> extends <a href="HMMInference.html" class="extype" name="org.scalaml.supervised.hmm.HMMInference">HMMInference</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class that implements the Viterbi algorithm to extract the best sequence
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@ViterbiPathextendsHMMInference" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class that implements the Viterbi algorithm to extract the best sequence
 of hidden states in a HMM given a lambda model and a sequence of integer
-observations.</p>
+observations.</p><div class="fullcomment"><div class="comment cmt"><p>Class that implements the Viterbi algorithm to extract the best sequence
+of hidden states in a HMM given a lambda model and a sequence of integer
+observations. The maximum value of delta is computed recursively during
+instantiation. <br>
+The recursion throws a Arithmetic or Runtime exception that is to be caught by
+the client code</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 17, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if lambda, params and observations are undefined of eps is out of range</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.hmm.DynamicAlgorithm</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -216,7 +322,7 @@ observations.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.supervised.hmm.Alpha" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Alpha"></a>
       <a id="Alpha:Alpha"></a>
       <h4 class="signature">
@@ -227,9 +333,14 @@ observations.</p>
       <span class="symbol">
         <a href="Alpha$.html"><span class="name">Alpha</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the Alpha pass that defines the constructor applhy</p>
-    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@Alpha" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the Alpha pass that defines the constructor applhy</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the Alpha pass that defines the constructor applhy</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 13, 2014
+</p></dd></dl></div>
+    </li><li name="org.scalaml.supervised.hmm.BaumWelchEM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BaumWelchEM"></a>
       <a id="BaumWelchEM:BaumWelchEM"></a>
       <h4 class="signature">
@@ -240,8 +351,13 @@ observations.</p>
       <span class="symbol">
         <a href="BaumWelchEM$.html"><span class="name">BaumWelchEM</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Object companion for Baum_Welch algorithm that defines the constructors for BaumWelchEM</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@BaumWelchEM" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Object companion for Baum_Welch algorithm that defines the constructors for BaumWelchEM</p><div class="fullcomment"><div class="comment cmt"><p>Object companion for Baum_Welch algorithm that defines the constructors for BaumWelchEM</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 15, 2014
+</p></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.Beta" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Beta"></a>
       <a id="Beta:Beta"></a>
@@ -253,10 +369,14 @@ observations.</p>
       <span class="symbol">
         <a href="Beta$.html"><span class="name">Beta</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the Beta pass that defines the constructor apply
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@Beta" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the Beta pass that defines the constructor apply
 </p>
-    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.HMM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMM"></a>
       <a id="HMM:HMM"></a>
       <h4 class="signature">
@@ -267,9 +387,15 @@ observations.</p>
       <span class="symbol">
         <a href="HMM$.html"><span class="name">HMM</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object for the HMM that defines a HMMPredictor type and the constructor
-apply for the HMM.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMM" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object for the HMM that defines a HMMPredictor type and the constructor
+apply for the HMM.</p><div class="fullcomment"><div class="comment cmt"><p>Companion object for the HMM that defines a HMMPredictor type and the constructor
+apply for the HMM.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 11, 2014
+</p></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMMConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="HMMConfig"></a>
       <a id="HMMConfig:HMMConfig"></a>
@@ -281,9 +407,30 @@ apply for the HMM.</p>
       <span class="symbol">
         <a href="HMMConfig$.html"><span class="name">HMMConfig</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMConfig" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.hmm.HMMForm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.HMMDim" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="HMMDim"></a>
+      <a id="HMMDim:HMMDim"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="HMMDim$.html"><span class="name">HMMDim</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMDim" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.supervised.hmm.HMMForm" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HMMForm"></a>
       <a id="HMMForm:HMMForm"></a>
       <h4 class="signature">
@@ -294,8 +441,13 @@ apply for the HMM.</p>
       <span class="symbol">
         <a href="HMMForm$.html"><span class="name">HMMForm</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Enumeration class to specify the canonical form of the HMM</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMForm" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Enumeration class to specify the canonical form of the HMM</p><div class="fullcomment"><div class="comment cmt"><p>Enumeration class to specify the canonical form of the HMM</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 9, 2014
+</p></dd></dl></div>
     </li><li name="org.scalaml.supervised.hmm.HMMLambda" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="HMMLambda"></a>
       <a id="HMMLambda:HMMLambda"></a>
@@ -307,8 +459,12 @@ apply for the HMM.</p>
       <span class="symbol">
         <a href="HMMLambda$.html"><span class="name">HMMLambda</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion for the HMMLambda class to define the constructors apply.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMLambda" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion for the HMMLambda class to define the constructors apply.</p>
     </li><li name="org.scalaml.supervised.hmm.HMMState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="HMMState"></a>
       <a id="HMMState:HMMState"></a>
@@ -320,9 +476,13 @@ apply for the HMM.</p>
       <span class="symbol">
         <a href="HMMState$.html"><span class="name">HMMState</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@HMMState" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.scalaml.supervised.hmm.ViterbiPath" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ViterbiPath"></a>
       <a id="ViterbiPath:ViterbiPath"></a>
       <h4 class="signature">
@@ -333,9 +493,15 @@ apply for the HMM.</p>
       <span class="symbol">
         <a href="ViterbiPath$.html"><span class="name">ViterbiPath</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Object companion for the Viterbi algorithm for the extraction of
-best sequences.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.hmm.package@ViterbiPath" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Object companion for the Viterbi algorithm for the extraction of
+best sequences.</p><div class="fullcomment"><div class="comment cmt"><p>Object companion for the Viterbi algorithm for the extraction of
+best sequences. Implements the constructor - apply</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>March 17, 2014
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -361,6 +527,7 @@ best sequences.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

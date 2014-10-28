@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>KMeans - org.scalaml.unsupervised.clustering.KMeans</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="KMeans$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.unsupervised">unsupervised</a>.<a href="package.html" class="extype" name="org.scalaml.unsupervised.clustering">clustering</a></p>
-        <h1><a href="KMeans$.html" title="Go to companion">KMeans</a></h1>
+        <h1><a href="KMeans$.html" title="Go to companion">KMeans</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,7 +43,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">KMeans</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
+        <span class="name">KMeans</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
       </span>
       </h4>
       
@@ -48,11 +56,11 @@ are ordered by their variance.</p></div><dl class="attributes block"> <dt>Annota
     </span>)</span>
               
         </dd><dt>Since</dt><dd><p>February 23, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of clusters or the maximum number of
-iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundExceptin<p>if the ordering instance is not implicitly defined.
-</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundException<p>if the ordering instance is not implicitly defined.
+</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning: Chapter 4 Unsupervised learning $Clustering
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -70,7 +78,7 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.unsupervised.clustering.KMeans"><span>KMeans</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.unsupervised.clustering.KMeans"><span>KMeans</span></li><li class="in" name="org.scalaml.core.design.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -91,7 +99,7 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.unsupervised.clustering.KMeans#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(K:Int,maxIters:Int,distance:(org.scalaml.core.Types.ScalaMl.DblVector,Array[T])=&gt;Double)(implicitevidence$1:T=&gt;Double,implicitorder:Ordering[T],implicitm:Manifest[T]):org.scalaml.unsupervised.clustering.KMeans[T]"></a>
+      <a id="&lt;init&gt;(K:Int,maxIters:Int,distance:(org.scalaml.core.types.ScalaMl.DblVector,Array[T])=&gt;Double)(implicitevidence$1:T=&gt;Double,implicitorder:Ordering[T],implicitm:Manifest[T]):org.scalaml.unsupervised.clustering.KMeans[T]"></a>
       <a id="&lt;init&gt;:KMeans[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -99,13 +107,17 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">KMeans</span><span class="params">(<span name="K">K: <span class="extype" name="scala.Int">Int</span></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="distance">distance: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="order">order: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>, <span name="m">m: <span class="extype" name="scala.Predef.Manifest">Manifest</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>)</span>
+        <span class="name">KMeans</span><span class="params">(<span name="K">K: <span class="extype" name="scala.Int">Int</span></span>, <span name="maxIters">maxIters: <span class="extype" name="scala.Int">Int</span></span>, <span name="distance">distance: (<a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="order">order: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>, <span name="m">m: <span class="extype" name="scala.Predef.Manifest">Manifest</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]</span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">K</dt><dd class="cmt"><p>number of clusters</p></dd><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations allowed for the generation of clusters (default: 5000)</p></dd><dt class="param">distance</dt><dd class="cmt"><p>metric used in computing distance between data points.</p></dd><dt class="param">order</dt><dd class="cmt"><p>implicit ordering used in the initialization of of centroids</p></dd><dt class="param">m</dt><dd class="cmt"><p>implicit declaration of manifest of type T to overcome Java erasure of type when
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@&lt;init&gt;(K:Int,maxIters:Int,distance:(org.scalaml.core.types.ScalaMl.DblVector,Array[T])=&gt;Double)(implicitevidence$1:T=&gt;Double,implicitorder:Ordering[T],implicitm:Manifest[T]):org.scalaml.unsupervised.clustering.KMeans[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric.</p><div class="fullcomment"><div class="comment cmt"><p>Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric. [K] Number of clusters. [maxIters] Maximum number of iterations allowed for the generation of clusters (default: 5000). [distance] Metric used in computing distance between data points.</p></div><dl class="paramcmts block"><dt class="param">K</dt><dd class="cmt"><p>number of clusters</p></dd><dt class="param">maxIters</dt><dd class="cmt"><p>maximum number of iterations allowed for the generation of clusters (default: 5000)</p></dd><dt class="param">distance</dt><dd class="cmt"><p>metric used in computing distance between data points.</p></dd><dt class="param">order</dt><dd class="cmt"><p>implicit ordering used in the initialization of of centroids</p></dd><dt class="param">m</dt><dd class="cmt"><p>implicit declaration of manifest of type T to overcome Java erasure of type when
 converting Array of T to Array of double and vice versa
 </p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of clusters or the maximum number of
-iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundExceptin<p>if the ordering instance is not implicitly defined.
+iterations is out of range or if the distance metric is undefined.</p></span><span class="cmt">implicitNotFoundException<p>if the ordering instance is not implicitly defined.
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -117,19 +129,6 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -140,8 +139,12 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -153,22 +156,13 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -179,21 +173,12 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.unsupervised.clustering.KMeans#K" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="K:Int"></a>
-      <a id="K:Int"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">K</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">number of clusters</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -205,7 +190,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -218,7 +207,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -226,19 +219,6 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.unsupervised.clustering.KMeans#distance" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="distance:(org.scalaml.core.Types.ScalaMl.DblVector,Array[T])=&gt;Double"></a>
-      <a id="distance:(DblVector,Array[T])⇒Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">distance</span><span class="result">: (<a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a>, <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]) ⇒ <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">metric used in computing distance between data points.</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -250,7 +230,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -263,7 +247,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -276,7 +264,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -295,7 +287,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -308,7 +304,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -321,21 +321,12 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.scalaml.unsupervised.clustering.KMeans#maxIters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="maxIters:Int"></a>
-      <a id="maxIters:Int"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">maxIters</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">maximum number of iterations allowed for the generation of clusters (default: 5000)</p>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -347,7 +338,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -360,7 +355,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -373,7 +372,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -386,7 +389,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -399,7 +406,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -412,7 +423,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -431,7 +446,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -450,7 +469,11 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -459,21 +482,25 @@ iterations is out of range or if the distance metric is undefined.</p></span><sp
               
         </dd></dl></div>
     </li><li name="org.scalaml.unsupervised.clustering.KMeans#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(xt:org.scalaml.core.XTSeries[Array[T]]):Option[List[org.scalaml.unsupervised.clustering.Cluster[T]]]"></a>
-      <a id="|&gt;(XTSeries[Array[T]]):Option[List[Cluster[T]]]"></a>
+      <a id="|&gt;:PartialFunction[org.scalaml.core.XTSeries[Array[T]],List[org.scalaml.unsupervised.clustering.Cluster[T]]]"></a>
+      <a id="|&gt;:PartialFunction[XTSeries[Array[T]],List[Cluster[T]]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.unsupervised.clustering.KMeans@|&gt;:PartialFunction[org.scalaml.core.XTSeries[Array[T]],List[org.scalaml.unsupervised.clustering.Cluster[T]]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Overload data transformation/Pipe operator to implement
 KMeans++ algorithm with buckets initialization.</p><div class="fullcomment"><div class="comment cmt"><p>Overload data transformation/Pipe operator to implement
-KMeans++ algorithm with buckets initialization.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.unsupervised.clustering.KMeans">KMeans</a> → <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd></dl></div>
+KMeans++ algorithm with buckets initialization.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>PartialFunction of time series of elements of type T as input to the K-means algorithm and a list of cluster as output
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.unsupervised.clustering.KMeans">KMeans</a> → <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">MatchError<p>if the input time series is undefined or have no elements</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -483,8 +510,8 @@ KMeans++ algorithm with buckets initialization.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</h3>
+        <div class="parent" name="org.scalaml.core.design.PipeOperator">
+              <h3>Inherited from <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]], <span class="extype" name="scala.List">List</span>[<a href="Cluster.html" class="extype" name="org.scalaml.unsupervised.clustering.Cluster">Cluster</a>[<span class="extype" name="org.scalaml.unsupervised.clustering.KMeans.T">T</span>]]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -505,6 +532,7 @@ KMeans++ algorithm with buckets initialization.
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

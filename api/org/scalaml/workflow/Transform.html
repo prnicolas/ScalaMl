@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>Transform - org.scalaml.workflow.Transform</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="Transform$.html" title="Go to companion"><img src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="package.html" class="extype" name="org.scalaml.workflow">workflow</a></p>
-        <h1><a href="Transform$.html" title="Go to companion">Transform</a></h1>
+        <h1><a href="Transform$.html" title="Go to companion">Transform</a></h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,7 +43,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Transform</span><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[(<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
+        <span class="name">Transform</span><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
       </span>
       </h4>
       
@@ -45,7 +53,7 @@ applying the transform function. A transform function can be a filtering,
 smoothing function, a moving average, a classifier.....</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>December 19, 2013
 </p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the transform function is undefined</p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.core._FCT</p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[(<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -84,7 +92,7 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.workflow.Transform#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(op:org.scalaml.workflow.PipeOperator[T,U]):org.scalaml.workflow.Transform[T,U]"></a>
+      <a id="&lt;init&gt;(op:org.scalaml.core.design.PipeOperator[T,U])(implicitevidence$1:scala.reflect.ClassTag[T]):org.scalaml.workflow.Transform[T,U]"></a>
       <a id="&lt;init&gt;:Transform[T,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -92,9 +100,13 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Transform</span><span class="params">(<span name="op">op: <a href="PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>)</span>
+        <span class="name">Transform</span><span class="params">(<span name="op">op: <a href="../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@&lt;init&gt;(op:org.scalaml.core.design.PipeOperator[T,U])(implicitevidence$1:scala.reflect.ClassTag[T]):org.scalaml.workflow.Transform[T,U]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">op</dt><dd class="cmt"><p>pipe operator implementing the function that transform data</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the transform function is undefined</p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -106,19 +118,6 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -129,8 +128,12 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -142,22 +145,13 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -168,33 +162,45 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.core._FCT#_fct" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="_fct:T"></a>
-      <a id="_fct:(T)⇒Option[U]"></a>
+      <a id="_fct:Function[T,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">_fct</span><span class="result">: (<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
+        <span class="name">_fct</span><span class="result">: <span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@_fct:T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="org.scalaml.core._FCT#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply:T"></a>
-      <a id="apply:(T)⇒Option[U]"></a>
+      <a id="apply:Function[T,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="result">: (<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
+        <span class="name">apply</span><span class="result">: <span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@apply:T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -207,7 +213,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -220,7 +230,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@clone():Object" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -239,7 +253,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -252,20 +270,28 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.core._FCT#filter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="filter(p:T=&gt;Boolean):org.scalaml.core._FCT[T]"></a>
-      <a id="filter(((T)⇒Option[U])⇒Boolean):_FCT[(T)⇒Option[U]]"></a>
+      <a id="filter((Function[T,U])⇒Boolean):_FCT[Function[T,U]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">filter</span><span class="params">(<span name="p">p: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[(<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
+        <span class="name">filter</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@filter(p:T=&gt;Boolean):org.scalaml.core._FCT[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Implementation of filter for the monadic container</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of filter for the monadic container</p></div><dl class="paramcmts block"><dt class="param">p</dt><dd class="cmt"><p>function that test a condition on the element
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -279,7 +305,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -289,43 +319,55 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
         </dd></dl></div>
     </li><li name="org.scalaml.core._FCT#flatMap" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatMap[U](f:T=&gt;org.scalaml.core._FCT[U]):org.scalaml.core._FCT[U]"></a>
-      <a id="flatMap[U](((T)⇒Option[U])⇒_FCT[U]):_FCT[U]"></a>
+      <a id="flatMap[U]((Function[T,U])⇒_FCT[U]):_FCT[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">flatMap</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.flatMap.U">U</span>]</span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.flatMap.U">U</span>]</span>
+        <span class="name">flatMap</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.flatMap.U">U</span>]</span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.flatMap.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@flatMap[U](f:T=&gt;org.scalaml.core._FCT[U]):org.scalaml.core._FCT[U]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Implementation of flatMap</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of flatMap</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="org.scalaml.core._FCT#foldLeft" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foldLeft[U](zero:U)(f:(U,T)=&gt;U)(implicitc:T=&gt;U):U"></a>
-      <a id="foldLeft[U](U)((U,(T)⇒Option[U])⇒U)(((T)⇒Option[U])⇒U):U"></a>
+      <a id="foldLeft[U](U)((U,Function[T,U])⇒U)((Function[T,U])⇒U):U"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foldLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="zero">zero: <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span>, (<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="c">c: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>
+        <span class="name">foldLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="zero">zero: <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span>, <span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="c">c: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core._FCT.foldLeft.U">U</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@foldLeft[U](zero:U)(f:(U,T)=&gt;U)(implicitc:T=&gt;U):U" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">implementation of fold</p><div class="fullcomment"><div class="comment cmt"><p>implementation of fold</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>reducer/aggregator/accumulator function applied to the element
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="org.scalaml.core._FCT#foreach" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foreach(p:T=&gt;Unit):Unit"></a>
-      <a id="foreach(((T)⇒Option[U])⇒Unit):Unit"></a>
+      <a id="foreach((Function[T,U])⇒Unit):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foreach</span><span class="params">(<span name="p">p: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">foreach</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@foreach(p:T=&gt;Unit):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">implementation of the foreach loop</p><div class="fullcomment"><div class="comment cmt"><p>implementation of the foreach loop</p></div><dl class="paramcmts block"><dt class="param">p</dt><dd class="cmt"><p>immutable method that process the element of the monadic container
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -339,7 +381,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -352,7 +398,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -365,20 +415,28 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.core._FCT#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="map[U](c:T=&gt;U):org.scalaml.core._FCT[U]"></a>
-      <a id="map[U](((T)⇒Option[U])⇒U):_FCT[U]"></a>
+      <a id="map[U]((Function[T,U])⇒U):_FCT[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">map</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="c">c: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.map.U">U</span></span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.map.U">U</span>]</span>
+        <span class="name">map</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="c">c: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.map.U">U</span></span>)</span><span class="result">: <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="org.scalaml.core._FCT.map.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@map[U](c:T=&gt;U):org.scalaml.core._FCT[U]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Implementation of the map method</p><div class="fullcomment"><div class="comment cmt"><p>Implementation of the map method</p></div><dl class="paramcmts block"><dt class="param">c</dt><dd class="cmt"><p>function that converts from type T to type U
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -392,7 +450,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -405,7 +467,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -418,33 +484,28 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.workflow.Transform#op" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="op:org.scalaml.workflow.PipeOperator[T,U]"></a>
-      <a id="op:PipeOperator[T,U]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">op</span><span class="result">: <a href="PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">pipe operator implementing the function that transform data</p>
     </li><li name="org.scalaml.core._FCT#reduceLeft" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reduceLeft[U](f:(U,T)=&gt;U)(implicitc:T=&gt;U):U"></a>
-      <a id="reduceLeft[U]((U,(T)⇒Option[U])⇒U)(((T)⇒Option[U])⇒U):U"></a>
+      <a id="reduceLeft[U]((U,Function[T,U])⇒U)((Function[T,U])⇒U):U"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">reduceLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span>, (<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="c">c: ((<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>
+        <span class="name">reduceLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span>, <span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="c">c: (<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]) ⇒ <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core._FCT.reduceLeft.U">U</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@reduceLeft[U](f:(U,T)=&gt;U)(implicitc:T=&gt;U):U" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">implementation of the reduce method</p><div class="fullcomment"><div class="comment cmt"><p>implementation of the reduce method</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>reducer/aggregator/accumulator function applied to the element
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -458,7 +519,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -471,7 +536,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -484,7 +553,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -503,7 +576,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -522,7 +599,11 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -531,17 +612,21 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
               
         </dd></dl></div>
     </li><li name="org.scalaml.workflow.Transform#|&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="|&gt;(data:T):Option[U]"></a>
-      <a id="|&gt;(T):Option[U]"></a>
+      <a id="|&gt;:PartialFunction[T,U]"></a>
+      <a id="|&gt;:PartialFunction[T,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="data">data: <span class="extype" name="org.scalaml.workflow.Transform.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.Transform@|&gt;:PartialFunction[T,U]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -553,7 +638,7 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
 
         <div id="inheritedMembers">
         <div class="parent" name="org.scalaml.core._FCT">
-              <h3>Inherited from <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[(<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</h3>
+              <h3>Inherited from <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -574,6 +659,7 @@ smoothing function, a moving average, a classifier.....</p></div><dl class="attr
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

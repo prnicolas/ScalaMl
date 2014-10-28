@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>workflow - org.scalaml.workflow</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../lib/package_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a></p>
-        <h1>workflow</h1>
+        <h1>workflow</h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,21 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.workflow.PipeOperator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="PipeOperator[-T,+U]extendsAnyRef"></a>
-      <a id="PipeOperator[-T,+U]:PipeOperator[T,U]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="PipeOperator.html"><span class="name">PipeOperator</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4>
-      <p class="comment cmt">Parameterized pipe operator for processing data within a workflow with
-a T as input type and U as output type.</p>
-    </li><li name="org.scalaml.workflow.PostprocModule" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.workflow.PostprocModule" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="PostprocModule[-T,+U]extendsAnyRef"></a>
       <a id="PostprocModule[-T,+U]:PostprocModule[T,U]"></a>
       <h4 class="signature">
@@ -83,9 +77,15 @@ a T as input type and U as output type.</p>
       <span class="symbol">
         <a href="PostprocModule.html"><span class="name">PostprocModule</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Post-processing module used in the workflow.</p>
-    </li><li name="org.scalaml.workflow.PreprocModule" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@PostprocModule[-T,+U]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Post-processing module used in the workflow.</p><div class="fullcomment"><div class="comment cmt"><p>Post-processing module used in the workflow. This module is &quot;injected&quot; at run-time
+to build a dynamic computation workflow.
+</p></div></div>
+    </li><li name="org.scalaml.workflow.PreprocModule" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="PreprocModule[-T,+U]extendsAnyRef"></a>
       <a id="PreprocModule[-T,+U]:PreprocModule[T,U]"></a>
       <h4 class="signature">
@@ -96,9 +96,15 @@ a T as input type and U as output type.</p>
       <span class="symbol">
         <a href="PreprocModule.html"><span class="name">PreprocModule</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Pre-processing module used in the workflow.</p>
-    </li><li name="org.scalaml.workflow.ProcModule" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@PreprocModule[-T,+U]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Pre-processing module used in the workflow.</p><div class="fullcomment"><div class="comment cmt"><p>Pre-processing module used in the workflow. This module is &quot;injected&quot; at run-time
+to build a dynamic computation workflow.
+</p></div></div>
+    </li><li name="org.scalaml.workflow.ProcModule" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ProcModule[-T,+U]extendsAnyRef"></a>
       <a id="ProcModule[-T,+U]:ProcModule[T,U]"></a>
       <h4 class="signature">
@@ -109,10 +115,16 @@ a T as input type and U as output type.</p>
       <span class="symbol">
         <a href="ProcModule.html"><span class="name">ProcModule</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Processing module used in the workflow.</p>
-    </li><li name="org.scalaml.workflow.Transform" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Transform[-T,+U]extends_FCT[T=&gt;Option[U]]"></a>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@ProcModule[-T,+U]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Processing module used in the workflow.</p><div class="fullcomment"><div class="comment cmt"><p>Processing module used in the workflow. This module is &quot;injected&quot; at run-time
+to build a dynamic computation workflow.
+</p></div></div>
+    </li><li name="org.scalaml.workflow.Transform" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Transform[-T,+U]extends_FCT[Function[T,U]]"></a>
       <a id="Transform[-T,+U]:Transform[T,U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -120,11 +132,19 @@ a T as input type and U as output type.</p>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Transform.html"><span class="name">Transform</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[(<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>) ⇒ <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
+        <a href="Transform.html"><span class="name">Transform</span></a><span class="tparams">[<span name="T">-T</span>, <span name="U">+U</span>]</span><span class="result"> extends <a href="../core/_FCT.html" class="extype" name="org.scalaml.core._FCT">_FCT</a>[<span class="extype" name="scala.Predef.Function">Function</span>[<span class="extype" name="org.scalaml.workflow.Transform.T">T</span>, <span class="extype" name="org.scalaml.workflow.Transform.U">U</span>]]</span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic data transformation class that process data with input type T
-and output type U.</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@Transform[-T,+U]extends_FCT[Function[T,U]]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic data transformation class that process data with input type T
+and output type U.</p><div class="fullcomment"><div class="comment cmt"><p>Generic data transformation class that process data with input type T
+and output type U. The data transform implements the pipe operator by
+applying the transform function. A transform function can be a filtering,
+smoothing function, a moving average, a classifier.....</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>December 19, 2013
+</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the transform function is undefined</p></span></dd><dt>See also</dt><dd><span class="cmt"><p>org.scalaml.core._FCT</p></span></dd></dl></div>
     </li><li name="org.scalaml.workflow.Workflow" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Workflow[T,U,V,W]extendsAnyRef"></a>
       <a id="Workflow[T,U,V,W]:Workflow[T,U,V,W]"></a>
@@ -136,8 +156,12 @@ and output type U.</p>
       <span class="symbol">
         <a href="Workflow.html"><span class="name">Workflow</span></a><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>, <span name="V">V</span>, <span name="W">W</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic workflow using stackable traits/modules which instances
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@Workflow[T,U,V,W]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic workflow using stackable traits/modules which instances
 are initialize at run-time.</p>
     </li></ol>
             </div>
@@ -146,20 +170,7 @@ are initialize at run-time.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.workflow.PipeOperator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PipeOperator"></a>
-      <a id="PipeOperator:PipeOperator"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="PipeOperator$.html"><span class="name">PipeOperator</span></a>
-      </span>
-      </h4>
-      
-    </li><li name="org.scalaml.workflow.Transform" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.workflow.Transform" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Transform"></a>
       <a id="Transform:Transform"></a>
       <h4 class="signature">
@@ -170,7 +181,11 @@ are initialize at run-time.</p>
       <span class="symbol">
         <a href="Transform$.html"><span class="name">Transform</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@Transform" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.workflow.data" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="data"></a>
@@ -183,7 +198,11 @@ are initialize at run-time.</p>
       <span class="symbol">
         <a href="data/package.html"><span class="name">data</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@data" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.workflow.module" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="module"></a>
@@ -196,7 +215,11 @@ are initialize at run-time.</p>
       <span class="symbol">
         <a href="module/package.html"><span class="name">module</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.workflow.package@module" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -223,6 +246,7 @@ are initialize at run-time.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>NaiveBayes - org.scalaml.supervised.bayes.NaiveBayes</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="NaiveBayes$.html" title="Go to companion"><img src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.bayes">bayes</a></p>
-        <h1><a href="NaiveBayes$.html" title="Go to companion">NaiveBayes</a></h1>
+        <h1><a href="NaiveBayes$.html" title="Go to companion">NaiveBayes</a></h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -35,19 +43,20 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">NaiveBayes</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]] with <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]</span>
+        <span class="name">NaiveBayes</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]] with <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Generic Multi-nomial Naive Bayes classification class. The class is used for both training
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Generic Binomial Naive Bayes classification class. The class is used for both training
 and run-time classification. The training of the model is executed during the instantiation
-of the class to avoid having an uninitialized model.<br>
+of the class to avoid having an uninitialized model. A conversion from a parameterized array, Array[T]
+to an array of double, DblVector, has to be implicitly defined for training the model.<br>
 As a classifier, the method implement the generic data transformation PipeOperator and the
-Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Since</dt><dd><p>February 13, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
+Supervised interface.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 13, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
 </p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine learning
 </p></span></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -65,7 +74,7 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.scalaml.supervised.bayes.NaiveBayes"><span>NaiveBayes</span></li><li class="in" name="org.scalaml.supervised.Supervised"><span>Supervised</span></li><li class="in" name="org.scalaml.workflow.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.scalaml.supervised.bayes.NaiveBayes"><span>NaiveBayes</span></li><li class="in" name="org.scalaml.supervised.Supervised"><span>Supervised</span></li><li class="in" name="org.scalaml.core.design.PipeOperator"><span>PipeOperator</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -86,7 +95,7 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.scalaml.supervised.bayes.NaiveBayes#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(smoothing:Double,xt:org.scalaml.core.XTSeries[(Array[T],Int)],density:Double*=&gt;Double)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayes[T]"></a>
+      <a id="&lt;init&gt;(smoothing:Double,xt:org.scalaml.core.XTSeries[(Array[T],Int)],density:org.scalaml.supervised.bayes.NaiveBayesModel.Density)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayes[T]"></a>
       <a id="&lt;init&gt;:NaiveBayes[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -94,10 +103,14 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">NaiveBayes</span><span class="params">(<span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="density">density: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
+        <span class="name">NaiveBayes</span><span class="params">(<span name="smoothing">smoothing: <span class="extype" name="scala.Double">Double</span></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="density">density: <a href="NaiveBayesModel$.html#Density=Double*=&gt;Double" class="extmbr" name="org.scalaml.supervised.bayes.NaiveBayesModel.Density">Density</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">smoothing</dt><dd class="cmt"><p>Laplace or Lidstone smoothing factor</p></dd><dt class="param">xt</dt><dd class="cmt"><p>Input labeled time series used for training</p></dd><dt class="param">density</dt><dd class="cmt"><p>Density function used to compute the discriminant</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@&lt;init&gt;(smoothing:Double,xt:org.scalaml.core.XTSeries[(Array[T],Int)],density:org.scalaml.supervised.bayes.NaiveBayesModel.Density)(implicitevidence$1:T=&gt;Double):org.scalaml.supervised.bayes.NaiveBayes[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Instantiate a parameterized NaiveBayes model [smoothing]: Laplace or Lidstone smoothing factor.</p><div class="fullcomment"><div class="comment cmt"><p>Instantiate a parameterized NaiveBayes model [smoothing]: Laplace or Lidstone smoothing factor. [xt]: Input labeled time series used for training. [density]: Density function used to compute the discriminant</p></div><dl class="paramcmts block"><dt class="param">smoothing</dt><dd class="cmt"><p>Laplace or Lidstone smoothing factor</p></dd><dt class="param">xt</dt><dd class="cmt"><p>Input labeled time series used for training</p></dd><dt class="param">density</dt><dd class="cmt"><p>Density function used to compute the discriminant</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if one of the class parameters is undefined
 </p></span></dd></dl></div>
     </li></ol>
             </div>
@@ -109,19 +122,6 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -132,8 +132,12 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -145,22 +149,13 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -171,8 +166,12 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -184,7 +183,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -197,7 +200,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -216,21 +223,12 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">crossValidation</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@crossValidation:Array[Double]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a></dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NaiveBayes#density" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="density:Double*=&gt;Double"></a>
-      <a id="density:(Double*)⇒Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">density</span><span class="result">: (<span class="extype" name="scala.Double">Double</span>*) ⇒ <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Density function used to compute the discriminant</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -242,7 +240,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -255,7 +257,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -268,7 +274,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -287,7 +297,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -300,7 +314,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -313,7 +331,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -326,7 +348,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -339,7 +365,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -352,21 +382,12 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NaiveBayes#smoothing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="smoothing:Double"></a>
-      <a id="smoothing:Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">smoothing</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Laplace or Lidstone smoothing factor</p>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -378,7 +399,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayes#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -391,21 +416,29 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.NaiveBayes">NaiveBayes</a> → AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayes#validate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="validate(xt:org.scalaml.core.XTSeries[(Array[T],Int)],index:Int):Double"></a>
-      <a id="validate(XTSeries[(Array[T],Int)],Int):Double"></a>
+      <a id="validate(xt:org.scalaml.core.XTSeries[(Array[T],Int)],index:Int):Option[Double]"></a>
+      <a id="validate(XTSeries[(Array[T],Int)],Int):Option[Double]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">validate</span><span class="params">(<span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">validate</span><span class="params">(<span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Double">Double</span>]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">validation method for supervised learning algorithm</p><div class="fullcomment"><div class="comment cmt"><p>validation method for supervised learning algorithm</p></div><dl class="paramcmts block"><dt class="param">xt</dt><dd class="cmt"><p>parameterized multidimensional time series of tuple (observation, class label)</p></dd><dt>returns</dt><dd class="cmt"><p>F1 measure
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@validate(xt:org.scalaml.core.XTSeries[(Array[T],Int)],index:Int):Option[Double]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Compute the F1 statistics for the Naive Bayes.</p><div class="fullcomment"><div class="comment cmt"><p>Compute the F1 statistics for the Naive Bayes.</p></div><dl class="paramcmts block"><dt class="param">xt</dt><dd class="cmt"><p>Time series of features of type Array[T], and class indices as labels</p></dd><dt class="param">index</dt><dd class="cmt"><p>of the class, the time series or observation should belong to</p></dd><dt>returns</dt><dd class="cmt"><p>F1 measure if the model has been properly trained (!= None), None otherwise
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.NaiveBayes">NaiveBayes</a> → <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -418,7 +451,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -437,7 +474,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -456,7 +497,11 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -464,34 +509,24 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.supervised.bayes.NaiveBayes#xt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="xt:org.scalaml.core.XTSeries[(Array[T],Int)]"></a>
-      <a id="xt:XTSeries[(Array[T],Int)]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">xt</span><span class="result">: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>], <span class="extype" name="scala.Int">Int</span>)]</span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Input labeled time series used for training</p>
     </li><li name="org.scalaml.supervised.bayes.NaiveBayes#|&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="|&gt;(xt:org.scalaml.core.XTSeries[Array[T]]):Option[Array[Int]]"></a>
-      <a id="|&gt;(XTSeries[Array[T]]):Option[Array[Int]]"></a>
+      <a id="|&gt;:PartialFunction[org.scalaml.core.XTSeries[Array[T]],Array[Int]]"></a>
+      <a id="|&gt;:PartialFunction[XTSeries[Array[T]],Array[Int]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="params">(<span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]]</span>
+        <span title="gt4s: $bar$greater" class="name">|&gt;</span><span class="result">: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]]</span>
       </span>
-      </h4>
-      <p class="shortcomment cmt">Run-time classification of a time series using the Naive Bayes model
-</p><div class="fullcomment"><div class="comment cmt"><p>Run-time classification of a time series using the Naive Bayes model
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.NaiveBayes">NaiveBayes</a> → <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a></dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.bayes.NaiveBayes@|&gt;:PartialFunction[org.scalaml.core.XTSeries[Array[T]],Array[Int]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Run-time classification of a time series using the Naive Bayes model</p><div class="fullcomment"><div class="comment cmt"><p>Run-time classification of a time series using the Naive Bayes model</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>PartialFunction of time series of elements of type T as input to the Naive Bayes and array of class indices as output
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.supervised.bayes.NaiveBayes">NaiveBayes</a> → <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">MatchError<p>if the input time series is undefined or have no elements or the model was not properly trained</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -503,8 +538,8 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
         <div id="inheritedMembers">
         <div class="parent" name="org.scalaml.supervised.Supervised">
               <h3>Inherited from <a href="../Supervised.html" class="extype" name="org.scalaml.supervised.Supervised">Supervised</a>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]</h3>
-            </div><div class="parent" name="org.scalaml.workflow.PipeOperator">
-              <h3>Inherited from <a href="../../workflow/PipeOperator.html" class="extype" name="org.scalaml.workflow.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]]</h3>
+            </div><div class="parent" name="org.scalaml.core.design.PipeOperator">
+              <h3>Inherited from <a href="../../core/design/PipeOperator.html" class="extype" name="org.scalaml.core.design.PipeOperator">PipeOperator</a>[<a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.bayes.NaiveBayes.T">T</span>]], <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Int">Int</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
@@ -525,6 +560,7 @@ Supervised interface.</p></div><dl class="attributes block"> <dt>Attributes</dt>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>

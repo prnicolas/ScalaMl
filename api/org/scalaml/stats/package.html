@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>stats - org.scalaml.stats</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../lib/package_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a></p>
-        <h1>stats</h1>
+        <h1>stats</h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -69,9 +77,14 @@
       <span class="symbol">
         <a href="BiasVarianceEmulator.html"><span class="name">BiasVarianceEmulator</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      
-    </li><li name="org.scalaml.stats.ClassValidation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@BiasVarianceEmulator[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class to emulate the Bias-Variance decomposition using an emulator function
+to generate nValues.</p>
+    </li><li name="org.scalaml.stats.ClassValidation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ClassValidationextendsValidation"></a>
       <a id="ClassValidation:ClassValidation"></a>
       <h4 class="signature">
@@ -82,10 +95,17 @@
       <span class="symbol">
         <a href="ClassValidation.html"><span class="name">ClassValidation</span></a><span class="result"> extends <a href="Validation.html" class="extype" name="org.scalaml.stats.Validation">Validation</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Immutable class that implements the Validation variables on a results
-of a test run.</p>
-    </li><li name="org.scalaml.stats.Stats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@ClassValidationextendsValidation" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Immutable class that implements the Validation variables on a results
+of a test run.</p><div class="fullcomment"><div class="comment cmt"><p>Immutable class that implements the Validation variables on a results
+of a test run. The counters for TP, TN, FP and FN are computed during instantiation
+to the class, Accuracy, precision and recall are computed at run-time (lazy values).</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 1, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if actualExpected is undefined or has no elements</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.stats.Stats" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="Stats[T]extendsAnyRef"></a>
       <a id="Stats[T]:Stats[T]"></a>
       <h4 class="signature">
@@ -96,11 +116,18 @@ of a test run.</p>
       <span class="symbol">
         <a href="Stats.html"><span class="name">Stats</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt"> Parameterized class (view bound) that compute and update the statistics (mean,
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@Stats[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Parameterized class (view bound) that compute and update the statistics (mean,
  standard deviation) for any set of observations for which the
- type can be converted to a Double.</p>
-    </li><li name="org.scalaml.stats.Validation" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+ type can be converted to a Double.</p><div class="fullcomment"><div class="comment cmt"><p> Parameterized class (view bound) that compute and update the statistics (mean,
+ standard deviation) for any set of observations for which the
+ type can be converted to a Double.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>Jan 24, 2014</p></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if values is either undefined or have no elements</p></span></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.stats.Validation" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ValidationextendsAnyRef"></a>
       <a id="Validation:Validation"></a>
       <h4 class="signature">
@@ -111,9 +138,15 @@ of a test run.</p>
       <span class="symbol">
         <a href="Validation.html"><span class="name">Validation</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Generic trait for the validation method, f1 to compute the F1-measure
-and the precision, recall tuple.</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@ValidationextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Generic trait for the validation method, f1 to compute the F1-measure
+and the precision, recall tuple.</p><div class="fullcomment"><div class="comment cmt"><p>Generic trait for the validation method, f1 to compute the F1-measure
+and the precision, recall tuple.</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>January 29, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -121,7 +154,7 @@ and the precision, recall tuple.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="org.scalaml.stats.BiasVarianceEmulator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="org.scalaml.stats.BiasVarianceEmulator" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BiasVarianceEmulator"></a>
       <a id="BiasVarianceEmulator:BiasVarianceEmulator"></a>
       <h4 class="signature">
@@ -132,9 +165,14 @@ and the precision, recall tuple.</p>
       <span class="symbol">
         <a href="BiasVarianceEmulator$.html"><span class="name">BiasVarianceEmulator</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Object companion to BiasVarianceEmulator that defines the constructor apply</p>
-    </li><li name="org.scalaml.stats.ClassValidation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@BiasVarianceEmulator" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Object companion to BiasVarianceEmulator that defines the constructor apply</p><div class="fullcomment"><div class="comment cmt"><p>Object companion to BiasVarianceEmulator that defines the constructor apply</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>April 3, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
+    </li><li name="org.scalaml.stats.ClassValidation" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ClassValidation"></a>
       <a id="ClassValidation:ClassValidation"></a>
       <h4 class="signature">
@@ -145,8 +183,13 @@ and the precision, recall tuple.</p>
       <span class="symbol">
         <a href="ClassValidation$.html"><span class="name">ClassValidation</span></a>
       </span>
-      </h4>
-      <p class="comment cmt">Companion object to the Class validation class that implement the constructors apply</p>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@ClassValidation" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object to the Class validation class that implement the constructors apply</p><div class="fullcomment"><div class="comment cmt"><p>Companion object to the Class validation class that implement the constructors apply</p></div><dl class="attributes block"> <dt>Since</dt><dd><p>February 1, 2014</p></dd><dt>Note</dt><dd><span class="cmt"><p>Scala for Machine Learning
+</p></span></dd></dl></div>
     </li><li name="org.scalaml.stats.Label" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Label"></a>
       <a id="Label:Label"></a>
@@ -158,7 +201,11 @@ and the precision, recall tuple.</p>
       <span class="symbol">
         <a href="Label$.html"><span class="name">Label</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@Label" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.stats.Stats" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Stats"></a>
@@ -171,7 +218,11 @@ and the precision, recall tuple.</p>
       <span class="symbol">
         <a href="Stats$.html"><span class="name">Stats</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.stats.package@Stats" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -198,6 +249,7 @@ and the precision, recall tuple.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

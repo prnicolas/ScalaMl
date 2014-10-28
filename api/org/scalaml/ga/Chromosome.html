@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>Chromosome - org.scalaml.ga.Chromosome</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="Chromosome$.html" title="Go to companion"><img src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="package.html" class="extype" name="org.scalaml.ga">ga</a></p>
-        <h1><a href="Chromosome$.html" title="Go to companion">Chromosome</a></h1>
+        <h1><a href="Chromosome$.html" title="Go to companion">Chromosome</a></h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -94,7 +102,11 @@ represents candidate solution to a problem or candidate model to a dataset.</p><
       <span class="symbol">
         <span class="name">Chromosome</span><span class="params">(<span name="code">code: <span class="extype" name="scala.List">List</span>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@&lt;init&gt;(code:List[T]):org.scalaml.ga.Chromosome[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Create a chromosome with the parameterized sbutype of Gene.</p><div class="fullcomment"><div class="comment cmt"><p>Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>the genetic code is undefined or empty
 </p></span></dd></dl></div>
     </li></ol>
@@ -107,19 +119,6 @@ represents candidate solution to a problem or candidate model to a dataset.</p><
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -130,8 +129,12 @@ represents candidate solution to a problem or candidate model to a dataset.</p><
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -143,26 +146,34 @@ represents candidate solution to a problem or candidate model to a dataset.</p><
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#+-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="+-(that:org.scalaml.ga.Chromosome[T],xOver:Double):(org.scalaml.ga.Chromosome[T],org.scalaml.ga.Chromosome[T])"></a>
-      <a id="+-(Chromosome[T],Double):(Chromosome[T],Chromosome[T])"></a>
+      <a id="+-(that:org.scalaml.ga.Chromosome[T],idx:org.scalaml.ga.GeneticIndices):(org.scalaml.ga.Chromosome[T],org.scalaml.ga.Chromosome[T])"></a>
+      <a id="+-(Chromosome[T],GeneticIndices):(Chromosome[T],Chromosome[T])"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $plus$minus" class="name">+-</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>, <span name="xOver">xOver: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: (<a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>], <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>])</span>
+        <span title="gt4s: $plus$minus" class="name">+-</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>, <span name="idx">idx: <a href="GeneticIndices.html" class="extype" name="org.scalaml.ga.GeneticIndices">GeneticIndices</a></span>)</span><span class="result">: (<a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>], <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>])</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@+-(that:org.scalaml.ga.Chromosome[T],idx:org.scalaml.ga.GeneticIndices):(org.scalaml.ga.Chromosome[T],org.scalaml.ga.Chromosome[T])" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Define the cross-over operator to be applied on this chromosome.</p><div class="fullcomment"><div class="comment cmt"><p>Define the cross-over operator to be applied on this chromosome. The cross-over
 is hierarchical. The algorithm selects the gene associated to the cross-over index,
 swap all the genes of higher index (below or after the cross-over gene) between
 the two parents and finally swap the bits within the cross-over gene.<br>
 The cross over operation generates two off springs from the two original parents. The off-springs
-are added to the current population along with the parents.</p></div><dl class="paramcmts block"><dt class="param">that</dt><dd class="cmt"><p>other parent chromosome</p></dd><dt class="param">xOver</dt><dd class="cmt"><p>cross-over factor [0, 1]</p></dd><dt>returns</dt><dd class="cmt"><p>the pair of offspring.
+are added to the current population along with the parents.</p></div><dl class="paramcmts block"><dt class="param">that</dt><dd class="cmt"><p>other parent chromosome</p></dd><dt>returns</dt><dd class="cmt"><p>the pair of offspring.
 </p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the other chromosome is undefined, or have a different size
 or if the cross-over factor is out of range.</p></span></dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#/=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -176,7 +187,11 @@ or if the cross-over factor is out of range.</p></span></dd></dl></div>
       <span class="symbol">
         <span title="gt4s: $div$eq" class="name">/=</span><span class="params">(<span name="normalizeFactor">normalizeFactor: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@/=(normalizeFactor:Double):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Normalize the fitness of this chromosome with a factor.</p><div class="fullcomment"><div class="comment cmt"><p>Normalize the fitness of this chromosome with a factor. This
 operation is required by the selection algorithm.</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the normalization factor is less than EPS
 </p></span></dd></dl></div>
@@ -191,25 +206,16 @@ operation is required by the selection algorithm.</p></div><dl class="attributes
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@==(that:org.scalaml.ga.Chromosome[T]):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -220,22 +226,30 @@ operation is required by the selection algorithm.</p></div><dl class="attributes
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#^" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="^(mu:Double):org.scalaml.ga.Chromosome[T]"></a>
-      <a id="^(Double):Chromosome[T]"></a>
+      <a id="^(idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Chromosome[T]"></a>
+      <a id="^(GeneticIndices):Chromosome[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $up" class="name">^</span><span class="params">(<span name="mu">mu: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>
+        <span title="gt4s: $up" class="name">^</span><span class="params">(<span name="idx">idx: <a href="GeneticIndices.html" class="extype" name="org.scalaml.ga.GeneticIndices">GeneticIndices</a></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@^(idx:org.scalaml.ga.GeneticIndices):org.scalaml.ga.Chromosome[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Mutation operator that flip a gene selected through a mutation index.</p><div class="fullcomment"><div class="comment cmt"><p>Mutation operator that flip a gene selected through a mutation index.
-The mutated gene is added to the population (gene pool).</p></div><dl class="paramcmts block"><dt class="param">mu</dt><dd class="cmt"><p>mutation factor [0, 1]</p></dd><dt>returns</dt><dd class="cmt"><p>a mutated chromosome
+The mutated gene is added to the population (gene pool).</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a mutated chromosome
 </p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if mu is out of range</p></span></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -248,7 +262,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#clone" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():org.scalaml.ga.Chromosome[T]"></a>
@@ -261,7 +279,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@clone():org.scalaml.ga.Chromosome[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a> → AnyRef</dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#code" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="code:List[T]"></a>
@@ -274,7 +296,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">code</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@code:List[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.ga.Chromosome#compareTo" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="compareTo(thatCode:org.scalaml.ga.Gene):Boolean"></a>
@@ -287,7 +313,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">compareTo</span><span class="params">(<span name="thatCode">thatCode: <a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@compareTo(thatCode:org.scalaml.ga.Gene):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -303,10 +333,12 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">decode</span><span class="params">(<span class="implicit">implicit </span><span name="d">d: (<a href="Gene.html" class="extype" name="org.scalaml.ga.Gene">Gene</a>) ⇒ <span class="extype" name="org.scalaml.ga.Chromosome.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="org.scalaml.ga.Chromosome.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@decode(implicitd:org.scalaml.ga.Gene=&gt;T):List[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
       <span class="defval" name="&quot;Conversion from Gene to parameterized type undefined in decoding chromosome&quot;">...</span>
@@ -324,7 +356,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -337,7 +373,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -350,7 +390,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -358,19 +402,6 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.ga.Chromosome#fitness" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="fitness:Double"></a>
-      <a id="fitness:Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">var</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fitness</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -382,7 +413,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -395,7 +430,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -408,7 +447,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -421,7 +464,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -434,7 +481,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -447,8 +498,29 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.scalaml.ga.Chromosome#show" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="show:String"></a>
+      <a id="show:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">show</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@show:String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.ga.Chromosome#size" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="size:Int"></a>
       <a id="size:Int"></a>
@@ -460,7 +532,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">size</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@size:Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -476,7 +552,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.ga.Chromosome#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -489,8 +569,29 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.ga.Chromosome">Chromosome</a> → AnyRef → Any</dd></dl></div>
+    </li><li name="org.scalaml.ga.Chromosome#unfitness" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="unfitness:Double"></a>
+      <a id="unfitness:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unfitness</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@unfitness:Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -502,7 +603,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -521,7 +626,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -540,7 +649,11 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.ga.Chromosome@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -577,6 +690,7 @@ The mutated gene is added to the population (gene pool).</p></div><dl class="par
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

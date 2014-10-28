@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>XTSeries - org.scalaml.core.XTSeries</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <a href="XTSeries$.html" title="Go to companion"><img src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="package.html" class="extype" name="org.scalaml.core">core</a></p>
-        <h1><a href="XTSeries$.html" title="Go to companion">XTSeries</a></h1>
+        <h1><a href="XTSeries$.html" title="Go to companion">XTSeries</a></h1> <span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -48,9 +56,9 @@ variable time series or arrays/list to create matrix for multiple variables time
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
-          <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a href="VTSeries.html" class="extype" name="org.scalaml.core.VTSeries">VTSeries</a></div>
-        </div></div>
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="VTSeries.html" class="extype" name="org.scalaml.core.VTSeries">VTSeries</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -98,7 +106,11 @@ variable time series or arrays/list to create matrix for multiple variables time
       <span class="symbol">
         <span class="name">XTSeries</span><span class="params">(<span name="label">label: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="arr">arr: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@&lt;init&gt;(label:String,arr:Array[T]):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types</p><div class="fullcomment"><div class="comment cmt"><p>Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types</p></div><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>If the array of values, [arr] is undefined
 </p></span></dd></dl></div>
     </li></ol>
@@ -111,19 +123,6 @@ variable time series or arrays/list to create matrix for multiple variables time
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -134,8 +133,12 @@ variable time series or arrays/list to create matrix for multiple variables time
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -147,7 +150,11 @@ variable time series or arrays/list to create matrix for multiple variables time
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.core.XTSeries#+" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="+(n:Int,t:T)(implicitf:(T,T)=&gt;T):T"></a>
@@ -160,7 +167,11 @@ variable time series or arrays/list to create matrix for multiple variables time
       <span class="symbol">
         <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>, <span name="t">t: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="f">f: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>, <span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@+(n:Int,t:T)(implicitf:(T,T)=&gt;T):T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(that:org.scalaml.core.XTSeries[T]):Boolean"></a>
@@ -173,24 +184,15 @@ variable time series or arrays/list to create matrix for multiple variables time
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@==(that:org.scalaml.core.XTSeries[T]):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Test if a time series is identical to this time series.</p><div class="fullcomment"><div class="comment cmt"><p>Test if a time series is identical to this time series. The label is not included
 in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</dt><dd class="cmt"><p>other series  this series is compared to</p></dd><dt>returns</dt><dd class="cmt"><p>true if the series are identical, false if the other time series, 'that' is null or is different from this time series
 </p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumenException<p>if the argument is null</p></span></dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -201,8 +203,12 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.core.XTSeries#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="apply(n:Int):T"></a>
       <a id="apply(Int):T"></a>
@@ -214,9 +220,13 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">apply</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@apply(n:Int):T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.core.XTSeries#arr" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.core.XTSeries#arr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="arr:Array[T]"></a>
       <a id="arr:Array[T]"></a>
       <h4 class="signature">
@@ -227,8 +237,12 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">arr</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@arr:Array[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -240,7 +254,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -253,7 +271,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@clone():Object" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -272,7 +294,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">drop</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@drop(n:Int):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
@@ -285,7 +311,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -298,7 +328,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -311,7 +345,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -330,7 +368,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">foldLeft</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="org.scalaml.core.XTSeries.foldLeft.U">U</span></span>)</span><span class="params">(<span name="op">op: (<span class="extype" name="org.scalaml.core.XTSeries.foldLeft.U">U</span>, <span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="org.scalaml.core.XTSeries.foldLeft.U">U</span></span>)</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.foldLeft.U">U</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@foldLeft[U](z:U)(op:(U,T)=&gt;U):U" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#foreach" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="foreach(f:T=&gt;Unit):Unit"></a>
@@ -343,7 +385,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">foreach</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@foreach(f:T=&gt;Unit):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
@@ -356,7 +402,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -369,9 +419,13 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.scalaml.core.XTSeries#head" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.core.XTSeries#head" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="head:T"></a>
       <a id="head:T"></a>
       <h4 class="signature">
@@ -382,7 +436,28 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">head</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@head:T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.core.XTSeries#isEmpty" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isEmpty:Boolean"></a>
+      <a id="isEmpty:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isEmpty</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@isEmpty:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -398,7 +473,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.scalaml.core.XTSeries#label" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="label:String"></a>
@@ -411,9 +490,13 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">label</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@label:String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
-    </li><li name="org.scalaml.core.XTSeries#last" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.core.XTSeries#last" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="last:T"></a>
       <a id="last:T"></a>
       <h4 class="signature">
@@ -424,11 +507,12 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">last</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
-        </dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@last:T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.core.XTSeries#map" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="map[U](f:T=&gt;U)(implicitevidence$1:scala.reflect.ClassTag[U]):org.scalaml.core.XTSeries[U]"></a>
       <a id="map[U]((T)⇒U)(ClassTag[U]):XTSeries[U]"></a>
@@ -440,7 +524,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">map</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="org.scalaml.core.XTSeries.map.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="org.scalaml.core.XTSeries.map.U">U</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.map.U">U</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@map[U](f:T=&gt;U)(implicitevidence$1:scala.reflect.ClassTag[U]):org.scalaml.core.XTSeries[U]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#max" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="max(implicitcmp:Ordering[T]):T"></a>
@@ -453,7 +541,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">max</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@max(implicitcmp:Ordering[T]):T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -469,7 +561,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">min</span><span class="params">(<span class="implicit">implicit </span><span name="cmp">cmp: <span class="extype" name="scala.Ordering">Ordering</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="org.scalaml.core.XTSeries.T">T</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@min(implicitcmp:Ordering[T]):T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -485,7 +581,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -498,7 +598,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -511,24 +615,29 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.scalaml.core.XTSeries#size" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.core.XTSeries#size" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="size:Int"></a>
       <a id="size:Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
         <span class="name">size</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
-        </dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@size:Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.core.XTSeries#slice" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="slice(start:Int,end:Int):org.scalaml.core.XTSeries[T]"></a>
       <a id="slice(Int,Int):XTSeries[T]"></a>
@@ -540,7 +649,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">slice</span><span class="params">(<span name="start">start: <span class="extype" name="scala.Int">Int</span></span>, <span name="end">end: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@slice(start:Int,end:Int):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#sortWith" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="sortWith(lt:(T,T)=&gt;Boolean):org.scalaml.core.XTSeries[T]"></a>
@@ -553,7 +666,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">sortWith</span><span class="params">(<span name="lt">lt: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>, <span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@sortWith(lt:(T,T)=&gt;Boolean):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -566,7 +683,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.scalaml.core.XTSeries#tail" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="tail:org.scalaml.core.XTSeries[T]"></a>
@@ -579,7 +700,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">tail</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@tail:org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -595,7 +720,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">take</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@take(n:Int):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#takeRight" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="takeRight(n:Int):org.scalaml.core.XTSeries[T]"></a>
@@ -608,7 +737,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">takeRight</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@takeRight(n:Int):org.scalaml.core.XTSeries[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#toArray" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="toArray:Array[T]"></a>
@@ -621,10 +754,14 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">toArray</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@toArray:Array[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#toDblMatrix" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toDblMatrix(implicitfv:T=&gt;org.scalaml.core.Types.ScalaMl.DblVector):org.scalaml.core.Types.ScalaMl.DblMatrix"></a>
+      <a id="toDblMatrix(implicitfv:T=&gt;org.scalaml.core.types.ScalaMl.DblVector):org.scalaml.core.types.ScalaMl.DblMatrix"></a>
       <a id="toDblMatrix((T)⇒DblVector):DblMatrix"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -632,9 +769,13 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toDblMatrix</span><span class="params">(<span class="implicit">implicit </span><span name="fv">fv: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <a href="Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result">: <a href="Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>
+        <span class="name">toDblMatrix</span><span class="params">(<span class="implicit">implicit </span><span name="fv">fv: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <a href="types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="result">: <a href="types/ScalaMl$.html#DblMatrix=org.scalaml.core.types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblMatrix">DblMatrix</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@toDblMatrix(implicitfv:T=&gt;org.scalaml.core.types.ScalaMl.DblVector):org.scalaml.core.types.ScalaMl.DblMatrix" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Convert a this time series into a matrix of Double floating point values.</p><div class="fullcomment"><div class="comment cmt"><p>Convert a this time series into a matrix of Double floating point values.</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>Matrix of double values (DblMatrix)</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
@@ -644,7 +785,7 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
         </dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the implicit conversion T to DblVector is explicitly provided as a null function.</p></span><span class="cmt">implicitNotFound<p>if the implicit conversion is undefined
 </p></span></dd></dl></div>
     </li><li name="org.scalaml.core.XTSeries#toDblVector" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toDblVector(implicitf:T=&gt;Double):org.scalaml.core.Types.ScalaMl.DblVector"></a>
+      <a id="toDblVector(implicitf:T=&gt;Double):org.scalaml.core.types.ScalaMl.DblVector"></a>
       <a id="toDblVector((T)⇒Double):DblVector"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -652,9 +793,13 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toDblVector</span><span class="params">(<span class="implicit">implicit </span><span name="f">f: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>
+        <span class="name">toDblVector</span><span class="params">(<span class="implicit">implicit </span><span name="f">f: (<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@toDblVector(implicitf:T=&gt;Double):org.scalaml.core.types.ScalaMl.DblVector" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <p class="shortcomment cmt">Convert a this time series into a vector of Double floating point values.</p><div class="fullcomment"><div class="comment cmt"><p>Convert a this time series into a vector of Double floating point values.</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>implicit conversion of type T to Double</p></dd><dt>returns</dt><dd class="cmt"><p>Vector of double values (DblVector)</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@implicitNotFound</span><span class="args">(<span>
       
@@ -674,7 +819,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">toList</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@toList:List[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.core.XTSeries#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -687,7 +836,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -700,7 +853,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -719,7 +876,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -738,7 +899,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -746,7 +911,7 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.scalaml.core.XTSeries#zip" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="org.scalaml.core.XTSeries#zip" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="zip[U](that:org.scalaml.core.XTSeries[U]):org.scalaml.core.XTSeries[(T,U)]"></a>
       <a id="zip[U](XTSeries[U]):XTSeries[(T,U)]"></a>
       <h4 class="signature">
@@ -757,11 +922,12 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">zip</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="org.scalaml.core.XTSeries.zip.U">U</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>, <span class="extype" name="org.scalaml.core.XTSeries.zip.U">U</span>)]</span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Annotations</dt><dd>
-                <span class="name">@inline</span><span class="args">()</span>
-              
-        </dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@zip[U](that:org.scalaml.core.XTSeries[U]):org.scalaml.core.XTSeries[(T,U)]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.core.XTSeries#zipWithIndex" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="zipWithIndex:org.scalaml.core.XTSeries[(T,Int)]"></a>
       <a id="zipWithIndex:XTSeries[(T,Int)]"></a>
@@ -773,7 +939,11 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <span class="symbol">
         <span class="name">zipWithIndex</span><span class="result">: <a href="" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[(<span class="extype" name="org.scalaml.core.XTSeries.T">T</span>, <span class="extype" name="scala.Int">Int</span>)]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.scalaml.core.XTSeries@zipWithIndex:org.scalaml.core.XTSeries[(T,Int)]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -804,6 +974,7 @@ in the comparison.</p></div><dl class="paramcmts block"><dt class="param">that</
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+
+
     </body>
       </html>

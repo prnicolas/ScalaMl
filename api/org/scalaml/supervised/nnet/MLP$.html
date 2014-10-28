@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>MLP - org.scalaml.supervised.nnet.MLP</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../lib/object_big.png" />
         <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalaml">scalaml</a>.<a href="../package.html" class="extype" name="org.scalaml.supervised">supervised</a>.<a href="package.html" class="extype" name="org.scalaml.supervised.nnet">nnet</a></p>
-        <h1>MLP</h1>
+        <h1>MLP</h1> <span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -84,19 +92,40 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="org.scalaml.supervised.nnet.MLP.MLPClassification" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="MLPClassificationextendsMLP.MLPObjective"></a>
-      <a id="MLPClassification:MLPClassification"></a>
+              <ol><li name="org.scalaml.supervised.nnet.MLP.MLPBinClassifier" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MLPBinClassifierextendsMLP.MLPObjective"></a>
+      <a id="MLPBinClassifier:MLPBinClassifier"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="MLP$$MLPClassification.html"><span class="name">MLPClassification</span></a><span class="result"> extends <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
+        <a href="MLP$$MLPBinClassifier.html"><span class="name">MLPBinClassifier</span></a><span class="result"> extends <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class signature for the classification objective.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@MLPBinClassifierextendsMLP.MLPObjective" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalaml.supervised.nnet.MLP.MLPMultiClassifier" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MLPMultiClassifierextendsMLP.MLPObjective"></a>
+      <a id="MLPMultiClassifier:MLPMultiClassifier"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MLP$$MLPMultiClassifier.html"><span class="name">MLPMultiClassifier</span></a><span class="result"> extends <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@MLPMultiClassifierextendsMLP.MLPObjective" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="org.scalaml.supervised.nnet.MLP.MLPObjective" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="MLPObjectiveextendsAnyRef"></a>
       <a id="MLPObjective:MLPObjective"></a>
@@ -108,8 +137,14 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <a href="MLP$$MLPObjective.html"><span class="name">MLPObjective</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
-      <p class="comment cmt">Trait that defined the signature of the objective function.</p>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@MLPObjectiveextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait that defined the signature of the objective function.<br>
++= for updating parameters if needed<br>
+normalize to normalize the output.</p>
     </li><li name="org.scalaml.supervised.nnet.MLP.MLPRegression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="MLPRegressionextendsMLP.MLPObjective"></a>
       <a id="MLPRegression:MLPRegression"></a>
@@ -121,8 +156,12 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <a href="MLP$$MLPRegression.html"><span class="name">MLPRegression</span></a><span class="result"> extends <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Class signature for the Regression objective for the MLP
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@MLPRegressionextendsMLP.MLPObjective" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class signature for the Regression objective for the MLP
 </p>
     </li></ol>
             </div>
@@ -132,19 +171,6 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
         <div id="values" class="values members">
               <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="!=(x$1:AnyRef):Boolean"></a>
-      <a id="!=(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
@@ -155,8 +181,12 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <a id="##():Int"></a>
@@ -168,22 +198,13 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@##():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="==(x$1:AnyRef):Boolean"></a>
-      <a id="==(AnyRef):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a>
       <a id="==(Any):Boolean"></a>
       <h4 class="signature">
@@ -194,8 +215,12 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.scalaml.supervised.nnet.MLP#EPS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="EPS:Double(1.0E-5)"></a>
       <a id="EPS:Double(1.0E-5)"></a>
@@ -207,46 +232,62 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">EPS</span><span class="result">: Double(1.0E-5)</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@EPS:Double(1.0E-5)" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.nnet.MLP#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](state:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblVector,objective:org.scalaml.supervised.nnet.MLP.MLPObjective)(implicitevidence$4:T=&gt;Double):org.scalaml.supervised.nnet.MLP[T]"></a>
-      <a id="apply[T](MLPConfig,Array[Array[T]],DblVector,MLPObjective)((T)⇒Double):MLP[T]"></a>
+      <a id="apply[T](config:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblVector)(implicitevidence$4:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]"></a>
+      <a id="apply[T](MLPConfig,Array[Array[T]],DblVector)((T)⇒Double,MLPObjective):MLP[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="state">state: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="features">features: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/Types$$ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblVector">DblVector</a></span>, <span name="objective">objective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="config">config: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="features">features: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/types/ScalaMl$.html#DblVector=Array[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblVector">DblVector</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="mlpObjective">mlpObjective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@apply[T](config:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblVector)(implicitevidence$4:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.nnet.MLP#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](state:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblMatrix,objective:org.scalaml.supervised.nnet.MLP.MLPObjective)(implicitevidence$3:T=&gt;Double):org.scalaml.supervised.nnet.MLP[T]"></a>
-      <a id="apply[T](MLPConfig,Array[Array[T]],DblMatrix,MLPObjective)((T)⇒Double):MLP[T]"></a>
+      <a id="apply[T](config:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblMatrix)(implicitevidence$3:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]"></a>
+      <a id="apply[T](MLPConfig,Array[Array[T]],DblMatrix)((T)⇒Double,MLPObjective):MLP[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="state">state: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="features">features: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="objective">objective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="config">config: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="features">features: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/types/ScalaMl$.html#DblMatrix=org.scalaml.core.types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblMatrix">DblMatrix</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="mlpObjective">mlpObjective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@apply[T](config:org.scalaml.supervised.nnet.MLPConfig,features:Array[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblMatrix)(implicitevidence$3:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="org.scalaml.supervised.nnet.MLP#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[T](state:org.scalaml.supervised.nnet.MLPConfig,xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.Types.ScalaMl.DblMatrix,objective:org.scalaml.supervised.nnet.MLP.MLPObjective)(implicitevidence$2:T=&gt;Double):org.scalaml.supervised.nnet.MLP[T]"></a>
-      <a id="apply[T](MLPConfig,XTSeries[Array[T]],DblMatrix,MLPObjective)((T)⇒Double):MLP[T]"></a>
+      <a id="apply[T](config:org.scalaml.supervised.nnet.MLPConfig,xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblMatrix)(implicitevidence$2:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]"></a>
+      <a id="apply[T](MLPConfig,XTSeries[Array[T]],DblMatrix)((T)⇒Double,MLPObjective):MLP[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="state">state: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/Types$$ScalaMl$.html#DblMatrix=org.scalaml.core.Types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.Types.ScalaMl.DblMatrix">DblMatrix</a></span>, <span name="objective">objective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="config">config: <a href="MLPConfig.html" class="extype" name="org.scalaml.supervised.nnet.MLPConfig">MLPConfig</a></span>, <span name="xt">xt: <a href="../../core/XTSeries.html" class="extype" name="org.scalaml.core.XTSeries">XTSeries</a>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]]</span>, <span name="labels">labels: <a href="../../core/types/ScalaMl$.html#DblMatrix=org.scalaml.core.types.ScalaMl.DMatrix[Double]" class="extmbr" name="org.scalaml.core.types.ScalaMl.DblMatrix">DblMatrix</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>, <span name="mlpObjective">mlpObjective: <a href="MLP$$MLPObjective.html" class="extype" name="org.scalaml.supervised.nnet.MLP.MLPObjective">MLPObjective</a></span>)</span><span class="result">: <a href="MLP.html" class="extype" name="org.scalaml.supervised.nnet.MLP">MLP</a>[<span class="extype" name="org.scalaml.supervised.nnet.MLP.apply.T">T</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@apply[T](config:org.scalaml.supervised.nnet.MLPConfig,xt:org.scalaml.core.XTSeries[Array[T]],labels:org.scalaml.core.types.ScalaMl.DblMatrix)(implicitevidence$2:T=&gt;Double,implicitmlpObjective:org.scalaml.supervised.nnet.MLP.MLPObjective):org.scalaml.supervised.nnet.MLP[T]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -259,7 +300,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
@@ -272,7 +317,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -291,7 +340,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a>
@@ -304,7 +357,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
@@ -317,7 +374,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -336,7 +397,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
@@ -349,7 +414,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -362,7 +431,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
@@ -375,7 +448,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
@@ -388,7 +465,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
@@ -401,7 +482,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
@@ -414,7 +499,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
@@ -427,7 +516,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@toString():String" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
@@ -440,7 +533,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -459,7 +556,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -478,7 +579,11 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <span class="symbol">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalaml.supervised.nnet.MLP$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@throws</span><span class="args">(<span>
       
@@ -515,6 +620,7 @@ Define the class/trait hierarchy for the objective of the MLP {classification, r
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../lib/template.js"></script>
+
+
     </body>
       </html>
