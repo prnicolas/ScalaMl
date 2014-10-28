@@ -6,28 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow
 
 import org.scalaml.core._FCT
 import org.scalaml.stats.Validation
-
-	/**
-	 * <p>Parameterized pipe operator for processing data within a workflow with
-	 * a T as input type and U as output type. The trait implements the F# pipe
-	 * operator |>.</p>
-	 * @author Patrick Nicolas
-	 * @since December, 15, 2013
-	 */
-trait PipeOperator[-T, +U] {
-  def |> (data: T): Option[U]
-}
-
-
-object PipeOperator {
-	def identity[T] = new PipeOperator[T,T] { override def |> (data: T): Option[T] = Some(data) }
-}
+import org.scalaml.core.design.PipeOperator
+import scala.reflect.ClassTag
 
 
 	/**
@@ -41,10 +27,10 @@ object PipeOperator {
 	 * @author Patrick Nicolas
 	 * @since December 19, 2013
 	 */
-class Transform[-T, +U](val op: PipeOperator[T, U]) extends _FCT[Function[T, Option[U]]](op.|>)  {
+class Transform[-T: ClassTag, +U](op: PipeOperator[T, U]) extends _FCT[Function[T, U]](op.|>)  {
 	require(op != null, "Cannot create a monadic transform with undefined transform function")
 	
-	def |>(data: T): Option[U] = _fct(data)
+	def |> : PartialFunction[T, U] = { case t: T => _fct(t)}
 }
 
 
@@ -55,8 +41,9 @@ class Transform[-T, +U](val op: PipeOperator[T, U]) extends _FCT[Function[T, Opt
 	 */
 import PipeOperator._
 object Transform {
-	def zeroTransform[T] = new Transform[T, T](identity[T])
+	def zeroTransform[T: ClassTag] = new Transform[T, T](identity[T])
 }
+
 
 
 

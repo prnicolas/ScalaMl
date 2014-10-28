@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -17,10 +17,9 @@ import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter, FeatureGenerator}
 import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.workflow.PipeOperator
-import org.scalaml.supervised.Supervised
+import org.scalaml.core.design.PipeOperator
 import java.io.IOException
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import CrfConfig._
 
 	/**
@@ -35,10 +34,10 @@ import CrfConfig._
 	 * @author Patrick Nicolas
 	 * @since April 3, 2014
 	 */
-protected class CrfConfig(val w0: Double, val maxIters: Int, val lambda: Double, val eps:Double, val debug: Int) {
+protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double, debug: Int) {
     validate(w0, maxIters, lambda, eps)
     
-    // textual description of the CRF stateuration
+    // textual description of the CRF configuration
 	val params = new StringBuilder().append("initValue ").append(String.valueOf(w0))
 		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" lambda ")
 		              .append(String.valueOf(lambda)).append( " scale ")

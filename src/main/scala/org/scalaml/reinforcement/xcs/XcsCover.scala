@@ -6,14 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.reinforcement.xcs
 
-import org.scalaml.trading.Signal;
+import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning.QLState
-
 import scala.util.Random
+import org.scalaml.trading.SOperator
+import org.scalaml.ga.Discretization
+
 
         /**
  		 * <p>Implementation of basic covering algorithm. This covering is invoked
@@ -24,7 +26,7 @@ import scala.util.Random
 		 * @since March 25, 2014
 		 * @note Scala for Machine Learning
 		 */
-import XcsRule._
+
 object XcsCover {  
    		/**
    		 * <p>Generates new rules from an existing population. The number of rules
@@ -34,14 +36,15 @@ object XcsCover {
    		 * @throws IllegalArgumenException if the signal is undefined
    		 * @return list of new XCS rules. 
    		 */
-   def create(signal: Signal, numRules: Int): List[XcsRule[Double]] = {
-  	  require(signal != null, "Cannot generates new rules from undefined signal or predicate")
+   def cover(sensor: XcsSensor, actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
+  	  require(sensor != null, "Cannot generates new rules from undefined signal or predicate")
   	  
-  	  Range(0, numRules).foldLeft(List[XcsRule[Double]]()) ( (xs, n) => {
-  	  	 val action: XcsAction[Double] =  createRandomAction(rulesCount + n, 6)  // force conversion
-  	  	 XcsRule[Double](signal, action) :: xs
+  	  actions.foldLeft(List[XcsRule]()) ((xs, act) => {
+  	  	 val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(4)))
+  	  	 new XcsRule(signal, XcsAction(act, Random)) :: xs
   	  })
    } 
 }
+
 
 // -------------------------  EOF -----------------------------------------

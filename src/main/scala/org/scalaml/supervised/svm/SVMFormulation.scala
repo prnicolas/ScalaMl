@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.svm
 
@@ -20,7 +20,7 @@ import libsvm._
 	 * @note Scala for Machine Learning
 	 */
 sealed trait SVMFormulation extends SVMConfigItem {
-  def state(param: svm_parameter): Unit 
+  def update(param: svm_parameter): Unit 
 }
 
 object SVMFormulation {
@@ -41,7 +41,7 @@ import SVMFormulation._
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-case class CSVCFormulation(val c: Double) extends SVMFormulation {
+class CSVCFormulation(val c: Double) extends SVMFormulation {
   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
   
   	/**
@@ -49,7 +49,7 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def state(param: svm_parameter): Unit = {
+  override def update(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.C_SVC
@@ -69,7 +69,7 @@ case class CSVCFormulation(val c: Double) extends SVMFormulation {
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
+class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
@@ -77,7 +77,7 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def state(param: svm_parameter): Unit = {
+  override def update(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 	 
      param.svm_type = svm_parameter.NU_SVC
@@ -98,7 +98,7 @@ case class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulat
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
+class OneSVCFormulation(val nu: Double) extends SVMFormulation {
   require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
   
     /**
@@ -106,7 +106,7 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def state(param: svm_parameter): Unit = {
+  override def update(param: svm_parameter): Unit = {
 	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.ONE_CLASS
@@ -127,7 +127,7 @@ case class OneSVCFormulation(val nu: Double) extends SVMFormulation {
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation { 
+class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation { 
    require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
    require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, "Epsilon factor " + epsilon + " is out of range") 
    
@@ -136,7 +136,7 @@ case class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormula
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-  override def state(param: svm_parameter): Unit = {
+  override def update(param: svm_parameter): Unit = {
   	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.EPSILON_SVR

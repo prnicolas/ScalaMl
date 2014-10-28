@@ -6,21 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.supervised.Supervised
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.core.XTSeries
 import HMM._
 import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-import org.scalaml.supervised.Model
 
 	/**
 	 * <p>Enumeration class to specify the canonical form of the HMM</p>
@@ -34,9 +32,11 @@ object HMMForm extends Enumeration {
 
 
 
-class HMMModel(val lambda: HMMLambda, val obsIdx: Array[Int]) extends Model {
+abstract class HMMModel(val lambda: HMMLambda, val obsIdx: Array[Int]) extends Model {
    require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
    require(obsIdx != null && obsIdx.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
+   
+   val persists = "models/hmm"
 }
 
 
@@ -96,13 +96,13 @@ import HMMForm._
 		 * @since March 2014
 		 * @note Scala for Machine Learning
 		 */
-protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val form: HMMForm, val maxIters: Int)(implicit f: DblVector => T)  
+protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T)  
                            extends PipeOperator[DblVector, HMMPredictor] {
 
 	private val logger = Logger.getLogger("HMM")
 	require(lambda != null, "Cannot execute a HMM with undefined lambda model")
 	require(form != null, "Cannot execute a HMM with undefined canonical form")
-	require( maxIters > 1 && maxIters < 1000, "Maximum number of iterations to train a HMM " + maxIters + " is out of bounds")
+	require( maxIters > 1 && maxIters < 1000, s"Maximum number of iterations to train a HMM $maxIters is out of bounds")
 	
 	protected val state = HMMState(lambda.config, maxIters)
 	
@@ -113,6 +113,21 @@ protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val for
 		 * @param obs set of observation of type bounded by Array[Int]
 		 * @return HMMPredictor instance if no computation error occurs, NONE otherwise
 		 */
+		
+	override def |> : PartialFunction[DblVector, HMMPredictor] = {
+		case obs: DblVector if(obs != null && obs.size > 2) => {
+			Try { 
+			   form match {
+			     case EVALUATION => evaluate(obs)
+			     case DECODING => decode(obs)
+			   } 
+			} match {
+				case Success(prediction) =>prediction
+				case Failure(e) => Display.error("HMM.|> ", logger, e); null
+			}
+	   }
+	}
+	/*
 	def |> (obs: DblVector): Option[HMMPredictor] = {
 		require(obs != null, "Cannot perform an evaluaton or decoding of HMM with undefined observations")
 
@@ -126,6 +141,8 @@ protected class HMM[@specialized T <% Array[Int]](val lambda: HMMLambda, val for
 			case Failure(e) => Display.error("HMM.|> ", logger, e); None
 		}
 	}
+	* 
+	*/
 
 		/**
 		 * <p>Train HMM with a set of observations to extract the Lambda model.</p>

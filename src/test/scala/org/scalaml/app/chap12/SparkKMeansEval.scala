@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap12
 
@@ -18,46 +18,59 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import com.typesafe.config.Config
 import akka.actor.Props
 import scala.concurrent.{Await, duration}
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.scalability.spark._
 import org.apache.spark.SparkContext
 import org.apache.spark.storage.StorageLevel
 import org.scalaml.scalability.akka._
 import org.scalaml.scalability.scala._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+import scala.util.{Try, Success, Failure}
 
 
-
-object SparkKMeansEval extends AkkaEval {
-  final val K = 8
-  final val numRuns = 16
-
-  def run : Unit = {
-  		  
-  	 extractVolatilityVolume match {
-		case Some(x) => {
-		   val volatilityVol = XTSeries[DblVector](x(0).zip(x(1)).map( x => Array[Double](x._1, x._2)))
+object SparkKMeansEval {
+  val K = 8
+  val numRuns = 16
+  val maxIters = 200
+  val path = "resources/data/chap12/CSCO.csv"
+  val logger = Logger.getLogger("SparkKMeansEval")
+  
+  def run: Int = {
+  	Try {
+  	   val input = extract
+	   val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
 		   
-		   val kmeansConfig = SparkKMeansConfig(K, numIters, numRuns)
-		   implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
+	   val config = new SparkKMeansConfig(K, maxIters, numRuns)
+	   implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
 		   
-		   val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
-		   val sparkKMeans = SparkKMeans(kmeansConfig, rddConfig, volatilityVol)
+	   val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
+	   val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
 		   
-		   val obs = Array[Double](0.23, 0.67)
-		   sparkKMeans |> obs match {
-		  	 case Some(clusterId) => println("(" + obs(0) + "," + obs(1) + ") = " + clusterId)
-		  	 case None => println("Failed to predict data")
-		   }
+	   val obs = Array[Double](0.23, 0.67)
+       val clusterId1 = sparkKMeans |> obs
+	   Display.show(s"(${obs(0)},${obs(1)}) = $clusterId1", logger)
 		   
-		   val obs2 = Array[Double](0.56, 0.11)
-		   sparkKMeans |> obs2 match {
-		  	 case Some(clusterId) => println("(" + obs2(0) + "," + obs2(1) + ") = " + clusterId)
-		  	 case None => println("Failed to predict data")
-		   }
-		}
-		case None => println("Failed to extract data")
-  	 }
+	   val obs2 = Array[Double](0.56, 0.11)
+	   val clusterId2 = sparkKMeans |> obs2 
+	   Display.show(s"(${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
+	 }
+	 match {
+	   case Success(n) => n
+	   case Failure(e) => Display.error("SparkKMeansEval.run", logger, e)
+	 }
   }
+  
+  private def extract: List[DblVector] = {
+      import org.scalaml.trading.YahooFinancials
+      import org.scalaml.workflow.data.DataSource
+        
+      val extractors = List[Array[String] => Double](
+      	 YahooFinancials.volatility, YahooFinancials.volume )	
+
+	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors
+   }
 }
+
 
 // ---------------------------------  EOF -------------------------

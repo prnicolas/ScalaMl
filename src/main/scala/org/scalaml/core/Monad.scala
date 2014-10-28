@@ -6,10 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.core
 
+import scala.language.higherKinds
 
 	/**
 	 * <p>Generic definition of a Monad used as a template for creating transforms.</p>
@@ -75,12 +76,18 @@ class _FCT[+T](val _fct: T) {
 	 * value.
 	 */
 object _FCT {
+     /**
+      * Define the zero value for the FCT monad.
+      * @param fct contained (i.e. data transformation) element
+      * @return an instance of the container with a contained element, fct
+      */
   def zeroFCT[T](fct: T): _FCT[T] = new _FCT[T](fct)
-		 /**
-		  * Generic constructor for the container class.
-		  * @param item wrapped in the monadic container
-		  * @return an instance of the the monadic container.
-		  */
+		
+	/**
+	 * Generic constructor for the container class.
+	 * @param item wrapped in the monadic container
+	 * @return an instance of the monadic container.
+	 */
   def apply[T](t: T): _FCT[T] = new _FCT[T](t)
 }
 

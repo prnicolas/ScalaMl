@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap12
 
@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import com.typesafe.config.Config
 import akka.actor.Props
 import scala.concurrent.{Await, duration}
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.scalability.spark._
 import org.apache.spark.SparkContext
 import org.apache.spark.storage.StorageLevel
@@ -27,7 +27,7 @@ import org.scalaml.scalability.scala._
 
 
 
-
+/*
 object ScalaParallelCollectionEval {
   final val descriptor = "Evaluation performance Scala parallel collections"	
 	
@@ -36,7 +36,7 @@ object ScalaParallelCollectionEval {
      import scala.collection.mutable.ArraySeq
      import scala.collection.parallel.ForkJoinTaskSupport
      import scala.concurrent.forkjoin.ForkJoinPool
-     
+     /*
      println(descriptor)
 
 	 val sz = 100000
@@ -47,13 +47,17 @@ object ScalaParallelCollectionEval {
 	
 	 (100000 to 2000000 by 100000) foreach( i => {
 	    val data = Array.tabulate( i) ( _ * 0.1)
-	    val test = new ParallelCollections[Double](data, 4)
+	    val test = new CollectionsBenchmark[Double](data, 4)
 			
 		test.map(x => 2.5*Math.sin(0.01*x) + 2.0*Math.cos(0.01*x))
 		test.reduceLeft((s, x) => s + x)
 	 })
+	 * 
+	 */
   }
 }
+* 
+*/
 
 
 // ---------------------------------  EOF -------------------------

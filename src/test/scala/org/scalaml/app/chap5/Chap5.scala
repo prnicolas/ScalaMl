@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap5
 
@@ -14,12 +14,29 @@ import org.scalatest.FunSuite
 
 
 final class Chap5 extends FunSuite {
-   test("Binomial Naive Bayes evaluation") {
-  	  BinomialBayesEval.run(Array[String]("0.5", "8"))
+   test("Chapter 5: Binomial Naive Bayes evaluation") {
+  	  assert(BinomialBayesEval.run(Array[String]("0.5", "8")) >=0, "Chap5.BinomialBayesEval failed")
+  	  
+  	  val TRAIN_VALIDATION_RATIO = "0.8"
+	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
+	  
+	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
+	  
+	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
+	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
    }
    
-   test("Naive Bayes text analysis evaluation") {
-  	  TextBayesEval.run
+   test("Chapter 5: Naive Bayes text analysis evaluation") {
+  	  assert(TextBayesEval.run >= 0, "Chap5. Text Analysis using Naive Bayes failed")
+   }
+   
+   test("Chapte 5: Naive Bayes and function classification") {
+  	   	assert(FunctionClassificationEval.run >= 0, "Chap5. Text Analysis using Naive Bayes failed")
    }
 }
 

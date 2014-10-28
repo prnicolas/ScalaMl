@@ -6,29 +6,29 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.ga
 
 import java.util.BitSet
 import scala.annotation.implicitNotFound
+import org.scalaml.core.types.ScalaMl.DblVector
 
 
+trait Operator {
+  def id: Int
+  def apply(idx: Int): Operator
+}
 
-	/**
-	 * <p>Enumerator for the Boolean operator used as component of a gene. A gene is defined
-	 * as a predicate by a value and an operator.</p>
-	 * @author Patrick Nicolas
-	 * @since August 28, 2013
-	 */
-object Operator extends Enumeration  {
-  type Operator = Value
-  val NONE, LESS_THAN, EQUAL, GREATER_THAN = Value
+object NO_OPERATOR extends Operator {
+  override def id: Int = -1
+  def apply(idx: Int): Operator = NO_OPERATOR
 }
 
 
 import Gene._
-import Operator._
+
+case class Discretization(toInt: Double => Int, toDouble: Int => Double)
 
 	/**
 	 * <p>Implementation of a gene as a tuple (value, operator) for example the
@@ -50,57 +50,54 @@ import Operator._
 	 * @note Scala for Machine Learning
 	 */
 @implicitNotFound("Gene encoding requires double to integer conversion") 
-class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
+class Gene(val id: String, val target: Double, val op: Operator)(implicit val discr: Discretization) {
   require(op != null, "Cannot create a gene/predicate with undefined operator")
-  
+  require( id != null && id.length > 0, "Cannot create a signal with undefined id")
+   
   		/**
   		 * Bits encoding of the tuple (value, operator) into bits. The encoding
   		 * is executed as part of the instantiation of a gene class.
   		 */
   val bits = {
-  	val bitset = new BitSet(GENE_SIZE)
-    rOp foreach( i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
-  	rValue foreach( i => if( ((discr(value)>>i) & 0x01)  == 0x01) bitset.set(i)  )
-  	bitset
+  	 val bitset = new BitSet(GENE_SIZE)
+     rOp foreach( i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
+  	 rValue foreach( i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
+  	 bitset
   }
   
   override def clone: Gene = 
-    Range(0, bits.length).foldLeft(Gene(value, op))((enc, n) => { 
+    Range(0, bits.length).foldLeft(Gene(id, target, op))((enc, n) => { 
        if( bits.get(n)) 
          enc.bits.set(n)
        enc
      })
+     
+     
+     
+   def score: Double = -1.0
 
-  
-     	/**
-     	 * <p>Method to decode a gene as a bit sets into a tuple (value, operator).</p>\
-     	 * @throws mplicitNotFound if the conversion from integer to double is not provided
-     	 * @return Tuple (Value, Operator)
-     	 */
-  @implicitNotFound("Gene decoding requires Integer to double conversion") 
-  def decode(implicit f_1: Int => Double): (Double, Operator)= {
-     val value = rValue.foldLeft(0) ((valx, i) => valx + (if( bits.get(i) ) (1 << i) else 0) )
-	 val opInt = rOp.foldLeft(0) ((valx, i) => valx + (if( bits.get(i) ) (1 << i) else 0) )
-	 (f_1(value), Operator(opInt) )
-  }
-
-  		
+   		
   		/**
   		 * <p>Implements the cross-over operator between this gene and another
   		 * parent gene.</p>
-  		 * @param index index of the bit to apply the cross-over
+  		 * @param xOverIdx index of the bit to apply the cross-over
   		 * @param that other gene used in the cross-over
   		 * @return a single Gene as cross-over of two parents.
   		 * @throws IllegalArgumenException if the argument are undefined or the index is out of range
   		 */
-  def +- (index: Int, that: Gene): Gene = {
+  def +- (that: Gene, idx: GeneticIndices): Gene = {
   	 require(that != null, "Cannot cross over this gene with undefined gene")
-  	 require(index >= 0 && index < GENE_SIZE, "Index " + index + " for gene cross-over is out of range")
-  	 
-     val newGene = clone
-     Range(index, bits.size).foreach(n => if( that.bits.get(n) ) newGene.bits.set(n) else newGene.bits.clear(n))
-     newGene
+       
+     val clonedBits = cloneBits(bits)
+     Range(idx.geneOpIdx, bits.size).foreach(n => 
+    	if( that.bits.get(n) ) clonedBits.set(n) else clonedBits.clear(n))
+    	
+     val valOp = decode(clonedBits)
+  	 Gene(id, valOp._1, valOp._2)
   }
+  
+  @inline
+  final def size = GENE_SIZE
   
     	/**
   		 * <p>Implements the mutation operator on this gene</p>
@@ -108,11 +105,31 @@ class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
   		 * @return a single mutated gene
   		 * @throws IllegalArgumenException if the mutation index is out of range
   		 */
-  def ^ (index: Int): Unit = {
-  	 require(index >= 0 && index < GENE_SIZE, "Index " + index + " for gene cross-over is out of range")
-     bits.flip(index)
-  }
+  def ^ (idx: GeneticIndices): Gene = ^ (idx.geneOpIdx)
+  	/*
+     val clonedBits = cloneBits(bits)
+  	 clonedBits.flip(idx.geneOpIdx)
+  	
+  	 val valOp = decode(clonedBits)
+  	 Gene(id, valOp._1, valOp._2)
+  	 * 
+  	 */
 
+  
+  def ^ (idx: Int): Gene = {
+  	 val clonedBits = cloneBits(bits)
+  	 clonedBits.flip(idx)
+  	 val valOp = decode(clonedBits)
+  	 Gene(id, valOp._1, valOp._2)
+  }
+  
+  
+  def decode(bits: BitSet): (Double, Operator) = 
+	 (discr.toDouble(convert(rValue, bits)), op(convert(rOp, bits)) )
+  
+
+  def show: String = new StringBuilder(id).append(" ").append(op).append(" ").append(target).toString
+  
   override def toString: String = 
      Range(0, bits.size).foldLeft(new StringBuilder) ((buf, n) => buf.append( (if( bits.get(n) == true) "1" else "0"))).toString
 }
@@ -122,8 +139,17 @@ class Gene(val value: Double, op: Operator)(implicit discr: Double => Int)  {
 		 * Companion object for the Gene class to define constants and constructors.
 		 */
 object Gene {
-    def apply(value: Double, op: Operator)(implicit f: Double => Int) : Gene = new Gene(value, op)(f)
-    def apply(implicit f: Double => Int) : Gene = new Gene(0.0, NONE)(f)
+    def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Gene = new Gene(id, target, op)
+      
+    def cloneBits(bits: BitSet): BitSet = {
+      Range(0, bits.length).foldLeft(new BitSet)((enc, n) => { 
+        if( bits.get(n)) 
+           enc.set(n)
+        enc
+      })
+    }
+    
+   private def convert(r: Range, bits: BitSet): Int = r.foldLeft(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
     
 	final val VALUE_SIZE = 32
     final val OP_SIZE = 2

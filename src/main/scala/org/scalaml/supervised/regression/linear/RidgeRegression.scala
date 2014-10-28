@@ -6,18 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression.linear
 
 import org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
 import org.apache.commons.math3.linear.{RealMatrix, RealVector, QRDecomposition, LUDecomposition}
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.XTSeries
 import scala.annotation.implicitNotFound
 import org.apache.commons.math3.stat.StatUtils
 import org.apache.commons.math3.stat.descriptive.moment.SecondMoment
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
@@ -46,7 +46,7 @@ final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val y: DblV
     type Feature = Array[T]
 	
 	private val logger = Logger.getLogger("RidgeRegression")
-	private var qr: QRDecomposition = null
+	private var qr: QRDecomposition = _
   	private[this] val model: Option[RegressionModel] = {
     	
 	  Try {
@@ -87,6 +87,14 @@ final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val y: DblV
 		 * @throws IllegalStateException if the size of the input vector is incorrect
 		 * @return predicted value if the model has been successfully trained, None otherwise
 		 */
+   override def |> : PartialFunction[Feature, Double] = {
+     case x: Feature if(x != null && model != None && x.size != model.get.size+1) => {
+        val m = model.get
+        x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2)
+     }
+   }
+
+    /*
     override def |> (x: Feature): Option[Double] = model match {
       case Some(m) => {
     	 if( x == null || x.size != m.size +1) 
@@ -95,6 +103,8 @@ final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val y: DblV
       }
       case None => None
     }
+    * 
+    */
   
     override protected def newXSampleData(x: DblMatrix): Unit =  {
         super.newXSampleData(x)

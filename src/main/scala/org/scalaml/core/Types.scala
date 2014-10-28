@@ -6,23 +6,24 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.core
 
-
+import scala.language.implicitConversions
 
 
 
 	/**
-	 * <p>Singleton that define the types and conversion used in the Scala for Machine learning
+	 * <p>Package that encapsulates the types and conversion used in the Scala for Machine learning
 	 * project. Internal types conversion are defined by the Primitives singleton. The type conversion
-	 * related to each specific libraries are defined by their respective singleton (i.e CommonsMath)
+	 * related to each specific libraries are defined by their respective singleton (i.e CommonsMath).</p>
+	 * 
 	 *  @author Patrick Nicolas
 	 *  @since Feb 23, 2014
 	 *  @note Scala for Machine Learning
 	 */
-object Types {  
+package types {  
 
 
 	/**
@@ -109,7 +110,7 @@ object Types {
   }
 
   		/**
-  		 * <p>Implicity conversion from internal primitive types DblVector and DblMatrix to Apache 
+  		 * <p>Implicit conversion from internal primitive types DblVector and DblMatrix to Apache 
   		 * Commons Math types.</p>
   		 * @author Patrick Nicolas
   		 * @since January 23, 2014
@@ -117,13 +118,28 @@ object Types {
   object CommonMath {
   	 import org.apache.commons.math3.linear._
   	 import ScalaMl._
-  	
 	 implicit def double2RealMatrix(data: DblMatrix): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealMatrix2(data: DblVector): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealVector(data: DblVector): RealVector = new ArrayRealVector(data)
   	 implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
   }
+}
 
+object TypesApp extends App {
+	import types.ScalaMl._
+	import types.CommonMath._
+	import org.apache.commons.math3.linear._
+	  	 
+	 val B: DblMatrix = ((0.0, 0.0), (0.0, 0.0))  // convert into 1 by 2 matrix
+     val H: DblMatrix = ((1.0, 0.0), (0.0, 1.0))
+	 val P0: DblMatrix = ((0.4, 0.4), (0.4, 0.4))
+	 val x0: DblVector = (5.0, 0.0)
+	 
+	 val Q = new DblMatrix(B.size).map(_ => Array.fill(B(0).size)(1.7) )
+	 val rB: RealMatrix = B
+	 var rQ: RealMatrix = Q
+	 println(rQ.toString)
+	 
 }
 
 

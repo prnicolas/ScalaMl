@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap2
 
@@ -15,9 +15,11 @@ import scala.collection.mutable.ArrayBuffer
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.workflow._
 import scala.util.Random
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.plots.LightPlotTheme
-
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 
@@ -28,47 +30,36 @@ import org.scalaml.plots.LightPlotTheme
 	 * @since February 4, 2014
 	 */
 object TransformExample {
+	private val logger = Logger.getLogger("TransformExample")
 	val op1 = new PipeOperator[Int, Double] {
-		def |> (n: Int): Option[Double] = Some(Math.sin(n.toDouble))
+		override def |> : PartialFunction[Int, Double] = {
+		  case n: Int if(n > 0) => Math.sin(n.toDouble)
+		}
 	}
 	
-	def run: Unit = { 
-		println("Evaluation of workflow framework")
-		
+	def run: Int = { 
+		Display.show("Evaluation of workflow framework", logger)
 		val tform = new Transform[Int, Double](op1)
-		tform |> 6 match {
-			case Some(res) => println(res)
-			case None => {}
-		}
-		
-		def g(f: Int =>Option[Double]): (Int=> Long) = { 
-			(n: Int) => {
-				f(n) match {
-					case Some(x) => x.toLong
-					case None => -1L
-				}
-			}
-		}
-	    val z : Long = tform.map(f => g(f)).apply(4)
+		Display.show(s"TransformExample.run ${tform |> 6}", logger)
 	}
 }
 
 		/**
-		 * <p>Demonstration class to illustrate the dependency injection based framework 
+		 * <p>Class to illustrate the dependency injection based framework 
 		 * for building dynamic workflow. This first data transformation samples a function 
 		 * f over the interval [0, 1].</p>
+		 * @constructor Instantiate a Sampler data transformation. [samples] Number of sampled value to be generated within the interval [0, 1]
 		 * @param Number of samples to be generated within the interval [0, 1]
 		 * @throws IllegalArgumentException if samples is out of range
 		 * @author Patrick Nicolas 
 		 * @since January 22, 2014
 		 */
 final class Sampler(val samples: Int) extends PipeOperator[Double => Double, DblVector] {
-  require(samples > 0 && samples < 1E+5, "Number of samples " + samples + " is out of range")
+  require(samples > 0 && samples < 1E+5, s"Sampler: the number of samples $samples is out of range")
 	  	  
-   override def |> (f: Double => Double): Option[DblVector] = { 
-      require( f != null, "sampler operation undefined")
-      
-  	  Some(Array.tabulate(samples)(n => f(n.toDouble/samples)) )
+   override def |> : PartialFunction[(Double => Double), DblVector] = { 
+     case f: (Double => Double) if(f != null) => 
+    	  Array.tabulate(samples)(n => f(n.toDouble/samples)) 
    }
 }
 
@@ -80,11 +71,16 @@ final class Sampler(val samples: Int) extends PipeOperator[Double => Double, Dbl
 		 * @since January 22, 2014
 		 */
 final class Normalizer extends PipeOperator[DblVector, DblVector] {
-	
+  override def |> : PartialFunction[DblVector, DblVector] = { 
+    case x: DblVector if(x != null && x.size > 1) => Stats[Double](x).normalize
+   }
+  /*
    override def |> (data: DblVector): Option[DblVector] = { 
-  	 require(data != null && data.size > 1, "Input to normalizer undefined")
+  	 require(data != null && data.size > 1, "Normalizer: input vector is undefined")
   	 Some(Stats[Double](data).normalize)
    }
+   * 
+   */
 }
 
 		/**
@@ -94,11 +90,10 @@ final class Normalizer extends PipeOperator[DblVector, DblVector] {
 		 * @author Patrick Nicolas 
 		 * @since January 22, 2014
 		 */
-final class Reducer extends PipeOperator[DblVector, Int] {
-	   
-  override def |> (data: DblVector): Option[Int] = { 
-  	 require(data != null && data.size > 1, "Input to normalizer undefined")
-  	 Range(0, data.size) find( data(_) == 1.0)
+final class Reducer extends PipeOperator[DblVector, Int] { 
+  override def |> : PartialFunction[DblVector, Int] = { 
+    case x: DblVector if(x != null && x.size > 1) => 
+    	  Range(0, x.size).find(x(_) == 1.0).get
   }
 }
 
@@ -112,7 +107,10 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @note Scala for Machine Learning
 	 */
 object WorkflowEval {
-   def run: Unit = {
+   private val logger = Logger.getLogger("WorkflowEval")
+   
+   def run: Int = {
+  	  val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
 	  val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
 		                         with PreprocModule[Double => Double, DblVector] 
 		                                  with ProcModule[DblVector, DblVector] 
@@ -122,11 +120,8 @@ object WorkflowEval {
 			val proc: PipeOperator[DblVector, DblVector] = new Normalizer
 			val postProc: PipeOperator[DblVector, Int] = new Reducer
 		}
-		
-		workflow |> ((x: Double) => Math.log(x + 1.0) + Random.nextDouble) match {
-			case Some(index) => println(index)
-			case None => println("no found")
-		}
+		val result = workflow |> g 
+		Display.show(s"WorkflowEval.run with index = $result", logger)
 	}
 }
 

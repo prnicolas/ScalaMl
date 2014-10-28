@@ -9,12 +9,21 @@
 package org.scalaml.reinforcement.xcs
 
 import scala.collection.mutable.HashMap
-
-import org.scalaml.trading.Signal
-import org.scalaml.ga.{Operator, Gene}
+import org.scalaml.trading.{Signal, EQUAL}
+import org.scalaml.ga.{Operator, Gene, Discretization}
 import org.scalaml.reinforcement.qlearning.QLState
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import XcsRule._
+import org.scalaml.ga.Chromosome
+import scala.util.Random
+
+
+class XcsAction(val sensorid: String, val _target: Double)(implicit val _discr: Discretization) extends Gene(sensorid, _target, EQUAL)
+
+object XcsAction {
+	val XCSACTION_SIZE = 32
+	def apply(action: XcsAction, r: Random): XcsAction = (action ^ r.nextInt(XCSACTION_SIZE)).asInstanceOf[XcsAction]
+}
 
 		/**
 		 * <p>Class that define a rule or policy in XCS algorithm. The rule is encoded as a gene so
@@ -30,12 +39,11 @@ import XcsRule._
 		 * @note Scala for Machine Learning
 		 */
 
-class XcsRule[T <% Double](val signal: Signal, val action: XcsAction[T]) extends Gene(signal.value, signal.op)(DIGITIZE) {
+class XcsRule(val signal: Signal, val action: XcsAction) {
    require(signal != null, "Cannot create an XCS rule with undefined signal/predicate")
    require(action != null, "Cannot create an XCS rule with undefined action")
-   
-   rulesCount += 1
 }
+
 
 
 			/**
@@ -49,17 +57,15 @@ class XcsRule[T <% Double](val signal: Signal, val action: XcsAction[T]) extends
 			 * @since March 24, 2014
 		     * @note Scala for Machine Learning
 			 */
-import Operator._
+
 object XcsRule {
 	import QLState._
-	final val DIGITIZE = (x:Double) => (x*1e+4).floor.toInt
-	type XcsAction[T] = QLState[T]
-	
-	def createRandomAction[T <% Double](id: Int, dim: Int): XcsAction[T] = createRandomState(id, dim) 
-	
-	var rulesCount = 0
-	def apply[T <% Double](signal: Signal, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](signal, action)
-	def apply[T <% Double](id: String, threshold: Double, op: Operator, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](Signal(id, threshold, op)(DIGITIZE), action)
+//	final val DIGITIZE = Discretization((x:Double) => (x*1e+4).floor.toInt, (n: Int) => n.toDouble*1e-4 )
+    type XcsSensor = Signal
+
+//	var rulesCount = 0
+//	def apply[T <% Double](signal: Signal, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](signal, action)
+//	def apply[T <% Double](id: String, threshold: Double, op: Operator, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](Signal(id, threshold, op)(DIGITIZE), action)
 }
 
    

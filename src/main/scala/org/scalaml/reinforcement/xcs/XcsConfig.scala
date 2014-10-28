@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.reinforcement.xcs
 
@@ -15,7 +15,6 @@ import scala.io.Source
 import org.scalaml.ga.{Chromosome, GAConfig, Population}
 import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning.QLConfig
-import XcsConfig._
 
 
 		/**
@@ -33,18 +32,10 @@ import XcsConfig._
 		 * @note Scala for Machine Learning
 		 */
 
-class XcsConfig(val maxPopulationSize: Int, val gaConfig: GAConfig, val qConfig: QLConfig, val init: () => Population[XcsRule[Double]]) {
-	require(maxPopulationSize > 0 && maxPopulationSize < MAX_POPULATION_SIZE, "Maximum size of population for XCS " + maxPopulationSize + " is out of range")
-	require(gaConfig != null, "Cannot initialize XCS algorithm with undefined GA stateuration")
-	require(qConfig != null, "Cannot initialize XCS algorithm with undefined Q-Learning stateuration")
-	require(init != null, "Cannot training XCS without initializing the population of rules")
+class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) {
+	require(gaConfig != null, "Cannot initialize XCS algorithm with undefined GA configuration")
+	require(qlConfig != null, "Cannot initialize XCS algorithm with undefined Q-Learning configuration")
 }
-
-
-object XcsConfig {
-	final val MAX_POPULATION_SIZE = 10000
-}
-
 
 
 // --------------------------  EOF ------------------------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.bayes
 
@@ -18,13 +18,14 @@ import NaiveBayesModel._
 
 
 	/**
-	 * Abstract class for all the Naive Bayes model. The purpose of the model is to 
-	 * classify a new set of observations.
-	 * @param density Probabiliy density function used in computing the conditional probability p(C|x)
+	 * <b>Abstract class for all the Naive Bayes model. The purpose of the model is to 
+	 * classify a new set of observations.</b>
+	 * @constructor Create a generic Naive Bayes Model using a specific density. density Probability [density] Function used in computing the conditional probability p(C|x)
+	 * @param density Probability density function used in computing the conditional probability p(C|x)
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 8, 2014
-	 * @note Scala for Machine Learning
+	 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 	 */
 abstract class NaiveBayesModel[T <% Double](val density: Density) {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
@@ -46,7 +47,8 @@ object NaiveBayesModel {
 
 
 	/**
-	 * Defines a 2-class Naive Bayes model
+	 * <p>Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and negative outcome and for a specific density function.</p>
+	 * @constructor Instantiation of a Binomial Naive Bayes model. [positives] Prior for the class of positive outcomes. [negatives] Prior for the class of negatives outcomes. [density] Probability density function used in computing the conditional probability p(C|x)
 	 * @param positives Prior for the class of positive outcomes
 	 * @param negatives Prior for the class of negatives outcomes
 	 * @param density Probability density function used in computing the conditional probability p(C|x)
@@ -54,27 +56,26 @@ object NaiveBayesModel {
 	 * @see org.scalaml.supervised.bayes.NaiveBayesModel
 	 * @author Patrick Nicolas
 	 * @since February 11, 2014
-	 * @note Scala for Machine Learning
+	 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models.
 	 */
-protected class BinNaiveBayesModel[T <% Double](val positives: Likelihood[T], 
-		                                        val negatives: Likelihood[T], 
-		                                        val _density: Density) extends NaiveBayesModel[T](_density) {
-	require(positives !=null, "Cannot classify an observation with undefine positive labels")
-    require(negatives !=null, "Cannot classify an observation with undefine negative labels")
+protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], 
+		                                        negatives: Likelihood[T], 
+		                                        _density: Density) extends NaiveBayesModel[T](_density) {
+	require(positives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine positive labels")
+    require(negatives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine negative labels")
     
     	/**
-    	 * Classify a new observation (or vector)
+    	 * <p>Classify a new observation (features vector) using the Binomial Naive Bayes model.</p>
     	 * @param x new observation
     	 * @return 1 if the observation belongs to the positive class, 0 otherwise
     	 * @throws IllegalArgumentException if any of the observation is undefined.
     	 */
 	override def classify(x: Array[T]): Int = {
-		require(x != null && x.size > 0, "Cannot NB classify an undefined observation")
-		
+		require(x != null && x.size > 0, "BinNaiveBayesModel.classify Cannot classify an undefined observation")
 		if (positives.score(x, density) > negatives.score(x, density)) 1 else 0
 	}
 	
-	override def toString: String = new StringBuilder(positives.toString).append(negatives.toString).toString
+	override def toString: String = s"Positive cases: ${positives.toString}\nNegative cases: ${negatives.toString}"
 }
 
 
@@ -92,28 +93,29 @@ object BinNaiveBayesModel {
 
 
 	/**
-	 * <p>Defines a Multiclass (or multinomial) Naive Bayes model for n classes.The number of classes is defined
-	 * as likelihoodSet.size. Use the binomial Naive Bayes model BinNaiveBayesModel for a two class problem.</p>
-	 *
+	 * <p>Defines a Multi-class (or multinomial) Naive Bayes model for n classes.The number of classes is defined
+	 * as likelihoodSet.size. The binomial Naive Bayes model, BinNaiveBayesModel, should be used for the two class problem.</p>
+	 * @constructor Instantiates a Multinomial Naive Bayes model (number classes > 2). [likelihoodSet] List of likelihood or priors for every classes in the model. [density] Probability density function used in computing the conditional probability p(C|x)
 	 * @param likelihoodSet list of likelihood for all the classes
 	 * @param _density Probability density function used in computing the conditional probability p(C|x)
-	 * @throws IllegalArgumentException if any of the class parameters is undefined.
+	 * @throws IllegalArgumentException if any of the class parameters is undefined
+	 * 
 	 * @author Patrick Nicolas
 	 * @since February 11, 2014
 	 * @note Scala for Machine Learning
 	 */
-protected class MultiNaiveBayesModel[T <% Double](val likelihoodSet: List[Likelihood[T]], 
-		                                          val _density: Density) extends NaiveBayesModel[T](_density) {
-  require(likelihoodSet != null && likelihoodSet.size > 0, "Cannot classify using Multi-NB with undefined classes")
+protected class MultiNaiveBayesModel[T <% Double](likelihoodSet: List[Likelihood[T]], 
+		                                          _density: Density) extends NaiveBayesModel[T](_density) {
+  require(likelihoodSet != null && likelihoodSet.size > 0, "MultiNaiveBayesModel Cannot classify using Multi-NB with undefined classes")
   
   		 /**
-    	 * Classify a new observation (or vector) using the Multinomial Naive Bayes model
+    	 * <p>Classify a new observation (or vector) using the Multinomial Naive Bayes model.</p>
     	 * @param x new observation
     	 * @return the class ID the new observations has been classified.
     	 * @throws IllegalArgumentException if any of the observation is undefined.
     	 */
   override def classify(x: Array[T]): Int = 
-    likelihoodSet.sortWith( (p1,p2) => p1.score(x, density) > p2.score(x, density)).head.label
+     likelihoodSet.sortWith((p1, p2) => p1.score(x, density) > p2.score(x, density)).head.label
 }
 
 

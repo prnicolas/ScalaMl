@@ -6,17 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.reinforcement.qlearning
 
 
 import scala.util.Random
 import org.scalaml.util.Matrix
-import org.scalaml.core.Types
+import org.scalaml.core.types
+import org.scalaml.core.design.{Config, PipeOperator}
 import QLearning._
-import Types.ScalaMl._
-import org.scalaml.workflow.PipeOperator
+import types.ScalaMl._
+import org.scalaml.util.Display
+import scala.collection.mutable.ArrayBuffer
+
 
 
 		/**
@@ -30,42 +33,20 @@ import org.scalaml.workflow.PipeOperator
 		 * @since January 19, 2014
 		 * @note Scala for Machine Learning
 		 */
-case class QLConfig(val alpha: Double, val gamma: Double, val maxIters: Int) {
-	require(alpha > 0.0 && alpha < 1.0, "Cannot stateure QLearning with incorrect alpha " + alpha)
-	require(gamma > 0.0 && gamma < 1.0, "Cannot stateure QLearning with incorrect gamma " + gamma)
-    require(maxIters > 0 && maxIters < QLearning.MAX_ITERS, "Cannot stateure QLearning maxIters " + alpha + " is out of bounds")
+class QLConfig(val alpha: Double, 
+		       val gamma: Double, 
+		       val episodeLength: Int, 
+		       val numEpisodes: Int, 
+		       val minAccuracy: Double, 
+		       val neighbors: (Int, Int) =>List[Int]) extends Config {
+	require(alpha > 0.0 && alpha < 1.0, s"Cannot initialize QLearning with incorrect alpha $alpha")
+	require(gamma > 0.0 && gamma < 1.0, s"Cannot initialize QLearning with incorrect gamma $gamma")
+    require(minAccuracy  > 0.4 && minAccuracy <= 1.0, s"Cannot initialize QLearning with incorrect minimum quality condition $minAccuracy")
+    val persists = "config/qlearning"
 }
 
 
-
-import QLLabel._
-
-	/**
-		 * Parameterized class that defines the training labels for Q-Learning
-		 * @param labels List of tuples or episodes (Observations, Goal/state) used in the training phase.
-		 * @throws IllegalArgumentException if the list of labels is either undefined or empty
-		 * 
-		 * @author Patrick Nicolas
-		 * @since January 20, 2014
-		 */
-
-class QLLabel[T <% Double](val labels: List[Episode[T]]) {
-   require(labels != null && labels.size > 0, "Cannot traing Q-Learning with undefine labels")	
-	
-  @inline def size: Int = labels.size
-  
-  def state0: QLState[T] = labels(0)._2
-  def data0: DVector[T] = labels(0)._1
-}
-
-
-	/**
-	 * Companion object to QLearningLabel used to define constructors
-	 */
-object QLLabel {
-   type Episode[T] = (DVector[T], QLState[T])
-   def apply[T <% Double](labels: List[(DVector[T], QLState[T])]): QLLabel[T] = new QLLabel[T](labels)
-}
+class QLModel[T](val bestPolicy: QLPolicy[T], val quality: Double)
 
 		/**
 		 * <p>Generic parameterized class that implements the QLearning algorithm. The Q-Learning
@@ -75,32 +56,31 @@ object QLLabel {
 		 * The implementation does not assume that every episode (or training cycle) is successful. 
 		 * At completion of the training, the ratio of labels over initial training set is computed.
 		 * The client code is responsible to evaluate the quality of the model by testing the ratio
-		 * agammast a threshold.</p>
-		 * @param state stateuration for Q-Learning algorithm
+		 * gamma a threshold.</p>
+		 * @param state configuration for Q-Learning algorithm
 		 * @param qLabels training set input used to build the search space (or model)
 		 * @param numStates total number of states in the search space
-		 * @throws IllegalArgumentException if the stateuration or labels are undefined
+		 * @throws IllegalArgumentException if the configuration or labels are undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning
 		 */
-class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val numStates: Int) 
-                                   extends PipeOperator[Episode[T], (QLState[T], Double)]  {
+final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]) 
+                                   extends PipeOperator[QLState[T], QLState[T]]  {
                                   	 
-   require(config != null, "Cannot traing Q-Learning with undefined stateuration")
-   require(qLabels != null, "Cannot traing Q-Learning with undefined training labels")
-   		// Q-Value matrix
-   private val Q = Matrix[Double](numStates, numStates)
+   require(config != null, "Cannot train Q-Learning with undefined configuration")
    
-   		// Reward matrix
-   private val R = Matrix[Double](numStates, numStates)
-       
-   		// SearchSpace as states-actions
-   private val statesActions = QLSpace[T](numStates).statesActions
-   private val trainQuality = train.toDouble/qLabels.size
-   
-   		/**
+   val model: Option[QLModel[T]] = {
+  	   val r = new Random(System.currentTimeMillis)
+  	   val successes = Range(0, config.numEpisodes).foldLeft(0)((s, _) => s + (if(train(r)) 1 else 0))
+  	   val accuracy = successes.toDouble/config.numEpisodes
+  	   if( accuracy> config.minAccuracy )
+  	      Some(new QLModel[T](qlPolicy, accuracy))
+  	   else None
+   }
+
+    		/**
    		 * <p>Prediction method using Q-Learning model. The model is automatically 
    		 * trained during instantiation of the class. It overrides the
    		 * usual data transformation method (PipeOperator)</p>
@@ -109,95 +89,71 @@ class QLearning[T <% Double](val config: QLConfig, val qLabels: QLLabel[T], val 
    		 * the rewards associated to the action from the current state can be computed, None otherwise
    		 * @throws IllegalArgumenException if the entry is undefined.
    		 */
-   override def |>(episode: Episode[T]): Option[(QLState[T], Double)] = {
-  	 require(episode != null, "Cannot predict next state with undefined input")
-  	 
-  	 if( trainQuality > MIN_TRAINING_QUALITY ) {
-	  	 statesActions._2.find( _.from.id == episode._2.id)  match {
-	  	  	case Some(action) => { 
-	  	  	  val bestToState = action.to.maxBy(st => reward(episode._2, st, episode._1))
-	  	  	  Some(bestToState, reward(episode._2, bestToState, episode._1))
-	  	  	}
-	  	  	case None => println("Cannot compute reward for entry " + episode._2.id ); None
-	  	  }
-  	 }
-  	 else
-  		 println("Training failed with a ratio " + trainQuality); None
-   }
-  	  
-   
-   private def reward(from: QLState[T], to: QLState[T], data: DVector[T]): Double = {
-  	  val r = to.V(data) - from.V(data)
-  	  R += (from.id, to.id, r)
-  	  r
-   }
-   
-   private def train: Int = 
-  	   qLabels.labels.foldLeft(0)( (s, episode) => s + {if( search(episode) ) 1 else 0} )
-
-
-    private def maxQ(state: QLState[T]): Double = 
-       statesActions._1.filter( _ != state)
-                       .foldLeft(Double.MinValue) ((mx, x) => { 
-                          if(Q(state.id, x.id) > mx) Q(state.id, x.id) else mx
-                       })
-	
-	private def nextStates(st: QLState[T]): List[QLState[T]] = {
-       statesActions._2.find ( _.from.id == st.id) match {
-	     case Some(ac) =>  ac.to
-	     case None => List.empty
-	   }
-	}
-    
-	
-	override def toString: String =  {
-	   val desc = new StringBuilder("States\n")
-	   desc.append( statesActions._1.foldLeft(new StringBuilder)(( buf, st) => buf.append(st.toString).append("\n")).toString)
-	   desc.append("Actions:\n")
-	   desc.append( statesActions._2.foldLeft(new StringBuilder)(( buf, ac) => buf.append(ac.toString).append("\n")).toString)
-	   desc.toString
-	}
-	
-		/*
-		 * Search method for the training of the XCS
-		 */
-	private[this] def search(episode: (DVector[T], QLState[T])): Boolean =  {
-      var prevState = statesActions._1(Random.nextInt(statesActions._1.size-1))
-      val data = episode._1
-      val goal = episode._2
       
-      Range(0, config.maxIters).find( n => {
+   override def |> : PartialFunction[QLState[T], QLState[T]] = {
+     case state: QLState[T] if(state != null && model != None)  => nextState(state, 0)._1
+   }	  
+           
+   @scala.annotation.tailrec
+   private def nextState(stateIter: (QLState[T], Int)): (QLState[T], Int) =  {
+  	   val states = qlSpace.nextStates(stateIter._1)
+  	   if( states.isEmpty || stateIter._2 >= config.episodeLength) 
+  	      stateIter
+  	   else
+  	      nextState( (states.maxBy(s => model.get.bestPolicy.R(stateIter._1.id, s.id)), stateIter._2+1))
+   }
+   
+	override def toString: String = qlPolicy.toString + qlSpace.toString
 
-         val states = nextStates(prevState)
-         if( !states.isEmpty ) {
-            val state = states.maxBy( m => R(prevState.id, m.id) )
-               
-            val r = reward(prevState, state, data)   
-			val q = Q(prevState.id, state.id)
-			      
-			val nq = q + config.alpha*(r + config.gamma*maxQ(state) - q)
-			Q += (prevState.id, state.id, nq)
-			prevState = state 
-			state.id == goal.id
-         } 
-         else 
-            false
-       }) match {
-      	  case Some(_) => false
-      	  case None => true
-      }
+
+	
+	private[this] def train(r: Random): Boolean =  {
+	   r.setSeed(System.currentTimeMillis*Random.nextInt)
+       qlSpace.isGoal(search((qlSpace.init(r), 0))._1)
     }
-}
+	
+	
+	@scala.annotation.tailrec
+	private def search(st: (QLState[T], Int)): (QLState[T], Int) = {
+		val states = qlSpace.nextStates(st._1)
+
+		if( states.isEmpty || st._2 >= config.episodeLength ) 
+             st		
+		else {
+            val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id) )
+      
+            if( qlSpace.isGoal(state) )
+                (state, st._2)
+            else {
+               val r = qlPolicy.R(st._1.id, state.id)   
+			   val q = qlPolicy.Q(st._1.id, state.id)
+			      
+			   val nq = q + config.alpha*(r + config.gamma*qlSpace.maxQ(state, qlPolicy) - q)
+			   qlPolicy.setQ(st._1.id, state.id,  nq)
+			   search((state, st._2))
+            }
+		}
+	}
+  }
+
+
+class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
 
 		/**
 		 * Companion object to the Q-Learning class used to define constants and constructor
 		 */
-object QLearning {
-  def apply[T <% Double](state: QLConfig, qLabels: QLLabel[T], numStates: Int): QLearning[T] = new QLearning(state, qLabels, numStates)
-
-  final val MAX_ITERS = 5000
-  final val MIN_TRAINING_QUALITY = 0.85
+object QLearning {   
+   def apply[T](config: QLConfig, numStates: Int, goals: Array[Int], input: Array[QLInput], features: Set[T]): QLearning[T] = {
+  	  require(input != null && input.size > 0, "Cannot initialize a Q-learning with undefine input")
+      new QLearning[T](config, QLSpace[T](numStates, goals, features, config.neighbors), new QLPolicy[T](numStates, input))
+   }
+   
+   def apply[T](config: QLConfig, numStates: Int, goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
+  	   apply[T](config, numStates, Array[Int](goal), input, features)
 }
+
+
+
 
 
 // ----------------------------  EOF --------------------------------------------------------------

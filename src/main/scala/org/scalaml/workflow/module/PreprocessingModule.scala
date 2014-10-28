@@ -6,18 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow.module
 
 import scala.Array.fallbackCanBuildFrom
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 
 
 
 trait PreprocessingModule[T] {
+  type DblSeries = XTSeries[Double]
   implicit val convert = (t: T) => Double
   val preprocessor: Preprocessing[T]
   
@@ -25,24 +26,17 @@ trait PreprocessingModule[T] {
   	  def execute(xt: XTSeries[T]): Unit
   }
   
-  abstract class MovingAverage[T] extends Preprocessing[T] with PipeOperator[XTSeries[T], XTSeries[Double]]  {
-  	  override def execute(xt: XTSeries[T]): Unit = this |> xt match {
-  	  	case Some(filteredData) => filteredData.foreach(println)
-  	  	case None => println("Filtering algorithm failed")
-  	  }
+  abstract class MovingAverage[T] extends Preprocessing[T] with PipeOperator[XTSeries[T], DblSeries]  {
+  	  override def execute(xt: XTSeries[T]): Unit = this |> xt
   }
 
-  class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
-	   override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = None
+  class SimpleMovingAverage[T <% Double](period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
+	  override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ => null }
   }
   
-  class DFTFir[T <% Double](val g: Double=>Double) extends Preprocessing[T] with PipeOperator[XTSeries[T], XTSeries[Double]]  {
-
-	  override def |> (xt: XTSeries[T]) : Option[XTSeries[Double]] = None
-	  override def execute(xt: XTSeries[T]): Unit = this |> xt match {
-  	  	case Some(filteredData) => filteredData.foreach(println)
-  	  	case None => println("Filtering algorithm failed")
-  	  }
+  class DFTFir[T <% Double](g: Double=>Double) extends Preprocessing[T] with PipeOperator[XTSeries[T], DblSeries]  {
+	  override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ => null }
+	  override def execute(xt: XTSeries[T]): Unit = (this |> xt).foreach(println)
   }
   
 }

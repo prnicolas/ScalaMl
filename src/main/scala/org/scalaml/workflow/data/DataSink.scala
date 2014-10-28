@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow.data
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.design.PipeOperator
 import java.io.{FileNotFoundException, IOException, PrintWriter}
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
@@ -24,7 +24,7 @@ import org.scalaml.util.Display
 		 * Generic class to load or save files into either HDFS or local files system
 		 */
    
-class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries[T]], Int] {
+class DataSink[T <% String](path: String) extends PipeOperator[List[XTSeries[T]], Int] {
    import XTSeries._
    import scala.io.Source
    
@@ -84,40 +84,43 @@ class DataSink[T <% String](val path: String) extends PipeOperator[List[XTSeries
      }
    }
     
-   override def |> (xs: List[XTSeries[T]]): Option[Int] = {
-     import java.io.{PrintWriter, IOException, FileNotFoundException}
+   import java.io.{PrintWriter, IOException, FileNotFoundException}
+   override def |> : PartialFunction[List[XTSeries[T]], Int] = {
+  	 
+      case xs: List[XTSeries[T]] if(xs != null && xs.length > 0) => {
      
-     var printWriter: PrintWriter = null
-     Try {
-         val content = new StringBuilder
-         val numValues = xs(0).size-1
-         val last = xs.size-1
-         var k = 0
-         while( k < numValues) {
-        	val values = xs.toArray
-            (0 until last) foreach(j => content.append(values(j)(k)).append(CSV_DELIM) )
-            content.append(values(last)(k)).append("\n")
-            k += 1
-         }
-   
-	     printWriter = new PrintWriter(path)
-	     printWriter.write(content.toString)
-	     k
-     } match {
-    	 case Success(k) => Some(k)
-    	 case Failure(e) => {
-    		  Display.error("DataSink.|> ", logger, e)
-    		  
-    		 if( printWriter != null) {
-    		    Try {printWriter.close; 0 }
-    		    match {
-    		    	case Success(res) => Some(res)
-    		    	case Failure(e) => Display.error("DataSink.|> ", logger, e); None
-    		    }
-    		  }
-    		 else None
-    	 }
-     }
+	     var printWriter: PrintWriter = null
+	     Try {
+	         val content = new StringBuilder
+	         val numValues = xs(0).size-1
+	         val last = xs.size-1
+	         var k = 0
+	         while( k < numValues) {
+	        	val values = xs.toArray
+	            (0 until last) foreach(j => content.append(values(j)(k)).append(CSV_DELIM) )
+	            content.append(values(last)(k)).append("\n")
+	            k += 1
+	         }
+	   
+		     printWriter = new PrintWriter(path)
+		     printWriter.write(content.toString)
+		     k
+	     } match {
+	    	 case Success(k) => k
+	    	 case Failure(e) => {
+	    		  Display.error("DataSink.|> ", logger, e)
+	    		  
+	    		 if( printWriter != null) {
+	    		    Try {printWriter.close; 0 }
+	    		    match {
+	    		    	case Success(res) => res
+	    		    	case Failure(e) => Display.error("DataSink.|> ", logger, e)
+	    		    }
+	    		  }
+	    		 else Display.error("DataSink.|> no printWrite", logger)
+	    	 }
+	     }
+	   }
    }
 }
 

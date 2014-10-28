@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.scalability.spark
 
@@ -14,15 +14,15 @@ package org.scalaml.scalability.spark
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
-
 import scala.annotation.implicitNotFound
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
-
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.workflow.PipeOperator
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.XTSeries
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 case class RDDConfig(val cache: Boolean, val persist: StorageLevel)
@@ -47,7 +47,7 @@ final class RDDSource(	val pathName: String,
 		        		val headerLines: Int,
 		        		val state: RDDConfig)(implicit sc: SparkContext)  
 		          extends PipeOperator[Array[String] =>DblVector, RDD[DblVector]] {
-
+   private val logger = Logger.getLogger("RDDSource")
    validate(pathName, headerLines, state)
    private val src = DataSource(pathName, normalize, reverseOrder, headerLines)
   
@@ -58,7 +58,21 @@ final class RDDSource(	val pathName: String,
    		 * @return a RDD of DblVector if succeed, None otherwise
    		 * @throws IllegalArgumentException if the extraction function is undefined
    		 */   
-   override def |> (extr: Array[String] => DblVector): Option[RDD[DblVector]] = src.load(extr) match {
+   override def |> : PartialFunction[(Array[String] => DblVector), RDD[DblVector]] = {
+     case extractor: (Array[String] => DblVector) if(extractor != null) => {
+        val ts = src.load(extractor) 
+        if( ts != None) {
+           val rdd = sc.parallelize(ts.get.toArray)
+      	   rdd.persist(state.persist)
+           if( state.cache)
+             rdd.cache
+           rdd
+        }
+        else { Display.error("RDDSource.|> ", logger); null} 
+     }
+   }
+   /*
+      override def |> (extr: Array[String] => DblVector): Option[RDD[DblVector]] = src.load(extr) match {
       case Some(xt) => {
          val rdd = sc.parallelize(xt.toArray)
       	 rdd.persist(state.persist)
@@ -68,6 +82,8 @@ final class RDDSource(	val pathName: String,
       }
       case None => None
    }
+   * 
+   */
    
    
    private def validate(pathName: String, headerLines: Int, state: RDDConfig) {

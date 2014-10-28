@@ -6,15 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.reinforcement.qlearning
 
 import scala.util.Random
 import org.scalaml.util.Matrix
-import org.scalaml.core.Types.ScalaMl._
-
+import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.design.Model
 import QLearning._
+import org.scalaml.util.Display
+import scala.collection.immutable.HashSet
+import scala.collection.mutable.ListBuffer
 
 
 	 /**
@@ -25,15 +28,35 @@ import QLearning._
 	 * @param actions list of actions for the search space
 	 * @throws IllegalArgument if states or actions list are not well defined
 	 * 
-	 * @author Patrick Nicolsa
+	 * @author Patrick Nicolas
 	 * @since January 17, 2014
 	 * @note Scala for Machine Learning
 	 */
-class QLSpace[T <% Double](val states: List[QLState[T]], val actions: List[QLAction[T]]) {
-   require(states != null && states.size > 1, "States list is undefined")
-   require(actions != null && actions.size > 1, "Action list is undefined")
+protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
+   require(states != null && states.size > 1, "States list for QLSpace is undefined")
+   
+   private[this] val statesMap: Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
+   private[this] val goalStates = new HashSet[Int]() ++ goalIds
 
-   val statesActions = (states, actions)
+   final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {
+      val best = states.filter( _ != state).maxBy(st => policy.EQ(state.id, st.id))
+      policy.EQ(state.id, best.id)
+   }
+    
+   def init(r: Random): QLState[T] = states(r.nextInt(states.size-1))
+   
+   final def nextStates(st: QLState[T]): List[QLState[T]] = st.actions.map(ac => statesMap.get(ac.to).get )
+
+   final def isGoal(state: QLState[T]): Boolean = goalStates.contains(state.id)
+
+
+
+   override def toString: String = 
+  	  new StringBuilder("States\n")
+	           .append( states.foldLeft(new StringBuilder)(( buf, st) => {
+	          	   val isGoal = if(goalStates.contains(st.id) ) "(G)" else ""
+	               buf.append(s"$st $isGoal\n")
+	           }).toString ).toString
 }
 
 
@@ -44,41 +67,27 @@ class QLSpace[T <% Double](val states: List[QLState[T]], val actions: List[QLAct
 	 * @author Patrick Nicolas
 	 * @since January 22, 2014
 	 */
-object QLSpace {
-	  final val SCALE_FACTOR = 1000
-		
-		/**
+object QLSpace {		
+	/**
 		 * <p>Create a search space automatically using a scale factor.</p>
 		 * @param number of symbols or states used by the Q-Learning algorithm
 		 */
-	def apply[T <% Double](numStates: Int): QLSpace[T] = {
-	  require( numStates > 0, "Cannot create a search space for QLearning with undefined number of states")
-
-	  	// Inner function
-	  def createNextStates(startIndex: Int, value: Int, zeroStart: Boolean = true): List[QLState[T]] = {
-	  	  Range(startIndex+1, numStates).zipWithIndex
-	  	                                 .foldLeft(List[QLState[T]]()) ((s, n) => { 
-	  	     val dist = Array.fill(numStates)(value)
-	  	  	 if(zeroStart) 
-	  	  		  dist(startIndex) = 0
-	  	  	 dist(n._1) = 0
-	  	  	 QLState[T](n._2, dist) :: s
-	  	  })
-      }
-  	  val avgdistribution = (SCALE_FACTOR/numStates).floor.toInt
-  	  val allStates = QLState[T](0, Array.fill(numStates)(avgdistribution)) :: List[QLState[T]]()
-  	  val value_1 = (SCALE_FACTOR/(numStates-1)).floor.toInt
-  	  val value_2 = (SCALE_FACTOR/(numStates-2)).floor.toInt
-  	  
-  	  val nextStatesList = createNextStates(0, value_1, false)
-  	  val combinedStates = nextStatesList ::: allStates
-  	  val statesList = nextStatesList.zipWithIndex.foldLeft(combinedStates)((xs, st) => createNextStates(st._2, value_2) ::: xs)
-
-  	  new QLSpace[T](statesList, statesList.foldLeft(List[QLAction[T]]()) ((acs, st) => QLAction(st, statesList) :: acs))
-   }
 	
-	def apply[T <% Double](states: List[QLState[T]], actions: List[QLAction[T]]): QLSpace[T] = new QLSpace[T](states, actions)
+	def apply[T](numStates: Int, goals: Array[Int], features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
+	  val states = features.zipWithIndex
+	                       .map(x => 
+	  	            QLState[T](x._2, 
+	  	            		   neighbors(x._2, numStates).map(j =>  new QLAction[T](x._2, j)).filter(x._2 != _.to), 
+	  	            		   x._1))
+
+	   new QLSpace[T](states.toArray, goals)
+	}
+	
+	
+	def apply[T](numStates: Int, goal: Int, features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = 
+		 apply(numStates, Array[Int](goal), features, neighbors)
 }
+
 
 
 // ----------------------------  EOF --------------------------------------------------------------

@@ -6,19 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.filtering
 
-import org.scalaml.core.{Types, XTSeries}
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 
 
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>
-		 * @constructor Abstract moving average
+		 * @constructor Generi moving average
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
@@ -30,55 +30,54 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		 * <p>Parameterized simple moving average data transformation. The computation is implemented
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
 		 * arithmetic operation on elements of the time series.</p>
-		 * @constructor Create a simple moving average: [period] Period or duration of the window in the moving average
+		 * @constructor Create a simple moving average: [period] Period or duration of the window in the moving average [num] implicit numeric required for the summation of values of type T 
 		 * @throws IllegalArgumentExceptionif period is non positive
+		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior instantiation of the moving average
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Numeric bound has to be implicitly defined for the Simple moving average")
-class SimpleMovingAverage[@specialized(Double) T <% Double](val period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
-   import Types._, Types.ScalaMl._
-   require( period > 0, "Cannot compute simple moving average with a null or negative period " + period)
+class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
+   import types.ScalaMl._
+   require( period > 0, s"Cannot compute simple moving average with an incorrect $period")
    
    		/**
-   		 * <p>Implementation of the data transformation by overloading the pipe operator.</p>
+   		 * <p>Implementation of the data transformation of a time series of type T to a time series of type Double.</p>
    		 * @param xt time series for which the simple moving average has to be computed.
-   		 * @throws IllegalArgumentException if the input time series is undefined
-   		 * @return Time series of element type double if computation succeeds, None otherwise
+   		 * @throws MatchError exception if the input time series is undefined
+   		 * @return Partial function with time series of type T as input and time series of type Double as output.
    		 */
-   override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
-      import Types.ScalaMl._
-      require(xt != null && xt.size > 0, "Cannot compute simple moving average for undefined series")
-      
-      val slider = xt.take(xt.size - period).zip(xt.drop(period) )
-      val a0 =  xt.take(period).toArray.sum/period
-      var a: Double = a0
+   override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+     case xt: XTSeries[T] if(xt != null && xt.size > 0) => {
+        val slider = xt.take(xt.size - period).zip(xt.drop(period) )
+        val a0 =  xt.take(period).toArray.sum/period
+        var a: Double = a0
       
       	// Computing each point by removing the first element in the time window
         // an adding the data point.
-      val z = Array[Array[Double]]( 
-          Array.fill(period)(0.0), a,  slider.map(x => {a += (x._2 - x._1) /period; a }) 
-      ).flatten
-      
-      Some(XTSeries[Double](z))
+        val z = Array[Array[Double]]( 
+           Array.fill(period)(0.0), a, slider.toArray.map(x => {a += (x._2 - x._1) /period; a })
+        ).flatten
+        XTSeries[Double](z)   
+     }
    }
    
    	     /**
-   		 * <p>Implementation of the data transformation by overloading the pipe operator.</p>
-   		 * @param data data sets for which the simple moving average has to be computed.
-   		 * @throws IllegalArgumentException if the input time series is undefined
-   		 * @return Time series of element type double if computation succeeds, None otherwise
+   		 * <p>Implementation of the data transformation of a vector of double values.</p>
+   		 * @throws MatchError if the input time series is undefined
+   		 * @return PartialFunction of type vector of Double for input to the transformation, and type vector of Double for output.
    		 */
-   def |> (data: DblVector): Option[DblVector] = {
-      import Types.ScalaMl._
-      val slider = data.take(data.size - period).zip(data.drop(period) )
-      val a0 = data.take(period).sum/period
+   def get : PartialFunction[DblVector, DblVector] = {
+  	 case data: DblVector if(data != null && data.size > 0) => {
+        val slider = data.take(data.size - period).zip(data.drop(period) )
+        val a0 = data.take(period).sum/period
       
-      var a = a0
-      Some(Array[Array[Double]]( 
+        var a = a0
+        Array[Array[Double]]( 
           Array.fill(period)(0.0), a0,  slider.map(x => {a += (x._2 - x._1) /period; a }) 
-      ).flatten)
+        ).flatten
+     }
    }
 }
 
@@ -95,28 +94,29 @@ object SimpleMovingAverage {
 		/**
 		 * <p>Parameterized exponential average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
-		 * @constructor Create an exponential moving average: [period] Period of the window in the moving average, [alpha] Decary factor
+		 * @constructor Create an exponential moving average: [period] Period of the window in the moving average, [alpha] Decay factor
 		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-final class ExpMovingAverage[@specialized(Double) T <% Double](private val period: Int, private val alpha: Double) extends MovingAverage[T]  {
-  require( period > 0, "Cannot initialize exponential moving average with a null or negative period " + period)
-  require( alpha > 0 && alpha <= 1.0, "Cannot initialize exponential with alpha " + alpha + " value")
+final class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alpha: Double) extends MovingAverage[T]  {
+  require( period > 0, s"Cannot initialize exponential moving average with period = $period")
+  require( alpha > 0 && alpha <= 1.0, s"Cannot initialize exponential with alpha = $alpha")
    
   def this(p: Int)= this(p,2.0/(p+1))
   
 		 /**
    		 * <p>Implementation of the data transformation, exponential moving average by overloading the pipe operator.</p>
-   		 * @param xt time series for which the exponential moving average has to be computed.
-   		 * @throws IllegalArgumentException if the input time series is undefined
-   		 * @return Time series of element type double if computation succeeds, None otherwise
+   		 * @throws MatchError if the input time series is undefined
+   		 * @return PartialFunction of time series of type T and a time series of Double elements as output
    		 */
-  override def |> (data: XTSeries[T]): Option[XTSeries[Double]] = {
-     val alpha_1 = 1-alpha
-	 var y: Double = data(0)
-	 Some(data.map( x => {val z = x*alpha + y*alpha_1; y = z;  z }))
+   override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+  	 case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
+	     val alpha_1 = 1-alpha
+		 var y: Double = xt(0)
+		 xt.map(x => {val z = x*alpha + y*alpha_1; y = z;  z })
+  	 }
   }
 }
 
@@ -133,7 +133,7 @@ object ExpMovingAverage {
 }
 
 
-import Types.ScalaMl._
+import types.ScalaMl._
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>
@@ -143,23 +143,23 @@ import Types.ScalaMl._
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning
 		 */
-final class WeightedMovingAverage[@specialized(Double) T <% Double](private val weights: DblVector) extends MovingAverage[T]  {
+final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: DblVector) extends MovingAverage[T]  {
    require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, "Weights are not defined or normalized")
      
    		/**
    		 * <p>Implementation of the data transformation, weighted moving average by overloading the pipe operator.</p>
-   		 * @param xt time series for which the weighted moving average has to be computed.
-   		 * @throws IllegalArgumentException if the input time series is undefined
-   		 * @return Time series of element type double if computation succeeds, None otherwise
+   		 * @throws MatchError if the input time series is undefined
+   		 * @return PartialFunction of type vector of Double for input to the transformation, and type vector of Double for output.
    		 */
-    override def |> (xt: XTSeries[T]): Option[XTSeries[Double]] = {
-      require(xt != null, "Cannot computed the weighted moving average for undefined time series")
-      
-      val smoothed =  Range(weights.size, xt.size).map( i => {
-         xt.toArray.slice(i- weights.size , i).zip(weights).foldLeft(0.0)((s, x) => s + x._1*x._2)
-      })
-
-      Some(XTSeries[Double](Array.fill(weights.size)(0.0) ++ smoothed))
+    override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+      case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
+         val smoothed =  Range(weights.size, xt.size).map( i => {
+            xt.toArray.slice(i- weights.size , i)
+                      .zip(weights)
+                      .foldLeft(0.0)((s, x) => s + x._1*x._2)
+         })
+         XTSeries[Double](Array.fill(weights.size)(0.0) ++ smoothed)
+      }
    }
 }
 

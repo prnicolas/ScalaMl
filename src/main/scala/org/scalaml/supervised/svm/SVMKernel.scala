@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.svm
 
@@ -14,7 +14,7 @@ import libsvm._
 
 
 trait SVMConfigItem {
-	 def state(param: svm_parameter): Unit
+	 def update(param: svm_parameter): Unit
 }
 
 
@@ -26,7 +26,7 @@ trait SVMConfigItem {
 		 * @note Scala for Machine Learning
 		 */
 sealed trait SVMKernel extends SVMConfigItem {
-   def state(param: svm_parameter): Unit
+   def update(param: svm_parameter): Unit
 }
 
 
@@ -50,7 +50,7 @@ object LinearKernel extends SVMKernel {
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-   override def state(param: svm_parameter): Unit = {
+   override def update(param: svm_parameter): Unit = {
    	  require(param != null, "Cannot stateure undefined LIBSVM svm parameter class with kernel")
       param.kernel_type = svm_parameter.LINEAR
    }
@@ -77,7 +77,7 @@ case class RbfKernel(val gamma: Double) extends SVMKernel {
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-    override def state(param: svm_parameter): Unit = {
+    override def update(param: svm_parameter): Unit = {
       require(param != null, "Cannot stateure undefined LIBSVM svm parameter class with kernel") 
     	
       param.kernel_type = svm_parameter.RBF
@@ -105,7 +105,7 @@ case class SigmoidKernel(val gamma: Double) extends SVMKernel {
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-	override def state(param: svm_parameter): Unit = {
+	override def update(param: svm_parameter): Unit = {
 	  require(param != null, "Cannot stateure undefined LIBSVM svm parameter class with kernel")
 			  
       param.kernel_type = svm_parameter.SIGMOID
@@ -136,7 +136,7 @@ case class PolynomialKernel(val gamma: Double, val coef0: Double, val degree: In
   	 * @param param svm_parameter LIBSVM instance to initialize
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
-   override def state(param: svm_parameter): Unit = {
+   override def update(param: svm_parameter): Unit = {
   	  require(param != null, "Cannot stateure undefined LIBSVM svm parameter class with kernel")
   	   	 
       param.kernel_type = svm_parameter.POLY

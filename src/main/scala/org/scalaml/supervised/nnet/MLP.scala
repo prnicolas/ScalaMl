@@ -6,15 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl._
-import scala.util.Random
+import org.scalaml.core.types.ScalaMl._
+import scala.util.{Random, Try, Success, Failure}
 import org.scalaml.core.XTSeries
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import XTSeries._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
 
 
 		/**
@@ -34,31 +37,33 @@ import XTSeries._
 		 * @since May 8, 2-14
 		 * @note Scala for Machine Learning
 		 */
-final protected class MLP[T <% Double](val state: MLPConfig, 
-		                     val xt: XTSeries[Array[T]], 
-		                     val labels: DblMatrix,
-		                     val objective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
-   validate(state, xt, labels, objective)
+final protected class MLP[T <% Double](config: MLPConfig, 
+		                               xt: XTSeries[Array[T]], 
+		                               labels: DblMatrix)(implicit val mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
+   
+   validate(config, xt, labels)
+   private val logger = Logger.getLogger("MLP")
    
    var converged = false
    val model: Option[MLPModel] = {
-  	 try {
-	  	val _model = new MLPModel(state, xt(0), labels(0).size)
-	  	  	// Scaling or normalization factor for the Mean Squares error
+  	 Try {
+	  	val _model = new MLPModel(config, xt(0).size, labels(0).size)(mlpObjective)
+	  	  	// Scaling or normalization factor for the sum of the squared error
 	  	val errScale = 1.0/(labels(0).size*xt.size)
 	  	
 	  		// Apply the exit condition for this online training strategy
-	  	converged = Range(0, state.numEpochs).find( _ => {
-		   xt.toArray.zip(labels).foldLeft(0.0)( (s, xtlbl) => {
-		  	  _model.trainEpoch(xtlbl._1)
-		  	  s +  _model.mse(xtlbl._2, objective)
-		   })*errScale < state.eps		  	 
+	  	converged = Range(0, config.numEpochs).find( _ => {
+	  		
+		   xt.toArray.zip(labels)
+		             .foldLeft(0.0)( (s, xtlbl) => 
+		  	  s + _model.trainEpoch(xtlbl._1, xtlbl._2)
+		   )*errScale < config.eps		  	 
 	  	}) != None
-	  	Some(_model)   
+	  	_model
   	 }
-  	 catch {
-  		 case e: IllegalArgumentException => println(e.toString); None
-  		 case e: IllegalStateException =>  println(e.toString); None
+  	 match {
+  		case Success(_model) => Some(_model)
+  		case Failure(e) => Display.error("MLP.model ", logger, e); None
   	 }
    }
    
@@ -68,19 +73,32 @@ final protected class MLP[T <% Double](val state: MLPConfig,
    	 * @param feature new data point that need to be either classified or regressed.
    	 * @return The normalized output of the neural network if model exists, None otherwise
    	 */
-   override def |> (feature: Array[T]): Option[DblVector] = model match {
-  	 case Some(_model) => {
-  		require(feature == null || feature.size != dimension(xt), "Incorrect argument for MLP.|> method")
-  		try {
-  			Some(objective.normalize(_model.getOutput(feature)))
+   
+   override def |> : PartialFunction[Array[T], DblVector] = {
+  	 case x: Array[T] if(x != null && model != None && x.size == dimension(xt)) => {
+     	Try(model.get.getOutput(x))
+  		match {
+  			case Success(y) => y
+  			case Failure(e) => Display.error("MLP.|> ", logger, e); null
   		}
-  		catch {
-  			case e: IllegalStateException => None
-  			case _: RuntimeException => None
+  	 }
+   }
+   /*
+   override def |> (x: Array[T]): Option[DblVector] = model match {
+  	 case Some(_model) => {
+  		require(x != null, "Input to MLP.|> method is undefined")
+  		require(x.size == dimension(xt), "Incorrect array size input to MLP.|> method is " + x.size + " and should be " + dimension(xt))
+
+  		Try(_model.getOutput(x))
+  		match {
+  			case Success(y) => Some(y)
+  			case Failure(e) => Display.error("MLP.|> ", logger, e); None
   		}
   	  }
-  	  case None => None
+  	  case None => Display.error("MLP.|> ", logger); None
   }
+  * 
+  */
    
    		/**
    		 * <p>Computes the accuracy of the training session. The accuracy is estimated
@@ -93,25 +111,32 @@ final protected class MLP[T <% Double](val state: MLPConfig,
   	 if( model != None ) {
   		 	// counts the number of data points for which the 
   		 val correct = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
-  			 val predicted = objective.normalize(model.get.getOutput(xtl._1))
-  			 val diff = xtl._2.zip(predicted).foldLeft(0.0)((err,tp) => err + (tp._1 - tp._2)*(tp._1 - tp._2))
-  			
-  			 if( Math.sqrt(diff)/predicted.size < threshold)
+  			 
+  			 val output = model.get.getOutput(xtl._1)
+  			 val _sse = xtl._2.zip(output.drop(1))
+  			                  .foldLeft(0.0)((err,tp) => { 
+  			                  	 val diff= tp._1 - tp._2
+  			                  	 err + diff*diff
+  			                  })
+  			 val error = Math.sqrt(_sse)/(output.size -1)
+  			 if( error < threshold)
   				s + 1
   		     else s
   		 })
   		 Some(correct.toDouble/xt.size)  // normalization
   	 }
-  	 else None
+  	 else {
+  		 Display.error("MLP.accuracy ", logger);
+  		 None
+  	 }
   }
 
   
-  private def validate(state: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLP.MLPObjective): Unit = {
-	   require(state != null, "Cannot train a multilayer perceptron without stateuration parameters")
+  private def validate(config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
+	   require(config != null, "Cannot train a multilayer perceptron without stateuration parameters")
 	   require(xt != null && xt.size > 0, "Features for the MLP are undefined")
 	   require(labels != null && labels.size > 0, "Labeled observations for the MLP are undefined")
 	   require(xt.size == labels.size, "Number of features for MLP " + xt.size + " is different from number of labels " + labels.size)
-	   require(objective != null, "Objective for MLP is undefined")
    }
 }
 
@@ -124,79 +149,54 @@ final protected class MLP[T <% Double](val state: MLPConfig,
 object MLP {
 	final val EPS = 1e-5
 	
+//	implicit var mlpObjective: MLPObjective = new MLPBinClassifier
 		/**
 		 * <p>Trait that defined the signature of the objective function.<br>
 		 * += for updating parameters if needed<br>
 		 * normalize to normalize the output.</p>
 		 */
-	trait MLPObjective {	
-		/**
-		 * <p>+= operator to update the parameters of the objective
-		 * function during training.The method is overriding for the classification only.
-		 * The trait is defined to implement the regression by default.<p>
-		 * @param z: new output value 
-		 * @param index: index of the output value in the output vector
-		 */
-	   def += (z: Double, index: Int): Unit = {}
-	   
+	trait MLPObjective {
 	   	/**
 	   	 * <p>Normalize the output vector to match the objective of the MLP. The
 	   	 * output vector is the output layers minus the bias, output(0).</p>
 	   	 * @param output raw output vector
 	   	 * @return normalized output vector
 	   	 */
-	   def normalize(output: DblVector): DblVector = output.drop(1)
+	   def apply(output: DblVector): DblVector
+	}
+	
+	class MLPBinClassifier extends MLPObjective {
+		override def apply(output: DblVector): DblVector = output
 	}
 	
 		/**
 		 * Class signature for the Regression objective for the MLP
 		 */
-	class MLPRegression extends MLPObjective
-	
-		/**
-		 * <p>Class signature for the classification objective. The class
-		 * implements a normalization to convert the output vector into
-		 * a probability [0, 1].</p>
-		 * @param labels labeled or target observations used in the training set
-		 */
-	class MLPClassification(val labels: DblMatrix) extends MLPObjective {
-	  private val min = Array.fill(labels(0).size)(Double.MaxValue)
-	  private val max = Array.fill(labels(0).size)(-Double.MaxValue) 
-	  
-	  	
-	  	/**
-		 * <p>Overloaded += operator to update the parameters of the classification.<p>
-		 * @param z: new output value 
-		 * @param index: index of the output value in the output vector
-		 */
-	  override def += (z: Double, index: Int): Unit = {
-	  	if(z < min(index))
-  	  	   min(index) = z
-  	  	if(z >  max(index))
-  	  	   max(index) = z
-	  }
-	  	   	
-	    /**
-	   	 * <p>Normalize the output vector with the minimum and maximum values
-	   	 * of each output values during training.</p>
-	   	 * @param output raw output vector
-	   	 * @return normalized output vector
-	   	 */
-
-      override def normalize(output: DblVector): DblVector = 
-      	 output.drop(1)
-      	    .zipWithIndex
-      	    .map(o => (o._1 - min(o._2))/(max(o._2) - min(o._2)))
+	class MLPRegression extends MLPObjective  {
+	   override def apply(output: DblVector): DblVector = output
 	}
 	
-	def apply[T <% Double](state: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] = 
-		    new MLP[T](state, xt, labels, objective)
+	class MLPMultiClassifier extends MLPObjective {
+	   override def apply(output: DblVector): DblVector =  softmax(output.drop(1))
+		
+	   private  def softmax(y: DblVector): DblVector = {
+	     val softmaxValues = new DblVector(y.size)
+	     val expY = y.map( Math.exp(_))
+	     val expYSum = expY.sum
+	     expY.map( _ /expYSum).copyToArray(softmaxValues , 1)
+	     softmaxValues
+	   }
+	}
+	
+	
+	def apply[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] = 
+		    new MLP[T](config, xt, labels)
 		    
-    def apply[T <% Double](state: MLPConfig, features: Array[Array[T]], labels: DblMatrix, objective: MLPObjective): MLP[T] =
-            new MLP[T](state, XTSeries[Array[T]](features), labels, objective)
+    def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+            new MLP[T](config, XTSeries[Array[T]](features), labels)
     
-    def apply[T <% Double](state: MLPConfig, features: Array[Array[T]], labels: DblVector, objective: MLPObjective): MLP[T] =
-            new MLP[T](state, XTSeries[Array[T]](features), Array[DblVector](labels), objective)
+    def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblVector)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+            new MLP[T](config, XTSeries[Array[T]](features), labels.map(Array[Double](_)))
 }
 
 

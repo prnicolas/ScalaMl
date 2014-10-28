@@ -6,15 +6,15 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.unsupervised.clustering
 
-import org.scalaml.core.{XTSeries, Types}
+import org.scalaml.core.{XTSeries, types}
 import org.scalaml.stats.Stats
 import scala.collection.mutable.ListBuffer
 import org.scalaml.unsupervised.Distance.euclidean
-import Types.ScalaMl._
+import types.ScalaMl._
 import XTSeries._
 
 
@@ -24,6 +24,7 @@ import XTSeries._
 		 * it contains. The membership of data points to this cluster is done through their index.
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
 		 * contains two data points with the same index.</p>
+		 * @constructor Instantiate a cluster with an initial centroid. [center] Initial centroid for this cluster
 		 * @param center data point acting as the center of the cluster
 		 * @throws IllegalArgumenException if the center is undefined (null)
 		 * 
@@ -33,14 +34,15 @@ import XTSeries._
 		 */
 
 class Cluster[T <% Double](val center: DblVector) {
-   require(center != null && center.size > 0, "Cannot create a cluster with undefined centers")
+   require(center != null && center.size > 0, "Cluster Cannot create a cluster with undefined centers")
    
    private val members = new ListBuffer[Int]
    
 	/**
-	 * <p>Overloaded operator that add a new data point by its index in the membership.
+	 * <p>Overloaded operator += to add a new data point by its index in the membership.
 	 * There is no validation whether this data points is already a member of this cluster
 	 * or any other clusters.</p>
+	 * @param n index of the new data point
 	 */
    def += (n:Int): Unit = members.append(n)
    final def size: Int = members.size
@@ -52,11 +54,13 @@ class Cluster[T <% Double](val center: DblVector) {
    	 * @return a new cluster with the recomputed center.
    	 */
    final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
-  	   require(xt != null && xt.size > 0, "Cannot migrate undefined times series values within the cluster" )
+  	   require(xt != null && xt.size > 0, "Cluster.moveCenter Cannot migrate undefined times series values within the cluster" )
   	   
-  	   val centroid = Array.fill(dimension(xt))(0.0)
-  	   members.map(xt( _ )).foreach( Op( _, centroid, (x:T, y:Double)=>x+y))
-  	   Cluster[T](/ (centroid, members.size))
+  	   val sums = members.map(xt(_)
+  	                     .map(_.toDouble)).toList
+  	                     .transpose
+  	                     .map( _.sum)
+  	   Cluster[T](sums.map( _ / members.size).toArray)
    }
    
    
@@ -68,22 +72,32 @@ class Cluster[T <% Double](val center: DblVector) {
     * @return standard deviation of all the members from the center of the cluster.
     */
    final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double =  {
-  	  require(xt != null && xt.size > 0, "Cannot compute the standard deviation within this cluster for undefined times series")
-      require( distance != null, "Cannot compute the standard deviation within a cluster with undefined distance")
-      
+  	  require(xt != null && xt.size > 0, "Cluster.stdDev Cannot compute the standard deviation within this cluster for undefined times series")
+      require(distance != null, "Cluster.stdDev Cannot compute the standard deviation within a cluster with undefined distance")
+      require(members.size > 0, "Cluster.stdDev this cluster has no member")
+      println(s"members.size: ${members.size}")
   	  Stats[Double](members.map( xt( _)).map( distance(center, _)).toArray).stdDev
    }  
    
+   		/**
+   		 * <p>Returns the list of index of the data points (members) that belong to this cluster
+   		 * @return list of index of the members of this clusters
+   		 */
    final def getMembers: List[Int] = members.toList
    
-   override def toString: String = 
-     members.foldLeft(new StringBuffer)((b, n) => b.append(n).append(",")).toString
+   override def toString: String = {
+     val membersToString = members.foldLeft(new StringBuffer)((b, n) => b.append(s"$n,")).toString
+     val centerToString = center.foldLeft(new StringBuffer)((b, x) => b.append(s"$x,")).toString
+     s"${centerToString}\n${membersToString}"
+   }
 }
 
-
-
+	/**
+	 * Companion object used to define the constructor for this cluster
+	 */
 object Cluster {
    def apply[T <% Double](center: DblVector): Cluster[T] = new Cluster[T](center)
+   def apply[T <% Double]: Cluster[T] = new Cluster[T](Array.empty)
 }
 
 

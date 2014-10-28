@@ -6,22 +6,25 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.unsupervised.clustering
 
-import org.scalaml.core.{XTSeries, Types}
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import org.scalaml.unsupervised.Distance
-import Types.ScalaMl._
+import types.ScalaMl._
 import KMeans._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
 
 		/**
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids
 		 * are initialized at mid point of K segments of data points after the data points
 		 * are ordered by their variance.</p>
+		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric. [K] Number of clusters. [maxIters] Maximum number of iterations allowed for the generation of clusters (default: 5000). [distance] Metric used in computing distance between data points. 
 		 * @param K number of clusters
 		 * @param maxIters maximum number of iterations allowed for the generation of clusters (default: 5000)
 		 * @param distance metric used in computing distance between data points.
@@ -31,63 +34,63 @@ import KMeans._
 		 * 
 		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 
 		 * iterations is out of range or if the distance metric is undefined.
-		 * @throws implicitNotFoundExceptin if the ordering instance is not implicitly defined.
+		 * @throws implicitNotFoundException if the ordering instance is not implicitly defined.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning: Chapter 4 Unsupervised learning/Clustering
 		 */
 @implicitNotFound("Ordering not implicitly defined for K-means")
-final class KMeans[T <% Double](val K: Int, 
-		                        val maxIters: Int, 
-		                        val distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
+final class KMeans[T <% Double](K: Int, 
+		                        maxIters: Int, 
+		                        distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
                                    extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
-    import XTSeries._, Types.ScalaMl._
+    import XTSeries._
     
-    require(K > 0 && K < MAX_K, "Number of clusters for Kmeans " + K + " is out of range")
-    require( maxIters > 1 && maxIters < MAX_ITERATIONS, "Maximum number of iterations for Kmeans " + maxIters + " is out of range")
-    require( distance != null, "Distance for K-means is undefined")
-    
+    require(K > 0 && K < MAX_K, s"KMeans Number of clusters for Kmeans $K is out of range")
+    require( maxIters > 1 && maxIters < MAX_ITERATIONS, s"KMeans Maximum number of iterations for Kmeans $maxIters is out of range")
+    require( distance != null, "KMeans Distance for K-means is undefined")
+    private val logger = Logger.getLogger("KMeans")
     	/**
     	 * <p>Overload data transformation/Pipe operator to implement
     	 * KMeans++ algorithm with buckets initialization.</p>
+    	 * @throws MatchError if the input time series is undefined or have no elements
+    	 * @param xt time series of elements of type T
+   		 * @return PartialFunction of time series of elements of type T as input to the K-means algorithm and a list of cluster as output
     	 */
-    def |> (xt: XTSeries[Array[T]]): Option[List[Cluster[T]]] = {
-        require(xt != null && xt.size > 0, "Cannot apply K-means to undefined dataset")	
-    	
-	   val clusters = initialize(xt)  // 1
-			   // In the rare case we could not initialize the clusters.
-	   if( clusters.isEmpty)  None
-	   else  {
-	  	 	// initial assignment of clusters.
-		   val membership = Array.fill(xt.size)(0)
-		   val reassigned = assignToClusters(xt, clusters, membership) //2
-		   var newClusters: List[Cluster[T]] = null
-		   		 
-		   		// Reassign iteratively data points to 
-		        // existing clusters. The clusters are re-created at each iterations
-		   Range(0,  maxIters).find( _ => {
-		  	  newClusters = clusters.map( c => {
-		  	     if( c.size > 0) 
-		  	    	c.moveCenter(xt) 
-		  	    else 
-		  	       	clusters.filter( _.size > 0).maxBy( _.stdDev(xt, distance) )
-		  	  }) 
-		  	 
-		  	  assignToClusters(xt, newClusters, membership) > 0
-		   }) match {    // Failed if the maximum number of iterations is reached.
-		  	  case Some(index) => Some(newClusters)
-		  	  case None => None
-		   } 
-	   }
+     override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = {
+    	 case xt: XTSeries[Array[T]] if(xt != null && xt.size > 1 && xt(0).size > 0) => {
+		   val clusters = initialize(xt)  // 1 
+				   // In the rare case we could not initialize the clusters.
+		   if( clusters.isEmpty) List.empty
+		   else  {
+		  	 	// initial assignment of clusters.
+			   val membership = Array.fill(xt.size)(0)
+			   val reassigned = assignToClusters(xt, clusters, membership) //2
+			   var newClusters: List[Cluster[T]] = List.empty			   		 
+			   		// Reassign iteratively data points to 
+			        // existing clusters. The clusters are re-created at each iterations
+			   Range(0,  maxIters).find( _ => {
+			  	  newClusters = clusters.map( c => {
+			  	     if( c.size > 0) 
+			  	    	c.moveCenter(xt) 
+			  	    else 
+			  	       	clusters.filter( _.size > 0).maxBy( _.stdDev(xt, distance) )
+			  	  }) 
+			  	 
+			  	  assignToClusters(xt, newClusters, membership) > 0
+			   }) match {    // Failed if the maximum number of iterations is reached.
+			  	  case Some(index) => newClusters
+			  	  case None => List.empty
+			   } 
+		   }
+    	 }
 	}
-    
 
     	/**
     	 * Buckets initialization of centroids and clusters. 
     	 */
     private def initialize(xt: XTSeries[Array[T]]): List[Cluster[T]] = {
-        import Types.ScalaMl._
         
 	    val stats = statistics(xt)   // step 1
 		val maxSDevDim = Range(0, stats.size).maxBy (stats( _ ).stdDev )
@@ -99,8 +102,8 @@ final class KMeans[T <% Double](val K: Int,
 		Range(0, K).foldLeft(List[Cluster[T]]())((xs, i) => Cluster[T](centroids(i)) :: xs)
 	}
     
-    final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = 
-       ((t._2 % hSz == 0 && t._2 %(hSz<<1) != 0) || t._2 == dim -1)
+    final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = (t._2 % hSz == 0) && (t._2 %(hSz<<1) != 0)
+     //  ((t._2 % hSz == 0 && t._2 %(hSz<<1) != 0) || t._2 == dim -1)
   
 
 	private def assignToClusters(xt: XTSeries[Array[T]], clusters: List[Cluster[T]], membership: Array[Int]): Int =  {

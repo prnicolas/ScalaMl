@@ -6,47 +6,53 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm._
-import org.scalaml.core.{XTSeries, Types}
-
-
+import org.scalaml.core.{XTSeries, types}
 import Fundamentals._
-import Types.ScalaMl._
-object SVCOutliersEval {
-   final val path = "resources/data/chap8/dividends2.csv"	
-   final val NU = 0.2
-   final val GAMMA = 0.5
-   final val EPS = 1e-3
-   final val NFOLDS = 2
+import types.ScalaMl._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+import scala.util.{Try, Success, Failure}
+
 	
-	def run: Unit = {
-	   Console.println("Evaluation of One class Support Vector Classifier")
+object SVCOutliersEval {
+   val path = "resources/data/chap8/dividends2.csv"	
+   val NU = 0.2
+   val GAMMA = 0.5
+   val EPS = 1e-3
+   val NFOLDS = 2
+	
+   private val logger = Logger.getLogger("SVCOutliersEval")
+	def run: Int = {
+	   Display.show("Evaluation of One class Support Vector Classifier", logger)
 	   val extractor = relPriceChange :: 
 	                   debtToEquity ::
 	                   dividendCoverage ::
 	                   cashPerShareToPrice ::
-	              //     epsTrend ::
+	                   epsTrend ::
 	                   dividendTrend :: List[Array[String] =>Double]()
 	   	   
-	   DataSource(path, true, false, 1) |> extractor match {
-	  	 case Some(xs) => {	  	
-	  		 val state = SVMConfig(OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
-	  		 val features = XTSeries.transpose(xs.take(xs.size-1))
-		     val svc = SVM[Double](state, features, xs.last.map(x => if( x == 0.0) -1.0 else 1.0))
+	   val filter = (x: Double) => if(x == 0) -1.0 else 1.0
+	   Try {
+	      val xs = DataSource(path, true, false, 1) |> extractor
+ 	
+	      val config = SVMConfig(new OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	  	  val features = XTSeries.transpose(xs.take(xs.size-1))
+		  val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
           
-		     svc.accuracy match {
-	  			 case Some(acc) => println("Accuracy: " + acc)
-	  			 case None => println("Could not validate the training set")
-	  		 }
-	  	 }
-	  	 
-	  	 case None => println("Dividend data extration failed ")
+		  svc.accuracy match {
+	  		case Some(acc) => Display.show("Accuracy: " + acc, logger)
+	  		case None => Display.error("Could not validate the training set", logger)
+	  	  }
+	   } match {
+	  	  case Success(n) => n
+	  	  case Failure(e) => Display.error("SVCOutliersEval.run ", logger, e) 
 	   }
 	}
 }

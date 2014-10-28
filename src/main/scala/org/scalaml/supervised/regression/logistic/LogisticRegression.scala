@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression.logistic
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.util.Matrix
 import scala.util.Random
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
@@ -23,16 +23,16 @@ import org.apache.commons.math3.util.Pair
 import org.apache.commons.math3.optim.ConvergenceChecker
 import LogisticRegression._
 import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import scala.util.{Try, Success, Failure}
 import XTSeries._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.apache.commons.math3.linear.DiagonalMatrix
+import scala.language.implicitConversions
 
-
-protected class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
+class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
 		                                val labels: Array[Int], 
 										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
 	type Feature = Array[T]
@@ -69,19 +69,12 @@ protected class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 			 * @throws IllegalArgumentException if the data point is undefined
 			 * @throws DimensionMismatchException if the dimension of the data point x is incorrect
 			 */
-	override def |> (x: Feature): Option[Int] = model match {
-	  case Some(_model) => {
-		 if(x == null || _model.size -1 != x.size) 
-			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (_model.size -1))
-				
-		 val w = _model.weights
-		 val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
-	//	  println("(" + m.weights(0) + "," + m.weights(1) + "," + m.weights(2) + ")")
-//		 println("(" + x(0) + "," + x(1) + ")")
-		 println("value: " + z + " & " + logit(z))
-		 Some(if( logit(z) > 0.5 + MARGIN) 1 else 0)
-	   }
-	   case None => None	
+	override def |> : PartialFunction[Feature, Int] = {
+		case x: Feature  if(x != null && model != None && model.get.size -1 != x.size) => {				
+		  val w = model.get.weights
+		  val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
+		  if( logit(z) > 0.5 + MARGIN) 1 else 0
+		}
 	}
 	
 	@inline

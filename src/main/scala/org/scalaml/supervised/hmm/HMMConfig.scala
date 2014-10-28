@@ -6,17 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types
-import Types._
+import org.scalaml.core.types
+import types._
 import org.scalaml.supervised.Supervised
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.{PipeOperator, Config}
 import org.scalaml.core.XTSeries
-import org.scalaml.supervised.Config
 
 import HMM._
 import org.scalaml.util.Matrix
@@ -39,6 +38,7 @@ class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
   require( _T > 0 && _T < 1000, "Number of observations " + _T + " in HMM lambda model is out of bounds")
   require( _N > 0 && _N < 1000, "Number of States " + _N + " in HMM lambda model is out of bounds")
   require( _M > 0 && _M < 1000, "Number of symbols " + _M + " in HMM lambda model is out of bounds")
+  val persists = "config/hmm"
 }
 
 object HMMConfig {

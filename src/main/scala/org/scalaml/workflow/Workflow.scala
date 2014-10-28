@@ -6,10 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow
 
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 	/**
 	 * <p>Pre-processing module used in the workflow. This module is "injected" at run-time
@@ -45,17 +48,8 @@ trait PostprocModule[-T, +U] {
 class Workflow[T, U, V, W] {
   self: PreprocModule[T, U] with ProcModule[U, V] with PostprocModule[V, W] =>
 	 
-  	def |> (data: T): Option[W] = {
-	   preProc |> data match {
-		 case Some(input) => {
-		     proc |> input match {
-		    	case Some(output) => postProc |> output
-		    	case None => println("Post processing failed"); None	 
-		     }
-		  }
-		  case None => println("Processing failed"); None     
-	    }
-  	}
+  	private val logger = Logger.getLogger("Workflow")
+  	def |> (t: T): W = postProc |> (proc |> (preProc |> t))
 }
 
 

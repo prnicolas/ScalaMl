@@ -6,17 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression
 
 
-import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.supervised.Model
+import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.design.Model
 
 
 case class RegressionModel(val weights: DblVector, val rss: Double) extends Model {
-   @inline def size: Int = weights.size
+   val persists = "models/regression"
+   val size: Int = weights.size
 }
 
 // ------------------------  EOF ----------------------------------------------------

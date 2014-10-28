@@ -6,70 +6,65 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.unsupervised.em
 
 
-import org.scalaml.core.{XTSeries, Types}
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.design.PipeOperator
 import org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximization
 import org.apache.commons.math3.distribution.{MixtureMultivariateNormalDistribution, MultivariateNormalDistribution}
 import scala.collection.JavaConversions._
 import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsTooSmallException, NumberIsTooLargeException, NotStrictlyPositiveException}
-import Types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import types.ScalaMl._
 import MultivariateEM._
 import XTSeries._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 		/**
 		 * <p>Class that implements the Multivariate Expectation-Maximization algorithm with 
 		 * K number of clusters. The class uses the Multivariate Normal distribution, Mixture
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
 		 * Commons Math library.</p>
+		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. [K] Number of clusters used in the Expectation-Maximization algorithm.
 		 * @param K number of Clusters used in the EM algorithm
 		 * @throws IllegalArgumentException if K is out of range
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning
 		 */
-final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
-	require( K > 0 && K < MAX_K, "Number K of clusters for EM " + K + " is out of range")
+final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
+	require( K > 0 && K < MAX_K, s"MultivariateEM Number K of clusters for EM $K is out of range")
 	
+	private val logger = Logger.getLogger("MultivariateEM")
 	type EM = MultivariateNormalMixtureExpectationMaximization
 	
 		/**
 		 * <p>Implement the Expectation-Maximization algorithm as a data transformation.</p>
 		 * @param xt time series of vectors (array) of parameterized type
-		 * @throws IllegalArgumentException if the input time series is undefined or has zero dimension
-		 * @return a list of tuple (key, vector of means, vector of standard deviation for each cluster/components 
-		 * if no error is detected, None if any of the following Apache Commons math exceptions, DimensionMismatchException,
-		 * NumberIsTooSmallException, NumberIsTooLargeException or NotStrictlyPositiveException is caught
+		 * @throws MatchError if the input time series is undefined or have no elements
+   		 * @return PartialFunction of time series of elements of type T as input to Expectation-Maximization algorithm and tuple of type EMOutput as output.
 		 */
-	override def |> (xt: XTSeries[Array[T]]): Option[EMOutput] = {
-	  require(xt != null && xt.toArray.size > 0, "Cannot apply EM on undefined time series")
-	  require( dimension(xt) > 0, "Cannot apply EM on time series with zero dimension")
-	  
-	  val data: DblMatrix = xt  // force a conversion
-		
-	  try {
-		val multivariateEM = new EM(data)
-		val est = MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
-		multivariateEM.fit(est)
-			 
-		val newMixture = multivariateEM.getFittedModel
-	    val components = newMixture.getComponents.toList
- 		Some(components.map(p => 
- 		   (p.getKey.toDouble, p.getValue.getMeans, p.getValue.getStandardDeviations)
- 		))
-	  }
-	  		// A generic exception has to caught in the case the Apache Commmons Library
-	        // is updated and introduces new type of exception
-	  catch {
-		case e: DimensionMismatchException => Console.println(e.toString); None
-		case e: NumberIsTooSmallException => Console.println(e.toString); None
-		case e: NumberIsTooLargeException => Console.println(e.toString); None
-		case e: NotStrictlyPositiveException => Console.println(e.toString); None
-		case e: Exception => Console.println(e.toString); None
+   override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
+	 case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
+		  val data: DblMatrix = xt  // force a type conversion
+			
+		  Try {
+			val multivariateEM = new EM(data)
+			val est = MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
+			multivariateEM.fit(est)
+				 
+			val newMixture = multivariateEM.getFittedModel
+		    val components = newMixture.getComponents.toList
+	 		components.map(p => 
+	 		   (p.getKey.toDouble, p.getValue.getMeans, p.getValue.getStandardDeviations))
+		  } match {
+		  	 case Success(components) => components
+		  	 case Failure(e) => Display.error("MultivariateEM.|> ", logger, e); List.empty
+		  }
 	  }
 	}
 }
@@ -84,6 +79,9 @@ final class MultivariateEM[T <% Double](val K: Int) extends PipeOperator[XTSerie
 object MultivariateEM { 
 	final val MAX_K = 500
     
+			/**
+			 * Type EMOutput as a list of tuple (key, array of means, array of standard deviation.</p>
+			 */
     type EMOutput = List[(Double, DblVector, DblVector)]
 	def apply[T <% Double](numComponents: Int) = new MultivariateEM[T](numComponents)
 	
@@ -97,8 +95,8 @@ object MultivariateEM {
 		 * @throws IllegalArgumenException if the input is not defined or K is out of range.
 		 */
 	protected def estimate(data: DblMatrix, K: Int): MixtureMultivariateNormalDistribution = {
-		require(data != null && data.size > 0, "Cannot eximate the Gaussian mixture distribution for undefined input")
-		require( K > 0 && K < MAX_K, "Number K of clusters for EM " + K + " is out of range")
+		require(data != null && data.size > 0, "MultivariateEM.estimate Cannot eximate the Gaussian mixture distribution for undefined input")
+		require( K > 0 && K < MAX_K, s"MultivariateEM.estimate Number K of clusters for EM $K is out of range")
 			
 		MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
 	}

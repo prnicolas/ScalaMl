@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow.data
 
@@ -15,9 +15,9 @@ import org.scalaml.core.XTSeries
 import java.io.{FileNotFoundException, IOException}
 import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import scala.io.Source
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.apache.log4j.Logger
 import scala.util.{Try, Failure, Success}
 import org.scalaml.util.Display
@@ -42,7 +42,7 @@ final class DataSource(val pathName: String,
 				       val srcFilter: Option[Array[String] => Boolean]= None) extends PipeOperator[List[Array[String] =>Double], List[DblVector]] {
 	
    require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
-   require(headerLines >=0,  "Cannot create a data source with negative number of lines for header " + headerLines)
+   require(headerLines >=0,  s"Cannot create a data source with negative number of lines for header $headerLines")
    
    import scala.io.Source
    
@@ -63,9 +63,7 @@ final class DataSource(val pathName: String,
 		   * Load data from a comma delimited fields text file and generate
 		   * a tuple of column names and array of text fields
 		   */
-   private def load: Option[(TxtFields, Array[TxtFields])] = {
-     import java.io.{IOException, FileNotFoundException}
-     
+   private def load: Option[(TxtFields, Array[TxtFields])] = {     
      Try {
     	 val src = Source.fromFile(pathName)
 	  	 val rawFields = src.getLines.map( _.split(CSV_DELIM)).toArray.drop(headerLines)
@@ -102,39 +100,50 @@ final class DataSource(val pathName: String,
    			 * conversion of some of the text fields failed.
    			 * @throws IllegalArgumentException if the extraction function is undefined
    			 */
-   override def |> (extr: List[TxtFields => Double]): Option[List[DblVector]] = {
-     require(extr != null && extr.size > 0, "Cannot extracts fields with undefined extractors")
-       	 
-  	 load match {
-       case Some(data) => {
-          if( normalize) {
+   override def |> : PartialFunction[List[TxtFields => Double], List[DblVector]] = {
+     case extr: List[TxtFields => Double] if(extr != null && extr.size > 0) => {
+       load match {
+         case Some(data) => {
+             if( normalize) {
           	 import org.scalaml.stats.Stats
-              Some(extr map {t => Stats[Double](data._2.map(t(_))).normalize })
-          }
-          else
-             Some(extr map {t => data._2.map(t(_) ) })
+                extr map {t => Stats[Double](data._2.map(t(_))).normalize }
+             }
+             else
+               extr map {t => data._2.map(t(_) ) }
+         }
+         case None => Display.error("DataSource.|> ", logger); List.empty
        }
-       case None => Display.error("DataSource.|> ", logger); None
      }
    }
-   
 
-   def |> (extr: TxtFields => Double): Option[XTSeries[Double]] = {
+
+   def |> (extr: TxtFields => Double): XTSeries[Double] = {
      require(extr != null, "Cannot extracts fields with undefined extractors")
   	 
   	 load match {
        case Some(data) => {
           if( normalize) {
-          	  import org.scalaml.stats.Stats
-	          Some(XTSeries[Double](Stats[Double](  data._2.map( extr( _)) ).normalize))
+          	 import org.scalaml.stats.Stats
+	         XTSeries[Double](Stats[Double](  data._2.map( extr( _)) ).normalize)
           }
           else 
-             Some(XTSeries[Double](data._2.map( extr(_))))
+             XTSeries[Double](data._2.map( extr(_)))
        }
-       case None => Display.error("DataSource.|> ", logger); None
+       case None => Display.error("DataSource.|> ", logger); XTSeries.empty
      }
    }
-
+   
+   def extract : Option[DblVector] = 
+  	  Try {
+    	 Source.fromFile(pathName)
+	           .getLines
+	           .drop(headerLines)
+	           .map( _.toDouble ).toArray
+     } match {
+    	 case Success(x) => Some(x)
+    	 case Failure(e) => Display.error("DataSource.load ", e); None
+     }
+  	 
    
   def load(extr: TxtFields => DblVector): Option[XTSeries[DblVector]] = {
      require(extr != null, "Cannot extracts fields with undefined extractors")
@@ -155,15 +164,23 @@ final class DataSource(val pathName: String,
 
 object DataSource {
      
-   def listSymbols(directoryName: String): Array[String] = {
-        val directory = new java.io.File(directoryName)
-        directory.listFiles.map( _.getName)
+	/**
+	 * <p>Generate a list of CSV files within a directory, associated with a list of symbol:<br>
+	 * symbol => directoryName/symbol.csv
+	 * @param directoryName, name of the directory containing the CSV files
+	 */
+   def listSymbolFiles(directoryName: String): Array[String] = {
+       require(directoryName != null, "DataSource.listSymbolFiles Directory name is undefined")
+       
+       val directory = new java.io.File(directoryName)
+       val filesList =  directory.listFiles
+       if( filesList != null)  directory.listFiles.map( _.getName) else Array.empty
     }
   
   def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int, filter: Option[Array[String] => Boolean]): DataSource = new DataSource(pathName, normalize, reverseOrder, headerLines, filter)  
   def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int): DataSource = new DataSource(pathName, normalize, reverseOrder, headerLines, None)
   def apply(pathName: String, normalize: Boolean): DataSource = new DataSource(pathName, normalize, true)
-  def apply(symName: String, pathName: String, normalize: Boolean): DataSource = new DataSource(symName, normalize, true)
+  def apply(symName: String, pathName: String, normalize: Boolean): DataSource = new DataSource(s"$pathName$symName", normalize, true)
 }
 
 // ----------------------------------   EOF ----------------------------------------------

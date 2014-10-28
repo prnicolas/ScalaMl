@@ -6,29 +6,30 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.supervised.nnet._
 import org.scalaml.trading.GoogleFinancials
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.supervised.nnet.MLPConnection.setNoSoftmax
-
-
+import org.scalaml.core.types.ScalaMl._
 import GoogleFinancials._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+
+
 object MLPEval {
-  final val path = "resources/data/chap9/"
-  final val ALPHA = 0.8; val ETA = 0.015
-  final val GAMMA = 1.0
-  final val NUM_EPOCHS = 200
-  final val EPS = 1e-4
-  final val THRESHOLD = 0.35
-  final val ACTIVATION = (x:Double) => Math.tanh(x) 	
-  
+  val path = "resources/data/chap9/"
+  val ALPHA = 0.8; 
+  val ETA = 0.01
+  val NUM_EPOCHS = 250
+  val EPS = 1e-3
+  val THRESHOLD = 0.12
+
   final val symbols = Array[String]("FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB")
-  	 
+  private val logger = Logger.getLogger("MLPEval")
+  
   val index: Map[String, Int] = {
   	 import scala.collection.mutable.HashMap
   		 
@@ -38,74 +39,97 @@ object MLPEval {
 
   	
   def run(args: Array[String]): Unit =  {
-     Console.println("Evaluation of MLP classifier evaluation without SoftMax conversion")
+     Display.show("Evaluation of MLP classifier evaluation without SoftMax conversion", logger)
        
   	 val prices = symbols.map(s => DataSource(path + s +".csv", true, true, 1))
-  	                   .map( _ |> GoogleFinancials.close )
-  	                   .map( _.get.toArray)
+  	                     .map( _ |> GoogleFinancials.close )
+  	                     .map( _.toArray)
     
-     setNoSoftmax
+  	 val trends: DblMatrix = prices.map(z => z.drop(1).zip(z.take(z.size-1)).map(xtx => if(xtx._1 - xtx._2 > 0.0) 1.0 else 0.0))
+  	 
+  	 Display.show(s"\nsize: ${prices(0).size}", logger)
+  	 var startTime= System.currentTimeMillis
      var hiddenLayers = Array[Int](4)
-     var state = MLPConfig(ALPHA, ETA, GAMMA,  hiddenLayers, NUM_EPOCHS, EPS, ACTIVATION)
-     println("\nSingle 4 neuron hidden layer")
-     eval(prices, state)
- 
+     var config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
+
+     eval(prices, config)
+     
+     Display.show(s"\nSingle 4 neuron hidden layer: ${(System.currentTimeMillis - startTime)}", logger)
+     startTime= System.currentTimeMillis
+     
+     
      hiddenLayers = Array[Int](4, 4)
-     state = MLPConfig(ALPHA, ETA, GAMMA,  hiddenLayers, NUM_EPOCHS, EPS, ACTIVATION)
-     println("\nTwo hidden layers of 4 neurons each")
-     eval(prices, state)
+     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
+
+     eval(prices, config)
+     Display.show(s"\nTwo hidden layers of 4 neurons each ${(System.currentTimeMillis - startTime)}", logger)
+     startTime= System.currentTimeMillis
      
      hiddenLayers = Array[Int](7, 7)
-     state = MLPConfig(ALPHA, ETA, GAMMA,  hiddenLayers, NUM_EPOCHS, EPS, ACTIVATION)
-     println("\nTwo hidden layers of 7 neurons each")
-     eval(prices, state)
+     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
+     eval(prices, config)
+     Display.show(s"\nTwo hidden layers of 7 neurons each ${(System.currentTimeMillis - startTime)}", logger)
+           
+     hiddenLayers = Array[Int](8, 5, 6)
+     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
+     eval(prices, config)
+     Display.show(s"\nThree hidden layers of 7 neurons each ${(System.currentTimeMillis - startTime)}", logger)
   }
   
- private def eval(obs: DblMatrix, state: MLPConfig) {
-     accuracy(Array[String]("FXY", "FXC", "GLD", "FXA"), obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+ private def eval(obs: DblMatrix, config: MLPConfig) {
+     accuracy(Array[String]("FXY", "FXC", "GLD", "FXA"), obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 }    
   	 
-  	 accuracy(Array[String]("FXE", "FXF", "FXB", "CYB"), obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+  	 accuracy(Array[String]("FXE", "FXF", "FXB", "CYB"), obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 } 
   	 
-  	 accuracy(Array[String]("FXE", "FXC", "GLD", "FXA", "FXY", "FXB"), obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+  	 accuracy(Array[String]("FXE", "FXC", "GLD", "FXA", "FXY", "FXB"), obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 }    
   	 
-  	 accuracy(Array[String]("FXC", "FXY", "FXA"), obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+  	 accuracy(Array[String]("FXC", "FXY", "FXA"), obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 } 
   	 
-  	  accuracy(Array[String]("CYB", "GLD", "FXY"), obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+  	  accuracy(Array[String]("CYB", "GLD", "FXY"), obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 } 
   	 
-  	 accuracy(symbols, obs, state) match {
-  		 case Some(acc) => println(acc)
-  		 case None => println("Could not compute the accuracy")
+  	 accuracy(symbols, obs, config) match {
+  		 case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+  		 case None => Display.error("Could not compute the accuracy", logger)
   	 } 
   }
  
-  private def accuracy(symbols: Array[String], prices: DblMatrix, state: MLPConfig): Option[Double] = {  	 
-     val obs: Array[DblVector] = symbols.map( sym => index.get(sym).get).map( prices( _ ) )
+  private def accuracy(symbols: Array[String], prices: DblMatrix, config: MLPConfig): Option[Double] = {  	 
+     val obs: DblMatrix = symbols.map( sym => index.get(sym).get).map( prices( _ ) )
 
      val features = obs.drop(1).transpose
      val target = Array[DblVector](obs(0)).transpose
-  	 val classifier = MLP[Double](state, features, target, new MLP.MLPClassification(target))
+
+     
+     implicit val mlpObjective = new MLP.MLPBinClassifier
+  	 val classifier = MLP[Double](config, features, target)
   	 classifier.accuracy(THRESHOLD)
    }
+  
   
   private def toString(symbols: Array[String]): String = 
   	 new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s).append(" ")).toString)
   	     .append("=> ")
   	       .append(symbols(0)).toString
+}
+
+
+object MLPEvalApp extends App {
+	MLPEval.run(null)
 }
 
 // -------------------------------------  EOF ----------------------------------------------------------

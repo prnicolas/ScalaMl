@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap12
 
@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import com.typesafe.config.Config
 import akka.actor.Props
 import scala.concurrent.{Await, duration}
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.scalability.spark._
 import org.apache.spark.SparkContext
 import org.apache.spark.storage.StorageLevel
@@ -26,26 +26,23 @@ import org.scalaml.scalability.akka._
 import org.scalaml.scalability.scala._
 
 
-
 trait AkkaEval {
    final val numWorkers = 4
    final val numIters = 6
 
-   protected def extractVolatilityVolume: Option[List[XTSeries[Double]]] = {
+   protected def extractVolatilityVolume: List[DblVector] = {
       import org.scalaml.trading.YahooFinancials
       import org.scalaml.workflow.data.DataSource
         
       val extractors = List[Array[String] => Double](
       	 YahooFinancials.volatility, YahooFinancials.volume )	
       	 
-	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors match {
-	  	case Some(xs) => Some(xs.map( XTSeries(_) ))
-	  	case None => None
-	  }
+	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors
    }
 }
 
 
+/*
 
 object AkkaActorEval extends AkkaEval {
    final val descriptor = "Evaluation Akka actors"	
@@ -106,6 +103,8 @@ object AkkaFutureEval extends AkkaEval {
 	  }
     }
 }
+* 
+*/
 
 
 // ---------------------------------  EOF -------------------------

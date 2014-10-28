@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types
+import org.scalaml.core.types
 import org.scalaml.util.Matrix
-import Types._
+import types._
 import scala.reflect.ClassTag
 
 

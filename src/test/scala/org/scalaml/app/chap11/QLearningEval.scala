@@ -6,77 +6,79 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap11
 
-import org.scalaml.reinforcement.qlearning.{QLearning, QLState, QLConfig, QLLabel}
+import org.scalaml.reinforcement.qlearning._
 import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
 import YahooFinancials._
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.types.ScalaMl.DblVector
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-
-
+import scala.collection.mutable.ArrayBuffer
+import org.scalaml.util.{Counter, NumericAccumulator}
+import scala.collection.mutable.HashMap
+import scala.collection.mutable.ListBuffer
 
 	 
 object QLearningEval {
-    			/*
-    			 * Initial data set extracted from stock CSV files
-    			 */
-    final val alpha = 0.6
-	final val gamma = 0.5
-	final val maxIters = 150
-			
-	final val path = "resources/data/chap11/"
-	final val etfs = Array[String]("TLT", "ICF", "SPY", "VWO", "USO", "IWC")
-	
-	private val logger = Logger.getLogger("QLearningEval")
-
-	final val states = Array[QLState[Double]](
-	   QLState[Double](0, Array[Double](0.2, 0.2, 0.2, 0.0, 0.2, 0.0)),
-	   QLState[Double](1, Array[Double](0.1, 0.1, 0.1, 0.1, 0.3, 0.3)),
-	   QLState[Double](2, Array[Double](0.3, 0.3, 0.1, 0.1, 0.1, 0.1)),
-	   QLState[Double](3, Array[Double](0.1, 0.2, 0.2, 0.2, 0.2, 0.1)),
-	   QLState[Double](4, Array[Double](0.5, 0.1, 0.1, 0.1, 0.1, 0.1)),
-	   QLState[Double](5, Array[Double](0.2, 0.3, 0.0, 0.2, 0.2, 0.1)),
-	   QLState[Double](6, Array[Double](0.0, 0.0, 0.3, 0.2, 0.2, 0.2)),
-	   QLState[Double](7, Array[Double](0.3, 0.0, 0.0, 0.2, 0.1, 0.4)),
-	   QLState[Double](8, Array[Double](0.4, 0.1, 0.1, 0.0, 0.2, 0.2))
-	)
-	
-	
-    def run: Unit = {	
-    	println("Evaluation Q-Learning algorithm")
-    		// stateuration of QLearning algorithm
-	  	val qConfig = QLConfig(alpha, gamma, maxIters)
-	  	
-	  		// extract the input values for each symbol (stock time series)
-	  	val values = etfs.map( etf =>
-	  		DataSource(path + etf + ".csv", false, true, 1) |> YahooFinancials.adjClose )
-	  		
-	  		// If all values have been retrieved
-	    values find( _ != None) match {
-		   case Some(input) => {
-		  	  val labels = List[(DblVector, QLState[Double])]()
-		  	  
-		  			  // start collecting the training labels
-		  	  Range(40, 240).foreach( n => {
-			     val goal = states.zipWithIndex
-			                       .maxBy(p => p._1.distribution.reduceLeft( (s, x) => s + x + input.get(n)))._1
-			     (input.get, goal) :: labels
-		  	  })  
-		  	    	
-		  	  val qLabels = QLLabel[Double](labels)
-		  	  val qLearning = QLearning[Double](qConfig, qLabels, states.size)
-		   }
-		   case None => Display.error("Failed to extract all input data", logger)
-	   }
+    val stockPricePath = "resources/data/chap11/IBM.csv"
+    val optionPricePath = "resources/data/chap11/IBM_O.csv"
+	 
+    val MIN_TIME_EXPIRATION = 6
+    val FUNCTION_APPROX_STEP = 3
+    val ALPHA = 0.4
+    val DISCOUNT = 0.6
+    val EPISODE_LEN = 15
+    val NUM_EPISODES = 24
+    val MIN_ACCURACY= 0.8
+    
+    def run: Unit = { 
+       val src = DataSource(stockPricePath, false, false, 1)
+       val ibmOption = new OptionModel("IBM", 190.0, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
+  	   
+  	   val optionSrc = DataSource(optionPricePath, false, false, 1)
+       optionSrc.extract match {
+          case Some(v) => initializeModel(ibmOption, v)
+      	  case None => Display.error("Failed extracting option prices")
+       }
     }
+    
+    def initializeModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
+      val fMap = ibmOption.approximate(oPrice)
+      val input = new ArrayBuffer[QLInput]
+      val profits = fMap.values.zipWithIndex
+      profits.foreach(v1 => 
+      	  	 profits.foreach( v2 => 
+      	  		  input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1)))
+      )
+   	      
+      val goal = input.maxBy( _.reward).to
+	          
+	  val getNeighbors = (idx: Int, numStates: Int) => {
+		val rows = idx/numStates
+		val cols = if( rows == 0) idx else (idx % (rows*numStates))
+		val _toList = new ListBuffer[Int]
+		if(cols > 0) _toList.append(cols-1)
+		if(cols < numStates-1) _toList.append(cols+1)
+		_toList.append(cols)
+		_toList.toList	
+      }
+      val config = new QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, MIN_ACCURACY, getNeighbors)
+	  QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
+   }
 }
+
+
+object AA extends App {
+
+    QLearningEval.run
+}
+
 
 
 // ------------------------------------  EOF ----------------------------------

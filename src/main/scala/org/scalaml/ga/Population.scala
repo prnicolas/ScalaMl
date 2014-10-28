@@ -6,16 +6,23 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.ga
 
 import scala.collection.mutable.ArrayBuffer
+import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
 import Chromosome._
 import java.util.{HashSet, Arrays}
-
-
 import Population._
+import org.scalaml.core.XTSeries
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+
+
+
+case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int)
+
 		/**
 		 * <p>Class that defines a population of chromosomes. The size of the population varies
 		 * over time following successive, iterative selection but is bounded to avoid a potential
@@ -29,11 +36,11 @@ import Population._
 		 * @since August 25, 2013
 		 * @note Scala for Machine Learning
 		 */
-final class Population[T <: Gene](val limit: Int, 
+final class Population[T <: Gene](limit: Int, 
 						          val chromosomes: Pool[T]) {
     require(chromosomes != null, "Population has undefined initial set of chromosomes")
     require(limit > 1 && limit < MAX_NUM_CHROMOSOMES, "Maximum number of allowed chromosomes " + limit + " is out of range")
-
+    private val logger = Logger.getLogger("Population")
     	/**
 		 * <p>Add an array of chromosomes to the existing population. The new chromosomes are
 		 * appended to the existing ones, after removal of duplicates</p>
@@ -42,7 +49,6 @@ final class Population[T <: Gene](val limit: Int,
 		 */
 	def + (that: Population[T]): Population[T] = {
 	    require(that != null, "Cannot add an undefined list of chromosomes to this population")
-	    
 	    if(that.size > 0) Population[T](limit, chromosomes ++: that.chromosomes) else this
 	}
     
@@ -53,10 +59,6 @@ final class Population[T <: Gene](val limit: Int,
        chromosomes += new Chromosome[T](that)
     }
   
-    
-    
-    
-	
     	/**
     	 * <p>Selection operator for the chromosomes pool The selection relies on the
     	 * normalized cumulative fitness for each of the chromosome ranked by decreasing
@@ -66,21 +68,25 @@ final class Population[T <: Gene](val limit: Int,
     	 * @return a new population
     	 * @throws IllegalArgumenException if the cutoff is out of bounds or the fitness function is undefined
     	 */
-    def select(cutOff: Double, fit: Chromosome[T] => Double): Population[T] = {
-    	require(cutOff > 0.0 && cutOff < 1.0, "cannot select chromosomes with a cutoff" + cutOff + " out of range")
-    	require(fit != null, "Cannot select chromosomes in a population with undefined fitness function")
-    	
-    	val cumul = chromosomes.foldLeft(0.0)((sum, x) => sum + fit(x) )
+    def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
+      	require(score != null, "Cannot select chromosomes in a population with undefined fitness function")
+    	  	
+      	val cumul = chromosomes.foldLeft(0.0)((s, xy) => {score(xy); s + xy.unfitness })
+      	println(cumul + "," + chromosomes.size)
     	chromosomes foreach( _ /= cumul)
-        chromosomes.sortWith(_.fitness < _.fitness)
-            
-        var sum = 0.0
-    	chromosomes.foreach( x => {sum += x.fitness; x.fitness = sum} )
-    	
-	    val idx = binSearch(cutOff)
-	    val nSize = if(idx < limit) idx else limit
-        Population[T](limit, chromosomes.take(nSize))
+        val newChromosomes = chromosomes.sortWith(_.unfitness < _.unfitness)
+
+        val cutOffSize: Int = (cutOff*newChromosomes.size).floor.toInt
+        val newPopSize = if(limit < cutOffSize) limit else cutOffSize
+        chromosomes.clear
+        chromosomes ++= newChromosomes.take(newPopSize)        
     }
+    
+    @inline
+    final def geneSize: Int = chromosomes.head.code.head.size
+    
+    @inline
+    final def chromosomeSize: Int = if(chromosomes.size > 0) chromosomes.head.size else 0
     
     
     	/**
@@ -90,18 +96,19 @@ final class Population[T <: Gene](val limit: Int,
     	 * @return a new population with most likely a different size
     	 * @throws IllegalArgumentException if xOver is out of range.
     	 */
-    def +- (xOver: Double): Population[T] = {
-    	require(xOver > 0.0 && xOver < 1.0, "Cross-over factor " + xOver + " on the population is out of range")
+    def +- (xOver: Double): Unit = {
+    	require(xOver > 0.0 && xOver < 1.0, s"Cross-over factor $xOver on the population is out of range")
     	  	
-    	val mid = size>>1
-    	val bottom = chromosomes.slice(mid,  chromosomes.size)
-    	val offSprings = chromosomes.take(mid)
-    	                            .zip(bottom)
-    	                            .map(p => p._1 +- (p._2, xOver))
- 
-    	val group1 = offSprings.map( _._1)
-    	val group2 =  offSprings.map( _._2)
-    	Population[T](limit, chromosomes ++ group1 ++ group2)
+    	if( size > 1) {
+	    	val mid = size>>1
+	    	val bottom = chromosomes.slice(mid,  size)              
+	    	val geneticIdx = geneticIndices(xOver)
+	    	val offSprings = chromosomes.take(mid)
+	    	                            .zip(bottom)
+	    	                            .map(p => p._1 +- (p._2, geneticIdx))
+	    	                            .unzip
+	    	chromosomes ++= offSprings._1 ++ offSprings._2
+    	}
     }
     
     
@@ -112,33 +119,14 @@ final class Population[T <: Gene](val limit: Int,
     	 * @return Population with original chromosomes and mutated counter-part
     	 * @throws IllegalArgumenException if mu is out of range.
     	 */
-    def ^ (mu: Double): Population[T] = {
+    def ^ (mu: Double): Unit = {
         require(mu > 0.0 && mu < 1.0, "Mutation factor " + mu + " on the population is out of range")
-    	Population[T](limit, chromosomes ++ chromosomes.map(_ ^ mu))
+    	chromosomes ++= chromosomes.map(_ ^ geneticIndices(mu))
     }
-
-
-    private[this] def binSearch(cutOff: Double) = {
-    	var left = 0
-    	var right = size-1
-    	while( left <= right) {
-    	  val mid = left + (right-left)>>1
-    	  if( chromosomes(mid).fitness <= cutOff) 
-    		 left = mid+1
-    	  else 
-    		 right = mid-1
-    	}
-    	  // We align to an even number of chromosomes because the
-    	  // X-over is an operation on pair
-    	if( (left & 0x01) == 0x01)
-    		left += 1
-    	left 
-    }
-
 
     def diff(that: Population[T], depth: Int): Option[Pool[T]] = {
-    	topChromosomes(depth) match {
-    		case Some(top) => that.topChromosomes(depth) match {
+    	fittest(depth) match {
+    		case Some(top) => that.fittest(depth) match {
     			case Some(thatTop) => {
     			    if( top.zip(thatTop).exists( x => x._1 != x._2 ) )
     			    	None
@@ -152,7 +140,7 @@ final class Population[T <: Gene](val limit: Int,
     }
 
 	
-	def topChromosomes(depth: Int) : Option[Pool[T]] = {
+	def fittest(depth: Int) : Option[Pool[T]] = {
 	   require(depth > 0, "Cannot list a negative or null number of chromosomes:" + depth)
 	   if( size > 1) 
 	      Some(chromosomes.take(if(depth > size)  size else depth))
@@ -168,9 +156,22 @@ final class Population[T <: Gene](val limit: Int,
 	final def size: Int = chromosomes.size
 	
 
-	override def toString: String = {
-	    chromosomes.foldLeft(new StringBuilder)((buf, x) =>  { buf.append(x.toString); buf.append("\n")}).toString
-	}
+	override def toString: String = 
+	   chromosomes.foldLeft(new StringBuilder)((buf, x) =>  { buf.append(s"${x.toString}\n")}).toString
+	
+    def display(comments: String): Unit = 	
+	    Display.show( chromosomes.foldLeft(new StringBuilder(comments))((buf, x) =>  buf.append(s"${x.show}\n")).toString, logger )
+	    
+	
+	private def geneticIndices(prob: Double): GeneticIndices = {
+	   val idx = (prob*chromosomeSize).floor.toInt
+	   val chromIdx = if(idx == 0) 1 else if(idx == chromosomeSize) chromosomeSize-1 else idx
+	        
+	   val gIdx = (prob*geneSize).floor.toInt
+	   val geneIdx = if(gIdx == 0) 1 else if(gIdx == geneSize) geneSize-1 else gIdx
+            
+       GeneticIndices(chromIdx, geneIdx)	
+    }
 }
 
 
@@ -180,6 +181,7 @@ final class Population[T <: Gene](val limit: Int,
 object Population{
    final val MAX_NUM_CHROMOSOMES = 10000
    def apply[T <: Gene](maxNumChromosomes: Int, chromosomes: Pool[T]): Population[T] = new Population[T](maxNumChromosomes, chromosomes)
+   def apply[T <: Gene](maxNumChromosomes: Int, chromosomes: List[Chromosome[T]]): Population[T] = new Population[T](maxNumChromosomes, new Pool[T] ++ chromosomes)
 }
 
 // -----------------------  EOF -------------------------------------------

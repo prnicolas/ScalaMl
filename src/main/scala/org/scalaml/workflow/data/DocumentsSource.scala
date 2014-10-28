@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow.data
 
@@ -41,11 +41,11 @@ class DocumentsSource(val pathName: String) {
   	  if( file.isDirectory) file.listFiles.map( x => x.getName) else Array[String](pathName)
    }
     
-   def |> : Option[Corpus] = {
+   def |> : Corpus = {
   	  import scala.io.Source
   	  import java.io.{FileNotFoundException, IOException}
   	  
-  	  Try(filesList.map( fName => {
+  	  filesList.map( fName => {
 	  	  val src = Source.fromFile(pathName + fName)	
 	  	  val fieldIter = src.getLines
 	  	  	  
@@ -56,12 +56,8 @@ class DocumentsSource(val pathName: String) {
 	  	  src.close
 	  	  if(date == None || title == None)
 	  	  	throw new IllegalStateException("DocumentsSource.|> title or date for " + fName + " is malformatted")
-	  	  (date.get, title.get, content.toString)
-	  	  
-  	  }) ) match {
-  	  	 case Success(res) => Some(res)
-  	  	 case Failure(e) => Display.error("TextSource", logger, e); None
-  	  }
+	  	  (date.get, title.get, content.toString) 
+  	  }) 
    }
    
 

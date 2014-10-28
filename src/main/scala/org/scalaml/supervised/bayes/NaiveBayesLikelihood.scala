@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.bayes
 
@@ -15,13 +15,15 @@ import org.scalaml.stats.Stats
 
 import NaiveBayesModel._
 
+import Likelihood._
 
 		/**
-		 * <p>Class that represents a likelihood for each featurefor Naive Bayes classifier.<br>
+		 * <p>Class that represents a likelihood for each feature for Naive Bayes classifier.<br>
 		 * The prior consists of a label (index), the mean of the prior of each dimension of the model,
-		 * the standard deviation of the prior of each dimension of the model and the class likelyHood.
+		 * the standard deviation of the prior of each dimension of the model and the class likeliHood.<br>
 		 * The Naive Bayes assume that the dimension of the model are independent, making the log of 
 		 * the prior additive.</p>
+		 * @constructor Create a likelihood for a specific class. [label] Name or label of the class or prior for which the likelihood is computed. [muSigma]  Array of tuples (mean, standard deviation) of the prior observations for the model. [prior] Probability of occurrence for the class specified by the label. 
 		 * @param label for a specific class or prior
 		 * @param muSigma  array of (mean, standard deviation) of the prior observations for the model
 		 * @param prior probability of occurrence for the class specified by the label.
@@ -32,11 +34,11 @@ import NaiveBayesModel._
 		 * @since March 11, 2014
 		 * @note Scala for Machine Learning
 		 */
-protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Double, Double)], val prior: Double) {
+protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Double, Double)], prior: Double) {
   import Stats._
   
-  require(muSigma != null && muSigma.size > 0, "Cannot create a likelihood for undefined historical mean and standard deviation")
-  require(prior > 0.0  && prior <= 1.0, "prior for the NB prior " + prior + " is out of range")
+  require(muSigma != null && muSigma.size > 0, "Likelihood Cannot create a likelihood for undefined historical mean and standard deviation")
+  require(prior > 0.0  && prior <= 1.0, s"Likelihood Prior for the NB prior $prior is out of range")
   
   		/**
   		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
@@ -47,24 +49,21 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
   		 * @return log of the conditional probability p(C|x)
   		 */
   final def score(obs: Array[T], density: Density): Double = {
-  	 require(obs != null && obs.size > 0, "Cannot compute conditional prob with NB for undefined observations")
-  	 require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
-  	 
+  	 require(obs != null && obs.size > 0, "Likelihood.score Cannot compute conditional prob with NB for undefined observations")
+  	 require(density != null, "Likelihood.score Cannot compute conditional prob with NB for undefined prob density")
+
 	 (obs, muSigma).zipped
-	       .foldLeft(0.0)((post, xms) => post + Math.log(density(xms._2._1, xms._2._2, xms._1))) + Math.log(prior)
+	               .foldLeft(0.0)((post, xms) => {
+	    val probability = density(xms._2._1, xms._2._2, xms._1)
+	    post + Math.log(if(probability< MIN_LOG_ARG) MIN_LOG_VALUE else probability)
+	 }) + Math.log(prior)
   }
-  
-  override def toString: String = 
-	new StringBuilder("\n")
-	      .append(label)
-	          .append(": ")
-	             .append(muSigma.foldLeft(new StringBuilder)((b, m) => b.append(" (").append(m._1).append(",").append(m._2).append(") ")).toString)
-	                .append(" <")
-	                    .append(prior) 
-	                       .append(">").toString
+
+  override def toString: String = {
+    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => b.append(s" (${m._1},${m._2}) ")).toString
+     s"\nlabel: $label: ${muSigmaStr} [$prior]"
+  }
 }
-
-
 
 
 	/**
@@ -76,6 +75,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
 	 */
 
 object Likelihood {
+   val MIN_LOG_ARG = 1e-32
+   val MIN_LOG_VALUE = -1e+32
    def apply[T <% Double](label: Int, muSigma: Array[(Double, Double)], prior: Double): Likelihood[T] 
     = new Likelihood[T](label, muSigma, prior)
 }

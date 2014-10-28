@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.Types
+import org.scalaml.core.types
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
@@ -31,7 +31,7 @@ import org.scalaml.util.Display
 		 */
 protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
 	private val logger = Logger.getLogger("Beta")
-	
+
 	val complete = {
 		Try {
 		    alphaBeta = Matrix[Double](lambda.config._T, lambda.config._N)	

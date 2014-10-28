@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 
 
 		/**
@@ -25,7 +25,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
 		 */
-final class Alpha(val lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lambdaA, obsIdxA) {
+final class Alpha(lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lambdaA, obsIdxA) {
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */

@@ -6,12 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression.logistic
 
-import org.scalaml.core.Types
-import Types.ScalaMl._
+import org.scalaml.core.types
+import types.ScalaMl._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 	/**
@@ -29,30 +31,27 @@ import Types.ScalaMl._
 	 * @author Patrick Nicolas
 	 * @since January 11, 2014
 	 */
-final class LogBinRegression(val labels: DVector[(XY, Double)], val maxIters: Int, val eta: Double, val eps: Double) {
-	require(maxIters > 10 && maxIters < 10000, "Maximum number of iteration " + maxIters + " is out of bounds")
-	require(eta < 1e-1 && eta > 1e-7, "Gradient slope " + eta + " is out of bounds")
-	require(eps < 0.25 && eps > 1e-7, "Convergence criteria " + eps + " is out of bounds")
+final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double) {
+	require(maxIters > 10 && maxIters < 10000, s"Maximum number of iteration $maxIters is out of bounds")
+	require(eta < 1e-1 && eta > 1e-7, s"Gradient slope $eta + is out of bounds")
+	require(eps < 0.25 && eps > 1e-7, s"Convergence criteria $eps is out of bounds")
 	require(labels != null && labels.size > 1, "Cannot train with undefined set of observations")
 	    	
 	final val dim = 3
 	private[this] val weights = train
+	private val logger = Logger.getLogger("LogBinRegression")
 
 		/**
 		 * <p>classification of a two dimension data (xy) using a binary logistic regression.</p>
 		 * @param xy (x,y) data point
 		 * @return Option (class, likelihood) for the logistic regression is the training was completed, None otherwise
 		 */
-   	def classify(xy: XY): Option[(Boolean, Double)] = {
-       require( xy != null, "Cannot classify an undefined data point")
-       
-	   weights match {
-	  	 case Some(w) => { 
-	  		 val likelihood = w(0) + xy._1*w(1) + xy._2*w(2)
-	  		 Some(likelihood > 0.0, likelihood)
-	  	 }
-	  	 case None => None
+   	def classify(xy: XY): Option[(Boolean, Double)] = weights match {
+	  case Some(w) => { 
+	  	 val likelihood =  sigmoid(w(0) + xy._1*w(1) + xy._2*w(2))
+	     Some(likelihood > 0.5, likelihood)
 	   }
+	   case None => Display.error("classify failed", logger); None
 	}
 	
 	
@@ -66,20 +65,19 @@ final class LogBinRegression(val labels: DVector[(XY, Double)], val maxIters: In
     	val w = Array.tabulate(dim)( x=> Random.nextDouble-1.0) 
     	
     	(0 until maxIters).find( i => {
-    	   val deltaW = labels.foldLeft(Array.fill(dim)(0.0)) ((dw, lbl) => {  
-    	  	   val y = sigmoid(w(0) + w(1)*lbl._1._1 +  w(2)*lbl._1._2)
-    	  	   dw.map(dx => dx + (lbl._2 - y)*(lbl._1._1 + lbl._1._2))
+    	   val deltaW = labels.foldLeft(Array.fill(dim)(0.0)) ((dw, y) => {  
+    	  	   val z = sigmoid(w(0) + w(1)*y._1._1 +  w(2)*y._1._2)
+    	  	   dw.map(dx => dx + (y._2 - z)*(y._1._1 + y._1._2))
     	   })
 
     	   val nextW = Array.fill(dim)(0.0).zipWithIndex.map( nw => w(nw._2) + eta*deltaW(nw._2))
 	       val diff = Math.abs(nextW.sum - w.sum)
 	    	
 	       nextW.copyToArray(w)
-	       println(diff)
 	       diff < eps
     	}) match {
     		case Some(iters) => Some(w)
-    		case None => println("LogBinRegression.train failed to converge"); None
+    		case None => Display.error("LogBinRegression.train failed to converge", logger); None
     	}
 	}
 	

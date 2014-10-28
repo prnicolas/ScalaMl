@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap1
 
@@ -15,9 +15,9 @@ import java.awt.Color
 import org.scalaml.plots._
 import org.scalaml.stats.Stats
 import org.scalaml.trading.{Signal, YahooFinancials}
-import org.scalaml.core.Types
+import org.scalaml.core.types
 import Signal._
-import Types.ScalaMl._
+import types.ScalaMl._
 import org.scalaml.supervised.regression.logistic.LogBinRegression
 import scala.util.{Try, Success,Failure}
 import org.apache.log4j.Logger
@@ -33,25 +33,27 @@ import org.scalaml.util.Display
 object LogBinRegressionEval  {
 	import YahooFinancials._
 	
-    final val nIters = 300
-    final val eps = 0.02
-    final val eta = 0.000002
+    final val NITERS = 300
+    final val EPS = 0.02
+    final val ETA = 0.000002
+    final val path_training = "resources/data/chap1/CSCO.csv"
+    final val path_test = "resources/data/chap1/CSCO2.csv"
     private val logger = Logger.getLogger("LogBinRegressionEval")
 
     		/*
     		 * Driver code that load, visualize and train labeled data.
     		 * Classifier is invoked on the model once training is completed.
     		 */
-    def run: Unit = {
-	    load("resources/data/chap1/CSCO.csv") match {
+    def run: Int = {
+	    load(path_training) match {
 	      case Some(volatilityVolume) => {
 	      	
 	        display(volatilityVolume)
 	    	
-	        val labels = volatilityVolume.zip(volatilityVolume.map(x => if( x._1 > 0.32 && x._2 > 0.35) 1.0 else 0.0 ))
-		    val logit = new LogBinRegression(labels, nIters, eta, eps)
+	        val labels = volatilityVolume.zip(volatilityVolume.map(x => if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
+		    val logit = new LogBinRegression(labels, NITERS, ETA, EPS)
 	    	  
-	    	load("resources/data/chap1/CSCO2.csv") match {
+	    	load(path_test) match {
 	    	   case Some(test) =>{
 	    	  	 logit.classify(test(0)) match {
 		            case Some(topCategory) => Display.show(topCategory.toString, logger)
@@ -62,10 +64,10 @@ object LogBinRegressionEval  {
 		            case None => Display.error("Failed to classify", logger)
 		         }
 	    	   }	
-	    	   case None => Display.error("Could not load stock information for CSCO2", logger)
+	    	   case None => Display.error(s"Could not load training set for $path_test", logger)
 	    	 }
 	      }
-	      case None =>  Display.error("Could not load stock information for CSCO", logger)
+	      case None => Display.error(s"Could not load test set for $path_training", logger)
 	    }
     }
 	
@@ -73,21 +75,24 @@ object LogBinRegressionEval  {
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
     private def load(fileName: String): Option[XYTSeries] = {
-    	import java.io.{FileNotFoundException, IOException}
-    	
     	require(fileName != null, "Cannot load data from undefined fileName")
     	Try {
 			val src =  Source.fromFile(fileName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray
 			val cols = fields.drop(1)
-		    val volatility = Stats[Double]( cols.map( f => f(HIGH.id).toDouble - f(LOW.id).toDouble ) ).normalizeMean
-			val volume =  (Stats[Double])(cols.map( _(VOLUME.id).toDouble) ).normalizeMean
+			val data = transform(cols)
 			src.close
-			volatility.zip(volume)
+			data
     	} match  {
     		case Success(xySeries) => Some(xySeries)
     		case Failure(e) => Display.error("LogBinRegressionEval ", logger, e); None
     	}
+    }
+    
+    private def transform(cols: Array[Array[String]]): XYTSeries = {
+    	val volatility  = Stats[Double](cols.map(YahooFinancials.volatility)).normalize
+		val volume =  Stats[Double](cols.map(YahooFinancials.volume) ).normalize
+		volatility.zip(volume)
     }
     
     	/**
@@ -96,8 +101,9 @@ object LogBinRegressionEval  {
     private def display(volatilityVolume: XYTSeries): Unit = {
        require(volatilityVolume != null && volatilityVolume.size > 0, "Cannot display an undefined time series")
        
-       val plotter = new ScatterPlot(("CSCO 2012-2013 Stock", "Session Volatility", "Session Volume"), new BlackPlotTheme)
-       plotter.display(volatilityVolume.filter(x => (x._2 < 0.4 && x._2 > -0.48) && x._1 < 0.40), 250, 340)
+       val plotter = new ScatterPlot(("CSCO 2012-13 stock price", "Normalized session volatility", "Normalized session Volume"), 
+      		                         new BlackPlotTheme)
+       plotter.display(volatilityVolume, 250, 340)
 	}
 }
 

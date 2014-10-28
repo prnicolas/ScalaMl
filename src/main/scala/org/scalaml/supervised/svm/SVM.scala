@@ -6,39 +6,37 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.svm
 
 import org.scalaml.core.XTSeries
 import libsvm.{svm_problem, svm_node, svm, svm_model}
-import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
 import XTSeries._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import scala.collection.mutable.ArrayBuffer
 
 
 
 
-final class SVM[T <% Double](val state: SVMConfig, 
-		               val xt: XTSeries[Array[T]], 
-		               val labels: DblVector) extends PipeOperator[Array[T], Double] {
+final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) extends PipeOperator[Array[T], Double] {
 	
   private val logger = Logger.getLogger("SVM")
-  validate(state, xt, labels)
+  validate(config, xt, labels)
   
   type Feature = Array[T]
   type SVMNodes = Array[Array[svm_node]]
   
   private val model: Option[SVMModel] = {
-  	 
-  	  val prob = new svm_problem
-      prob.l = xt.size;
-      prob.y = labels  
-      prob.x = new SVMNodes(xt.size)
+  	  val problem = new svm_problem
+      problem.l = xt.size;
+      problem.y = labels  
+      problem.x = new SVMNodes(xt.size)
       
       val dim = dimension(xt)
       Try {
@@ -50,9 +48,9 @@ final class SVM[T <% Double](val state: SVMConfig,
 	  	  	    node.index= xi._2
 	  	  	    node.value = xi._1
 	  	  	    svm_col(xi._2) = node })
-	  	  	 prob.x(xt_i._2) = svm_col
+	  	  	 problem.x(xt_i._2) = svm_col
 	      })
-	      SVMModel(svm.svm_train(prob, state.param), accuracy(prob))
+	      SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
       } match {
       	case Success(m) => Some(m)
       	case Failure(e) => Display.error("SVM.model ", logger, e); None
@@ -64,7 +62,7 @@ final class SVM[T <% Double](val state: SVMConfig,
   	 * Access the accuracy of the SVM algorithm. 
   	 * @return accuracy value in the range [0, 1] if the model was successfully trained, None otherwise
   	 */
-  final def accuracy: Option[Double] = if( model != None) Some(model.get.params._2) else None
+  final def accuracy: Option[Double] = if( model != None) Some(model.get.accuracy) else None
 
   
 	/**
@@ -75,7 +73,7 @@ final class SVM[T <% Double](val state: SVMConfig,
   	case Some(m) => {
   		val z: Double = xt.toArray.zipWithIndex
   		          .foldLeft(0.0)((s, xti) => {
-  		          	val diff = svm.svm_predict(m.params._1, featurePrediction(xti._1)) - labels(xti._2)
+  		          	val diff = svm.svm_predict(m.svmmodel, toNodes(xti._1)) - labels(xti._2)
   		          	s + diff*diff
   		          })
         Some(Math.sqrt(z))
@@ -89,8 +87,8 @@ final class SVM[T <% Double](val state: SVMConfig,
   	 */
   def margin: Option[Double] = model match {
   	case Some(m) => {
-  		val wNorm = m.params._1.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
-  		if(wNorm < state.eps)
+  		val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
+  		if(wNorm < config.eps)
   			None
   		else
   			Some(2.0/Math.sqrt(wNorm))
@@ -103,33 +101,45 @@ final class SVM[T <% Double](val state: SVMConfig,
   	 * @param x feature used as input to the prediction
   	 * @throws IllegalStateException if the features vector is undefined or have an incorrect size
   	 */
-  override def |> (x: Feature): Option[Double] = model match {
-  	case Some(m) => {
-  	   if(x == null || x.size != dimension(xt))
-  			throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + dimension(xt))
-  		Some(svm.svm_predict(m.params._1, featurePrediction(x)))
-  	}
-  	case None => None
+  override def |> : PartialFunction[Feature, Double] =  {
+    case x: Feature if(x != null && x.size == dimension(xt) && model != None) =>
+      svm.svm_predict(model.get.svmmodel, toNodes(x))
   }
 
+  /*
+  override def |> (x: Feature): Option[Double] = model match {
+  	case Some(m) => {
+  	   if(x == null || x.size != dimension(xt)) {
+  	  	  Display.error("SVM.|> feature undefined or incorrect size", logger)
+  	  	  None
+  	   }
+  	   else
+  		Some(svm.svm_predict(m.svmmodel, toNodes(x)))
+  	}
+  	case None => Display.error("SVM.|> Model undefined", logger); None
+  }
+  * 
+  */
 
-  private def accuracy(prob: svm_problem): Double = {
-	 if( state.isCrossValidation ) { 
+
+  private def accuracy(problem: svm_problem): Double = {
+	 if( config.isCrossValidation ) { 
 	    val target = new Array[Double](labels.size)
-	    svm.svm_cross_validation(prob, state.param, 5, target)
+	    svm.svm_cross_validation(problem, config.param, config.nFolds, target)
 	  	target.zip(labels).filter(z => {println(z._1.toString + ", " + z._2.toString); Math.abs(z._1-z._2) < 1e-3}).size.toDouble/labels.size
 	 }
 	 else -1.0
   }
   
   
-  private def featurePrediction(x: Feature): Array[svm_node] = 
-  	  x.zipWithIndex.foldLeft(List[svm_node]())((xs, f) =>  {
+  private def toNodes(x: Feature): Array[svm_node] = 
+  	  x.zipWithIndex.foldLeft(new ArrayBuffer[svm_node])((xs, f) =>  {
   			val node = new svm_node
   			node.index = f._2
   			node.value = f._1
-  			node :: xs
-  	  }).toArray.reverse
+  			xs.append(node)
+  			xs
+  	  }).toArray
 
   
   private def validate(state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
@@ -140,7 +150,7 @@ final class SVM[T <% Double](val state: SVMConfig,
   }
   
   override def toString: String = 
-  	 new StringBuilder(state.toString)
+  	 new StringBuilder(config.toString)
            .append("\n") 
               .append(model.get.toString)
                  .toString
@@ -153,8 +163,8 @@ final class SVM[T <% Double](val state: SVMConfig,
 		 */
 object SVM {
   
-  def apply[T <% Double](state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector): SVM[T] = new SVM[T](state, xt, labels)
-  def apply[T <% Double](state: SVMConfig, ft: Array[Array[T]], labels: DblVector): SVM[T] = new SVM[T](state, XTSeries[Array[T]](ft), labels)
+  def apply[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, xt, labels)
+  def apply[T <% Double](config: SVMConfig, ft: Array[Array[T]], labels: DblVector): SVM[T] = new SVM[T](config, XTSeries[Array[T]](ft), labels)
 }
 
 // ----------------------------------  EOF ------------------------------------

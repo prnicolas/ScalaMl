@@ -6,20 +6,21 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.svm
 
 import libsvm._
-import org.scalaml.supervised.Config
+import org.scalaml.core.design.Config
+
 
 
 	/**
-	 * <p>Generic stateuration manager for any category of SVM algorithm. The stateuration of a SVM has
+	 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
 	 * three elements:<br>
 	 * - Type and parameters of the formulation of the SVM algorithm<br>
 	 * - Type and parameter(s) of the Kernel function used for non-linear problems<br>
-	 * - Execution (training) stateuration parameters.</p>
+	 * - Execution (training) configuration parameters.</p>
 	 * @param formulation formulation of the SVM problem
 	 * @param kernel kernel function used for non-separable training sets
 	 * @param svmParms parameters for the training of the SVM model
@@ -28,22 +29,17 @@ import org.scalaml.supervised.Config
 	 * @since April 30, 2014
 	 * @note Scala for Machine Learning
 	 */
-final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVMKernel, val svmParams: SVMExecution) extends Config {
-	validate(formulation, kernel, svmParams)
-	
+final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, exec: SVMExecution) extends Config {
+	validate(formulation, kernel, exec)
+	val persists = "config/svm"
+	  
     val  param = new svm_parameter
-    formulation.state(param)
-    kernel.state(param)
-    svmParams.state(param)
+    formulation.update(param)
+    kernel.update(param)
+    exec.update(param)
     
     override def toString: String = {
-       val buf = new StringBuilder("\nSVM Formulation: ")
-       buf.append(param.svm_type)
-    	     .append("\ngamma: ")
-    	       .append(param.gamma)
-    	         .append("\nProbability: ")
-    	           .append(param.probability)
-    	             .append("\nWeights: ")
+       val buf = new StringBuilder("\nSVM Formulation: ${param.svm_type}\ngamma: ${param.gamma}\nProbability: ${param.probability}\nWeights: ")
     	             
        if( param.weight != null) {
          for( w <- param.weight)
@@ -54,10 +50,13 @@ final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVM
       buf.toString
     }
     
-    @inline def eps: Double = svmParams.eps
+    @inline def eps: Double = exec.eps
     
     @inline
-    def isCrossValidation: Boolean = svmParams.nFolds > 0
+    def isCrossValidation: Boolean = exec.nFolds > 0
+    
+    @inline
+    def nFolds: Int = exec.nFolds
     
     private def validate(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
 		require(formulation != null, "Formulation in the stateuration of SVM is undefined")
@@ -67,8 +66,9 @@ final protected class SVMConfig(val formulation: SVMFormulation, val kernel: SVM
 }
 
 
+
 		/**
-		 * <p>Companion object for SVM stateuration manager used for defining the constructors of SVMConfig class.</p>
+		 * <p>Companion object for SVM configuration manager used for defining the constructors of SVMConfig class.</p>
 		 */
 object SVMConfig {
    final val DEFAULT_CACHE = 25000
@@ -77,5 +77,6 @@ object SVMConfig {
    def apply(svmType: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): SVMConfig = new SVMConfig(svmType, kernel, svmParams)
    def apply(svmType: SVMFormulation, kernel: SVMKernel): SVMConfig = new SVMConfig(svmType, kernel, new SVMExecution(DEFAULT_CACHE, DEFAULT_EPS, -1))
 }
+
 
 // --------------------------- EOF ------------------------------------------

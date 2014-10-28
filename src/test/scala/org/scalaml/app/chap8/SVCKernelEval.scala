@@ -6,17 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.supervised.svm._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import XTSeries._
 import org.scalaml.plots.ScatterPlot
 import org.scalaml.plots.BlackPlotTheme
-
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+import scala.util.{Try, Success, Failure}
 
 
 		/**
@@ -39,76 +41,57 @@ object SVCKernelEval {
     final val DEGREE = 2
     type Features = XTSeries[DblVector]
     
-    
+    private val logger = Logger.getLogger("SVCKernelEval")
     	/**
     	 * Main routine to compare the impact of different kernel function
     	 * using a synthetic features with format x = a*random + b*random
     	 */
     def run: Unit = {
-	    Console.println("Comparison of kernel functions for a Binary Support Vector Classifier")
-		compareKernel(0.27, 0.23)
-		compareKernel(0.16, 0.45)
-		compareKernel(0.12, 0.19)
+	    Display.show("Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+		compareKernel(0.6, 0.3)
+	    compareKernel(0.7, 0.3)
+	    compareKernel(0.8, 0.3)
+	    compareKernel(1.4, 0.3)
 	}
     
     
-    private def genLabels(a: Double, b: Double): DblMatrix = 
-		Array.fill(N)(Array[Double](a*Random.nextDouble, b*Random.nextDouble))
-
-	private def genFeatures(a: Double, b: Double): DblMatrix = 
-		genLabels(a,b) ++
-		Array.fill(N)(Array[Double](a*1.85*Random.nextDouble, 1.7*b*Random.nextDouble))
+    private def genData(variance: Double, mean: Double): DblMatrix = 
+		Array.fill(N)(Array[Double](variance*Random.nextDouble - mean, variance*Random.nextDouble - mean))
 
 		
 	private def compareKernel(a: Double, b: Double) {
-    	require(a > 0.0 && a < 10.0, "Cannot compare Kernel with inadequate features a = " + a)
-    	require(b > 0.0 && b < 10.0, "Cannot compare Kernel with inadequate features b = " + b)
+    	require(a > 0.0 && a < 2.0, "Cannot compare Kernel with inadequate features a = " + a)
+    	require(b > -0.5 && b < 0.5, "Cannot compare Kernel with inadequate features b = " + b)
     	   	
-		val trainingSet = genLabels(a, b) 
+		val trainingSet = genData(a, b) ++ genData(a, 1-b)
+		
+		val testSet = genData(a, b) ++ genData(a, 1-b)
 		val setHalfSize = trainingSet.size>>1
 		
-		val legend = new StringBuilder("Skewed Random values: a=").append(a).append(" b=").append(b).toString
+		val legend = new StringBuilder("\nSkewed Random values: a=").append(a).append(" b=").append(b).toString
 		display(legend, trainingSet.take(setHalfSize).map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
-		val y = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
+		val labels = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
 	       
-		println(legend)
-	    var testSet = genLabels(0.18, 0.35)
-        evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
-        evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel)
-        evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
-        
-        testSet = genLabels(0.25, 0.6)
-        evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
-        evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel)
-        evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
-        
-        testSet = genLabels(0.5, 0.5)
-        evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
-        evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel)
-        evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
-          
-        testSet = genLabels(0.75, 0.45)
-        evalKernel(trainingSet, testSet, y, RbfKernel(GAMMA))  
-        evalKernel(trainingSet, testSet, y, SigmoidKernel(GAMMA))
-        evalKernel(trainingSet, testSet, y, LinearKernel)
-        evalKernel(trainingSet, testSet, y, PolynomialKernel(GAMMA, COEF0, DEGREE))
+        val results = evalKernel(trainingSet, testSet, labels, RbfKernel(GAMMA)) ::
+                      evalKernel(trainingSet, testSet, labels, SigmoidKernel(GAMMA)) ::
+                      evalKernel(trainingSet, testSet, labels, LinearKernel) ::
+                      evalKernel(trainingSet, testSet, labels, PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
+                      List[Double]()
+         Display.show(legend + "\n" + results.toString, logger)
 	}
 	
-	private def evalKernel(features: DblMatrix, eval: DblMatrix, lbl: DblVector, kF: SVMKernel): Unit = {
-		val state = SVMConfig(CSVCFormulation(C), kF)
-	    val ft = XTSeries[DblVector](features)
-		val svc = SVM[Double](state,  ft, lbl)
-		var vote = Array[Int](0,0)
-		
-		eval.zipWithIndex.foreach(zi => svc |> zi._1 match {
-		   case Some(z) => if(z == lbl(zi._2)) vote(1) += 1 else vote(0) += 1
-		   case None => println("Could not train SVM")
-		})
-	    println(vote(1) + "," + vote(0))
-	}
+	private def evalKernel(features: DblMatrix, test: DblMatrix, labels: DblVector, kF: SVMKernel): Double = {
+		val config = SVMConfig(new CSVCFormulation(C), kF)
+	    val xt = XTSeries[DblVector](features)
+		val svc = SVM[Double](config,  xt, labels)
+		val successes = test.zip(labels)
+		                    .count(tl => {
+		                    	Try((svc |> tl._1) == tl._2)
+		                    	match { 
+		                    	  case Success(n) => true 
+		                    	  case Failure(e) => false }})
+		successes.toDouble/test.size
+	 }
 
 	private def display(label: String, xy1: XYTSeries, xy2: XYTSeries): Unit = {
        require(xy1 != null && xy1.size > 0, "Cannot display an undefined time series")

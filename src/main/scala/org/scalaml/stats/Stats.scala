@@ -6,18 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.stats
 
 import scala.Array.canBuildFrom
-import org.scalaml.core.Types
+import org.scalaml.core.types
 import Stats._
-import Types.ScalaMl._
+import types.ScalaMl._
 	/**
 	 *  Parameterized class (view bound) that compute and update the statistics (mean,
 	 *  standard deviation) for any set of observations for which the
-	 *  type can be converted to a Double. 
+	 *  type can be converted to a Double.
+	 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
 	 *  @param values vector or array of elements of type T
 	 *  @throws IllegalArgumentException if values is either undefined or have no elements
 	 *  @author Patrick Nicolas
@@ -25,8 +26,8 @@ import Types.ScalaMl._
 	 *  @note Scala for Machine Learning
 	 */
 
-class Stats[T <% Double](val values: DVector[T]) {
-    require( values != null && values.size > 1, "Cannot initialize stats with undefined data")
+class Stats[T <% Double](values: DVector[T]) {
+    require( values != null && values.size > 0, "Cannot initialize stats with undefined data")
 	 
 	private[this] var counters = values.foldLeft((Double.MaxValue, Double.MinValue, 0.0, 0.0))((c, x) => {
 	  	            (if(x < c._1) x else c._1, if(x > c._2) x else c._2,  c._3 + x, c._4 + x*x ) })
@@ -43,7 +44,7 @@ class Stats[T <% Double](val values: DVector[T]) {
 		 /**
 	     * Computation of standard deviation for the array values
 	     */
-	lazy val stdDev = Math.sqrt(variance)
+	lazy val stdDev = if(variance < ZERO_EPS) ZERO_EPS else Math.sqrt(variance)
 		/**
 	     * Computation of minimun values of a vector. This values is
 	     * computed during instantiation
@@ -84,7 +85,7 @@ class Stats[T <% Double](val values: DVector[T]) {
 	   val range = max - min
 	   
 	   if( range < ZERO_EPS) 
-	  	  throw new ArithmeticException ("Cannot normalize min: " + min + " and max: " + max)
+	  	  throw new ArithmeticException(s"Stats.normalize: cannot normalize $min and $max")
 	   values.map(x => (x - min)/range)
 	}
     
@@ -100,7 +101,7 @@ class Stats[T <% Double](val values: DVector[T]) {
     	 * @throws IllegalArgumentException of h <= l
     	 */
     def normalize(l: Double, h: Double): DblVector = {
-    	require(h > l + ZERO_EPS, "Cannot normalized on undefined range " + l + ", " +h)
+    	require(h > l + ZERO_EPS, s"Stats.normalize: cannot normalize between $l and $h")
     	val range = h-l
     	values.map( x =>(x - l)/range)
     }
@@ -126,9 +127,9 @@ class Stats[T <% Double](val values: DVector[T]) {
 		 * @since January 24, 2014
 		 * @note Scala for Machine Learning
 		 */
-import Types.ScalaMl._
+import types.ScalaMl._
 object Stats {
-   final val ZERO_EPS = 1e-10
+   final val ZERO_EPS = 1e-32
    final val INV_SQRT_2PI = 1.0/Math.sqrt(2.0*Math.PI)
    
    def apply[T <% Double](values: Array[T]): Stats[T] = new Stats[T](values)
@@ -141,7 +142,7 @@ object Stats {
    		 * @throws IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
    		 */
    final def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
-      require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")
+      require(Math.abs(stdDev) >= ZERO_EPS, "Gauss standard deviation is close to zero")
       require(values != null, "Values for the Gauss distribution is undefined")
       
   	  values.map( x =>{val y = x - mean; INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y/stdDev)} )
@@ -155,12 +156,14 @@ object Stats {
    		 * @throws IllegalArgumentExeption if stdDev is close t zero
    		 */
    final def gauss(mean: Double, stdDev: Double, x:Double): Double = {
-  	  require(Math.abs(stdDev) > 1e-10, "Gauss standard deviation is close to zero")
+  	  require(Math.abs(stdDev) >= ZERO_EPS, s"Stats.gauss, Gauss standard deviation $stdDev is close to zero")
   	  val y = x - mean
-  	  INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y/stdDev)
+  	  INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y /stdDev)
    }
    
    final def gauss(x: Double*): Double = gauss(x(0), x(1), x(2))
+   
+   final def normal(x: Double*): Double = gauss(0.0, 1.0, x(0))
 
    final def bernouilli(mean: Double, p: Int): Double = mean*p + (1-mean)*(1-p)
    

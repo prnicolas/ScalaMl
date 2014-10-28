@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.util
 
@@ -19,17 +19,47 @@ import org.apache.log4j.Logger
 	 *  @note Scala for Machine Learning
 	 */
 object Display {	
+  val loggerFlag = false
 		// Dump information message onto standard output or logger
-  final def show[T](t: T): Unit = println(t.toString)
-  final def show[T](t: T, logger: Logger): Unit = logger.info(t.toString)
-  final def show[T](seq: Seq[T], logger: Logger): Unit = logger.info(seq.foreach(t => Display.show(t, logger)))
+  /*
+  final def show[T](t: T): Int = {Console.println(t.toString); 0}
+  final def show[T](seq: Seq[T]): Int = { 
+  	
+  	0
+  }
+  * 
+  */
   
+  final def show[T](t: T, logger: Logger): Int = { 
+     if(loggerFlag) logger.info(t.toString)
+     else Console.println(t.toString)
+     0
+  }
+  final def show[T](seq: Seq[T], logger: Logger): Int = {
+    val info = seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString
+    if( loggerFlag) logger.info(info)
+    else Console.println(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString)
+    0
+  }
+ 
   		// Dump debugging message and exception in standard output or logger
-  final def error[T](t: T): Unit = println("Error: " + t.toString)
-  final def error[T](t: T, e: Throwable): Unit =  println("Error: " + t.toString + e.toString)
-  final def error[T](t: T, logger: Logger): Unit = logger.debug(t.toString)
-  final def error[T](t: T, logger: Logger, e: Throwable): Unit = logger.debug(t.toString + " - " + e.toString)
-
+  final def error[T](t: T): Int = { Console.println(s"Error: ${t.toString}"); -1}
+  final def error[T](t: T, e: Throwable): Int =  { 
+      Console.println(s"Error: ${t.toString} with ${e.toString}")
+      e.printStackTrace
+      -1
+  }
+  final def error[T](t: T, logger: Logger): Int = { 
+     if(loggerFlag) logger.error(s"Error: ${t.toString}")
+     else error(t)
+     -1
+  }
+  final def error[T](t: T, logger: Logger, e: Throwable): Int = { 
+  	 if(loggerFlag) logger.error(s"Error: ${t.toString} with ${e.toString}")
+  	 else error(t,e)
+  	 e.printStackTrace
+  	 -1 
+  }
 }
 
 

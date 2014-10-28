@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap12
 
@@ -14,10 +14,13 @@ import org.scalatest.FunSuite
 
 
 final class Chap12 extends FunSuite {
+	/*
 	test("Scala parallel collections") {
 	   ScalaParallelCollectionEval.run
 	}
-	
+	* 
+	*/
+	/*
 	test("Akka actors evaluation") {
 	   AkkaActorEval.run
 	}
@@ -25,10 +28,14 @@ final class Chap12 extends FunSuite {
 	test("Akka futures evaluation") {
 		   AkkaFutureEval.run
 	}
-	
+	* 
+	*/
+	/*
 	test("Spark K-means evaluation") {
 		SparkKMeansEval.run
 	}
+	* 
+	*/
 
 }
 

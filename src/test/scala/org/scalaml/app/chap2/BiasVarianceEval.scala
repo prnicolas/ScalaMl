@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap2
 
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import scala.util.Random
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
@@ -28,10 +28,10 @@ import org.scalaml.util.Display
 	 */
 object BiasVarianceEval {
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
-			
+		
 	private val logger = Logger.getLogger("BiasVarianceEval")
-	def run: Unit = {
-		println("Evaluation of Bias Variance decomposition")
+	def run: Int = {
+		Display.show("Evaluation of Bias Variance decomposition", logger)
 		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)
 	    
@@ -42,20 +42,18 @@ object BiasVarianceEval {
 		   ((x: Double) =>0.201*x*(0.99 + Math.sin(x*0.05)), "y=x(1+sin(x/20))/5" )
 		)
         
+			// Uses jFreeChart to display the test data and the three models.
 		display(fEst, testData)
 		
 		Try {
-			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
-			modelFit.fit(fEst.map( _._1)) match {
-		    	case Some(varBias) => {
-		    		varBias.foreach( vb => Display.show(vb._1 + ", " + vb._2 + ", " + (vb._1 + vb._2*vb._2), logger) )
-		    		true
-		    	}
-		    	case None => false
-		    }
+		  val modelFit = new BiasVarianceEmulator[Double](emul, 200)
+		  modelFit.fit(fEst.map( _._1)) match {
+		    case Some(varBias) => Display.show(varBias, logger); true
+		    case None => false
+		  }
 		} match {
-			case Success(succeed) => Display.show("BiasVarianceEval completed ", logger)
-			case Failure(e) => Display.error("BiasVarianceEval ", logger, e)
+			case Success(succeed) => Display.show("BiasVarianceEval completed ", logger); 0
+			case Failure(e) => Display.error("BiasVarianceEval ", logger, e); -1
 		}
 	}
 	

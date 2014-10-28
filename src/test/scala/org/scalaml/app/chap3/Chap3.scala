@@ -6,35 +6,34 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap3
 
 
 import org.scalatest.FunSuite
-
+import scala.language.implicitConversions
 
 trait FilteringEval {
-  def run(args: Array[String]): Unit
+  def run(args: Array[String]): Int
 }
 
 
-
-final class Chap3 extends FunSuite {
+final class Chap3 extends FunSuite {  
+    implicit def double2String(x: Double): String = x.toString
 	test("Moving averages evaluation") {
-		 MovingAveragesEval.run(Array[String]("BAC", "10"))
+	  assert(MovingAveragesEval.run(Array[String]("BAC", "10")) != -1)
 	}
 	
 	test("Discrete Fourier Series synthetic evaluation") {
-		 DFTEval.run(null)
+	  assert(DFTEval.run(null) != -1)
 	}
 	
 	test("Discrete Fourier Series evaluation on stock") {
-		 DFTEval.run(Array[String]("BAC"))
+	  assert(DFTEval.run(Array[String]("BAC")) != -1)
 	}
 	
 	test("Kalman filter evaluation") {
-        implicit def double2String(x: Double): String = x.toString
 	   (new DKalmanEval).run(Array[String]("BAC"))
 	}
 }

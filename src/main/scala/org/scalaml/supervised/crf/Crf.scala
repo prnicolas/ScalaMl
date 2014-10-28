@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -17,19 +17,20 @@ import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter, FeatureGenerator}
 import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.supervised.Supervised
 import java.io.IOException
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import CrfConfig._
 import Crf._
-import org.scalaml.supervised.Model
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
 
-case class CrfModel(weights: DblVector) extends Model
+class CrfModel(val weights: DblVector) extends Model {
+  val persists = "models/crf"  
+}
 
 	/**
 	 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular expression. The class
@@ -50,17 +51,17 @@ case class CrfModel(weights: DblVector) extends Model
 	 * @since April 3, 2014
 	 * @note Scala for Machine Learning
 	 */
-final class Crf(val nLabels: Int, val state: CrfConfig, val delims: CrfSeqDelimiter, val taggedObs: String) 
+final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String) 
                                                extends PipeOperator[String, Double] with Supervised[String] {
 	
-  validate(nLabels, state, delims, taggedObs)
+  validate(nLabels, config, delims, taggedObs)
   
   private val logger = Logger.getLogger("Crf")
   
   class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
 	
   private[this] val features = new TaggingGenerator(nLabels)
-  private[this] lazy val crf = new CRF(nLabels, features, state.params)
+  private[this] lazy val crf = new CRF(nLabels, features, config.params)
   
   private val model: Option[CrfModel] = {
   	 val seqIter = CrfSeqIter(nLabels, taggedObs, delims)
@@ -75,25 +76,20 @@ final class Crf(val nLabels: Int, val state: CrfConfig, val delims: CrfSeqDelimi
   
   		/**
   		 * <p>Predictive method for the conditional random field.</p>
-  		 */
-
-  override def |> (obs: String): Option[Double] = model match {
-  	 case Some(w) => {
-  	     require( obs != null && obs.length > 1, "Argument for CRF prediction is undefined")
-  	     
-	  	 val dataSeq =  new CrfTrainingSet(nLabels, obs, delims.obsDelim)
-	  	 Some(crf.apply(dataSeq))
+  		 */    
+  override def |> : PartialFunction[String, Double] = {
+  	 case obs: String if(obs != null && obs.length > 1 && model != None) => {
+  	    val dataSeq =  new CrfTrainingSet(nLabels, obs, delims.obsDelim)
+	  	crf.apply(dataSeq)
   	 }
-  	 case None => None
   }
-  
   
   final def weights: Option[DblVector] = model match {
   	case Some(m) => Some(m.weights)
   	case None => None
   }
   
-  override def validate(output: XTSeries[(Array[String], Int)], index: Int): Double = -1.0
+  override def validate(output: XTSeries[(Array[String], Int)], index: Int): Option[Double] = None
   
   private def validate(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Unit = {
 	 require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, "Number of labels for generating tags for CRF " + nLabels + " is out of range")

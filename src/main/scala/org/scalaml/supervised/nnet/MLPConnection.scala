@@ -6,16 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.types.ScalaMl
+import org.scalaml.supervised.nnet.MLPConfig._
 import scala.util.Random
-import org.scalaml.supervised.Model
+import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
 import ScalaMl._
 import MLPConnection._
+import org.scalaml.supervised.nnet.MLP.MLPObjective
 
 
 		/**
@@ -32,38 +34,41 @@ import MLPConnection._
 		 * @since May 5, 2014
 		 * @note Scala for Machine Learning
 		 */
-protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: MLPLayer)  {
-	require(state != null, "Configuration for the MLP connection is undefined")
+protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit val mlpObjective: MLP.MLPObjective)  {
+	require(config != null, "Configuration for the MLP connection is undefined")
 	require(src != null && dst != null, "The source or destination layer for this connection is undefined")
 	
     type MLPSynapse = (Double, Double)
-	val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => if(n > 0) Array.fill(src.len)((beta*Random.nextDouble, 0.0)) else Array.fill(src.len)((1.0, 0.0)))
+	// val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => if(n > 0) Array.fill(src.len)((beta*Random.nextDouble, 0.0)) else Array.fill(src.len)((1.0, 0.0)))
 
+	val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => if(n > 0) Array.fill(src.len)((Random.nextDouble*0.1, 0.0)) else Array.fill(src.len)((1.0, 0.0)))
 		   
 		/**
 		 * <p>Implement the forward propagation of input value. The output
-		 * value depends on the conversion selected for the output (identity
+		 * value depends on the conversion selected for the output (ratio
 		 * or softmax).
 		 */
-	def inputForwardPropagation: Unit =  {
-	  val _output = synapses.drop(1).map(x => {
-	  	 val sum = x.zip(src.output).foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
-	  	  state.activation(sum)
-	  })
-	  if( isOutputLayer ) 
-	  	 conversion(_output, dst.output)
-	  else 
-	  	 _output.copyToArray(dst.output, 1)
-   }
+     def connectionForwardPropagation: Unit = {
+	    val _output = synapses.drop(1).map(x => {
+		    val sum = x.zip(src.output)
+		               .foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
+		    if(!isOutLayer) 
+	  	        config.activation(sum)
+	  	    else
+	       	 sum
+	    })
+	    (if(isOutLayer) mlpObjective(_output) else _output).copyToArray(dst.output, 1)     
+     }
+
 
 	   
 	  	/**
 	  	 * <p>Implement the back propagation of output error (target - output).</p>
 	  	 */
-	def errorBackpropagation: Unit =  
+	def connectionBackpropagation: Unit =  
 	   Range(1, src.len).foreach(i => {
-	  	   val err = Range(1, dst.len).foldLeft(0.0)((s, j) => s + synapses(j)(i)._1*dst.errors(j) )
-	  	   src.errors(i) =  state.gamma*src.output(i)* (1.0- src.output(i))*err
+	  	   val err = Range(1, dst.len).foldLeft(0.0)((s, j) => s + synapses(j)(i)._1*dst.delta(j) )
+	  	   src.delta(i) =  src.output(i)* (1.0- src.output(i))*err
 	   })
 
 	  	  
@@ -72,16 +77,16 @@ protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: 
 	   	 * Implement the update of the synapse (weight, grad weight) following the
 	   	 * back propagation of output error. This method is called during training.
 	   	 */
-	def updateSynapses: Unit =  
+	def connectionUpdate: Unit =  
 	   Range(1, dst.len).foreach(i => {  
-	  	  val msError = dst.errors(i)
+	  	  val delta = dst.delta(i)
 	  	  	  
 	  	  Range(0, src.len).foreach(j => { 
-	  	  	 val out = src.output(j)
-	  	  	 val dWeight = synapses(i)(j)._2
-	  	  	 val grad = state.eta*msError*out
-	  	  	 val deltaWeight = grad + state.alpha*dWeight
-	  	  	 update(i,j, deltaWeight, grad)
+	  	  	 val _output = src.output(j)
+	  	  	 val oldSynapse = synapses(i)(j)
+	  	  	 val grad = config.eta*delta*_output
+	  	  	 val deltaWeight = grad + config.alpha*oldSynapse._2
+	  	  	 synapses(i)(j) = (oldSynapse._1 + deltaWeight, grad)
 	  	  })
 	   }) 
 
@@ -93,7 +98,7 @@ protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: 
 	  Range(0, dst.len).foreach( i => {
 	  	Range(0, src.len).foreach(j => {
 	  	   val wij: (Double, Double) = synapses(i)(j)
-	  	   buf.append(i + "," + j + ": (" + wij._1 + "," +  wij._2 + ")")
+	  	   buf.append(i + "," + j + ": (" + wij._1 + "," +  wij._2 + ")  ")
 	  	})
 	  	buf.append("\n")
 	  })
@@ -107,7 +112,7 @@ protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: 
    }
    
    @inline
-   private def isOutputLayer: Boolean = dst.id == state.outputLayerId
+   private def isOutLayer: Boolean = dst.id == config.outLayerId
 }
 
 
@@ -121,18 +126,28 @@ protected class MLPConnection(val state: MLPConfig, val src: MLPLayer, val dst: 
 		 */
 object MLPConnection {
 	final val beta = 0.6
-	implicit def setSoftmax: Unit = conversion = softmax
-	implicit def setNoSoftmax: Unit = conversion = noSoftmax
 	
-	var conversion = (input: DblVector, output: DblVector) => ()
+//	implicit def setSoftmax: Unit = outputActivation = softmax
+//	implicit def setNoSoftmax: Unit = outputActivation = noSoftmax
 	
-    private def softmax(input: DblVector, output: DblVector): Unit = {
-	   val softOutput = input.map( Math.exp(_))
-	   val softMaxValue = softOutput.max
-	   softOutput.map( _ /softMaxValue).copyToArray(output , 1)
+//	var outputActivation = (y: DblVector) => Array[Double](0.0)
+ 
+	/*
+    def softmax(y: DblVector): DblVector = {
+	   val softmaxValues = new DblVector(y.size)
+	   val expY = y.map( Math.exp(_))
+	   val expYSum = expY.sum
+	   expY.map( _ /expYSum).copyToArray(softmaxValues , 1)
+	   softmaxValues
 	}
 	
-    private def noSoftmax(input: DblVector, output: DblVector): Unit = input.copyToArray(output, 1)
+    def noSoftmax(y: DblVector): DblVector = {
+       val softmaxValues = new DblVector(y.size)
+       y.copyToArray(softmaxValues, 1)
+       softmaxValues
+    }
+    * 
+    */
 }
 
 // -------------------------------------  EOF ------------------------------------------------

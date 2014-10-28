@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression.linear
 
 import org.scalaml.core.XTSeries
 import org.apache.commons.math3.stat.regression.SimpleRegression
-import org.scalaml.core.Types.ScalaMl.DblMatrix
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.types.ScalaMl.DblMatrix
+import org.scalaml.core.design.PipeOperator
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
@@ -32,7 +32,7 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
-protected class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
+class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
                                           extends PipeOperator[Double, T] {
 	require(xt != null && xt.size > 0, "Cannot compute the single variate linear regression of a undefined time series")
 	type XY = (Double, Double)
@@ -40,7 +40,6 @@ protected class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(im
 	
     private val model: Option[XY] = {
        Try {
-	    //  val data: DblMatrix = xt.zipWithIndex.map(x => Array[Double](x._2.toDouble, x._1.toDouble))
       	  val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
 	      val regr = new SimpleRegression(true)
 	      regr.addData(data)
@@ -68,9 +67,8 @@ protected class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(im
     	 * @param index of the time series n
     	 * @return new predictive value for index index
     	 */
-    override def |> (x: Double): Option[T] = model match {
-    	case None => None
-    	case Some(m) => Some(m._1*x + m._2)
+    override def |> : PartialFunction[Double, T] = {
+      case x: Double if(model != None) => model.get._1*x + model.get._2
     }
 }
 
@@ -82,7 +80,7 @@ protected class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(im
 		 * 
 		 * @author Patrick Nicolas
 		 */
-object SingleLinearRegression {
-	def apply[T <% Double](xt: XTSeries[(T, T)])(implicit g: Double => T): SingleLinearRegression[T] = new SingleLinearRegression[T](xt)
+object SingleLinearRegression { 
+  def apply[T <% Double](xt: XTSeries[(T, T)])(implicit g: Double => T): SingleLinearRegression[T] = new SingleLinearRegression[T](xt)
 }
 // ----------------------------------  EOF ----------------------------------------

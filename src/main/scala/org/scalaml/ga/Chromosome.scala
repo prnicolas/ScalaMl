@@ -6,13 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.ga
 
 import scala.annotation.implicitNotFound
 import Gene._
 import Chromosome._
+import scala.util.Random
 
 			/**
 			 * <p>Class that implements a parameterized chromosome using an encoding scheme and
@@ -27,8 +28,9 @@ import Chromosome._
 			 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
    require(code != null && code.size > 1, "Cannot create a chromosome from undefined genetic code")
-   var fitness: Double = 1e+10
-
+   var unfitness: Double = 1000*(1.0 + Random.nextDouble)
+   
+   
    		/**
    		 * <p>Define the cross-over operator to be applied on this chromosome. The cross-over
    		 * is hierarchical. The algorithm selects the gene associated to the cross-over index, 
@@ -42,25 +44,21 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * or if the cross-over factor is out of range.
    		 * @return the pair of offspring.
    		 */
-   def +- (that: Chromosome[T], xOver: Double): (Chromosome[T], Chromosome[T]) = {
+   def +- (that: Chromosome[T], idx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
        require(that != null, "Cannot cross-over this chromosome with an undefined parent")
-       require(size == that.size, "Cannot cross-over chromosomes of different size")
-       require(xOver > 0.0 && xOver < 1.0, "Cross factor " + xOver + " is out of range")
-         
-       	// Index of the gene for which the cross-over is applied
-       val index = (xOver*size).floor.toInt
-       val idx = if(index == 0) 1 else if (index >= size) size-1 else index
-       
+       require(this.size == that.size, "Cannot cross-over chromosomes of different size")
+     
       	 	 // First use the global index (module the number of gene
-         
-       val xGenes = if(HIERARCHICAL) xGene(xOver, idx , that.code(idx) ) else (code(idx), that.code(idx))
-        
-       val offSprng1: List[T] = code.slice(0, idx) ::: xGenes._1 :: that.code.drop(idx+1)
-       val offSprng2 = that.code.slice(0, idx) :::  xGenes._2 :: code.drop(idx+1)
+       val xoverIdx = idx.chOpIdx
+       val xGenes =  spliceGene(idx, that.code(xoverIdx) ) 
+       
+
+       val offSprng1 = code.slice(0, xoverIdx) ::: xGenes._1 :: that.code.drop(xoverIdx+1)
+       val offSprng2 = that.code.slice(0, xoverIdx) ::: xGenes._2 :: code.drop(xoverIdx+1)
        (Chromosome[T](offSprng1), Chromosome[T](offSprng2))
     }
-     	
-    
+   
+       
    		/**
    		 * <p>Mutation operator that flip a gene selected through a mutation index.
    		 * The mutated gene is added to the population (gene pool).</p>
@@ -68,16 +66,12 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * @throws IllegalArgumentException if mu is out of range
    		 * @return a mutated chromosome
    		 */
-    def ^ (mu: Double): Chromosome[T] = {         
-    	require( mu > 0.0 && mu < 1.0, "Cannot mutate with factor " + mu + " out of range")
-    	       
-    	val index = (mu*size).floor.toInt
-        val idx = if(index == 0) 1 else if (index >= size) size-1 else index
-        
-        	// Get the mutation index in the gene to mutate
-        val mutated = clone
-        mutated.code(idx) ^ (mu*GENE_SIZE).floor.toInt
-        mutated
+    def ^ (idx: GeneticIndices): Chromosome[T] = {             	       
+         	// Get the mutation index in the gene to mutate
+   
+        val mutated = code(idx.chOpIdx) ^ idx
+        val xs = Range(0, code.size).map(i => if(i == idx.chOpIdx) mutated.asInstanceOf[T] else code(i)).toList
+        Chromosome[T](xs)
     }
      
      
@@ -88,8 +82,8 @@ final class Chromosome[T <: Gene](val code: List[T]) {
     	 * @throws IllegalArgumentException if the normalization factor is less than EPS
     	 */
     def /= (normalizeFactor: Double): Unit = {
-    	require( normalizeFactor > Chromosome.EPS, "Cannot normalize with " + normalizeFactor)
-    	fitness /= normalizeFactor
+    	require( Math.abs(normalizeFactor) > Chromosome.EPS, "Cannot normalize with " + normalizeFactor)
+        unfitness /= normalizeFactor
     }
 
     
@@ -99,7 +93,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
     @inline
     def compareTo(thatCode: Gene): Boolean = if(thatCode == null) false else (code == thatCode)
      
-    @inline
+  
     @implicitNotFound("Conversion from Gene to parameterized type undefined in decoding chromosome")
     def decode(implicit d: Gene => T): List[T] = code.map( d(_))
      
@@ -111,10 +105,15 @@ final class Chromosome[T <: Gene](val code: List[T]) {
     
     override def toString: String = String.valueOf(code.toString)
      
-    private[this] def xGene(xOver: Double, idx: Int, thatCode: T): (T, T) = {
-        val cdx = (xOver*GENE_SIZE).floor.toInt
-        ((code(idx) +- (cdx, thatCode)).asInstanceOf[T], (thatCode +- (cdx, code(idx))).asInstanceOf[T] )
+    private[this] def spliceGene(idx: GeneticIndices, thatCode: T): (T, T) = {
+        ((this.code(idx.chOpIdx) +- (thatCode, idx)).asInstanceOf[T], 
+         (thatCode +- (code(idx.chOpIdx), idx)).asInstanceOf[T] )
     }
+    
+    def show: String = 
+    	new StringBuilder(code.foldLeft(new StringBuilder)((buf,gene) => buf.append(gene.show).append(" ")).toString)
+              .append(" score: ")
+                .append(unfitness).toString
 }
 
 
@@ -124,7 +123,8 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 	 * @since September 2, 2013
 	 */
 object Chromosome {
-  import scala.collection.mutable.ListBuffer
+  import scala.collection.mutable.ArrayBuffer
+  import java.util.BitSet
   
   final val EPS = 1e-10
   final val HIERARCHICAL = true
@@ -133,7 +133,7 @@ object Chromosome {
                     List[T](encode(predicates(0)).asInstanceOf[T])
                  else 
                     predicates.foldLeft(List[T]()) ((xs, t) => encode(t).asInstanceOf[T] :: xs))
-  type Pool[T <: Gene] = ListBuffer[Chromosome[T]]
+  type Pool[T <: Gene] = ArrayBuffer[Chromosome[T]]
 }
       
 

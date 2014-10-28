@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types
+import org.scalaml.core.types
 import org.scalaml.util.Matrix
-import Types.ScalaMl._
+import types.ScalaMl._
 import scala.reflect.ClassTag
 import scala.util.Random
 
@@ -28,7 +28,7 @@ import scala.util.Random
 	 * @author Patrick Nicolas
 	 * @since March 6, 2014
 	 */
-final class HMMLambda(val states: Seq[Array[Double]], val symbols: Seq[Array[Double]]) {
+final class HMMLambda(states: Seq[Array[Double]], symbols: Seq[Array[Double]]) {
   require(states != null && states.size > 0, "Cannot create a HMM lambda model with states")
   require(symbols != null && symbols.size > 0, "Cannot create a HMM lambda model with states")
     

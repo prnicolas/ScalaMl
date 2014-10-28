@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap7
 
@@ -15,7 +15,9 @@ import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import scala.io.Source
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import scala.language.implicitConversions
 
 		/**
 		 * Singleton for the evaluation of Hidden Markov Models presented in chapter 7
@@ -26,30 +28,13 @@ import org.scalaml.core.Types.ScalaMl._
 		 */
 object HMMEval {
   import HMM._, HMMForm._
-   /*
-   final val pi = Array[Double](0.6, 0.4)
-   final val A = Matrix[Double](2, 2)
-   A += (0, 0, 0.7)
-   A += (0, 1, 0.3)
-   A += (1, 0, 0.4)
-   A += (1, 1, 0.6)
-   
-   final val B = Matrix[Double](2, 3)
-   B += (0, 0, 0.1)
-   B += (0, 1, 0.4)
-   B += (0, 2, 0.5)
-   B += (1, 0, 0.7)
-   B += (1, 1, 0.2)
-   B += (1, 2, 0.1)
-   final val T = 4
-   * 
-   */
+
    final val STATES_PATH = "resources/data/chap7/statesprob.csv"
    final val OBS_PATH = "resources/data/chap7/obsprob.csv"
    final val CSV_DELIM=","
    private val logger = Logger.getLogger("HMMEval")
    
-  def run: Unit = {
+  def run: Int = {
   		
   	Display.show("Evaluation of Hidden Markov Models", logger)
 
@@ -69,11 +54,11 @@ object HMMEval {
 	val percentNeutral = 0.2
 	val percentBearish = 0.45
 	
-	hmm |> Array[Double](percentBullish, percentNeutral, percentBearish) match {
-		case Some(predictor) => Display.show("Likelihood: " + predictor.toString, logger)
-		case None => Display.error("Likelihood: ", logger)
+	Try( hmm |> Array[Double](percentBullish, percentNeutral, percentBearish) )
+	match {
+	  case Success(predictor) => Display.show(s"HMMEval.run Likelihood: ${predictor.toString}", logger)
+	  case Failure(e) => Display.error("HMMEval.run", logger, e)
 	}
-	
   }
 }
 

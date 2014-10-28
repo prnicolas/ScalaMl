@@ -6,15 +6,15 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.{Types, XTSeries}
+import org.scalaml.core.{types, XTSeries}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
-import Types.ScalaMl._
+import types.ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
@@ -33,7 +33,7 @@ import XTSeries._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 4: Unsupervised learning $Principal Components Analysis
 		 */
 object PCAEval extends UnsupervisedLearningEval {
    private val logger = Logger.getLogger("PCAEval")	
@@ -75,25 +75,29 @@ object PCAEval extends UnsupervisedLearningEval {
   )
   
   
-  override def run(args: Array[String]): Unit = {
-  	  println("Evaluation of Principal Component Analysis")
+  override def run(args: Array[String]): Int = {
+  	  Display.show("Evaluation of Principal Component Analysis", logger)
   	  
   	  import scala.util.{Try, Success, Failure}
 	  val pca = new PCA[Double]
 		  
   	  Try(pca |> XTSeries[DblVector](data.map( _._2.take(3)) ) ) match {
-  	  	 case Success(covariance) => Display.show(this.toString(covariance), logger)
-  	  	 case Failure(e) => Display.error("pca fails ", logger, e)
+  	  	 case Success(covariance) => Display.show(s"PCAEval.run\n${this.toString(covariance)}", logger)
+  	  	 case Failure(e) => Display.error("PCAEval.run.pca fails ", logger, e)
   	  }
    }
    
-   private def toString(covariance: Option[(DblMatrix, DblVector)]): String = {
-  	   val buf = new StringBuilder
-  	   covariance.get._2.foreach( buf.append( _).append(","))
-  	   covariance.get._1.foreach( r => buf.append(r.foldLeft(new StringBuilder)((b, c) => b.append(c).append(",")).toString).append("\n"))
+   private def toString(covariance: (DblMatrix, DblVector)): String = {
+  	   val buf = new StringBuilder("\nPCA Eigenvalues:\n")
+  	   covariance._2.foreach(c => buf.append(s"$c ,"))
+  	   buf.append("\n\nCovariance matrix\n")
+  	   covariance._1.foreach(r => buf.append(r.foldLeft(new StringBuilder)((b, c) => b.append(s"$c,")).toString).append("\n"))
   	   buf.toString
    }
-	
+}
+
+object PCAApp extends App {
+  PCAEval.run(Array.empty)
 }
 
 

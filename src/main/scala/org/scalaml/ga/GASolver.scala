@@ -6,20 +6,28 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.ga
 
 import scala.util.Random
-
-
-object GAState extends Enumeration {
-   type GAState = Value
-   val SUCCEED, FAILED, NO_CONVERGE, RUNNING = Value
-}
-
 import Chromosome._
-import GAState._
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.XTSeries
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+
+sealed abstract class GAState(val description: String)
+case class GA_SUCCEED(val _description: String) extends GAState(_description)
+case class GA_FAILED(val _description: String) extends GAState(_description)
+object GA_RUNNING extends GAState("Running")
+object GA_NOT_RUNNING extends GAState("Not Running")
+case class GA_NO_CONVERGENCE(val _description: String) extends GAState(_description)
+
+
+
+
 
 	/**
 	 * <p>Class to select the best solution or Chromosome from an initial population
@@ -31,54 +39,62 @@ import GAState._
 	 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
 	 * @param state Configuration parameters for the GA algorithm
 	 * @param population initialized population of chromosomes (solution candidates)
-	 * @throws IllegalArgumenException if the stateuration is undefined or the population is not initialized
+	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
 	 * 
 	 * @author Patrick Nicolas
 	 * @since August 29, 2013
 	 * @note Scala for Machine Learning
 	 * /
 	 */
-final class GASolver[T <: Gene](private val config: GAConfig, val population: Population[T]) {
+final class GASolver[T <: Gene](config: GAConfig, 
+		                        val score: Chromosome[T] =>Unit) extends PipeOperator[Population[T], Population[T]] {
    require(config != null, "GA stateuration is undefined")
-   require(population != null && population.size > 1, "Population for the GA solver is undefined")
-
+   require(score != null, "Cannot search with an undefined fitness Function")
+   private var state: GAState = GA_NOT_RUNNING
+   
+   private val logger = Logger.getLogger("GASolve")
 	/**
 	 * <p>Method to resolve any optimization problem using an initial genes pool 
 	 * (population of Chromosomes. The minimum size of the population is 2</p>
 	 * @param fitness fitness Function used to rank and select a chromosome.
 	 * @throws IllegalArgumenException if the fitness function is not provided.
 	 */
-   def search(fit: Chromosome[T] => Double): GAState = {	
-      require(fit != null, "Cannot search with an undefined fitness Function")
-
-	  val reproduction = Reproduction[T](config, fit)
-      var state = GAState.RUNNING
-      var pop = population
-        
-      Range(0, config.maxNumIters).find( n => {  
-         val prev: Population[T] = pop
-		 pop = reproduction.mate(prev).getOrElse(null)		
-	     state = converge(population, prev, n)
-	     state != GAState.RUNNING
-      }) match {
-         case Some(n) => state
-         case None => GAState.NO_CONVERGE
-      }
+    
+   def |>(initialize: () => Population[T]): Population[T] = this.|>(initialize())
+   
+   override def |> : PartialFunction[Population[T], Population[T]] = {	
+  	 case population: Population[T] if(population.size > 1) => {
+		  val reproduction = Reproduction[T](score)
+	      state = GA_RUNNING
+	          
+	      Range(0, config.maxCycles).find(n => {  		 
+	         reproduction.mate(population, config, n) match {
+	        	case true => converge(population, n) != GA_RUNNING
+	        	case false => {
+	               if(population.size == 0) 
+	        		 state = GA_FAILED("Mating failed") 
+	        	   else 
+	        		 state = GA_SUCCEED(s"Completed in $n cycles")
+	        	   true
+	            }
+	         }
+		   
+	      }) match {
+	         case Some(n) => population
+	         case None => state = GA_NO_CONVERGENCE(s"Failed to converge"); population
+	      }
+  	 }
    }
    
-   @inline
-   def populationSize: Int = population.size
+
    
-   @inline 
-   def chromosomeSize: Int = if(population.size > 0) population.chromosomes(0).size else -1
-   
-   private[this] def converge(population: Population[T], prev: Population[T], iters: Int): GAState = {
+   private[this] def converge(population: Population[T], cycle: Int): GAState = {
   	  if(population == null) 
-  	  	GAState.FAILED
-  	  else if( population.diff(prev, 2) != None)
-  	  	GAState.SUCCEED
-  	  else
-  	  	GAState.RUNNING
+  	  	GA_FAILED(s"Failed at $cycle")
+  	  else if(cycle >= config.maxCycles)
+  	  	GA_NO_CONVERGENCE(s"Failed to converge at $cycle ")
+  	 else
+  	  	GA_RUNNING
    }
 }
 
@@ -87,8 +103,12 @@ final class GASolver[T <: Gene](private val config: GAConfig, val population: Po
 		 * Object companion for the Solve that defines the two constructors
 		 */
 object GASolver {
-  def apply[T <: Gene](state: GAConfig, pop: Population[T]): GASolver[T] = new GASolver[T](state, pop)
-  def apply[T <: Gene](state: GAConfig, initialize: () => Population[T]): GASolver[T] = new GASolver[T](state, initialize())
+  	      
+  def apply[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit): GASolver[T] = 
+  	      new GASolver[T](config, score)
+  	      
+  def apply[T <: Gene](config: GAConfig): GASolver[T] = 
+  	      new GASolver[T](config, null)
 }
 
 // ---------------------------  EOF -----------------------------------------------

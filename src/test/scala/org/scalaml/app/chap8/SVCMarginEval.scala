@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.supervised.svm.{SVMConfig, RbfKernel, CSVCFormulation, SVMExecution, SVM}
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import XTSeries._
 import org.scalaml.plots.ScatterPlot
 import org.scalaml.plots.BlackPlotTheme
@@ -41,7 +41,7 @@ object SVCMarginEval {
 	def run: Unit = {   
         Console.println("Evaluation of impact of C penalty on margin of a binary support vector classifier")
     	val values = generate
-		Range(0, 50).foreach( i => computeMargin(values._1, values._2, i*0.1))
+		Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
 	}
     
     private def generate: (DblMatrix, DblVector) = {
@@ -54,9 +54,9 @@ object SVCMarginEval {
       (z, Array.fill(N)(1) ++ Array.fill(N)(-1))
     }
 
-	private def computeMargin(features: DblMatrix, lbl: DblVector, c: Double): Unit = {
+	private def evalMargin(features: DblMatrix, lbl: DblVector, c: Double): Unit = {
 	
-		val state = SVMConfig(CSVCFormulation(c), RbfKernel(GAMMA))
+		val state = SVMConfig(new CSVCFormulation(c), RbfKernel(GAMMA))
 		val svc = SVM[Double](state, XTSeries[DblVector](features),lbl)
 		svc.margin match {
 			case Some(mrgn) => 	println( "\nMargin: " + mrgn )

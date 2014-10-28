@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.types.ScalaMl
 import scala.util.Random
-import org.scalaml.supervised.Model
+import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
 import ScalaMl._
 import MLPLayer._
@@ -37,28 +37,31 @@ import MLPLayer._
 		 * @note Scala for Machine Learning
 		 */
 
-final protected class MLPModel(val state: MLPConfig, val input: DblVector, val numOutputs: Int) extends Model {
-	private val topology = if( state.hiddenLayers == null )
-	                          Array[Int](input.size, numOutputs) 
+final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
+                                      (implicit val mlpObjective: MLP.MLPObjective) extends Model {
+    val persists = "model/mlp"
+	private val topology = if( config.nHiddens == 0)
+	                          Array[Int](nInputs, nOutputs) 
 	                       else 
-	                          Array[Int](input.size) ++ state.hiddenLayers ++ Array[Int](numOutputs)
+	                          Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
 	
-	private val layers = topology.zipWithIndex.map(t => MLPLayer(t._2, t._1+1))
-	private val connections  = Range(0, layers.size-1).map(n => new MLPConnection(state, layers(n), layers(n+1))).toArray
+	private val layers: Array[MLPLayer] = topology.zipWithIndex.map(t => MLPLayer(t._2, t._1+1))
+	private val connections: Array[MLPConnection]  = Range(0, layers.size-1).map(n => 
+		        new MLPConnection(config, layers(n), layers(n+1))).toArray
 
 		/**
 		 * Alias for the input or first layer in the network
 		 * @return input layer
 		 */
 	@inline 
-	final def inputLayer: MLPLayer = layers.head
+	final def inLayer: MLPLayer = layers.head
 	
 		/**
 		 * Alias for the last layer (output layer) in the network
 		 * @return output layer
 		 */
 	@inline 
-	final def outputLayer: MLPLayer = layers.last
+	final def outLayer: MLPLayer = layers.last
 	   
 		/**
 		 * <p>Implements the training cycle or training epoch with the 
@@ -68,14 +71,16 @@ final protected class MLPModel(val state: MLPConfig, val input: DblVector, val n
 		 * @param feature new feature or data point used in the training (online or batch training)
 		 * @throws IllegalArgumentException if the feature is either undefined or has incorrect size.
 		 */
-	def trainEpoch(feature: DblVector): Unit = {
-	   inputLayer.setInput(feature)
-  	   connections.foreach( _.inputForwardPropagation)
+	def trainEpoch(x: DblVector, y: DblVector): Double = {
+	   inLayer.set(x)
+  	   connections.foreach( _.connectionForwardPropagation)
+       val _sse = sse(y)
 
 	   val bckIterator = connections.reverseIterator
-	   bckIterator.foreach( _.errorBackpropagation)
+	   bckIterator.foreach( _.connectionBackpropagation)
 	     
-	   connections.foreach( _.updateSynapses)
+	   connections.foreach( _.connectionUpdate)
+	   _sse
 	}
 	
 	
@@ -88,7 +93,7 @@ final protected class MLPModel(val state: MLPConfig, val input: DblVector, val n
 		 * @return sum of the mean squares error of the output layer.
 		 */
 	@inline
-	def mse(label: DblVector, objective: MLP.MLPObjective): Double = outputLayer.mse(label, objective, state.gamma)
+	def sse(label: DblVector): Double = outLayer.sse(label)
 
     
 		/**
@@ -97,10 +102,10 @@ final protected class MLPModel(val state: MLPConfig, val input: DblVector, val n
 		 * @param feature or data point for which the output has to be computed
 		 * @return output vector
 		 */
-    def getOutput(feature: DblVector): DblVector = {
- 	   inputLayer.setInput(feature)
-  	   connections.foreach( _.inputForwardPropagation)
-  	   outputLayer.output
+    def getOutput(x: DblVector): DblVector = {
+ 	   inLayer.set(x)
+  	   connections.foreach( _.connectionForwardPropagation)
+  	   outLayer.output
     }
 	 
    

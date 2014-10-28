@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised
 
@@ -29,25 +29,8 @@ trait Supervised[T] {
 		 * @param tpClass index of the class that contains the True positive labels
 		 * @return F1 measure
 		 */
-   def validate(xt: XTSeries[(Array[T], Int)], tpClass: Int): Double
+   def validate(xt: XTSeries[(Array[T], Int)], tpClass: Int): Option[Double]
    def crossValidation: Array[Double] = null
-}
-
-
-	/**
-	  * <p>Define the stateuration trait for the stateuration of all the supervised
-	  * learning algorithms.</p>
-	  */
-trait Config
-
-
-	/**
-	  * <p>Define the model for the stateuration of all the supervised
-	  * learning algorithms. The trait is used to record any information
-	  * relevant to the training of the model.</p>
-	  */
-trait Model {
-  var status: String = "Ready"
 }
 
 

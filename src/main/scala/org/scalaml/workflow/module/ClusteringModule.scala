@@ -6,15 +6,15 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.workflow.module
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.workflow.PipeOperator
+import org.scalaml.core.design.PipeOperator
 import org.scalaml.unsupervised.clustering.Cluster
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.types.ScalaMl.DblVector
 
 	/**
 	 * <p>Clustering module used to instantiate a clustering component in a workflow.</p>
@@ -27,26 +27,18 @@ trait ClusteringModule[T] {
   	 def execute(xt: XTSeries[Array[T]]): Unit 
   }
   
-  
-  final class KMeans[T <% Double](val K: Int, val maxIters: Int, val distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
+  import Cluster._
+  final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
                                    extends Clustering[T] with PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
   	
-  	  override def |> (xt: XTSeries[Array[T]]): Option[List[Cluster[T]]] = { 
-  	    None
-  	  }
-  	  override def execute(xt: XTSeries[Array[T]]): Unit =  this |> xt match {
-  	  	 case Some(clusters) => clusters.foreach( println )
-  	  	 case None => println("failed to create EM clusters")
-  	  }
+  	  override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = { case _ => null }
+  	  
+  	  override def execute(xt: XTSeries[Array[T]]): Unit =  this |> xt
   }
   
-  final class MultivariateEM[T <% Double](val K: Int) extends Clustering[T] with PipeOperator[XTSeries[Array[T]], EMOutput] {
-  	  override def |> (xt: XTSeries[Array[T]]): Option[EMOutput] = { None }
-  	  
-  	  override def execute(xt: XTSeries[Array[T]]): Unit = this |> xt match {
-  	  	  case Some(emOutput) => println(emOutput.toString)
-  	  	  case None => println("failed to create EM clusters")
-  	  }
+  final class MultivariateEM[T <% Double](K: Int) extends Clustering[T] with PipeOperator[XTSeries[Array[T]], EMOutput] {
+  	  override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = { case _ => null }
+  	  override def execute(xt: XTSeries[Array[T]]): Unit = this |> xt 
   }
 }
 

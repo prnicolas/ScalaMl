@@ -6,22 +6,22 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.regression.linear
 
-import org.scalaml.core.{XTSeries, Types}
-import Types.ScalaMl._
+import org.scalaml.core.{XTSeries, types}
+import types.ScalaMl._
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRuntimeException, OutOfRangeException}
-import org.scalaml.workflow.PipeOperator
-import org.scalaml.core.Types.CommonMath._
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.types.CommonMath._
 import scala.annotation.implicitNotFound
 import org.scalaml.supervised.regression.RegressionModel
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-
+import scala.language.implicitConversions
 
 		/**
 		 * <p>Class that defines a Multivariate linear regression. The regression
@@ -38,7 +38,7 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Implicit conversion to Double for MultiLinearRegression is missing")
-final class MultiLinearRegression[T <% Double](val xt: XTSeries[Array[T]], val labels: DblVector) 
+final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], val labels: DblVector) 
                     extends OLSMultipleLinearRegression with PipeOperator[Array[T], Double] {
 	
 	require(xt != null && xt.size > 0, "Cannot create perform a Multivariate linear regression on undefined time series")
@@ -86,14 +86,11 @@ final class MultiLinearRegression[T <% Double](val xt: XTSeries[Array[T]], val l
 		 * @throws IllegalStateException if the input array is undefined
 		 * @return predicted value if the model has been successfully trained, None otherwise
 		 */
-	override def |> (x: Feature): Option[Double] = model match {
-	   case Some(m) => {
-    	 if( x == null || x.size != m.size -1) 
-    		 throw new IllegalStateException("Size of input data for prediction " + x.size + " should be " + (m.size -1))
-    	 
-         Some(x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2))
+	override def |> : PartialFunction[Feature, Double] = {
+	   case x: Feature if(x != null && model != None && x.size != model.get.size-1) =>  {
+		  val w = model.get.weights
+          x.zip(w.drop(1)).foldLeft(w(0))((s, z) => s + z._1*z._2)
        }
-       case None => None
 	}
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  * 
  */
 package org.scalaml.supervised.hmm
@@ -30,9 +30,9 @@ import org.scalaml.util.Display
 	 */
 class BaumWelchEM(val lambdaBW: HMMLambda, 
 					val stateBW: HMMState, 
-					val obsIdxBw: Array[Int], 
-					val eps: Double) extends HMMInference(lambdaBW, stateBW, obsIdxBw) {
-	
+					val obsIndx: Array[Int], 
+					val eps: Double) extends HMMInference(lambdaBW, stateBW, obsIndx) {
+   
   private val logger = Logger.getLogger("BaumWelchEM")
   require( eps > 1E-5 && eps < 0.1, "Convergence criteria for HMM Baum_Welch " + eps + " is out of range")
 

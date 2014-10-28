@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.types.ScalaMl
 import scala.util.Random
-import org.scalaml.supervised.Model
+import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
 import ScalaMl._
 import MLP._
@@ -35,9 +35,10 @@ protected class MLPLayer(val id: Int, val len: Int) {
    require(id >= 0, "Create a MLP layer with incorrect id: " + id)
    require(len > 0, "Create a MLP layer with zero element")
    
-   val output = new DblVector(len)
-   val errors = new DblVector(len)
+   val output = new DblVector(len) // used for forward propagation
    output.update(0, 1.0)
+   val delta = new DblVector(len)  // used for back propagation
+
 
    
    		/**
@@ -45,10 +46,9 @@ protected class MLPLayer(val id: Int, val len: Int) {
    		 * @param _input input vector for this layer. 
    		 * @throws IllegalArgumentException if the input vector is undefined
    		 */
-   @inline
-   def setInput(_input: DblVector): Unit = {
-  	 require(_input != null, "Cannot initialize this MLP layer " + id  + " with undefined data")
-  	 _input.copyToArray(output, 1)
+   def set(_x: DblVector): Unit = {
+  	 require(_x != null, "Cannot initialize this MLP layer " + id  + " with undefined data")
+  	 _x.copyToArray(output, 1)
    }
 
 
@@ -59,18 +59,19 @@ protected class MLPLayer(val id: Int, val len: Int) {
    		 * @param gamma gamma or gain of the logistic or tanh function
    		 * 
    		 */
-   def mse(labels: DblVector, objective: MLP.MLPObjective,  gamma: Double): Double = {
+   def sse(labels: DblVector): Double = {
   	  require(labels != null, "Cannot compute the mean square error for a MLP layer with undefined labeled values")
   	  require(output.size == labels.size+1, "The size of the output " + output.size + " should be equal to target + 1" + labels.size+1)
   	  
-	  var sumMSE = 0.0
-	  output.drop(1).zipWithIndex.foreach(on => {
-	  	 objective += (on._1, on._2)
+	  var _sse = 0.0
+	  output.drop(1)
+	        .zipWithIndex
+	        .foreach(on => {
   	  	 val err = labels(on._2) - on._1
-	     errors.update(on._2+1, gamma*on._1* (1.0- on._1)*err)
-	  	 sumMSE += err*err
+	     delta.update(on._2+1, on._1* (1.0- on._1)*err)
+	  	 _sse += err*err
 	  })
-	  sumMSE*0.5
+	  _sse*0.5
    }
    
    

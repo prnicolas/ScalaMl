@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.stats
 
@@ -52,7 +52,7 @@ import Label._
 		 * @since February 1, 2014
 		 * @note Scala for Machine Learning
 		 */
-class ClassValidation(val actualExpected: Array[(Int, Int)], val tpClass: Int) extends Validation {
+class ClassValidation(actualExpected: Array[(Int, Int)], tpClass: Int) extends Validation {
    require(actualExpected != null && actualExpected.size > 0, "Cannot validate undefined results")
    require(tpClass >= 0, "Cannot validate a model with negative index for the target class") 
    

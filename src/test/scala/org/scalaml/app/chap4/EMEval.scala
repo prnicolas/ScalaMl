@@ -6,28 +6,35 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.{Types, XTSeries}
+import org.scalaml.core.{types, XTSeries}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
-import Types.ScalaMl._
+import types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 
-
+		/**
+		 * <p>Object to evaluate the Expectation-Maximization algorithm
+		 */
 object EMEval extends UnsupervisedLearningEval {
-    import org.scalaml.unsupervised.em.MultivariateEM
-    import org.scalaml.filtering.SimpleMovingAverage
-    import SimpleMovingAverage._
-    import MultivariateEM._
+   import org.scalaml.unsupervised.em.MultivariateEM
+   import org.scalaml.filtering.SimpleMovingAverage
+   import SimpleMovingAverage._
+   import MultivariateEM._
     	
-   override def run(args: Array[String]): Unit = {
-	 require(args != null && args.length != 2, "Cannot evaluate EM with undefined arguments")
-     println("Evaluation of EM clustering")
+   private val logger = Logger.getLogger("UnsupervisedLearningEval")
+   
+   override def run(args: Array[String]): Int = {
+	 require(args != null && args.length == 2, "Cannot evaluate EM with undefined arguments")
+     Display.show("Evaluation of EM clustering", logger)
      
 	 val K = args(0).toInt
 	 val samplingRate = args(1).toInt
@@ -35,44 +42,38 @@ object EMEval extends UnsupervisedLearningEval {
      val smAve = SimpleMovingAverage[Double](period)
         
      		// extracts the observations from a set of csv files.
-     val obs = symbols.map(sym => {
-        DataSource(sym, path, true) |> extractor match {
-          case Some(xs) => {
-              val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
-
-              smAve |> values match {
-                case Some(filtered) => {
-                   filtered.zipWithIndex
-                           .drop(period+1)
-                           .toArray
-                           .filter( _._2 % samplingRate == 0).map( _._1)
-                }
-                case None =>null
-              }
-          }
-          case None => null
-        }
-     })
-     
-     	// If all the observations are valid
-     if( obs.find( _ == null) != None) {
-    	 
-        MultivariateEM[Double](K) |> XTSeries[DblVector](obs) match {
-		  case Some(components) => components.foreach( x => {
-		      println(x._1 + " means: ")
-		      x._2.foreach( println )
-		      println(" stddev: ")
-		      x._3.foreach( println )
-		  })
-		  case None => Console.println("Error")
-	   }
-	 }
-     else 
-    	 println("Some observations are corrupted")
-   }
+     Try {
+	     require(symbolFiles.size > 0, "EMEval.run Symbol files are undefined")
+	     
+	     val obs: DblMatrix = symbolFiles.map(sym => {
+	        val xs = DataSource(sym, path, true) |> extractor
+	        val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
+	
+	        val filtered = smAve |> values
+	        filtered.zipWithIndex
+	                .drop(period+1)
+	                .toArray
+	                .filter( _._2 % samplingRate == 0).map( _._1)
+	     })
+	     
+	     	// If all the observations are valid
+	     if( obs.find( _ == Array.empty) == None) {  	 
+	        val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
+		    components.foreach( x => {
+		       Display.show(s"\n${x._1}\nMeans: ", logger)
+		       Display.show(x._2.toSeq, logger)
+		       Display.show("Standard Deviations", logger)
+		       Display.show(x._3.toSeq, logger)
+			})
+			Display.show("EMEval.run completed", logger)
+		 }
+	     else 
+	    	Display.error("EMEval.run Some observations are corrupted", logger)
+	  }
+    } match {
+	   case Success(n) => n
+	   case Failure(e) => Display.error("EMEval.run", logger, e)
+    }
 }
-
-
-
 
 // -----------------------------------  EOF ---------------------------------------------------

@@ -6,25 +6,28 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.app.chap3
 
 
 
-import org.scalaml.core.{Types, XTSeries}
+import org.scalaml.core.{types, XTSeries}
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
 import YahooFinancials._
-
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+import scala.util.{Try, Success, Failure}
 
 		/**
 		 * Singleton used to test the moving average algorithms
 		 */
 object MovingAveragesEval extends FilteringEval {
    import org.scalaml.filtering._
+   private val logger = Logger.getLogger("MovingAveragesEval.run")
    
-   override def run(args: Array[String]): Unit = {
+   override def run(args: Array[String]): Int = {
   	 Console.println("MovingAverages evaluation")
   	 
   	 val symbol = args(0)
@@ -35,23 +38,25 @@ object MovingAveragesEval extends FilteringEval {
 
      weights.foreach( x => println( x + ",") )
      val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
-     
-	 dataSource |> YahooFinancials.adjClose match {
-	    case Some(price) => {  
+     Try {
+	      val price = dataSource |> YahooFinancials.adjClose
 	      val sMvAve = SimpleMovingAverage[Double](p)  
 	      val wMvAve = WeightedMovingAverage[Double](weights)
 	      val eMvAve = ExpMovingAverage[Double](p)
 	
 	      val dataSink = DataSink[Double]("output/chap3/mvaverage" + p.toString + ".csv")
 
-	      val results = price :: sMvAve.|>(price).getOrElse(price) :: 
-	                             sMvAve.|>(price).getOrElse(price) :: 
-	                             sMvAve.|>(price).getOrElse(price) :: 
+	      val results = price :: sMvAve.|>(price) :: 
+	                             sMvAve.|>(price) :: 
+	                             sMvAve.|>(price) :: 
 	                             List[XTSeries[Double]]()
 	      dataSink |> results
-	    }
-	    case None => Console.println("cannot load data")  
+	      Display.show("MovingAveragesEval.run", logger)
 	  }
+      match {
+      	case Success(n) => n
+      	case Failure(e) => Display.error("MovingAveragesEval.run", logger, e)
+      }
     }
 }
 

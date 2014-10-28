@@ -6,19 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.92
+ * Version 0.94
  */
 package org.scalaml.core
 
 import scala.reflect.ClassTag
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-
+import scala.language.implicitConversions
 
 		/**
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
@@ -32,15 +32,15 @@ import org.scalaml.util.Display
 		 * @since January, 22, 2014
 		 * @note Scala for Machine Learning
 		 */
-class XTSeries[@specialized(Double) T](val label: String, protected val arr: Array[T]) { 
-  require(arr != null && arr.size > 0, "Cannot create a times series from undefined values")
+class XTSeries[T](val label: String, val arr: Array[T]) { 
+  require(arr != null && arr.size > 0, "XTSeries Cannot create a times series from undefined values")
   
   def toArray: Array[T] = arr
   def toList: List[T] = arr.toList
   
-  @inline def head: T = arr.head
+  def head: T = arr.head
 	
-  @inline def last: T = arr.last
+  def last: T = arr.last
   
   	/**
   	 * Test if a time series is identical to this time series. The label is not included
@@ -54,6 +54,7 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   	
   	if(that != null) size == that.size && arr.equals(that.toArray) else false
   }
+  
         
   	/**
   	 * <p>Convert a this time series into a vector of Double floating point values.</p>
@@ -95,13 +96,16 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
   
   def apply(n: Int): T = arr.apply(n)
   
-  @inline
+
   def zip[U](that: XTSeries[U]): XTSeries[(T, U)] = XTSeries[(T,U)](arr.zip(that.toArray))
   
   def slice(start: Int, end: Int): XTSeries[T] = {
-    require( start < arr.size && end < arr.size && start < end, "Slice of XTSeries is incorrectly specified")
+    require(start < arr.size && end <= arr.size && start < end, "Slice of XTSeries is incorrectly specified")
     new XTSeries[T](label, arr.slice(start, end))
   }
+  
+  @inline
+  def isEmpty: Boolean = size == 0
   
   @inline 
   def max(implicit cmp: Ordering[T]): T = arr.max
@@ -112,8 +116,7 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
  
   override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => b.append(x).append("\n") ).toString
   
-  @inline 
-  def size: Int = arr.size
+  val size: Int = arr.size
 
   def foreach( f: T => Unit) = arr.foreach(f)
   
@@ -137,8 +140,8 @@ class XTSeries[@specialized(Double) T](val label: String, protected val arr: Arr
 class VTSeries[T](val _label: String, val _arr: Array[DVector[T]])(implicit val f: T => Double) extends XTSeries[Array[T]](_label, _arr) {
    
   def normalize(implicit ordering: Ordering[T]): DblMatrix = {
-     val minMax = arr.map(x => (x.min, x.max))
-     arr.zip(minMax).map(z => { 
+     val minMax  = toArray.map(x => (x.min, x.max))
+     toArray.zip(minMax).map(z => { 
         val range = z._2._2 - z._2._1
         z._1.map( y => (y -z._2._1)/range)
      }) 
@@ -152,7 +155,10 @@ class VTSeries[T](val _label: String, val _arr: Array[DVector[T]])(implicit val 
 		 * common implicit conversions.
 		 */
 object XTSeries {  
-  private val logger = Logger.getLogger("XTSeries")	
+   private val logger = Logger.getLogger("XTSeries")	
+  
+   type DblSeries = XTSeries[Double]
+   type DblVecSeries = XTSeries[DblVector]
 	
    final val EPS = 1-20
    def apply[T](label: String, arr: Array[T]): XTSeries[T] = new XTSeries[T](label, arr)
@@ -162,23 +168,25 @@ object XTSeries {
    implicit def xTSeries[T: ClassTag](label: String, v: Vector[T]) = new XTSeries[T](label, v.toArray)
    implicit def xTSeries[T: ClassTag](xs: List[T]): XTSeries[T] = new XTSeries[T]("", xs.toArray)
    implicit def xTSeries[T: ClassTag](xs: Array[String])(implicit fc: String=> T) = new XTSeries[T]("", xs.toArray.map{fc(_)})
-   implicit def xTseries[T](xtseries: XTSeries[T]) = new XTSeries[T]("", xtseries.arr)
+   implicit def xTseries[T](xt: XTSeries[T]) = new XTSeries[T]("", xt.toArray)
    
-   implicit def series2DblVector[T](series: XTSeries[T])(implicit f: T => Double): DblVector = series.toDblVector(f)
-   implicit def series2DblMatrix[T](series: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = series.toDblMatrix(fv)
+   implicit def series2DblVector[T](xt: XTSeries[T])(implicit f: T => Double): DblVector = xt.toDblVector(f)
+   implicit def series2DblMatrix[T](xt: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = xt.toDblMatrix(fv)
    
    def dimension[T](xt: XTSeries[Array[T]]): Int = xt.toArray(0).size
    
+   def empty[T: ClassTag]: XTSeries[T] = new XTSeries[T]("", Array.empty[T])
    
    def |>[T] (xs: List[Array[T]]): List[XTSeries[T]] = xs map{ XTSeries[T](_) }
 
    		/**
-   		 * Implements the normalization of a parameterized single dimension time series within [0, 1]
+   		 * Implements the normalization of a parameterized time series
    		 * @param xt single dimension parameterized time series
    		 * @throws IllegalArgumentException if the time series is undefined
+   		 * @throws implicitNotFound if the implicit ordering is undefined
    		 * @return normalized time series as double elements if max > min, None otherwise
    		 */
-   @implicitNotFound("Ordering for normalizatoin is undefined")
+   @implicitNotFound("Ordering for normalization is undefined")
    def normalize[T <% Double](xt: XTSeries[T])(implicit ordering: Ordering[T]): Option[XTSeries[Double]] = {
   	   require(xt != null, "Cannot normalize an undefined time series of elements")
   	   val mn = xt.min
@@ -186,13 +194,20 @@ object XTSeries {
        if(range < EPS) None  else Some(xt.map(x => (x -mn)/range))
    }
    
-   @implicitNotFound("Ordering for normalizatoin is undefined")
-   def normalize[T <% Double](feature: Array[T])(implicit ordering: Ordering[T]): Option[DblVector] = {
-  	   require(feature != null, "Cannot normalize an undefined time vector")
+         /**
+   		 * Implements the normalization of a parameterized single dimension time series within [0, 1]
+   		 * @param x a parameterized array
+   		 * @throws IllegalArgumentException if the time series is undefined
+   		 * @throws implicitNotFound if the implicit ordering is undefined
+   		 * @return normalized time series as double elements if max > min, None otherwise
+   		 */
+   @implicitNotFound("Ordering for normalization is undefined")
+   def normalize[T <% Double](x: Array[T])(implicit ordering: Ordering[T]): Option[DblVector] = {
+  	   require(x != null && x.size > 0, "Cannot normalize an undefined time vector")
   	   
-  	   val mn = feature.min
-       val range = feature.max - mn
-       if(range < EPS) None  else Some(feature.map(x => (x -mn)/range))
+  	   val mn = x.min
+       val range = x.max - mn
+       if(range < EPS) None  else Some(x.map(x => (x -mn)/range))
    }
    
    
@@ -235,7 +250,7 @@ object XTSeries {
 	    	var j = 0
 	    	arr(k) = new Array[Double](dimension)
 	    	while( j < dimension) {
-	    		arr(k)(j) =(xt.arr(k)(j) - min(j))/(max(j)-min(j))
+	    		arr(k)(j) =(xt.toArray(k)(j) - min(j))/(max(j)-min(j))
 	    		j += 1
 	    	}
 	    	k += 1
@@ -267,7 +282,7 @@ object XTSeries {
 	    	var j = 0
 	    	arr(k) = new Array[Double](dimension)
 	    	while( j < dimension) {
-	    		arr(k)(j) =(xt.arr(k)(j) - stats(j).mean)/stats(j).stdDev
+	    		arr(k)(j) =(xt.toArray(k)(j) - stats(j).mean)/stats(j).stdDev
 	    		j += 1
 	    	}
 	    	k += 1
@@ -284,13 +299,21 @@ object XTSeries {
    def transpose[T: ClassTag](from: List[Array[T]]):  Array[Array[T]] = from.toArray.transpose
    
    
-   def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.arr)
+   def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.toArray)
 
    def statistics[T <% Double](xt: XTSeries[Array[T]]): Array[Stats[T]] = {
-       import Stats._
-       xt.arr.transpose.map( new Stats[T]( _ ))
+      require(xt != null && xt.size > 0, "XTSeries.statistics input time series undefined")
+      
+      import Stats._
+      xt.toArray.transpose.map( new Stats[T]( _ ))
    }
 }
+
+
+
+
+
+
 
 
 // ---------------------------------  EOF --------------------------------------------------------
