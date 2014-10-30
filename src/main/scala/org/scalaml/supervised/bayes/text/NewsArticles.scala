@@ -59,11 +59,12 @@ class NewsArticles[T <% Long](implicit val order: Ordering[T]) {
 	  		             else weightedTerms )
 	}
 	
+	
 			/**
 			 * <p>Order the existing map of weighted map per their associated date</p>
 			 * @return Array of weighted terms ordered by their release date
 			 */
-	def toOrderedArray: Array[(T, Map[String, Double])] = articles.toArray.sortWith( _._1 < _._1)
+	final def toOrderedArray: Array[(T, Map[String, Double])] = articles.toArray.sortWith( _._1 < _._1)
 	
 			/** 
 			 *  <p>Generates a textual description of the labels and the weighted terms associated
@@ -101,6 +102,15 @@ class NewsArticles[T <% Long](implicit val order: Ordering[T]) {
 		 */
 object NewsArticles {
   def apply[T <% Long](implicit order: Ordering[T]): NewsArticles[T] = new NewsArticles[T]
+  
+  def toString[T](arr: Array[(T, Map[String, Double])]): String =  {
+      val buf = new StringBuilder
+      arr.foreach(x => { 
+         val weightedTerms = x._2.foldLeft(new StringBuilder)((b, wt) => b.append(s"(${wt._1},${wt._2}) ")).toString
+         buf.append(s"${x._1.toString} => ${weightedTerms}\n" )
+      })
+      buf.toString
+  }
 }
 
 

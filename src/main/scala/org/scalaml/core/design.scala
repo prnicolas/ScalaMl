@@ -18,7 +18,7 @@ import scala.reflect.ClassTag
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning
 		 */
-package design {
+package object design {
 
 	/**
 	  * <p>Define the configuration trait used in the classifiers and optimizers.</p>

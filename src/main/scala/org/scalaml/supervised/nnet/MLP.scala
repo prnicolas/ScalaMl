@@ -73,7 +73,6 @@ final protected class MLP[T <% Double](config: MLPConfig,
    	 * @param feature new data point that need to be either classified or regressed.
    	 * @return The normalized output of the neural network if model exists, None otherwise
    	 */
-   
    override def |> : PartialFunction[Array[T], DblVector] = {
   	 case x: Array[T] if(x != null && model != None && x.size == dimension(xt)) => {
      	Try(model.get.getOutput(x))
@@ -83,22 +82,6 @@ final protected class MLP[T <% Double](config: MLPConfig,
   		}
   	 }
    }
-   /*
-   override def |> (x: Array[T]): Option[DblVector] = model match {
-  	 case Some(_model) => {
-  		require(x != null, "Input to MLP.|> method is undefined")
-  		require(x.size == dimension(xt), "Incorrect array size input to MLP.|> method is " + x.size + " and should be " + dimension(xt))
-
-  		Try(_model.getOutput(x))
-  		match {
-  			case Success(y) => Some(y)
-  			case Failure(e) => Display.error("MLP.|> ", logger, e); None
-  		}
-  	  }
-  	  case None => Display.error("MLP.|> ", logger); None
-  }
-  * 
-  */
    
    		/**
    		 * <p>Computes the accuracy of the training session. The accuracy is estimated
@@ -148,8 +131,7 @@ final protected class MLP[T <% Double](config: MLPConfig,
 		 */
 object MLP {
 	final val EPS = 1e-5
-	
-//	implicit var mlpObjective: MLPObjective = new MLPBinClassifier
+
 		/**
 		 * <p>Trait that defined the signature of the objective function.<br>
 		 * += for updating parameters if needed<br>

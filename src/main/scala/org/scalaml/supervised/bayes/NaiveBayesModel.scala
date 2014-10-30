@@ -75,7 +75,7 @@ protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T],
 		if (positives.score(x, density) > negatives.score(x, density)) 1 else 0
 	}
 	
-	override def toString: String = s"Positive cases: ${positives.toString}\nNegative cases: ${negatives.toString}"
+	override def toString: String = s"\nPositive cases: ${positives.toString}\nNegative cases: ${negatives.toString}"
 }
 
 

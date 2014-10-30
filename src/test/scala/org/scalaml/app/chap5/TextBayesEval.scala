@@ -18,7 +18,7 @@ import scala.collection.mutable.ArrayBuffer
 import types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
-import scala.collection.immutable.HashSet
+import scala.collection.mutable.HashSet
 import org.scalaml.supervised.bayes.NaiveBayes
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
@@ -27,6 +27,10 @@ import org.scalaml.supervised.bayes.text.TermsScore
 import DocumentsSource._
 import scala.language.postfixOps
 import scala.util.{Try, Success, Failure}
+import org.scalaml.supervised.bayes.text.NewsArticles
+import java.text.DecimalFormat
+import scala.io.Source
+import scala.collection.mutable.HashMap
 
 
 
@@ -43,68 +47,69 @@ import scala.util.{Try, Success, Failure}
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Model
 		 */
 object TextBayesEval {
-	final val pathName = "resources/text/chap5/"
-		
+	final val pathCorpus = "resources/text/chap5/"
+    final val pathLexicon = "resources/text/lexicon.txt"
+    	
 	private val logger = Logger.getLogger("TextBayesEval")
+	
+		// Convert a date into a Long value so the news articles can 
+	    // be ordered and the weighted terms frequencies be aggregated for each date.
 	private def toDate(date: String): Long = {
 		val idx1 = date.indexOf(".")
 		val idx2 = date.lastIndexOf(".")
 		if( idx1 != -1 && idx2 != -1) (date.substring(0, idx1) + date.substring(idx1+1, idx2)).toLong else -1
 	}
 
-		/**
-		 * Map of keywords which associates keywords with a semantic equivalent (poor man's stemming
-		 * and lemmatization)
-		 */
-    final val LEXICON = Map[String, String](
-	   "tesla" -> "Tesla", "tsla" -> "TSLA" , "musk" -> "Musk", "china" -> "China", "chinese" -> "China", 
-	   "charging" -> "Charge",  "supercharger" -> "Charge", "battery" -> "battery", "batteries" ->"battery", 
-	   "upside" ->"Upside", "outperform" ->"Upside", "risk" -> "risk", "risks" ->"risk", "risky"->"risk", 
-	   "panasonic" ->"Panasonic", "growth" -> "Upside", "short" -> "Downside", "shorted" -> "Downside", 
-	   "downside" -> "Downside", "underperform" -> "Downside"
-	)
-	
-		/**
-		 * Regular expression to extract keywords and match thems against the lexicon
-		 */
+		
+		 // Map of keywords which associates keywords with a semantic equivalent (poor man's stemming
+		 // and lemmatization), loaded from a dictionary/lexicon file 
+	 val LEXICON = loadLexicon
+
+		
+		 // Regular expression to extract keywords and match them against the lexicon 
 	def toWords(content: String): Array[String] = {
     	val regExpr = "['|,|.|?|!|:|\"]"
     	content.trim.toLowerCase.replace(regExpr," ").split(" ").filter( _.length > 2)
     }
     
-    	/**
-    	 * Qoutes for TLSA stocks
-    	 */
-    final val TSLA_QUOTES = Array[Double](
-    	250.56, 254.84, 252.66, 252.94, 246.21, 238.84, 234.41, 241.49, 237.79, 230.97, 233.98, 240.04, 235.84,
+    	 // Stock prices for TSLA indexed by their date from the oldest to the newest.	 
+     final val TSLA_QUOTES = Array[Double](
+    	250.56, 254.84, 252.66, 252.94, 253.21, 255.84, 234.41, 241.49, 237.79, 230.97, 233.98, 240.04, 235.84,
         234.91, 228.89, 220.17, 220.44, 212.96, 207.32, 212.37, 208.45, 216.97, 230.29, 225.4, 212.22, 207.52,
-        215.46, 216.93, 204.19, 203.78, 198.09, 193.91, 199.11, 198.12, 204.38, 218.64, 207.99, 207.86, 199.85 )
-    
+        215.46, 203.93, 204.19, 197.78, 198.09, 201.91, 199.11, 198.12, 197.38, 205.64, 207.99, 209.86, 199.85 )
         
 	def run: Int  = {
     	Display.show("TextBayesEval: Evaluation Multinomial Naive Bayes for text analysis", logger)
     	
-		val corpus: Corpus = DocumentsSource(pathName) |>
+		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 	    val ts = new TermsScore[Long](toDate, toWords, LEXICON)
 	    Try {
 		    ts.score(corpus) match {
-			  	case Some(terms) => {
-			  	   var prevQ = 0.0
+			  	case Some(terms) => {    // computes the difference in price between current 
+			  	   var prevQ = 0.0       // trading session and the previous session.      
 			  	   val diff = TSLA_QUOTES.map(q => {
 			  	  	  val delta = if(q > prevQ) 1 else 0
 			  	  	  prevQ = q
 			  	  	  delta
 			  	   })
-			  		  	  	  	  	  
-			  	   val relFrequencies = terms.toOrderedArray
-			  	  	                      .zip(diff)
-			  	  	                      .map(x => (x._1._2, x._2))
-			  	  	                      .map(lbl => { 
-			  	  	                      	  (LEXICON.values.toArray.map(f => if( lbl._1.contains(f) ) lbl._1(f) else 0.0), lbl._2) 
-			  	  	                      })
-				   val xt = XTSeries[(Array[Double], Int)](relFrequencies)
+			  	   	
+			  	   	   //Extracts the unique column names as the lemme in the Lexicon.
+			  	   val columns = LEXICON.values
+			  	                        .foldLeft(new HashSet[String])((hs, key) => {hs.add(key); hs})
+			  	                        .toArray	
+			  	   
+			  	       // Computes the relative frequencies of the lemmed terms zipped with
+			  	       // the direction of the stock movement between two consecutive trading sessions.
+				   val relFreQ = terms.toOrderedArray
+			  	  	                  .zip(diff)
+			  	  	                  .map(x => (x._1._2, x._2))
+			  	  	                  .map(lbl => (columns.map(f => if(lbl._1.contains(f)) lbl._1(f) else 0.0), lbl._2) )
+			  	  	                      
+				   val xt = XTSeries[(DblVector, Int)](relFreQ)
 			  	   val nb = NaiveBayes[Double](xt)
-				   Display.show(s"TextBayesEval: text extraction model ${nb.toString}", logger)
+			  	   
+			  	   	  // Display the pairs (mean, standard deviation) for each term.
+			  	   displayResults(columns, nb.toString)
 			  	}
 			  	case None => Display.error("TextBayesEval keywords extraction failed", logger)
 			 }
@@ -113,6 +118,19 @@ object TextBayesEval {
 	    	case Failure(e) => Display.error("TextBayesEval.run", logger, e)
 	    }
 	}
+    
+    private def displayResults(columns: Array[String], results: String): Int = {
+        val buf = new StringBuilder
+        buf.append("Keywords:\t")
+        columns.foreach( c => buf.append(Display.align(c.toString, 14)))
+        Display.show(s"TextBayesEval: text extraction model\n ${buf.toString}${results}", logger)
+    }
+    
+    private def loadLexicon: Map[String, String] = {
+    	 val src = Source.fromFile(pathLexicon)
+	  	 val fields = src.getLines.map( _.split(",").map(_.trim))
+         fields.foldLeft(new HashMap[String, String])((hm, field)=> {hm.put(field(0), field(1)); hm}).toMap
+    }
 }
 
 

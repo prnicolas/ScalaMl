@@ -20,19 +20,20 @@ import org.apache.log4j.Logger
 	 */
 object Display {	
   val loggerFlag = false
-		// Dump information message onto standard output or logger
-  /*
-  final def show[T](t: T): Int = {Console.println(t.toString); 0}
-  final def show[T](seq: Seq[T]): Int = { 
-  	
-  	0
-  }
-  * 
-  */
   
-  final def show[T](t: T, logger: Logger): Int = { 
-     if(loggerFlag) logger.info(t.toString)
-     else Console.println(t.toString)
+		// Dump information message onto standard output or logger
+  
+  final def align(label: String, length: Int): String = {
+  	 if( length < label.size)
+  		label
+  	 else 
+  		label + Range(label.size, length).foldLeft(new StringBuilder)((b, n) =>b.append(" "))
+  }
+  
+  final def show[T](t: T, logger: Logger, alignment: Int = -1) = { 
+  	 val text = if(alignment != -1) align(t.toString, alignment) else t.toString
+     if(loggerFlag) logger.info(text)
+     else Console.println(text)
      0
   }
   final def show[T](seq: Seq[T], logger: Logger): Int = {

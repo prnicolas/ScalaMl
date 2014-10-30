@@ -11,11 +11,10 @@
 package org.scalaml.supervised.bayes
 
 import org.scalaml.stats.Stats
-
-
 import NaiveBayesModel._
-
 import Likelihood._
+import java.text.DecimalFormat
+import org.scalaml.util.Display
 
 		/**
 		 * <p>Class that represents a likelihood for each feature for Naive Bayes classifier.<br>
@@ -60,8 +59,11 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
   }
 
   override def toString: String = {
-    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => b.append(s" (${m._1},${m._2}) ")).toString
-     s"\nlabel: $label: ${muSigmaStr} [$prior]"
+  	val colWidth = 14
+    val fmt = new DecimalFormat("#.###")
+    
+    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
+     s"${muSigmaStr}   Class likelihood: $prior"
   }
 }
 

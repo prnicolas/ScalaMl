@@ -67,7 +67,6 @@ class TermsScore[T <% Long](toDate: String =>T,
    }
 
   
-  
    private[this] def count(term: String): Counter[String] = {
   	 require(term != null && term.length > 0, "TermsScore.count: Cannot count the number of words in undefined text")
    
@@ -82,8 +81,14 @@ class TermsScore[T <% Long](toDate: String =>T,
    }
 }
    
-   
+   	/**
+   	 * <p>Companion object for TermsScore to define constructors and data type for corpus.</>
+   	 */
 object TermsScore {
+		/**
+		 * <p>Define the type for a corpus as a array of tuples (date, document title, document content). The type for
+		 * date is bounded (view) to a Long (convertible to a Long).
+		 */
     type CorpusType[T] = Array[(T, String, String)]
     def apply[T <% Long](tStamp: String =>T, words: String => Array[String], dict: Map[String, String])(implicit ordering: Ordering[T]): TermsScore[T] 
       = new TermsScore[T](tStamp, words, dict)

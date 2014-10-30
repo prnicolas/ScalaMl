@@ -23,7 +23,7 @@ import scala.language.implicitConversions
 	 *  @since Feb 23, 2014
 	 *  @note Scala for Machine Learning
 	 */
-package types {  
+package object types {  
 
 
 	/**
