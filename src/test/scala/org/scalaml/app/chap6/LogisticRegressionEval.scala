@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap6
 
@@ -56,11 +56,10 @@ object LogisticRegressionEval {
       }
   	  
    }
-   
-
+  
    private def toString(regression: LogisticRegression[Double]): String = {
-  	  val buf = new StringBuilder("Regression model: RMS").append(regression.rss.get).append(" weights:")
-  	  regression.weights.get.foreach(w => buf.append(" ").append(w))
+  	  val buf = new StringBuilder(s"Regression model: rss ${regression.rss.get}")
+  	  regression.weights.get.foreach(w => buf.append(s" $w"))
   	  buf.toString
    }
 }

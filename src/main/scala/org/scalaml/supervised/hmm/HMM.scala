@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.hmm
 
@@ -19,11 +19,13 @@ import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import HMMConfig._
 
 	/**
 	 * <p>Enumeration class to specify the canonical form of the HMM</p>
 	 * @author Patrick Nicolas
 	 * @since March 9, 2014
+	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
 	 */
 object HMMForm extends Enumeration {
   type HMMForm = Value
@@ -32,9 +34,9 @@ object HMMForm extends Enumeration {
 
 
 
-abstract class HMMModel(val lambda: HMMLambda, val obsIdx: Array[Int]) extends Model {
+abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Model {
    require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
-   require(obsIdx != null && obsIdx.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
+   require(obs != null && obs.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
    
    val persists = "models/hmm"
 }
@@ -44,20 +46,23 @@ abstract class HMMModel(val lambda: HMMLambda, val obsIdx: Array[Int]) extends M
 	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
 	 * the evaluation form of the HMM.</p>
 	 * @param lambda Lambda (pi, A, B) model for the HMM
-	 * @param obs: Array of observations as integer (categorical data)
-	 * @throws IllegalArgumentException if lambda, params and observations are undefined
+	 * @param obsIdx: Array of observations as integer (categorical data)
+	 * 
 	 * @author Patrick Nicolas
 	 * @since March 29, 2014
+	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
 	 */
 class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd, _obsIdx) { 
    protected var alphaBeta: Matrix[Double] = _
-   protected val ct = Array.fill(lambda.config._T)(0.0)
+   protected val ct = Array.fill(lambda.getT)(0.0)
 
    protected def normalize(t: Int): Unit = {
-  	  require(t >= 0 && t < lambda.config._N, "Incorrect argument " + t + " for normalization")
-  	  ct.update(t, HMMConfig.foldLeft(lambda.config._N, (s, n) => s + alphaBeta(t, n)))
+  	  require(t >= 0 && t < lambda.getT, s"Incorrect argument $t for normalization")
+  	  ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
   	  alphaBeta /= (t, ct(t))
    }
+   
+   def getAlphaBeta: Matrix[Double] = alphaBeta
 }
 
 
@@ -74,13 +79,12 @@ class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd
 	 * @throws IllegalArgumentException if lambda, params and observations are undefined
 	 * @author Patrick Nicolas
 	 * @since March 7, 2014
+	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
 	 */
-class HMMInference(val lmdb: HMMLambda, val state: HMMState, val _obsIndx: Array[Int]) 
-                                                    extends HMMModel(lmdb,  _obsIndx) {
+class HMMInference(val lmdb: HMMLambda, val state: HMMState, val _obs: Array[Int]) 
+                                                    extends HMMModel(lmdb,  _obs) {
   require(state != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
 }
-
-
 
 
 import HMMForm._
@@ -93,8 +97,8 @@ import HMMForm._
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @since March 2014
-		 * @note Scala for Machine Learning
+		 * @since March 23, 2014
+		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
 		 */
 protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T)  
                            extends PipeOperator[DblVector, HMMPredictor] {
@@ -102,9 +106,9 @@ protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMFo
 	private val logger = Logger.getLogger("HMM")
 	require(lambda != null, "Cannot execute a HMM with undefined lambda model")
 	require(form != null, "Cannot execute a HMM with undefined canonical form")
-	require( maxIters > 1 && maxIters < 1000, s"Maximum number of iterations to train a HMM $maxIters is out of bounds")
+	require(maxIters > 1 && maxIters < 1000, s"Maximum number of iterations to train a HMM $maxIters is out of bounds")
 	
-	protected val state = HMMState(lambda.config, maxIters)
+	private val state = HMMState(lambda, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -115,7 +119,7 @@ protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMFo
 		 */
 		
 	override def |> : PartialFunction[DblVector, HMMPredictor] = {
-		case obs: DblVector if(obs != null && obs.size > 2) => {
+		case obs: DblVector if(obs != null && obs.size > 1) => {
 			Try { 
 			   form match {
 			     case EVALUATION => evaluate(obs)
@@ -127,48 +131,22 @@ protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMFo
 			}
 	   }
 	}
-	/*
-	def |> (obs: DblVector): Option[HMMPredictor] = {
-		require(obs != null, "Cannot perform an evaluaton or decoding of HMM with undefined observations")
-
-		Try { 
-		   form match {
-		     case EVALUATION => evaluate(obs)
-		     case DECODING => decode(obs)
-		   } 
-		} match {
-			case Success(prediction) => Some(prediction)
-			case Failure(e) => Display.error("HMM.|> ", logger, e); None
-		}
-	}
-	* 
-	*/
-
-		/**
-		 * <p>Train HMM with a set of observations to extract the Lambda model.</p>
-		 * @param  obsIdx set of observation of type bounded by Array[Int]
-		 * @return maximum log likelihood if no arithmetic function occurs, None otherwise
-		 * @throws IllegalArgumentException if the set of observations is not defined
-		 * @throws RuntimeException for computation error such as divide by zero
-		 */
-	def train(obsIdx: T): Option[Double] = {
-		require(obsIdx != null, "Cannot train a HMM with undefined observations")
-	    BaumWelchEM(lambda, state, obsIdx).maxLikelihood
-	}
-		
 		/**
 		 * <p>Implements the 3rd canonical form of the HMM</p>
 		 * @param obsIdx given sequence of observations
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
 		 */
-	def decode(obsIdx: T): HMMPredictor = (ViterbiPath(lambda, state, obsIdx).maxDelta, state.QStar())
+	def decode(obs: T): HMMPredictor = (ViterbiPath(lambda, obs).maxDelta, state.QStar())
 	
 		/**
 		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>
 		 * @param obsIdx index of the observation O in a sequence
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations indexes)
 		 */
-	def evaluate(obsIdx: T): HMMPredictor = (-Alpha(lambda, obsIdx).logProb, obsIdx)
+	def evaluate(obs: T): HMMPredictor = (-Alpha(lambda, obs).logProb, obs)
+	
+	@inline
+	final def getModel: HMMLambda = state.lambda
 }
 
 
@@ -187,6 +165,14 @@ object HMM {
 	type HMMPredictor = (Double, Array[Int])
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, maxIters)
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
+	
+	
+    def apply[T <% Array[Int]](config: HMMConfig, obsIndx: Array[Int], form: HMMForm,  maxIters: Int, eps: Double)(implicit f: DblVector => T): Option[HMM[T]] = {
+		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
+		if( baumWelchEM.maxLikelihood != None)
+		   Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
+		else None
+	}
 }
 
 

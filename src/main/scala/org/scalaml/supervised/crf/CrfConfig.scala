@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -21,10 +21,11 @@ import org.scalaml.core.design.PipeOperator
 import java.io.IOException
 import org.scalaml.core.types.ScalaMl._
 import CrfConfig._
+import org.scalaml.core.design.Config
 
 	/**
-	 * <p>Class that defines the basic stateuration of the CRF algorithm. The class generates a textual
-	 * description of the stateuration of CRF used by iitb library </p>
+	 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
+	 * description of the configuration of CRF used by iitb library </p>
 	 * @param initLambda  initial values for the CRF weights/factors (lambdas)
 	 * @param maxIters  Maximum number of iterations to be used for the training of CRF
 	 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
@@ -34,31 +35,24 @@ import CrfConfig._
 	 * @author Patrick Nicolas
 	 * @since April 3, 2014
 	 */
-protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double, debug: Int) {
-    validate(w0, maxIters, lambda, eps)
+protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double) extends Config {
+    check(w0, maxIters, lambda, eps)
+    val persists: String = "config/crf"
     
     // textual description of the CRF configuration
-	val params = new StringBuilder().append("initValue ").append(String.valueOf(w0))
-		           .append(" maxIters ").append(String.valueOf(maxIters)).append(" lambda ")
-		              .append(String.valueOf(lambda)).append( " scale ")
-		                 .append(" true" ).append(" epsForConvergence ").append(String.valueOf(eps) )
-		                   .append(" debugLvl ").append(debug).toString
+	val params = s"initValue: ${String.valueOf(w0)}, maxIters: ${String.valueOf(maxIters)}, lambda: ${String.valueOf(lambda)}, scale: true, eps: $eps"
 
-	private def validate(w0: Double, maxIters: Int, lambda: Double,  eps: Double): Unit = {
-		require(w0 >= INIT_WEIGHTS_LIMITS._1 && w0 <= INIT_WEIGHTS_LIMITS._2, 
-				        "Initialization of the CRF weights " + w0 + " is out of range")
-		require( maxIters >= MAX_ITERS_LIMITS._1 && maxIters <= MAX_ITERS_LIMITS._2, 
-				         "Maximum number of iterations for CRF training " + maxIters + " is out of range")
-		require( lambda >= LAMBDA_LIMITS._1 && lambda <= LAMBDA_LIMITS._2, 
-				         "The factor for the L2 penalty for CRF" + lambda + " is out of range")
-		require( eps > EPS_LIMITS._1 && eps<= EPS_LIMITS._2, 
-				          "The convergence criteria for the CRF training " + eps + " is out of range")
+	private def check(w0: Double, maxIters: Int, lambda: Double,  eps: Double): Unit = {
+	  require(w0 >= INIT_WEIGHTS_LIMITS._1 && w0 <= INIT_WEIGHTS_LIMITS._2, s"Initialization of the CRF weights $w0 is out of range")
+	  require( maxIters >= MAX_ITERS_LIMITS._1 && maxIters <= MAX_ITERS_LIMITS._2, s"Maximum number of iterations for CRF training $maxIters is out of range")
+	  require( lambda >= LAMBDA_LIMITS._1 && lambda <= LAMBDA_LIMITS._2, s"The factor for the L2 penalty for CRF $lambda is out of range")
+	  require( eps > EPS_LIMITS._1 && eps<= EPS_LIMITS._2, s"The convergence criteria for the CRF training $eps is out of range")
     }
 }
 
 
 		/**
-		 * <p>Companion object for the stateuration of the conditional random field. The
+		 * <p>Companion object for the configuration of the conditional random field. The
 		 * singleton is used to define constructors and boundaries for the class parameters..</p>
 		 */
 object CrfConfig {
@@ -67,11 +61,9 @@ object CrfConfig {
 	final val LAMBDA_LIMITS = (1e-15, 1.5)
 	final val EPS_LIMITS = (1e-5, 0.2)
 	
-	def apply(w0: Double, maxIters: Int, lambda: Double, eps:Double, debug: Int): CrfConfig = 
-		            new CrfConfig(w0, maxIters, lambda, eps, debug)
 	
     def apply(w0: Double, maxIters: Int, lambda: Double, eps:Double): CrfConfig = 
-		            new CrfConfig(w0, maxIters, lambda, eps, 0)
+		            new CrfConfig(w0, maxIters, lambda, eps)
 }
 
 

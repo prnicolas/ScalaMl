@@ -6,19 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.types
-import types._
 import org.scalaml.supervised.Supervised
-import org.scalaml.core.design.{PipeOperator, Config}
-import org.scalaml.core.XTSeries
-
-import HMM._
-import org.scalaml.util.Matrix
+import org.scalaml.core.design.Config
 
 
 
@@ -31,18 +25,21 @@ import org.scalaml.util.Matrix
 		 * @param _N number of hidden states in the HMM
 		 * @param _M number of symbols (or model dimension) for the HMM
 		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 27, 2014
+		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
 		 */
 class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
-  require( _T > 0 && _T < 1000, "Number of observations " + _T + " in HMM lambda model is out of bounds")
-  require( _N > 0 && _N < 1000, "Number of States " + _N + " in HMM lambda model is out of bounds")
-  require( _M > 0 && _M < 1000, "Number of symbols " + _M + " in HMM lambda model is out of bounds")
+  require( _T > 0 && _T < 1000, s"Number of observations ${_T} in HMM lambda model is out of bounds")
+  require( _N > 0 && _N < 1000, s"Number of States ${_N} in HMM lambda model is out of bounds")
+  require( _M > 0 && _M < 1000, s"Number of symbols ${_M} in HMM lambda model is out of bounds")
   val persists = "config/hmm"
 }
 
 object HMMConfig {
-   def foreach(i: Int, f: (Int) => Unit): Unit = Range(0, i).foreach(f)
+   def foreach(i: Int, j: Int, f: (Int) => Unit): Unit = Range(i, j).foreach(f)
+   def foreach(i: Int, f: (Int) => Unit): Unit = foreach(0, i, f)  
    def foldLeft(i: Int, f: (Double, Int) => Double, zero:Double) = Range(0, i).foldLeft(zero)(f)
    def foldLeft(i: Int, f: (Double, Int) => Double) = Range(0, i).foldLeft(0.0)(f)
    

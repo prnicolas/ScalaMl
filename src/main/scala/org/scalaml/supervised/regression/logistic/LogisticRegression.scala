@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -32,11 +32,21 @@ import org.scalaml.util.Display
 import org.apache.commons.math3.linear.DiagonalMatrix
 import scala.language.implicitConversions
 
-class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]], 
-		                                val labels: Array[Int], 
-										val optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
+		/**
+		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
+		 * support regularization or penalty terms.</p>
+		 * @constructor Create a logistic regression classifier model. [xt] Input time series observations, [labels] label for the class used during training of the classifier. [optimizer] Optimization method used to minimmize the loss function during training.
+		 * @see org.apache.commons.math3.fitting.leastsquares.
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 11, 2014
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization $Logistic regression
+		 */
+final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
+		                                    labels: Array[Int], 
+										    optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
 	type Feature = Array[T]
-	validate(xt, labels, optimizer)
+	check(xt, labels, optimizer)
     
 	private val logger = Logger.getLogger("LogisticRegression")
 	private[this] val model: Option[RegressionModel] = {
@@ -53,21 +63,24 @@ class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 		 */
 	final def weights: Option[DblVector] = model match {
 	   case Some(m) => Some(m.weights)
-	   case None => None
+	   case None => Display.none("LogisticRegression.weights model is undefined", logger)
 	}
 	
+	
+	     /**
+		 * <p>Access the residual sum of squares of the logistic regression model.</p>
+		 * @return rss if the model has been successfully trained, None otherwise.
+		 */
 	final def rss: Option[Double] = model match {
 	   case Some(m) => Some(m.rss)
-	   case None => None
+	   case None => Display.none("LogisticRegression.tdd model is undefined", logger)
 	}
 			/**
 			 * <p>Binary predictor using the Binomial logistic regression and implemented
 			 * as a data transformation (PipeOperator). The predictor relies on a margin
 			 * error to associated to the outcome 0 or 1.</p>
-			 * @param x new data point to classify as 0 or 1
-			 * @return 0 if the logit value is close to 0, 1 otherwise, None if the model could not be trained
-			 * @throws IllegalArgumentException if the data point is undefined
-			 * @throws DimensionMismatchException if the dimension of the data point x is incorrect
+			 * @throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
+   		     * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 			 */
 	override def |> : PartialFunction[Feature, Int] = {
 		case x: Feature  if(x != null && model != None && model.get.size -1 != x.size) => {				
@@ -127,8 +140,7 @@ class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
 
 	    val builder = new LeastSquaresBuilder
         val lsp = builder.model(lrJacobian)
-                        .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
-     //   .weight(new DiagonalMatrix(weights0)) 
+                         .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
                          .target(labels)
                          .checkerPair(exitCheck)
                          .maxEvaluations(optimizer.maxEvals)
@@ -137,13 +149,12 @@ class LogisticRegression[T <% Double](val xt: XTSeries[Array[T]],
                          .build
                                  
         val optimum = optimizer.optimize(lsp)
-        println("Optimum: ")
         RegressionModel(optimum.getPoint.toArray, optimum.getRMS)
 	}
 	
-    private def validate(xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
+    private def check(xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
 	  require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
-	  require(xt.size == labels.size, "Size of input data " + xt.size + " is different from size of labels " + labels.size)
+	  require(xt.size == labels.size, s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
       require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
    }
 	

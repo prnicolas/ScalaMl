@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap5
 
@@ -37,9 +37,9 @@ import scala.collection.mutable.HashMap
 		/**
 		 * <p>Text retrieval application of the Naive Bayes algorithm. The test consists of:<br>
 		 * <ul>
-		 * 	<li>Collection and organize news articles regarding a specific stock</li>
-		 *  <li>Extract and score the essential keywords</li>
-		 *  <li>Evaluate which keyword has the most impact on the stock price using Naive Bayes</li>
+		 * 	<li>Collecting and organizing news articles regarding a specific stock</li>
+		 *  <li>Extracting and scoring the essential keywords</li>
+		 *  <li>Evaluating which keyword has the most impact on the stock price using Naive Bayes</li>
 		 * </ul>
 		 * 
 		 * @author Patrick Nicolas
@@ -131,11 +131,6 @@ object TextBayesEval {
 	  	 val fields = src.getLines.map( _.split(",").map(_.trim))
          fields.foldLeft(new HashMap[String, String])((hm, field)=> {hm.put(field(0), field(1)); hm}).toMap
     }
-}
-
-
-object TextBayesEvalApp extends App {
-  TextBayesEval.run
 }
 
 // -----------------------------  EOF ------------------------------------

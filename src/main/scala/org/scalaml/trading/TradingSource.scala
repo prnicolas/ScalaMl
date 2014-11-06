@@ -6,12 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.trading
 
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
+import org.apache.log4j.Logger
 
 
 	/**
@@ -26,6 +27,7 @@ object YahooFinancials extends Enumeration {
    type YahooFinancials = Value
    val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
   
+   private val logger = Logger.getLogger("YahooFinancials")
    def toDouble(value: Value): Array[String] => Double = (s: Array[String]) => s(value.id).toDouble
    def divide(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble/s(value2.id).toDouble
    def ratio(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try {  s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => -1.0} 
@@ -48,7 +50,7 @@ object YahooFinancials extends Enumeration {
   	  Try ( (s(HIGH.id).toDouble/s(LOW.id).toDouble -1.0)*s(VOLUME.id).toDouble  )
   	   match {
   	  	case Success(res) => res
-  	  	case Failure(e) => Display.error("YahooFinancials.vol ", e); -1
+  	  	case Failure(e) => Display.error("YahooFinancials.vol ", logger, e)
   	  }
    }
 }

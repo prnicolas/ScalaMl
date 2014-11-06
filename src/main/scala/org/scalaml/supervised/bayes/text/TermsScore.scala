@@ -6,21 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.bayes.text
 
 import org.scalaml.workflow.data.DocumentsSource
-import TermsScore._
 import org.scalaml.util.Counter
 import scala.collection.mutable.HashMap
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
-import DocumentsSource._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 
-
+import TermsScore._
+import DocumentsSource._
 
 	/**
 	 * <p>Class to extract and score terms extracted from a set of news articles.</p>

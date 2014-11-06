@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap7
 
@@ -23,7 +23,11 @@ import org.scalatest.FunSuite
 final class Chap7 extends FunSuite {
 		 
    test("Hidden Markov Model evaluation") {
-  	   assert(HMMEval.run != -1)
+  	   assert(HMMEval.run("evaluation") != -1)
+   }
+   
+   test("Hidden Markov Model training") {
+  	   assert(HMMEval.run("training") != -1)
    }
    
    test("Conditional Random Fields evaluation") {

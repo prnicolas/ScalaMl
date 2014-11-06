@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap8
 
@@ -16,22 +16,17 @@ import org.scalaml.core.types.ScalaMl._
 import XTSeries._
 import org.scalaml.plots.ScatterPlot
 import org.scalaml.plots.BlackPlotTheme
-
-
-
-		/**
-		 * <p>Singleton to evaluate the impact of the C penalty factor
-		 * on the size of the margin in the training of a binary 
-		 * support vector classifier using synthetic features.</p>
-		 * 
-		 * @author Patrick Nicolsa
-		 * @since April 23, 2014
-		 * #project Scala for Machine Learning
-		 */
 import XTSeries._
+import org.scalaml.util.Display
+import org.apache.log4j.Logger
+
+
+
+
 object SVCMarginEval {
 	import scala.util.Random
     final val GAMMA = 0.8; val N = 100
+    private val logger = Logger.getLogger("SVCMarginEval")
     
     	/**
     	 * Main evaluation routine that consists of two steps:<br>
@@ -59,8 +54,8 @@ object SVCMarginEval {
 		val state = SVMConfig(new CSVCFormulation(c), RbfKernel(GAMMA))
 		val svc = SVM[Double](state, XTSeries[DblVector](features),lbl)
 		svc.margin match {
-			case Some(mrgn) => 	println( "\nMargin: " + mrgn )
-			case None => println("training failed")
+			case Some(mrgn) => Display.show(s"\nSVRFormulation Margin $mrgn", logger)
+			case None => Display.error("SVRFormulation.evalMaring. training failed", logger)
 		}
 	}
 }

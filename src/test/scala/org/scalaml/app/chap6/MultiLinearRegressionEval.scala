@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap6
 
@@ -23,17 +23,24 @@ import org.apache.log4j.Logger
 import scala.collection.mutable.ListBuffer
 import scala.util.{Try, Success, Failure}
 
+
+			/**
+			 * <p>Singleton to test the multi-variate least squares regression. The evaluation
+			 * is composed of two tests<br>
+			 * Trend analysis and filter: MultiLinearRegressionEval.filter<br>
+			 * Features selection: MultiLinearRegressionEval.featuresSelection
+			 */
 object MultiLinearRegressionEval {
    private val logger = Logger.getLogger("MultiLinearRegressionEval")
    
    def run(args: Array[String] = null): Int = {
   	  if( args != null && args.size > 0 && args(0).equals("trend")) 
-  	  	inference
+  	  	featuresSelection
   	  else
         filter  	  	
    }	 
    
-   def inference: Int = {
+   private def featuresSelection: Int = {
   	  Display.show("Evaluation of ordinary least squares regression inference", logger)
   	  
   	  val path = "resources/data/chap6/"
@@ -59,7 +66,7 @@ object MultiLinearRegressionEval {
 	  	  		("CNY = f(GLD)\n", features.slice(1,2).map( _.toArray).transpose)
 	  	  )
 	  	  		
-	  	  featuresList.foreach(x =>  Display.show(x._1 + getRss(XTSeries[DblVector](x._2), input(0)), logger ))  	  
+	  	  featuresList.foreach(x =>  Display.show(s"${x._1 + getRss(XTSeries[DblVector](x._2), input(0))}", logger ))  	  
 	  	  
 	  	  var xsRss = new ListBuffer[Double]()
 	  	  val tss = featuresList.foldLeft(0.0)((s, x) => {
@@ -74,8 +81,6 @@ object MultiLinearRegressionEval {
   	  	case Success(n) => n
   	  	case Failure(e) => Display.error("MultiLinearRegressionEval.inference", logger, e)
   	  }
-  	  
-  	  
    }
   	  
    private def getRss(xt: XTSeries[DblVector], y: DblVector): String = {
@@ -86,14 +91,14 @@ object MultiLinearRegressionEval {
   	            .zipWithIndex
   	            .foreach(w => {
   	               if( w._2 == 0) buf.append(w._1)
-  	               else buf.append(" + ").append(w._1).append(".x").append(w._2)
+  	               else buf.append(s" + ${w._1}.x${w._2}")
   	            })
-  	  buf.append("RSS: ").append(regression.rss.get).toString
+  	  buf.append(s"RSS: ${regression.rss.get}").toString
   }
    
   
    
-  private def rssSum(xt: XTSeries[DblVector], y: DblVector): (Double, Double) = {
+  private def rssSum(xt: XTSeries[DblVector], y: DblVector): XY = {
   	  val regression = MultiLinearRegression[Double](xt, y)
   	  
   	  (regression.rss.get, xt.toArray.foldLeft(0.0)((s, x) => s + (regression |> x)))
@@ -108,17 +113,15 @@ object MultiLinearRegressionEval {
   	 
      Try {
    	    val src = DataSource(path, true, true, 1)
-	    val prices = src |> YahooFinancials.adjClose 
+	    val prices = (src |> YahooFinancials.adjClose).toArray 
 	    val volatility = src |> YahooFinancials.volatility 
 	    val volume = src |> YahooFinancials.volume
 	
-		val _prices = prices.toArray
-		val deltaPrice = _prices.drop(1)
-		                       .zip(_prices.take(_prices.size -1))
+		val deltaPrice = prices.drop(1)
+		                       .zip(prices.take(prices.size -1))
 		                       .map(z => z._1 - z._2)
-		val deltaPricet = XTSeries[Double](deltaPrice)
 	    
-		DataSink[Double](output) |>  deltaPricet ::
+		DataSink[Double](output) |>  XTSeries[Double](deltaPrice) ::
                                     volatility :: 
                                     volume :: 
                                     List[XTSeries[Double]]()
@@ -137,6 +140,7 @@ object MultiLinearRegressionEval {
 		}
 		Display.show("MultiLinearRegressionEval.filter", logger)
 	  }
+  	 
   	  match {
   	  	case Success(n) => n
   	  	case Failure(e) => Display.error("MultiLinearRegressionEval.filter", logger, e)

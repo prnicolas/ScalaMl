@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.plots
 
@@ -24,8 +24,7 @@ import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
 import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
 import java.util.List
-import org.scalaml.core.types
-import types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import org.jfree.data.xy.XYDataset
 import java.awt.geom.Ellipse2D
 import org.jfree.chart.renderer.xy.XYShapeRenderer
@@ -38,6 +37,8 @@ object ChartType extends Enumeration {
 	type ChartType = Value
 	val LINE, TIME_SERIES, SCATTER, BAR = Value
 }
+
+
 abstract class Plot(val config: PlotInfo, val theme: PlotTheme) {
    require(config != null, "Cannot create a plot with undefined stateuration")
    require(theme != null, "Cannot create a plot with undefined theme")

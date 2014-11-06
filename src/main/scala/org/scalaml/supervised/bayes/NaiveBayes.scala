@@ -6,25 +6,25 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.bayes
 
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.stats.Validation
 import scala.collection.mutable.ArraySeq
 import scala.annotation.implicitNotFound
-import org.scalaml.stats.Stats
-import types._
+import org.scalaml.stats.Stats._
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.Supervised
-import NaiveBayesModel._
-import Stats._
 import org.scalaml.stats.ClassValidation
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 
+import NaiveBayesModel._
+import XTSeries._
 
     
     /**
@@ -47,10 +47,10 @@ import org.scalaml.util.Display
 final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density)
                               extends PipeOperator[XTSeries[Array[T]], Array[Int]]
                                  with Supervised[T] {
-	import XTSeries._, types.ScalaMl._
-	private val logger = Logger.getLogger("NaiveBayes")
-	validate(smoothing, xt, density)
 
+	check(smoothing, xt, density)
+	
+	private val logger = Logger.getLogger("NaiveBayes")
 	private[this] val model: Option[BinNaiveBayesModel[T]] = Try(BinNaiveBayesModel[T](train(1), train(0), density))
 	                          match {
 		                         case Success(nb) => Option(nb)
@@ -94,7 +94,7 @@ final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], I
 	  		      values.size.toDouble/xi.size) 
 	}	
 	
-    private def validate(smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density): Unit = {
+    private def check(smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density): Unit = {
 		require(smoothing > 0.0 && smoothing <= 1.0, s"NaiveBayes: Laplace or Lidstone smoothing factor $smoothing is out of range")
 		require(xt != null && xt.size > 0, "NaiveBayes: Time series input for training Naive Bayes is undefined")
 		require(density != null, "NaiveBayes: Density function for Naive Bayes is undefined")

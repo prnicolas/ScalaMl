@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.nnet
 
@@ -41,7 +41,7 @@ final protected class MLP[T <% Double](config: MLPConfig,
 		                               xt: XTSeries[Array[T]], 
 		                               labels: DblMatrix)(implicit val mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
    
-   validate(config, xt, labels)
+   check(config, xt, labels)
    private val logger = Logger.getLogger("MLP")
    
    var converged = false
@@ -115,11 +115,11 @@ final protected class MLP[T <% Double](config: MLPConfig,
   }
 
   
-  private def validate(config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
+  private def check(config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
 	   require(config != null, "Cannot train a multilayer perceptron without stateuration parameters")
 	   require(xt != null && xt.size > 0, "Features for the MLP are undefined")
 	   require(labels != null && labels.size > 0, "Labeled observations for the MLP are undefined")
-	   require(xt.size == labels.size, "Number of features for MLP " + xt.size + " is different from number of labels " + labels.size)
+	   require(xt.size == labels.size, s"Number of features for MLP ${xt.size} is different from number of labels ${labels.size}")
    }
 }
 

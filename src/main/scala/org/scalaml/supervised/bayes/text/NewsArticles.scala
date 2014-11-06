@@ -6,20 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.bayes.text
 
 import org.scalaml.workflow.data.DocumentsSource
-import TermsScore._
+
 import org.scalaml.util.Counter
 import scala.collection.mutable.HashMap
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
-import DocumentsSource._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
-
+import DocumentsSource._
+import TermsScore._
 
 		/**
 		 * <p>Class to organize news articles as map of relative frequency of specific keywords extracted from those 
@@ -43,7 +43,7 @@ class NewsArticles[T <% Long](implicit val order: Ordering[T]) {
 		 */	
 	def += (date: T, weightedTerms: Map[String, Double]): Unit = {
 	   require( date != null, "NewsArticles.+= Incorrect date format")
-	   require(weightedTerms != null && weightedTerms.size > 0, "Cannot update daily keywords with undefined document weighted words")
+	   require(weightedTerms != null && weightedTerms.size > 0, "NewsArticles.+= Cannot update daily keywords with undefined document weighted words")
 	   
 	  def merge(m1: Map[String, Double], m2: Map[String, Double]): Map[String, Double] = {
   	     (m1.keySet ++ m2.keySet).foldLeft(new HashMap[String, Double])( (m, x) => {

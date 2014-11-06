@@ -21,8 +21,8 @@ trait ScalaMlApp {
   
   def process(args: Array[String]): Unit = {
     Try(execute(args)) match {
-	   case Success(status) => Display.show(status)
-	   case Failure(e) => Display.error(args(0), e)
+	   case Success(status) => Display.show(status, logger)
+	   case Failure(e) => Display.error(args(0), logger, e)
      }
   }
   

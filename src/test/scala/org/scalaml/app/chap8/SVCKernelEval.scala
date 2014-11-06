@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap8
 
@@ -55,21 +55,25 @@ object SVCKernelEval {
 	}
     
     
-    private def genData(variance: Double, mean: Double): DblMatrix = 
-		Array.fill(N)(Array[Double](variance*Random.nextDouble - mean, variance*Random.nextDouble - mean))
+    private def genData(variance: Double, mean: Double): DblMatrix = {
+    	val adjVariance1 = variance*Random.nextDouble - mean
+    	val adjVariance2 = variance*Random.nextDouble - mean
+		Array.fill(N)(Array[Double](adjVariance1, adjVariance2))
+    }
 
 		
 	private def compareKernel(a: Double, b: Double) {
-    	require(a > 0.0 && a < 2.0, "Cannot compare Kernel with inadequate features a = " + a)
-    	require(b > -0.5 && b < 0.5, "Cannot compare Kernel with inadequate features b = " + b)
+    	require(a > 0.0 && a < 2.0, s"Cannot compare Kernel with inadequate features a = $a")
+    	require(b > -0.5 && b < 0.5, s"Cannot compare Kernel with inadequate features b = $b")
     	   	
 		val trainingSet = genData(a, b) ++ genData(a, 1-b)
 		
 		val testSet = genData(a, b) ++ genData(a, 1-b)
 		val setHalfSize = trainingSet.size>>1
 		
-		val legend = new StringBuilder("\nSkewed Random values: a=").append(a).append(" b=").append(b).toString
-		display(legend, trainingSet.take(setHalfSize).map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
+		val legend = s"\nSkewed Random values: a=$a b= $b"
+		display(legend, trainingSet.take(setHalfSize)
+				                   .map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
 		val labels = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
 	       
         val results = evalKernel(trainingSet, testSet, labels, RbfKernel(GAMMA)) ::

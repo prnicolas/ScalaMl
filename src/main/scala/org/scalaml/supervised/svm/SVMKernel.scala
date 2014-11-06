@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.svm
 
@@ -23,7 +23,7 @@ trait SVMConfigItem {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 8 
 		 */
 sealed trait SVMKernel extends SVMConfigItem {
    def update(param: svm_parameter): Unit
@@ -69,8 +69,8 @@ object LinearKernel extends SVMKernel {
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning
 		 */
-case class RbfKernel(val gamma: Double) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the RBF kernel " + gamma + " is out of range")
+case class RbfKernel(gamma: Double) extends SVMKernel {
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"Gamma for the RBF kernel $gamma is out of range")
     
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -97,8 +97,8 @@ case class RbfKernel(val gamma: Double) extends SVMKernel {
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning
 		 */
-case class SigmoidKernel(val gamma: Double) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the Sigmoid kernel " + gamma + " is out of range")
+case class SigmoidKernel(gamma: Double) extends SVMKernel {
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"Gamma for the Sigmoid kernel $gamma is out of range")
 		
 	/**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -127,9 +127,9 @@ case class SigmoidKernel(val gamma: Double) extends SVMKernel {
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning
 		 */
-case class PolynomialKernel(val gamma: Double, val coef0: Double, val degree: Int) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, "Gamma for the polynomial kernel" + gamma + " is out of range")
-	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, "The degree of the polynomial kernel " + degree + " is out of range")
+case class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends SVMKernel {
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"Gamma for the polynomial kernel $gamma is out of range")
+	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, s"The degree of the polynomial kernel $degree is out of range")
 	
     /**
   	 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>

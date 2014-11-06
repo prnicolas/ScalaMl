@@ -6,19 +6,19 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.unsupervised.em
 
 
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximization
 import org.apache.commons.math3.distribution.{MixtureMultivariateNormalDistribution, MultivariateNormalDistribution}
 import scala.collection.JavaConversions._
 import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsTooSmallException, NumberIsTooLargeException, NotStrictlyPositiveException}
 import scala.util.{Try, Success, Failure}
-import types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import MultivariateEM._
 import XTSeries._
 import org.scalaml.util.Display
@@ -40,7 +40,7 @@ final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Ar
 	require( K > 0 && K < MAX_K, s"MultivariateEM Number K of clusters for EM $K is out of range")
 	
 	private val logger = Logger.getLogger("MultivariateEM")
-	type EM = MultivariateNormalMixtureExpectationMaximization
+	type EM = MultivariateNormalMixtureExpectationMaximization	
 	
 		/**
 		 * <p>Implement the Expectation-Maximization algorithm as a data transformation.</p>
@@ -51,10 +51,10 @@ final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Ar
    override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
 	 case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
 		  val data: DblMatrix = xt  // force a type conversion
-			
+		  
 		  Try {
 			val multivariateEM = new EM(data)
-			val est = MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
+            val est = estimate(data, K)
 			multivariateEM.fit(est)
 				 
 			val newMixture = multivariateEM.getFittedModel

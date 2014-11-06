@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.bayes
 
@@ -15,6 +15,7 @@ import NaiveBayesModel._
 import Likelihood._
 import java.text.DecimalFormat
 import org.scalaml.util.Display
+import org.scalaml.core.types.ScalaMl.XYTSeries
 
 		/**
 		 * <p>Class that represents a likelihood for each feature for Naive Bayes classifier.<br>
@@ -33,7 +34,7 @@ import org.scalaml.util.Display
 		 * @since March 11, 2014
 		 * @note Scala for Machine Learning
 		 */
-protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Double, Double)], prior: Double) {
+protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, prior: Double) {
   import Stats._
   
   require(muSigma != null && muSigma.size > 0, "Likelihood Cannot create a likelihood for undefined historical mean and standard deviation")
@@ -54,7 +55,7 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
 	 (obs, muSigma).zipped
 	               .foldLeft(0.0)((post, xms) => {
 	    val probability = density(xms._2._1, xms._2._2, xms._1)
-	    post + Math.log(if(probability< MIN_LOG_ARG) MIN_LOG_VALUE else probability)
+	    post + Math.log(if(probability< MINLOGARG) MINLOGVALUE else probability)
 	 }) + Math.log(prior)
   }
 
@@ -62,7 +63,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
   	val colWidth = 14
     val fmt = new DecimalFormat("#.###")
     
-    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
+    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) 
+                  => b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
      s"${muSigmaStr}   Class likelihood: $prior"
   }
 }
@@ -77,9 +79,10 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: Array[(Doub
 	 */
 
 object Likelihood {
-   val MIN_LOG_ARG = 1e-32
-   val MIN_LOG_VALUE = -1e+32
-   def apply[T <% Double](label: Int, muSigma: Array[(Double, Double)], prior: Double): Likelihood[T] 
+   val MINLOGARG = 1e-32
+   val MINLOGVALUE = -MINLOGARG
+   
+   def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] 
     = new Likelihood[T](label, muSigma, prior)
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap5
 
@@ -51,7 +51,7 @@ object BinomialBayesEval extends BayesEval {
 	private val logger = Logger.getLogger("BinomialBayesEval")
 	
 	override def run(args: Array[String]): Int = {
-	  require(args != null && args.size >2, "BinomialBayesEval.run incorrect arguments list")
+	   require(args != null && args.size >2, "BinomialBayesEval.run incorrect arguments list")
 	   Display.show("Evaluation Multinomial Naive Bayes", logger)	
 		
 	   val trainValidRatio = args(1).toDouble
@@ -95,21 +95,6 @@ object BinomialBayesEval extends BayesEval {
 	             // Transpose the list of ratios and zip with the label
 	  ratios.transpose.take(label.size).zip(label) 
 	}
-}
-
-object BinomialNBApp extends App {
-  val TRAIN_VALIDATION_RATIO = "0.8"
-  BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4"))
-  BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12"))
-  BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36"))
-  
-  BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "4"))
-  BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "12"))
-  BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "36"))
-  
-  BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4"))
-  BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
-  BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
 }
 
 

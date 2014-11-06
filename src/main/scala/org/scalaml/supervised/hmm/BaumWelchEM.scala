@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  * 
  */
 package org.scalaml.supervised.hmm
@@ -24,46 +24,52 @@ import org.scalaml.util.Display
 	 *  @param _params parameters used in any of the three canonical form of the HMM
      *  @param _obs Array of observations as integer (categorical data)
      *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+     *  
 	 *  @author Patrick Nicolas
 	 *  @since March 15, 2014
-	 *  @note Scala for Machine Learning
+	 *  @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Training
 	 */
-class BaumWelchEM(val lambdaBW: HMMLambda, 
-					val stateBW: HMMState, 
-					val obsIndx: Array[Int], 
-					val eps: Double) extends HMMInference(lambdaBW, stateBW, obsIndx) {
-   
+class BaumWelchEM(config: HMMConfig, 
+				  _obs: Array[Int], 
+				  numIters: Int,
+				  eps: Double) extends HMMModel(HMMLambda(config), _obs) {
+  require( eps > 1E-5 && eps < 0.1, s"Convergence criteria for HMM Baum_Welch $eps is out of range")
+	  
   private val logger = Logger.getLogger("BaumWelchEM")
-  require( eps > 1E-5 && eps < 0.1, "Convergence criteria for HMM Baum_Welch " + eps + " is out of range")
 
+  val state = HMMState(lambda, numIters)
+  
   	/**
   	 * Maximum likelihood (maximum log of the conditional probability) extracted from the training 
   	 */
   val maxLikelihood: Option[Double] = {
   	  Try {
 		  var likelihood = frwrdBckwrdLattice
+		  
 		  Range(0, state.maxIters) find( _ => {
-		  	  lambda.estimate(state, obsIdx)
+		  	  lambda.estimate(state, obs)
 		  	  val _likelihood = frwrdBckwrdLattice
 		  	  val diff = likelihood - _likelihood
 		  	  likelihood = _likelihood
+		  	  
 		  	  diff < eps
 		  }) match {
 		  	case Some(index) => likelihood
 		  	case None => throw new IllegalStateException("Likelihood failed")
 		  }
   	  } match {
-  	  	case Success(likelihood) => Some(likelihood)
-  	  	case Failure(e) => Display.error("BaumWelchEM ", logger, e); None
+  	  	case Success(likelihood) => {
+  	  	    state.lambda.normalize
+  	  	    Some(likelihood)
+  	  	}
+  	  	case Failure(e) => Display.none("BaumWelchEM ", logger, e)
   	  }
 	}
    
    private def frwrdBckwrdLattice: Double  = {
-       val alpha = Alpha(lambda, obsIdx).alpha
-	   Beta(lambda, obsIdx)
-	   state.Gamma
-	   state.DiGamma.update(lambda.A, lambda.B, obsIdx)
-	   alpha
+  	   val alphaM = Alpha(lambda, obs)
+	   state.update(alphaM.getAlphaBeta, Beta(lambda, obs).getAlphaBeta, lambda.A, lambda.B, obs)
+	   alphaM.alpha
    }
 }
 
@@ -75,8 +81,8 @@ class BaumWelchEM(val lambdaBW: HMMLambda,
 	 * @since March 15, 2014
 	 */
 object BaumWelchEM {
-   final val EPS = 1e-3
-   def apply(lambda: HMMLambda, params: HMMState, _labels: Array[Int], eps: Double) = new BaumWelchEM(lambda, params, _labels, eps)
-   def apply(lambda: HMMLambda, params: HMMState, _labels: Array[Int])  = new BaumWelchEM(lambda, params, _labels, EPS)
+   final val EPS = 1e-3   
+   def apply(config: HMMConfig, labels: Array[Int], numIters: Int, eps: Double): BaumWelchEM = new BaumWelchEM(config, labels, numIters,eps)
+
 }
 // -----------------------------  EOF --------------------------------

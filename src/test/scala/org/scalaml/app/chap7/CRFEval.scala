@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap7
 
@@ -42,7 +42,7 @@ object CrfEval {
     
 
 	val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
-	val delimiters = CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
+	val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
 	Try {
 	   Crf(NLABELS, state, delimiters, PATH).weights match {

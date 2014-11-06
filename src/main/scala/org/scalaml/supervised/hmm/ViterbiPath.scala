@@ -6,14 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.types
-import types.ScalaMl._
+import HMMConfig._
 
 
 	/**
@@ -27,25 +26,26 @@ import types.ScalaMl._
 	 *  @param paramsV parameters used in any of the three canonical form of the HMM
      *  @param  obsV Array of observations as integer (categorical data)
      *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
-     *  @see org.scalaml.hmm.DynamicAlgorithm
+     *  @see org.scalaml.hmm.HMMInference
+     *  
 	 *  @author Patrick Nicolas
 	 *  @since March 17, 2014
-	 *  @note Scala for Machine Learning
+	 *  @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Decoding
 	 */
-class ViterbiPath(val lambdaV: HMMLambda, 
-				  val stateV: HMMState, 
-				  val obsV: Array[Int]) extends HMMInference(lambdaV, stateV, obsV) {
+class ViterbiPath(lambdaV: HMMLambda, 
+				  obsV: Array[Int]) extends HMMModel(lambdaV, obsV) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
 	   * throws a Arithmetic or Runtime exception that is to be caught by
 	   * the client code
 	   */
-   val maxDelta = recurse(lambda.config._T, 0)
+   val maxDelta = recurse(lambda.getT, 0)
+   val state = HMMState(lambda)
 
    private def initial(ti: (Int, Int)): Double = {
   	 if(ti._1 == 0) {
   	    state.psi += (0, 0, 0)
-  		state.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, obsIdx(ti._2))
+  		state.delta(ti._1, ti._2) + lambda.pi(ti._2) * lambda.B(ti._1, obs(ti._2))
   	 }
   	 else 
   		-1.0
@@ -56,15 +56,15 @@ class ViterbiPath(val lambdaV: HMMLambda,
   	 var maxDelta = initial((t, j))
   	 
   	 if( maxDelta == -1.0) {
-  	    if( t != obsIdx.size) {
-  	    	maxDelta = HMMConfig.maxBy(lambda.config._N, s => recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obsIdx(t)) )
-  		    val idx = HMMConfig.maxBy(lambda.config._T, i =>recurse(t-1 ,i)*lambda.A(i,j))
+  	    if( t != obs.size) {
+  	    	maxDelta = maxBy(lambda.getN, s => recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obs(t)) )
+  		    val idx = maxBy(lambda.getT, i =>recurse(t-1 ,i)*lambda.A(i,j))
   		    state.psi += (t, j, idx)
             state.delta += (t, j, maxDelta)
   	     }
   	     else {
   		   maxDelta = 0.0  		   
-  		   val index = HMMConfig.maxBy(lambda.config._N, i => { 
+  		   val index = maxBy(lambda.getN, i => { 
   		  	   val delta = recurse(t-1 ,i)
   		  	   if( delta > maxDelta) maxDelta = delta
   		  	   delta
@@ -84,7 +84,7 @@ class ViterbiPath(val lambdaV: HMMLambda,
 	 * @since March 17, 2014
 	 */
 object ViterbiPath {
-	def apply(lambda: HMMLambda, state: HMMState, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, state, _labels)
+	def apply(lambda: HMMLambda, _labels: Array[Int]): ViterbiPath = new ViterbiPath(lambda, _labels)
 }
 
 

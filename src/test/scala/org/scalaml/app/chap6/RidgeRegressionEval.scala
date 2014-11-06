@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap6
 
@@ -25,6 +25,7 @@ object RidgeRegressionEval {
    final val dataInput = "output/chap6/CU_input.csv"
     
    private val logger = Logger.getLogger("RidgeRegressionEval")	 
+   
 	def run: Int = {
   	   	Display.show("Evaluation of Ridge regression", logger)
   	   	 
@@ -36,14 +37,16 @@ object RidgeRegressionEval {
 		
 		   val deltaPrice = XTSeries[Double](price.drop(1).zip(price.take(price.size -1)).map( z => z._1 - z._2))
 		
-		    DataSink[Double](dataInput) |> deltaPrice :: volatility :: volume :: List[XTSeries[Double]]()
+		    DataSink[Double](dataInput) |> deltaPrice :: 
+		                                   volatility :: 
+		                                   volume :: List[XTSeries[Double]]()
 		    val data =  volatility.zip(volume).map(z => Array[Double](z._1, z._2))
 		
 		    val features = XTSeries[DblVector](data.take(data.size-1))
 		    val regression = new RidgeRegression[Double](features, 
 				                                         deltaPrice, 0.5)
 	        regression.weights match {
-			   case Some(w) => w.zipWithIndex.foreach( wi => Display.show(wi._1 +": " + wi._2, logger))
+			   case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"{wi._1}: ${wi._2}", logger))
 			   case None => Display.error("The multivariate regression could not be trained", logger)
 		    }
 		    

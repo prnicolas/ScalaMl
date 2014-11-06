@@ -10,8 +10,7 @@ package org.scalaml.reinforcement.qlearning
 
 
 import scala.util.Random
-import org.scalaml.core.types
-import types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 
 			/**
 			 * <p>State defines as a label and a normalized values or frequency disribution across a set

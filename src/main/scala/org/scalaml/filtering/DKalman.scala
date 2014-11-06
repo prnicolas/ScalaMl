@@ -6,22 +6,25 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.filtering
+
+
+import org.apache.commons.math3.linear._
+import org.apache.commons.math3.filter._
+import org.apache.log4j.Logger
+import org.scalaml.core.XTSeries
+import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.util.Display
 
 import scala.util.Random
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-import org.apache.commons.math3.linear._
-import org.apache.commons.math3.filter._
-import org.scalaml.core.XTSeries
-import org.scalaml.core.types
-import org.scalaml.core.design.PipeOperator
-import types.ScalaMl._
 import scala.util.{Try, Success, Failure}
-import org.scalaml.util.Display
-import org.apache.log4j.Logger
+
+
 
 	/**
 	 * <p>Case class that defines the white (Gaussian) noise q for the process 
@@ -78,9 +81,9 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix)(implicit val qrNoise: QRNoise) 
    extends PipeOperator[XTSeries[XY], XTSeries[XY]] {
 	
-  import types.ScalaMl._, DKalman._
+  import DKalman._
    
-  validateDimension(A, B,  H, P)
+  check(A, B,  H, P)
   private val logger = Logger.getLogger("DKalman")
   		/**
   		 * <p>Process related white noise (mean = 0.0)
@@ -122,8 +125,7 @@ class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix)(implicit
   }
   
   private def newState: DblVector = {
-      import types.CommonMath._
-
+      import org.scalaml.core.types.CommonMath._
       filter.predict
       x = A.operate(x).add(qrNoise.noisyQ) 
       val z = H.operate(x).add(qrNoise.noisyR)
@@ -140,7 +142,7 @@ class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix)(implicit
   	 Math.sqrt(sumSqr)
   }
   
-  private def validateDimension(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix): Unit = {
+  private def check(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix): Unit = {
   	 require(A != null && H != null && P != null, "Cannot create a Kalman filter with undefined parameters")
      require( A.size ==B.size && A(0).size == B(0).size, s"Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and B(${B.size}x${B(0).size})")
      require( A.size == H.size && A(0).size == H(0).size, s"Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and H(${H.size}x${H(0).size})")

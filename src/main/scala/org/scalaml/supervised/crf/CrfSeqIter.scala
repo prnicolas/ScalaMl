@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -17,27 +17,6 @@ import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter}
 import java.util.Properties
 import iitb.Model.FeatureImpl
 import iitb.Segment.{DataCruncher, LabelMap}
-
-
-	/**
-	 * <p>Class that defines a Recommendation as a data sequence.</p>
-	 * @param nLabels Number of labels (or tags) used in the training of CRF
-	 * @param entry recommendation or observation as a sequence of words
-	 * @param delim delimiter of segments in the sequence
-	 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
-	 * @see ittb.CRF.DataSequence
-	 * @author Patrick Nicolas
-	 * @since April 2, 2014
-	 */
-class CrfTrainingSet(val nLabels: Int, val entry: String, val delim: String) extends DataSequence {
-    private val words: Array[String] = entry.split(delim)
-    private val map: Array[Int] = new Array[Int](nLabels)
-   
-    override def set_y(k: Int, label: Int): Unit = map(k) = label
-    override def y(k: Int): Int = map(k)
-    override def length: Int = words.size
-    override def x(k: Int): Object = words(k)
-}
 
 
 	/**
@@ -55,7 +34,7 @@ class CrfTrainingSet(val nLabels: Int, val entry: String, val delim: String) ext
 	 * @author Patrick Nicolas
 	 * @since April 5, 2014
 	 */
-case class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
+class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
 	require(obsDelim != null && obsDelim.length > 0, "Delimiter for observations in CRF training sequence is undefined")
 	require(labelsDelim != null && labelsDelim.length > 0, "Delimiter for labels in CRF training sequence is undefined")
 	require(trainingDelim != null && trainingDelim.length > 0, "Delimiter for training sequences in CRF training sequence is undefined")
@@ -75,7 +54,7 @@ case class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val tr
 	 * @since April 5, 2014
 	 */
 class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter) extends DataIter {
-   require(nLabels > 0 && nLabels < 1000, "Number of labels for the CRF model " + nLabels + " is out of range")
+   require(nLabels > 0 && nLabels < 1000, s"Number of labels for the CRF model $nLabels is out of range")
    require(input != null, "Identifier for the CRF training files is undefined")
    require(delim != null, "Delimiter for the CRF training files is undefined")
 	
@@ -106,7 +85,7 @@ class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter
 	 * @author Patrick Nicolas
 	 */
 object CrfSeqIter { 
-   final val DEFAULT_SEQ_DELIMITER = CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
+   final val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
    def apply(nLabels: Int, input: String, delim: CrfSeqDelimiter): CrfSeqIter = new CrfSeqIter(nLabels, input, delim)
    def apply(nLabels: Int, input: String): CrfSeqIter = new CrfSeqIter(nLabels, input, DEFAULT_SEQ_DELIMITER)
 }

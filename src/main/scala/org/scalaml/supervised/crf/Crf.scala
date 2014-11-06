@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -28,7 +28,20 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
 
+
+	/**
+	 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.</p>
+	 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
+	 * @throws IllegalArgumentException if weights is not properly defined
+	 * @see org.scalaml.core.design.Model
+	 * 
+	 * @author Patrick Nicolas
+	 * @since April 1, 2014
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models $Conditional Random Fields.
+	 */
 class CrfModel(val weights: DblVector) extends Model {
+  require(weights != null && weights.size > 0, "CrfModel Cannot create a model with undefined weights")
+  
   val persists = "models/crf"  
 }
 
@@ -52,9 +65,9 @@ class CrfModel(val weights: DblVector) extends Model {
 	 * @note Scala for Machine Learning
 	 */
 final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String) 
-                                               extends PipeOperator[String, Double] with Supervised[String] {
+                                               extends PipeOperator[String, Double] {
 	
-  validate(nLabels, config, delims, taggedObs)
+  check(nLabels, config, delims, taggedObs)
   
   private val logger = Logger.getLogger("Crf")
   
@@ -89,9 +102,7 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
   	case None => None
   }
   
-  override def validate(output: XTSeries[(Array[String], Int)], index: Int): Option[Double] = None
-  
-  private def validate(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Unit = {
+  private def check(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Unit = {
 	 require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, "Number of labels for generating tags for CRF " + nLabels + " is out of range")
 	 require(state != null, "Configuration of the linear Chain CRF is undefined")
 	 require(delims != null, "delimiters used in the CRF training files are undefined")

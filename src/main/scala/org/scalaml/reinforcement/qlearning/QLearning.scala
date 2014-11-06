@@ -6,17 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.reinforcement.qlearning
 
 
 import scala.util.Random
 import org.scalaml.util.Matrix
-import org.scalaml.core.types
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.design.{Config, PipeOperator}
 import QLearning._
-import types.ScalaMl._
 import org.scalaml.util.Display
 import scala.collection.mutable.ArrayBuffer
 

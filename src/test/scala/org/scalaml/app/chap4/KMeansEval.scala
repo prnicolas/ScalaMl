@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap4
 
@@ -62,11 +62,11 @@ object KMeansEval extends UnsupervisedLearningEval {
       Try {
          require(symbolFiles.size > 0, "KMeansEval.run The input symbol files are undefined")
          
-         val obsList: Array[List[DblVector]] = symbolFiles.map(s => DataSource(s, path, normalize) |> extractor)
-         obsList.find ( _ == List.empty) match {
+         val prices: Array[List[DblVector]] = symbolFiles.map(s => DataSource(s, path, normalize) |> extractor)
+         prices.find ( _ == List.empty) match {
       	    case Some(nullObsList) => Display.error("Could not load data", logger)
       	    case None => {
-      	       val values: DblMatrix = obsList.map(x => x(0)).map( _.drop(START_INDEX).take(NUM_SAMPLES))
+      	       val values: DblMatrix = prices.map(x => x(0)).map( _.drop(START_INDEX).take(NUM_SAMPLES))
       		   args.map(_.toInt).foreach(run(_, values))
       		   Display.show("KMeansEval.run ", logger)
       	     }

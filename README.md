@@ -4,7 +4,7 @@ ScalaMl
 Source code, data files and utilities related to "Scala for Machine Learning"
 
 
-Version 0.94 Copyright Patrick Nicolas All rights reserved 2013-2015
+Version 0.95 Copyright Patrick Nicolas All rights reserved 2013-2015
 
 <h2>Overview</h2>
 The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br>
@@ -21,7 +21,7 @@ The real-world examples, related to financial and market analysis, used for the 
 4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
 <br>
 <b>Operating system</b>: None<br>
-<b>Software</b>: JDK 1.7+, Scala 2.10+ and SBT 0.13+ (see installation section for deployment.<br>
+<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.2 and SBT 0.13+ (see installation section for deployment.<br>
 
 <h2>Project Components</h2>
 Directory structure of the source code library for <i>Scala for Machine Learning</i>:<br>

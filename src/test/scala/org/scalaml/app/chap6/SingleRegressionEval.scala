@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap6
 
@@ -19,8 +19,17 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.core.XTSeries
 import scala.util.{Try, Success, Failure}
-
 import XTSeries._
+
+
+
+		/**
+		 * <p>Singleton to evaluate the single variate linear regression.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 23, 2014
+	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
+		 */
 object SingleLinearRegressionEval {
 			
 	final val path = "resources/data/chap6/CU.csv"
@@ -38,7 +47,7 @@ object SingleLinearRegressionEval {
 		    val intercept = linRegr.intercept
 		    if( slope != None ) {
 		    	Display.show(s"y = $slope.x + $intercept", logger)
-		    	Display.show(s"validation: ${validate(xy.toArray, slope.get, intercept.get)}", logger)
+		    	Display.show(s"validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
 		    }
 		    else
 		    	Display.error("SingleLinearRegressionEval.run failed to get slope", logger)
@@ -49,13 +58,12 @@ object SingleLinearRegressionEval {
 		  }
 	}
 	
-	private def validate(xyt: Array[(Double, Double)], slope: Double, intercept: Double): Double = {
+	private def lsError(xyt: Array[(Double, Double)], slope: Double, intercept: Double): Double = {
 	   val error = xyt.foldLeft(0.0)((err, xy) => {
-		 val diff = xy._2 - slope*xy._1 - intercept
-		 println( xy._2 + " - " + (slope*xy._1 + intercept))
-	     err + diff*diff  
-		})
-		Math.sqrt(error/xyt.size)
+	 	  val diff = xy._2 - slope*xy._1 - intercept
+	      err + diff*diff  
+	   })
+	   Math.sqrt(error/xyt.size)
 	}
 }
 

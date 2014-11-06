@@ -6,16 +6,17 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.types
 import org.scalaml.util.Matrix
-import types._
 import scala.reflect.ClassTag
-
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+import HMMConfig._
 
 	/**
 	 * <p>Class that encapsulates the execution parameters for the three
@@ -23,18 +24,22 @@ import scala.reflect.ClassTag
 	 * @param d configension for the HMM
 	 * @param maxIters maximum number of iterations used in the training of HMM
 	 * @throws if range is undefined or the maximum iterations is out of range
+	 * 
+	 * @author Patrick Nicolas
+	 * @since March 24, 2014
+	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
 	 */
-final class HMMState(val config: HMMConfig, val maxIters: Int) {
-  require(config != null, "Cannot stateure a HMM with undefined configension")
-  require( maxIters > 0 &&  maxIters < 1000, "Maximum number of iterations " + maxIters + " is out of range")
+final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
+  require(lambda != null, "Cannot initialize the state of the computation of the HMM with undefined model")
+  require( maxIters > 0 &&  maxIters < 1000, s"Maximum number of iterations $maxIters is out of range")
   
-  val alpha = Matrix[Double](config._T, config._N)
-  val beta = Matrix[Double](config._T, config._N)
-  val delta = Matrix[Double](config._T, config._N)
-  val psi = Matrix[Int](config._T, config._N)
+  private val logger = Logger.getLogger("HMMState")
+
+  val delta = Matrix[Double](lambda.getT, lambda.getN)
+  val psi = Matrix[Int](lambda.getT, lambda.getN)
   
   object QStar {
-  	private val qStar = Array.fill(config._T)(0)
+  	private val qStar = Array.fill(lambda.getT)(0)
   	
   	def update(t: Int, index: Int): Unit = {
   	   qStar(t-1) = index
@@ -43,54 +48,59 @@ final class HMMState(val config: HMMConfig, val maxIters: Int) {
   	def apply(): Array[Int] = qStar
   }
   
+  
+  def update(alpha: Matrix[Double], beta: Matrix[Double], A: Matrix[Double], B: Matrix[Double], obs: Array[Int]): Int= {
+  	 Gamma.update(alpha, beta)
+  	 DiGamma.update(alpha, beta, A, B, obs)
+  }
+  
   object DiGamma {
-  	private val diGamma = Array.fill(config._T-1)(Matrix[Double](config._N, config._N))
+  	private val diGamma = Array.fill(lambda.getT-1)(Matrix[Double](lambda.getN, lambda.getN))
   	
-  	def update(A: Matrix[Double], B: Matrix[Double], obs: Array[Int]): Unit = {
-       try {
-	      HMMConfig.foreach(config._T-1, t => {     	
-	           val sum =  HMMConfig.foldLeft(config._N, (sst, i) => {
-	               sst + HMMConfig.foldLeft(config._N+1, (s, j) => {
-	            	  diGamma(t) += (i, j, A(t,i)*beta(t+1, i)* A(i,j)*B(j, obs(t+1)))
+  	def update(alpha: Matrix[Double], beta: Matrix[Double], A: Matrix[Double], B: Matrix[Double], obs: Array[Int]): Int = {
+       Try {
+	      foreach(lambda.getT-1, t => {     	
+	           val sum =  foldLeft(lambda.getN, (sst, i) => {
+	               sst + foldLeft(lambda.getN, (s, j) => {
+	            	  diGamma(t) += (i, j, alpha(t,i)*beta(t+1, i)* A(i,j)*B(j, obs(t+1)))
 	            	  s + diGamma(t)(i, j)
 	               })
 	           })
 	            
-	           HMMConfig.foreach(config._T, i => {
-	              HMMConfig.foreach(config._N+1, j => 
+	           foreach(lambda.getN, i => {
+	              foreach(lambda.getN, j => 
 	                 diGamma(t) += (i, j,  diGamma(t)(i,j)/sum) )
 	            })
 	        })
-       }
-       catch {
-      	 case e: ArithmeticException => Console.println(e.toString)
+	        1
+       } match {
+          case Success(n) => n
+          case Failure(e) => Display.error("HMMState.DiGamma", logger, e)
        }
   	 }
   	
-  	def fold(t: Int, i: Int, j: Int): Double = HMMConfig.foldLeft(t, (s, k) => s + diGamma(k)(i,j) )
+  	def fold(t: Int, i: Int, j: Int): Double = foldLeft(t, (s, k) => s + diGamma(k)(i,j) )
   }
   
   
   
   object Gamma {
-  	private[this] val values = {
-  	   val gamma = Matrix[Double](config._T, config._N)
-
-  	   HMMConfig.foreach(config._T, t => {
-  	      val sum = HMMConfig.foldLeft(config._N, (s, i) => {
-  	      	 gamma += (t, i, alpha(t,i)*beta(t,i))
-  	      	 s + gamma(t,i) 
+  	private[this] val values: Matrix[Double] = Matrix[Double](lambda.getT, lambda.getN)
+  	
+  	def update(alpha: Matrix[Double], beta: Matrix[Double]): Unit = {
+  	   foreach(lambda.getT, t => {
+  	      val sum = foldLeft(lambda.getN, (s, i) => {
+  	      	 values += (t, i, alpha(t,i)*beta(t,i))
+  	      	 s + values(t,i) 
   	      })
-  	      gamma.cols(t).map( _ / sum)
+  	      values.cols(t).map( _ / sum)
   	   })
-  	   gamma
   	}
   	
-  	def fold(t: Int, i: Int): Double = HMMConfig.foldLeft(t, (s, n) => s + values(n, i))
+  	def fold(t: Int, i: Int): Double = foldLeft(t, (s, n) => s + values(n, i))
   	def fold(t: Int, i: Int, k: Int, obs: Array[Int]): Double = 
-  		 HMMConfig.foldLeft(t, (s, n) => s + { if(obs(n) ==k) values(n, i) else 0.0} )
+  		 foldLeft(t, (s, n) => s + { if(obs(n) ==k) values(n, i) else 0.0} )
   	 
-  	
   	def apply(i: Int, j: Int): Double = values(i,j)
   }
 }
@@ -98,8 +108,8 @@ final class HMMState(val config: HMMConfig, val maxIters: Int) {
 
 object HMMState {
 	final val DEFAULT_MAXITERS = 20
-	def apply(config: HMMConfig, maxIters: Int): HMMState = new HMMState(config, maxIters)
-	def apply(config: HMMConfig): HMMState = new HMMState(config, DEFAULT_MAXITERS)
+	def apply(lambda: HMMLambda, maxIters: Int): HMMState = new HMMState(lambda, maxIters)
+	def apply(lambda: HMMLambda): HMMState = new HMMState(lambda, DEFAULT_MAXITERS)
 }
 
 // ----------------------------------------  EOF ------------------------------------------------------------

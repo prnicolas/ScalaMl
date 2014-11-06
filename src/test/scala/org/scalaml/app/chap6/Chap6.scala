@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap6
 
@@ -16,23 +16,23 @@ import org.scalatest.FunSuite
 
 final class Chap6 extends FunSuite {
 	test("Single linear regression evaluation") {
-			SingleLinearRegressionEval.run
+	   assert(SingleLinearRegressionEval.run >= 0, "Chapter 6 SingleLinearRegressionEval failed")
 	}
 
 	test("Least squares regression trending evaluation") {
-		MultiLinearRegressionEval.run(Array[String]("trend"))
+		 assert(MultiLinearRegressionEval.run(Array[String]("trend")) >= 0, "Chapter 6 MultiLinearRegressionEval for trends failed")
 	}
 	
 	test("Least squares regression features selection evaluation") {
-		MultiLinearRegressionEval.run(Array[String]("filter"))
+		assert(MultiLinearRegressionEval.run(Array[String]("filter")) >= 0, "Chapter 6 MultiLinearRegressionEval for features selection failed")
 	}
 	
 	test("Ridge regression evaluation") {
-		RidgeRegressionEval.run
+		assert(RidgeRegressionEval.run >= 0, "Chapter 6 Ridge regression failed")
 	}
 	
 	test("Binomial logistic regression evaluation") {
-		LogisticRegressionEval.run
+		assert(LogisticRegressionEval.run >= 0, "Chapter 6 Binomial Logistic regression failed")
 	}
 }
 

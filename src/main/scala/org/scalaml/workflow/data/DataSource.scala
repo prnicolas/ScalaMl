@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.workflow.data
 
@@ -141,7 +141,7 @@ final class DataSource(val pathName: String,
 	           .map( _.toDouble ).toArray
      } match {
     	 case Success(x) => Some(x)
-    	 case Failure(e) => Display.error("DataSource.load ", e); None
+    	 case Failure(e) => Display.none("DataSource.load ", logger, e)
      }
   	 
    
@@ -155,7 +155,7 @@ final class DataSource(val pathName: String,
           else 
              Some(XTSeries[DblVector](data._2.map( extr(_))))
        }
-       case None => Display.error("DataSource.load ", logger); None
+       case None => Display.none("DataSource.load ", logger)
      }
    }
 }

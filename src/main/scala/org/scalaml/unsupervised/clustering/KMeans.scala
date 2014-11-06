@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.unsupervised.clustering
 
@@ -103,7 +103,7 @@ final class KMeans[T <% Double](K: Int,
 	}
     
     final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = (t._2 % hSz == 0) && (t._2 %(hSz<<1) != 0)
-     //  ((t._2 % hSz == 0 && t._2 %(hSz<<1) != 0) || t._2 == dim -1)
+
   
 
 	private def assignToClusters(xt: XTSeries[Array[T]], clusters: List[Cluster[T]], membership: Array[Int]): Int =  {
@@ -119,7 +119,6 @@ final class KMeans[T <% Double](K: Int,
 
     /**
      * Returns the nearest {@link Cluster} to the given point
-     *
      * @param <T> type of the points to cluster
      * @param clusters the {@link Cluster}s to search
      * @param point the point to find the nearest {@link Cluster} for

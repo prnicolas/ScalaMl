@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.nnet
 
@@ -42,7 +42,7 @@ class MLPConfig(val alpha: Double,
 		        val activation: Double => Double) extends Config {
 	val persists = "config/mlp"
 	  
-    validate(alpha, eta, numEpochs, activation)
+    check(alpha, eta, numEpochs, activation)
 
     final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
     
@@ -50,14 +50,14 @@ class MLPConfig(val alpha: Double,
     
 
     
-	private def validate(alpha: Double, 
+	private def check(alpha: Double, 
 			             eta: Double,  
 			             numEpochs: Int,
 			             activation: Double => Double): Unit = {
 		
-	   require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, "Momentum factor, alpha " + alpha + " is out of bounds")
-	   require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, "Learning rate eta for the Neural Network " + eta + " is out of range")
-       require(numEpochs > 1, "Number of epoch " + numEpochs + " for the Neural Network should be > 1")
+	   require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, s"Momentum factor, alpha $alpha is out of bounds")
+	   require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, s"Learning rate eta for the Neural Network $eta is out of range")
+       require(numEpochs > 1, s"Number of epoch $numEpochs for the Neural Network should be > 1")
        require(activation != null, "Activation for MLP is undefined")
 	}
 }

@@ -6,17 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.filtering
 
 import org.apache.commons.math3.transform._
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import org.apache.commons.math3.exception.MathIllegalArgumentException
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-import types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import DFT._
 import org.apache.log4j.Logger

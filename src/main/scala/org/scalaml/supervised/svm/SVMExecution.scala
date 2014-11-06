@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.svm
 
@@ -19,7 +19,7 @@ import libsvm._
 		 * class are instantiated by the companion object.</p>
 		 * @constructor Create SVM execution configuration with the following parameters [cacheSize] Size of the cache to maintain intermediate results during training/optimization, [eps] Convergence criteria or exit strategy used during training  [nFolds] Number of folds to use during validation.
  		 */
-protected class SVMExecution(val cacheSize: Int, val eps: Double, val nFolds: Int) extends SVMConfigItem {
+protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) extends SVMConfigItem {
 	override def update(param: svm_parameter): Unit = {
 		param.cache_size = cacheSize
         param.eps = eps

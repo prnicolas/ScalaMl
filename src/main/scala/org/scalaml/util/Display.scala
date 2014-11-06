@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.util
 
@@ -43,23 +43,25 @@ object Display {
     0
   }
  
-  		// Dump debugging message and exception in standard output or logger
-  final def error[T](t: T): Int = { Console.println(s"Error: ${t.toString}"); -1}
-  final def error[T](t: T, e: Throwable): Int =  { 
-      Console.println(s"Error: ${t.toString} with ${e.toString}")
-      e.printStackTrace
-      -1
-  }
-  final def error[T](t: T, logger: Logger): Int = { 
-     if(loggerFlag) logger.error(s"Error: ${t.toString}")
-     else error(t)
-     -1
-  }
-  final def error[T](t: T, logger: Logger, e: Throwable): Int = { 
-  	 if(loggerFlag) logger.error(s"Error: ${t.toString} with ${e.toString}")
-  	 else error(t,e)
-  	 e.printStackTrace
+
+  final def error[T](t: T, logger: Logger): Int = error(t, logger, null)
+
+  final def error[T](t: T, logger: Logger, e: Throwable): Int = {
+     processError(t, logger, e)
   	 -1 
+  }
+  
+  final def none[T](t: T, logger: Logger): None.type = none(t, logger, null)
+
+  final def none[T](t: T, logger: Logger, e: Throwable): None.type = {
+     processError(t, logger, e)
+  	 None
+  }
+  private def processError[T](t: T, logger: Logger, e: Throwable): Unit = {
+      val msg = if(e != null) s"Error: ${t.toString} with ${e.toString}" else s"Error: ${t.toString}"
+      if(loggerFlag) logger.error(msg)
+      else Console.println(msg)
+      e.printStackTrace
   }
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.svm
 
@@ -41,7 +41,7 @@ import SVMFormulation._
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-class CSVCFormulation(val c: Double) extends SVMFormulation {
+class CSVCFormulation(c: Double) extends SVMFormulation {
   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
   
   	/**
@@ -50,13 +50,13 @@ class CSVCFormulation(val c: Double) extends SVMFormulation {
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def update(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
+  	 require(param != null, "CSVCFormulation: Undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.C_SVC
      param.C = c
   }
   
-  override def toString: String = "\nC-SVC: C=" + String.valueOf(c)
+  override def toString: String = s"\nC-SVC: C=${String.valueOf(c)}"
 }
 
 	/**
@@ -69,8 +69,8 @@ class CSVCFormulation(val c: Double) extends SVMFormulation {
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
-  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
+class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
+  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"NuSVCFormulation: Nu penalty factor $nu is out of range")  
   
     /**
   	 * <p>Initialize the LIBSVM parameters stateuration</p>
@@ -78,14 +78,14 @@ class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def update(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
+  	 require(param != null, "NuSVCFormulation: Undefined LIBSVM svm parameter class")
   	 	 
      param.svm_type = svm_parameter.NU_SVC
      param.nu = nu
      param.p =rho
   }
   
-  override def toString: String = new StringBuilder("\nNu-SVC: nu= ").append(nu).append(" rho= ").append(rho).toString
+  override def toString: String = s"\nNu-SVC: nu= $nu, rho= $rho"
 }
 
 
@@ -98,8 +98,8 @@ class NuSVCFormulation(val nu: Double, val rho: Double) extends SVMFormulation {
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-class OneSVCFormulation(val nu: Double) extends SVMFormulation {
-  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, "nu penalty factor " + nu + " is out of range")  
+class OneSVCFormulation(nu: Double) extends SVMFormulation {
+  require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"nu penalty factor $nu is out of range")  
   
     /**
   	 * <p>Initialize the LIBSVM parameters stateuration</p>
@@ -107,13 +107,13 @@ class OneSVCFormulation(val nu: Double) extends SVMFormulation {
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def update(param: svm_parameter): Unit = {
-	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
+	 require(param != null, "OneSVCFormulation Cannot Undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.ONE_CLASS
      param.nu = nu
   }
   
-  override def toString: String = new StringBuilder("\nOne-class SVC: nu= ").append(nu).toString
+  override def toString: String = s"\nOne-class SVC: nu= $nu"
 }
 
 
@@ -127,9 +127,9 @@ class OneSVCFormulation(val nu: Double) extends SVMFormulation {
 	 * @since April 29, 2014
 	 * @note Scala for Machine Learning
 	 */
-class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation { 
-   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, "C penalty factor " + c + " is out of range")
-   require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, "Epsilon factor " + epsilon + " is out of range") 
+class SVRFormulation(c: Double, epsilon: Double) extends SVMFormulation { 
+   require(c >= C_LIMITS._1 && c <= C_LIMITS._2, s"C penalty factor $c is out of range")
+   require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, s"Epsilon factor $epsilon is out of range") 
    
      /**
   	 * <p>Initialize the LIBSVM parameters stateuration</p>
@@ -137,14 +137,14 @@ class SVRFormulation(val c: Double, val epsilon: Double) extends SVMFormulation 
   	 * @throws IllegalArgumentException if param is undefined.
   	 */
   override def update(param: svm_parameter): Unit = {
-  	 require(param != null, "Cannot stateure undefined LIBSVM svm parameter class")
+  	 require(param != null, "SVRFormulation Undefined LIBSVM svm parameter class")
   	 
      param.svm_type = svm_parameter.EPSILON_SVR
      param.C = c
      param.p = epsilon
   }
   
-  override def toString: String = new StringBuilder("\nEpsilon-SVR: C= ").append(c).append(" epsilon=").append(epsilon).toString
+  override def toString: String = s"\nEpsilon-SVR: C = $c, epsilon= $epsilon"
 }
 
 

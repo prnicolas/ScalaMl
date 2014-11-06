@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.regression.linear
 
 import org.scalaml.core.XTSeries
 import org.apache.commons.math3.stat.regression.SimpleRegression
-import org.scalaml.core.types.ScalaMl.DblMatrix
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
@@ -22,14 +22,15 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-		 * of instances.</p>
+		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class</p>
+		 * @constructor Create a single linear regression model of type bounded to a Double as a view. [xt] Time series of (x,y) pairs of values.
 		 * @param xt single parameterized variable time series
 		 * @throws IllegalArgumentException if the time series is undefined
-		 * @throws implicitNotFound if conversion from type to Double is not implicitely defined
+		 * @throws implicitNotFound if conversion from type to Double is not implicitly defined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
 class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
@@ -38,7 +39,8 @@ class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: 
 	type XY = (Double, Double)
 	private val logger = Logger.getLogger("SingleLinearRegression")
 	
-    private val model: Option[XY] = {
+			// Create the model during instantiation 
+    private[this] val model: Option[XY] = {
        Try {
       	  val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
 	      val regr = new SimpleRegression(true)
@@ -50,22 +52,30 @@ class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: 
     	}
 	}
 	
+		/**
+		 * <p>Retrieve the slope for this single variable linear regression.</p>
+		 * @return slope of the linear regression if model has been properly trained, None otherwise
+		 */
 	final def slope: Option[Double] = model match {
 		case Some(m) => Some(m._1)
-		case None => None
+		case None => Display.none("SingleLinearRegression.slope model is undefined", logger)
 	}
 	
+	    /**
+		 * <p>Retrieve the intercept for this single variable linear regression.</p>
+		 * @return intercept of the linear regression if model has been properly trained, None otherwise
+		 */
 	final def intercept: Option[Double] = model match {
 	    case Some(m) => Some(m._2)
-		case None => None
+		case None => Display.none("SingleLinearRegression.intecept model is undefined", logger)
 	}
     
     	/**
     	 * <p>Data transformation that computes the predictive value of a time series
     	 * using a single variable linear regression model. The model is initialized
     	 * during instantiation of a class.</p>
-    	 * @param index of the time series n
-    	 * @return new predictive value for index index
+   	     * @throws MatchError if the model is undefined
+   		 * @return PartialFunction of a Double value as input and the value computed using the model as output
     	 */
     override def |> : PartialFunction[Double, T] = {
       case x: Double if(model != None) => model.get._1*x + model.get._2
@@ -79,6 +89,8 @@ class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: 
 		 * singleton is used to define the constructor for the class SingleLinearRegression.</p>
 		 * 
 		 * @author Patrick Nicolas
+		 * @since April 27, 2014
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
 		 */
 object SingleLinearRegression { 
   def apply[T <% Double](xt: XTSeries[(T, T)])(implicit g: Double => T): SingleLinearRegression[T] = new SingleLinearRegression[T](xt)

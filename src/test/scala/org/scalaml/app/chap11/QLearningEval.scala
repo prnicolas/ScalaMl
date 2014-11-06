@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap11
 
@@ -37,6 +37,7 @@ object QLearningEval {
     val NUM_EPISODES = 24
     val MIN_ACCURACY= 0.8
     
+    private val logger = Logger.getLogger("QLearningEval")
     def run: Unit = { 
        val src = DataSource(stockPricePath, false, false, 1)
        val ibmOption = new OptionModel("IBM", 190.0, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
@@ -44,7 +45,7 @@ object QLearningEval {
   	   val optionSrc = DataSource(optionPricePath, false, false, 1)
        optionSrc.extract match {
           case Some(v) => initializeModel(ibmOption, v)
-      	  case None => Display.error("Failed extracting option prices")
+      	  case None => Display.none("Failed extracting option prices", logger)
        }
     }
     

@@ -6,17 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.hmm
 
-
-
-import org.scalaml.util.Matrix
-import org.scalaml.core.types
+import org.scalaml.util.{Matrix, Display}
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import HMMConfig._
 
 		/**
 		 * <p>Implementation of the Beta or backward pass of the 
@@ -26,15 +23,17 @@ import org.scalaml.util.Display
 		 * @param parms parameters used in any of the three canonical form of the HMM
 		 * @param obsB: Array of observations as integer (categorical data)
 		 * @throws IllegalArgumentException if lmbda, params and observations are undefined
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 14, 2014
+		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
 		 */
 protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
 	private val logger = Logger.getLogger("Beta")
 
 	val complete = {
 		Try {
-		    alphaBeta = Matrix[Double](lambda.config._T, lambda.config._N)	
+		    alphaBeta = Matrix[Double](lambda.getT, lambda.getN)	
 		    alphaBeta += (lambda.d_1, 1.0)
 		    normalize(lambda.d_1)
 		    sumUp
@@ -46,15 +45,14 @@ protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(
 	}
 	
     private def sumUp: Unit = 
-	   (lambda.config._T-2 to 0 by -1).foreach( t =>{
+	   (lambda.getT-2 to 0 by -1).foreach( t =>{
 	  	  updateBeta(t)
 	  	  normalize(t) 
 	   })
 	  	
 	private def updateBeta(t: Int): Unit =
-  	   HMMConfig.foreach(lambda.config._N, i => { 
-  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, obsIdx(t+1)))	
-  	   })
+  	   foreach(lambda.getN, i =>
+  	 	  alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, obs(t+1))))
 }
 
 
@@ -62,7 +60,7 @@ protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(
 		 * Companion object for the Beta pass that defines the constructor apply
 		 */
 object Beta {
-	def apply(lambda: HMMLambda,  obsIdx: Array[Int]): Beta = new Beta(lambda, obsIdx)
+	def apply(lambda: HMMLambda,  obs: Array[Int]): Beta = new Beta(lambda, obs)
 }
 
 

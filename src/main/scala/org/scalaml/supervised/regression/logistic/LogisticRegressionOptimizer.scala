@@ -6,37 +6,56 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.regression.logistic
 
 import org.apache.commons.math3.fitting.leastsquares._
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
 import org.scalaml.core.types.ScalaMl._
-
-
-
 import LogisticRegressionOptimizer._
-protected class LogisticRegressionOptimizer(val maxIters: Int, 
-		                          val maxEvals: Int, 
-		                          val eps: Double, 
-		                          private val lsOptimizer: LeastSquaresOptimizer) {
-	
-  validate(maxIters, maxEvals, eps, lsOptimizer)
 
+
+
+	/**
+	 * <p>Class that implements the minimization of the loss function for the logistic
+	 * regression classifier. It is implemented as the least squares optimization of the
+	 * Least Square problem defined in Apache Commons Math.</p>
+	 * @constructor Initialize the optimization function for the logistic regression classifier. [maxIters] Maximum number of iterations allowed during training for the minimization of the loss function. [maxEvals] Maximum number of runs or evaluations allowed during training. [eps] Maximum error allowed during training for the minimization of the loss function. [lsOptimizer] Least squares optimizer used during training.
+	 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
+	 * @see org.apache.commons.math3.fitting.leastsquares
+	 * 
+	 * @author Patrick Nicolas
+	 * @since May 13, 2014
+	 * @note Scala for Machine Learning Chapter 6 Regression and Regularization $Logistic regression
+	 */
+protected class LogisticRegressionOptimizer(val maxIters: Int, 
+		                                    val maxEvals: Int, 
+		                                    val eps: Double, 
+		                                    lsOptimizer: LeastSquaresOptimizer) {
+	
+  check(maxIters, maxEvals, eps, lsOptimizer)
+
+  		/**
+  		 * <p>Performs the minimization of the loss function by optimizing the least squares problems</p>
+  		 * @param lsProblem least squares problem as defined in the Apache Commons Math library
+  		 * @return Optimum value for the weights of the logistic regression
+  		 * @throws IllegalArgumentException if the least squares problem is undefined
+  		 * @see org.apache.commons.math3.fitting.leastsquares
+  		 */
   def optimize(lsProblem: LeastSquaresProblem): Optimum = {
-  	  require(lsProblem != null, "Cannot perform a Least Squares optimization with undefined Least square problem")
+  	  require(lsProblem != null, "LogisticRegressionOptimizer.optimizer: failure because the Least squares problem is undefined")
   	  lsOptimizer.optimize(lsProblem)
   }
   
-  private def validate(maxIters: Int, maxEvals: Int, eps: Double, lsOptimizer: LeastSquaresOptimizer): Unit = {
+  private def check(maxIters: Int, maxEvals: Int, eps: Double, lsOptimizer: LeastSquaresOptimizer): Unit = {
 	  require(maxIters >=  NUM_ITERS_LIMITS._1 && maxIters <= NUM_ITERS_LIMITS._2, 
-				   "Maximum number of iterations " + maxIters + " is out of range")
+				   s"Maximum number of iterations $maxIters is out of range")
 	  require(maxEvals >=  NUM_EVALS_LIMITS._1 && maxEvals <= NUM_EVALS_LIMITS._2, 
-				   "Maximum number of evaluations " + maxEvals + " is out of range")			   
+				   s"Maximum number of evaluations $maxEvals is out of range")			   
 	  require(maxIters < maxEvals, 
-				   "Maximum number of iterations " + maxIters + " exceeds maximum number of evaluations" + maxEvals)
-	  require( eps >= EPS_LIMITS._1 && eps <= EPS_LIMITS._2, "eps for the optimization of the logistic regression " + eps + " is out of range")
+				   s"Maximum number of iterations $maxIters exceeds maximum number of evaluations $maxEvals")
+	  require( eps >= EPS_LIMITS._1 && eps <= EPS_LIMITS._2, s"eps for the optimization of the logistic regression $eps is out of range")
 	  require(lsOptimizer != null, "Least squares optimizer for the logistic regression is undefined")
   }
 }

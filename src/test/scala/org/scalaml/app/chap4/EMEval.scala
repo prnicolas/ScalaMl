@@ -6,15 +6,15 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
-import types.ScalaMl._
+import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
@@ -53,7 +53,8 @@ object EMEval extends UnsupervisedLearningEval {
 	        filtered.zipWithIndex
 	                .drop(period+1)
 	                .toArray
-	                .filter( _._2 % samplingRate == 0).map( _._1)
+	                .filter( _._2 % samplingRate == 0)
+	                .map( _._1)
 	     })
 	     
 	     	// If all the observations are valid

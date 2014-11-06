@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.util
 
@@ -28,7 +28,7 @@ class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nCols: I
    def += (i: Int, j : Int, t: T): Unit = data(i*nCols +j) = t
    
    final def diff(that: Matrix[T], error: (T, T) => Double)(implicit f: T => Double): Double = {
-  	  require( nCols == that.nCols && nRows == that.nRows, "cannot compare Matrices of different sizes")
+  	  require(nCols == that.nCols && nRows == that.nRows, s"cannot compare Matrices of different sizes ($nCols, $nRows) with {${that.nCols}, ${}that.nRows})")
   	  
   	  data.zip(that.data).foldLeft(0.0)((s, xy) => s + error(xy._1, xy._2))
    }
@@ -38,41 +38,31 @@ class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nCols: I
   	 data.slice(idx, idx + nRows) 
    }
    
-   def /= (i: Int, t: T)(implicit g: Double => T): Unit =  {
-  	  val iRow = i*nRows
-  	  Range(0, nRows).foreach(k => data(iRow + k) /= t)
-  	  /*
-  	  var k = 0
-  	  while(k < nRows ) {
-  	     data(iRow +k) /= t
-  	     k += 1
-  	  }
-  	  * 
-  	  */
+   def /= (iRow: Int, t: T)(implicit g: Double => T): Unit =  {
+  	  val i = iRow*nCols
+  	  Range(0, nCols).foreach(k => data(i + k) /= t)
    }
    
-   def += (i: Int, t: T): Unit = {
-  	  val iRow = i*nRows
-  	  Range(0, nRows).foreach(k => data(iRow + k) =t)
-  	  /*
-  	  var k = 0
-  	  while(k < nRows ) {
-  	     data(i*nRows +k) = t
-  	     k += 1
-  	  }
-  	  * 
-  	  */
+   def += (iRow: Int, t: T): Unit = {
+  	  val i = iRow*nCols
+  	  Range(0, nCols).foreach(k => data(i + k) =t)
    }
    
-   
-   def fillRandom(mean: Double)(implicit f: Double =>T): Unit = {
-      var k = 0
-      val rGen = new Random(System.currentTimeMillis)
-      while( k < data.size) {
-        data(k) = f(mean*rGen.nextDouble)
-        k += 1
-      }
+   def transpose: Matrix[T] = {
+  	  val m = Matrix[T](nCols, nRows)
+  	  Range(0, nRows).foreach(i =>{
+  	  	 val col = i*nCols
+  	     Range(0, nCols).foreach(j => m += (j, i, data(col+j)))
+  	  })
+  	  m
    }
+   
+   @inline
+   final def size = nRows*nCols
+   
+   def fillRandom(mean: Double = 0.0)(implicit f: Double =>T): Unit = 
+  	  Range(0, data.size).foreach(i => data.update(i,  mean + Random.nextDouble))
+   
 
    override def toString: String = {
       var count = 0
@@ -90,6 +80,19 @@ object Matrix {
    def apply[T: ClassTag](nRows: Int, nCols: Int)(implicit f: T => Double): Matrix[T] = new Matrix(nRows, nCols, new Array[T](nCols*nRows))
    def apply[T: ClassTag](xy: Array[Array[T]])(implicit f: T => Double): Matrix[T] = new Matrix(xy.size, xy(0).size, xy.flatten)
 }
+
+/*
+object MatrixApp extends App {
+	val x = Array[Array[Double]](
+	  Array[Double](11, 12, 13, 14, 15),
+	  Array[Double](21, 22, 23, 24, 25),
+      Array[Double](31, 32, 33, 34, 35)
+    )
+	val m = Matrix[Double](x)
+	println(s"${m.nRows}, ${m.nCols},: ${m(3, 1)}")
+}
+* 
+*/
 
 
 

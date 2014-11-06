@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.svm
 
@@ -24,14 +24,15 @@ import scala.collection.mutable.ArrayBuffer
 
 
 
-final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) extends PipeOperator[Array[T], Double] {
+final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) 
+                                                                           extends PipeOperator[Array[T], Double] {
 	
-  private val logger = Logger.getLogger("SVM")
-  validate(config, xt, labels)
+  check(config, xt, labels)
   
   type Feature = Array[T]
   type SVMNodes = Array[Array[svm_node]]
-  
+  private val logger = Logger.getLogger("SVM")
+    
   private val model: Option[SVMModel] = {
   	  val problem = new svm_problem
       problem.l = xt.size;
@@ -50,7 +51,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	  	  	    svm_col(xi._2) = node })
 	  	  	 problem.x(xt_i._2) = svm_col
 	      })
-	      SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
+	      new SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
       } match {
       	case Success(m) => Some(m)
       	case Failure(e) => Display.error("SVM.model ", logger, e); None
@@ -102,31 +103,16 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
   	 * @throws IllegalStateException if the features vector is undefined or have an incorrect size
   	 */
   override def |> : PartialFunction[Feature, Double] =  {
-    case x: Feature if(x != null && x.size == dimension(xt) && model != None) =>
+    case x: Feature if(x != null && x.size == dimension(xt) && model != None && model.get.accuracy >= 0.0) =>
       svm.svm_predict(model.get.svmmodel, toNodes(x))
   }
-
-  /*
-  override def |> (x: Feature): Option[Double] = model match {
-  	case Some(m) => {
-  	   if(x == null || x.size != dimension(xt)) {
-  	  	  Display.error("SVM.|> feature undefined or incorrect size", logger)
-  	  	  None
-  	   }
-  	   else
-  		Some(svm.svm_predict(m.svmmodel, toNodes(x)))
-  	}
-  	case None => Display.error("SVM.|> Model undefined", logger); None
-  }
-  * 
-  */
 
 
   private def accuracy(problem: svm_problem): Double = {
 	 if( config.isCrossValidation ) { 
 	    val target = new Array[Double](labels.size)
 	    svm.svm_cross_validation(problem, config.param, config.nFolds, target)
-	  	target.zip(labels).filter(z => {println(z._1.toString + ", " + z._2.toString); Math.abs(z._1-z._2) < 1e-3}).size.toDouble/labels.size
+	  	target.zip(labels).filter(z => Math.abs(z._1-z._2) < 1e-3).size.toDouble/labels.size
 	 }
 	 else -1.0
   }
@@ -142,18 +128,14 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
   	  }).toArray
 
   
-  private def validate(state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
+  private def check(state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
 	  require(state != null, "Configuration of the SVM is undefined")
 	  require(xt != null && xt.size > 0, "Features for the SVM are undefined")
 	  require(labels != null && labels.size > 0, "Labeled observations for the SVM are undefined")
-	  require(xt.size == labels.size, "Number of features " + xt.size + " and number of labels " + labels.size + " differs for SVM")
+	  require(xt.size == labels.size, s"Number of features ${xt.size} and number of labels ${labels.size} differs for SVM")
   }
   
-  override def toString: String = 
-  	 new StringBuilder(config.toString)
-           .append("\n") 
-              .append(model.get.toString)
-                 .toString
+  override def toString: String = s"\n${model.get.toString}"
 }
 
 

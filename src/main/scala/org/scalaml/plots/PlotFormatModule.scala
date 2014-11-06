@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.plots
 
@@ -21,12 +21,12 @@ import java.awt.{Color, Dimension}
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
+import PlotFormatModule._
 	/**
 	 * Trait to format the plot
 	 */
 
-import PlotFormatModule._
+
 trait PlotFormatModule {
   val plotFormat: PlotFormat
   

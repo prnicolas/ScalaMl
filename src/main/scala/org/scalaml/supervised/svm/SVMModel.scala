@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.supervised.svm
 
@@ -18,7 +18,7 @@ import libsvm.svm_model
  *  @since April 19, 2014
  *  @note Scala for Machine Learning
  */
-final case class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Model {
+final class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Model {
    val persists = "models/svm"
    override def toString: String = s"SVMModel: ${svmmodel.toString}\nAccuracy: $accuracy"
 }

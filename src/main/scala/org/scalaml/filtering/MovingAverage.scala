@@ -6,14 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.filtering
 
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
+
 
 
 		/**
@@ -39,7 +41,6 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		 */
 @implicitNotFound("Numeric bound has to be implicitly defined for the Simple moving average")
 class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
-   import types.ScalaMl._
    require( period > 0, s"Cannot compute simple moving average with an incorrect $period")
    
    		/**
@@ -132,8 +133,6 @@ object ExpMovingAverage {
    def apply[T <% Double](period: Int): ExpMovingAverage[T] = new ExpMovingAverage[T](period)
 }
 
-
-import types.ScalaMl._
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
 		 * by the pipe operator |>.</p>

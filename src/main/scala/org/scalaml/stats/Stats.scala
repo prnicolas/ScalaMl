@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.94
+ * Version 0.95
  */
 package org.scalaml.stats
 
 import scala.Array.canBuildFrom
-import org.scalaml.core.types
+import org.scalaml.core.types.ScalaMl._
 import Stats._
-import types.ScalaMl._
+
 	/**
 	 *  Parameterized class (view bound) that compute and update the statistics (mean,
 	 *  standard deviation) for any set of observations for which the
@@ -25,7 +25,6 @@ import types.ScalaMl._
 	 *  @since Jan 24, 2014
 	 *  @note Scala for Machine Learning
 	 */
-
 class Stats[T <% Double](values: DVector[T]) {
     require( values != null && values.size > 0, "Cannot initialize stats with undefined data")
 	 
@@ -127,7 +126,6 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @since January 24, 2014
 		 * @note Scala for Machine Learning
 		 */
-import types.ScalaMl._
 object Stats {
    final val ZERO_EPS = 1e-32
    final val INV_SQRT_2PI = 1.0/Math.sqrt(2.0*Math.PI)
