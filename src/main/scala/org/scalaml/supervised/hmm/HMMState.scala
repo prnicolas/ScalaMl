@@ -27,7 +27,7 @@ import HMMConfig._
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 24, 2014
-	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
 	 */
 final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
   require(lambda != null, "Cannot initialize the state of the computation of the HMM with undefined model")

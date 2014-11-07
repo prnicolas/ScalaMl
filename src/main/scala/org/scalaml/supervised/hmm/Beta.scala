@@ -26,7 +26,7 @@ import HMMConfig._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 14, 2014
-		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
 protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
 	private val logger = Logger.getLogger("Beta")

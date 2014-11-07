@@ -38,7 +38,7 @@ import org.scalaml.util.Display
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 14, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning  Chapter 6 Regression and regularization/Ridge regression
 		 */
 final class RidgeRegression[T <% Double](val xt: XTSeries[Array[T]], val y: DblVector, val lambda: Double) 
                   extends AbstractMultipleLinearRegression with PipeOperator[Array[T], Double] {

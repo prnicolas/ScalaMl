@@ -27,7 +27,7 @@ import LogisticRegressionOptimizer._
 	 * 
 	 * @author Patrick Nicolas
 	 * @since May 13, 2014
-	 * @note Scala for Machine Learning Chapter 6 Regression and Regularization $Logistic regression
+	 * @note Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
 	 */
 protected class LogisticRegressionOptimizer(val maxIters: Int, 
 		                                    val maxEvals: Int, 

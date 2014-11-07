@@ -19,8 +19,6 @@ import scala.collection.mutable.{Map, HashMap}
 import org.scalaml.util.Display
 import scala.collection.parallel.immutable.ParVector
 import org.apache.log4j.Logger
-import org.scalaml.app.Eval
-
 
 
 

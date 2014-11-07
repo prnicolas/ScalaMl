@@ -34,7 +34,7 @@ import scala.language.implicitConversions
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization $Ordinary least squares regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
 		 */
 @implicitNotFound("Implicit conversion to Double for MultiLinearRegression is missing")
 final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector) 

@@ -37,7 +37,7 @@ import org.scalaml.util.Display
 	 * 
 	 * @author Patrick Nicolas
 	 * @since April 1, 2014
-	 * @note Scala for Machine Learning Chapter 7 Sequential data models $Conditional Random Fields.
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 	 */
 class CrfModel(val weights: DblVector) extends Model {
   require(weights != null && weights.size > 0, "CrfModel Cannot create a model with undefined weights")
@@ -99,6 +99,10 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
   	 }
   }
   
+  		/**
+  		 * <p>Return the weights or lambda values for this CRF.</p>
+  		 * @return Weights of the CRF model if the model has been properly trained, None otherwise.
+  		 */
   final def weights: Option[DblVector] = model match {
   	case Some(m) => Some(m.weights)
   	case None => None

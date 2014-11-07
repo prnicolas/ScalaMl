@@ -30,7 +30,7 @@ import HMMConfig._
      *  
 	 *  @author Patrick Nicolas
 	 *  @since March 17, 2014
-	 *  @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Decoding
+	 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Decoding
 	 */
 class ViterbiPath(lambdaV: HMMLambda, 
 				  obsV: Array[Int]) extends HMMModel(lambdaV, obsV) {

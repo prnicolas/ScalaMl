@@ -33,7 +33,7 @@ import MLPConfig._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron
 		 */
 class MLPConfig(val alpha: Double, 
 		        val eta: Double, 

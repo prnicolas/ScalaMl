@@ -32,7 +32,7 @@ import org.scalaml.core.design.PipeOperator
 		 * @throws IllegalArgumenException if the configuration, input information or training episodes is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @data March 26, 2014
+		 * @since March 26, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Learning classifier systems.
 		 */
 

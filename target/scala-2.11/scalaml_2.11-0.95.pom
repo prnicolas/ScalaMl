@@ -2,11 +2,11 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <groupId>Patrick Nicolas</groupId>
-    <artifactId>scalaml_2.10</artifactId>
+    <artifactId>scalaml_2.11</artifactId>
     <packaging>jar</packaging>
-    <description>ScalaMl</description>
-    <version>0.90</version>
-    <name>ScalaMl</name>
+    <description>scalaml</description>
+    <version>0.95</version>
+    <name>scalaml</name>
     <organization>
         <name>Patrick Nicolas</name>
     </organization>
@@ -14,7 +14,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.10.4</version>
+            <version>2.11.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -28,18 +28,23 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.10</artifactId>
-            <version>2.1.0</version>
+            <artifactId>akka-actor_2.11</artifactId>
+            <version>2.3.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_2.10</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.11</artifactId>
+            <version>2.1.6</version>
         </dependency>
     </dependencies>
 </project>

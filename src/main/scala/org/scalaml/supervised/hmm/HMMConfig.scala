@@ -28,7 +28,7 @@ import org.scalaml.core.design.Config
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 27, 2014
-		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
 		 */
 class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
   require( _T > 0 && _T < 1000, s"Number of observations ${_T} in HMM lambda model is out of bounds")

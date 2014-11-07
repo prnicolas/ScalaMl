@@ -27,7 +27,7 @@ import HMMConfig._
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 6, 2014
-	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 	 */
 final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
 

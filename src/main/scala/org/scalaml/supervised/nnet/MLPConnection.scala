@@ -31,7 +31,7 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network $Multilayer perceptron/Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
 		 */
 protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit val mlpObjective: MLP.MLPObjective)  {
 	require(config != null, "Configuration for the MLP connection is undefined")

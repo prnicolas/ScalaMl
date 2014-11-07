@@ -40,7 +40,7 @@ import scala.language.implicitConversions
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 11, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization $Logistic regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
 		 */
 final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
 		                                    labels: Array[Int], 

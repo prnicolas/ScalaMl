@@ -36,7 +36,7 @@ import org.scalaml.util.Display
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network $Multilayer perceptron/Training cycle/epoch
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
 		 */
 final protected class MLP[T <% Double](config: MLPConfig, 
 		                               xt: XTSeries[Array[T]], 

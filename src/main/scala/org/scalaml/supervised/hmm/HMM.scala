@@ -25,7 +25,7 @@ import HMMConfig._
 	 * <p>Enumeration class to specify the canonical form of the HMM</p>
 	 * @author Patrick Nicolas
 	 * @since March 9, 2014
-	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 	 */
 object HMMForm extends Enumeration {
   type HMMForm = Value
@@ -50,7 +50,7 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 29, 2014
-	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
+	 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model - Evaluation
 	 */
 class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd, _obsIdx) { 
    protected var alphaBeta: Matrix[Double] = _
@@ -67,25 +67,6 @@ class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd
 
 
 
-	/**
-	 * <p>Generic class for the Dynamic Programming algorithms used in the Hidden 
-	 * Markov Model. The sub-classes are the alpha (forward) pass, beta (backward) pass,
-	 * Viterbi algorithm the compute the best sequence of hidden states and the Baum-Welch
-	 * algorithm used in training a HMM.</p>
-	 * @param lambda Lambda (pi, A, B) model for the HMM
-	 * @param params parameters (alpha, beta, gamma, digamma, q) used in any of the three
-	 * canonical form of the HMM
-	 * @param labels: Array of observations as integer (categorical data)
-	 * @throws IllegalArgumentException if lambda, params and observations are undefined
-	 * @author Patrick Nicolas
-	 * @since March 7, 2014
-	 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
-	 */
-class HMMInference(val lmdb: HMMLambda, val state: HMMState, val _obs: Array[Int]) 
-                                                    extends HMMModel(lmdb,  _obs) {
-  require(state != null, "Cannot execute dynammic algorithm  with undefined HMM execution parameters")
-}
-
 
 import HMMForm._
 		/**
@@ -98,7 +79,7 @@ import HMMForm._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 23, 2014
-		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model
+		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model
 		 */
 protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T)  
                            extends PipeOperator[DblVector, HMMPredictor] {

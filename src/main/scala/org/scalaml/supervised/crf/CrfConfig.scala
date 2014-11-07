@@ -26,11 +26,11 @@ import org.scalaml.core.design.Config
 	/**
 	 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
 	 * description of the configuration of CRF used by iitb library </p>
-	 * @param initLambda  initial values for the CRF weights/factors (lambdas)
+	 * @constructor Create a configuration for the CRF. [w0] Initial values for the CRF weights/factors (lambdas). [maxIters] Maximum number of iterations to be used for the training of CRF. [lambda] L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X). [eps] Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
+	 * @param w0  initial values for the CRF weights/factors (lambdas)
 	 * @param maxIters  Maximum number of iterations to be used for the training of CRF
 	 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
 	 * @param eps Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
-	 * @param debug Optional debugging flag 
 	 * 
 	 * @author Patrick Nicolas
 	 * @since April 3, 2014

@@ -27,7 +27,7 @@ import HMMConfig._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
-		 * @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Evaluation
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
 final class Alpha(lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lambdaA, obsIdxA) {
 	/**

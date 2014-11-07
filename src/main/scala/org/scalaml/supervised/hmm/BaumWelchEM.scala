@@ -27,7 +27,7 @@ import org.scalaml.util.Display
      *  
 	 *  @author Patrick Nicolas
 	 *  @since March 15, 2014
-	 *  @note Scala for Machine Learning Chapter 7 $Hidden Markov Model - Training
+	 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training
 	 */
 class BaumWelchEM(config: HMMConfig, 
 				  _obs: Array[Int], 

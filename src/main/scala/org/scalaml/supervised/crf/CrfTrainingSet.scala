@@ -21,6 +21,7 @@ import iitb.Segment.{DataCruncher, LabelMap}
 
 	/**
 	 * <p>Class that defines a Recommendation as a data sequence.</p>
+	 * @constructor Create a training set for a CRF. [nLabels] Number of labels (or tags) used in the training of CRF. [entry] Recommendation or observation as a sequence of words. [delim] Delimiter of segments in the sequence
 	 * @param nLabels Number of labels (or tags) used in the training of CRF
 	 * @param entry recommendation or observation as a sequence of words
 	 * @param delim delimiter of segments in the sequence

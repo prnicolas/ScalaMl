@@ -23,8 +23,6 @@ import XTSeries._
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import org.apache.log4j.Logger
-import org.scalaml.app.Eval
-
 
 
 

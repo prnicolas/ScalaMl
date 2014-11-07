@@ -35,7 +35,7 @@ import MLPLayer._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network $Multilayer perceptron/Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
 		 */
 
 final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
