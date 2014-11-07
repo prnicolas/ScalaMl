@@ -163,10 +163,10 @@ object Stats {
    
    final def normal(x: Double*): Double = gauss(0.0, 1.0, x(0))
 
-   final def bernouilli(mean: Double, p: Int): Double = mean*p + (1-mean)*(1-p)
+   final def bernoulli(mean: Double, p: Int): Double = mean*p + (1-mean)*(1-p)
    
    @inline
-   final def bernouilli(x: Double*): Double = bernouilli(x(0), x(1).toInt)
+   final def bernoulli(x: Double*): Double = bernoulli(x(0), x(1).toInt)
 }
 
 // -------------------------  EOF -----------------------------------------

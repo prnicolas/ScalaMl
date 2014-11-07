@@ -61,7 +61,7 @@ object Display {
       val msg = if(e != null) s"Error: ${t.toString} with ${e.toString}" else s"Error: ${t.toString}"
       if(loggerFlag) logger.error(msg)
       else Console.println(msg)
-      e.printStackTrace
+      if( e != null) e.printStackTrace
   }
 }
 

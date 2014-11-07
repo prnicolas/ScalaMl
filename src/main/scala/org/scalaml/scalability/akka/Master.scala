@@ -23,6 +23,7 @@ import XTSeries._
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import org.apache.log4j.Logger
+import org.scalaml.app.Eval
 
 
 
@@ -39,6 +40,7 @@ class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner
    
    override def preStart: Unit = Display.show("Master.preStart", logger)
    override def postStop: Unit = Display.show("Master stop", logger)
+   
         /**
    		 * <p>Event loop of the master actor that processes two messages<br>
    		 * Start to initialize the worker actor and launch the normalization of cross validation groups<br>
@@ -61,30 +63,6 @@ class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner
   	  val partIdx = partitioner.split(xt)
   	  workers.zip(partIdx).foreach(w => w._1 ! Activate(xt.slice(w._2-partIdx(0), w._2), self) )  
    }
-}
-
-
-object ActorsManagerApp extends App {
-   import scala.concurrent.duration.Duration
-   import scala.concurrent.{Await, Awaitable}
-   import akka.actor.ActorSystem	 
-	  
-   val NUM_WORKERS = 4
-   val NUM_DATA_POINTS = 1000000
-   val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
-                            Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
-                        0.5*Math.cos(Math.PI*0.2*x)  +    // simulated third harmonic 
-                        0.2*Random.nextDouble
-	  
-   val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
-   val partitioner = new Partitioner(NUM_WORKERS)
-   
-   implicit val actorSystem = ActorSystem("system") 
-
-   val master = actorSystem.actorOf(Props(new Master(xt, DFT[Double], partitioner)), "Master")
-   master ! Start
-   Thread.sleep(15000)
-   actorSystem.shutdown
 }
 
 

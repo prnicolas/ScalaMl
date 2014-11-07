@@ -21,12 +21,13 @@ import MLPConfig._
 
 		/**
 		 * <p>Class that defines the configuration for the Multi-layer Perceptron. The validation
-		 * of the configuration/tuning parameters for the MLP is defined in this class. The softmax
-		 * output conversion is defined implicitly and is not a parameter for the class.</p>
+		 * of the configuration/tuning parameters for the MLP is defined in this class..</p>
+		 * @constructor Creates a configuration object for the neural network. [alpha] Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing). [eta] Learning rate ]0, 1] used in the computation of the gradient of the weights during training. [hidLayers] Sequence of number of neurons for the hidden layers. [numEpochs] Number of epochs used to train the weights/model. [eps] Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error. [activation] Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
 		 * @param alpha momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
 		 * @param eta learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param hidLayers sequence of number of neurons for the hidden layers.
 		 * @param numEpochs number of epochs or iterations allowed to train the weights/model
-		 * @param eps convergence criteria used as exit condition of the convergence toward optimumn weights that minimize the mean squares error		 * @param classification boolean that specifies if this MLP is used for classification or regression (true for classification, false for regression)
+		 * @param eps convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
 		 * @param activation activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
 		 * @throws IllegalArgumentException if one of the class parameters is either out of bounds or undefined
 		 * 
@@ -44,17 +45,21 @@ class MLPConfig(val alpha: Double,
 	  
     check(alpha, eta, numEpochs, activation)
 
+    	/**
+    	 * <p>Return the id of the output layer.</p>
+    	 * @return 1 if there is no hidden layers, the id of the last hidden layer + 1, otherwise
+    	 */
     final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
     
+    	/**
+    	 * <p>Return the number of hidden layers in this Neural network.</p>
+    	 * @return 0 if there is no hidden layer, the size of the hidLayer array or sequence otherwise
+    	 */
     final def nHiddens: Int = if(hidLayers == null) 0 else hidLayers.size
     
 
     
-	private def check(alpha: Double, 
-			             eta: Double,  
-			             numEpochs: Int,
-			             activation: Double => Double): Unit = {
-		
+	private def check(alpha: Double, eta: Double, numEpochs: Int, activation: Double => Double): Unit = {
 	   require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, s"Momentum factor, alpha $alpha is out of bounds")
 	   require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, s"Learning rate eta for the Neural Network $eta is out of range")
        require(numEpochs > 1, s"Number of epoch $numEpochs for the Neural Network should be > 1")

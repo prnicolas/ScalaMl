@@ -19,6 +19,7 @@ import scala.collection.mutable.{Map, HashMap}
 import org.scalaml.util.Display
 import scala.collection.parallel.immutable.ParVector
 import org.apache.log4j.Logger
+import org.scalaml.app.Eval
 
 
 
@@ -46,11 +47,11 @@ abstract class ParBenchmark[U](times: Int) {
 		 * @note Scala for Machine Learning
 		 */
 class ParArrayBenchmark[U](val u: Array[U], val v: ParArray[U], _times: Int) extends ParBenchmark[U](_times) {
-	require(u != null && u.size > 0, "Cannot evaluate performance of Scala parallel collections with undefined data")
+	require(u != null && u.size > 0, "ParArrayBenchmark: Cannot evaluate performance of Scala parallel collections with undefined data")
 	private val logger = Logger.getLogger("ParArrayBenchmark")
 	
 	override def map(f: U => U)(nTasks: Int): Unit = {
-	   require(f != null, "Cannot execute a map on the data set with undefined operator" )
+	   require(f != null, "ParArrayBenchmark:  Cannot execute a map on the data set with undefined operator" )
 	   v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 	   
 	   val duration = timing(_ => u.map(f)).toDouble
@@ -59,7 +60,7 @@ class ParArrayBenchmark[U](val u: Array[U], val v: ParArray[U], _times: Int) ext
 	}
 	
 	override def filter(f: U => Boolean)(nTasks: Int): Unit = {
-      require(f != null, "Cannot reduce data set with undefined operator" )	
+      require(f != null, "ParArrayBenchmark: Cannot reduce data set with undefined operator" )	
       v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
       
        val duration = timing(_ => u.filter(f)).toDouble
@@ -68,7 +69,7 @@ class ParArrayBenchmark[U](val u: Array[U], val v: ParArray[U], _times: Int) ext
     }
 	
     def reduce(f: (U,U) => U)(nTasks: Int): Unit = {
-      require(f != null, "Cannot reduce data set with undefined operator" )	
+      require(f != null, "ParArrayBenchmark: Cannot reduce data set with undefined operator" )	
       v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
       
        val duration = timing(_ => u.reduceLeft(f)).toDouble
@@ -78,12 +79,12 @@ class ParArrayBenchmark[U](val u: Array[U], val v: ParArray[U], _times: Int) ext
 
 }
 
-class ParMapBenchmark[U](val u: Map[Int, U], val v: ParMap[Int, U], _times: Int) extends ParBenchmark[U](_times) {
-	require(u != null && u.size > 0, "Cannot evaluate performance of Scala parallel collections with undefined data")
+final class ParMapBenchmark[U](val u: Map[Int, U], val v: ParMap[Int, U], _times: Int) extends ParBenchmark[U](_times) {
+	require(u != null && u.size > 0, "ParArrayBenchmark: Cannot evaluate performance of Scala parallel collections with undefined data")
     private val logger = Logger.getLogger("ParMapBenchmark")
     	
 	override def map(f: U=> U)(nTasks: Int): Unit = {
-	   require(f != null, "Cannot execute a map on the data set with undefined operator" )
+	   require(f != null, "ParArrayBenchmark: Cannot execute a map on the data set with undefined operator" )
 	   v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 	   
 	   val duration = timing(_ => u.map(e => (e._1, f(e._2)))).toDouble
@@ -92,54 +93,13 @@ class ParMapBenchmark[U](val u: Map[Int, U], val v: ParMap[Int, U], _times: Int)
 	}
 	
 	override def filter( f: U => Boolean)(nTasks: Int): Unit = {
-      require(f != null, "Cannot execute a map on the data set with undefined operator" )
+      require(f != null, "ParArrayBenchmark: Cannot execute a map on the data set with undefined operator" )
 	   v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 	   
 	   val duration = timing(_ => u.filter(e => f(e._2))).toDouble
 	   val ratio = timing( _ => v.filter(e => f(e._2)))/duration
        Display.show(s"$nTasks, $ratio", logger)
 	}
-}
-
-
-
-object ParBenchmarkApp extends App {
-	 import scala.util.Random
-	 
-	 val mapper = new HashMap[String, Double]
-	 val mapped = mapper.map( k => (k._1, k._2/10.0))
-	 
-	 val rand = new ParVector[Float]
-	 Range(0, 1000000).foreach(n => rand.updated(n, n*Random.nextFloat))
-	 rand.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(16))
-	 val randExp = rand.map( Math.exp(_) )
-
-	  
-	 val sz = 1000000
-	 val data = Array.fill(sz)(Random.nextDouble)
-	 val pData = ParArray.fill(sz)(Random.nextDouble)
-	 val times: Int = 25
-	 	 
-	 val benchmark = new ParArrayBenchmark[Double](data, pData, times)
-	 
-	 val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
-	 Range(1, 16).foreach(n => benchmark.map(mapF)(n))
-	 /*
-	 val reduceF = (x: Double, y: Double) => x+y
-	 Range(1, 4).foreach(n => benchmark.reduce(reduceF)(n))
-	 */
-	 val filterF = (x: Double) => (x > 0.8)
-	 Range(1, 16).foreach(n => benchmark.filter(filterF)(n))
-	 
-	 val mapData = new HashMap[Int, Double]
-	 Range(0, sz).foreach(n => mapData.put(n, Random.nextDouble) )
-	 val parMapData = new ParHashMap[Int, Double]
-	 Range(0, sz).foreach(n => parMapData.put(n, Random.nextDouble) )
-	 
-	 val benchmark2 = new ParMapBenchmark[Double](mapData, parMapData, times)
-	 Range(1, 16).foreach(n => benchmark2.map(mapF)(n))
-	 Range(1, 16).foreach(n => benchmark2.filter(filterF)(n))
-
 }
 
 

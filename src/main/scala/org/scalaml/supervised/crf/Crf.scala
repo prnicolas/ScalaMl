@@ -89,6 +89,8 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
   
   		/**
   		 * <p>Predictive method for the conditional random field.</p>
+  		 * @throws MatchError if the model is undefined or the input string has an incorrect size
+   		 * @return PartialFunction of feature of type String as input and the predicted value of type Double as output
   		 */    
   override def |> : PartialFunction[String, Double] = {
   	 case obs: String if(obs != null && obs.length > 1 && model != None) => {

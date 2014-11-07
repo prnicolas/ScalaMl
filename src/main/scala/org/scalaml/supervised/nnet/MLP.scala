@@ -27,15 +27,16 @@ import org.scalaml.util.Display
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.Br>
 		 * This MLP uses the online training strategy suitable for time series.</p>
-		 * @param state stateuration parameters class for the MLP
+		 * @constructor Instantiates a multi-layer Perceptron for a specific configuration, time series and target or labeled data. [config] Configuration parameters class for the MLP. [xt] Time series of features in the training set. [labels] Labeled or target observations used for training. [objective] Implicit objective of the model (classification or regression)
+		 * @param config configuration parameters class for the MLP
 		 * @param xt time series of features in the training set
 		 * @param labels labeled or target observations used for training
 		 * @param objective Objective of the model (classification or regression)
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 
 		 * @author Patrick Nicolas
-		 * @since May 8, 2-14
-		 * @note Scala for Machine Learning
+		 * @since May 8, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network $Multilayer perceptron/Training cycle/epoch
 		 */
 final protected class MLP[T <% Double](config: MLPConfig, 
 		                               xt: XTSeries[Array[T]], 
@@ -63,22 +64,23 @@ final protected class MLP[T <% Double](config: MLPConfig,
   	 }
   	 match {
   		case Success(_model) => Some(_model)
-  		case Failure(e) => Display.error("MLP.model ", logger, e); None
+  		case Failure(e) => Display.none("MLP.model ", logger, e)
   	 }
    }
    
    	/**
    	 * <p>Define the predictive function of the classifier or regression as a data
    	 * transformation by overriding the pipe operator |>.</p>
+   	 * @throws MatchError if the model is undefined or the input string has an incorrect size
+     * @return PartialFunction of features vector of type Array[T] as input and the predicted vector values as output
    	 * @param feature new data point that need to be either classified or regressed.
-   	 * @return The normalized output of the neural network if model exists, None otherwise
    	 */
    override def |> : PartialFunction[Array[T], DblVector] = {
   	 case x: Array[T] if(x != null && model != None && x.size == dimension(xt)) => {
      	Try(model.get.getOutput(x))
   		match {
   			case Success(y) => y
-  			case Failure(e) => Display.error("MLP.|> ", logger, e); null
+  			case Failure(e) => Display.error("MLP.|> ", logger, e); Array.empty
   		}
   	 }
    }

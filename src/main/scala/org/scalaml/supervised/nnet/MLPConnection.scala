@@ -16,46 +16,45 @@ import scala.util.Random
 import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
 import ScalaMl._
-import MLPConnection._
 import org.scalaml.supervised.nnet.MLP.MLPObjective
 
 
 		/**
-		 * <p>Class that defines the connection between two consecutive layers in a Multi-layer
+		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
-		 * or variable of each layer.<br>
-		 * The Synapse is defined as a nested class</p>
-		 * @param state stateuration for the Multi-layer Perceptron
+		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)</p>
+		 * @constructor Create a MLP connection between two consecutive neural layer. [config] Configuration for the Multi-layer Perceptron.  [src] Source (or input or upstream) neural layer to this connection. [dst] Destination (or output or downstream) neural layer for this connection. [mlpObjective] Objective of the Neural Network (binary classification, regression...) 
+		 * @param config configuration for the Multi-layer Perceptron
 		 * @param src source or ingress layer for the network
 		 * @param dst destination of egress layer for the network
-		 * @throws IllegalArgumenException if either the stateuration or any of the Neural Network layer is defined
+		 * @throws IllegalArgumenException if either the configuration or if the source layer or destination layer is undefined.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network $Multilayer perceptron/Model definition
 		 */
 protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit val mlpObjective: MLP.MLPObjective)  {
 	require(config != null, "Configuration for the MLP connection is undefined")
 	require(src != null && dst != null, "The source or destination layer for this connection is undefined")
 	
     type MLPSynapse = (Double, Double)
-	// val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => if(n > 0) Array.fill(src.len)((beta*Random.nextDouble, 0.0)) else Array.fill(src.len)((1.0, 0.0)))
 
-	val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => if(n > 0) Array.fill(src.len)((Random.nextDouble*0.1, 0.0)) else Array.fill(src.len)((1.0, 0.0)))
+	private val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
+	                        if(n > 0) Array.fill(src.len)((Random.nextDouble*0.1, 0.0)) 
+	                        else Array.fill(src.len)((1.0, 0.0)))
 		   
 		/**
 		 * <p>Implement the forward propagation of input value. The output
-		 * value depends on the conversion selected for the output (ratio
-		 * or softmax).
+		 * value depends on the conversion selected for the output. If the output or destination
+		 * layer is a hidden layer, then the activation function is applied to the dot product of
+		 * weights and values. If the destination is the output layer, the output value is just the dot product weights and values.</p>
 		 */
      def connectionForwardPropagation: Unit = {
 	    val _output = synapses.drop(1).map(x => {
 		    val sum = x.zip(src.output)
 		               .foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
-		    if(!isOutLayer) 
-	  	        config.activation(sum)
-	  	    else
-	       	 sum
+		    if(!isOutLayer) config.activation(sum)
+	  	    else sum
 	    })
 	    (if(isOutLayer) mlpObjective(_output) else _output).copyToArray(dst.output, 1)     
      }
@@ -63,7 +62,9 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 
 	   
 	  	/**
-	  	 * <p>Implement the back propagation of output error (target - output).</p>
+	  	 * <p>Implement the back propagation of output error (target - output). The method uses
+	  	 * the derivative of the logistic function to compute the delta value for the output of 
+	  	 * the source layer.</p>
 	  	 */
 	def connectionBackpropagation: Unit =  
 	   Range(1, src.len).foreach(i => {
@@ -74,8 +75,8 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 	  	  
 	   
 	   	/**
-	   	 * Implement the update of the synapse (weight, grad weight) following the
-	   	 * back propagation of output error. This method is called during training.
+	   	 * <p>Implement the update of the synapse (weight, grad weight) following the
+	   	 * back propagation of output error. This method is called during training.</p>
 	   	 */
 	def connectionUpdate: Unit =  
 	   Range(1, dst.len).foreach(i => {  
@@ -92,8 +93,8 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 
 	   
    override def toString: String = {
-	  val buf = new StringBuilder("\nConnections weights from layer ")
-	  buf.append(src.id).append(" to layer ").append(dst.id).append("\n")
+	  val buf = new StringBuilder
+	  buf.append("\nConnections weights from layer ${src.id} to layer ${dst.id}\n")
 
 	  Range(0, dst.len).foreach( i => {
 	  	Range(0, src.len).foreach(j => {
@@ -116,38 +117,5 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 }
 
 
-
-
-		/**
-		 * <p>Companion object for MLP connections. The singleton is used to implicitly
-		 * defined the softmax and identity function fo the conversion of the output values.
-		 * @author Patrick Nicolas
-		 * @since May 6, 2014
-		 */
-object MLPConnection {
-	final val beta = 0.6
-	
-//	implicit def setSoftmax: Unit = outputActivation = softmax
-//	implicit def setNoSoftmax: Unit = outputActivation = noSoftmax
-	
-//	var outputActivation = (y: DblVector) => Array[Double](0.0)
- 
-	/*
-    def softmax(y: DblVector): DblVector = {
-	   val softmaxValues = new DblVector(y.size)
-	   val expY = y.map( Math.exp(_))
-	   val expYSum = expY.sum
-	   expY.map( _ /expYSum).copyToArray(softmaxValues , 1)
-	   softmaxValues
-	}
-	
-    def noSoftmax(y: DblVector): DblVector = {
-       val softmaxValues = new DblVector(y.size)
-       y.copyToArray(softmaxValues, 1)
-       softmaxValues
-    }
-    * 
-    */
-}
 
 // -------------------------------------  EOF ------------------------------------------------

@@ -48,13 +48,15 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	  	  	    val node = new svm_node
 	  	  	    node.index= xi._2
 	  	  	    node.value = xi._1
-	  	  	    svm_col(xi._2) = node })
+	  	  	    svm_col(xi._2) = node 
+	  	  	 })
+	  	  	 
 	  	  	 problem.x(xt_i._2) = svm_col
 	      })
 	      new SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
       } match {
-      	case Success(m) => Some(m)
-      	case Failure(e) => Display.error("SVM.model ", logger, e); None
+      	 case Success(m) => Some(m)
+      	 case Failure(e) => Display.none("SVM.model", logger, e)
       }
   }
   
@@ -72,14 +74,15 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	 */
   final def mse: Option[Double] = model match {
   	case Some(m) => {
-  		val z: Double = xt.toArray.zipWithIndex
+  		val z = xt.toArray
+  		          .zipWithIndex
   		          .foldLeft(0.0)((s, xti) => {
-  		          	val diff = svm.svm_predict(m.svmmodel, toNodes(xti._1)) - labels(xti._2)
-  		          	s + diff*diff
+  		             val diff = svm.svm_predict(m.svmmodel, toNodes(xti._1)) - labels(xti._2)
+  		          	 s + diff*diff
   		          })
-        Some(Math.sqrt(z))
+        Some(Math.sqrt(z)/xt.size)
   	}
-  	case None => None
+  	case None =>  Display.none("SVM.mse model is undefined", logger)
   }
   
   	/**
@@ -90,11 +93,11 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
   	case Some(m) => {
   		val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
   		if(wNorm < config.eps)
-  			None
+  			Display.none("SVM.margin sum of squared errors is null", logger)
   		else
   			Some(2.0/Math.sqrt(wNorm))
      }
-  	case None => None
+  	case None => Display.none("SVM.margin model is undefined", logger)
   }
   
   	/**
@@ -110,6 +113,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 
   private def accuracy(problem: svm_problem): Double = {
 	 if( config.isCrossValidation ) { 
+		 
 	    val target = new Array[Double](labels.size)
 	    svm.svm_cross_validation(problem, config.param, config.nFolds, target)
 	  	target.zip(labels).filter(z => Math.abs(z._1-z._2) < 1e-3).size.toDouble/labels.size
@@ -135,7 +139,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	  require(xt.size == labels.size, s"Number of features ${xt.size} and number of labels ${labels.size} differs for SVM")
   }
   
-  override def toString: String = s"\n${model.get.toString}"
+  override def toString: String = if(model != None) s"\n${model.get.toString}" else "SVM model undefined"
 }
 
 
