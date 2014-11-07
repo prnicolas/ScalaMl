@@ -19,6 +19,7 @@ import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import scala.language.implicitConversions
 import org.scalaml.supervised.hmm.HMMConfig
+import org.scalaml.app.Eval
 
 		/**
 		 * <p>Singleton for the evaluation of Hidden Markov Models presented in chapter 7<br>
@@ -29,9 +30,10 @@ import org.scalaml.supervised.hmm.HMMConfig
 		 * @since March 28, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models $Hidden Markov model
 		 */
-object HMMEval {
-  import HMM._, HMMForm._
-
+object HMMEval extends Eval  {
+   import HMM._, HMMForm._
+   val name: String = "HMMEval"
+  	 
    final val STATES_PATH = "resources/data/chap7/statesprob.csv"
    final val OBS_PATH = "resources/data/chap7/obsprob.csv"
    final val CSV_DELIM= ","
@@ -40,9 +42,9 @@ object HMMEval {
    final val EPS = 1e-3
    final val MAX_ITERS = 250
    
-   private val logger = Logger.getLogger("HMMEval")
+   private val logger = Logger.getLogger(name)
    
-   def run(arg: String): Int = arg match {
+   def run(args: Array[String]): Int = args(0) match {
   	  case "evaluation" => runCF1
   	  case "training" => runCF2
   	  case _ => Display.error("HMMEval.run: Incorrect argument $args", logger)

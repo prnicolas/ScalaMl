@@ -24,6 +24,8 @@ import org.scalaml.util.{Counter, NumericAccumulator}
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
+
+
 class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT: Int, nSteps: Int) {
    import YahooFinancials._
    val price = src |> adjClose

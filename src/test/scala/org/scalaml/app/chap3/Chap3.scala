@@ -11,30 +11,33 @@
 package org.scalaml.app.chap3
 
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 import scala.language.implicitConversions
+import org.scalaml.app.Eval
 
-trait FilteringEval {
+trait FilteringEval extends Eval {
   def run(args: Array[String]): Int
 }
 
 
-final class Chap3 extends FunSuite {  
+final class Chap3 extends ScalaMlTest  {  
+	val chapter: String = "Chap 3"
+		
     implicit def double2String(x: Double): String = x.toString
-	test("Moving averages evaluation") {
-	  assert(MovingAveragesEval.run(Array[String]("BAC", "10")) != -1)
+	test(s"$chapter Moving averages evaluation") {
+	   evaluate(MovingAveragesEval, Array[String]("BAC", "10")) 
 	}
 	
-	test("Discrete Fourier Series synthetic evaluation") {
-	  assert(DFTEval.run(null) != -1)
+	test(s"$chapter Discrete Fourier Series synthetic evaluation") {
+	   evaluate(DFTEval)
 	}
 	
-	test("Discrete Fourier Series evaluation on stock") {
-	  assert(DFTEval.run(Array[String]("BAC")) != -1)
+	test(s"$chapter Discrete Fourier Series evaluation on stock") {
+	   evaluate(DFTEval, Array[String]("BAC"))
 	}
 	
-	test("Kalman filter evaluation") {
-	   (new DKalmanEval).run(Array[String]("BAC"))
+	test(s"$chapter Kalman filter evaluation") {
+	   evaluate(new DKalmanEval, Array[String]("BAC"))
 	}
 }
 

@@ -33,7 +33,9 @@ import org.scalaml.util.Display
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
 class DKalmanEval extends FilteringEval {
    import YahooFinancials._, types.ScalaMl._
-   val logger = Logger.getLogger("DKalmanEval")
+   val name: String = "DKalmanEval"
+   
+   val logger = Logger.getLogger(name)
      
    		  // Noise has to be declared implicitly
    implicit val qrNoise = QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   

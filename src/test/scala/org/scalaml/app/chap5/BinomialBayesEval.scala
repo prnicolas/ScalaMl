@@ -23,13 +23,14 @@ import org.scalaml.supervised.bayes.NaiveBayes
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 
 		/**
 		 * <p>Generic trait that implements the extraction of data associated to a stock
 		 * or ETF ticker symbol, located into a directory
 		 */
-trait BayesEval {
+trait BayesEval extends Eval {
    import org.scalaml.trading.YahooFinancials._
    final val path = "resources/data/chap5/"
        
@@ -48,7 +49,8 @@ trait BayesEval {
 			 * <p>Singleton to evaluate the Binomial Naive Bayes classifier.</p>
 			 */
 object BinomialBayesEval extends BayesEval {
-	private val logger = Logger.getLogger("BinomialBayesEval")
+	val name: String = "BinomialBayesEval"
+	private val logger = Logger.getLogger(name)
 	
 	override def run(args: Array[String]): Int = {
 	   require(args != null && args.size >2, "BinomialBayesEval.run incorrect arguments list")

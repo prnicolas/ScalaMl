@@ -10,8 +10,9 @@
  */
 package org.scalaml.app.chap7
 
+import org.scalaml.app.ScalaMlTest
 
-import org.scalatest.FunSuite
+
 
 	/**
 	 * Test class to execute the test cases presented in Chapter7
@@ -20,18 +21,19 @@ import org.scalatest.FunSuite
 	 * @since March 25, 2014
 	 * @note Scala for Machine Learning
 	 */
-final class Chap7 extends FunSuite {
-		 
-   test("Hidden Markov Model evaluation") {
-  	   assert(HMMEval.run("evaluation") != -1)
+final class Chap7 extends ScalaMlTest {
+   val chapter: String = "Chap 7"
+  	 
+   test(s"$chapter Hidden Markov Model evaluation") {
+  	   evaluate(HMMEval, Array[String]("evaluation"))
    }
    
-   test("Hidden Markov Model training") {
-  	   assert(HMMEval.run("training") != -1)
+   test(s"$chapter Hidden Markov Model training") {
+  	   evaluate(HMMEval, Array[String]("training"))
    }
    
-   test("Conditional Random Fields evaluation") {
-  	  assert(CrfEval.run != -1)
+   test(s"$chapter Conditional Random Fields evaluation") {
+  	  evaluate(CrfEval)
    }
 }
 

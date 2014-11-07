@@ -10,33 +10,35 @@
  */
 package org.scalaml.app.chap5
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
-final class Chap5 extends FunSuite {
-   test("Chapter 5: Binomial Naive Bayes evaluation") {
-  	  assert(BinomialBayesEval.run(Array[String]("0.5", "8")) >=0, "Chap5.BinomialBayesEval failed")
+final class Chap5 extends ScalaMlTest {
+   val chapter: String = "Chap5"
+  	 
+   test(s"$chapter Binomial Naive Bayes evaluation") {
+  	  evaluate(BinomialBayesEval, Array[String]("0.5", "8"))
   	  
   	  val TRAIN_VALIDATION_RATIO = "0.8"
-	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
+	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4"))
+	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12"))
+	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36"))
 	  
-	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("GE", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
+	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "4"))
+	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "12"))
+	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "36"))
 	  
-	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12")) >=0, "Chap5.BinomialBayesEval failed")
-	  assert(BinomialBayesEval.run(Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36")) >=0, "Chap5.BinomialBayesEval failed")
+	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4"))
+	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
+	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
    }
    
-   test("Chapter 5: Naive Bayes text analysis evaluation") {
-  	  assert(TextBayesEval.run >= 0, "Chap5. Text Analysis using Naive Bayes failed")
+   test(s"$chapter Naive Bayes text analysis evaluation") {
+  	   evaluate(TextBayesEval)
    }
    
-   test("Chapte 5: Naive Bayes and function classification") {
-  	   	assert(FunctionClassificationEval.run >= 0, "Chap5. Text Analysis using Naive Bayes failed")
+   test(s"$chapter Naive Bayes and function classification") {
+  	   	evaluate(FunctionClassificationEval)
    }
 }
 

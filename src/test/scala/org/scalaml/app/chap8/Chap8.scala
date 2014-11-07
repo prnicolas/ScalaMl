@@ -10,8 +10,7 @@
  */
 package org.scalaml.app.chap8
 
-import org.scalatest.FunSuite
-
+import org.scalaml.app.ScalaMlTest
 
 
 	/**
@@ -21,23 +20,30 @@ import org.scalatest.FunSuite
 	 *  @since May 7. 2014
 	 *  @note Scala for Machine Learning
 	 */
-final class Chap8 extends FunSuite {
-
-   test("Support Vector machines margin factor evaluation") {
-	 SVCMarginEval.run
+final class Chap8 extends ScalaMlTest {
+   val chapter = "Chap 8"
+  	 
+   test(s"$chapter Support Vector machines margin factor evaluation") {
+  	  evaluate(SVCMarginEval)
    }
    
-    test("Support Vector machines kernel function evaluation") {
-	  SVCKernelEval.run
+    test(s"$chapter  Support Vector machines kernel function evaluation") { 
+      evaluate(SVCKernelEval)
     }
     
-    test("Support Vector classifier evaluation") {
-	 SVCEval.run
+    test(s"$chapter Support Vector classifier evaluation") {
+	   evaluate(SVCEval)
     }
     
-    test("One-class Support Vector classifier evaluation") {
-	   SVCOutliersEval.run
+    test(s"$chapter One-class Support Vector classifier evaluation") {
+	   evaluate(SVCOutliersEval)
     }
+}
+
+
+object Chap8App extends App {
+	val chap = new Chap8
+	chap.evaluate(SVCMarginEval)
 }
 
 

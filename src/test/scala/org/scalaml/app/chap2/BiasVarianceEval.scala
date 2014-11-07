@@ -16,6 +16,7 @@ import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 
 
@@ -26,11 +27,13 @@ import org.scalaml.util.Display
 	 * @since February 1, 2014
 	 * @note Scala for Machine Learning
 	 */
-object BiasVarianceEval {
+object BiasVarianceEval extends Eval {
+	val name: String = "BiasVarianceEval"
+		
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 		
-	private val logger = Logger.getLogger("BiasVarianceEval")
-	def run: Int = {
+	private val logger = Logger.getLogger(name)
+	def run(args: Array[String]): Int = {
 		Display.show("Evaluation of Bias Variance decomposition", logger)
 		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)

@@ -10,25 +10,30 @@
  */
 package org.scalaml.app.chap9
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
-
-final class Chap9 extends FunSuite {
-  test("Multi-perceptron eta factor evaluation") {
-	 MLPConfigEval.run(Array[String]("eta"))
+final class Chap9 extends ScalaMlTest {
+  val chapter: String = "Chap 9"
+  	
+  test(s"$chapter Multi-perceptron eta factor evaluation") {
+	  evaluate(MLPConfigEval, Array[String]("eta"))
   }
   
-  test("Multi-perceptron alpha factor evaluation") {
-	 MLPConfigEval.run(Array[String]("alpha")) 
+  test(s"$chapter Multi-perceptron alpha factor evaluation") {
+	  evaluate(MLPConfigEval, Array[String]("alpha"))
   }
   
-  test("Multi-perceptron validation") {
-	 MLPValidation.run(null) 
+  test(s"$chapter Multi-perceptron validation") {
+	  evaluate(MLPValidation)
   }
   
-  test("Multi-perceptron binomial classification evaluation") {
-	 BinaryMLPEval.run
+  test(s"$chapter Multi-perceptron binomial classification evaluation") {
+	 evaluate(BinaryMLPEval)
+  }
+  
+  test(s"$chapter Multi-perceptron binomial classification evaluation") {
+	 evaluate(MLPEval)
   }
 }
 

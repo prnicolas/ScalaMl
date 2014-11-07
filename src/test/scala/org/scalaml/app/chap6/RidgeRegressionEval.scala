@@ -19,15 +19,19 @@ import org.scalaml.supervised.regression.linear.RidgeRegression
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
-object RidgeRegressionEval {
+
+
+object RidgeRegressionEval extends Eval {
+   val name: String = "RidgeRegressionEval"
    final val path = "resources/data/chap6/CU.csv"
    final val dataInput = "output/chap6/CU_input.csv"
     
-   private val logger = Logger.getLogger("RidgeRegressionEval")	 
+   private val logger = Logger.getLogger(name)	 
    
-	def run: Int = {
-  	   	Display.show("Evaluation of Ridge regression", logger)
+	def run(args: Array[String]): Int = {
+  	   	Display.show(s"$name evaluation of Ridge regression", logger)
   	   	 
   	   	Try {
 		   val src = DataSource(path, true, true, 1)
@@ -46,19 +50,19 @@ object RidgeRegressionEval {
 		    val regression = new RidgeRegression[Double](features, 
 				                                         deltaPrice, 0.5)
 	        regression.weights match {
-			   case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"{wi._1}: ${wi._2}", logger))
-			   case None => Display.error("The multivariate regression could not be trained", logger)
+			   case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name {wi._1}: ${wi._2}", logger))
+			   case None => Display.error(s"$name the multivariate regression could not be trained", logger)
 		    }
 		    
 		    regression.rss match {
-		    	case Some(rss) => Display.show(rss, logger)
-		    	case None => Display.error("The multivariate regression could not be trained", logger)
+		    	case Some(rss) => Display.show(s"$name rss = $rss", logger)
+		    	case None => Display.error(s"$name the multivariate regression could not be trained", logger)
 		    }
 		    
 		    Display.show((1 until 10 by 2), logger)
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error("RidgeRegressionEval.run", logger, e)
+			case Failure(e) => Display.error(s"$name run failes", logger, e)
 		}
   	   	
    }

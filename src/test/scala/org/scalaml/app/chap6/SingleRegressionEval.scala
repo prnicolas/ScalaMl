@@ -20,6 +20,7 @@ import org.scalaml.util.Display
 import org.scalaml.core.XTSeries
 import scala.util.{Try, Success, Failure}
 import XTSeries._
+import org.scalaml.app.Eval
 
 
 
@@ -30,13 +31,13 @@ import XTSeries._
 		 * @since April 23, 2014
 	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
 		 */
-object SingleLinearRegressionEval {
-			
+object SingleLinearRegressionEval extends Eval {
+    val name: String = "SingleLinearRegressionEval"			
 	final val path = "resources/data/chap6/CU.csv"
-	private val logger = Logger.getLogger("SingleLinearRegressionEval")
+	private val logger = Logger.getLogger(name)
 		
-	def run: Int =  {
-		Display.show("Evaluation of single variate linear regression", logger)
+	def run(args: Array[String]): Int =  {
+		Display.show(s"$name evaluation of single variate linear regression", logger)
 		
 		Try {
 		    val price = DataSource(path, false, true, 1) |> adjClose
@@ -46,15 +47,15 @@ object SingleLinearRegressionEval {
 		    val slope = linRegr.slope
 		    val intercept = linRegr.intercept
 		    if( slope != None ) {
-		    	Display.show(s"y = $slope.x + $intercept", logger)
-		    	Display.show(s"validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
+		    	Display.show(s"$name y = $slope.x + $intercept", logger)
+		    	Display.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
 		    }
 		    else
-		    	Display.error("SingleLinearRegressionEval.run failed to get slope", logger)
+		    	Display.error(s"$name run failed compute slope", logger)
 		    	  
 		  }match {
 		  	case Success(n) => n
-		  	case Failure(e) => Display.error("SingleLinearRegressionEval.run", logger, e)
+		  	case Failure(e) => Display.error(s"$name failed to be build a model", logger, e)
 		  }
 	}
 	
@@ -69,7 +70,7 @@ object SingleLinearRegressionEval {
 
 
 object SingleLinearRegressionEvalApp extends App {
-	 SingleLinearRegressionEval.run
+	 SingleLinearRegressionEval.run(null)
 }
 
 

@@ -20,30 +20,33 @@ import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
-object SVREval {
+object SVREval extends Eval {
+   val name: String = "SVREval"
    final val path = "resources/data/chap8/SPY.csv"
    final val C = 1
    final val GAMMA = 0.8
    final val EPS = 1e-1
    final val EPSILON = 0.1
-   private val logger = Logger.getLogger("SVREval")
-   type SVM_Double = SVM[Double]
    
-   def run: Int = {
+   private val logger = Logger.getLogger(name)
+   
+   def run(args: Array[String]): Int = {
 	   Display.show("Evaluation of Support Vector Regression", logger)
        Try {
 	      val price = DataSource(path, false, true, 1) |> adjClose	
 	  	  val priceIdx = price.zipWithIndex
-	  	  	               .map( x => (x._1.toDouble, x._2.toDouble))
+	  	  	                  .map( x => (x._1.toDouble, x._2.toDouble))
 	      val linRg = SingleLinearRegression(priceIdx)  	  	
 	  	  	 
 	  	  val config = SVMConfig(new SVRFormulation(C, EPSILON), RbfKernel(GAMMA))
 	  	  val labels = price.toArray
           val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
           val svr = SVM[Double](config, features, labels)
-             
+          Display.show(s"SVREval.run: ${svr.toString}", logger)   
+          
           display("Support Vector vs. Linear Regression", 
             		  collect(svr, linRg, price).toList,
             		  List[String]("SVR", "Linear regression", "Stock Price"))
@@ -55,7 +58,7 @@ object SVREval {
    }
    
    import SingleLinearRegression._
-   private def collect(svr: SVM_Double, lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
+   private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
   	   import scala.collection.mutable.ArrayBuffer
 
   	   val collector = Array.fill(3)(new ArrayBuffer[XY])
@@ -69,12 +72,15 @@ object SVREval {
    
    private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {
   	  import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
-  	 
        require(xs != null && xs.size > 0, "Cannot display an undefined time series")
        
        val plotter = new ScatterPlot(("Training set", label, "SPY"), new LightPlotTheme)
        plotter.display(xs, lbls, 250, 340)
 	}
+}
+
+object SVREvalApp extends App {
+	SVREval.run(Array.empty)
 }
 
 // --------------------------  EOF -----------------------------------------------

@@ -24,6 +24,7 @@ import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.filtering.DFT
+import org.scalaml.app.Eval
 
 
 
@@ -39,9 +40,11 @@ import org.scalaml.filtering.DFT
 			 * @since July 3, 2014
 			 * @note: Scala for Machine Learning Chapter 5: Naive Bayes Models
 			 */
-object FunctionClassificationEval {
+object FunctionClassificationEval extends Eval {
 	import scala.util.Random
-	private val logger = Logger.getLogger("NaiveBayesEval")
+	
+	val name: String = "NaiveBayesEval"
+	private val logger = Logger.getLogger(name)
 	type Input = Array[(Array[Double], Int)]
 		  
 	val DATA_SIZE = 1025
@@ -50,7 +53,7 @@ object FunctionClassificationEval {
     val GAMMA = ALPHA*0.1
     val SPECTRUM = 24
       
-	def run: Int = {
+	def run(args: Array[String]): Int = {
 			/**
 			 * Labeled mathematical functions.
 			 */

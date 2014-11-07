@@ -10,7 +10,7 @@
  */
 package org.scalaml.app.chap1
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
 
@@ -24,13 +24,15 @@ import org.scalatest.FunSuite
 		 * @since December 11, 2013
 		 * @note Scala for Machine Learning.
 		 */
-final class Chap1 extends FunSuite {
-	test("Simple Binary Logistic Regression") {
-	   assert(LogBinRegressionEval.run == 0)
+final class Chap1 extends ScalaMlTest {
+	val chapter: String = "Chap 1"
+		
+	test(s"$chapter Simple Binary Logistic Regression") {
+	   evaluate(LogBinRegressionEval)
 	}
 	
-	test("JFreeChart Plotting") {
-		assert(PlotterEval.run == 0)
+	test(s"$chapter JFreeChart Plotting") {
+	   evaluate(PlotterEval)
 	}
 }
 

@@ -10,29 +10,32 @@
  */
 package org.scalaml.app.chap6
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
 
-final class Chap6 extends FunSuite {
-	test("Single linear regression evaluation") {
-	   assert(SingleLinearRegressionEval.run >= 0, "Chapter 6 SingleLinearRegressionEval failed")
+
+final class Chap6 extends ScalaMlTest {
+	val chapter: String = "Chap 6"
+		
+	test(s"$chapter Single linear regression evaluation") {
+	   evaluate(SingleLinearRegressionEval)
 	}
 
-	test("Least squares regression trending evaluation") {
-		 assert(MultiLinearRegressionEval.run(Array[String]("trend")) >= 0, "Chapter 6 MultiLinearRegressionEval for trends failed")
-	}
-	
-	test("Least squares regression features selection evaluation") {
-		assert(MultiLinearRegressionEval.run(Array[String]("filter")) >= 0, "Chapter 6 MultiLinearRegressionEval for features selection failed")
-	}
-	
-	test("Ridge regression evaluation") {
-		assert(RidgeRegressionEval.run >= 0, "Chapter 6 Ridge regression failed")
+	test(s"$chapter Least squares regression trending evaluation") {
+		evaluate(MultiLinearRegressionEval, Array[String]("trend"))
 	}
 	
-	test("Binomial logistic regression evaluation") {
-		assert(LogisticRegressionEval.run >= 0, "Chapter 6 Binomial Logistic regression failed")
+	test(s"$chapter Least squares regression features selection evaluation") {
+		evaluate(MultiLinearRegressionEval, Array[String]("filter"))
+	}
+	
+	test(s"$chapter Ridge regression evaluation") {
+		evaluate(RidgeRegressionEval)
+	}
+	
+	test(s"$chapter Binomial logistic regression evaluation") {
+		evaluate(LogisticRegressionEval)
 	}
 }
 

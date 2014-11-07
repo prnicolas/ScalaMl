@@ -16,6 +16,7 @@ import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 
 
@@ -27,7 +28,9 @@ import org.scalaml.util.Display
 		 * @since March 28, 2014
 		 * @note Scala for Machine Learning
 		 */
-object CrfEval {
+object CrfEval extends Eval {
+  val name: String = "CrfEval"
+  	
   final val LAMBDA = 0.5
   final val NLABELS = 9
   final val MAX_ITERS = 100
@@ -35,10 +38,10 @@ object CrfEval {
   final val EPS = 1e-3
   final val PATH = "resources/data/chap7/rating"
   
-  private val logger = Logger.getLogger("CrfEval")
+  private val logger = Logger.getLogger(name)
   
-  def run: Int = {
-    Display.show("Evaluation of Conditional Random Fields", logger)
+  def run(args: Array[String]): Int = {
+    Display.show(s"$name evaluation of Conditional Random Fields", logger)
     
 
 	val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
@@ -50,8 +53,8 @@ object CrfEval {
 	  	 case None => throw new IllegalStateException("Count not train the CRF model")
 	   }
 	 } match {
-		case Success(weights) => Display.show("CrfEval " + weights, logger)
-		case Failure(e) => Display.error("CrfEval ", logger, e)
+		case Success(weights) => Display.show(s"$name weights=$weights", logger)
+		case Failure(e) => Display.error(s"$name error ", logger, e)
 	 }
   }
 }

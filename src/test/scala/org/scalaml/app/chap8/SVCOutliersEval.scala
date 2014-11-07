@@ -19,18 +19,21 @@ import types.ScalaMl._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 	
-object SVCOutliersEval {
+object SVCOutliersEval extends Eval {
+   val name: String = "SVCOutliersEval"
    val path = "resources/data/chap8/dividends2.csv"	
    val NU = 0.2
    val GAMMA = 0.5
    val EPS = 1e-3
    val NFOLDS = 2
 	
-   private val logger = Logger.getLogger("SVCOutliersEval")
-	def run: Int = {
-	   Display.show("Evaluation of One class Support Vector Classifier", logger)
+   private val logger = Logger.getLogger(name)
+	
+   def run(args: Array[String]): Int = {
+	   Display.show("SVCOutliersEval Evaluation of One class Support Vector Classifier", logger)
 	   val extractor = relPriceChange :: 
 	                   debtToEquity ::
 	                   dividendCoverage ::
@@ -45,9 +48,11 @@ object SVCOutliersEval {
 	      val config = SVMConfig(new OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
 	  	  val features = XTSeries.transpose(xs.take(xs.size-1))
 		  val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
-          
+     
+		  Display.show(s"SVCOutliersEval.run: ${svc.toString}", logger)   
+		        
 		  svc.accuracy match {
-	  		case Some(acc) => Display.show("Accuracy: " + acc, logger)
+	  		case Some(acc) => Display.show("SVCOutliersEval.run completed", logger)
 	  		case None => Display.error("Could not validate the training set", logger)
 	  	  }
 	   } match {
@@ -57,5 +62,9 @@ object SVCOutliersEval {
 	}
 }
 
+
+object SVCOutliersEvalApp extends App {
+	SVCOutliersEval.run(Array.empty)
+}
 
 // --------------------------  EOF -----------------------------------------------

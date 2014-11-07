@@ -19,18 +19,20 @@ import types.ScalaMl._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
-object SVCEval {
-   final val path = "resources/data/chap8/dividendsB.csv"	
+object SVCEval extends Eval {
+   val name: String = "SVCEval"
+   final val path = "resources/data/chap8/dividends2.csv"	
    final val C = 1.0
    final val GAMMA = 0.5
    final val EPS = 1e-3
    final val NFOLDS = 2
 	
-   private val logger = Logger.getLogger("SVCEval")
-   def run: Int = {
-	   Display.show("Evaluation of Binary Support Vector Classifier", logger)
+   private val logger = Logger.getLogger(name)
+   def run(args: Array[String]): Int = {
+	   Display.show("SVCEval: Evaluation of Binary Support Vector Classifier", logger)
 	   val extractor = relPriceChange :: 
 	                   debtToEquity ::
 	                   dividendCoverage ::
@@ -46,17 +48,22 @@ object SVCEval {
 	  	   val features = XTSeries.transpose(xs.take(xs.size-1))
 		   val svc = SVM[Double](config, features, xs.last)
 		     
+		   Display.show(s"SVCEval.run ${svc.toString}", logger)
 		   svc.accuracy match {
-	  	      case Some(acc) => Display.show(s"Accuracy: $acc", logger)
+	  	      case Some(acc) => Display.show("SVCEval.run completed", logger)
 	  	      case None => Display.error("SVCEval.run accuracy could not be computed", logger)
 	  	   }
 	  	} match {
 	  		case Success(n) => n
-	  		case Failure(e) => Display.error("Could not validate the training set", logger, e)
+	  		case Failure(e) => Display.error("SVCEval.run Could not validate the training set", logger, e)
 	  	}
 	}
 }
 
+
+object SVCEvalApp extends App {
+	SVCEval.run(Array.empty)
+}
 
 
 // --------------------------  EOF -----------------------------------------------

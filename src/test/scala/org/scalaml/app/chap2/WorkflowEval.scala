@@ -20,6 +20,7 @@ import org.scalaml.plots.LightPlotTheme
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
+import org.scalaml.app.Eval
 
 
 
@@ -106,10 +107,11 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @since February 3, 2014
 	 * @note Scala for Machine Learning
 	 */
-object WorkflowEval {
-   private val logger = Logger.getLogger("WorkflowEval")
+object WorkflowEval extends Eval {
+   val name: String = "WorkflowEval"
+   private val logger = Logger.getLogger(name)
    
-   def run: Int = {
+   def run(args: Array[String]): Int = {
   	  val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
 	  val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
 		                         with PreprocModule[Double => Double, DblVector] 

@@ -22,6 +22,7 @@ import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.collection.mutable.ListBuffer
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
 			/**
@@ -30,8 +31,9 @@ import scala.util.{Try, Success, Failure}
 			 * Trend analysis and filter: MultiLinearRegressionEval.filter<br>
 			 * Features selection: MultiLinearRegressionEval.featuresSelection
 			 */
-object MultiLinearRegressionEval {
-   private val logger = Logger.getLogger("MultiLinearRegressionEval")
+object MultiLinearRegressionEval extends Eval {
+   val name: String = "MultiLinearRegressionEval"
+   private val logger = Logger.getLogger(name)
    
    def run(args: Array[String] = null): Int = {
   	  if( args != null && args.size > 0 && args(0).equals("trend")) 
@@ -41,7 +43,7 @@ object MultiLinearRegressionEval {
    }	 
    
    private def featuresSelection: Int = {
-  	  Display.show("Evaluation of ordinary least squares regression inference", logger)
+  	  Display.show(s"$name evaluation of ordinary least squares regression inference", logger)
   	  
   	  val path = "resources/data/chap6/"
   	  val output = "output/chap6/CNY_output.csv"
@@ -79,7 +81,7 @@ object MultiLinearRegressionEval {
 	  	  Display.show(r2, logger)
   	  } match {
   	  	case Success(n) => n
-  	  	case Failure(e) => Display.error("MultiLinearRegressionEval.inference", logger, e)
+  	  	case Failure(e) => Display.error(s"$name MultiLinearRegressionEval.inference", logger, e)
   	  }
    }
   	  
@@ -93,7 +95,7 @@ object MultiLinearRegressionEval {
   	               if( w._2 == 0) buf.append(w._1)
   	               else buf.append(s" + ${w._1}.x${w._2}")
   	            })
-  	  buf.append(s"RSS: ${regression.rss.get}").toString
+  	  buf.append(s"$name RSS: ${regression.rss.get}").toString
   }
    
   
@@ -106,7 +108,7 @@ object MultiLinearRegressionEval {
   
   	 
    private def filter: Int = {
-  	 Display.show("Evaluation of ordinary least squares regression filtering", logger)
+  	 Display.show(s"$name Evaluation of ordinary least squares regression filtering", logger)
   	   	 
   	 val path = "resources/data/chap6/CU.csv"
      val output = "output/chap6/CU_output.csv"
@@ -136,14 +138,14 @@ object MultiLinearRegressionEval {
 	      	   w.zipWithIndex.foreach( wi => buf.append(s"${wi._1}: ${wi._2}\n"))
 	      	   Display.show(buf.toString, logger)
 	       }
-		   case None => Display.error("The multivariate regression could not be trained", logger)
+		   case None => Display.error(s"$name  multivariate regression could not be trained", logger)
 		}
-		Display.show("MultiLinearRegressionEval.filter", logger)
+		Display.show(s"$name MultiLinearRegressionEval.filter", logger)
 	  }
   	 
   	  match {
   	  	case Success(n) => n
-  	  	case Failure(e) => Display.error("MultiLinearRegressionEval.filter", logger, e)
+  	  	case Failure(e) => Display.error(s"$name filter", logger, e)
   	  }
    }
 }

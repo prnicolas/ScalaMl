@@ -10,13 +10,15 @@
  */
 package org.scalaml.app.chap11
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
 
-final class Chap11 extends FunSuite {  
-   test("QLearning evaluation")  {
-  	  QLearningEval.run
+final class Chap11 extends ScalaMlTest { 
+   val chapter: String = "Chap 11"
+  	 
+   test(s"$chapter QLearning evaluation")  {
+  	  evaluate(QLearningEval)
    }
 }
 

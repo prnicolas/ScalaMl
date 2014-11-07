@@ -10,33 +10,27 @@
  */
 package org.scalaml.app.chap12
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
-final class Chap12 extends FunSuite {
-	/*
-	test("Scala parallel collections") {
-	   ScalaParallelCollectionEval.run
+
+final class Chap12 extends ScalaMlTest  {
+   val chapter: String = "Chap 12"
+  	 
+	test(s"$chapter Scala parallel collections") {
+	   evaluate(ParBenchmarkEval)
 	}
-	* 
-	*/
-	/*
-	test("Akka actors evaluation") {
-	   AkkaActorEval.run
+	test(s"$chapter Akka actors evaluation") {
+	   evaluate(ActorsManagerEval)
 	}
 	
-	test("Akka futures evaluation") {
-		   AkkaFutureEval.run
+	test(s"$chapter Akka futures evaluation") {
+		evaluate(TransformFuturesEval)
 	}
-	* 
-	*/
-	/*
-	test("Spark K-means evaluation") {
-		SparkKMeansEval.run
-	}
-	* 
-	*/
 
+	test(s"$chapter Spark K-means evaluation") {
+		evaluate(SparkKMeansEval)
+	}
 }
 
 

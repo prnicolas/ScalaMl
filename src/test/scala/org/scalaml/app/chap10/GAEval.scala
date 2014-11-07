@@ -25,6 +25,7 @@ import Chromosome._
 import org.apache.log4j.Logger
 import org.scalaml.ga.GeneticIndices
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
 /**
@@ -32,17 +33,19 @@ import scala.util.{Try, Success, Failure}
  *  @date Aug 10, 2014
  *  @project Book
  */
-object GAEval  {
+object GAEval extends Eval {
    import org.scalaml.trading.YahooFinancials._
+   val name: String = "GAEval"
+   
    final val path = "resources/data/chap10/GS.csv"
    final val XOVER = 0.8
    final val MU = 0.4
    final val MAX_CYCLES = 400
 	   
-   private val logger = Logger.getLogger("GAEval")
+   private val logger = Logger.getLogger(name)
 
    
-   def run: Int = { 
+   def run(args: Array[String]): Int = { 
   	 Try {
   	    val src = DataSource(path, false, true, 1)
   	    		// Extract relative variation of price between two consecutive trading sessions
@@ -59,6 +62,7 @@ object GAEval  {
 		       // Relative difference between close and open price
 		val relCloseOpen = src |> YahooFinancials.relCloseOpen
 
+		Display.show(s"$name Delta price:\n", logger)
 		Display.show(deltaPrice, logger)
 	    implicit val digital = Discretization((x: Double) =>(x*1024).toInt, (n: Int) => n/1024.0) 
 	   
@@ -87,11 +91,12 @@ object GAEval  {
 	    val best = gaSolver |> population
 	    best.fittest(2)
 	        .getOrElse(ArrayBuffer.empty)
-	        .foreach(ch => Display.show(s"Best strategy: ${ch.show}", logger))
-	  	Display.show("GAEval.run completed", logger)
+	        .foreach(ch => Display.show(s"$name Best strategy: ${ch.show}", logger))
+	        
+	  	Display.show(s"$name run completed", logger)
      } match {
     	case Success(n) => n
-  	    case Failure(e) => Display.error("GAEval.run completed", logger, e)
+  	    case Failure(e) => Display.error(s"$name failed", logger, e)
      }
    }
 }
@@ -100,7 +105,7 @@ object GAEval  {
 
 
 object GAEvalApp extends App {
-	GAEval.run
+	GAEval.run(Array.empty)
 }
 
 // ----------------  EOF ------------------------------------

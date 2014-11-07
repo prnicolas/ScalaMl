@@ -19,6 +19,7 @@ import org.scalaml.plots.BlackPlotTheme
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
 		/**
@@ -31,8 +32,10 @@ import scala.util.{Try, Success, Failure}
 		 * @since April 24, 2014
 		 * @note Scala for Machine Learning
 		 */
-object SVCKernelEval {
+object SVCKernelEval extends Eval {
 	import scala.util.Random
+	
+	val name: String = "SVCKernelEval"
     final val EPS = 0.0001
     final val C = 1.0
     final val GAMMA = 0.8
@@ -41,33 +44,30 @@ object SVCKernelEval {
     final val DEGREE = 2
     type Features = XTSeries[DblVector]
     
-    private val logger = Logger.getLogger("SVCKernelEval")
+    private val logger = Logger.getLogger(name)
     	/**
     	 * Main routine to compare the impact of different kernel function
     	 * using a synthetic features with format x = a*random + b*random
     	 */
-    def run: Unit = {
-	    Display.show("Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+    def run(args: Array[String]): Int = {
+	    Display.show("SVCKernelEval: Comparison of kernel functions for a Binary Support Vector Classifier", logger)
 		compareKernel(0.6, 0.3)
 	    compareKernel(0.7, 0.3)
 	    compareKernel(0.8, 0.3)
-	    compareKernel(1.4, 0.3)
+	    compareKernel(1.3, 0.3)
 	}
     
     
     private def genData(variance: Double, mean: Double): DblMatrix = {
-    	val adjVariance1 = variance*Random.nextDouble - mean
-    	val adjVariance2 = variance*Random.nextDouble - mean
-		Array.fill(N)(Array[Double](adjVariance1, adjVariance2))
+    	val rGen = new Random(System.currentTimeMillis)
+    	Array.tabulate(N)( _ => {rGen.setSeed(rGen.nextLong); Array[Double](rGen.nextDouble, rGen.nextDouble).map(x => variance*x - mean) })
     }
-
 		
-	private def compareKernel(a: Double, b: Double) {
+	private def compareKernel(a: Double, b: Double): Int = {
     	require(a > 0.0 && a < 2.0, s"Cannot compare Kernel with inadequate features a = $a")
     	require(b > -0.5 && b < 0.5, s"Cannot compare Kernel with inadequate features b = $b")
     	   	
 		val trainingSet = genData(a, b) ++ genData(a, 1-b)
-		
 		val testSet = genData(a, b) ++ genData(a, 1-b)
 		val setHalfSize = trainingSet.size>>1
 		
@@ -81,13 +81,14 @@ object SVCKernelEval {
                       evalKernel(trainingSet, testSet, labels, LinearKernel) ::
                       evalKernel(trainingSet, testSet, labels, PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
                       List[Double]()
-         Display.show(legend + "\n" + results.toString, logger)
+        Display.show(s"SVCKernelEval.run:  $legend completed", logger)
 	}
 	
 	private def evalKernel(features: DblMatrix, test: DblMatrix, labels: DblVector, kF: SVMKernel): Double = {
 		val config = SVMConfig(new CSVCFormulation(C), kF)
 	    val xt = XTSeries[DblVector](features)
 		val svc = SVM[Double](config,  xt, labels)
+		
 		val successes = test.zip(labels)
 		                    .count(tl => {
 		                    	Try((svc |> tl._1) == tl._2)
@@ -105,6 +106,10 @@ object SVCKernelEval {
 	}
 }
 
+
+object SVCKernelEvalApp extends App {
+	SVCKernelEval.run(Array.empty)
+}
 
 
 // --------------------------- EOF --------------------------------------------------

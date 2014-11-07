@@ -11,7 +11,7 @@
 package org.scalaml.app.chap2
 
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
 
@@ -26,13 +26,15 @@ import org.scalatest.FunSuite
 		 * @since February 1, 20
 		 * @note Scala for Machine Learning.
 		 */
-final class Chap2 extends FunSuite {
-   test("Workflow evaluation") {
-  	  assert(WorkflowEval.run == 0)
+final class Chap2 extends ScalaMlTest {
+   val chapter: String = "Chap 2"
+  	 
+   test(s"$chapter Workflow evaluation") {
+  	  evaluate(WorkflowEval)
    }
    
-   test("Variance - Bias decomposition evaluation") {
-  	  assert(BiasVarianceEval.run == 0)
+   test(s"$chapter Variance - Bias decomposition evaluation") {
+  	  evaluate(BiasVarianceEval)
    }
 }
 

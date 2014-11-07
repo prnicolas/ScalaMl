@@ -31,6 +31,7 @@ import org.scalaml.supervised.bayes.text.NewsArticles
 import java.text.DecimalFormat
 import scala.io.Source
 import scala.collection.mutable.HashMap
+import org.scalaml.app.Eval
 
 
 
@@ -46,11 +47,12 @@ import scala.collection.mutable.HashMap
 		 * @since May 13, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Model
 		 */
-object TextBayesEval {
+object TextBayesEval extends Eval {
+	val name: String = "TextBayesEval"
 	final val pathCorpus = "resources/text/chap5/"
     final val pathLexicon = "resources/text/lexicon.txt"
     	
-	private val logger = Logger.getLogger("TextBayesEval")
+	private val logger = Logger.getLogger(name)
 	
 		// Convert a date into a Long value so the news articles can 
 	    // be ordered and the weighted terms frequencies be aggregated for each date.
@@ -78,7 +80,7 @@ object TextBayesEval {
         234.91, 228.89, 220.17, 220.44, 212.96, 207.32, 212.37, 208.45, 216.97, 230.29, 225.4, 212.22, 207.52,
         215.46, 203.93, 204.19, 197.78, 198.09, 201.91, 199.11, 198.12, 197.38, 205.64, 207.99, 209.86, 199.85 )
         
-	def run: Int  = {
+	def run(args: Array[String]): Int  = {
     	Display.show("TextBayesEval: Evaluation Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>

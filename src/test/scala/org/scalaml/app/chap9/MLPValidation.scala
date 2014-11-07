@@ -15,11 +15,17 @@ import org.scalaml.supervised.nnet._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.types.ScalaMl._
 import scala.util.Random
-
-
-
 import MLP._
-object MLPValidation {
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+import org.scalaml.app.Eval
+
+
+
+object MLPValidation extends Eval {
+   val name: String = "MLPValidation"
+   private val logger = Logger.getLogger(name)
+   
    final val ALPHA = 0.8
    final val ETA = 0.01
    final val SIZE_HIDDEN_LAYER = 5
@@ -27,18 +33,26 @@ object MLPValidation {
    final val NUM_EPOCHS = 100
    final val EPS = 1e-5
    
-   def run(args: Array[String]): Unit =  {
-     Console.println("Test for validating MLP with synthetic data")
+   def run(arg: Array[String]) : Int =  {
+     Display.show(s"$name Test for validating MLP with synthetic data", logger)
         
   	 val x = Array.fill(TEST_SIZE)(Array[Double](0.2 + 0.4*Random.nextDouble, 0.2*Random.nextDouble))  
   	 val y = Array.tabulate(TEST_SIZE)(n => Array[Double](n/TEST_SIZE+ 0.1))  	 
   	 
    	 
   	 val state = MLPConfig(ALPHA, ETA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
-  	  implicit val mlpObjective = new MLP.MLPBinClassifier
-  	 if( MLP[Double](state, x, y).model == None )
-	     throw new IllegalStateException("Failed to train the model for alpha = " + ALPHA)
+  	  
+  	 implicit val mlpObjective = new MLP.MLPBinClassifier
+  	 if( MLP[Double](state, x, y).model == None ) 
+  	    Display.error(s"$name Failed to train the model for alpha = $ALPHA, eta = $ETA", logger)
+  	 else
+  	    Display.show(s"$name uccessfully compute the model", logger)
    }
+}
+
+
+object MLPValidationApp extends App {
+  MLPValidation.run(Array.empty)
 }
 
 

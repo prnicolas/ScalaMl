@@ -23,9 +23,11 @@ import scala.collection.mutable.ArrayBuffer
 import org.scalaml.util.{Counter, NumericAccumulator}
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
+import org.scalaml.app.Eval
 
 	 
-object QLearningEval {
+object QLearningEval extends Eval {
+	val name: String = "QLearningEval"
     val stockPricePath = "resources/data/chap11/IBM.csv"
     val optionPricePath = "resources/data/chap11/IBM_O.csv"
 	 
@@ -37,18 +39,23 @@ object QLearningEval {
     val NUM_EPISODES = 24
     val MIN_ACCURACY= 0.8
     
-    private val logger = Logger.getLogger("QLearningEval")
-    def run: Unit = { 
+    private val logger = Logger.getLogger(name)
+    
+    def run(args: Array[String]): Int = { 
        val src = DataSource(stockPricePath, false, false, 1)
        val ibmOption = new OptionModel("IBM", 190.0, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
   	   
   	   val optionSrc = DataSource(optionPricePath, false, false, 1)
        optionSrc.extract match {
-          case Some(v) => initializeModel(ibmOption, v)
-      	  case None => Display.none("Failed extracting option prices", logger)
+          case Some(v) => {
+          	val model = initializeModel(ibmOption, v)
+          	Display.show(s"$name QLearning model ${model.toString}", logger)
+          }
+      	  case None => Display.error(s"$name Failed extracting option prices", logger)
        }
     }
     
+	
     def initializeModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
       val fMap = ibmOption.approximate(oPrice)
       val input = new ArrayBuffer[QLInput]
@@ -65,10 +72,12 @@ object QLearningEval {
 		val cols = if( rows == 0) idx else (idx % (rows*numStates))
 		val _toList = new ListBuffer[Int]
 		if(cols > 0) _toList.append(cols-1)
+		
 		if(cols < numStates-1) _toList.append(cols+1)
 		_toList.append(cols)
 		_toList.toList	
       }
+	  
       val config = new QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, MIN_ACCURACY, getNeighbors)
 	  QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
    }
@@ -76,8 +85,7 @@ object QLearningEval {
 
 
 object AA extends App {
-
-    QLearningEval.run
+    QLearningEval.run(Array.empty)
 }
 
 

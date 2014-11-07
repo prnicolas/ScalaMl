@@ -14,12 +14,15 @@ package org.scalaml.app.chap9
 import org.scalaml.supervised.nnet._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.types.ScalaMl._
-import scala.util.Random
+import scala.util.{Random, Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 
-object MLPConfigEval {
+object MLPConfigEval extends Eval {
+   val name: String = "MLPConfigEval"
+  	 
    final val ALPHA = 0.9
    final val ETA = 0.1
    final val SIZE_HIDDEN_LAYER = 5
@@ -27,10 +30,10 @@ object MLPConfigEval {
    final val NUM_EPOCHS = 250
    final val NOISE_RATIO = 0.7
    final val EPS = 1e-4
-   private val logger = Logger.getLogger("MLPConfigEval")
+   private val logger = Logger.getLogger(name)
    
-   def run(args: Array[String]): Unit =  {
-     Display.show(s"Evaluation of MLP stateuration parameters for ${args(1)}", logger)
+   def run(args: Array[String]): Int =  {
+     Display.show(s"$name Evaluation of MLP configuration parameters for ${args(0)}", logger)
      
      val noise = () => NOISE_RATIO*Random.nextDouble
      val f1 = (x: Double) => x*(1.0 + noise())
@@ -57,32 +60,37 @@ object MLPConfigEval {
       	 eval(-1.0, -1.0, features, labels)
    }
    
-   private def eval(alpha: Double, eta: Double, features: XTSeries[DblVector], labels: DblMatrix): Unit = 
+   private def eval(alpha: Double, eta: Double, features: XTSeries[DblVector], labels: DblMatrix): Int = 
   	  _eval(alpha, eta, features, labels)
   	 
-   private def _eval(alpha: Double, eta: Double, features: DblMatrix, labels: DblMatrix): Unit = {
+   private def _eval(alpha: Double, eta: Double, features: DblMatrix, labels: DblMatrix): Int = {
   	  implicit val mlpObjective = new MLP.MLPBinClassifier
   	         
-  	  try {
+  	  Try {
         (0.001 until 0.01 by 0.002).foreach( x =>  {
         	val _alpha = if(alpha < 0.0)  x else ALPHA
         	val _eta = if(eta < 0.0) x else ETA
-        	println("eta  " + _eta + " alpha: " + _alpha)
   	        val config = MLPConfig(_alpha, _eta, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
      
-  	
   	        val mlp = MLP[Double](config, features, labels)
-	        if( mlp.model == None )
-	        	throw new IllegalStateException("Failed to train the model for alpha = " + alpha) })
-       }
-       catch {
-  	 	 case e: IllegalStateException => println(e.toString); None
-  	 	 case e: IllegalArgumentException =>   println(e.toString); None
+	        if( mlp.model == None ) {
+	           throw new IllegalStateException(s"$name run failed for eta = $eta and alpha = $alpha") 
+	        }
+	        else 
+	           Display.show(s"$name run for eta = $eta and alpha = $alpha ${mlp.model.get.toString}", logger)
+         })
+         1
+       } match {
+         case Success(n) => n
+         case Failure(e) => Display.error(s"$name run", logger, e)
        }
    }
 }
 
 
+object MLPConfigEvalApp extends App {
+	MLPConfigEval.run(Array[String]("alpha"))
+}
 
 
 // ---------------------------------  EOF --------------------------------------------

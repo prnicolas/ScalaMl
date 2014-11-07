@@ -22,7 +22,7 @@ import org.scalaml.supervised.regression.logistic.LogBinRegression
 import scala.util.{Try, Success,Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-
+import org.scalaml.app.Eval
 
 		/**
 		 * <p>Test driver for the Logistic two-class Regression presented in Chapter 1.</p>
@@ -30,21 +30,23 @@ import org.scalaml.util.Display
 		 * @since December 22, 2013
 		 * @note Scala for Machine Learning.
 		 */
-object LogBinRegressionEval  {
+object LogBinRegressionEval extends Eval {
 	import YahooFinancials._
+	val name: String = "LogBinRegressionEval"
 	
     final val NITERS = 300
     final val EPS = 0.02
     final val ETA = 0.000002
     final val path_training = "resources/data/chap1/CSCO.csv"
     final val path_test = "resources/data/chap1/CSCO2.csv"
-    private val logger = Logger.getLogger("LogBinRegressionEval")
+    private val logger = Logger.getLogger(name)
+    
 
     		/*
     		 * Driver code that load, visualize and train labeled data.
     		 * Classifier is invoked on the model once training is completed.
     		 */
-    def run: Int = {
+    def run(args: Array[String]): Int = {
 	    load(path_training) match {
 	      case Some(volatilityVolume) => {
 	      	

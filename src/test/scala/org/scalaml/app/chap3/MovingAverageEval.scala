@@ -12,7 +12,8 @@ package org.scalaml.app.chap3
 
 
 
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
 import YahooFinancials._
@@ -25,10 +26,12 @@ import scala.util.{Try, Success, Failure}
 		 */
 object MovingAveragesEval extends FilteringEval {
    import org.scalaml.filtering._
-   private val logger = Logger.getLogger("MovingAveragesEval.run")
+   val name: String = "MovingAveragesEval"
+  	 
+   private val logger = Logger.getLogger(name)
    
    override def run(args: Array[String]): Int = {
-  	 Console.println("MovingAverages evaluation")
+  	 Display.show("MovingAverages evaluation", logger)
   	 
   	 val symbol = args(0)
      val p = args(1).toInt

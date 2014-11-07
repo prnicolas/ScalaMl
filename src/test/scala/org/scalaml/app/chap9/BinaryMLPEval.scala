@@ -17,13 +17,16 @@ import org.scalaml.core.XTSeries
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
+import org.scalaml.app.Eval
 
 /**
  *  @author Patrick Nicolas
  *  @since Jul 20, 2014
  *  @note Book
  */
-object BinaryMLPEval {
+object BinaryMLPEval extends Eval {
+   val name: String = "BinaryMLPEval"
+  	 
    final val ALPHA = 0.85
    final val ETA = 0.01
    final val SIZE_HIDDEN_LAYER = 4
@@ -32,11 +35,11 @@ object BinaryMLPEval {
    final val EPS = 1e-3
 
    
-   def run: Int = {
+   def run(args: Array[String]): Int = {
   	  import scala.util.Random
   	  
-  	  val logger = Logger.getLogger("BinaryMLPEval")
-  	  Display.show("Evaluation of Binary MLP evaluation", logger)
+  	  val logger = Logger.getLogger(name)
+  	  Display.show(s"$name Evaluation of Binary MLP evaluation", logger)
   
   	  val HALF_TEST_SIZE = (TEST_SIZE>>1)
   	  def function1(x: Double): DblVector = Array[Double](0.1 + 0.2*Random.nextDouble, 0.1  +  0.2*Random.nextDouble)
@@ -53,15 +56,22 @@ object BinaryMLPEval {
       val correct = x.zip(y).foldLeft(0)((s, xy) => {
 	      val output = mlpClassifier |> xy._1
 	      if(output(0) - xy._2(0) < 0.25) s + 1 else s
-       })
-       Display.show(s"Accuracy: ${correct.toDouble/x.size}", logger)
-
-	  Try(mlpClassifier |> Array[Double](0.9, 0.9))
+      })
+      Display.show(s"$name Accuracy: ${correct.toDouble/x.size}", logger)
+      val x0 = 0.9
+      val y0 = 0.8
+	  Try(mlpClassifier |> Array[Double](x0, y0))
 	  match {
-      	case Success(output) => Display.show(s"BinaryMLPEval.run ${output(0)}", logger)
-      	case Failure(e) => Display.error("BinaryMLPEval.run", logger, e)
-      }      
+      	case Success(output) => Display.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
+      	case Failure(e) => Display.error(s"$name run", logger, e)
+      }     
    }
+}
+
+
+
+object BinaryMLPEvalApp extends App {
+   BinaryMLPEval.run(Array.empty)
 }
 
 // --------------------------------- EOF -----------------------------

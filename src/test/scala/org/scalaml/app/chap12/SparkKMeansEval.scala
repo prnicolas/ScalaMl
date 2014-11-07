@@ -27,16 +27,20 @@ import org.scalaml.scalability.scala._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
-object SparkKMeansEval {
+object SparkKMeansEval extends Eval {
+  val name: String = "SparkKMeansEval"
   val K = 8
   val numRuns = 16
   val maxIters = 200
   val path = "resources/data/chap12/CSCO.csv"
-  val logger = Logger.getLogger("SparkKMeansEval")
+  val logger = Logger.getLogger(name)
   
-  def run: Int = {
+  def run(args: Array[String]): Int = {
+  	Display.show(s"$name evaluation of MLLib K-means on Spark framework", logger)
+  	
   	Try {
   	   val input = extract
 	   val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
@@ -49,15 +53,15 @@ object SparkKMeansEval {
 		   
 	   val obs = Array[Double](0.23, 0.67)
        val clusterId1 = sparkKMeans |> obs
-	   Display.show(s"(${obs(0)},${obs(1)}) = $clusterId1", logger)
+	   Display.show(s"$name  (${obs(0)},${obs(1)}) = $clusterId1", logger)
 		   
 	   val obs2 = Array[Double](0.56, 0.11)
 	   val clusterId2 = sparkKMeans |> obs2 
-	   Display.show(s"(${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
+	   Display.show(s"$name (${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
 	 }
 	 match {
 	   case Success(n) => n
-	   case Failure(e) => Display.error("SparkKMeansEval.run", logger, e)
+	   case Failure(e) => Display.error(s"$name run failed", logger, e)
 	 }
   }
   

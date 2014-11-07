@@ -31,8 +31,9 @@ import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 object DFTEval extends FilteringEval {
    import types.ScalaMl._
    import org.scalaml.filtering.DFT
-     
-   val logger = Logger.getLogger("DFTEval")
+   val name: String = "DFTEval"  
+   
+   val logger = Logger.getLogger(name)
    val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
                             Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
                         0.5*Math.cos(Math.PI*0.2*x)      // simulated third harmonic

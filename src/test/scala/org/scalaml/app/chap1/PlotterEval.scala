@@ -17,6 +17,7 @@ import org.scalaml.plots._
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 		/**
 		 * <p>Singleton to evaluate the different plotting format used in
@@ -26,7 +27,9 @@ import org.scalaml.util.Display
 		 * @since December 22, 2013
 		 * @note Scala for Machine Learning
 		 */
-object PlotterEval {
+object PlotterEval extends Eval {
+	val name: String = "Eval"
+		
 	final val CSV_DELIM = ","
 	final val PRICE_COLUMN_INDEX = 6
 	final val OPEN_COLUMN_INDEX = 1
@@ -35,8 +38,8 @@ object PlotterEval {
 	final val LOW_INDEX = 3
     final val pathName = "resources/data/chap1/CSCO.csv"
 				
-    private val logger = Logger.getLogger("PlotterEval")
-	def run: Int = {
+    private val logger = Logger.getLogger(name)
+	def run(args: Array[String]): Int = {
         Try {
 			val src = Source.fromFile(pathName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray	   

@@ -10,12 +10,15 @@
  */
 package org.scalaml.app.chap10
 
-import org.scalatest.FunSuite
+import org.scalaml.app.ScalaMlTest
 
 
-final class Chap10 extends FunSuite  {
-  test("Genetic Algorithm") {
-	 GAEval.run
+
+final class Chap10 extends ScalaMlTest  {
+  val chapter: String = "Chap 10"
+  	
+  test(s"$chapter evaluate fenetic Algorithm") {
+	 evaluate(GAEval)
   }
 }
 
