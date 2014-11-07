@@ -4,7 +4,7 @@ ScalaMl
 Source code, data files and utilities related to "Scala for Machine Learning"
 
 
-Version 0.95 Copyright Patrick Nicolas All rights reserved 2013-2015
+Version 0.95.b Copyright Patrick Nicolas All rights reserved 2013-2015
 
 <h2>Overview</h2>
 The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br>
@@ -35,8 +35,6 @@ Library components for <i>Scala for Machine Learning</i>:<br>
 <br>
 Build script for <i>Scala for Machine Learning</i>:<br>
 To build the library and tests: <i>$(ROOT)/sbt clean compile publish-local</i><br>
-To run all tests
-To build the library and examples: <i>$(ROOT)/sbt clean test</i><br>
 <br>
 
 
