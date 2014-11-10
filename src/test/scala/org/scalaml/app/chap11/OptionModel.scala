@@ -6,28 +6,28 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.app.chap11
 
-import org.scalaml.reinforcement.qlearning._
+import org.scalaml.reinforcement.qlearning
 import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
 import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.util.{Counter, NumericAccumulator, Display}
+
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+
 import scala.collection.mutable.ArrayBuffer
-import org.scalaml.util.{Counter, NumericAccumulator}
 import scala.collection.mutable.HashMap
-import scala.collection.mutable.ListBuffer
+
 
 
 
 class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT: Int, nSteps: Int) {
-   import YahooFinancials._
+   import YahooFinancials._, qlearning._
    val price = src |> adjClose
      
    val futurePrice = price.drop(2)

@@ -25,15 +25,17 @@ import org.scalaml.core.types.ScalaMl._
 			 * @since January 17, 2014
 			 * @note Scala for Machine Learning
 			 */
-class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, val prop: T) {
+class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, prop: T) {
   require(actions != null, "Cannot create a QLState with undefined list of actions")
 
   def == (that: QLState[T]): Boolean = that.id == id
   def != (that: QLState[T]): Boolean = ! ==(that)
   
+  @inline
+  final def hasActions: Boolean = actions != List.empty
   
   override def toString: String = 
-     new StringBuilder(s"id=$id ")
+     new StringBuilder(s"state: $id ")
 		    .append( actions.foldLeft(new StringBuilder)((b,a) => b.append(s"$a ")).toString )
 		    .toString
 }
@@ -44,6 +46,10 @@ class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, val p
 		 */
 object QLState {
   def apply[T](id: Int, actions: List[QLAction[T]], t: T): QLState[T] = new QLState(id, actions, t)
+  
+  protected def check[T](id: Int, actions: List[QLAction[T]], prop: T): Unit = {
+    
+  }
 }
 
 

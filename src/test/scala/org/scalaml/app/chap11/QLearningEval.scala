@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.app.chap11
 
@@ -15,49 +15,59 @@ import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
 import org.scalaml.core.types.ScalaMl.DblVector
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
-import scala.collection.mutable.ArrayBuffer
-import org.scalaml.util.{Counter, NumericAccumulator}
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.ListBuffer
+import org.scalaml.util.{Counter, NumericAccumulator, Display}
 import org.scalaml.app.Eval
+
+import org.apache.log4j.Logger
+
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+
+
 
 	 
 object QLearningEval extends Eval {
+    import YahooFinancials._
+  
 	val name: String = "QLearningEval"
+	private val logger = Logger.getLogger(name)
+	      
     val stockPricePath = "resources/data/chap11/IBM.csv"
     val optionPricePath = "resources/data/chap11/IBM_O.csv"
+    val STRIKE_PRICE = 190.0
 	 
     val MIN_TIME_EXPIRATION = 6
     val FUNCTION_APPROX_STEP = 3
     val ALPHA = 0.4
     val DISCOUNT = 0.6
-    val EPISODE_LEN = 15
-    val NUM_EPISODES = 24
-    val MIN_ACCURACY= 0.8
+    val EPISODE_LEN = 35
+    val NUM_EPISODES = 60
+    val MIN_ACCURACY = 0.55
     
-    private val logger = Logger.getLogger(name)
     
     def run(args: Array[String]): Int = { 
+       Display.show(s"$name Evaluation of the Q-learning algorithm", logger)
+       
        val src = DataSource(stockPricePath, false, false, 1)
-       val ibmOption = new OptionModel("IBM", 190.0, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
+       val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
   	   
   	   val optionSrc = DataSource(optionPricePath, false, false, 1)
        optionSrc.extract match {
           case Some(v) => {
-          	val model = initializeModel(ibmOption, v)
-          	Display.show(s"$name QLearning model ${model.toString}", logger)
+          	val qLearning = createModel(ibmOption, v)
+          	if( qLearning.model != None)
+          	   Display.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
+          	else
+          	   Display.error(s"$name Failed to create a Q-learning model", logger)
           }
       	  case None => Display.error(s"$name Failed extracting option prices", logger)
        }
     }
     
 	
-    def initializeModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
+    def createModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
       val fMap = ibmOption.approximate(oPrice)
+      
       val input = new ArrayBuffer[QLInput]
       val profits = fMap.values.zipWithIndex
       profits.foreach(v1 => 
@@ -65,27 +75,69 @@ object QLearningEval extends Eval {
       	  		  input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1)))
       )
    	      
-      val goal = input.maxBy( _.reward).to
-	          
+      val goal = input.maxBy( _.reward).to  
+      Display.show(s"Goal state: ${goal.toString}", logger)
+      
+      
+      	// List the neighbors that are allowed 
+      /*
+      val getNeighbors2 = (idx: Int, numStates: Int) => {
+          def getProximity(idx: Int, radius: Int): List[Int] = {
+              val idx_max = if(idx + radius >= numStates) numStates else idx+ radius
+              val idx_min = if(idx < radius) 0 else idx - radius
+              Range(idx_min, idx_max+1).filter(idx - _ >= 0)
+                                   .foldLeft(List[Int]())((xs, n) => (idx -n) :: xs)
+          }
+          
+          getProximity(idx, RADIUS).toList
+      }
+      
+      def getProximityNeighbors(idx: Int, radius: Int, numStates: Int): List[Int] = {
+          val idx_max = if(idx + radius >= numStates) numStates else idx+ radius
+          val idx_min = if(idx < radius) 0 else idx - radius
+          Range(idx_min, idx_max+1).filter(idx - _ >= 0)
+                                   .foldLeft(List[Int]())((xs, n) => (idx -n) :: xs)
+      }
+      * 
+      */
+      
 	  val getNeighbors = (idx: Int, numStates: Int) => {
 		val rows = idx/numStates
 		val cols = if( rows == 0) idx else (idx % (rows*numStates))
+		
 		val _toList = new ListBuffer[Int]
 		if(cols > 0) _toList.append(cols-1)
 		
-		if(cols < numStates-1) _toList.append(cols+1)
+		if(cols < numStates-1) 
+		     _toList.append(cols+1)
 		_toList.append(cols)
 		_toList.toList	
       }
 	  
-      val config = new QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, MIN_ACCURACY, getNeighbors)
+      val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, getNeighbors2)
 	  QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
    }
+    
+        	// List the neighbors that are allowed 
+   val RADIUS = 4
+     def getNeighbors2(idx: Int, numStates: Int): List[Int] = {
+ //  val getNeighbors2 = (idx: Int, numStates: Int) => {
+        def getProximity(idx: Int, radius: Int): List[Int] = {
+            val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
+            val idx_min = if(idx < radius) 0 else idx - radius
+            Range(idx_min, idx_max+1).filter( _ != idx).foldLeft(List[Int]())((xs, n) => n :: xs)
+        }
+          
+        getProximity(idx, RADIUS).toList
+    }
+      
 }
 
 
 object AA extends App {
     QLearningEval.run(Array.empty)
+
+    
 }
 
 

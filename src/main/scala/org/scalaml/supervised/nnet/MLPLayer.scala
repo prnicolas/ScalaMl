@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.supervised.nnet
 
@@ -37,9 +37,8 @@ protected class MLPLayer(val id: Int, val len: Int) {
    require(len > 0, s"Create a MLP layer with incorrect length $len")
    
    val output = new DblVector(len) // used for forward propagation
-   output.update(0, 1.0)
    val delta = new DblVector(len)  // used for back propagation
-
+   output.update(0, 1.0)
 
    		/**
    		 * <p>Initialize the value of the input for this MLP layer.</p>
@@ -58,7 +57,7 @@ protected class MLPLayer(val id: Int, val len: Int) {
    		 * @return sum of squared of errors/2
    		 * @throws IllegalArgumentException if the size of the output vector is not equals to the size of the input vector + 1
    		 */
-   def sse(labels: DblVector): Double = {
+   final def sse(labels: DblVector): Double = {
   	  require(labels != null, "Cannot compute the mean square error for a MLP layer with undefined labeled values")
   	  require(output.size == labels.size+1, s"The size of the output ${output.size} should be equal to target ${labels.size+1}")
   	  
@@ -85,8 +84,8 @@ protected class MLPLayer(val id: Int, val len: Int) {
 	
    override def toString: String = {
 	  val buf = new StringBuilder("\nLayer:")
-	  buf.append(id).append(" output: ")
-	  output.foreach(buf.append( _).append(","))
+	  buf.append(s"\nLayer: $id output: ")
+	  output.foreach(x => buf.append(s"$x,"))
 	  buf.setCharAt(buf.length-1, ' ')
 	  buf.toString
    }

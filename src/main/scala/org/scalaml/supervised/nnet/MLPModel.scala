@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.supervised.nnet
 
@@ -94,7 +94,7 @@ final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
 		 * @return sum of the mean squares error of the output layer.
 		 */
 	@inline
-	def sse(label: DblVector): Double = outLayer.sse(label)
+	final def sse(label: DblVector): Double = outLayer.sse(label)
 
     
 		/**

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.trading
 
@@ -32,7 +32,7 @@ import scala.collection.mutable.TreeSet
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 5, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithms/GA for trading strategies/Trading operators
 		 */
 class SOperator(_id: Int) extends Operator {
 	/**
@@ -78,10 +78,10 @@ object EQUAL extends SOperator(3) { override def toString: String = "=" }
 		 * @since Mar 4, 2014
 		 */
 @implicitNotFound("Signal does not have a discretization function implicitly defined")
-class Signal(_id: String, _target: Double, _op: Operator, ts: DblVector, weights: DblVector)(implicit discr: Discretization) extends Gene(_id, _target, _op) {
+class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) extends Gene(_id, _target, _op) {
    require( op != null, "Signal Cannot create a signal with undefined operator")
-   require(ts != null && weights != null, "Signal Cannot create a signal with undefined data or weights")
-   require(ts.size == weights.size, s"Signal The number of weights ${weights.size} is different from the size of data ${ts.size}")
+   require(xt != null && weights != null, "Signal Cannot create a signal with undefined data or weights")
+   require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
    
    		/**
    		 * Computation of the score of this trading signal by comparing a value with the threshold, value
@@ -92,7 +92,7 @@ class Signal(_id: String, _target: Double, _op: Operator, ts: DblVector, weights
    override def score: Double = sumScore(operatorFuncMap.get(op).get)
      
    private def sumScore(f: (Double, Double) => Double): Double = 
-  	    ts.zip(weights).foldLeft(0.0)((s, x) => s + x._2*f(x._1, target))
+  	    xt.zip(weights).foldLeft(0.0)((s, x) => s + x._2*f(x._1, target))
    
    
   	      /**

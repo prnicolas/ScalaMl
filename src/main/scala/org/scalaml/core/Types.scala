@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.core
 
@@ -52,7 +52,7 @@ package object types {
 	  def Op[T <% Double](v: DVector[T], w: DblVector, op: (T, Double) => Double): DblVector = {
   	  	 require( v != null && w != null, "Cannot apply operator on undefined vectors")
   	  	 require( op != null, "Cannot apply undefined operator to vectors")
-	     require(v.size == w.size, "Cannot combine vector of different size")
+	     require(v.size == w.size, s"Cannot combine vector of different size ${v.size} and ${w.size}")
 	     v.zipWithIndex.map( x => op(x._1, w(x._2)))
 	  }
 	  
@@ -65,7 +65,7 @@ package object types {
 	  		 */
 	  def dot[T <% Double](v: DVector[T], w: DblVector): Double = {
 	     require( v != null && w != null, "Cannot apply dot product on undefined vectors")
-	     require(v.size == w.size, "dot product requires vector of identical size")
+	     require(v.size == w.size, s"dot product requires vector of identical size ${v.size} and ${w.size}")
 	     
 	     v.zipWithIndex.foldLeft(0.0)((s, x) => s + x._1* w(x._2) )
 	  }
@@ -76,12 +76,12 @@ package object types {
 	  implicit def int2Double(n: Int): Double = n.toDouble
 	  implicit def long2Double(n: Long): Double = n.toDouble
 	  implicit def vectorT2DblVector[T <% Double](vt: DVector[T]): DblVector = vt.map( _.toDouble)
-	  implicit def dblVector2String(v: DblVector): String = v.foldLeft(new StringBuilder)((s, x) => s.append(x).append("")).toString
+	  implicit def dblVector2String(v: DblVector): String = v.foldLeft(new StringBuilder)((s, x) => s.append(s"$x ")).toString
 	  
 	  implicit def /(v: DblVector, n: Int): DblVector = v.map( _/n)
 	  implicit def /(m: DblMatrix, n: Int, z: Double) {
-  	  	 require(n < m.size, "/ matrix column " + n + " out of bounds")
-  	  	 require(Math.abs(z) > 1e-32, "/ divide column matrix by " + z + " too small")
+  	  	 require(n < m.size, "/ matrix column $n out of bounds")
+  	  	 require(Math.abs(z) > 1e-32, s"/ divide column matrix by $z too small")
   	  	 Range(0, m(n).size).foreach( m(n)(_) /= z)
   	  }
 
@@ -95,17 +95,17 @@ package object types {
       def toText(v: DblVector, index: Boolean): String = {
 	  	 require(v != null && v.size > 0, "Cannot create a textual representation of a undefined vector")
 	  	 if( index)
-	  		v.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(x._2).append(":").append(x._1).append(", ")).toString
+	  		v.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}:${x._1}, ")).toString
 	  	 else
-	  	    v.foldLeft(new StringBuilder)((buf, x) => buf.append(x).append(",")).toString.take(v.size-1)
+	  	    v.foldLeft(new StringBuilder)((buf, x) => buf.append(s"$x,")).toString.take(v.size-1)
 	  }
 	  
 	  def toText(m: DblMatrix, index: Boolean): String = {
 	  	 require(m != null && m.size > 0, "Cannot create a textual representation of a undefined vector")
 	  	 if(index)
-	  		  m.zipWithIndex.foldLeft(new StringBuilder)((buf, v) => buf.append(v._2).append(":").append(toText(v._1, true)).append("\n")).toString
+	  		  m.zipWithIndex.foldLeft(new StringBuilder)((buf, v) => buf.append(s"${v._2}:${toText(v._1, true)}\n")).toString
 	  	 else 
-	  	      m.foldLeft(new StringBuilder)((buf, v) => buf.append(toText(v, false)).append("\n")).toString
+	  	      m.foldLeft(new StringBuilder)((buf, v) => buf.append(s"${toText(v, false)}\n")).toString
 	  }
   }
 
@@ -125,6 +125,7 @@ package object types {
   }
 }
 
+/*
 object TypesApp extends App {
 	import types.ScalaMl._
 	import types.CommonMath._
@@ -139,8 +140,9 @@ object TypesApp extends App {
 	 val rB: RealMatrix = B
 	 var rQ: RealMatrix = Q
 	 println(rQ.toString)
-	 
 }
+* 
+*/
 
 
 // ------------------------------------------  EOF -----------------------------------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -67,12 +67,10 @@ class QLPolicy[T](numStates: Int, input: Array[QLInput]) extends Model {
    
    
    override def toString: String = 
-  	  new StringBuilder("\nQ-Policy: Q-Value\n")
-  	                     .append(show(VALUE))
-  	                     .append("\nQ-Policy: Reward\n")
-  	                     .append(show(REWARD)).toString
+  	  new StringBuilder("\nQ-Policy: Reward: ")
+  	                     .append(toString(REWARD)).toString
 
-   def show(varType: QLDataVar): String = { 
+   def toString(varType: QLDataVar): String = { 
   	  val buf = new StringBuilder
       Range(1, numStates).foreach(i => {
           val line = qlData(i).zipWithIndex
@@ -84,6 +82,13 @@ class QLPolicy[T](numStates: Int, input: Array[QLInput]) extends Model {
       })
       buf.toString
     } 
+}
+
+object QLPolicy {
+  protected def check(numStates: Int, input: Array[QLInput]): Unit = {
+    
+  }
+  
 }
 
 

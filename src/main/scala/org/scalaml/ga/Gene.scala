@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.ga
 
@@ -28,7 +28,17 @@ object NO_OPERATOR extends Operator {
 
 import Gene._
 
-case class Discretization(toInt: Double => Int, toDouble: Int => Double)
+		/**
+		 * <p>Create a conversion class between discrete time series and continuous time series.</p>
+		 * @constructor Discretization class that convert a Double to Int and an Int to a Double. [toInt] Function which discretizes a continuous signal or pseudo-continuous data set. [toDouble] Function that converts a discretized time series back to its original values
+		 * @param toInt function which discretizes a continuous signal or pseudo-continuous data set
+		 * @param toDouble convert a discretized time series back to its original values
+		 */
+case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
+   def this(R: Int) = this((x: Double) => (x*R).floor.toInt, (n: Int) => n/R)
+}
+
+ 
 
 	/**
 	 * <p>Implementation of a gene as a tuple (value, operator) for example the
@@ -47,10 +57,10 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double)
 	 * 
 	 * @author Patrick Nicolas
 	 * @since August 28, 2013
-	 * @note Scala for Machine Learning
+	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 	 */
 @implicitNotFound("Gene encoding requires double to integer conversion") 
-class Gene(val id: String, val target: Double, val op: Operator)(implicit val discr: Discretization) {
+class Gene(val id: String, val target: Double, val op: Operator)(implicit discr: Discretization) {
   require(op != null, "Cannot create a gene/predicate with undefined operator")
   require( id != null && id.length > 0, "Cannot create a signal with undefined id")
    
@@ -65,6 +75,10 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit val di
   	 bitset
   }
   
+  		/**
+  		 * <p>Create a clone of this gene by duplicating its genetic material (bits).</p>
+  		 * @return identical Gene
+  		 */
   override def clone: Gene = 
     Range(0, bits.length).foldLeft(Gene(id, target, op))((enc, n) => { 
        if( bits.get(n)) 
@@ -73,7 +87,11 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit val di
      })
      
      
-     
+     	/**
+     	 * <p>Generic method to compute the score of this gene. The score of the genes in a 
+     	 * chromosome are summed as the score of the chromosome.
+     	 * @return score of this gene
+     	 */
    def score: Double = -1.0
 
    		
@@ -85,11 +103,11 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit val di
   		 * @return a single Gene as cross-over of two parents.
   		 * @throws IllegalArgumenException if the argument are undefined or the index is out of range
   		 */
-  def +- (that: Gene, idx: GeneticIndices): Gene = {
+  def +- (that: Gene, gIdx: GeneticIndices): Gene = {
   	 require(that != null, "Cannot cross over this gene with undefined gene")
        
      val clonedBits = cloneBits(bits)
-     Range(idx.geneOpIdx, bits.size).foreach(n => 
+     Range(gIdx.geneOpIdx, bits.size).foreach(n => 
     	if( that.bits.get(n) ) clonedBits.set(n) else clonedBits.clear(n))
     	
      val valOp = decode(clonedBits)
@@ -101,21 +119,17 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit val di
   
     	/**
   		 * <p>Implements the mutation operator on this gene</p>
+  		 * @param idx genetic indexer 
+  		 * @return a single mutated gene
+  		 */
+  def ^ (gIdx: GeneticIndices): Gene = ^ (gIdx.geneOpIdx)
+
+
+      	/**
+  		 * <p>Implements the mutation operator on this gene</p>
   		 * @param index index of the bit to mutate
   		 * @return a single mutated gene
-  		 * @throws IllegalArgumenException if the mutation index is out of range
   		 */
-  def ^ (idx: GeneticIndices): Gene = ^ (idx.geneOpIdx)
-  	/*
-     val clonedBits = cloneBits(bits)
-  	 clonedBits.flip(idx.geneOpIdx)
-  	
-  	 val valOp = decode(clonedBits)
-  	 Gene(id, valOp._1, valOp._2)
-  	 * 
-  	 */
-
-  
   def ^ (idx: Int): Gene = {
   	 val clonedBits = cloneBits(bits)
   	 clonedBits.flip(idx)

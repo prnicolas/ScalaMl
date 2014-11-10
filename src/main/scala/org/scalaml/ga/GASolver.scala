@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.ga
 
@@ -47,7 +47,7 @@ case class GA_NO_CONVERGENCE(val _description: String) extends GAState(_descript
 	 * /
 	 */
 final class GASolver[T <: Gene](config: GAConfig, 
-		                        val score: Chromosome[T] =>Unit) extends PipeOperator[Population[T], Population[T]] {
+		                        score: Chromosome[T] =>Unit) extends PipeOperator[Population[T], Population[T]] {
    require(config != null, "GA stateuration is undefined")
    require(score != null, "Cannot search with an undefined fitness Function")
    private var state: GAState = GA_NOT_RUNNING
@@ -90,11 +90,11 @@ final class GASolver[T <: Gene](config: GAConfig,
    
    private[this] def converge(population: Population[T], cycle: Int): GAState = {
   	  if(population == null) 
-  	  	GA_FAILED(s"Failed at $cycle")
+  	  	 GA_FAILED(s"Failed at $cycle")
   	  else if(cycle >= config.maxCycles)
-  	  	GA_NO_CONVERGENCE(s"Failed to converge at $cycle ")
-  	 else
-  	  	GA_RUNNING
+  	  	 GA_NO_CONVERGENCE(s"Failed to converge at $cycle ")
+  	  else
+  	   	 GA_RUNNING
    }
 }
 

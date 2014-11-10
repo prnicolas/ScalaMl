@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.app.chap10
 
@@ -17,7 +17,7 @@ import org.scalaml.app.ScalaMlTest
 final class Chap10 extends ScalaMlTest  {
   val chapter: String = "Chap 10"
   	
-  test(s"$chapter evaluate fenetic Algorithm") {
+  test(s"$chapter evaluate genetic Algorithm") {
 	 evaluate(GAEval)
   }
 }

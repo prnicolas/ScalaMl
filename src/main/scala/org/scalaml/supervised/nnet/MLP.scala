@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.supervised.nnet
 
@@ -27,7 +27,7 @@ import org.scalaml.util.Display
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.Br>
 		 * This MLP uses the online training strategy suitable for time series.</p>
-		 * @constructor Instantiates a multi-layer Perceptron for a specific configuration, time series and target or labeled data. [config] Configuration parameters class for the MLP. [xt] Time series of features in the training set. [labels] Labeled or target observations used for training. [objective] Implicit objective of the model (classification or regression)
+		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. [config] Configuration parameters class for the MLP. [xt] Time series of features in the training set. [labels] Labeled or target observations used for training. [objective] Implicit objective of the model (classification or regression)
 		 * @param config configuration parameters class for the MLP
 		 * @param xt time series of features in the training set
 		 * @param labels labeled or target observations used for training
@@ -40,7 +40,8 @@ import org.scalaml.util.Display
 		 */
 final protected class MLP[T <% Double](config: MLPConfig, 
 		                               xt: XTSeries[Array[T]], 
-		                               labels: DblMatrix)(implicit val mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
+		                               labels: DblMatrix)(implicit val mlpObjective: MLP.MLPObjective) 
+		                        extends PipeOperator[Array[T], DblVector] {
    
    check(config, xt, labels)
    private val logger = Logger.getLogger("MLP")
@@ -57,7 +58,7 @@ final protected class MLP[T <% Double](config: MLPConfig,
 	  		
 		   xt.toArray.zip(labels)
 		             .foldLeft(0.0)( (s, xtlbl) => 
-		  	  s + _model.trainEpoch(xtlbl._1, xtlbl._2)
+		  	              s + _model.trainEpoch(xtlbl._1, xtlbl._2)
 		   )*errScale < config.eps		  	 
 	  	}) != None
 	  	_model
@@ -92,17 +93,18 @@ final protected class MLP[T <% Double](config: MLPConfig,
    		 * @param threshold threshold applied to the square root of the sum of squares error to validate the data point
    		 * @return accuracy value [0, 1] if model exits, None otherwise
    		 */
-  def accuracy(threshold: Double): Option[Double] = {
+  final def accuracy(threshold: Double): Option[Double] = {
   	 if( model != None ) {
   		 	// counts the number of data points for which the 
-  		 val correct = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
+  		 val correct = xt.toArray.zip(labels)
+  		                         .foldLeft(0)((s, xtl) =>  {
   			 
   			 val output = model.get.getOutput(xtl._1)
   			 val _sse = xtl._2.zip(output.drop(1))
   			                  .foldLeft(0.0)((err,tp) => { 
   			                  	 val diff= tp._1 - tp._2
   			                  	 err + diff*diff
-  			                  })
+  			                  })*0.5
   			 val error = Math.sqrt(_sse)/(output.size -1)
   			 if( error < threshold)
   				s + 1
@@ -110,10 +112,8 @@ final protected class MLP[T <% Double](config: MLPConfig,
   		 })
   		 Some(correct.toDouble/xt.size)  // normalization
   	 }
-  	 else {
-  		 Display.error("MLP.accuracy ", logger);
-  		 None
-  	 }
+  	 else 
+  		 Display.none("MLP.accuracy ", logger);
   }
 
   
@@ -163,7 +163,7 @@ object MLP {
 	class MLPMultiClassifier extends MLPObjective {
 	   override def apply(output: DblVector): DblVector =  softmax(output.drop(1))
 		
-	   private  def softmax(y: DblVector): DblVector = {
+	   private def softmax(y: DblVector): DblVector = {
 	     val softmaxValues = new DblVector(y.size)
 	     val expY = y.map( Math.exp(_))
 	     val expYSum = expY.sum

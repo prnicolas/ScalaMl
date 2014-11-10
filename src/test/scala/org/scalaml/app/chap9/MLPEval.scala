@@ -6,20 +6,25 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.supervised.nnet._
 import org.scalaml.trading.GoogleFinancials
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
 import GoogleFinancials._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import org.scalaml.app.Eval
 
 
+
+		/**
+		 * <p>Singleton to evaluate the Multi-layer perceptron by classifying
+		 * Exchange Traded funds (ETF)</p>
+		 */
 object MLPEval extends Eval {
   val name: String = "MLPEval"
   	
@@ -33,6 +38,16 @@ object MLPEval extends Eval {
   final val symbols = Array[String]("FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB")
   private val logger = Logger.getLogger(name)
   
+  val TEST_CASES = List[Array[String]](
+      Array[String]("FXY", "FXC", "GLD", "FXA"),
+      Array[String]("FXE", "FXF", "FXB", "CYB"),
+      Array[String]("FXE", "FXC", "GLD", "FXA", "FXY", "FXB"),
+      Array[String]("FXC", "FXY", "FXA"),
+      Array[String]("CYB", "GLD", "FXY"),
+      symbols
+  )
+  
+  
   private val index: Map[String, Int] = {
   	 import scala.collection.mutable.HashMap
   		 
@@ -44,72 +59,33 @@ object MLPEval extends Eval {
   def run(args: Array[String]): Int =  {
      Display.show(s"$name evaluation of MLP classifier evaluation without SoftMax conversion", logger)
        
-  	 val prices = symbols.map(s => DataSource(path + s +".csv", true, true, 1))
+  	 val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
   	                     .map( _ |> GoogleFinancials.close )
   	                     .map( _.toArray)
-    
-  	 val trends: DblMatrix = prices.map(z => z.drop(1).zip(z.take(z.size-1)).map(xtx => if(xtx._1 - xtx._2 > 0.0) 1.0 else 0.0))
   	 
   	 Display.show(s"$name size: ${prices(0).size}", logger)
-  	 var startTime= System.currentTimeMillis
-     var hiddenLayers = Array[Int](4)
-     var config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
-
-     eval(prices, config)
-     
-     Display.show(s"$name \nSingle 4 neuron hidden layer: ${(System.currentTimeMillis - startTime)}", logger)
-     startTime= System.currentTimeMillis
-     
-     
-     hiddenLayers = Array[Int](4, 4)
-     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
-
-     eval(prices, config)
-     Display.show(s"$name \nTwo hidden layers of 4 neurons each ${(System.currentTimeMillis - startTime)}", logger)
-     startTime= System.currentTimeMillis
-     
-     hiddenLayers = Array[Int](7, 7)
-     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
-     eval(prices, config)
-     Display.show(s"$name \nTwo hidden layers of 7 neurons each ${(System.currentTimeMillis - startTime)}", logger)
-           
-     hiddenLayers = Array[Int](8, 5, 6)
-     config = MLPConfig(ALPHA, ETA, hiddenLayers, NUM_EPOCHS, EPS)
-     eval(prices, config)
-     Display.show(s"$name \nThree hidden layers of 7 neurons each ${(System.currentTimeMillis - startTime)}", logger)
+  	 test(Array[Int](4), prices)
+  	 test(Array[Int](4, 4), prices)
+  	 test(Array[Int](7, 7), prices)
+  	 test(Array[Int](8, 5, 6), prices)
   }
   
- private def eval(obs: DblMatrix, config: MLPConfig) {
-     accuracy(Array[String]("FXY", "FXC", "GLD", "FXA"), obs, config) match {
-  		 case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 }    
-  	 
-  	 accuracy(Array[String]("FXE", "FXF", "FXB", "CYB"), obs, config) match {
-  		 case Some(acc) => Display.show(s"$name  accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 } 
-  	 
-  	 accuracy(Array[String]("FXE", "FXC", "GLD", "FXA", "FXY", "FXB"), obs, config) match {
-  		 case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 }    
-  	 
-  	 accuracy(Array[String]("FXC", "FXY", "FXA"), obs, config) match {
-  		 case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 } 
-  	 
-  	  accuracy(Array[String]("CYB", "GLD", "FXY"), obs, config) match {
-  		 case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 } 
-  	 
-  	 accuracy(symbols, obs, config) match {
-  		 case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-  		 case None => Display.error(s"$name could not compute the accuracy", logger)
-  	 } 
-  }
+ private def test(hidLayers: Array[Int], prices: DblMatrix): Int = {
+    val networkArchitecture = hidLayers.foldLeft(new StringBuilder)((b,n)=>b.append(s"$n ")).toString
+    Display.show(s"$name \n${hidLayers.size} layers: ( ${networkArchitecture})", logger)
+  
+    val startTime = System.currentTimeMillis
+    val config = MLPConfig(ALPHA, ETA, hidLayers, NUM_EPOCHS, EPS)
+    TEST_CASES.foreach(etfs => eval(prices, config, etfs))
+    Display.show(s"$name Duration ${(System.currentTimeMillis - startTime)} msecs.", logger)
+ }
+
+ private def eval(obs: DblMatrix, config: MLPConfig, etfsSet: Array[String]): Int = {
+    accuracy(etfsSet, obs, config) match {
+      case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
+  	  case None => Display.error(s"$name could not compute the accuracy", logger)
+  	}
+ }
  
   private def accuracy(symbols: Array[String], prices: DblMatrix, config: MLPConfig): Option[Double] = {  	 
      val obs: DblMatrix = symbols.map( sym => index.get(sym).get).map( prices( _ ) )
@@ -125,9 +101,8 @@ object MLPEval extends Eval {
   
   
   private def toString(symbols: Array[String]): String = 
-  	 new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s).append(" ")).toString)
-  	     .append("=> ")
-  	       .append(symbols(0)).toString
+  	 new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s"$s ")).toString)
+  	     .append(s"=> ${symbols(0)}").toString
 }
 
 

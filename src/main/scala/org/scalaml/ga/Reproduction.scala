@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.ga
 
@@ -27,7 +27,7 @@ import org.scalaml.util.Display
 		 *  		 
 		 *  @author Patrick Nicolas
 		 *  @since August 28, 2013
-		 *  @note Scalal for Machine Learning
+		 *  @note Scalal for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 		 */
 
 final class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   

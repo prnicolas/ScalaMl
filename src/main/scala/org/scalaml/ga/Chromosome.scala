@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.ga
 
@@ -24,7 +24,7 @@ import scala.util.Random
 			 * 
 			 * @author Patrick Nicolas
 			 * @since August 27, 2013
-			 * @note Scala for Machine Learning
+			 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 			 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
    require(code != null && code.size > 1, "Cannot create a chromosome from undefined genetic code")
@@ -44,13 +44,13 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * or if the cross-over factor is out of range.
    		 * @return the pair of offspring.
    		 */
-   def +- (that: Chromosome[T], idx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
+   def +- (that: Chromosome[T], gIdx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
        require(that != null, "Cannot cross-over this chromosome with an undefined parent")
-       require(this.size == that.size, "Cannot cross-over chromosomes of different size")
+       require(this.size == that.size, s"Cannot cross-over chromosomes of different size this ${size} and that ${that.size}")
      
       	 	 // First use the global index (module the number of gene
-       val xoverIdx = idx.chOpIdx
-       val xGenes =  spliceGene(idx, that.code(xoverIdx) ) 
+       val xoverIdx = gIdx.chOpIdx
+       val xGenes =  spliceGene(gIdx, that.code(xoverIdx) ) 
        
 
        val offSprng1 = code.slice(0, xoverIdx) ::: xGenes._1 :: that.code.drop(xoverIdx+1)
@@ -66,11 +66,12 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    		 * @throws IllegalArgumentException if mu is out of range
    		 * @return a mutated chromosome
    		 */
-    def ^ (idx: GeneticIndices): Chromosome[T] = {             	       
+    def ^ (gIdx: GeneticIndices): Chromosome[T] = {             	       
          	// Get the mutation index in the gene to mutate
    
-        val mutated = code(idx.chOpIdx) ^ idx
-        val xs = Range(0, code.size).map(i => if(i == idx.chOpIdx) mutated.asInstanceOf[T] else code(i)).toList
+        val mutated = code(gIdx.chOpIdx) ^ gIdx
+        val xs = Range(0, code.size).map(i => 
+            if(i == gIdx.chOpIdx) mutated.asInstanceOf[T] else code(i)).toList
         Chromosome[T](xs)
     }
      
@@ -105,15 +106,15 @@ final class Chromosome[T <: Gene](val code: List[T]) {
     
     override def toString: String = String.valueOf(code.toString)
      
-    private[this] def spliceGene(idx: GeneticIndices, thatCode: T): (T, T) = {
-        ((this.code(idx.chOpIdx) +- (thatCode, idx)).asInstanceOf[T], 
-         (thatCode +- (code(idx.chOpIdx), idx)).asInstanceOf[T] )
+    private[this] def spliceGene(gIdx: GeneticIndices, thatCode: T): (T, T) = {
+        ((this.code(gIdx.chOpIdx) +- (thatCode, gIdx)).asInstanceOf[T], 
+         (thatCode +- (code(gIdx.chOpIdx), gIdx)).asInstanceOf[T] )
     }
     
-    def show: String = 
-    	new StringBuilder(code.foldLeft(new StringBuilder)((buf,gene) => buf.append(gene.show).append(" ")).toString)
-              .append(" score: ")
-                .append(unfitness).toString
+    def toString(comment: String): String = 
+    	new StringBuilder(comment)
+              .append(code.foldLeft(new StringBuilder)((buf,gene) => buf.append(s"${gene.show} ")).toString)
+              .append(s" score: $unfitness").toString
 }
 
 
@@ -121,6 +122,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 	 * Companion object to a Chromosome used to define the constructors
 	 * @author Patrick Nicolas
 	 * @since September 2, 2013
+	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 	 */
 object Chromosome {
   import scala.collection.mutable.ArrayBuffer

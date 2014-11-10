@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.ga
 
@@ -29,7 +29,7 @@ import org.scalaml.core.design.Config
 	 * 	 
 	 * @author Patrick Nicolas
 	 * @since August 28, 2013
-	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
+	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/implementation/GA configuration
 	 */
 final class GAConfig(val xover: Double,
                      val mu: Double,
@@ -42,27 +42,24 @@ final class GAConfig(val xover: Double,
   	val persists = "config/ga"
   	  
   		/**
-  		 * <p>re-compute the mutation factor using an attenuator
+  		 * <p>re-compute the mutation factor using an attenuator</p>
   		 */
     val mutation = (cycle : Int) => {
-    	require(cycle >= 0 && cycle < maxCycles, "Iteration " + cycle + " is out of range")
+    	require(cycle >= 0 && cycle < maxCycles, s"Iteration $cycle is out of range")
         softLimit(cycle)
     }
     
-    override def toString : String = {
-        new StringBuilder("Cross-over: " ).
-                      append(xover).
-                            append("\nMutation: ").
-                              append(mu).toString
-    }
+    override def toString : String = s"Cross-over: $xover Mutation$mu"
 }
 
 
 	/**
 	 * <p>Singleton that define the attenuator function for computing the cross-over or mutation index
-	 * of chromosomes, according the number of iterations in the genetic algorithm optimization. The
-	 * attenuation function supported are linear, square and boltzman.</p>
+	 * of chromosomes, according the number of iterations in the genetic algorithm optimization.</p>
+	 * 
 	 * @author Patrick Nicolas
+	 * @since August 28, 2013
+	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/implementation/GA configuration
 	 */
 object GAConfig {
    def apply(xover: Double, mu: Double, maxCycles: Int, softLimit: Int =>Double): GAConfig = 

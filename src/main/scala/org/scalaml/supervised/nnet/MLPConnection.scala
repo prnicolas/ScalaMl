@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95
+ * Version 0.95c
  */
 package org.scalaml.supervised.nnet
 
@@ -17,7 +17,7 @@ import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
 import ScalaMl._
 import org.scalaml.supervised.nnet.MLP.MLPObjective
-
+import MLPConnection._
 
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
@@ -37,10 +37,14 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 	require(config != null, "Configuration for the MLP connection is undefined")
 	require(src != null && dst != null, "The source or destination layer for this connection is undefined")
 	
+		/**
+		 * <p>Type of Synapse defined as a tuple of [weight, gradient(weights)]
+		 */
     type MLPSynapse = (Double, Double)
 
+    
 	private val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
-	                        if(n > 0) Array.fill(src.len)((Random.nextDouble*0.1, 0.0)) 
+	                        if(n > 0) Array.fill(src.len)((Random.nextDouble*BETA, 0.0)) 
 	                        else Array.fill(src.len)((1.0, 0.0)))
 		   
 		/**
@@ -68,7 +72,8 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 	  	 */
 	def connectionBackpropagation: Unit =  
 	   Range(1, src.len).foreach(i => {
-	  	   val err = Range(1, dst.len).foldLeft(0.0)((s, j) => s + synapses(j)(i)._1*dst.delta(j) )
+	  	   val err = Range(1, dst.len).foldLeft(0.0)((s, j) => 
+	  	                         s + synapses(j)(i)._1*dst.delta(j) )
 	  	   src.delta(i) =  src.output(i)* (1.0- src.output(i))*err
 	   })
 
@@ -99,7 +104,7 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 	  Range(0, dst.len).foreach( i => {
 	  	Range(0, src.len).foreach(j => {
 	  	   val wij: (Double, Double) = synapses(i)(j)
-	  	   buf.append(i + "," + j + ": (" + wij._1 + "," +  wij._2 + ")  ")
+	  	   buf.append(s"$i,$j: (${wij._1}, ${wij._2})  ")
 	  	})
 	  	buf.append("\n")
 	  })
@@ -117,5 +122,7 @@ protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(i
 }
 
 
-
+object MLPConnection {
+  val BETA = 0.1
+}
 // -------------------------------------  EOF ------------------------------------------------

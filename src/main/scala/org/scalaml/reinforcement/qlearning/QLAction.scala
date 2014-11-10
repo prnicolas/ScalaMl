@@ -18,10 +18,10 @@ package org.scalaml.reinforcement.qlearning
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 class QLAction[T](val from: Int, val to: Int) {
-   override def toString: String = 
-      new StringBuilder(s"\nid: ${from}").append(s"  toState: ${to}").toString
+   override def toString: String = s"\naction: state ${from} => state ${to}"
 }
 
 
