@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.supervised.hmm
 
@@ -32,8 +32,7 @@ import HMMConfig._
 	 *  @since March 17, 2014
 	 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Decoding
 	 */
-class ViterbiPath(lambdaV: HMMLambda, 
-				  obsV: Array[Int]) extends HMMModel(lambdaV, obsV) {
+class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda, obs) {
 	  /**
 	   * Maximum value for delta computed by recursion. the computation
 	   * throws a Arithmetic or Runtime exception that is to be caught by

@@ -18,7 +18,8 @@ import org.scalaml.ga.Chromosome
 import scala.util.Random
 
 
-class XcsAction(val sensorid: String, val _target: Double)(implicit val _discr: Discretization) extends Gene(sensorid, _target, EQUAL)
+class XcsAction(sensorId: String, _target: Double)(implicit _discr: Discretization) extends Gene(sensorId, _target, EQUAL)
+
 
 object XcsAction {
 	val XCSACTION_SIZE = 32
@@ -36,31 +37,27 @@ object XcsAction {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
 
 class XcsRule(val signal: Signal, val action: XcsAction) {
-   require(signal != null, "Cannot create an XCS rule with undefined signal/predicate")
-   require(action != null, "Cannot create an XCS rule with undefined action")
+   require(signal != null, "XcsRule Cannot create an XCS rule with undefined signal/predicate")
+   require(action != null, "XcsRule Cannot create an XCS rule with undefined action")
 }
 
 
 
-			/**
-			 * <p>Companion singleton for the XCS rule, The object defines the following element:<br>
-			 * Default discretization method, DIGITIZE<br>
-			 * XcsAction type as a Q-Learning state<br>
-			 * Global rule counter, rulesCount<br>
-			 * Creationof random action required by the covering process.</p>
-			 * 
-			 * @author Patrick Nicolas
-			 * @since March 24, 2014
-		     * @note Scala for Machine Learning
-			 */
+		/**
+		 * <p>Companion singleton for the XCS rule, The object defines the XcsSensor type as 
+		 * a trading signal.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
+		*/
 
 object XcsRule {
 	import QLState._
-//	final val DIGITIZE = Discretization((x:Double) => (x*1e+4).floor.toInt, (n: Int) => n.toDouble*1e-4 )
     type XcsSensor = Signal
 
 //	var rulesCount = 0

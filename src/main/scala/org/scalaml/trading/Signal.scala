@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.trading
 
@@ -134,6 +134,9 @@ object Signal {
   	   EQUAL -> ((x: Double, target: Double) => Math.abs(x -target)),
        NONE -> ((x: Double, target: Double) => -1.0)
    )
+   
+   @inline
+   final def numOperators = operatorFuncMap.size
 }
 
 

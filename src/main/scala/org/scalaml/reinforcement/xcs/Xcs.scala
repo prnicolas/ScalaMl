@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.reinforcement.xcs
 
@@ -14,10 +14,11 @@ import org.scalaml.ga._
 import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning._
 import org.scalaml.core.types.ScalaMl._
-import Chromosome._
 import org.scalaml.core.design.PipeOperator
 
 
+
+case class XcsSensor(val id: String, val value: Double)
 
 		/**
 		 * <p>Example of implementation of the XCS algorithm with a predefined
@@ -33,32 +34,34 @@ import org.scalaml.core.design.PipeOperator
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 26, 2014
-		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Learning classifier systems.
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-
-case class XcsSensor(val id: String, val value: Double)
-
 final class Xcs(config: XcsConfig, population: Population[Signal], score: Chromosome[Signal]=> Unit, input: Array[QLInput]) extends PipeOperator[XcsSensor, List[XcsAction]] {
+	import Xcs._
+	check(config, population, score, input)
 
-   require(config != null, "Xcs: Cannot create XCS with undefined configuration")
-   require(score != null, "Xcs: Cannot create XCS with undefined chromosome scoring function")
-   require(input != null, "Xcs: Cannot create XCS with undefined state input")
-   require(population != null, "Xcs: Cannot create XCS with undefined population")
-   require(population.size > 2, s"Xcs: Cannot create XCS with a population of size ${population.size}")
-   	      
-   val gaSolver = GASolver[Signal](config.gaConfig, score)   
-   val featuresSet: Set[Chromosome[Signal]]  = population.chromosomes.toSet
-   val qLearner = QLearning[Chromosome[Signal]](config.qlConfig, computeNumStates(input), extractGoals(input), input, featuresSet)
+	val gaSolver = GASolver[Signal](config.gaConfig, score)   
+	val featuresSet: Set[Chromosome[Signal]]  = population.chromosomes.toSet
+	val qLearner = QLearning[Chromosome[Signal]](config.qlConfig, computeNumStates(input), extractGoals(input), input, featuresSet)
    
-   private def extractGoals(input: Array[QLInput]): Int = -1
-   private def computeNumStates(input: Array[QLInput]): Int = -1
-   
-   override def |> : PartialFunction[XcsSensor, List[XcsAction]] = {
-     case _ => List.empty
-   }
+	private def extractGoals(input: Array[QLInput]): Int = -1
+	private def computeNumStates(input: Array[QLInput]): Int = -1
+  
+	override def |> : PartialFunction[XcsSensor, List[XcsAction]] = {
+		case _ => List.empty
+	}
+}	
+
+
+object Xcs {
+	protected def check(config: XcsConfig, population: Population[Signal], score: Chromosome[Signal]=> Unit, input: Array[QLInput]): Unit = {
+		require(config != null, "Xcs.check: Cannot create XCS with undefined configuration")
+		require(score != null, "Xcs.check: Cannot create XCS with undefined chromosome scoring function")
+		require(input != null, "Xcs.check: Cannot create XCS with undefined state input")
+		require(population != null, "Xcs.check: Cannot create XCS with undefined population")
+		require(population.size > 2, s"Xcs.check: Cannot create XCS with a population of size ${population.size}")
+	}
 }
 
 
-          
-  
 // ------------------------------------  EOF -----------------------------------------------------

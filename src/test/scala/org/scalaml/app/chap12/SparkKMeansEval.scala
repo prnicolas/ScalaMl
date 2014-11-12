@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.app.chap12
 
@@ -31,49 +31,56 @@ import org.scalaml.app.Eval
 
 
 object SparkKMeansEval extends Eval {
-  val name: String = "SparkKMeansEval"
-  val K = 8
-  val numRuns = 16
-  val maxIters = 200
-  val path = "resources/data/chap12/CSCO.csv"
-  val logger = Logger.getLogger(name)
-  
-  def run(args: Array[String]): Int = {
-  	Display.show(s"$name evaluation of MLLib K-means on Spark framework", logger)
+	val name: String = "SparkKMeansEval"
+	val logger = Logger.getLogger(name)
+	
+	val K = 8
+	val NRUNS = 16
+	val MAXITERS = 200
+	val PATH = "resources/data/chap12/CSCO.csv"
+	  
+	def run(args: Array[String]): Int = {
+		Display.show(s"$name evaluation of MLLib K-means on Spark framework", logger)
   	
-  	Try {
-  	   val input = extract
-	   val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
-		   
-	   val config = new SparkKMeansConfig(K, maxIters, numRuns)
-	   implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
-		   
-	   val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
-	   val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
-		   
-	   val obs = Array[Double](0.23, 0.67)
-       val clusterId1 = sparkKMeans |> obs
-	   Display.show(s"$name  (${obs(0)},${obs(1)}) = $clusterId1", logger)
-		   
-	   val obs2 = Array[Double](0.56, 0.11)
-	   val clusterId2 = sparkKMeans |> obs2 
-	   Display.show(s"$name (${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
-	 }
-	 match {
-	   case Success(n) => n
-	   case Failure(e) => Display.error(s"$name run failed", logger, e)
-	 }
-  }
-  
-  private def extract: List[DblVector] = {
-      import org.scalaml.trading.YahooFinancials
-      import org.scalaml.workflow.data.DataSource
-        
-      val extractors = List[Array[String] => Double](
-      	 YahooFinancials.volatility, YahooFinancials.volume )	
+		Try {
+			val input = extract
+			val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
 
-	  DataSource("resources/data/chap12/CSCO.csv", true) |> extractors
-   }
+			val config = new SparkKMeansConfig(K, MAXITERS, NRUNS)
+			implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
+	
+			val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
+			val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
+		   
+			val obs = Array[Double](0.23, 0.67)
+			val clusterId1 = sparkKMeans |> obs
+			Display.show(s"$name  (${obs(0)},${obs(1)}) = $clusterId1", logger)
+
+			val obs2 = Array[Double](0.56, 0.11)
+			val clusterId2 = sparkKMeans |> obs2 
+			Display.show(s"$name (${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
+		}
+		match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name run failed", logger, e)
+		}
+	}
+  
+  
+	private def extract: List[DblVector] = {
+		import org.scalaml.trading.YahooFinancials
+		import org.scalaml.workflow.data.DataSource
+
+		val extractors = List[Array[String] => Double](
+			YahooFinancials.volatility, YahooFinancials.volume 
+		)	
+		DataSource(PATH, true) |> extractors
+	}
+}
+
+
+object SparkKMeansEvalApp extends App {
+  SparkKMeansEval.run(Array.empty)
 }
 
 

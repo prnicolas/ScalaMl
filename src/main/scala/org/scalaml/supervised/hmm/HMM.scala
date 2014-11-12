@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.supervised.hmm
 
@@ -28,17 +28,17 @@ import HMMConfig._
 	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 	 */
 object HMMForm extends Enumeration {
-  type HMMForm = Value
-  val EVALUATION, DECODING = Value
+	type HMMForm = Value
+	val EVALUATION, DECODING = Value
 }
 
 
 
 abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Model {
-   require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
-   require(obs != null && obs.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
+	require(lambda != null, "Cannot execute dynammic algorithm with undefined HMM lambda model")
+	require(obs != null && obs.size > 0, "Cannot execute dynammic algorithm  with undefined observations")
    
-   val persists = "models/hmm"
+	val persists = "models/hmm"
 }
 
 
@@ -52,17 +52,17 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 	 * @since March 29, 2014
 	 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model - Evaluation
 	 */
-class Pass(val lambd: HMMLambda, val _obsIdx: Array[Int]) extends HMMModel(lambd, _obsIdx) { 
-   protected var alphaBeta: Matrix[Double] = _
-   protected val ct = Array.fill(lambda.getT)(0.0)
+protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda, obs) { 
+	protected var alphaBeta: Matrix[Double] = _
+	protected val ct = Array.fill(lambda.getT)(0.0)
 
-   protected def normalize(t: Int): Unit = {
-  	  require(t >= 0 && t < lambda.getT, s"Incorrect argument $t for normalization")
-  	  ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
-  	  alphaBeta /= (t, ct(t))
-   }
-   
-   def getAlphaBeta: Matrix[Double] = alphaBeta
+	protected def normalize(t: Int): Unit = {
+		require(t >= 0 && t < lambda.getT, s"Incorrect argument $t for normalization")
+		ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
+		alphaBeta /= (t, ct(t))
+	}
+
+	def getAlphaBeta: Matrix[Double] = alphaBeta
 }
 
 
@@ -82,7 +82,7 @@ import HMMForm._
 		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model
 		 */
 protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T)  
-                           extends PipeOperator[DblVector, HMMPredictor] {
+				extends PipeOperator[DblVector, HMMPredictor] {
 
 	private val logger = Logger.getLogger("HMM")
 	require(lambda != null, "Cannot execute a HMM with undefined lambda model")
@@ -110,7 +110,7 @@ protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMFo
 				case Success(prediction) =>prediction
 				case Failure(e) => Display.error("HMM.|> ", logger, e); null
 			}
-	   }
+		}
 	}
 		/**
 		 * <p>Implements the 3rd canonical form of the HMM</p>
@@ -144,14 +144,16 @@ object HMM {
 		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
 		 */
 	type HMMPredictor = (Double, Array[Int])
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, maxIters)
-	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] = 
+		new HMM[T](lambda, form, maxIters)
+	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  
+		new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
 	
 	
     def apply[T <% Array[Int]](config: HMMConfig, obsIndx: Array[Int], form: HMMForm,  maxIters: Int, eps: Double)(implicit f: DblVector => T): Option[HMM[T]] = {
 		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
 		if( baumWelchEM.maxLikelihood != None)
-		   Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
+			Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
 		else None
 	}
 }

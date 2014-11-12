@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.scalability.akka
 
@@ -27,39 +27,47 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Worker actor used to implements a generate a value from a two dimension time series.
-		 * The computation is initiated by the Master or workflow controller.</p>
+		 * <p>Worker actor responsible for transforming a time series using the 
+		 * PipeOperator |>. The computation is initiated by the Master that acts 
+		 * as the workflow controller.</p>
+		 * @constructor Create a worker actor. [fct] Data transformation function to be applied to a time series
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers
 		 */
-final class WorkerActor(fct: PipeOperator[DblSeries, DblSeries]) extends Actor {
-  private val logger = Logger.getLogger("WorkerActor")
-  override def postStop: Unit = Display.show("WorkerActorpostStop", logger)
+final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Actor {
+	import Worker._
+	check(id, fct)
+	
+	private val logger = Logger.getLogger("WorkerActor")
+	override def postStop: Unit = Display.show(s"WorkerActor${id}.postStop", logger)
  
 		/**
 		 * <p>Event loop of the work actor that process two messages<br>
 		 * Activate to start processing for the current iteration<br>
-		 * Terminate to shutdown.
 		 */
-   override def receive = {
-      case msg: Activate =>  msg.sender ! Completed(msg.id, transform(msg.xt))
-      case _ => Display.show("WorkerActor.receive Message not recognized", logger)
-   }
-   
-   private def transform(xt: DblSeries): DblSeries =  fct |> xt
+	override def receive = {
+		case msg: Activate => {
+			val msgId = msg.id+id
+			Display.show(s"Worker.receive.Activate ${msgId}", logger)
+			msg.sender ! Completed(msgId, transform(msg.xt))
+		}
+		case _ => Display.error(s"WorkerActor${id}.receive Message not recognized", logger)
+	}
+
+	private def transform(xt: DblSeries): DblSeries =  fct |> xt
 }
 
 
-class Partitioner(val numPartitions: Int) {
-   def split(xt: DblSeries): Array[Int] = {
-  	  val sz = (xt.size.toDouble/numPartitions).floor.toInt
-  	  val indices = Array.tabulate(numPartitions)(i=>(i+1)*sz)
-  	  indices.update(numPartitions -1, xt.size)
-  	  indices
-   }
+object Worker {
+	private def check(id: Int, fct: PipeOperator[DblSeries, DblSeries]): Unit = {
+		require(id >= 0, s"Worker.check Id $id is out of range")
+		require(fct != null, "Worker.check Cannot create a master actor with undefined data transformation function")
+	}
 }
+
+
 
 
 

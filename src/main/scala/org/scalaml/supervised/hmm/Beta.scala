@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.supervised.hmm
 
@@ -28,7 +28,7 @@ import HMMConfig._
 		 * @since March 14, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
-protected class Beta(val lambdaB: HMMLambda, val obsB: Array[Int]) extends Pass(lambdaB, obsB) {
+protected class Beta(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
 	private val logger = Logger.getLogger("Beta")
 
 	val complete = {

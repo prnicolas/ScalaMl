@@ -13,31 +13,32 @@ import scala.util.Random
 import org.scalaml.core.types.ScalaMl._
 
 			/**
-			 * <p>State defines as a label and a normalized values or frequency disribution across a set
-			 * of categories or symbols. The main purpose of the state class is to compute its
-			 * Value V.</p>
-			 * @param id optional label or identifier for the state. The label is used as a key
-			 * @param distribution normalized distribution of values per categories
-			 * @param cost default cost function used to compute the V value of the state
-			 * @throws IllegalArgument is the normalized distribution is not defined
+			 * <p>State in the Q-learning. A state is uniquely defined by its identifier and the list of actions that transition
+			 * from this state to another state. The list of actions is empty if this state is a goal. A state may have properties of
+			 * type T that is independent from the state transition.</p>
+			 * @constructor Create a state for Q-learning. [id] Identifier for the state. [actions] List of actions for that transition from this state to other states. Each action transition the model to single state. [prop] Optional property of this state.
+			 * @throws IllegalArgument is list of actions is undefined.
 			 * 
 			 * @author Patrick Nicolas
 			 * @since January 17, 2014
 			 * @note Scala for Machine Learning
 			 */
-class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, prop: T) {
-  require(actions != null, "Cannot create a QLState with undefined list of actions")
+class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, property: T) {
+  
+	def == (that: QLState[T]): Boolean = that.id == id
+	def != (that: QLState[T]): Boolean = ! ==(that)
 
-  def == (that: QLState[T]): Boolean = that.id == id
-  def != (that: QLState[T]): Boolean = ! ==(that)
+		/**
+		 * Test if this state is a goal (or has not actions).
+		 * @return true if the state has no actions, false otherwise
+		 */
+	@inline
+	final def isGoal: Boolean = actions != List.empty
   
-  @inline
-  final def hasActions: Boolean = actions != List.empty
-  
-  override def toString: String = 
-     new StringBuilder(s"state: $id ")
-		    .append( actions.foldLeft(new StringBuilder)((b,a) => b.append(s"$a ")).toString )
-		    .toString
+	override def toString: String = 
+		new StringBuilder(s"state: $id ")
+			.append( actions.foldLeft(new StringBuilder)((b,a) => b.append(s"$a ")).toString )
+			.toString
 }
 
 
@@ -45,10 +46,11 @@ class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, prop:
 		 * Companion object to the State class used for defining constructors
 		 */
 object QLState {
-  def apply[T](id: Int, actions: List[QLAction[T]], t: T): QLState[T] = new QLState(id, actions, t)
+	def apply[T](id: Int, actions: List[QLAction[T]], property: T): QLState[T] = new QLState(id, actions, property)
   
-  protected def check[T](id: Int, actions: List[QLAction[T]], prop: T): Unit = {
-    
+	protected def check[T](id: Int, actions: List[QLAction[T]], property: T): Unit = {
+		require( id >= 0, s"QLState.check id $id is out of range")
+		require(actions != null, "QLState.check Cannot create a QLState with undefined list of actions")
   }
 }
 
@@ -56,5 +58,3 @@ object QLState {
 
 // ----------------------------  EOF --------------------------------------------------------------
 
-
-    

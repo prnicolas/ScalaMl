@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.reinforcement.xcs
 
@@ -24,23 +24,23 @@ import org.scalaml.ga.Discretization
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 25, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
 
 object XcsCover {  
-   		/**
-   		 * <p>Generates new rules from an existing population. The number of rules
-   		 * to generates is the size of the chromosome representing a trading strategy.</p>
-   		 * @param signal (or rule predicate) used to generate a set of new rules
-   		 * @param number of rules to generated.
-   		 * @throws IllegalArgumenException if the signal is undefined
-   		 * @return list of new XCS rules. 
-   		 */
+		/**		 
+		 * <p>Generates new rules from an existing population. The number of rules
+		 * to generates is the size of the chromosome representing a trading strategy.</p>
+		 * @param sensor (or rule predicate) used to generate a set of new rules
+		 * @param list of actions (or XCS rules) used in the coverage prpcoess
+		 * @throws IllegalArgumenException if the signal is undefined
+		 * @return list of new XCS rules. 
+		 */
    def cover(sensor: XcsSensor, actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
-  	  require(sensor != null, "Cannot generates new rules from undefined signal or predicate")
+  	  require(sensor != null, "XcsCover.cover Cannot generates new rules from undefined signal or predicate")
   	  
   	  actions.foldLeft(List[XcsRule]()) ((xs, act) => {
-  	  	 val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(4)))
+  	  	 val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(Signal.numOperators)))
   	  	 new XcsRule(signal, XcsAction(act, Random)) :: xs
   	  })
    } 

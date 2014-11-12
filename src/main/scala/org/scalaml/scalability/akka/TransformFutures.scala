@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.scalability.akka
 
@@ -22,58 +22,68 @@ import org.scalaml.core.design.PipeOperator
 import XTSeries._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
+import scala.concurrent.duration.Duration
+
 
 		/**
-		 * <p>Version of the future to compute the variance of data assigned to each group for which the
-		 *  the execution blocks until all the future complete the computation of 
-		 *  the variance for each assigned fold..</p>
-		 *  @param data time series {x, y} used in the cross validation and to be broken down into normalized groups
-		 *  @param numFutures number of futures used in the parallelization of the computation
+		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.</p>
+		 *  @constructor Create a distributed transformation for time series. [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
-		 *  @note Scala for Machine Learning
+		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures
 		 */			
-final class TransformFutures(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) extends Actor {
-  implicit val timeout = Timeout(2000)	
-  private val logger = Logger.getLogger("TransformFutures")
-  
-  def receive = {
-	  case Start => aggregate(transform)
-      case _ => Display.show("Message not recognized", logger)
-  }
-  
-  def transform: Array[Future[DblSeries]] = {   
-  	 val partIdx = partitioner.split(xt)
-     val partitions = partIdx.map(n => XTSeries[Double](xt.slice(n - partIdx(0), n)))
+abstract class TransformFutures(_xt: DblSeries, _fct: PipeOperator[DblSeries, DblSeries], _partitioner: Partitioner)(implicit timeout: Timeout) 
+					extends Controller(_xt, _fct, _partitioner) {
+		
+	private val logger = Logger.getLogger("TransformFutures")
 
-	 val futures = new Array[Future[DblSeries]](partIdx.size)
-	      
-	 partitions.zipWithIndex.foreach(pi => {
-		futures(pi._2) = Future[DblSeries] { 
-		   fct |> pi._1
-		 }
-	   }) 
-	   futures
+		/**
+		 * <p>Message handling for the future-based controller for the transformation of time series.</p>
+		 * <b>Start</b> to initiate the future computation of transformation of time series.<.p>
+		 */
+	override def receive = {
+		case Start => Display.show(compute(transform), logger)
+		case _ => Display.show("TransformFutures.receive Message not recognized", logger)
+	}
+  
+	
+	private def transform: Array[Future[DblSeries]] = {   
+		val partIdx = partitioner.split(xt)
+		val partitions: Iterable[DblSeries] = partIdx.map(n => XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
+
+		val futures = new Array[Future[DblSeries]](partIdx.size)
+		partitions.zipWithIndex.foreach(pi => {
+			futures(pi._2) = Future[DblSeries] { 
+				fct |> pi._1
+			}
+		}) 
+		futures
 	}
 	
 		/**
-		 * <p>Delegates the computation of the variance of each group
-		 * to their respective future. The execution blocks using Await.</p>
-		 * @param futures set of futures used to compute the variance of each grou[
+		 * <p>Executes the aggregation of the results for all the future execution of 
+		 * the transformation of time series, using the transform fct.</p>
+		 * @param futures Set of future transformation of time series using the transform fct.
 		 * @throws IllegalArgumentException if futures are undefined
 		 */
-   def aggregate(futures: Array[Future[DblSeries]]): Unit = {
-  	  require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
+	private def compute(futures: Array[Future[DblSeries]]): Seq[Double] = {
+		require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
   	  
-      val frequenciesList = futures.map(
-                 Await.result(_, timeout.duration).toArray  ).toList
-      val listFrequencies = frequenciesList.transpose
-      Display.show(listFrequencies.map( _.sum), logger)
-   }
+		val results = futures.map(Await.result(_, timeout.duration))
+		aggregate(results)
+	}
+	
+	
+		/**
+		 * <p>Executes the aggregation of the results for all the future execution of 
+		 * the transformation of time series, using the transform fct.</p>
+		 * @param results of the distributed processing of the time series by futures
+		 * @throws IllegalArgumentException if the results are undefined
+		 */
+	protected def aggregate(results: Array[DblSeries]): Seq[Double] 
 }
-
 
 
 // ------------------------  EOF -----------------------------------------------------------------------------

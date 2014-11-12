@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  * 
  */
 package org.scalaml.supervised.hmm
@@ -30,9 +30,9 @@ import org.scalaml.util.Display
 	 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training
 	 */
 class BaumWelchEM(config: HMMConfig, 
-				  _obs: Array[Int], 
+				  obs: Array[Int], 
 				  numIters: Int,
-				  eps: Double) extends HMMModel(HMMLambda(config), _obs) {
+				  eps: Double) extends HMMModel(HMMLambda(config), obs) {
   require( eps > 1E-5 && eps < 0.1, s"Convergence criteria for HMM Baum_Welch $eps is out of range")
 	  
   private val logger = Logger.getLogger("BaumWelchEM")

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.app.chap11
 
@@ -78,57 +78,23 @@ object QLearningEval extends Eval {
       val goal = input.maxBy( _.reward).to  
       Display.show(s"Goal state: ${goal.toString}", logger)
       
-      
-      	// List the neighbors that are allowed 
-      /*
-      val getNeighbors2 = (idx: Int, numStates: Int) => {
-          def getProximity(idx: Int, radius: Int): List[Int] = {
-              val idx_max = if(idx + radius >= numStates) numStates else idx+ radius
-              val idx_min = if(idx < radius) 0 else idx - radius
-              Range(idx_min, idx_max+1).filter(idx - _ >= 0)
-                                   .foldLeft(List[Int]())((xs, n) => (idx -n) :: xs)
-          }
-          
-          getProximity(idx, RADIUS).toList
-      }
-      
-      def getProximityNeighbors(idx: Int, radius: Int, numStates: Int): List[Int] = {
-          val idx_max = if(idx + radius >= numStates) numStates else idx+ radius
-          val idx_min = if(idx < radius) 0 else idx - radius
-          Range(idx_min, idx_max+1).filter(idx - _ >= 0)
-                                   .foldLeft(List[Int]())((xs, n) => (idx -n) :: xs)
-      }
-      * 
-      */
-      
-	  val getNeighbors = (idx: Int, numStates: Int) => {
-		val rows = idx/numStates
-		val cols = if( rows == 0) idx else (idx % (rows*numStates))
-		
-		val _toList = new ListBuffer[Int]
-		if(cols > 0) _toList.append(cols-1)
-		
-		if(cols < numStates-1) 
-		     _toList.append(cols+1)
-		_toList.append(cols)
-		_toList.toList	
-      }
 	  
-      val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, getNeighbors2)
+      val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, getNeighbors)
 	  QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
    }
     
         	// List the neighbors that are allowed 
    val RADIUS = 4
-     def getNeighbors2(idx: Int, numStates: Int): List[Int] = {
- //  val getNeighbors2 = (idx: Int, numStates: Int) => {
-        def getProximity(idx: Int, radius: Int): List[Int] = {
-            val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
-            val idx_min = if(idx < radius) 0 else idx - radius
-            Range(idx_min, idx_max+1).filter( _ != idx).foldLeft(List[Int]())((xs, n) => n :: xs)
-        }
+   val getNeighbors = (idx: Int, numStates: Int) => {
+        
+     def getProximity(idx: Int, radius: Int): List[Int] = {
+         val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
+         val idx_min = if(idx < radius) 0 else idx - radius
+         Range(idx_min, idx_max+1).filter( _ != idx)
+                                  .foldLeft(List[Int]())((xs, n) => n :: xs)
+      }
           
-        getProximity(idx, RADIUS).toList
+      getProximity(idx, RADIUS).toList
     }
       
 }

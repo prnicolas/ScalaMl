@@ -13,7 +13,7 @@ scalaVersion := "2.11.2"
 libraryDependencies ++= Seq(
    "org.apache.commons" % "commons-math3" % "3.3",
    "org.jfree" % "jfreechart" % "1.0.17",
-   "com.typesafe.akka" %% "akka-actor" % "2.3.4",
+   "com.typesafe.akka" %% "akka-actor" % "2.3.6",
    "org.apache.spark" % "spark-core_2.10" % "1.0.2",
    "org.apache.spark" % "spark-mllib_2.10" % "1.0.2",
    "org.scalatest" %% "scalatest" % "2.1.6"

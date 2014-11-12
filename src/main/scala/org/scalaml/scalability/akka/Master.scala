@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.scalability.akka
 
@@ -26,44 +26,57 @@ import org.apache.log4j.Logger
 
 
 
+		/**
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker (or master-slave) design..</p>
+		 *  @constructor Create a distributed transformation for time series. [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  
+		 *  @author Patrick Nicolas
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers
+		 */		
+abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) 
+								extends Controller(xt, fct, partitioner) {
 
-class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) extends Actor {
-   require(xt != null && xt.size > 0, "Cannot create a master actor to process undefined data")	
-   private val logger = Logger.getLogger("Master")
+	private val logger = Logger.getLogger("Master")
    
-   val workers = List.tabulate(partitioner.numPartitions)(n => 
-		    	    context.actorOf(Props(new WorkerActor(fct)), name = "worker_" + String.valueOf(n)))
+	private val workers = List.tabulate(partitioner.numPartitions)(n => 
+		context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
 
-   val aggregator = new ListBuffer[DblVector]
+	protected val aggregator = new ListBuffer[DblVector]
    
-   override def preStart: Unit = Display.show("Master.preStart", logger)
-   override def postStop: Unit = Display.show("Master stop", logger)
+	override def preStart: Unit = Display.show("Master.preStart", logger)
+	override def postStop: Unit = Display.show("Master stop", logger)
    
-        /**
-   		 * <p>Event loop of the master actor that processes two messages<br>
-   		 * Start to initialize the worker actor and launch the normalization of cross validation groups<br>
-   		 * Completed to process the results of the current iteration in the balancing procedure.</p>
-   		 */
-   override def receive = {
-      case Start => split
-      case msg: Completed => {
-      	if(aggregator.size >= partitioner.numPartitions-1) {
-		   workers.foreach( _ ! PoisonPill)
-           Display.show(aggregator.transpose.map( _.sum), logger)
-		   context.stop(self)
-         }
-      	 aggregator.append(msg.xt.toArray)
-	  }
-      case _ => Display.error("Message not recognized and ignored", logger)
-   }
-   
-   private def split: Unit = {
-  	  val partIdx = partitioner.split(xt)
-  	  workers.zip(partIdx).foreach(w => w._1 ! Activate(xt.slice(w._2-partIdx(0), w._2), self) )  
-   }
+		/**		 
+		 * <p>Message processing handler for the rmaster for a distributed transformation of time series.<br>
+		 * <b>Start</b> to partition the original time series and launch data transformation on worker actors.<br> 
+		 * <b>Completed</b> aggregates the results from all the worker actors.</p>
+		 */
+	override def receive = {
+		case Start => split
+		
+		case msg: Completed => {
+			Display.show(s"Master.receive.Completed from worker ${msg.id}", logger)
+			
+			if(aggregator.size >= partitioner.numPartitions-1) {
+				Display.show(aggregate.take(10), logger)
+				workers.foreach( _ ! PoisonPill)
+				Thread.sleep(1000)
+				context.stop(self)
+			}
+			aggregator.append(msg.xt.toArray)
+		}
+		case _ => Display.error("Message not recognized and ignored", logger)
+	}
+	
+	protected def aggregate: Seq[Double] 
+
+	private def split: Unit = {
+		Display.show("Master.recieve.Start", logger)
+		val partIdx = partitioner.split(xt)
+		workers.zip(partIdx).foreach(w => w._1 ! Activate(0, xt.slice(w._2-partIdx(0), w._2), self) )  
+	}
 }
-
-
-
 
 // ---------------------------------  EOF -------------------------

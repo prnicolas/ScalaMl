@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.supervised.hmm
 
@@ -19,8 +19,8 @@ import HMMConfig._
 		/**
 		 * <p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter 
 		 * is computed during instantiation.</p>
-		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). [LambdaA] Lambda (pi, A, B) model for the HMM. [obsIdxA]: Array of observations as integer (categorical data) 
-		 * @param lambdaA Lambda (pi, A, B) model for the HMM
+		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). [Lambda] Lambda (pi, A, B) model for the HMM. [obsIdxA]: Array of observations as integer (categorical data) 
+		 * @param lambda Lambda (pi, A, B) model for the HMM
 		 * @param obsIdxA: Array of observations as integer (categorical data)
 		 * @throws IllegalArgumentException if lambda, or  observations are undefined
 		 * @see org.scalaml.supervised.hmm.Pass
@@ -29,7 +29,7 @@ import HMMConfig._
 		 * @since March 13, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
-final class Alpha(lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lambdaA, obsIdxA) {
+final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
@@ -70,7 +70,7 @@ final class Alpha(lambdaA: HMMLambda, val obsIdxA: Array[Int]) extends Pass(lamb
 		 * @since March 13, 2014
 		 */
 object Alpha {
-  def apply(lambda: HMMLambda, obsIdx: Array[Int]): Alpha = new Alpha(lambda,obsIdx)
+  def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
 }
 
 

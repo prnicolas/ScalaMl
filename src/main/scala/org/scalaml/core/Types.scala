@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.core
 
@@ -41,6 +41,7 @@ package object types {
 	  
       type DblMatrix = DMatrix[Double]
       type DblVector = Array[Double]
+  	  
 
   			/**
   			 * <p>Generic operator on Vector of parameterized type and a DblVector</p>
@@ -118,31 +119,13 @@ package object types {
   object CommonMath {
   	 import org.apache.commons.math3.linear._
   	 import ScalaMl._
+  	 
 	 implicit def double2RealMatrix(data: DblMatrix): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealMatrix2(data: DblVector): RealMatrix = new Array2DRowRealMatrix(data)
 	 implicit def double2RealVector(data: DblVector): RealVector = new ArrayRealVector(data)
   	 implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
   }
 }
-
-/*
-object TypesApp extends App {
-	import types.ScalaMl._
-	import types.CommonMath._
-	import org.apache.commons.math3.linear._
-	  	 
-	 val B: DblMatrix = ((0.0, 0.0), (0.0, 0.0))  // convert into 1 by 2 matrix
-     val H: DblMatrix = ((1.0, 0.0), (0.0, 1.0))
-	 val P0: DblMatrix = ((0.4, 0.4), (0.4, 0.4))
-	 val x0: DblVector = (5.0, 0.0)
-	 
-	 val Q = new DblMatrix(B.size).map(_ => Array.fill(B(0).size)(1.7) )
-	 val rB: RealMatrix = B
-	 var rQ: RealMatrix = Q
-	 println(rQ.toString)
-}
-* 
-*/
 
 
 // ------------------------------------------  EOF -----------------------------------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.reinforcement.xcs
 
@@ -29,12 +29,12 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 		 *  
 		 * @author Patrick Nicolas
 	     * @since March 22, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
 
 class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) {
-	require(gaConfig != null, "Cannot initialize XCS algorithm with undefined GA configuration")
-	require(qlConfig != null, "Cannot initialize XCS algorithm with undefined Q-Learning configuration")
+	require(gaConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined GA configuration")
+	require(qlConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined Q-Learning configuration")
 }
 
 

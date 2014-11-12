@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -22,8 +22,8 @@ import scala.util.Random
 
 
 
-class QLModel[T](val bestPolicy: QLPolicy[T], val accuracy: Double) {
-   override def toString: String = s"Best policy: ${bestPolicy.toString} with accuracy: $accuracy" 
+class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) {
+	override def toString: String = s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }
 
 		/**
@@ -36,92 +36,95 @@ class QLModel[T](val bestPolicy: QLPolicy[T], val accuracy: Double) {
 		 * The client code is responsible to evaluate the quality of the model by testing the ratio
 		 * gamma a threshold.</p>
 		 * @constructor Create a Q-learning algorithm. [config] Configuration for Q-Learning algorithm. [qlSpace] Initial search space. [qlPolicy] Initial set of policies.
-		 * @throws IllegalArgumentException if the configuration or labels are undefined
+		 * @throws IllegalArgumentException if the configuration, the search space or the initial policies are undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]) 
-                                   extends PipeOperator[QLState[T], QLState[T]]  {
+								extends PipeOperator[QLState[T], QLState[T]]  {
    
-   import QLearning._
-   private val logger = Logger.getLogger("QLearning")
-   check(config, qlSpace, qlPolicy)
+	import QLearning._
+	private val logger = Logger.getLogger("QLearning")
+	check(config, qlSpace, qlPolicy)
    
    	/**
-   	 * Model parameters for Q-learning.
+   	 * Model parameters for Q-learning of type QLModel that is defined as
+   	 * a list of policies and training coverage
+   	 * 
    	 */
-   val model: Option[QLModel[T]] = {
-  	   val r = new Random(System.currentTimeMillis)
-  	   val successes = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
-  	       val success = train(r)
-  	       Display.show(s"\nEpisode # $n success: $success", logger)
-  	       s + (if(success) 1 else 0)
-  	   })
-  	   val accuracy = successes.toDouble/config.numEpisodes
-  	   
-  	   if( config.minAccuracy == -1.0 || accuracy >= config.minAccuracy )
-  	      Some(new QLModel[T](qlPolicy, accuracy))
-  	   else None
-   }
+	val model: Option[QLModel[T]] = {
+		val r = new Random(System.currentTimeMillis)
+		val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
+			val completed = train(r)
+		
+			Display.show(s"\nEpisode # $n completed: $completed", logger)
+			s + (if(completed) 1 else 0)
+		})
+		val coverage = completions.toDouble/config.numEpisodes
 
-        /**
-   		 * <p>Prediction method using Q-Learning model. The model is automatically 
-   		 * trained during instantiation of the class. It overrides the
-   		 * usual data transformation method (PipeOperator)</p>
-   		 * @throws MatchError if the model is undefined or the input state is undefined 
-     * @return PartialFunction of features vector of type Array[T] as input and the predicted vector values as output
-   		 * 
-   		 * @param data One or several entry as tuple (observations, state)
-   		 * @return A tuple (new state, reward) if the training was originally successful and all 
-   		 * the rewards associated to the action from the current state can be computed, None otherwise
-   		 * @throws IllegalArgumenException if the entry is undefined.
-   		 */
-      
-   override def |> : PartialFunction[QLState[T], QLState[T]] = {
-     case state: QLState[T] if(state != null && state.hasActions && model != None)  => nextState(state, 0)._1
-   }	  
-   
-   override def toString: String = qlPolicy.toString + qlSpace.toString
+		if( coverage >= config.minCoverage )
+			Some(new QLModel[T](qlPolicy, coverage))
+		else 
+			None
+	}
 
-           
-   @scala.annotation.tailrec
-   private def nextState(st: (QLState[T], Int)): (QLState[T], Int) =  {
-  	   val states = qlSpace.nextStates(st._1)
-  	   if( states.isEmpty || st._2 >= config.episodeLength) 
-  	      st
-  	   else
-  	      nextState( (states.maxBy(s => model.get.bestPolicy.R(st._1.id, s.id)), st._2+1))
-   }
-   
+		/**
+		 * <p>Prediction method using Q-Learning model. The model is automatically 
+		 * created (or trained) during instantiation of the class. It overrides the
+		 * data transformation method (PipeOperator) with a transformation of a state to a predicted goal state.</p>
+		 * @throws MatchError if the model is undefined or the input state is undefined 
+		 * @return PartialFunction of state of type QLState[T] as input to a predicted goal state of type QLState[T]
+		 */
+	override def |> : PartialFunction[QLState[T], QLState[T]] = {
+		case state: QLState[T] if(state != null && state.isGoal && model != None) => 
+			nextState(state, 0)._1
+	}
+
+	override def toString: String = qlPolicy.toString + qlSpace.toString
+
+
+	@scala.annotation.tailrec
+	private def nextState(st: (QLState[T], Int)): (QLState[T], Int) =  {
+		val states = qlSpace.nextStates(st._1)
+		if( states.isEmpty || st._2 >= config.episodeLength) 
+			st
+		else
+			nextState( (states.maxBy(s => model.get.bestPolicy.R(st._1.id, s.id)), st._2+1))
+	}
+
 	
-	private[this] def train(r: Random): Boolean =  {         
+	private[this] def train(r: Random): Boolean = {
+
 		@scala.annotation.tailrec
-		def search(st: (QLState[T], Int)): (QLState[T], Int) = {    
+		def search(st: (QLState[T], Int)): (QLState[T], Int) = {
 			val states = qlSpace.nextStates(st._1)
-	        if( states.isEmpty || st._2 >= config.episodeLength ) 
-	             (st._1, -1)		
+			
+			if( states.isEmpty || st._2 >= config.episodeLength ) 
+				(st._1, -1)		
 			else {
-	            val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id) )
-	      
-	            if( qlSpace.isGoal(state) )
-	                (state, st._2)
-	            else {
-	               val r = qlPolicy.R(st._1.id, state.id)   
-				   val q = qlPolicy.Q(st._1.id, state.id)
-				      
-				   val nq = q + config.alpha*(r + config.gamma*qlSpace.maxQ(state, qlPolicy) - q)
-				   qlPolicy.setQ(st._1.id, state.id,  nq)
-				   search((state, st._2+1))
-	            }
+				val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id) )
+					
+				if( qlSpace.isGoal(state) )
+					(state, st._2)
+				else {
+					val r = qlPolicy.R(st._1.id, state.id)   
+					val q = qlPolicy.Q(st._1.id, state.id)
+
+					val nq = q + config.alpha*(r + config.gamma*qlSpace.maxQ(state, qlPolicy) - q)
+					qlPolicy.setQ(st._1.id, state.id,  nq)
+					search((state, st._2+1))
+				}
 			}
-	    } 	
-        r.setSeed(System.currentTimeMillis*Random.nextInt)
-        val finalState = search((qlSpace.init(r), 0))
-        if( finalState._2 == -1) false
-        else
-            qlSpace.isGoal(finalState._1)
+		}	
+        
+		r.setSeed(System.currentTimeMillis*Random.nextInt)
+		val finalState = search((qlSpace.init(r), 0))
+		if( finalState._2 == -1) 
+			false
+		else
+			qlSpace.isGoal(finalState._1)
 	}
   }
 
@@ -132,26 +135,21 @@ class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Do
 		 * Companion object to the Q-Learning class used to define constants and constructor
 		 */
 object QLearning {   
-   def apply[T](config: QLConfig, numStates: Int, goals: Array[Int], input: Array[QLInput], features: Set[T]): QLearning[T] = {
-  	  require(input != null && input.size > 0, "Cannot initialize a Q-learning with undefine input")
-      new QLearning[T](config, QLSpace[T](numStates, goals, features, config.neighbors), new QLPolicy[T](numStates, input))
-   }
+	def apply[T](config: QLConfig, numStates: Int, goals: Array[Int], input: Array[QLInput], features: Set[T]): QLearning[T] = {
+		require(input != null && input.size > 0, "QLearning Cannot initialize a Q-learning with undefine input")
+		new QLearning[T](config, QLSpace[T](numStates, goals, features, config.neighbors), new QLPolicy[T](numStates, input))
+	}
    
-   def apply[T](config: QLConfig, numStates: Int, goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
-  	   apply[T](config, numStates, Array[Int](goal), input, features)
+
+	def apply[T](config: QLConfig, numStates: Int, goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
+		apply[T](config, numStates, Array[Int](goal), input, features)
   
-   protected def check[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]): Unit = {
-      require(config != null, "Cannot create a Q-Learning model with undefined configuration")
-      require(qlSpace != null, "Cannot create a Q-Learning model with undefined state space")
-      require(qlPolicy != null, "Cannot create a Q-Learning model with undefined policy")
-   }
+	protected def check[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]): Unit = {
+		require(config != null, "QLearning.check Cannot create a Q-Learning model with undefined configuration")
+		require(qlSpace != null, "QLearning.check Cannot create a Q-Learning model with undefined state space")
+		require(qlPolicy != null, "QLearning.check Cannot create a Q-Learning model with undefined policy")
+	}
 }
 
 
-
-
-
 // ----------------------------  EOF --------------------------------------------------------------
-
-
-    

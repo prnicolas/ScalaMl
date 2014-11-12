@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.app.chap7
 
@@ -28,7 +28,7 @@ import org.scalaml.app.Eval
 		 * </p>
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models $Hidden Markov model
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov model
 		 */
 object HMMEval extends Eval  {
    import HMM._, HMMForm._
@@ -47,11 +47,11 @@ object HMMEval extends Eval  {
    def run(args: Array[String]): Int = args(0) match {
   	  case "evaluation" => runCF1
   	  case "training" => runCF2
-  	  case _ => Display.error("HMMEval.run: Incorrect argument $args", logger)
+  	  case _ => Display.error(s"$name run: Incorrect argument $args", logger)
    }
    
    def runCF2: Int =  {
-  	  Display.show("Hidden Markov Models: Training form", logger)
+  	  Display.show(s"$name Hidden Markov Models: Training form", logger)
   	  
   	  val observations = Array[Double](
   	       0.0, 0.72, 0.78, 0.56, 0.61, 0.56, 0.45, 0.42, 0.46, 0.38, 
@@ -64,20 +64,20 @@ object HMMEval extends Eval  {
   	   
   	  val min = observations.min
   	  val delta = observations.max - min
-  	//  val obsSeq = observations.map( x => (x - min)/delta).map(x => (x*NUM_SYMBOLS).floor.toInt)
+
   	val obsSeq =  Array[Int](4, 1, 3, 1, 0, 0, 1, 2, 0, 1, 5, 5, 3, 4, 1, 1, 5, 3, 1, 3, 2, 1, 4, 5, 2, 1, 3, 4, 5, 0, 1, 1, 4, 2, 3, 4)
   	  val config = new HMMConfig(obsSeq.size, NUM_STATES, NUM_SYMBOLS)
   	  
   	  implicit def discretize(x: DblVector): Array[Int] = x.map(_.toInt) 
   	  HMM[Array[Int]](config, obsSeq, EVALUATION, MAX_ITERS, EPS) match {
-  	  	 case Some( hmm) => Display.show(s"HMMEval,runCF2:\n${hmm.getModel.toString}", logger)
-  	  	 case None => Display.error("HMMEval.runCF2: lambda model could not be created", logger)
+  	  	 case Some( hmm) => Display.show(s"$name runCF2:\n${hmm.getModel.toString}", logger)
+  	  	 case None => Display.error("$name runCF2: lambda model could not be created", logger)
   	  }
   }
    
    
    def runCF1: Int = {
-  	  Display.show("Hidden Markov Models: Evaluation form", logger)
+  	  Display.show(s"$name Hidden Markov Models: Evaluation form", logger)
   	  		// Transition matrix for HMM
   	  val A0 = Array[Array[Double]](
   	     Array[Double](0.21, 0.23, 0.45, 0.56, 0.31, 0.30),
@@ -101,10 +101,7 @@ object HMMEval extends Eval  {
   	  val PI0 = Array[Double](0.26, 0.34, 0.11, 0.56, 0.39, 0.47)
   	  val NUM_OBS: Int = 12
   	  val lambda = HMMLambda(Matrix[Double](A0), Matrix[Double](B0), PI0, NUM_OBS)
-  	  	 
 
-	
-	//  implicit def discretize(x: DblVector): Array[Int] = x.map(_ * NUM_STATES).map( _.floor.toInt)
   	  
   	  implicit def discretize(x: DblVector): Array[Int] = x.map(_.toInt) 
 	  val hmm = HMM[Array[Int]](lambda, EVALUATION)
@@ -114,9 +111,9 @@ object HMMEval extends Eval  {
 	  match {
 	     case Success(predictor) => {
 	       val indices = predictor._2.foldLeft(new StringBuilder)((b, p) => b.append(s"$p, "))
-	       Display.show(s"HMMEval.run (CF1 Evaluation)  Likelihood: ${predictor._1.toString} , indices: $indices", logger)
+	       Display.show(s"$name run (CF1 Evaluation)  Likelihood: ${predictor._1.toString} , indices: $indices", logger)
 	     }
-	     case Failure(e) => Display.error("HMMEval.run", logger, e)
+	     case Failure(e) => Display.error(s"$name  run", logger, e)
 	  }
    }
 }

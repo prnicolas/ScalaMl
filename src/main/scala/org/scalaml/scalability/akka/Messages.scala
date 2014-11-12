@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.scalability.akka
 
@@ -15,15 +15,53 @@ import akka.actor._
 import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.XTSeries
 
+
+		/**
+		 * <p>Generic message exchanged between a master and worker actors.</p>
+		 * @param id unique identifier for this message.
+		 * @author Patrick Nicolas
+		 * @since March 28, 2014
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
 sealed abstract class Message(val id: Int)
-case class Terminate(val _id: Int) extends Message(_id)
 
-case class Start(val _id: Int =0) extends Message(_id)
+		/**
+		 * <p>Message sent by the master to terminate the worker actors..</p>
+		 * @param i unique identifier for this message.
+		 * @author Patrick Nicolas
+		 * @since March 28, 2014
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
+case class Terminate(i: Int) extends Message(i)
 
-case class Completed(val _id: Int, val xt: XTSeries[Double]) extends Message(_id)
+		/**
+		 * <p>Message sent to the master to initialize the computation.</p>
+		 * @param i unique identifier for this message.
+		 * @author Patrick Nicolas
+		 * @since March 28, 2014
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
+case class Start(i: Int =0) extends Message(i)
 
-case class Activate(val xt: XTSeries[Double], 
-		            val sender: ActorRef) extends Message(0)
+		/**
+		 * <p>Message sent by the worker actors to notify the master their tasks is completed.</p>
+		 * @param i unique identifier for this message.
+		 * @param xt time series transformed (or processed)
+		 * @author Patrick Nicolas
+		 * @since March 28, 2014
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
+case class Completed(i: Int, xt: XTSeries[Double]) extends Message(i)
+
+		/**
+		 * <p>Message sent by the master to the worker actors to start the computation.</p>
+		 * @param id unique identifier for this message.
+		 * @param xt time series to transform (or process)
+		 * @author Patrick Nicolas
+		 * @since March 28, 2014
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
+case class Activate(i: Int, xt: XTSeries[Double], val sender: ActorRef) extends Message(i)
 
 
 

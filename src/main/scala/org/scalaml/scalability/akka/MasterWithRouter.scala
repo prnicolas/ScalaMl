@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95c
+ * Version 0.95d
  */
 package org.scalaml.scalability.akka
 
@@ -20,32 +20,53 @@ import org.scalaml.filtering.DFT
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import XTSeries._
+import org.apache.log4j.Logger
+import org.scalaml.util.Display
+import akka.routing.RoundRobinPool
+import scala.collection.mutable.ListBuffer
 
 
-		           
+		/**
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.</p>
+		 *  @constructor Create a distributed transformation for time series. [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @author Patrick Nicolas
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers
+		 */		
+abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) 
+							extends Controller(xt, fct, partitioner) {	
 
-	           
-		 /**
-		  * <p>Class that control the execution of the gradient for a data set.
-		  */
-class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) extends Actor {	
-    
-   val router = context.actorOf(Props(new WorkerActor(DFT[Double])).withRouter(RoundRobinRouter(nrOfInstances = partitioner.numPartitions)))  	
+	private val logger = Logger.getLogger("MasterWithRouter")
+	
+	private val aggregator = new ListBuffer[DblVector]
+	private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
+		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 
-   override def receive = {
-      case msg: Start => split
-      
-      case msg: Completed => {
-         router ! Terminate
-	     context.stop(self)
-      }
-      case _ => println("Message not recognized")
-   } 
+		/**
+		 * <p>Message processing handler for the routing master for a distributed transformation of time series.<br>
+		 * <b>Start</b> to partition the original time series and launch data transformation on worker actors.<br> 
+		 * <b>Completed</b> aggregates the results from all the worker actors.</p>
+		 */
+	override def receive = {
+		case msg: Start => split
 
-    private def split: Unit = {
-  	   val partIdx = partitioner.split(xt)
-  	   partIdx.foreach(n => router ! Activate(xt.slice(n, n - partIdx(0)), self) )
-   }
+		case msg: Completed => {
+			aggregate
+			router ! Terminate
+			Thread.sleep(1500)
+			context.stop(self)
+		}
+		case _ => Display.error("MasterWithRouter.recieve Message not recognized", logger)
+	} 
+	
+	
+	protected def aggregate: Seq[Double]
+
+	private def split: Unit = {
+		val partIdx = partitioner.split(xt)
+		partIdx.foreach(n => router ! Activate(0, xt.slice(n, n - partIdx(0)), self) )
+	}
 }
 
 // --------------------------------  EOF -------------------------------------
