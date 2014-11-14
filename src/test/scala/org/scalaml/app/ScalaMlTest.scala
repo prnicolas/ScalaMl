@@ -10,31 +10,38 @@ package org.scalaml.app
 
 import org.scalatest.FunSuite
 
-	/**
-	 * <p>Generic template for the scalatest invocation.</p>
-	 *
-	 * @author Patrick Nicolas
-	 * @since July, 13, 2014
-	 */
+		/**
+		 * <p>Generic template for the scalatest invocation.</p>
+		 * @author Patrick Nicolas
+		 * @since July, 13, 2014
+		 * @note Scala for Machine Learning
+		 */
 trait ScalaMlTest extends FunSuite {
-  val chapter: String
+	val chapter: String
   
-  	/**
-  	 * <p>Trigger the execution of a Scala test for a specific method and set of arguments.</p>
-  	 * @param args argument for the Scala test
-  	 * @param method Name of the method to be tested.
-  	 */
+		/**
+		 * <p>Trigger the execution of a Scala test for a specific method and set of arguments.</p>
+		 * @param args argument for the Scala test
+		 * @param method Name of the method to be tested.
+		 */
   def evaluate(eval: Eval, args: Array[String] = Array.empty): Unit = 
   	 assert(eval.run(args) >= 0, s"$chapter ${eval.name} failed")
 }
 
-
+		/**
+		 * <p>Generic trait to name and execute a test case using Scalatest</p>
+		 * @author Patrick Nicolas
+		 * @since July, 13, 2014
+		 * @note Scala for Machine Learning
+		 */
 trait Eval {
-   val name: String
-   def run(args: Array[String]): Int
+	val name: String
+	
+		/**
+		 * <p>Execution of scalatest case.</p>
+		 */
+	def run(args: Array[String]): Int
 }
-
-
 
 
 // --------------------------  EOF -------------------------------

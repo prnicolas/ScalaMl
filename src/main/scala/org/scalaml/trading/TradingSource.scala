@@ -24,35 +24,40 @@ import org.apache.log4j.Logger
 	 *  @note Scala for Machine Learning Appendix: Financials 101 
 	 */
 object YahooFinancials extends Enumeration {
-   type YahooFinancials = Value
-   val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
-  
-   private val logger = Logger.getLogger("YahooFinancials")
-   def toDouble(value: Value): Array[String] => Double = (s: Array[String]) => s(value.id).toDouble
-   def divide(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble/s(value2.id).toDouble
-   def ratio(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => try {  s(value1.id).toDouble/s(value2.id).toDouble - 1.0 } catch { case e: NumberFormatException => -1.0} 
-   def plus(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble + s(value2.id).toDouble
-   def minus(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble - s(value2.id).toDouble
-   def times(value1: Value, value2: Value): Array[String] => Double = (s: Array[String]) => s(value1.id).toDouble * s(value2.id).toDouble
+	type YahooFinancials = Value
+	val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
+
+	import org.scalaml.workflow.data.DataSource.Fields
+	private val logger = Logger.getLogger("YahooFinancials")
+   
+	def toDouble(v: Value): Fields => Double = (s: Fields) => s(v.id).toDouble
+	def divide(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble/s(v2.id).toDouble
+	
+	def ratio(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
+		 try {  s(v1.id).toDouble/s(v2.id).toDouble - 1.0 } 
+		 catch { case e: NumberFormatException => -1.0} 
+		 
+	def plus(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble + s(v2.id).toDouble
+	def minus(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble - s(v2.id).toDouble
+	def times(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble * s(v2.id).toDouble
 
    
-   val adjClose = (fs:Array[String]) =>fs(ADJ_CLOSE.id).toDouble
-   val volume =  (s:Array[String]) => s(VOLUME.id).toDouble
-   val volatility = minus(HIGH, LOW)
-   val relVolatility = ratio(HIGH, LOW)
-   val volatilityVol = ((s:Array[String]) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
-   val closeOpen = minus(ADJ_CLOSE, OPEN)
-   val relCloseOpen = ratio(ADJ_CLOSE, OPEN) 
-   val volatilityByVol = ((s:Array[String]) => ((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
+	val adjClose = (fs: Fields) =>fs(ADJ_CLOSE.id).toDouble
+	val volume =  (s: Fields) => s(VOLUME.id).toDouble
+	val volatility = minus(HIGH, LOW)
+	val relVolatility = ratio(HIGH, LOW)
+	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	val closeOpen = minus(ADJ_CLOSE, OPEN)
+	val relCloseOpen = ratio(ADJ_CLOSE, OPEN) 
+	val volatilityByVol = ((s: Fields) => ((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
    
     
-   def vol: Array[String] => Double = (s: Array[String]) => {
-  	  Try ( (s(HIGH.id).toDouble/s(LOW.id).toDouble -1.0)*s(VOLUME.id).toDouble  )
-  	   match {
-  	  	case Success(res) => res
-  	  	case Failure(e) => Display.error("YahooFinancials.vol ", logger, e)
-  	  }
-   }
+	def vol: Fields => Double = (s: Fields) => {
+		Try ( (s(HIGH.id).toDouble/s(LOW.id).toDouble -1.0)*s(VOLUME.id).toDouble  ) match {
+			case Success(res) => res
+			case Failure(e) => Display.error("YahooFinancials.vol ", logger, e)
+		}
+	}
 }
 
 	/**
@@ -64,13 +69,14 @@ object YahooFinancials extends Enumeration {
 	 *  @note Scala for Machine Learning Appendix: Financials 101 
 	 */
 object GoogleFinancials extends Enumeration {
-   type GoogleFinancials = Value
-   val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME = Value
+	type GoogleFinancials = Value
+	val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME = Value
   
-   val close = ((s:Array[String]) => s(CLOSE.id).toDouble)
-   val volume =  ((s:Array[String]) => s(VOLUME.id).toDouble)
-   val volatility = ((s:Array[String]) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
-   val volatilityVol = ((s:Array[String]) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	import org.scalaml.workflow.data.DataSource.Fields
+	val close = ((s: Fields) => s(CLOSE.id).toDouble)
+	val volume =  ((s: Fields) => s(VOLUME.id).toDouble)
+	val volatility = ((s: Fields) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
+	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
 }
 
 
@@ -83,33 +89,21 @@ object GoogleFinancials extends Enumeration {
 		 * @note Scala for Machine Learning Appendix: Financials 101 
 		 */
 object Fundamentals extends Enumeration {
-   type Fundamentals = Value
-   val TICKER, 
-       START_PRICE, 
-       END_PRICE, 
-       RELATIVE_PRICE_CHANGE, 
-       DEBT_TO_EQUITY, 
-       DIVIDEND_COVERAGE, 
-       OPERATING_MARGIN, 
-       SHORT_INTEREST, 
-       CASH_PER_SHARE,
-       CASH_PER_SHARE_TO_PRICE, 
-       EPS_TEND, 
-       DIVIDEND_YIELD,
-       DIVIDEND_TREND = Value
-       
-   val ticker = ((s:Array[String]) => s(TICKER.id))
-   val relPriceChange =  ((s:Array[String]) => s(RELATIVE_PRICE_CHANGE.id).toDouble)
-   val debtToEquity = ((s:Array[String]) => s(DEBT_TO_EQUITY.id).toDouble)
-   val dividendCoverage = ((s:Array[String]) => s(DIVIDEND_COVERAGE.id).toDouble)
-   val shortInterest = ((s:Array[String]) => s(SHORT_INTEREST.id).toDouble)
-   val cashPerShareToPrice = ((s:Array[String]) => s(CASH_PER_SHARE_TO_PRICE.id).toDouble)
-   val epsTrend = ((s:Array[String]) => s(EPS_TEND.id).toDouble)
-   val dividendYield = ((s:Array[String]) => s(DIVIDEND_YIELD.id).toDouble)
-   val dividendTrend = ((s:Array[String]) => s(DIVIDEND_TREND.id).toDouble)
+	type Fundamentals = Value
+	val TICKER, START_PRICE, END_PRICE, RELATIVE_PRICE_CHANGE, DEBT_TO_EQUITY, DIVIDEND_COVERAGE, OPERATING_MARGIN, 
+		SHORT_INTEREST, CASH_PER_SHARE, CASH_PER_SHARE_TO_PRICE, EPS_TREND, DIVIDEND_YIELD, DIVIDEND_TREND = Value
+
+	import org.scalaml.workflow.data.DataSource.Fields
+	val ticker = ((s: Fields) => s(TICKER.id))
+	val relPriceChange =  ((s: Fields) => s(RELATIVE_PRICE_CHANGE.id).toDouble)
+	val debtToEquity = ((s: Fields) => s(DEBT_TO_EQUITY.id).toDouble)
+	val dividendCoverage = ((s: Fields) => s(DIVIDEND_COVERAGE.id).toDouble)
+	val shortInterest = ((s: Fields) => s(SHORT_INTEREST.id).toDouble)
+	val cashPerShareToPrice = ((s: Fields) => s(CASH_PER_SHARE_TO_PRICE.id).toDouble)
+	val epsTrend = ((s: Fields) => s(EPS_TREND.id).toDouble)
+	val dividendYield = ((s: Fields) => s(DIVIDEND_YIELD.id).toDouble)
+	val dividendTrend = ((s: Fields) => s(DIVIDEND_TREND.id).toDouble)
 }
-
-
 
 
 // ------------------------------  EOF ---------------------------------------------

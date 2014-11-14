@@ -37,18 +37,21 @@ import MLPLayer._
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
 		 */
-
 final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
-                                      (implicit val mlpObjective: MLP.MLPObjective) extends Model {
+ 					(implicit val mlpObjective: MLP.MLPObjective) extends Model {
+	
+	import MLPModel._
+
+	check(config, nInputs, nOutputs)
     val persists = "model/mlp"
-	private val topology = if( config.nHiddens == 0)
-	                          Array[Int](nInputs, nOutputs) 
-	                       else 
-	                          Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
+	private val topology =	if( config.nHiddens == 0)
+								Array[Int](nInputs, nOutputs) 
+							else 
+								Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
 	
 	private val layers: Array[MLPLayer] = topology.zipWithIndex.map(t => MLPLayer(t._2, t._1+1))
 	private val connections: Array[MLPConnection]  = Range(0, layers.size-1).map(n => 
-		        new MLPConnection(config, layers(n), layers(n+1))).toArray
+			new MLPConnection(config, layers(n), layers(n+1))).toArray
 
 		/**
 		 * Alias for the input or first layer in the network
@@ -73,15 +76,14 @@ final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
 		 * @throws IllegalArgumentException if the feature is either undefined or has incorrect size.
 		 */
 	def trainEpoch(x: DblVector, y: DblVector): Double = {
-	   inLayer.set(x)
-  	   connections.foreach( _.connectionForwardPropagation)
-       val _sse = sse(y)
+		inLayer.set(x)
+		connections.foreach( _.connectionForwardPropagation)
 
-	   val bckIterator = connections.reverseIterator
-	   bckIterator.foreach( _.connectionBackpropagation)
-	     
-	   connections.foreach( _.connectionUpdate)
-	   _sse
+		val _sse = sse(y)
+		val bckIterator = connections.reverseIterator
+		bckIterator.foreach( _.connectionBackpropagation)
+		connections.foreach( _.connectionUpdate)
+		_sse
 	}
 	
 	
@@ -103,22 +105,35 @@ final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
 		 * @param feature or data point for which the output has to be computed
 		 * @return output vector
 		 */
-    def getOutput(x: DblVector): DblVector = {
- 	   inLayer.set(x)
-  	   connections.foreach( _.connectionForwardPropagation)
-  	   outLayer.output
-    }
+	def getOutput(x: DblVector): DblVector = {
+		inLayer.set(x)
+		connections.foreach( _.connectionForwardPropagation)
+		outLayer.output
+	}
 	 
    
-    override def toString: String = {
-      val buf = new StringBuilder
-      connections.foreach(buf.append(_))
-      layers.foreach(buf.append(_))
-      buf.toString
-   }
+	override def toString: String = {
+		val buf = new StringBuilder
+		connections.foreach(buf.append(_))
+		layers.foreach(buf.append(_))
+		buf.toString
+	}
 }
 
 
-
+		/**
+		 * Companion object for a Multi-layer perceptron model. This singleton is used
+		 * to validate the class parameters and define its constructors
+		 */
+object MLPModel {
+	val MAX_MLP_NUM_INPUTS = 4096
+	val MAX_MLP_NUM_OUTPUTS = 2048
+	
+	private def check(config: MLPConfig, nInputs: Int, nOutputs: Int): Unit = {
+		require(config != null, "MLPModel Cannot create a model with undefined configuration")
+		require(nInputs > 0 && nInputs < MAX_MLP_NUM_INPUTS, s"MLPModel number of input nodes $nInputs is out of range")
+		require(nOutputs > 0 && nOutputs < MAX_MLP_NUM_OUTPUTS, s"MLPModel number of output nodes $nOutputs is out of range")
+	}
+}
 
 // -------------------------------------  EOF ------------------------------------------------

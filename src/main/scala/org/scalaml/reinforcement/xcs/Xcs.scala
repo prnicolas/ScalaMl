@@ -17,7 +17,16 @@ import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 
 
-
+		/**
+		 * <p>Class that defines a sensor (or input stimuli) in an extended learning classifier system. It
+		 * is assume that the XCS model monitors continuous values of type Double</p>
+		 * @param id Identifier for the sensor or stimuli
+		 * @param value value of the stimuli or sensor.
+		 * 		 
+		 * @author Patrick Nicolas
+		 * @since March 26, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
+		 */
 case class XcsSensor(val id: String, val value: Double)
 
 		/**
@@ -36,7 +45,8 @@ case class XcsSensor(val id: String, val value: Double)
 		 * @since March 26, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-final class Xcs(config: XcsConfig, population: Population[Signal], score: Chromosome[Signal]=> Unit, input: Array[QLInput]) extends PipeOperator[XcsSensor, List[XcsAction]] {
+final class Xcs(config: XcsConfig, population: Population[Signal], score: Chromosome[Signal]=> Unit, input: Array[QLInput]) 
+									extends PipeOperator[XcsSensor, List[XcsAction]] {
 	import Xcs._
 	check(config, population, score, input)
 
@@ -53,6 +63,9 @@ final class Xcs(config: XcsConfig, population: Population[Signal], score: Chromo
 }	
 
 
+		/**
+		 * <p>Companion object for the extended learning classifier system.</p>
+		 */
 object Xcs {
 	protected def check(config: XcsConfig, population: Population[Signal], score: Chromosome[Signal]=> Unit, input: Array[QLInput]): Unit = {
 		require(config != null, "Xcs.check: Cannot create XCS with undefined configuration")

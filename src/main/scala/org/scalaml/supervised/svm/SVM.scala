@@ -101,9 +101,9 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
   }
   
   	/**
-  	 * Data transformation that implements the prediction value using SVM
-  	 * @param x feature used as input to the prediction
-  	 * @throws IllegalStateException if the features vector is undefined or have an incorrect size
+  	 * <p>Data transformation that implements the prediction value using SVM</p>
+  	 * 	@throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
+   	 *  @return PartialFunction of feature of type Array[T] as input and the predicted value as output
   	 */
   override def |> : PartialFunction[Feature, Double] =  {
     case x: Feature if(x != null && x.size == dimension(xt) && model != None && model.get.accuracy >= 0.0) =>

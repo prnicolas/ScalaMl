@@ -16,7 +16,6 @@ import org.scalaml.util.Display
 import org.apache.log4j.Logger
 
 
-
 		/**
 		 * <p>Class that define the extraction of a document from a corpus
 		 * or a list of text file using the following format.
@@ -30,44 +29,54 @@ import org.apache.log4j.Logger
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 15, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
 		 */
-class DocumentsSource(val pathName: String) {
-   require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
+final class DocumentsSource(val pathName: String) {
+	require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
 	   
-   private val logger = Logger.getLogger("TextSource")
-   private val filesList: Array[String] = {   
-  	  val file = new java.io.File(pathName)
-  	  if( file.isDirectory) file.listFiles.map( x => x.getName) else Array[String](pathName)
-   }
+	private val logger = Logger.getLogger("TextSource")
+	
+	private val filesList: Array[String] = {   
+		val file = new java.io.File(pathName)
+		if( file.isDirectory) 
+			file.listFiles.map( x => x.getName) 
+		else 
+			Array[String](pathName)
+	}
     
-   def |> : Corpus = {
-  	  import scala.io.Source
-  	  import java.io.{FileNotFoundException, IOException}
+	def |> : Corpus = {
+		import scala.io.Source
+		import java.io.{FileNotFoundException, IOException}
   	  
-  	  filesList.map( fName => {
-	  	  val src = Source.fromFile(pathName + fName)	
-	  	  val fieldIter = src.getLines
+		filesList.map( fName => {
+			val src = Source.fromFile(pathName + fName)	
+			val fieldIter = src.getLines
 	  	  	  
-	  	  val date = nextField(fieldIter)
-	  	  val title = nextField(fieldIter)
-	  	  val content = fieldIter.foldLeft(new StringBuilder)((b, str) => b.append(str.trim))
-	  	  	 
-	  	  src.close
-	  	  if(date == None || title == None)
-	  	  	throw new IllegalStateException("DocumentsSource.|> title or date for " + fName + " is malformatted")
-	  	  (date.get, title.get, content.toString) 
-  	  }) 
-   }
+			val date = nextField(fieldIter)
+			val title = nextField(fieldIter)
+			val content = fieldIter.foldLeft(new StringBuilder)((b, str) => b.append(str.trim))
+
+			src.close
+			if(date == None || title == None)
+				throw new IllegalStateException(s"DocumentsSource.|> title or date for $fName is malformatted")
+			(date.get, title.get, content.toString) 
+		}) 
+	}
    
 
-   private def nextField(iter: Iterator[String]): Option[String] = 
-  	 iter.find( s=> (s != null && s.length > 1))
+	private def nextField(iter: Iterator[String]): Option[String] = 
+		iter.find( s=> (s != null && s.length > 1))
 }
 
 
-
+	/**
+	 * <p>Companion object for the Document Source
+	 */
 object DocumentsSource {
+	
+		/**
+		 * A corpus is defined as a sequence of {stringized data, title, content} tuples
+		 */
 	type Corpus = Array[(String, String, String)]
 	def apply(pathName: String): DocumentsSource = new DocumentsSource(pathName)
 }

@@ -28,11 +28,10 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 		 * stateuration class is undefined.
 		 *  
 		 * @author Patrick Nicolas
-	     * @since March 22, 2014
+		 * @since March 22, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-
-class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) {
+final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) {
 	require(gaConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined GA configuration")
 	require(qlConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined Q-Learning configuration")
 }

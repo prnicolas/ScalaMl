@@ -19,28 +19,44 @@ import iitb.Model.FeatureImpl
 import iitb.Segment.{DataCruncher, LabelMap}
 
 
-	/**
-	 * <p>Class that defines a Recommendation as a data sequence.</p>
-	 * @constructor Create a training set for a CRF. [nLabels] Number of labels (or tags) used in the training of CRF. [entry] Recommendation or observation as a sequence of words. [delim] Delimiter of segments in the sequence
-	 * @param nLabels Number of labels (or tags) used in the training of CRF
-	 * @param entry recommendation or observation as a sequence of words
-	 * @param delim delimiter of segments in the sequence
-	 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
-	 * @see ittb.CRF.DataSequence
-	 * @author Patrick Nicolas
-	 * @since April 2, 2014
-	 */
+		/**
+		 * <p>Class that defines a Recommendation as a data sequence.</p>
+		 * @constructor Create a training set for a CRF. [nLabels] Number of labels (or tags) used in the training of CRF. [entry] Recommendation or observation as a sequence of words. [delim] Delimiter of segments in the sequence
+		 * @param nLabels Number of labels (or tags) used in the training of CRF
+		 * @param entry recommendation or observation as a sequence of words
+		 * @param delim delimiter of segments in the sequence
+		 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
+		 * @see ittb.CRF.DataSequence
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 2, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 */
 class CrfTrainingSet(val nLabels: Int, val entry: String, val delim: String) extends DataSequence {
-    private val words: Array[String] = entry.split(delim)
-    private val map: Array[Int] = new Array[Int](nLabels)
+	import CrfTrainingSet._
+	
+	check(nLabels, entry, delim)
+	
+	private[this] val words: Array[String] = entry.split(delim)
+	private[this] val map: Array[Int] = new Array[Int](nLabels)
    
-    override def set_y(k: Int, label: Int): Unit = map(k) = label
-    override def y(k: Int): Int = map(k)
-    override def length: Int = words.size
-    override def x(k: Int): Object = words(k)
+	override def set_y(k: Int, label: Int): Unit = map(k) = label
+	override def y(k: Int): Int = map(k)
+	override def length: Int = words.size
+	override def x(k: Int): Object = words(k)
 }
 
-
+		/**
+		 * Companion object to the training set for the Conditional Random field. This 
+		 * singleton is used to validate the parameters of the class.
+		 */
+object CrfTrainingSet {
+	import Crf._
+	
+	private def check(nLabels: Int, entry: String, delim: String): Unit = {
+		require(nLabels >= NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2)
+	}
+}
 
 
 // ---------------------------- EOF ------------------------------------------------------

@@ -35,19 +35,19 @@ import scala.collection.mutable.TreeSet
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithms/GA for trading strategies/Trading operators
 		 */
 class SOperator(_id: Int) extends Operator {
-	/**
-	 * Identifier (number) for this operator
-	 * @return Number identifier
-	 */
-   override def id: Int = _id
+		/**
+		 * Identifier (number) for this operator
+		 * * @return Number identifier
+		 */
+	override def id: Int = _id
    
-	  /**
-	   * Create a new trading signal operator with a new identifier
-	   * @param number identifier for the operator
-	   * @return new trading signal operator
-	   */
-   override def apply(idx: Int): SOperator = new SOperator(idx)
-   override def toString: String = id.toString
+		/**
+		 * Create a new trading signal operator with a new identifier
+		 * @param number identifier for the operator
+		 * @return new trading signal operator
+		 */
+	override def apply(idx: Int): SOperator = new SOperator(idx)
+	override def toString: String = id.toString
 }
 
 object NONE extends SOperator(0) { override def toString: String = "NA" }
@@ -79,40 +79,39 @@ object EQUAL extends SOperator(3) { override def toString: String = "=" }
 		 */
 @implicitNotFound("Signal does not have a discretization function implicitly defined")
 class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) extends Gene(_id, _target, _op) {
-   require( op != null, "Signal Cannot create a signal with undefined operator")
-   require(xt != null && weights != null, "Signal Cannot create a signal with undefined data or weights")
-   require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
+	import Signal._
+	check(_id, _target, _op, xt, weights)
    
-   		/**
-   		 * Computation of the score of this trading signal by comparing a value with the threshold, value
-   		 * @param x value to compare with the target value
-   		 * @param factor amplification factor for the generation of the score
-   		 * @return computed score for this trading signal
-   		 */
-   override def score: Double = sumScore(operatorFuncMap.get(op).get)
-     
-   private def sumScore(f: (Double, Double) => Double): Double = 
-  	    xt.zip(weights).foldLeft(0.0)((s, x) => s + x._2*f(x._1, target))
-   
-   
-  	      /**
-  	       * <p>Displays the attributes of this trading signal in symbolic format
-  	       * @return tuple (id, operator, target)
-  	       */
-  override def show: String = s"$id ${op.toString} $target"
+		/**
+		 * Computation of the score of this trading signal by comparing a value with the threshold, value
+		 * @param x value to compare with the target value
+		 * @param factor amplification factor for the generation of the score
+		 * @return computed score for this trading signal
+		 */
+	override def score: Double = sumScore(operatorFuncMap.get(op).get)
+
+		/**
+		 * <p>Displays the attributes of this trading signal in symbolic format
+		 * @return Description of the tuple (id, operator, target)
+		 */
+	override def show: String = s"$id ${op.toString} $target"
     
-   		/**
-   		 * Compare this trading signal with another one
-   		 * @param that  other trading signal
-   		 * @return true if the two trading signals share the same operator and threshold value
-   		 */
-   final def == (that: Signal): Boolean = op == that.op && Math.abs(target - that.target) < EPS
+		/**
+		 * Compare this trading signal with another one
+		 * @param that  other trading signal
+		 * @return true if the two trading signals share the same operator and threshold value
+		 */
+	final def == (that: Signal): Boolean = op == that.op && Math.abs(target - that.target) < EPS
    
-   		/**
-   		 * <p>Description of the trading signal using the encoded value of the target</p>
-   		 * @return tuple (id, operator, encoded target value)
-   		 */
-   override def toString: String = s"$id ${op.toString} ${String.valueOf(target)}"
+		/**
+		 * <p>Description of the trading signal using the encoded value of the target</p>
+		 * @return tuple (id, operator, encoded target value)
+		 */
+	override def toString: String = s"$id ${op.toString} ${String.valueOf(target)}"
+   
+	private def sumScore(f: (Double, Double) => Double): Double = 
+		xt.zip(weights).foldLeft(0.0)((s, x) => s + x._2*f(x._1, target))
+   
 }
 
 
@@ -121,22 +120,34 @@ class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights
 	 * Companion object to the trading signal class, used to defined constructors.
 	 */
 object Signal {
-   final val EPS = 1e-3
-   final val CSV_DELIM = ",";
-   def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = new Signal(id, target, op, obs, weights)
-   def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = new Signal(id, target, op, Array.empty, Array.empty)
+	final val EPS = 1e-3
+	final val CSV_DELIM = ",";
 
-   val orderedSignals = Ordering.by((signal: Signal) => signal.id)
+	def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = new Signal(id, target, op, obs, weights)
+	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = new Signal(id, target, op, Array.empty, Array.empty)
+
+	val orderedSignals = Ordering.by((signal: Signal) => signal.id)
    
-   val operatorFuncMap = Map[Operator, (Double, Double) =>Double](
-  	   LESS_THAN -> ((x: Double, target: Double) => target - x),
-  	   GREATER_THAN -> ((x: Double, target: Double) => x -target),
-  	   EQUAL -> ((x: Double, target: Double) => Math.abs(x -target)),
-       NONE -> ((x: Double, target: Double) => -1.0)
-   )
+	val operatorFuncMap = Map[Operator, (Double, Double) =>Double](
+		LESS_THAN -> ((x: Double, target: Double) => target - x),
+		GREATER_THAN -> ((x: Double, target: Double) => x -target),
+		EQUAL -> ((x: Double, target: Double) => Math.abs(x -target)),
+		NONE -> ((x: Double, target: Double) => -1.0)
+	)
    
-   @inline
-   final def numOperators = operatorFuncMap.size
+	@inline
+	final def numOperators = operatorFuncMap.size
+   
+	final private val MAX_TIME_SERIES_SIZE = 10000000
+	
+	protected def check(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector): Unit = {
+		require( _op != null, "Signal.check Cannot create a signal with undefined operator")
+		require(xt != null, "Signal.check Cannot create a signal with undefined time series input")
+		require(xt.size > 0 && xt.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Size of the time series input, ${xt.size} if out of range")
+		require(weights != null, "Signal.check Cannot create a signal with undefined weights")
+		require(weights.size > 0 && weights.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Number of weights ${weights.size} if out of range")
+		require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
+	}
 }
 
 

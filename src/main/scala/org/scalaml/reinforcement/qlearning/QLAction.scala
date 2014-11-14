@@ -21,7 +21,10 @@ package org.scalaml.reinforcement.qlearning
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 class QLAction[T](val from: Int, val to: Int) {
-   override def toString: String = s"\naction: state ${from} => state ${to}"
+	require(from >= 0, s"QLAction index $from of source state is undefined")
+	require(to >= 0, s"QLAction index $to of source state is undefined")
+
+	override def toString: String = s"\naction: state ${from} => state ${to}"
 }
 
 

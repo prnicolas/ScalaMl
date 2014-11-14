@@ -16,32 +16,31 @@ import scala.reflect.ClassTag
 		 * supervised and un-supervised learning algorithms.</p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
-		 * @note Scale for Machine Learning
+		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
 package object design {
 
-	/**
-	  * <p>Define the configuration trait used in the classifiers and optimizers.</p>
-	  * @constructor [persists] abstract value to be defined by sub-class
-	  * @author Patrick Nicolas
-	  * @since March 4, 2014
-	  * @note Scale for Machine Learning
-	  */
-  trait Config {
-    val persists: String
-  }
+		/**
+		 * <p>Define the configuration trait used in the classifiers and optimizers.</p>
+		 * @constructor [persists] abstract value to be defined by sub-class
+		 * @author Patrick Nicolas
+		 * @since March 4, 2014
+		 * @note Scale for Machine Learning Chapter 2 Hello World!
+		 */
+	trait Config {
+		val persists: String
+	}
 	
-	
-	/**
-	  * <p>Define the model trait for classification and optimization algorithms.</p>
-	  * @constructor [persists] abstract value to be defined by sub-class
-	  * @author Patrick Nicolas
-	  * @since March 4, 2014
-	  * @note Scala for Machine Learning
-	  */
-  trait Model { 
-    val persists: String
-  }
+		/**
+		 * <p>Define the model trait for classification and optimization algorithms.</p>
+		 * @constructor [persists] abstract value to be defined by sub-class
+		 * @author Patrick Nicolas
+		 * @since March 4, 2014
+		 * @note Scala for Machine Learning Chapter 2 Hello World!
+		 */
+	trait Model { 
+		val persists: String
+	}
 	
 	
 		/**
@@ -52,14 +51,14 @@ package object design {
 		 * @since December, 15, 2013
 		 * @note Scala for Machine Learning
 		 */
-  trait PipeOperator[-T, +U] {  def |> : PartialFunction[T, U] }
+	trait PipeOperator[-T, +U] {  def |> : PartialFunction[T, U] }
 
   
-  object PipeOperator {
-	 def identity[T: ClassTag] = new PipeOperator[T,T] { 
-	   override def |> : PartialFunction[T, T] = { case t: T => t  }
-	 }
-   }
+	object PipeOperator {
+		def identity[T: ClassTag] = new PipeOperator[T,T] { 
+			override def |> : PartialFunction[T, T] = { case t: T => t  }
+		}
+	}
 }
 
 // --------------------------------------------------  EOF ----------------------------------------

@@ -23,9 +23,24 @@ import scala.concurrent.{Await, Awaitable}
 import akka.actor.ActorSystem	
 import org.apache.log4j.Logger
 import org.scalaml.core.types.ScalaMl._
+import XTSeries._
 
 
-class DFTMaster(xt: XTSeries[Double], partitioner: Partitioner) extends Master(xt, DFT[Double], partitioner) {
+		/**
+		 * <p>Specialized Akka master actor for the distributed discrete Fourier transform.</p>
+		 * @constructor Create a master actor for the distributed discrete Fourier transform. [xt] time series to be processed. [partitioner] Partitioning methodology for distributing time series across a cluster of worker actors.
+		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
+		 * 
+		 * @author Patrick Nicolas
+		 * @since June 5, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Akka
+		 */
+class DFTMaster(xt: DblSeries, partitioner: Partitioner) extends Master(xt, DFT[Double], partitioner) {
+	
+		/**
+		 * <p>Aggregation of the results for the discrete Fourier transform for each worker actor.</p>
+		 * @return Sequence of frequencies 
+		 */
 	override protected def aggregate: Seq[Double] = 
 	  aggregator.transpose.map( _.sum).toSeq
 }

@@ -61,9 +61,9 @@ final class RDDSource(pathName: String, normalize: Boolean, reverseOrder: Boolea
 		 */   
 	override def |> : PartialFunction[(Array[String] => DblVector), RDD[DblVector]] = {
 		case extractor: (Array[String] => DblVector) if(extractor != null) => {
-			val ts = src.load(extractor) 
-			if( ts != None) {
-				val rdd = sc.parallelize(ts.get.toArray)
+			val ts = src load extractor
+			if( ts != XTSeries.empty ) {
+				val rdd = sc.parallelize(ts.toArray)
 				rdd.persist(config.persist)
 				if( config.cache)
 					rdd.cache
@@ -82,17 +82,27 @@ final class RDDSource(pathName: String, normalize: Boolean, reverseOrder: Boolea
 	 */
 object RDDSource {
 	import org.apache.spark.mllib.linalg.{Vector, DenseVector}
-   
+
+		/**
+		 * <p>Default RDD configuration as persistent and caching in memory only.</p>
+		 */
 	final val DefaultRDDConfig = new RDDConfig(true, StorageLevel.MEMORY_ONLY)
 	
 	def apply(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int, state: RDDConfig)(implicit sc: SparkContext): RDDSource  = new RDDSource(pathName, normalize, reverseOrder, headerLines, state: RDDConfig)
 	def apply(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int)(implicit sc: SparkContext): RDDSource  = new RDDSource(pathName, normalize, reverseOrder, headerLines, DefaultRDDConfig)
    
-   
+		/**
+		 * <p>Converts a time series of vectors of double to a Spark RDD using a predefined
+		 * set of RDD configuration parameters (Caching, Persistency).</p>
+		 * @param xt time series to be converted into a RDD
+		 * @param rddConfig configuration parameters used in the conversion
+		 * @throws IllegalArgumentException if the time series or the RDD configuration argument is not defined
+		 * @throws ImplicitNotFoundException if the Spark context has not been defined.
+		 */
 	@implicitNotFound("Spark context is implicitly undefined")
 	def convert(xt: XTSeries[DblVector], rddConfig: RDDConfig)(implicit sc: SparkContext): RDD[Vector] = {
-		require(xt != null && xt.size > 0, "Cannot generate a RDD from undefined time series")
-		require(rddConfig != null, "Cannot generate a RDD from a time series without an RDD stateuration")
+		require(xt != null && xt.size > 0, "RDDSource.convert Cannot generate a RDD from undefined time series")
+		require(rddConfig != null, "RDDSource.convert  Cannot generate a RDD from a time series without an RDD configuration")
 
 		val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map( x => new DenseVector(x)))
 		rdd.persist(rddConfig.persist)

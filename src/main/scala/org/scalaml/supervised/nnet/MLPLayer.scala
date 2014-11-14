@@ -33,62 +33,60 @@ import MLP._
 		 */
 
 protected class MLPLayer(val id: Int, val len: Int) {
-   require(id >= 0, s"Create a MLP layer with incorrect id: $id")
-   require(len > 0, s"Create a MLP layer with incorrect length $len")
+	import MLPLayer._
+	check(id, len)
    
-   val output = new DblVector(len) // used for forward propagation
-   val delta = new DblVector(len)  // used for back propagation
-   output.update(0, 1.0)
+	val output = new DblVector(len) // used for forward propagation
+	val delta = new DblVector(len)  // used for back propagation
+	output.update(0, 1.0)
 
-   		/**
-   		 * <p>Initialize the value of the input for this MLP layer.</p>
-   		 * @param _input input vector for this layer. 
-   		 * @throws IllegalArgumentException if the input vector is undefined
-   		 */
-   def set(_x: DblVector): Unit = {
-  	 require(_x != null, s"Cannot initialize this MLP layer $id with undefined data")
-  	 _x.copyToArray(output, 1)
-   }
+		/**
+		 * <p>Initialize the value of the input for this MLP layer.</p>
+		 * @param _input input vector for this layer. 
+		 * @throws IllegalArgumentException if the input vector is undefined
+		 */
+	def set(_x: DblVector): Unit = {
+		require(_x != null && _x.size > 0, s"MLPLayer.set Cannot initialize this MLP layer $id with undefined data")
+		_x.copyToArray(output, 1)
+	}
 
-
-   		/**
-   		 * <p>Compute the sum of squared error of the neurons/elements of this MLP layer.</p>
-   		 * @param labels target output value
-   		 * @return sum of squared of errors/2
-   		 * @throws IllegalArgumentException if the size of the output vector is not equals to the size of the input vector + 1
-   		 */
-   final def sse(labels: DblVector): Double = {
-  	  require(labels != null, "Cannot compute the mean square error for a MLP layer with undefined labeled values")
-  	  require(output.size == labels.size+1, s"The size of the output ${output.size} should be equal to target ${labels.size+1}")
+		/**
+		 * <p>Compute the sum of squared error of the neurons/elements of this MLP layer.</p>
+		 * @param labels target output value
+		 * @return sum of squared of errors/2
+		 * @throws IllegalArgumentException if the size of the output vector is not equals to the size of the input vector + 1
+		 */
+	final def sse(labels: DblVector): Double = {
+		require(labels != null, "MLPLayer.sse Cannot compute the sum of squared errors with undefined labeled values")
+		require(output.size == labels.size+1, s"MLPLayer.sse The size of the output ${output.size} should be equal to target ${labels.size+1}")
   	  
-	  var _sse = 0.0
-	  output.drop(1)
-	        .zipWithIndex
-	        .foreach(on => {
-  	  	 val err = labels(on._2) - on._1
-	     delta.update(on._2+1, on._1* (1.0- on._1)*err)
-	  	 _sse += err*err
-	  })
-	  _sse*0.5
-   }
+		var _sse = 0.0
+		output.drop(1).zipWithIndex.foreach(on => {
+			val err = labels(on._2) - on._1
+			delta.update(on._2+1, on._1* (1.0- on._1)*err)
+			_sse += err*err
+		})
+		_sse*0.5
+	}
    
    
-   		/**
-   		 * <p>Test if this neural network layer is the output layer (last layer in the network).</p>
-   		 * @param lastId id of the output layer in this neural network
-   		 * @return true if this layer is the output layer, false, otherwise
-   		 */
-   @inline
-   final def isOutput(lastId: Int): Boolean = id == lastId
+		/**
+		 * <p>Test if this neural network layer is the output layer (last layer in the network).</p>
+		 * @param lastId id of the output layer in this neural network
+		 * @return true if this layer is the output layer, false, otherwise
+		 */
+	@inline
+	final def isOutput(lastId: Int): Boolean = id == lastId
 	  	  
 	
-   override def toString: String = {
-	  val buf = new StringBuilder("\nLayer:")
-	  buf.append(s"\nLayer: $id output: ")
-	  output.foreach(x => buf.append(s"$x,"))
-	  buf.setCharAt(buf.length-1, ' ')
-	  buf.toString
-   }
+	override def toString: String = {
+		val buf = new StringBuilder("\nLayer:")
+		
+		buf.append(s"\nLayer: $id output: ")
+		output.foreach(x => buf.append(s"$x,"))
+		buf.setCharAt(buf.length-1, ' ')
+		buf.toString
+	}
 }
 
 
@@ -99,9 +97,13 @@ protected class MLPLayer(val id: Int, val len: Int) {
 		 * @since May 5, 2014
 		 */
 object MLPLayer {
-  def apply(id: Int, len: Int): MLPLayer = new MLPLayer(id, len)
+	def apply(id: Int, len: Int): MLPLayer = new MLPLayer(id, len)
+	
+	private def check(id: Int, len: Int): Unit = {
+		require(id >= 0, s"MLPLayer Create a MLP layer with incorrect id: $id")
+		require(len > 0, s"MLPLayer Create a MLP layer with incorrect length $len")
+	}
 }
-
 
 
 // -------------------------------------  EOF ------------------------------------------------

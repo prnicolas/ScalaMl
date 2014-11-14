@@ -12,20 +12,25 @@ package org.scalaml.util
 
 import scala.collection.mutable.HashMap
 
-/**
- *  @author Patrick Nicolas
- *  @since Feb 3, 2014
- *  @note Book
- */
+		/**
+		 * <p>Count implemented as a Hash map of type <T, Int>. Contrary to a Hash map, an accumulator
+		 * is additive: Elements can share the same key.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since March 1, 2014
+		 * @note Scala for Machine Learning 
+		 */
 final class Counter[T] extends HashMap[T, Int] { 
-   def += (t: T): Unit = put(t, getOrElse(t, 0)+1) 
-   def + (t: T): Counter[T] = { put(t, getOrElse(t, 0)+1); this }
-   def ++ (cnt: Counter[T]): Counter[T] = { cnt.foldLeft(this)((c, t) => c + t._1); this}
+	def += (t: T): Unit = super.put(t, getOrElse(t, 0)+1) 
    
-   def / (cnt: Counter[T]): HashMap[T, Double] = 
-  	 map( x => (x._1, if( !cnt.contains(x._1) ) throw new IllegalStateException("Incomplete counter") else x._2.toDouble/cnt.get(x._1).get ) )
+	def + (t: T): Counter[T] = { super.put(t, getOrElse(t, 0)+1); this }
+
+	def ++ (cnt: Counter[T]): Counter[T] = { cnt.foldLeft(this)((c, t) => c + t._1); this}
    
-   override def apply(t: T): Int = getOrElse(t, 0)  
+	def / (cnt: Counter[T]): HashMap[T, Double] = 
+		map( x => (x._1, if( !cnt.contains(x._1) ) throw new IllegalStateException("Counter./ Incomplete counter") else x._2.toDouble/cnt.get(x._1).get ) )
+   
+	override def apply(t: T): Int = getOrElse(t, 0)  
 }
 
 

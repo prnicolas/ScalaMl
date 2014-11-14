@@ -14,9 +14,8 @@ import org.apache.commons.math3.linear.RealMatrix
 import org.scalaml.core.types.ScalaMl._
 import scala.util.Random
 import org.scalaml.core.XTSeries
-import MLPConfig._
 import org.scalaml.core.design.Config
-import MLPConfig._
+
 
 
 		/**
@@ -35,36 +34,24 @@ import MLPConfig._
 		 * @since May 7, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron
 		 */
-class MLPConfig(val alpha: Double, 
-		        val eta: Double, 
-		        val hidLayers: Array[Int], 
-		        val numEpochs: Int,
-		        val eps: Double,
-		        val activation: Double => Double) extends Config {
+class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[Int], val numEpochs: Int, val eps: Double, val activation: Double => Double) 
+								extends Config {
+	import MLPConfig._
 	val persists = "config/mlp"
 	  
-    check(alpha, eta, numEpochs, activation)
+	check(alpha, eta, numEpochs, activation)
 
-    	/**
-    	 * <p>Return the id of the output layer.</p>
-    	 * @return 1 if there is no hidden layers, the id of the last hidden layer + 1, otherwise
-    	 */
-    final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
+		/**
+		 * <p>Return the id of the output layer.</p>
+		 * @return 1 if there is no hidden layers, the id of the last hidden layer + 1, otherwise
+		 */
+	final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
     
-    	/**
-    	 * <p>Return the number of hidden layers in this Neural network.</p>
-    	 * @return 0 if there is no hidden layer, the size of the hidLayer array or sequence otherwise
-    	 */
-    final def nHiddens: Int = if(hidLayers == null) 0 else hidLayers.size
-    
-
-    
-	private def check(alpha: Double, eta: Double, numEpochs: Int, activation: Double => Double): Unit = {
-	   require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, s"Momentum factor, alpha $alpha is out of bounds")
-	   require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, s"Learning rate eta for the Neural Network $eta is out of range")
-       require(numEpochs > 1, s"Number of epoch $numEpochs for the Neural Network should be > 1")
-       require(activation != null, "Activation for MLP is undefined")
-	}
+		/**
+		 * <p>Return the number of hidden layers in this Neural network.</p>
+		 * @return 0 if there is no hidden layer, the size of the hidLayer array or sequence otherwise
+		 */
+	final def nHiddens: Int = if(hidLayers == null) 0 else hidLayers.size
 }
 
 
@@ -77,27 +64,34 @@ class MLPConfig(val alpha: Double,
 		 * @since May 4, 2014
 		 */
 object MLPConfig {
-   final val EPS: Double = 1e-17
-   final val ALPHA_LIMITS = (0.0, 1.0)
-   final val ETA_LIMITS = (1e-5, 1.0)
-   final val NUM_EPOCHS_LIMITS = (2, 5000)
+	final val EPS: Double = 1e-17
+	final val ALPHA_LIMITS = (0.0, 1.0)
+	final val ETA_LIMITS = (1e-5, 1.0)
+	final val NUM_EPOCHS_LIMITS = (2, 5000)
    
-      
-   def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
-  	                    new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, activation)
+	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
+		new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, activation)
    
 
-   def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
-  	                    new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), numEpochs, eps, activation)
+	def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
+		new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), numEpochs, eps, activation)
    
-   def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double): MLPConfig = 
-  	                    new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
+	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double): MLPConfig = 
+		new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
    
-   def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], eps: Double): MLPConfig = 
-  	                    new MLPConfig(alpha, eta, hiddenLayers, NUM_EPOCHS_LIMITS._2, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
+	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], eps: Double): MLPConfig = 
+		new MLPConfig(alpha, eta, hiddenLayers, NUM_EPOCHS_LIMITS._2, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
       
-   def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, eps: Double): MLPConfig = 
-  	                    new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), NUM_EPOCHS_LIMITS._2, eps, (x: Double) => {1.0/(1.0 + Math.exp(-x))})
+	def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, eps: Double): MLPConfig = 
+		new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), NUM_EPOCHS_LIMITS._2, eps, (x: Double) => {1.0/(1.0 + Math.exp(-x))})
+   
+   
+	private def check(alpha: Double, eta: Double, numEpochs: Int, activation: Double => Double): Unit = {
+		require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, s"Momentum factor, alpha $alpha is out of bounds")
+		require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, s"Learning rate eta for the Neural Network $eta is out of range")
+		require(numEpochs > 1, s"Number of epoch $numEpochs for the Neural Network should be > 1")
+		require(activation != null, "Activation for MLP is undefined")
+	}
 }
 
 

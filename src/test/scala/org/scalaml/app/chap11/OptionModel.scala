@@ -46,7 +46,7 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
    def approximate(y: DblVector): Map[Array[Int], Double] = {
   	  val mapper = new HashMap[Int, Array[Int]]
   	    
-  	  val acc = new NumericAccumulator
+  	  val acc = new NumericAccumulator[Int]
   	  propsList.map( _.toArray)
   	             .map( toArrayInt( _ ))
   	             .map(ar => { val enc = encode(ar); mapper.put(enc, ar); enc})

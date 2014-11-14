@@ -56,10 +56,10 @@ object DFTEval extends FilteringEval {
   
   	 val values = Array.tabulate(1025)(x => h(x/1025))
   	   // Original data dump into a CSV file
-     DataSink[Double]("output/chap3/simulated.csv") |> values
+     DataSink[Double]("output/chap3/simulated.csv") write values
      
      val frequencies = DFT[Double] |> XTSeries[Double](values)
-     DataSink[Double]("output/chap3/smoothed.csv") |> frequencies
+     DataSink[Double]("output/chap3/smoothed.csv") write frequencies
   }
    
    import DTransform._

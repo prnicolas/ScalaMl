@@ -19,10 +19,18 @@ import org.apache.log4j.Logger
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
+import org.scalaml.core.design.Model
 
 
-
-class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) {
+		/**
+		 * <p>Define a model for the Q-learning algorithm as the tuple <optimum policy, training epoch coverage>.</p>
+		 * @constructor Model created during training of Q-learning. [bestPolicy] Best policy computed or estimated during training. [coverage] Ratio of training trial or epochs that reach a predefined goal state
+		 * @author Patrick Nicolas
+		 * @since January 22, 2014
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 */
+class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  extends Model {
+	val persists = "models/qlearning"
 	override def toString: String = s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }
 
@@ -49,11 +57,10 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 	private val logger = Logger.getLogger("QLearning")
 	check(config, qlSpace, qlPolicy)
    
-   	/**
-   	 * Model parameters for Q-learning of type QLModel that is defined as
-   	 * a list of policies and training coverage
-   	 * 
-   	 */
+		/**
+		 * Model parameters for Q-learning of type QLModel that is defined as
+		 * a list of policies and training coverage 
+		 */
 	val model: Option[QLModel[T]] = {
 		val r = new Random(System.currentTimeMillis)
 		val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {

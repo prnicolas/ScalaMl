@@ -19,21 +19,23 @@ import iitb.Model.FeatureImpl
 import iitb.Segment.{DataCruncher, LabelMap}
 
 
-	/**
-	 * <p>Class that specifies the regular expressions used to delineates labels, observations
-	 * and sequences in the training files '*.tagged'.
-	 * example in training file<br>
-	 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
-	 * [dSeq]<br>
-	 * </p>
-	 * @constructor Creates a delimiters set for the raw and tagged input (training) for the CRF. [obsDelim]: Delimiters for observation as a sequence of N-grams or words, [labelsDelim] Delimiter between observations string and tag/label, [trainingDelim]: Delimiter between training sequences
-	 * @param obsDelim delimiters for observation as a sequence of N-grams or words
-	 * @param labelsDelim delimiter between observations string and tag/label
-	 * @param trainingDelim delimiter between training sequences
-	 * @throws IllegalArgumentException if any of the delimiter is undefined
-	 * @author Patrick Nicolas
-	 * @since April 5, 2014
-	 */
+		/**
+		 * <p>Class that specifies the regular expressions used to delineates labels, observations
+		 * and sequences in the training files '*.tagged'.
+		 * example in training file<br>
+		 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
+		 * [dSeq]<br>
+		 * </p>
+		 * @constructor Creates a delimiters set for the raw and tagged input (training) for the CRF. [obsDelim]: Delimiters for observation as a sequence of N-grams or words, [labelsDelim] Delimiter between observations string and tag/label, [trainingDelim]: Delimiter between training sequences
+		 * @param obsDelim delimiters for observation as a sequence of N-grams or words
+		 * @param labelsDelim delimiter between observations string and tag/label
+		 * @param trainingDelim delimiter between training sequences
+		 * 
+		 * @throws IllegalArgumentException if any of the delimiter is undefined
+		 * @author Patrick Nicolas
+		 * @since April 5, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 */
 class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
 	require(obsDelim != null && obsDelim.length > 0, "Delimiter for observations in CRF training sequence is undefined")
 	require(labelsDelim != null && labelsDelim.length > 0, "Delimiter for labels in CRF training sequence is undefined")
@@ -41,53 +43,63 @@ class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainin
 }
 
 
-	/**
-	 * <p>Generic class that implements the iterator for sequences (training or validation). The class needs
-	 * to implement the methods of the iitb.CRF.DataIter interface. The class delegates the generation of 
-	 * the training data to the iitb.Segment.DataCruncher class</p>
-	 * @param nLabels number of labels used in the CRF  model
-	 * @param input identifier for the training or tagged files
-	 * @param delim delimiter instances used to break down the training data as sequence, observations and labels
-	 * @throws IllegalArgumentException if nLabel is out of range or the input or delim is undefined
-	 * @throws IOException if the training file '*.tagged' is not found
-	 * @author Patrick Nicolas
-	 * @since April 5, 2014
-	 */
+		/**
+		 * <p>Generic class that implements the iterator for sequences (training or validation). The class needs
+		 * to implement the methods of the iitb.CRF.DataIter interface. The class delegates the generation of 
+		 * the training data to the iitb.Segment.DataCruncher class</p>
+		 * @param nLabels number of labels used in the CRF  model
+		 * @param input identifier for the training or tagged files
+		 * @param delim delimiter instances used to break down the training data as sequence, observations and labels
+		 * @throws IllegalArgumentException if nLabel is out of range or the input or delim is undefined
+		 * @throws IOException if the training file '*.tagged' is not found
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 5, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 */
 class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter) extends DataIter {
-   require(nLabels > 0 && nLabels < 1000, s"Number of labels for the CRF model $nLabels is out of range")
-   require(input != null, "Identifier for the CRF training files is undefined")
-   require(delim != null, "Delimiter for the CRF training files is undefined")
+	import CrfSeqIter._
+	check(nLabels, input, delim)
 	
-   	/**
-   	 * Training data set extracted from file and to be used by the CRF model
-   	 */
-   lazy val trainData =  DataCruncher.readTagged(nLabels, input, input, delim.obsDelim, delim.labelsDelim, delim.trainingDelim, new LabelMap)
+		/**
+		 * Training data set extracted from file and to be used by the CRF model
+		 */
+	lazy val trainData =  DataCruncher.readTagged(nLabels, input, input, delim.obsDelim, delim.labelsDelim, delim.trainingDelim, new LabelMap)
    
-   	/**
-   	 * Override the DataIter.hasNext interface method. Delegate the call to DataCruncher
-   	 */
-   override def hasNext: Boolean = trainData.hasNext
+		/**
+		 * Override the DataIter.hasNext interface method. Delegate the call to DataCruncher
+		 */
+	override def hasNext: Boolean = trainData.hasNext
      
-   /**
-   	 * Override the DataIter.next interface method. Delegate the call to DataCruncher
-   	 */
-   override def next: DataSequence = trainData.next
+		/**
+		 * Override the DataIter.next interface method. Delegate the call to DataCruncher
+		 */
+	override def next: DataSequence = trainData.next
    
-    /**
-   	 * Override the DataIter.startScan interface method. Delegate the call to DataCruncher
-   	 */
-   override def startScan: Unit = trainData.startScan
+		/**
+		 * Override the DataIter.startScan interface method. Delegate the call to DataCruncher
+		 */
+	override def startScan: Unit = trainData.startScan
 }
 
 
 	/**
 	 * Companion object to SeqIter
 	 * @author Patrick Nicolas
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 	 */
 object CrfSeqIter { 
-   final val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
-   def apply(nLabels: Int, input: String, delim: CrfSeqDelimiter): CrfSeqIter = new CrfSeqIter(nLabels, input, delim)
-   def apply(nLabels: Int, input: String): CrfSeqIter = new CrfSeqIter(nLabels, input, DEFAULT_SEQ_DELIMITER)
+	final val MAX_NUM_LABELS = 1000
+	final val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
+   
+	def apply(nLabels: Int, input: String, delim: CrfSeqDelimiter): CrfSeqIter = new CrfSeqIter(nLabels, input, delim)
+	def apply(nLabels: Int, input: String): CrfSeqIter = new CrfSeqIter(nLabels, input, DEFAULT_SEQ_DELIMITER)
+   
+	private def check(nLabels: Int, input: String, delim: CrfSeqDelimiter): Unit = {
+		require(nLabels > 0 && nLabels < MAX_NUM_LABELS, s"Number of labels for the CRF model $nLabels is out of range")
+		require(input != null, "input for the CRF training files is undefined")
+		require(delim != null, "Delimiter for the CRF training files is undefined")
+	}
 }
 
 

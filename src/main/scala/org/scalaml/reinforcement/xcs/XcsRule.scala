@@ -18,7 +18,21 @@ import org.scalaml.ga.Chromosome
 import scala.util.Random
 
 
-class XcsAction(sensorId: String, _target: Double)(implicit _discr: Discretization) extends Gene(sensorId, _target, EQUAL)
+
+		/**
+		 * <p>Class that defined a action associated to a sensor and a target value. A typical
+		 * action is a sensor exceeding a target value (or threshold). XCS action are defined
+		 * as gene so they can be chained as chromosomes and define a strategy to optimize the 
+		 * operation of a system.
+		 * @constructor Create an XCS action. [sensorId] identifier of the sensor for which an action may be triggered or fired. [target] threshold value associated to a sensor to trigger the action.
+		 * @param sensorId identifier of the sensor for which an action may be triggered or fired
+		 * @param target threshold value associated to a sensor to trigger the action
+		 * 
+		 * @author Patrick Nicolas
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
+		 */
+class XcsAction(sensorId: String, target: Double)(implicit _discr: Discretization) extends Gene(sensorId, target, EQUAL)
 
 
 object XcsAction {
@@ -31,6 +45,7 @@ object XcsAction {
 		 * it can be manipulated by the Genetic Algorithm. A rule is defined by the format:<br>
 		 * IF signal THEN action.<br> The constructor increase a global rules count used to automatically
 		 * assigned a label to each signal/predicate.</p>
+		 * @constructor Create a XCS rule as a pair of signal and action. [signal] Signal or predicated of the rule. [action] XCS action of the rule.
 		 * @param signal  signal or predicated of the rule
 		 * @param action action of the rule
 		 * @throws IllegalArgumenException if the predicate or the action of the rule is undefined
@@ -39,10 +54,9 @@ object XcsAction {
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-
 class XcsRule(val signal: Signal, val action: XcsAction) {
-   require(signal != null, "XcsRule Cannot create an XCS rule with undefined signal/predicate")
-   require(action != null, "XcsRule Cannot create an XCS rule with undefined action")
+	require(signal != null, "XcsRule Cannot create an XCS rule with undefined signal/predicate")
+	require(action != null, "XcsRule Cannot create an XCS rule with undefined action")
 }
 
 
@@ -55,14 +69,8 @@ class XcsRule(val signal: Signal, val action: XcsAction) {
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		*/
-
 object XcsRule {
-	import QLState._
-    type XcsSensor = Signal
-
-//	var rulesCount = 0
-//	def apply[T <% Double](signal: Signal, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](signal, action)
-//	def apply[T <% Double](id: String, threshold: Double, op: Operator, action: XcsAction[T]): XcsRule[T] = new XcsRule[T](Signal(id, threshold, op)(DIGITIZE), action)
+	type XcsSensor = Signal
 }
 
    

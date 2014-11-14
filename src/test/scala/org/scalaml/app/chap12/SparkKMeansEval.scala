@@ -47,7 +47,7 @@ object SparkKMeansEval extends Eval {
 			val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
 
 			val config = new SparkKMeansConfig(K, MAXITERS, NRUNS)
-			implicit val sc = new SparkContext("Local", "SparkKMeans")  // no need to load additional jar file
+			implicit val sc = new SparkContext("local", "SparkKMeans")  // no need to load additional jar file
 	
 			val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
 			val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))

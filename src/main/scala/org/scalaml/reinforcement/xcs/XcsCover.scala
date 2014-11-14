@@ -17,7 +17,7 @@ import org.scalaml.trading.SOperator
 import org.scalaml.ga.Discretization
 
 
-        /**
+		/**
  		 * <p>Implementation of basic covering algorithm. This covering is invoked
 		 * when no rule has a signal or predicate that match the input data. The process
 		 * generate random, or pseudo-random rules.</p>
@@ -26,8 +26,8 @@ import org.scalaml.ga.Discretization
 		 * @since March 25, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-
 object XcsCover {  
+	final val MAX_NUM_ACTIONS = 2048
 		/**		 
 		 * <p>Generates new rules from an existing population. The number of rules
 		 * to generates is the size of the chromosome representing a trading strategy.</p>
@@ -36,14 +36,16 @@ object XcsCover {
 		 * @throws IllegalArgumenException if the signal is undefined
 		 * @return list of new XCS rules. 
 		 */
-   def cover(sensor: XcsSensor, actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
-  	  require(sensor != null, "XcsCover.cover Cannot generates new rules from undefined signal or predicate")
-  	  
-  	  actions.foldLeft(List[XcsRule]()) ((xs, act) => {
-  	  	 val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(Signal.numOperators)))
-  	  	 new XcsRule(signal, XcsAction(act, Random)) :: xs
-  	  })
-   } 
+	def cover(sensor: XcsSensor, actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
+		require(sensor != null, "XcsCover.cover Cannot generates new rules from undefined sensor or stimuli")
+		require(actions != null, "XcsCover.cover Cannot generates new rules from undefined list of actions")
+		require(actions.size >0 && actions.size < MAX_NUM_ACTIONS, s"XcsCover.cover The number of actions per state ${actions.size} if out of range")
+		
+		actions.foldLeft(List[XcsRule]()) ((xs, act) => {
+			val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(Signal.numOperators)))
+			new XcsRule(signal, XcsAction(act, Random)) :: xs
+		})
+	} 
 }
 
 

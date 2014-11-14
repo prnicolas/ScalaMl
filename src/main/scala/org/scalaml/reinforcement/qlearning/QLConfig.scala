@@ -30,12 +30,7 @@ import scala.collection.mutable.ArrayBuffer
 		 * @since January 19, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
-final class QLConfig(val alpha: Double, 
-		       val gamma: Double, 
-		       val episodeLength: Int, 
-		       val numEpisodes: Int, 
-		       val minCoverage: Double, 
-		       val neighbors: (Int, Int) =>List[Int]) extends Config {
+final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: Int, val numEpisodes: Int, val minCoverage: Double, val neighbors: (Int, Int) =>List[Int]) extends Config {
     import QLConfig._
     
     check(alpha, gamma, episodeLength, numEpisodes, minCoverage, neighbors)
@@ -44,28 +39,28 @@ final class QLConfig(val alpha: Double,
 
 
 		/**
-		 * Companion object for the configuration of the Q-learning algorithm
+		 * Companion object for the configuration of the Q-learning algorithm. This singleton defines
+		 * the constructor for the QLConfig class and validates its parameters.
 		 */
 object QLConfig {
   	   
-   final val MAX_EPISODES = 1000
-   final val MAX_MIN_COVERAGE = 0.9
-   final val NO_MIN_COVERAGE = 0.0
+	final val MAX_EPISODES = 1000
+	final val MAX_MIN_COVERAGE = 0.9
+	final val NO_MIN_COVERAGE = 0.0
    
-   def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): QLConfig = 
-        new QLConfig(alpha, gamma, episodeLength, numEpisodes, minCoverage,  neighbors)
+	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): QLConfig = 
+		new QLConfig(alpha, gamma, episodeLength, numEpisodes, minCoverage,  neighbors)
    
-   def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, neighbors: (Int, Int) =>List[Int]): QLConfig = 
-        new QLConfig(alpha, gamma, episodeLength, numEpisodes, NO_MIN_COVERAGE,  neighbors)
+	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, neighbors: (Int, Int) =>List[Int]): QLConfig = 
+		new QLConfig(alpha, gamma, episodeLength, numEpisodes, NO_MIN_COVERAGE,  neighbors)
 
-   protected def check(alpha: Double,  gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): Unit = {
-     require(alpha > 0.0 && alpha < 1.0, s"QLConfig.check Cannot initialize QLearning with incorrect alpha $alpha")
-	 require(gamma > 0.0 && gamma < 1.0, s"QLConfig.check Cannot initialize QLearning with incorrect gamma $gamma")
-     require(numEpisodes > 2 && numEpisodes < MAX_EPISODES, s"QLConfig.check  Number of episodes $numEpisodes is out of range")
-     require(minCoverage >= 0.0 && minCoverage < MAX_MIN_COVERAGE, s"QLConfig.check  Minimum coverage $minCoverage is out of range")
-     require(neighbors != null, "QLConfig.check  Function to select neighboring states is undefined")
-   }
-
+	protected def check(alpha: Double,  gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): Unit = {
+		require(alpha > 0.0 && alpha < 1.0, s"QLConfig.check Cannot initialize QLearning with incorrect alpha $alpha")
+		require(gamma > 0.0 && gamma < 1.0, s"QLConfig.check Cannot initialize QLearning with incorrect gamma $gamma")
+		require(numEpisodes > 2 && numEpisodes < MAX_EPISODES, s"QLConfig.check  Number of episodes $numEpisodes is out of range")
+		require(minCoverage >= 0.0 && minCoverage < MAX_MIN_COVERAGE, s"QLConfig.check  Minimum coverage $minCoverage is out of range")
+		require(neighbors != null, "QLConfig.check  Function to select neighboring states is undefined")
+	}
 }
 
 

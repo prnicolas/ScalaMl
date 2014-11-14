@@ -20,34 +20,32 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.design.PipeOperator
 import java.io.IOException
 import org.scalaml.core.types.ScalaMl._
-import CrfConfig._
+
 import org.scalaml.core.design.Config
 
-	/**
-	 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
-	 * description of the configuration of CRF used by iitb library </p>
-	 * @constructor Create a configuration for the CRF. [w0] Initial values for the CRF weights/factors (lambdas). [maxIters] Maximum number of iterations to be used for the training of CRF. [lambda] L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X). [eps] Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
-	 * @param w0  initial values for the CRF weights/factors (lambdas)
-	 * @param maxIters  Maximum number of iterations to be used for the training of CRF
-	 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
-	 * @param eps Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
-	 * 
-	 * @author Patrick Nicolas
-	 * @since April 3, 2014
-	 */
-protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double) extends Config {
-    check(w0, maxIters, lambda, eps)
-    val persists: String = "config/crf"
-    
-    // textual description of the CRF configuration
-	val params = s"initValue: ${String.valueOf(w0)}, maxIters: ${String.valueOf(maxIters)}, lambda: ${String.valueOf(lambda)}, scale: true, eps: $eps"
 
-	private def check(w0: Double, maxIters: Int, lambda: Double,  eps: Double): Unit = {
-	  require(w0 >= INIT_WEIGHTS_LIMITS._1 && w0 <= INIT_WEIGHTS_LIMITS._2, s"Initialization of the CRF weights $w0 is out of range")
-	  require( maxIters >= MAX_ITERS_LIMITS._1 && maxIters <= MAX_ITERS_LIMITS._2, s"Maximum number of iterations for CRF training $maxIters is out of range")
-	  require( lambda >= LAMBDA_LIMITS._1 && lambda <= LAMBDA_LIMITS._2, s"The factor for the L2 penalty for CRF $lambda is out of range")
-	  require( eps > EPS_LIMITS._1 && eps<= EPS_LIMITS._2, s"The convergence criteria for the CRF training $eps is out of range")
-    }
+
+		/**
+		 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
+		 * description of the configuration of CRF used by iitb library </p>
+		 * @constructor Create a configuration for the CRF. [w0] Initial values for the CRF weights/factors (lambdas). [maxIters] Maximum number of iterations to be used for the training of CRF. [lambda] L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X). [eps] Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
+		 * @param w0  initial values for the CRF weights/factors (lambdas)
+		 * @param maxIters  Maximum number of iterations to be used for the training of CRF
+		 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X)
+		 * @param eps Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 3, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 */
+protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double) extends Config {
+	import CrfConfig._
+	check(w0, maxIters, lambda, eps)
+
+	val persists: String = "config/crf"
+    
+		// textual description of the CRF configuration
+	val params = s"initValue: ${String.valueOf(w0)}, maxIters: ${String.valueOf(maxIters)}, lambda: ${String.valueOf(lambda)}, scale: true, eps: $eps"
 }
 
 
@@ -62,8 +60,16 @@ object CrfConfig {
 	final val EPS_LIMITS = (1e-5, 0.2)
 	
 	
-    def apply(w0: Double, maxIters: Int, lambda: Double, eps:Double): CrfConfig = 
-		            new CrfConfig(w0, maxIters, lambda, eps)
+	def apply(w0: Double, maxIters: Int, lambda: Double, eps:Double): CrfConfig = 
+		new CrfConfig(w0, maxIters, lambda, eps)
+	
+	
+	private def check(w0: Double, maxIters: Int, lambda: Double,  eps: Double): Unit = {
+		require(w0 >= INIT_WEIGHTS_LIMITS._1 && w0 <= INIT_WEIGHTS_LIMITS._2, s"Initialization of the CRF weights $w0 is out of range")
+		require( maxIters >= MAX_ITERS_LIMITS._1 && maxIters <= MAX_ITERS_LIMITS._2, s"Maximum number of iterations for CRF training $maxIters is out of range")
+		require( lambda >= LAMBDA_LIMITS._1 && lambda <= LAMBDA_LIMITS._2, s"The factor for the L2 penalty for CRF $lambda is out of range")
+		require( eps > EPS_LIMITS._1 && eps<= EPS_LIMITS._2, s"The convergence criteria for the CRF training $eps is out of range")
+    }
 }
 
 
