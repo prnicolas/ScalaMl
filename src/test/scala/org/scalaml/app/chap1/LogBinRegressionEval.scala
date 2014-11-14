@@ -40,8 +40,6 @@ object LogBinRegressionEval extends Eval {
     final val path_training = "resources/data/chap1/CSCO.csv"
     final val path_test = "resources/data/chap1/CSCO2.csv"
     private val logger = Logger.getLogger(name)
-    
-
     		/*
     		 * Driver code that load, visualize and train labeled data.
     		 * Classifier is invoked on the model once training is completed.

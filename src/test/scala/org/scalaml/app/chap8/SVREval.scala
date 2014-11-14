@@ -12,10 +12,13 @@ package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.supervised.svm._
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.supervised.svm.kernel.RbfKernel
+import org.scalaml.supervised.svm.formulation.SVRFormulation
+import org.scalaml.supervised.svm.{SVMConfig, SVM}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.types.ScalaMl
 import YahooFinancials._
-import types.ScalaMl._
+import ScalaMl._
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import org.apache.log4j.Logger
 import org.scalaml.util.Display

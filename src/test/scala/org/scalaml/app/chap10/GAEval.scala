@@ -12,7 +12,8 @@ package org.scalaml.app.chap10
 
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.{TradingStrategy, Signal, LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator, YahooFinancials, StrategyFactory}
+import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
+import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
 import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
 import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.core.XTSeries

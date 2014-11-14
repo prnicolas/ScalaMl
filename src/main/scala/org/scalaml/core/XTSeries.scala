@@ -38,8 +38,8 @@ class XTSeries[T](val label: String, val arr: Array[T]) {
 	def toArray: Array[T] = arr
 	def toList: List[T] = arr.toList
   
-	def head: T = arr.head
-	def last: T = arr.last
+	final def head: T = arr.head
+	final def last: T = arr.last
   
 		/**
 		 * Test if a time series is identical to this time series. The label is not included
@@ -49,9 +49,9 @@ class XTSeries[T](val label: String, val arr: Array[T]) {
 		 * @return true if the series are identical, false if the other time series, 'that' is null or is different from this time series
 		 */
 	def == (that: XTSeries[T]): Boolean = {
-			require(that != null, "Cannot compare this time series with undefined time series")
+		require(that != null, "Cannot compare this time series with undefined time series")
   	
-			if(that != null) size == that.size && arr.equals(that.toArray) else false
+		if(that != null) size == that.size && arr.equals(that.toArray) else false
 	}
   
         
@@ -104,18 +104,17 @@ class XTSeries[T](val label: String, val arr: Array[T]) {
 	}
   
 	@inline
-	def isEmpty: Boolean = size == 0
+	final def isEmpty: Boolean = size == 0
+
+	final def max(implicit cmp: Ordering[T]): T = arr.max
   
-	@inline 
-	def max(implicit cmp: Ordering[T]): T = arr.max
-  
-	@inline 
-	def min(implicit cmp: Ordering[T]): T = arr.min
+	
+	final def min(implicit cmp: Ordering[T]): T = arr.min
   
  
 	override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => b.append(s"$x\n") ).toString
   
-	val size: Int = arr.size
+	final val size: Int = arr.size
 
 	def foreach( f: T => Unit) = arr.foreach(f)
 

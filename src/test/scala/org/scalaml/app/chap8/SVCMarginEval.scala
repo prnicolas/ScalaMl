@@ -10,7 +10,9 @@
  */
 package org.scalaml.app.chap8
 
-import org.scalaml.supervised.svm.{SVMConfig, RbfKernel, CSVCFormulation, SVMExecution, SVM}
+import org.scalaml.supervised.svm.{SVMConfig, SVMExecution, SVM}
+import org.scalaml.supervised.svm.formulation.CSVCFormulation
+import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
 import org.scalaml.core.types.ScalaMl._
 import XTSeries._

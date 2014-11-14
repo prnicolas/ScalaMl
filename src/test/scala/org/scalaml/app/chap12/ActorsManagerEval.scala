@@ -13,11 +13,11 @@ package org.scalaml.app.chap12
 import org.scalaml.app.Eval
 import scala.util.Random
 import org.scalaml.scalability.akka.Partitioner
+import org.scalaml.scalability.akka.message._
 import org.scalaml.core.XTSeries
 import akka.actor.Props
 import org.scalaml.scalability.akka.Master
 import org.scalaml.filtering.DFT
-import org.scalaml.scalability.akka.Start
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable}
 import akka.actor.ActorSystem	

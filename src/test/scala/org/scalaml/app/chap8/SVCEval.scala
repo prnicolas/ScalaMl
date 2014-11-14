@@ -12,10 +12,14 @@ package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
-import org.scalaml.supervised.svm._
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.supervised.svm.{SVMConfig, SVM, SVMExecution}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.types.ScalaMl
+import org.scalaml.supervised.svm.formulation._
+import org.scalaml.supervised.svm.kernel._
 import Fundamentals._
-import types.ScalaMl._
+import ScalaMl._
+import SVMConfig._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}

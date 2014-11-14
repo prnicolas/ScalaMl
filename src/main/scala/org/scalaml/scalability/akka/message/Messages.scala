@@ -8,7 +8,7 @@
  * 
  * Version 0.95d
  */
-package org.scalaml.scalability.akka
+package org.scalaml.scalability.akka.message
 
 
 import akka.actor._

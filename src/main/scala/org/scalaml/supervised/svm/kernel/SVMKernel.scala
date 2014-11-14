@@ -8,14 +8,12 @@
  * 
  * Version 0.95d
  */
-package org.scalaml.supervised.svm
+package org.scalaml.supervised.svm.kernel
 
 import libsvm._
+import org.scalaml.supervised.svm.SVMConfigItem
 
 
-trait SVMConfigItem {
-	 def update(param: svm_parameter): Unit
-}
 
 
 		/**

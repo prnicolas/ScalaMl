@@ -12,6 +12,7 @@ package org.scalaml.scalability.akka
 
 
 import org.scalaml.core.types.ScalaMl._
+import org.scalaml.scalability.akka.message._
 import java.io.{IOException, PrintWriter}
 import akka.actor._
 import org.scalaml.stats.Stats

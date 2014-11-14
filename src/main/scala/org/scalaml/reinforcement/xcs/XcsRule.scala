@@ -9,7 +9,8 @@
 package org.scalaml.reinforcement.xcs
 
 import scala.collection.mutable.HashMap
-import org.scalaml.trading.{Signal, EQUAL}
+import org.scalaml.trading.Signal
+import org.scalaml.trading.operator.EQUAL
 import org.scalaml.ga.{Operator, Gene, Discretization}
 import org.scalaml.reinforcement.qlearning.QLState
 import org.scalaml.core.types.ScalaMl._

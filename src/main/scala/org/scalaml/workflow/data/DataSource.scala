@@ -101,7 +101,7 @@ final class DataSource(	pathName: String,
 		 * converts a line in a file to an array of String and to a Double.</p>
 		 * @param extr Extractor that convert an array of fields(String) to a double
 		 * @return A Single variable time series
-		 * @exception IllegalArgumentException if the extractor is not defined.
+		 * @throws IllegalArgumentException if the extractor is not defined.
 		 */
 	def |> (extr: Fields => Double): XTSeries[Double] = {
 		require(extr != null, "DataSource.|> Cannot extracts fields with undefined extractors")

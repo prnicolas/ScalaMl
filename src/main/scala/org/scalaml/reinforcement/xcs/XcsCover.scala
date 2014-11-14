@@ -13,7 +13,7 @@ package org.scalaml.reinforcement.xcs
 import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning.QLState
 import scala.util.Random
-import org.scalaml.trading.SOperator
+import org.scalaml.trading.operator.SOperator
 import org.scalaml.ga.Discretization
 
 

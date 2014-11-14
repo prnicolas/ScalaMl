@@ -8,10 +8,10 @@
  * 
  * Version 0.95d
  */
-package org.scalaml.supervised.svm
+package org.scalaml.supervised.svm.formulation
 
 import libsvm._
-
+import org.scalaml.supervised.svm.SVMConfigItem
 
 	/**
 	 * <p>Trait for type or formulation of Support Vector Machine algorithms.</p>

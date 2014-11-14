@@ -12,6 +12,7 @@ package org.scalaml.scalability.akka
 
 
 import org.scalaml.core.types.ScalaMl._
+import org.scalaml.scalability.akka.message._
 import akka.routing.RoundRobinRouter
 import akka.actor.{ActorRef, Props, Actor, actorRef2Scala}
 import akka.util.Timeout

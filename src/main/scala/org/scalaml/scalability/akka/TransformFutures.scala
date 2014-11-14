@@ -15,6 +15,7 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.mutable.ArrayBuffer
 import org.scalaml.core.types.ScalaMl._
+import org.scalaml.scalability.akka.message._
 import akka.actor._
 import akka.util.Timeout
 import org.scalaml.core.XTSeries

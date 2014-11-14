@@ -12,6 +12,24 @@ package org.scalaml.supervised.svm
 
 import libsvm._
 import org.scalaml.core.design.Config
+import org.scalaml.supervised.svm.kernel.SVMKernel
+import org.scalaml.supervised.svm.formulation.SVMFormulation
+
+
+		/**
+		 * <p>Generic configuration item for support vector machine.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 28, 2014
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines
+		 */
+trait SVMConfigItem {
+		/**
+		 * <p>Update the LIBSVM configuration parameter.</p>
+		 * @param param LIBSVM parameter to update.
+		 */
+	 def update(param: svm_parameter): Unit
+}
 
 
 
@@ -30,6 +48,8 @@ import org.scalaml.core.design.Config
 	 * @note Scala for Machine Learning
 	 */
 final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, exec: SVMExecution) extends Config {
+	import SVMConfig._
+	
 	check(formulation, kernel, exec)
 	val persists = "config/svm"
 	  
@@ -57,12 +77,7 @@ final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, 
     
     @inline
     def nFolds: Int = exec.nFolds
-    
-    private def check(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
-		require(formulation != null, "Formulation in the stateuration of SVM is undefined")
-		require(kernel != null, "Kernel function in the stateuration of SVM is undefined")
-		require(svmParams != null, "The training execution parameters in the stateuration of SVM is undefined")	
-	}
+
 }
 
 
@@ -76,7 +91,15 @@ object SVMConfig {
    
    def apply(svmType: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): SVMConfig = new SVMConfig(svmType, kernel, svmParams)
    def apply(svmType: SVMFormulation, kernel: SVMKernel): SVMConfig = new SVMConfig(svmType, kernel, new SVMExecution(DEFAULT_CACHE, DEFAULT_EPS, -1))
+   
+       
+    private def check(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
+		require(formulation != null, "Formulation in the stateuration of SVM is undefined")
+		require(kernel != null, "Kernel function in the stateuration of SVM is undefined")
+		require(svmParams != null, "The training execution parameters in the stateuration of SVM is undefined")	
+	}
 }
+
 
 
 // --------------------------- EOF ------------------------------------------

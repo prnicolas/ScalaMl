@@ -25,9 +25,9 @@ import org.scalaml.util.Display
 		 * Neural Network. The class uses the standard pattern of machine
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class<br>
-		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.Br>
+		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
 		 * This MLP uses the online training strategy suitable for time series.</p>
-		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. [config] Configuration parameters class for the MLP. [xt] Time series of features in the training set. [labels] Labeled or target observations used for training. [objective] Implicit objective of the model (classification or regression)
+		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. 
 		 * @param config configuration parameters class for the MLP
 		 * @param xt time series of features in the training set
 		 * @param labels labeled or target observations used for training

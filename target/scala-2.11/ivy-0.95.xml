@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="Patrick Nicolas" module="scalaml_2.11" revision="0.95" status="release" publication="20141106235248">
+	<info organisation="Patrick Nicolas" module="scalaml_2.11" revision="0.95" status="release" publication="20141114031821">
 		<description>
 		scalaml
 		</description>
@@ -31,7 +31,7 @@
 		<dependency org="org.scala-lang" name="scala-library" rev="2.11.2" conf="compile->default(compile)"/>
 		<dependency org="org.apache.commons" name="commons-math3" rev="3.3" conf="compile->default(compile)"/>
 		<dependency org="org.jfree" name="jfreechart" rev="1.0.17" conf="compile->default(compile)"/>
-		<dependency org="com.typesafe.akka" name="akka-actor_2.11" rev="2.3.4" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.akka" name="akka-actor_2.11" rev="2.3.6" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-core_2.10" rev="1.0.2" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-mllib_2.10" rev="1.0.2" conf="compile->default(compile)"/>
 		<dependency org="org.scalatest" name="scalatest_2.11" rev="2.1.6" conf="compile->default(compile)"/>
