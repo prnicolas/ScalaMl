@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.spark
 
@@ -27,12 +27,12 @@ import org.scalaml.core.design.PipeOperator
 			/**
 			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
 			 * training during instantiation of objects in order to reduce their life-cycle.<br>
-			 * The algorithm implements the default data transformation interface, PipeOperator.</p>
-			 * @constructor Create a wrapper for the Spark K-means algorithm. [kMeansConfig] configuration of the Spark KMeans. [rddConfig] Configuration parameters for the Spark RDD. [xt] Time series used for the training of the Spark KMeans 
-			 * @param kMeansConfig configuration of the Spark KMeans
-			 * @param rddConfig configuration parameters for the Spark RDD
-			 * @param xt Time series used for the training of the Spark KMeans 
-			 * @param sc implicit spark context
+			 * The algorithm implements the default data transformation interface, PipeOperator.<br>
+			 * <b>kMeansConfig</b> Configuration of the Spark KMeans<br>
+			 * <b>rddConfig</b> Configuration parameters for the Spark RDD<br>
+			 * <b>xt</b> Time series used for the training of the Spark KMeans<br>
+			 * <b>sc</b> implicit spark context.</p>
+			 * @constructor Create a wrapper for the Spark K-means algorithm. 
 			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
 			 * 
 			 * @author Patrick Nicolas

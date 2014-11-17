@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.spark
 
@@ -24,23 +24,26 @@ import org.scalaml.core.design.PipeOperator
 
 
 
-			/**
-			 * <p>Define the configuration of the Spark KMeans wrapper.</p>
-			 * @constructor Create a configuration for the Spark K-means algorithm. [K] Number of clusters used in Spark KMeans. [numIters] Maximum number of iterations allowed for Spark KMeans. [numRuns] Number of runs to be executed by Spark KMeans
-			 * @param K number of clusters used in Spark KMeans
-			 * @param numIters maximum number of iterations allowed for Spark KMeans
-			 * @param numRuns number of runs to be executed by Spark KMeans
-			 * @throws IllegalArgumentException if any of the parameters is out of range
-			 * 
-			 * @author Patrick Nicolas
-			 * @since April, 2, 2014
-			 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark
-			 */
+		/**
+		 * <p>Define the configuration of the Spark KMeans wrapper.<br>
+		 * <b>K</b> Number of clusters used in Spark KMeans<br>
+		 * <b>numIters</b> Maximum number of iterations allowed for Spark KMeans<br>
+		 * <b>numRuns</b> Number of runs to be executed by Spark KMeans.</p>
+		 * @constructor Create a configuration for the Spark K-means algorithm.
+		 * @throws IllegalArgumentException if any of the parameters is out of range
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April, 2, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark
+		 */
 final class SparkKMeansConfig(K: Int, maxNumIters: Int, numRuns: Int =1) {
 	import SparkKMeansConfig._
   
 	check(K, maxNumIters, numRuns)
 	
+		/**
+		 * <p>Reference to MLlib KMeans class that is initialized with the class parameters</p>
+		 */
 	val kmeans: KMeans = {
 		val kmeans = new KMeans
 		kmeans.setK(K)

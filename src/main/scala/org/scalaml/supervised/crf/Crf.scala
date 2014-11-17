@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -29,7 +29,8 @@ import org.scalaml.util.Display
 
 
 		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.</p>
+		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br>
+		 * <b>weights</b>	Weights (or lambda parameters) for this CRF model.</p>
 		 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
 		 * @throws IllegalArgumentException if weights is not properly defined
 		 * @see org.scalaml.core.design.Model
@@ -38,7 +39,7 @@ import org.scalaml.util.Display
 		 * @since April 1, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
-class CrfModel(val weights: DblVector) extends Model {
+final protected class CrfModel(val weights: DblVector) extends Model {
 	require(weights != null && weights.size > 0, "CrfModel Cannot create a model with undefined weights")
   
 	val persists = "models/crf"  
@@ -49,13 +50,13 @@ class CrfModel(val weights: DblVector) extends Model {
 		 * define a Feature generator class that inherits the default implementation FeatureGenImpl of iitb features generator.
 		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
 		 * The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.
-		 * </p>
-		 * @constructor Create a Linear chain conditional random fields. [nLabels]: Number of labels (or tags) used in tagging training sequences of observations, [state]: Minimum set of stateuration parameters used in the CRF, [delims]: Delimiters used in extracting labels and data from the training files, [taggedObs] identifier for the training data set. 
-		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
-		 * @param state minimum set of stateuration parameters used in the CRF
-		 * @param delims delimiters used in extracting labels and data from the training files
-		 * @param taggedObs identifier for the training data set. The training set of sequences is defined by the raw observations
-		 * and its associated tagged file    taggedObs.raw and taggedObs.tagged files.
+		 * <br><br>
+		 * <b>nLabels</b>  Number of labels (or tags) used in tagging training sequences of observations.<br>
+		 * <b>config</b>  Minimum set of configuration parameters required to define the CRF<br>
+		 * <b>delims</b>  Delimiters used in extracting labels and data from the training files<br>
+		 * <b>taggedObs</b>  Identifier for the training data set. The training set of sequences is defined by the raw observations
+		 * and its associated tagged file: <i>file.raw</i> and <i>file.tagged</i> file.</b>
+		 * @constructor Create a Linear chain conditional random fields. 
 		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either undefined or out of range.
 		 * @see org.scalaml.workflow.PipeOperator
 		 * 

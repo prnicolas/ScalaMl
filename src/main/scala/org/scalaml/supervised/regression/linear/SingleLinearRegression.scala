@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.regression.linear
 
@@ -22,9 +22,10 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class</p>
-		 * @constructor Create a single linear regression model of type bounded to a Double as a view. [xt] Time series of (x,y) pairs of values.
-		 * @param xt single parameterized variable time series
+		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class<br>
+		 * <b>xt</b>  Time series of (x,y) pairs of values<br>
+		 * <b>g</b> Implicit conversionm from a double to the type T
+		 * @constructor Create a single linear regression model of type bounded to a Double as a view. 
 		 * @throws IllegalArgumentException if the time series is undefined
 		 * @throws implicitNotFound if conversion from type to Double is not implicitly defined
 		 * 
@@ -33,23 +34,25 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
-class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
-                                          extends PipeOperator[Double, T] {
-	require(xt != null && xt.size > 0, "Cannot compute the single variate linear regression of a undefined time series")
+final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
+				extends PipeOperator[Double, T] {
+	require(xt != null && xt.size > 0, "SingleLinearRegression. Cannot create a simple linear regression with undefined time series")
+	
 	type XY = (Double, Double)
 	private val logger = Logger.getLogger("SingleLinearRegression")
 	
 			// Create the model during instantiation 
-    private[this] val model: Option[XY] = {
-       Try {
-      	  val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
-	      val regr = new SimpleRegression(true)
-	      regr.addData(data)
-	      (regr.getSlope, regr.getIntercept)
-    	} match {
-    		case Success(w) => Some(w)
-    		case Failure(e) => Display.error("SingleLinearRegression ", logger,e); None
-    	}
+	private[this] val model: Option[XY] = {
+		Try {
+			val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
+			val regr = new SimpleRegression(true)
+			regr.addData(data)
+			(regr.getSlope, regr.getIntercept)
+		} 
+		match {
+			case Success(w) => Some(w)
+			case Failure(e) => Display.none("SingleLinearRegression Cannot create a model", logger,e)
+		}
 	}
 	
 		/**
@@ -61,25 +64,25 @@ class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: 
 		case None => Display.none("SingleLinearRegression.slope model is undefined", logger)
 	}
 	
-	    /**
+		/**
 		 * <p>Retrieve the intercept for this single variable linear regression.</p>
 		 * @return intercept of the linear regression if model has been properly trained, None otherwise
 		 */
 	final def intercept: Option[Double] = model match {
-	    case Some(m) => Some(m._2)
+		case Some(m) => Some(m._2)
 		case None => Display.none("SingleLinearRegression.intecept model is undefined", logger)
 	}
     
-    	/**
-    	 * <p>Data transformation that computes the predictive value of a time series
-    	 * using a single variable linear regression model. The model is initialized
-    	 * during instantiation of a class.</p>
-   	     * @throws MatchError if the model is undefined
-   		 * @return PartialFunction of a Double value as input and the value computed using the model as output
-    	 */
-    override def |> : PartialFunction[Double, T] = {
-      case x: Double if(model != None) => model.get._1*x + model.get._2
-    }
+		/**
+		 * <p>Data transformation that computes the predictive value of a time series
+		 * using a single variable linear regression model. The model is initialized
+		 * during instantiation of a class.</p>
+		 * @throws MatchError if the regression model is undefined
+		 * @return PartialFunction of a Double value as input and the value computed using the model as output
+		 */	
+	override def |> : PartialFunction[Double, T] = {
+		case x: Double if(model != None) => model.get._1*x + model.get._2
+	}
 }
 
 
@@ -93,6 +96,7 @@ class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: 
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
 		 */
 object SingleLinearRegression { 
-  def apply[T <% Double](xt: XTSeries[(T, T)])(implicit g: Double => T): SingleLinearRegression[T] = new SingleLinearRegression[T](xt)
+	def apply[T <% Double](xt: XTSeries[(T, T)])(implicit g: Double => T): SingleLinearRegression[T] = 
+		new SingleLinearRegression[T](xt)
 }
 // ----------------------------------  EOF ----------------------------------------

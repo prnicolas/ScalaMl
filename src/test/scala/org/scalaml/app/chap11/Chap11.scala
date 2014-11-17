@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.app.chap11
 
@@ -15,11 +15,11 @@ import org.scalaml.app.ScalaMlTest
 
 
 final class Chap11 extends ScalaMlTest { 
-   val chapter: String = "Chap 11"
+	val chapter: String = "Chapter 11"
   	 
-   test(s"$chapter QLearning evaluation")  {
-  	  evaluate(QLearningEval)
-   }
+	test(s"$chapter QLearning evaluation")  {
+		evaluate(QLearningEval)
+ 	}
 }
 
 // ------------------------------------  EOF ----------------------------------

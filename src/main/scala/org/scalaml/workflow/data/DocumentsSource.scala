@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.workflow.data
 
@@ -24,7 +24,8 @@ import org.apache.log4j.Logger
 		 * <li>Title</li>
 		 * <li>Content</li>
 		 * </ul>
-		 * @param pathName relative path for the directory containing the corpus
+		 * <b>pathName</b> relative path for the directory containing the corpus.</p>
+		 * @constructor Create a source for a set of documents in a given relative path.
 		 * @throws IllegalArgumentException if the path is not defined
 		 * 
 		 * @author Patrick Nicolas
@@ -44,6 +45,10 @@ final class DocumentsSource(val pathName: String) {
 			Array[String](pathName)
 	}
     
+		/**
+		 * <p>Extract a Corpus from a set documents located in pathName directory.</p>
+		 * @return corpus of document grouped and ordered by date.
+		 */
 	def |> : Corpus = {
 		import scala.io.Source
 		import java.io.{FileNotFoundException, IOException}

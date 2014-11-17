@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.nnet
 
@@ -26,12 +26,12 @@ import org.scalaml.util.Display
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
-		 * This MLP uses the online training strategy suitable for time series.</p>
+		 * This MLP uses the online training strategy suitable for time series.<br>
+		 * <b>config</b> configuration parameters class for the MLP<br>
+		 * <b>xt</b> time series of features in the training set<br>
+		 * <b>labels</b> labeled or target observations used for training<br>
+		 * <b>objective</b> Objective of the model (classification or regression)</p>
 		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. 
-		 * @param config configuration parameters class for the MLP
-		 * @param xt time series of features in the training set
-		 * @param labels labeled or target observations used for training
-		 * @param objective Objective of the model (classification or regression)
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 
 		 * @author Patrick Nicolas
@@ -39,7 +39,7 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
 		 */
 final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix)
-				(implicit val mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
+				(implicit mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
 	import MLP._
 	
 	check(config, xt, labels)
@@ -109,11 +109,8 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 			Some(correct.toDouble/xt.size)  // normalization
 		}
 		else 
-			Display.none("MLP.accuracy ", logger);
+			Display.none("MLP.accuracy ", logger)
 	}
-
-  
-
 }
 
 

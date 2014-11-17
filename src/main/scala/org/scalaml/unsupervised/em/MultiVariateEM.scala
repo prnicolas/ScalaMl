@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.unsupervised.em
 
@@ -28,13 +28,13 @@ import org.apache.log4j.Logger
 		 * <p>Class that implements the Multivariate Expectation-Maximization algorithm with 
 		 * K number of clusters. The class uses the Multivariate Normal distribution, Mixture
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
-		 * Commons Math library.</p>
-		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. [K] Number of clusters used in the Expectation-Maximization algorithm.
-		 * @param K number of Clusters used in the EM algorithm
+		 * Commons Math library.<br>
+		 * <b>K</b> Number of clusters used in the Expectation-Maximization algorithm.</p>
+		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. 
 		 * @throws IllegalArgumentException if K is out of range
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
 		 */
 final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
 	require( K > 0 && K < MAX_K, s"MultivariateEM Number K of clusters for EM $K is out of range")
@@ -46,43 +46,45 @@ final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Ar
 		 * <p>Implement the Expectation-Maximization algorithm as a data transformation.</p>
 		 * @param xt time series of vectors (array) of parameterized type
 		 * @throws MatchError if the input time series is undefined or have no elements
-   		 * @return PartialFunction of time series of elements of type T as input to Expectation-Maximization algorithm and tuple of type EMOutput as output.
+		 * @return PartialFunction of time series of elements of type T as input to Expectation-Maximization algorithm and tuple of type EMOutput as output.
 		 */
-   override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
-	 case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
-		  val data: DblMatrix = xt  // force a type conversion
+	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
+		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
+			val data: DblMatrix = xt  // force a type conversion
 		  
-		  Try {
-			val multivariateEM = new EM(data)
-            val est = estimate(data, K)
-			multivariateEM.fit(est)
+			Try {
+				val multivariateEM = new EM(data)
+				val est = estimate(data, K)
+				multivariateEM.fit(est)
 				 
-			val newMixture = multivariateEM.getFittedModel
-		    val components = newMixture.getComponents.toList
-	 		components.map(p => 
-	 		   (p.getKey.toDouble, p.getValue.getMeans, p.getValue.getStandardDeviations))
-		  } match {
-		  	 case Success(components) => components
-		  	 case Failure(e) => Display.error("MultivariateEM.|> ", logger, e); List.empty
-		  }
-	  }
+				val newMixture = multivariateEM.getFittedModel
+				val components = newMixture.getComponents.toList
+				components.map(p => 
+					(p.getKey.toDouble, p.getValue.getMeans, p.getValue.getStandardDeviations))
+			} 
+			match {
+				case Success(components) => components
+				case Failure(e) => Display.error("MultivariateEM.|> ", logger, e); List.empty
+			}
+		}
 	}
 }
 
 
-	/**
-	 * <p>Companion object for the Multivariate Expectation-Maximization algorithm that defines
-	 * internal types EM and EMOutput, the constructor apply and the computation of estimate.</p>
-	 * @author Patrick Nicolas
-	 * @since February 24, 2014
-	 */
+		/**
+		 * <p>Companion object for the Multivariate Expectation-Maximization algorithm that defines
+		 * internal types EM and EMOutput, the constructor apply and the computation of estimate.</p>
+		 * @author Patrick Nicolas
+		 * @since February 24, 2014
+		 */
 object MultivariateEM { 
 	final val MAX_K = 500
     
-			/**
-			 * Type EMOutput as a list of tuple (key, array of means, array of standard deviation.</p>
-			 */
-    type EMOutput = List[(Double, DblVector, DblVector)]
+		/**
+		 * Type EMOutput as a list of tuple (key, array of means, array of standard deviation.</p>
+		 */
+	type EMOutput = List[(Double, DblVector, DblVector)]
+	
 	def apply[T <% Double](numComponents: Int) = new MultivariateEM[T](numComponents)
 	
 		/**

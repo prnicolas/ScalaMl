@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.trading
 
@@ -19,88 +19,102 @@ import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 import scala.collection.mutable.TreeSet
 
-	/**
-	 * <p>Trading Strategy defined as a list of trading signals. The signals are linked through
-	 * OR boolean operator IF( signal1 == true OR signal2 == true OR .../</p>
-	 * @constructor Create an instance of a trading strategy [name] Id or name of the strategy. [signals] List or sequence of trading signals used in this strategy.
-	 * #throws IllegalArgumenException if the list of signals is either undefined or empty
-	 * 
-	 * @author Patrick Nicolas
-	 * @since May 7, 2014
-	 * @note Scale for Machine Learning Appendix/Finances 101
-	 */
+
+		/**
+		 * <p>Trading Strategy defined as a list of trading signals. The signals are linked through
+		 * OR boolean operator IF( signal1 == true OR signal2 == true OR .../<br>
+		 * <b>name</b> Id or name of the strategy<br>
+		 * <b>signals</b> List or sequence of trading signals used in this strategy.</p>
+		 * @constructor Create an instance of a trading strategy 
+		 * @throws IllegalArgumenException if the list of signals is either undefined or empty
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 7, 2014
+		 * @note Scale for Machine Learning Appendix/Finances 101
+		 */
 case class TradingStrategy(val name: String, signals: List[Signal]) {
    require(signals != null && signals.size > 0, s"TradingStrategy Signals for this trading strategy is either undefined or empty")
 }
 
 
-	/**
-	 * <p>Factory for trading strategies. The factory collects all the trading signals needed to implement
-	 * the trading strategy. The strategies are generated as the list of all combination of nSignals trading
-	 * signals, once and only once when requested. The Factory is mainly used for initializing the population for the genetic algorithm or the
-	 * extended learning classifiers.</p>
-	 * @constructor Instantiate a factory for all the combination of nSignals trading signals. [nSignals] Number of trading signals used in any trading strategy.
-	 * @throws IllegalArgumentException if the number of signals is less than 1
-	 * 
-	 * @author Patrick Nicolas
-	 * @since May 7, 2014
-	 * @note Scala for Machine Learning Chapter 10: Genetic Algorithms 
+		/**
+		 * <p>Factory for trading strategies. The factory collects all the trading signals needed to implement
+		 * the trading strategy. The strategies are generated as the list of all combination of nSignals trading
+		 * signals, once and only once when requested. The Factory is mainly used for initializing the population for the genetic algorithm or the
+		 * extended learning classifiers.<br>
+		 * <b>nSignals</b> Number of trading signals used in any trading strategy.<br>
+		 * <b>discr</b> Discretization function to convert signal to discrete value and vice versa</p>
+		 * 
+		 * @constructor Instantiate a factory for all the combination of nSignals trading signals.
+		 * @throws IllegalArgumentException if the number of signals is less than 1
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 7, 2014
+		 * @note Scala for Machine Learning Chapter 10: Genetic Algorithms 
 	 */
 class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
-   require(nSignals > 0, s"StrategyFactory Number of signals $nSignals should be >0")
-   
-   private[this] val signals  = new ListBuffer[Signal]
-   
-		  /**
-		   * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
-		   * target vablue, operator, the observations its acts upon and optionally the weights
-		   * @param id Identifier for the signal created and collected
-		   * @param target target value (or threshold) for the signal created and collected
-		   * @param op Operator of type SOperator of the signal added to the pool
-		   * @param obs Observations or scalar time series used by the signal added to the pool
-		   * @param weights weights for the observations used by the signal (optional)
-		   */
-   def += (id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector): Unit = 
-  	   signals.append(Signal(id, target, op, obs, weights) )
-   
-  	   		/**
-		   * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
-		   * target vablue, operator, the observations its acts upon and optionally the weights.</p>
-		   * @param id Identifier for the signal created and collected
-		   * @param target target value (or threshold) for the signal created and collected
-		   * @param op Operator of type SOperator of the signal added to the pool
-		   * @param xt Scalar time series used by the signal added to the pool
-		   * @param weights weights for the observations used by the signal (optional)
-		   */
+	import org.scalaml.ga.Chromosome
+	import Chromosome._
 
-   def += (id: String, target: Double, op: Operator, xt: XTSeries[Double], weights: DblVector): Unit = 	 
-       signals.append(Signal(id, target, op, xt.toArray,weights) )
+	require(nSignals > 0, s"StrategyFactory Number of signals $nSignals should be >0")
+   
+	private[this] val signals  = new ListBuffer[Signal]
+   
+		/**
+		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
+		 * target vablue, operator, the observations its acts upon and optionally the weights
+		 * @param id Identifier for the signal created and collected
+		 * @param target target value (or threshold) for the signal created and collected
+		 * @param op Operator of type SOperator of the signal added to the pool
+		 * @param obs Observations or scalar time series used by the signal added to the pool
+		 * @param weights weights for the observations used by the signal (optional)
+		 */
+	def += (id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector): Unit = {
+	  	checkArguments(obs, weights)
+		signals.append(Signal(id, target, op, obs, weights) )
+	}
+	
+		/**
+		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
+		 * target value, operator, the observations its acts upon and optionally the weights.</p>
+		 * @param id Identifier for the signal created and collected
+		 * @param target target value (or threshold) for the signal created and collected
+		 * @param op Operator of type SOperator of the signal added to the pool
+		 * @param xt Scalar time series used by the signal added to the pool
+		 * @param weights weights for the observations used by the signal (optional)
+		 */
+	def += (id: String, target: Double, op: Operator, xt: XTSeries[Double], weights: DblVector): Unit = {
+		checkArguments(xt.toArray, weights)
+		signals.append(Signal(id, target, op, xt.toArray,weights) )
+	}
+
+
+		/**
+		 * <p>Generates the trading strategies as any unique combinations of <b>nSignals</b>
+		 * of signals currently in the pool of signals. The list of strategies is computed on demand
+		 * only once
+		 * @return strategies extracted from the pool of signals.
+		 */
+	lazy val strategies: Pool[Signal] = {
+		implicit val ordered = Signal.orderedSignals
         
-   import org.scalaml.ga.Chromosome._
-   import org.scalaml.ga.Chromosome
+		val xss = new Pool[Signal]
+		val treeSet = new TreeSet[Signal] ++= signals.toList
+		val subsetsIterator = treeSet.subsets(nSignals)
 
-   			/**
-   			 * <p>Generates the trading strategies as any unique combinations of <b>nSignals</b>
-   			 * of signals currently in the pool of signals. The list of strategies is computed on demand
-   			 * only once
-   			 * @return strategies extracted from the pool of signals.
-   			 */
-   lazy val strategies: Pool[Signal] = {
-      implicit val ordered = Signal.orderedSignals
-        
-      val xss = new Pool[Signal]
-      val treeSet = new TreeSet[Signal] ++= signals.toList
-
-      val subsetsIterator = treeSet.subsets(nSignals)
-      while( subsetsIterator.hasNext) {
-         val subset = subsetsIterator.next
-         val signalList: List[Signal] = subset.toList
-         xss.append(Chromosome[Signal](signalList))
-       }
-       xss
-    }
+		while( subsetsIterator.hasNext) {
+			val subset = subsetsIterator.next
+			val signalList: List[Signal] = subset.toList
+			xss.append(Chromosome[Signal](signalList))
+		}
+		xss
+	}
+	
+	private def checkArguments(xt: DblVector, weights: DblVector): Unit = {
+		require(xt != null && xt.size > 0, "StrategyFactory.checkArgument Data input to the signal added to this strategy is undefined")
+		require(weights != null && weights.size > 0, "StrategyFactory.checkArgument Weights of the signal be added to this strategy is undefined")
+	}
 }
-
 
 
 // ------------------------ EOF --------------------------------------------------------

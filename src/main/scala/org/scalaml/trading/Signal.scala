@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.trading
 
@@ -31,21 +31,25 @@ import scala.collection.mutable.TreeSet
 		 * A trading signal is emitted once a value (or data point) in a time series reaches a threshold (upward or downward movement).<br>
 		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
 		 * The class assume that a digitization function that discrete a continuous value is defined
-		 * implicitly. </p>
-		 * @constructor Create a trading signal used for analyzing changes in variables derived from the price and trading volume of a security. [id] Label or identifier for the trading signal. [target] Target value (or threshold) used to trigger the signal. [op] Operator that is used to defined the condition such as greater than, equals.... [ts] Times series of single variable the signal acts upon. [weights] Weights applied to each value of the time series (optional)
-		 * 
-		 * @param id  The label for the trading signal
-		 * @param op The operator that is used to defined the condition such as greater than, equals....
-		 * @param ts value threshold defined by the signal
-		 * @throws IllegalArgumentException if the operator or id is not defined
+		 * implicitly.<br>
+		 * <b>id</b> Label or identifier for the trading signal.<br>
+		 * <b>target</b> Target value (or threshold) used to trigger the signal.<br>
+		 * <b>op</b> Operator that is used to defined the condition such as greater than, equals.... <br>
+		 * <b>xt</b> Times series of single variable the signal acts upon.<br>
+		 * <b>weights</b> Weights applied to each value of the time series (optional).<br>
+		 * <b>discr</b> Discretization function that convert analog or continuous signal to a discrete time series.</p>
+		 * @constructor Create a trading signal used for analyzing changes in variables derived from the price and trading volume of a security. 
+		 * @throws IllegalArgumentException if the class parameters are not properily defined.
+		 * @throws ImplicitNotFoundException if the disretization function has not been defined.
 		 * @see org.scalaml.ga.Gene
 		 * 
 		 * @author Patrick Nicolas
 		 * @note Scala for Machine Learning
-		 * @since Mar 4, 2014
+		 * @since March 4, 2014 Appendix Finances 101 / Technical analysis
 		 */
 @implicitNotFound("Signal does not have a discretization function implicitly defined")
-class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) extends Gene(_id, _target, _op) {
+class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) 
+					extends Gene(_id, _target, _op) {
 	import Signal._
 	check(_id, _target, _op, xt, weights)
    
@@ -56,12 +60,6 @@ class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights
 		 * @return computed score for this trading signal
 		 */
 	override def score: Double = sumScore(operatorFuncMap.get(op).get)
-
-		/**
-		 * <p>Displays the attributes of this trading signal in symbolic format
-		 * @return Description of the tuple (id, operator, target)
-		 */
-	override def show: String = s"$id ${op.toString} $target"
     
 		/**
 		 * Compare this trading signal with another one
@@ -90,8 +88,11 @@ object Signal {
 	final val EPS = 1e-3
 	final val CSV_DELIM = ",";
 
-	def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = new Signal(id, target, op, obs, weights)
-	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = new Signal(id, target, op, Array.empty, Array.empty)
+	def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = 
+		new Signal(id, target, op, obs, weights)
+	
+	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = 
+		new Signal(id, target, op, Array.empty, Array.empty)
 
 	val orderedSignals = Ordering.by((signal: Signal) => signal.id)
    
@@ -116,7 +117,5 @@ object Signal {
 		require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
 	}
 }
-
-
 
 // ------------------------ EOF --------------------------------------------------------

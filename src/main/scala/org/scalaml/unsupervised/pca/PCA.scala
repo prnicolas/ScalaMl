@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.unsupervised.pca
 
@@ -14,9 +14,9 @@ import org.scalaml.core.XTSeries
 import org.apache.commons.math3.linear._
 import org.apache.commons.math3.stat.correlation.Covariance
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MaxCountExceededException, MathArithmeticException, DimensionMismatchException}
-import org.scalaml.core.types
+import org.scalaml.core.types.{CommonMath, ScalaMl}
 import org.scalaml.core.design.PipeOperator
-import types.ScalaMl._
+import ScalaMl._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
@@ -35,8 +35,9 @@ import scala.util.{Try, Success, Failure}
 		 * @note Scala for Machine Learning
 		 */
 final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix, DblVector)] {
-  import types.CommonMath._, XTSeries._
-  private val logger = Logger.getLogger("PCA")	   
+	import CommonMath._, XTSeries._
+
+	private val logger = Logger.getLogger("PCA")	   
 		/**
 		 * <p>Data transformation that implements the extraction of the principal components
 		 * from a time series. The methods uses the Apache Commons Math library to compute
@@ -47,24 +48,25 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
    		 * @return PartialFunction of time series of elements of type T as input to the Principal Component Analysis and tuple Covariance matrix and vector of eigen values as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], (DblMatrix, DblVector)] = {
-	  case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0) => {
-	    Try {
-	      zScoring(xt) match {
-	  	  	 case Some(observation) => {
-	  	  		 val obs: DblMatrix = observation  
-	  	  		 val covariance = new Covariance(obs).getCovarianceMatrix
-		         val transform = new EigenDecomposition(covariance)
-	             val eigenVectors = transform.getV
-	             val eigenValues = new ArrayRealVector(transform.getRealEigenvalues)
-	             (obs.multiply(eigenVectors).getData, eigenValues.toArray)
-	  	  	  }
-	  	  	  case None => throw new Exception("zScoring failed")
-	  	   }
-	    } match {
-	       case Success(eigenResults) => eigenResults
-	       case Failure(e) => Display.error("PCA.|> zScoring ", logger, e); null
-	    }
-	  }
+		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0) => {
+			Try {
+				zScoring(xt) match {
+					case Some(observation) => {
+						val obs: DblMatrix = observation  
+						val covariance = new Covariance(obs).getCovarianceMatrix
+						val transform = new EigenDecomposition(covariance)
+						val eigenVectors = transform.getV
+						val eigenValues = new ArrayRealVector(transform.getRealEigenvalues)
+						(obs.multiply(eigenVectors).getData, eigenValues.toArray)
+					}
+					case None => throw new Exception("zScoring failed")
+				}
+			} 
+			match {
+				case Success(eigenResults) => eigenResults
+				case Failure(e) => Display.error("PCA.|> zScoring ", logger, e); (Array.empty, Array.empty)
+			}
+		}
 	}
 }
 

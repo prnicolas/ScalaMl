@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -34,23 +34,29 @@ import scala.language.implicitConversions
 
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
-		 * support regularization or penalty terms.</p>
-		 * @constructor Create a logistic regression classifier model. [xt] Input time series observations, [labels] label for the class used during training of the classifier. [optimizer] Optimization method used to minimmize the loss function during training.
+		 * support regularization or penalty terms.<br>
+		 * <b>xt</b> Input time series observations.<br>
+		 * <b>labels</b> Labeled class data used during training of the classifier<br>
+		 * <b>optimizer</b> Optimization method used to minimmize the loss function during training</p>* 
+		 * @constructor Create a logistic regression classifier model.
+		 * @throws IllegalArgumentException if the class parameters are undefined. 
 		 * @see org.apache.commons.math3.fitting.leastsquares.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 11, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
 		 */
-final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
-		                                    labels: Array[Int], 
-										    optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
+final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer) 
+					extends PipeOperator[Array[T], Int] {
+	import LogisticRegression._
+  
 	type Feature = Array[T]
 	check(xt, labels, optimizer)
     
 	private val logger = Logger.getLogger("LogisticRegression")
+	
 	private[this] val model: Option[RegressionModel] = {
-	    Try(train)
+		Try(train)
 		match {
 			case Success(m) => Some(m)
 			case Failure(e) => Display.error("LogisticRegression", logger, e); None
@@ -62,31 +68,35 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 * @return Vector of weights if the model has been successfully trained, None otherwise.
 		 */
 	final def weights: Option[DblVector] = model match {
-	   case Some(m) => Some(m.weights)
-	   case None => Display.none("LogisticRegression.weights model is undefined", logger)
+		case Some(m) => Some(m.weights)
+		case None => Display.none("LogisticRegression.weights model is undefined", logger)
 	}
 	
 	
-	     /**
+		/**
 		 * <p>Access the residual sum of squares of the logistic regression model.</p>
 		 * @return rss if the model has been successfully trained, None otherwise.
 		 */
 	final def rss: Option[Double] = model match {
-	   case Some(m) => Some(m.rss)
-	   case None => Display.none("LogisticRegression.tdd model is undefined", logger)
+		case Some(m) => Some(m.rss)
+		case None => Display.none("LogisticRegression.tdd model is undefined", logger)
 	}
-			/**
-			 * <p>Binary predictor using the Binomial logistic regression and implemented
-			 * as a data transformation (PipeOperator). The predictor relies on a margin
-			 * error to associated to the outcome 0 or 1.</p>
-			 * @throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
-   		     * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
-			 */
+			
+		/**
+		 * <p>Binary predictor using the Binomial logistic regression and implemented
+		 * as a data transformation (PipeOperator). The predictor relies on a margin
+		 * error to associated to the outcome 0 or 1.</p>
+		 * @throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
+		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
+		 */
 	override def |> : PartialFunction[Feature, Int] = {
 		case x: Feature  if(x != null && model != None && model.get.size -1 != x.size) => {				
-		  val w = model.get.weights
-		  val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
-		  if( logit(z) > 0.5 + MARGIN) 1 else 0
+			val w = model.get.weights
+			val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
+			if( logit(z) > 0.5 + MARGIN) 
+				1 
+			else 
+				0
 		}
 	}
 	
@@ -96,68 +106,63 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 	
 	final val initWeight = 0.5
 	private def train: RegressionModel = {
-        val weights0 = Array.fill(xt(0).size +1)(initWeight)
+		val weights0 = Array.fill(xt(0).size +1)(initWeight)
           
-        		/**
-        		 * <p>Anonymous Class that defines the computation of the value of
-        		 * the function and its derivative (Jacobian matrix) for all the data points.
-        		 */
-	  	 val lrJacobian = new MultivariateJacobianFunction {
+		/*
+		 * <p>Anonymous Class that defines the computation of the value of
+		 * the function and its derivative (Jacobian matrix) for all the data points.
+		 */
+		val lrJacobian = new MultivariateJacobianFunction {
+			override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
+				require(w != null, "MultivariateJacobianFunction undefined weight for computing the Jacobian matrix")
+				require(w.toArray.length == dimension(xt)+1, 
+					s"MultivariateJacobianFunction number of weights ${w.toArray.length} should match the dimension of the time series ${dimension(xt)+1}")
 
-            override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
-		  	  require(w != null && w.toArray.length == dimension(xt)+1, "Incorrect size of weight for computing the Jacobian matrix")
+				val _w = w.toArray 	  
+					// computes the pair (function value, derivative value)
+				val gradient = xt.toArray.map( g => {  
+				val exponent = g.zip(_w.drop(1))
+									.foldLeft(_w(0))((s,z) => s + z._1*z._2)
+					val f = logit(exponent)
+					(f, f*(1.0-f))
+				})
 		  	  
-		  	  val _w = w.toArray 	  
-		  			  // computes the pair (function value, derivative value)
-		  	  val gradient = xt.toArray.map( g => {  
-		  	  	 val exponent = g.zip(_w.drop(1))
-		  	  	                 .foldLeft(_w(0))((s,z) => s + z._1*z._2)
-		  	  	 val f = logit(exponent)
-		  	  	 (f, f*(1.0-f))
-		  	  })
-		  	  
-		  	 val jacobian = Array.ofDim[Double](xt.size, weights0.size)
-	         xt.toArray.zipWithIndex.foreach(xi => {    // 1
-	        	 val df: Double = gradient(xi._2)._2
-	        	 Range(0, xi._1.size).foreach(j => jacobian(xi._2)(j+1) = xi._1(j)*df)
-	        	 jacobian(xi._2)(0) = 1.0
-	         })
+				val jacobian = Array.ofDim[Double](xt.size, weights0.size)
+				xt.toArray.zipWithIndex.foreach(xi => {    // 1
+					val df: Double = gradient(xi._2)._2
+							Range(0, xi._1.size).foreach(j => jacobian(xi._2)(j+1) = xi._1(j)*df)
+							jacobian(xi._2)(0) = 1.0
+				})
 	          
-		     (new ArrayRealVector(gradient.map(_._1)), new Array2DRowRealMatrix(jacobian))
-		   }
+				(new ArrayRealVector(gradient.map(_._1)), new Array2DRowRealMatrix(jacobian))
+			}
 		}
 
         	
-	    val exitCheck = new ConvergenceChecker[PointVectorValuePair] {
-	    	override def converged(iteration: Int, prev: PointVectorValuePair, current: PointVectorValuePair): Boolean =  {
-	    	  val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
-	    	  	  val diff = z._1 - z._2
-	    	  	  s + diff*diff 
-	    	  })
-	    	  Math.sqrt(delta) < optimizer.eps && iteration >= optimizer.maxIters
-	    	}
-	    }
+		val exitCheck = new ConvergenceChecker[PointVectorValuePair] {
+			
+			override def converged(iteration: Int, prev: PointVectorValuePair, current: PointVectorValuePair): Boolean =  {
+				val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
+					val diff = z._1 - z._2
+							s + diff*diff 
+				})
+				Math.sqrt(delta) < optimizer.eps && iteration >= optimizer.maxIters
+			}
+		}
 
-	    val builder = new LeastSquaresBuilder
-        val lsp = builder.model(lrJacobian)
-                         .weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
-                         .target(labels)
-                         .checkerPair(exitCheck)
-                         .maxEvaluations(optimizer.maxEvals)
-                         .start(weights0)
-                         .maxIterations(optimizer.maxIters)
-                         .build
-                                 
-        val optimum = optimizer.optimize(lsp)
-        RegressionModel(optimum.getPoint.toArray, optimum.getRMS)
+		val builder = new LeastSquaresBuilder
+		val lsp = builder.model(lrJacobian)
+							.weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
+							.target(labels)
+							.checkerPair(exitCheck)
+							.maxEvaluations(optimizer.maxEvals)
+							.start(weights0)
+							.maxIterations(optimizer.maxIters)
+							.build
+
+		val optimum = optimizer.optimize(lsp)
+		RegressionModel(optimum.getPoint.toArray, optimum.getRMS)
 	}
-	
-    private def check(xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
-	  require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
-	  require(xt.size == labels.size, s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
-      require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
-   }
-	
 }
 
 
@@ -167,13 +172,20 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 	 * The singleton is also used to define the constructors
 	 */
 object LogisticRegression {
-   final val MARGIN = 0.01
+	final val MARGIN = 0.01
    
-   implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
-   implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] = new Pair[RealVector,RealMatrix](pair._1, pair._2)
+	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
+	implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
+		= new Pair[RealVector,RealMatrix](pair._1, pair._2)
   	    
-   def apply[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
-  	    new LogisticRegression[T](xt, labels, optimizer)
+	def apply[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
+		new LogisticRegression[T](xt, labels, optimizer)
+  	    	
+	private def check[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
+		require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
+		require(xt.size == labels.size, s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
+		require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
+   }
 }
 
 

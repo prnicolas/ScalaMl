@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.akka
 
@@ -28,9 +28,13 @@ import scala.collection.mutable.ListBuffer
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.</p>
-		 *  @constructor Create a distributed transformation for time series. [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.<br>
+		 *  <b>xt</b> Time series to be processed.<br> 
+		 *  <b>fct</b> Data transformation<br>
+		 *  <b>partitioner</b> Method to partition time series for concurrent processing.</p>
+		 *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers

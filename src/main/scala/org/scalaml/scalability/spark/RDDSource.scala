@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.spark
 
@@ -30,14 +30,15 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
 	/**
-	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
-	 * @constructor Create a data
-	 * @param pathName relative path for data sources
-	 * @param normalize to normalize the data
-	 * @param reversedOrder specify that the order of the data in the CSV file has to be revered before processing
-	 * @param headerLines number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
-	 * @param config Configuration for the Spark RDDs
+	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br>
+	 * <b>pathName</b> Relative path for data sources<br>
+	 * <b>normalize</b> Flag to specify normalize of data [0, 1]<br>
+	 * <b>reversedOrder</b> Specify that the order of the data in the CSV file has to be revered before processing<br>
+	 * <b>headerLines</b> Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)<br>
+	 * <b>config</b> Configuration for the Spark RDDs
+	 * @constructor Create a RDD associated to a source of data of type DataSource
 	 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
+	 * @see org.scalaml.workflow.data.DataSource
 	 * 
 	 * @author Patrick Nicolas
 	 * @since April 1, 2014

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.akka
 
@@ -30,8 +30,10 @@ import org.apache.log4j.Logger
 		/**
 		 * <p>Worker actor responsible for transforming a time series using the 
 		 * PipeOperator |>. The computation is initiated by the Master that acts 
-		 * as the workflow controller.</p>
-		 * @constructor Create a worker actor. [fct] Data transformation function to be applied to a time series
+		 * as the workflow controller.<br>
+		 * <b>id</v> Identifier or counter for the worker actors.<br>
+		 * <b>fct</b> Data transformation function to be applied to a time series.</p>
+		 * @constructor Create a worker actor. 
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014

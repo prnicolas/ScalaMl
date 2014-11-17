@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.akka
 
@@ -20,7 +20,7 @@ import akka.actor.Actor
 		 * <b>xt</b>: Time series to be processed<br>
 		 * <b>fct</b>: Data transformation of type PipeOperator<br>
 		 * <b>partitioner</b>: Methodology to partition a time series in segments or partitions to be processed by workers.</p>
-		 *  @constructor Create a controller for data transformations: [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
+		 *  @constructor Create a controller for data transformations: 
 		 *  @throws IllegalArgumentException if one of the class parameters are undefined
 		 *  
 		 *  @author Patrick Nicolas
@@ -39,8 +39,11 @@ abstract class Controller(	protected val xt: DblSeries,
 
 		/**
 		 * <p>Class that create partition or sub-time series from a initial
-		 * time series</p>
-		 * @constructor Create a partitioner for a give number of partitions. [numPartitions] Number of partitions
+		 * time series. The number of partitions defines the number of concurrent
+		 * tasks in the data processing of the time series.<br>
+		 * <b>numPartitions</b> Number of partitions used in concurrent processing
+		 * @constructor Create a partitioner for a give number of partitions.
+		 * @throws IllegalArgumentException if the number of partition is out of range
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
@@ -49,6 +52,12 @@ abstract class Controller(	protected val xt: DblSeries,
 class Partitioner(val numPartitions: Int) {
 	require(numPartitions > 1 && numPartitions < 128, s"Partitioner Number of partitions $numPartitions is out of range")
 	
+		/**
+		 * Method to split a given time series into 'numPartitions' for concurrent processing
+		 * @param xt Time series to split for concurrent processing
+		 * @return Sequence of absolute index in the time series associated with each partition.
+		 * @throws IllegalArgumentException if the time series argument is undefined.
+		 */
 	def split(xt: DblSeries): Array[Int] = {
 		require(xt != null && xt.size > 0, "Partitioner.split Cannot partition undefined time series")
 		

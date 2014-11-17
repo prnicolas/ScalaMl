@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.scala
 
@@ -23,7 +23,8 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.</p>
+		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br>
+		 * <b>times</b> Number of executions to be performed during the performance testing
 		 * @constructor Create a performance benchmark. [times] Number of executions to be performed during the performance testing
 		 * @throws IllegalArgumentException if the number of executions is out of range
 		 * 
@@ -32,7 +33,7 @@ import org.apache.log4j.Logger
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 		 */
 abstract class ParBenchmark[U](times: Int) {
-	require(times > 0, s"ParBenchmark number of executions $times is out of range")
+	require(times > 0 && times < 256, s"ParBenchmark number of executions $times is out of range")
 	
 		/**
 		 * <p>Define the map operator for the performance benchmark</p>

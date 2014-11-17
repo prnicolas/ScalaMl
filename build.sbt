@@ -20,5 +20,8 @@ libraryDependencies ++= Seq(
 )
 
 // Options for the Scala compiler should be customize
-scalacOptions ++= Seq("-unchecked", "-optimize")
+scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings")
+
+// Options for Scala test with timing and short stack trace
+testOptions in Test += Tests.Argument("-oDS")
 

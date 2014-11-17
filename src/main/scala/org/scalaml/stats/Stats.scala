@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.stats
 
@@ -14,17 +14,19 @@ import scala.Array.canBuildFrom
 import org.scalaml.core.types.ScalaMl._
 import Stats._
 
-	/**
-	 *  Parameterized class (view bound) that compute and update the statistics (mean,
-	 *  standard deviation) for any set of observations for which the
-	 *  type can be converted to a Double.
-	 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
-	 *  @param values vector or array of elements of type T
-	 *  @throws IllegalArgumentException if values is either undefined or have no elements
-	 *  @author Patrick Nicolas
-	 *  @since Jan 24, 2014
-	 *  @note Scala for Machine Learning
-	 */
+		/**
+		 *  <p>Parameterized class (view bound T <% Double) that compute and update the statistics (mean,
+		 *  standard deviation) for any set of observations for which the
+		 *  type can be converted to a Double.<br>
+		 *  <b>values</b> Vector or array of elements of type T
+		 *  
+		 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
+		 *  @param values vector or array of elements of type T
+		 *  @throws IllegalArgumentException if values is either undefined or have no elements
+		 *  @author Patrick Nicolas
+		 *  @since Jan 24, 2014
+		 *  @note Scala for Machine Learning Chapter 2 Hello World!
+		 */
 class Stats[T <% Double](values: DVector[T]) {
     require( values != null && values.size > 0, "Cannot initialize stats with undefined data")
 	 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.workflow.data
 
@@ -22,8 +22,9 @@ import org.scalaml.util.Display
 
 		/**
 		 * <p>Generic class to load or save files into either HDFS or local files system. The persistency
-		 * of data is defined as a data transformation and therefore inherit from the PipeOperator</p>
-		 * @constructor Create a DataSink transform associated to a specific path name or database name. [sinkName] Name of the storage
+		 * of data is defined as a data transformation and therefore inherit from the PipeOperator<br>
+		 * <b>sinkName</b> Name of the storage.</p>
+		 * @constructor Create a DataSink transform associated to a specific path name or database name. 		 
 		 * @throws IllegalArgumentException if the name of the storage is undefined
 		 *
 		 * @author Patrick Nicolas
@@ -146,7 +147,8 @@ object DataSink {
 		 * @param sinkPath name of the storage.
 		 */
 	@implicitNotFound("Conversion of paramerized type to String for DataSink undefined")
-	def apply[T](sinkPath: String)(implicit f: T => String= (t:T) => t.toString): DataSink[T] = new DataSink[T](sinkPath)
+	def apply[T](sinkPath: String)(implicit f: T => String= (t:T) => t.toString): DataSink[T] 
+		= new DataSink[T](sinkPath)
 }
 
 // ----------------------------------   EOF ----------------------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.nnet
 
@@ -21,18 +21,18 @@ import MLPLayer._
 		/**
 		 * <p>Class that define and manage the components of the MLP model. A MLP model
 		 * is fully initialized with a configuration, the input and the number of output values.<br>
-		 * The components of a MLP model are:<br>
-		 * MLPLayer: Layer or array of neuron or elements<br>
-		 * MLPSynapse: Synapse or connection between neurons of two consecutive layers<br>
-		 * MLPConnection: Container for all the synapses between two layers<br>
+		 * The components of a MLP model are:<ul>
+		 * <li>MLPLayer: Layer or array of neuron or elements</li>
+		 * <li>MLPSynapse: Synapse or connection between neurons of two consecutive layers</li>
+		 * <li>MLPConnection: Container for all the synapses between two layers</li>
+		 * </ul>
 		 * The parameters of the class and the arguments of its methods are not validated as the class 
-		 * has package scope (protected)</p>
-		 * @constructor MLP model created during training. [config] Configuration parameters for the MLP. [input] Input value for the Network, that is the initial value of the input layer. [nOutputs] Size of the output vector
-		 * @param config Configuration parameters for the MLP
-		 * @param input Input value for the Network, that is the initial value of the input layer
-		 * @param nOutputs Size of the output vector
+		 * has package scope (protected)<br>
+		 * <b>config</b> Configuration parameters for the MLP.<br>
+		 * <b>nInputs</b> Input value for the Network, that is the initial value of the input layer.<br>
+		 * <b>nOutputs</b> Size of the output vector.</p>
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
-		 * 
+		 * @constructor MLP model created during training. 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition

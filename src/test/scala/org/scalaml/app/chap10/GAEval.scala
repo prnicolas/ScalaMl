@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.app.chap10
 
@@ -69,7 +69,7 @@ object GAEval extends Eval {
   	    val strategies = createStrategies
 	    val population = Population[Signal]((strategies.size <<4), strategies)
 	        
-	    population.toString(s"Initial population: $population\n")
+	    population.symbolic(s"Initial population: $population\n")
 	   
 
 	    val config = GAConfig(XOVER, MU, MAX_CYCLES, softLimit)
@@ -78,7 +78,7 @@ object GAEval extends Eval {
 	    val best = gaSolver |> population
 	    best.fittest(2)
 	        .getOrElse(ArrayBuffer.empty)
-	        .foreach(ch => Display.show(s"$name Best strategy: ${ch.toString("->")}", logger))
+	        .foreach(ch => Display.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
 	        
 	  	Display.show(s"$name run completed", logger)
      } match {

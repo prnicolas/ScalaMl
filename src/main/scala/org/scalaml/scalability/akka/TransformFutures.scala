@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.scalability.akka
 
@@ -27,8 +27,11 @@ import scala.concurrent.duration.Duration
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.</p>
-		 *  @constructor Create a distributed transformation for time series. [xt] Time series to be processed. [fct] Data transformation. [partitioner] Method to partition time series for concurrent processing.
+		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.<br>
+		 *  <b>xt</b> Time series to be processed.<br> 
+		 *  <b>fct</b> Data transformation<br>
+		 *  <b>partitioner</b> Method to partition time series for concurrent processing.</p>
+		 *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
 		 *  @author Patrick Nicolas

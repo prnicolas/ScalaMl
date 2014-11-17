@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.workflow.data
 
@@ -24,9 +24,14 @@ import org.scalaml.util.Display
 import DataSource._
 
 		/**
-		 * <p>Generic class to load or save files into either HDFS or local files system.</p>
-		 * @constructor Create a data source. [pathName] Relative path for the data files. [normalize] Flag to normalize data within the range [0,1]. [reverseOrder] Flag to re-order/index the data from the last entry to the first entry. [headerLines] Number of header lines in the file. [srcFilter] Source filter applied to the data source stream.
-		 * @throws IllegalArgumentException if the path name is undefined
+		 * <p>Generic class to load or save files into either HDFS or local files system.<br>
+		 * <b>pathName</b> Relative path for the data files.<br>
+		 * <b>normalize</b> Flag to normalize data within the range [0,1].<br>
+		 * <b>reverseOrder</b> Flag to re-order/index the data from the last entry to the first entry.<br> 
+		 * <b>headerLines</b> Number of header lines in the file.
+		 * <b>srcFilter</b> Source filter applied to the data source stream.
+		 * @constructor Create a data source. 
+		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value is out of range
 		 * 
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013

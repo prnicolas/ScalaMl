@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="Patrick Nicolas" module="scalaml_2.11" revision="0.95" status="release" publication="20141114031821">
+	<info organisation="Patrick Nicolas" module="scalaml_2.11" revision="0.95" status="release" publication="20141117020434">
 		<description>
 		scalaml
 		</description>

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.trading
 
@@ -29,8 +29,15 @@ object YahooFinancials extends Enumeration {
 
 	import org.scalaml.workflow.data.DataSource.Fields
 	private val logger = Logger.getLogger("YahooFinancials")
-   
+
+		/** 
+		 *  Convert an field to a double value
+		 */
 	def toDouble(v: Value): Fields => Double = (s: Fields) => s(v.id).toDouble
+	
+		/** 
+		 *  Divide to fields as the ratio of their converted values.
+		 */
 	def divide(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble/s(v2.id).toDouble
 	
 	def ratio(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
@@ -41,44 +48,81 @@ object YahooFinancials extends Enumeration {
 	def minus(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble - s(v2.id).toDouble
 	def times(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble * s(v2.id).toDouble
 
-   
+		/**
+		 * Extract value of the ADJ_CLOSE field
+		 */
 	val adjClose = (fs: Fields) =>fs(ADJ_CLOSE.id).toDouble
+	
+		/**
+		 * Extract value of the VOLUME field
+		 */
 	val volume =  (s: Fields) => s(VOLUME.id).toDouble
+	
+		/**
+		 * Extract value of the VOLATILITY field
+		 */
 	val volatility = minus(HIGH, LOW)
+	
+		/**
+		 * Computes the relative volatility as (HIGH -LOW)/LOW
+		 */
 	val relVolatility = ratio(HIGH, LOW)
+			
+		/**
+		 * Computes the ratio of volatility over volume
+		 */
 	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	
+		/**
+		 * Computes the difference between ADJ_CLOSE and OPEN
+		 */
 	val closeOpen = minus(ADJ_CLOSE, OPEN)
+	
+		/**
+		 * Computes the relative difference between ADJ_CLOSE and OPEN
+		 */
 	val relCloseOpen = ratio(ADJ_CLOSE, OPEN) 
+			
+		/**
+		 * Computes the ratio of relative volatility over volume as (1 - LOW/HIGH)/VOLUME
+		 */
 	val volatilityByVol = ((s: Fields) => ((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
-   
-    
-	def vol: Fields => Double = (s: Fields) => {
-		Try ( (s(HIGH.id).toDouble/s(LOW.id).toDouble -1.0)*s(VOLUME.id).toDouble  ) match {
-			case Success(res) => res
-			case Failure(e) => Display.error("YahooFinancials.vol ", logger, e)
-		}
-	}
 }
 
-	/**
-	 *  Enumerator that describes the fields used in the extraction of price related data from the Google
-	 *  finances historical data. The data is loaded from a CSV file.
-	 *  
-	 *  @author Patrick Nicolas
-	 *  @since Feb 19, 2014
-	 *  @note Scala for Machine Learning Appendix: Financials 101 
-	 */
+		/**
+		 *  Enumerator that describes the fields used in the extraction of price related data from the Google
+		 *  finances historical data. The data is loaded from a CSV file.
+		 *  
+		 *  @author Patrick Nicolas
+		 *  @since Feb 19, 2014
+		 *  @note Scala for Machine Learning Appendix: Financials 101 
+		 */
 object GoogleFinancials extends Enumeration {
 	type GoogleFinancials = Value
 	val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME = Value
   
 	import org.scalaml.workflow.data.DataSource.Fields
+	
+		/**
+		 * Extract stock price as session close
+		 */
 	val close = ((s: Fields) => s(CLOSE.id).toDouble)
+	
+		/**
+		 * Extract stock session volume
+		 */
 	val volume =  ((s: Fields) => s(VOLUME.id).toDouble)
+	
+		/**
+		 * Extract volatility of the stock within a session (HIGH - LOW)
+		 */
 	val volatility = ((s: Fields) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
+	
+		/**
+		 * Extract stock volatility relative to session volume as (HIGH - LOW)/VOLUME
+		 */
 	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
 }
-
 
 
 		/**

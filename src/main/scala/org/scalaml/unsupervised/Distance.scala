@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.unsupervised
 
@@ -16,6 +16,7 @@ package org.scalaml.unsupervised
 		 * unsupervised machine learning techniques.</p>
 		 * @author Patrick Nicolas
 		 * @since February 16, 2014
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised Learning / Measuring similarity
 		 */
 object Distance {
 	
@@ -27,14 +28,16 @@ object Distance {
 		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
-  def manhattan[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
-  	 require(x != null && x.size > 0 && y != null && y.size > 0, "Distance.manhattan Cannot compute the Manhattan distance between undefined data points")
-  	 require( x.size == y.size, s"Distance.manhattan Cannot compute the Manhattan distance between 2 arrays of size ${x.size} and ${y.size}")
-    
-  	 (x, y).zipped.foldLeft(0.0)((s, t) => s + Math.abs(t._1 - t._2))
-  }
+	def manhattan[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
+		require(x != null && x.size > 0 && y != null && y.size > 0, 
+			"Distance.manhattan Cannot compute the Manhattan distance between undefined data points")
+		
+		require( x.size == y.size, 
+			s"Distance.manhattan Cannot compute the Manhattan distance between 2 arrays of size ${x.size} and ${y.size}")
+		(x, y).zipped.foldLeft(0.0)((s, t) => s + Math.abs(t._1 - t._2))
+	}
   
-  		/**
+		/**
 		 * <p>Function that compute the Euclidean distance between two
 		 * array (vectors ) of values.</p>
 		 * @param x first array/vector/data point
@@ -42,15 +45,17 @@ object Distance {
 		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
-  def euclidean[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
-  	 require(x != null && x.size > 0 && y != null && y.size > 0, "Distance.euclidean Cannot compute the Euclidean distance between undefined data points")
-  	 require( x.size == y.size, s"Distance.euclidean Cannot compute the Euclidean distance between 2 arrays of size ${x.size} and ${y.size}")
+	def euclidean[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
+		require(x != null && x.size > 0 && y != null && y.size > 0, 
+			"Distance.euclidean Cannot compute the Euclidean distance between undefined data points")
 
-     Math.sqrt((x, y).zipped.foldLeft(0.0)((s, t) => { val d = t._1 - t._2; s + d*d} )) 
-  }
-     
-  
-    	/**
+		require( x.size == y.size, 
+			s"Distance.euclidean Cannot compute the Euclidean distance between 2 arrays of size ${x.size} and ${y.size}")
+
+		Math.sqrt((x, y).zipped.foldLeft(0.0)((s, t) => { val d = t._1 - t._2; s + d*d} )) 
+	}
+
+		/**
 		 * <p>Function that compute the Cosine distance between two
 		 * array (vectors ) of values.</p>
 		 * @param x first array/vector/data point
@@ -58,15 +63,18 @@ object Distance {
 		 * @throws IllegalArgumentException if the input array are undefined or have different size
 		 * @return distance between two data points
 		 */
-  def cosine[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
-  	 require(x != null && x.size > 0 && y != null && y.size > 0, "Distance.cosine Cannot compute the Cosine distance between undefined data points")
-  	 require( x.size == y.size, "Distance.cosine Cannot compute the Cosine distance between 2 arrays of size ${x.size} and ${y.size}")
+	def cosine[T <% Double, U <% Double](x: Array[T], y: Array[U]): Double = {
+		require(x != null && x.size > 0 && y != null && y.size > 0, 
+			"Distance.cosine Cannot compute the Cosine distance between undefined data points")
+
+		require( x.size == y.size, 
+			"Distance.cosine Cannot compute the Cosine distance between 2 arrays of size ${x.size} and ${y.size}")
  
-	  val zeros = (0.0, 0.0, 0.0)
-	  val norms = (x, y).zipped.foldLeft(zeros)((s, t) => 
-            (s._1 + t._1*t._2, s._2 + t._1*t._1, s._3 + t._2*t._2))
-      norms._1/Math.sqrt(norms._2*norms._3)
-  }
+		val zeros = (0.0, 0.0, 0.0)
+		val norms = (x, y).zipped.foldLeft(zeros)((s, t) => 
+			(s._1 + t._1*t._2, s._2 + t._1*t._1, s._3 + t._2*t._2))
+		norms._1/Math.sqrt(norms._2*norms._3)
+	}
 }
 
 // -------------------------------  EOF ----------------------------------------------------

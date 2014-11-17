@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.nnet
 
@@ -22,18 +22,19 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
-		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)</p>
-		 * @constructor Create a MLP connection between two consecutive neural layer. [config] Configuration for the Multi-layer Perceptron.  [src] Source (or input or upstream) neural layer to this connection. [dst] Destination (or output or downstream) neural layer for this connection. [mlpObjective] Objective of the Neural Network (binary classification, regression...) 
-		 * @param config configuration for the Multi-layer Perceptron
-		 * @param src source or ingress layer for the network
-		 * @param dst destination of egress layer for the network
+		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)<br>
+		 * <b>config</b> Configuration for the Multi-layer Perceptron.<br>
+		 * <b>src</b> Source (or input or upstream) neural layer to this connection<br> 
+		 * <b>dst</b> Destination (or output or downstream) neural layer for this connection.<br>
+		 * <b>mlpObjective</b> Objective of the Neural Network (binary classification, regression...)</p>
+		 * @constructor Create a MLP connection between two consecutive neural layer. 
 		 * @throws IllegalArgumenException if either the configuration or if the source layer or destination layer is undefined.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
 		 */
-protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit mlpObjective: MLP.MLPObjective)  {
+final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit mlpObjective: MLP.MLPObjective)  {
 	import MLPConnection._
 
 	check(config, src, dst)

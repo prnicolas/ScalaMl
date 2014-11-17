@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95d
+ * Version 0.95e
  */
 package org.scalaml.supervised.regression
 
@@ -16,12 +16,24 @@ import org.scalaml.core.design.Model
 
 
 		/**
-		 * <p>Generic class that defines a model for linear, logistic and regularized regression.</p>
-		 * @constructor Create a regression model. [weights] Parameters or weights of the regression. [rss] Residual sum of the squares computed during training.
+		 * <p>Generic class that defines a model for linear, logistic and regularized regression.<br>
+		 * @param weights Weights or parameters of the regression computed during the training of the model (class instantiation)<br>
+		 * @param rss Residual sum of the squares computed during training</p>
+		 * @constructor Create a (linear or logistic) regression model. 
+		 * 
+		 * @author Patrick Nicolas
+		 * @since @since January 09, 2014
+		 * @note Scala for Machine learning Chapter 6 Regression and regularization.
 		 */
 case class RegressionModel(val weights: DblVector, val rss: Double) extends Model {
-   val persists = "models/regression"
-   val size: Int = weights.size
+	val persists = "models/regression"
+
+		/**
+		 * Return the number of weights or regression parameters in this model
+		 * @return Size of the regression weight vector is weights are defined, 0 otherwise
+		 */
+	@inline
+	final val size: Int = if(weights != null) weights.size else 0
 }
 
 // ------------------------  EOF ----------------------------------------------------
