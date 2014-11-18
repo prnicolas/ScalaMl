@@ -56,7 +56,7 @@ object SVCMarginEval extends Eval {
     }
 
 	private def evalMargin(features: DblMatrix, lbl: DblVector, c: Double): Int = {
-		val config = SVMConfig(new CSVCFormulation(c), RbfKernel(GAMMA))
+		val config = SVMConfig(new CSVCFormulation(c), new RbfKernel(GAMMA))
 		val svc = SVM[Double](config, XTSeries[DblVector](features), lbl)
 		
 		svc.margin match {

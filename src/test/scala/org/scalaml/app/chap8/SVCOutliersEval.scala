@@ -47,7 +47,7 @@ object SVCOutliersEval extends Eval {
 	   Try {
 	      val xs = DataSource(path, true, false, 1) |> extractor
  	
-	      val config = SVMConfig(new OneSVCFormulation(NU), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	      val config = SVMConfig(new OneSVCFormulation(NU), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
 	  	  val features = XTSeries.transpose(xs.take(xs.size-1))
 		  val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
      

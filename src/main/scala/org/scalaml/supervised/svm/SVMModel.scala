@@ -17,12 +17,14 @@ import SVMModel._
 
 		/**
 		 * <p>Defined a model for support vector machine. The model is composed of the svm_model
-		 * parameters of LIBSVM library and the accuracy computed during training.<br>
+		 * parameters of LIBSVM library and the accuracy computed during training.<br><br>
 		 * <b>svmmodel</b>	LIBSVM model<br>
-		 * <b>accuracy</b>	Accuracy of the training process.
-		 *  @author Patrick Nicolas
-		 *  @since April 19, 2014
-		 *  @note Scala for Machine Learning
+		 * <b>accuracy</b>	Accuracy of the training process
+		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
+		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
+		 * @author Patrick Nicolas
+		 * @since April 19, 2014
+		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines
 		 */
 final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Model {
 	require(svmmodel != null, "SVMModel LIBSVM model smmodel is undefined")

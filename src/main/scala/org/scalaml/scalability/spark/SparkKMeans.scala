@@ -27,7 +27,7 @@ import org.scalaml.core.design.PipeOperator
 			/**
 			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
 			 * training during instantiation of objects in order to reduce their life-cycle.<br>
-			 * The algorithm implements the default data transformation interface, PipeOperator.<br>
+			 * The algorithm implements the default data transformation interface, PipeOperator.<br><br>
 			 * <b>kMeansConfig</b> Configuration of the Spark KMeans<br>
 			 * <b>rddConfig</b> Configuration parameters for the Spark RDD<br>
 			 * <b>xt</b> Time series used for the training of the Spark KMeans<br>

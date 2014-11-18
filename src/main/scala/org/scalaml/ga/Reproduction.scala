@@ -20,14 +20,14 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Define the replication cycle in the execution of the genetic algorithm optimizer.
 		 *  A replication cycle consists of a selection of chromosomes according to their 
-		 *  fitness/unfitness values, cross-over of pair of chromosomes and mutation<br>
+		 *  fitness/unfitness values, cross-over of pair of chromosomes and mutation<br><br>
 		 *  <b>score</b>   Scoring function of a chromosome.</p>
 		 *  @constructor Create a reproduction cycle for the genetic algorithm. 
 		 *  @throws IllegalArgumentException if the chromosome scoring function is undefined
 		 *  		 
 		 *  @author Patrick Nicolas
 		 *  @since August 28, 2013
-		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
+		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 
 final class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   

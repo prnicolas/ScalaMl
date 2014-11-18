@@ -30,7 +30,7 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
 	/**
-	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br>
+	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br><br>
 	 * <b>pathName</b> Relative path for data sources<br>
 	 * <b>normalize</b> Flag to specify normalize of data [0, 1]<br>
 	 * <b>reversedOrder</b> Specify that the order of the data in the CSV file has to be revered before processing<br>

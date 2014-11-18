@@ -15,15 +15,18 @@ import org.scalaml.core.types.ScalaMl._
 		/**
 		* <p>State in the Q-learning. A state is uniquely defined by its identifier and the list of actions that transition
 		* from this state to another state. The list of actions is empty if this state is a goal. A state may have properties of
-		* type T that is independent from the state transition.</p>
-		* @constructor Create a state for Q-learning. [id] Identifier for the state. [actions] List of actions for that transition from this state to other states. Each action transition the model to single state. [prop] Optional property of this state.
-		* @throws IllegalArgument is list of actions is undefined.
+		* type T that is independent from the state transition.<br><br>
+		* <b>id</b> Identifier for the state.<br>
+		* <b>actions</b> List of actions for that transition from this state to other states. Each action transition the model to single state.<br>
+		* <b>prop</b> Optional property of this state.
+		* @constructor Create a state for Q-learning. 
+		* @throws IllegalArgument is list of actions is undefined or the id negative
 		* 
 		* @author Patrick Nicolas
 		* @since January 17, 2014
 		* @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		*/
-class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, property: T) {
+protected class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, property: T) {
 	import QLState._
 	check(id, actions)
 	
@@ -45,7 +48,7 @@ class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, prope
 
 
 		/**
-		 * Companion object to the State class used for defining constructors
+		 * Companion object to the State class used for defining constructor and validating its parameters
 		 */
 object QLState {
 	def apply[T](id: Int, actions: List[QLAction[T]], property: T): QLState[T] = new QLState(id, actions, property)

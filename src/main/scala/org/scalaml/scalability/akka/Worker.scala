@@ -30,7 +30,7 @@ import org.apache.log4j.Logger
 		/**
 		 * <p>Worker actor responsible for transforming a time series using the 
 		 * PipeOperator |>. The computation is initiated by the Master that acts 
-		 * as the workflow controller.<br>
+		 * as the workflow controller.<br><br>
 		 * <b>id</v> Identifier or counter for the worker actors.<br>
 		 * <b>fct</b> Data transformation function to be applied to a time series.</p>
 		 * @constructor Create a worker actor. 

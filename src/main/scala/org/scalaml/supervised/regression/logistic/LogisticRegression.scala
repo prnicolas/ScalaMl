@@ -34,7 +34,7 @@ import scala.language.implicitConversions
 
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
-		 * support regularization or penalty terms.<br>
+		 * support regularization or penalty terms.<br><br>
 		 * <b>xt</b> Input time series observations.<br>
 		 * <b>labels</b> Labeled class data used during training of the classifier<br>
 		 * <b>optimizer</b> Optimization method used to minimmize the loss function during training</p>* 

@@ -28,7 +28,7 @@ import scala.collection.mutable.ListBuffer
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.<br>
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.<br><br>
 		 *  <b>xt</b> Time series to be processed.<br> 
 		 *  <b>fct</b> Data transformation<br>
 		 *  <b>partitioner</b> Method to partition time series for concurrent processing.</p>

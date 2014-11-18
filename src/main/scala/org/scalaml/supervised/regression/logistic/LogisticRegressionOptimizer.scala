@@ -20,7 +20,7 @@ import LogisticRegressionOptimizer._
 	/**
 	 * <p>Class that implements the minimization of the loss function for the logistic
 	 * regression classifier. It is implemented as the least squares optimization of the
-	 * Least Square problem defined in Apache Commons Math.<br>
+	 * Least Square problem defined in Apache Commons Math.<br><br>
 	 * <b>maxIters</b> Maximum number of iterations allowed during training for the minimization of the loss function.
 	 * <b>maxEvals</b> Maximum number of runs or evaluations allowed during training.
 	 * <b>eps</b> Maximum error allowed during training for the minimization of the loss function.

@@ -44,7 +44,7 @@ object SVREval extends Eval {
 	  	  	                  .map( x => (x._1.toDouble, x._2.toDouble))
 	      val linRg = SingleLinearRegression(priceIdx)  	  	
 	  	  	 
-	  	  val config = SVMConfig(new SVRFormulation(C, EPSILON), RbfKernel(GAMMA))
+	  	  val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
 	  	  val labels = price.toArray
           val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
           val svr = SVM[Double](config, features, labels)

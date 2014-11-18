@@ -23,7 +23,7 @@ import iitb.Segment.{DataCruncher, LabelMap}
 		 * <p>Class that specifies the regular expressions used to delineates labels, observations
 		 * and sequences in the training files '*.tagged'.
 		 * example in training file<br>
-		 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
+		 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br><br>
 		 * <b>obsDelim</b>  Delimiters for observation as a sequence of N-grams or words<br>
 		 * <b>labelsDelim</b>   Delimiter between observations string and tag/label<br>
 		 * <b>trainingDelim</b>  Delimiter between training sequences.</p>
@@ -43,7 +43,7 @@ class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainin
 		/**
 		 * <p>Generic class that implements the iterator for sequences (training or validation). The class needs
 		 * to implement the methods of the iitb.CRF.DataIter interface. The class delegates the generation of 
-		 * the training data to the iitb.Segment.DataCruncher class<br>
+		 * the training data to the iitb.Segment.DataCruncher class<br><br>
 		 * <b>nLabels</b> Number of labels used in the CRF model<br>
 		 * <b>input</b> Identifier for the training or tagged files<br>
 		 * <b>delim</b> Delimiter instance used to break down the training data as sequence, observations and labels</p>

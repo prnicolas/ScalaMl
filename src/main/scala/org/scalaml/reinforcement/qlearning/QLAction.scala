@@ -11,16 +11,17 @@ package org.scalaml.reinforcement.qlearning
 
 		/**
 		 * <p>Class that define action between on source state and multiple
-		 * destination states.</p>
-		 * @param from Source state
-		 * @param to list of destination states
-		 * @throws IllegalArgumentException if the source or destination states are undefined.
+		 * destination states.<br><br>
+		 * <b>from</b> Source state<br>
+		 * <b>to</b> list of destination states</p>
+		 * @constructor Create an state transition action for the Q-learning algorithm.
+		 * @throws IllegalArgumentException if the source or destination states ir undefined.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
-class QLAction[T](val from: Int, val to: Int) {
+final protected class QLAction[T](val from: Int, val to: Int) {
 	require(from >= 0, s"QLAction index $from of source state is undefined")
 	require(to >= 0, s"QLAction index $to of source state is undefined")
 

@@ -20,7 +20,7 @@ import HMMConfig._
 
 	/**
 	 * <p>Class that encapsulates the execution parameters for the three
-	 * canonical forms of the HMM.<br>
+	 * canonical forms of the HMM.<br><br>
 	 * <b>lambda</b>  Lambda model for this HMM<br>
 	 * <b>maxIters</b>  Maximum number of iterations used in training (Baum-Welch)</p>
 	 * @constructor Create a new execution state for the HMM for a predefined Lambda model

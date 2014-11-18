@@ -23,13 +23,15 @@ import org.scalaml.core.design.Model
 
 
 		/**
-		 * <p>Define a model for the Q-learning algorithm as the tuple <optimum policy, training epoch coverage>.</p>
-		 * @constructor Model created during training of Q-learning. [bestPolicy] Best policy computed or estimated during training. [coverage] Ratio of training trial or epochs that reach a predefined goal state
+		 * <p>Define a model for the Q-learning algorithm as the tuple <optimum policy, training epoch coverage>.<br><br>
+		 * <b>bestPolicy</b> Best policy computed or estimated during training.<br>
+		 * <b>coverage</b> Ratio of training trial or epochs that reach a predefined goal state.</p>
+		 * @constructor Model created during training of Q-learning. 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
-class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  extends Model {
+final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  extends Model {
 	val persists = "models/qlearning"
 	override def toString: String = s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }

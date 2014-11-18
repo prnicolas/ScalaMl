@@ -22,68 +22,70 @@ import org.scalaml.core.types.ScalaMl.XYTSeries
 		 * The prior consists of a label (index), the mean of the prior of each dimension of the model,
 		 * the standard deviation of the prior of each dimension of the model and the class likeliHood.<br>
 		 * The Naive Bayes assume that the dimension of the model are independent, making the log of 
-		 * the prior additive.</p>
-		 * @constructor Create a likelihood for a specific class. [label] Name or label of the class or prior for which the likelihood is computed. [muSigma]  Array of tuples (mean, standard deviation) of the prior observations for the model. [prior] Probability of occurrence for the class specified by the label. 
-		 * @param label for a specific class or prior
-		 * @param muSigma  array of (mean, standard deviation) of the prior observations for the model
-		 * @param prior probability of occurrence for the class specified by the label.
+		 * the prior additive.<br><br>
+		 * <b>label</b> Name or label of the class or prior for which the likelihood is computed.<br>
+		 * <b>muSigma</b> Array of tuples (mean, standard deviation) of the prior observations for the model.<br>
+		 * <b>prior</b> Probability of occurrence for the class specified by the label.</p> 
+		 * @constructor Create a likelihood for a specific class. 
 		 * @throws IllegalArgumentException if the array of mean and standard deviation of the likelihood is undefined 
 		 * of if the class likelihood is out of range ]0,1]
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 11, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 		 */
 protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, prior: Double) {
-  import Stats._
+	import Stats._, Likelihood._
   
-  require(muSigma != null && muSigma.size > 0, "Likelihood Cannot create a likelihood for undefined historical mean and standard deviation")
-  require(prior > 0.0  && prior <= 1.0, s"Likelihood Prior for the NB prior $prior is out of range")
+	check(muSigma, prior)
   
-  		/**
-  		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
-  		 * a probability density distribution.</p>
-  		 * @param obs parameterized observation 
-  		 * @param density probability density function (default Gauss)
-  		 * @throws IllegalArgumentException if the density is undefined or the observations are undefined
-  		 * @return log of the conditional probability p(C|x)
-  		 */
-  final def score(obs: Array[T], density: Density): Double = {
-  	 require(obs != null && obs.size > 0, "Likelihood.score Cannot compute conditional prob with NB for undefined observations")
-  	 require(density != null, "Likelihood.score Cannot compute conditional prob with NB for undefined prob density")
+		/**
+		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
+		 * a probability density distribution.</p>
+		 * @param obs parameterized observation 
+		 * @param density probability density function (default Gauss)
+		 * @throws IllegalArgumentException if the density is undefined or the observations are undefined
+		 * @return log of the conditional probability p(C|x)
+		 */
+	final def score(obs: Array[T], density: Density): Double = {
+		require(obs != null && obs.size > 0, "Likelihood.score Cannot compute conditional prob with NB for undefined observations")
+		require(density != null, "Likelihood.score Cannot compute conditional prob with NB for undefined prob density")
 
-	 (obs, muSigma).zipped
-	               .foldLeft(0.0)((post, xms) => {
-	    val probability = density(xms._2._1, xms._2._2, xms._1)
-	    post + Math.log(if(probability< MINLOGARG) MINLOGVALUE else probability)
-	 }) + Math.log(prior)
-  }
+		(obs, muSigma).zipped.foldLeft(0.0)((post, xms) => {
+			val probability = density(xms._2._1, xms._2._2, xms._1)
+			post + Math.log(if(probability< MINLOGARG) MINLOGVALUE else probability)
+		}) + Math.log(prior)
+	}
 
-  override def toString: String = {
-  	val colWidth = 14
-    val fmt = new DecimalFormat("#.###")
+	override def toString: String = {
+		val colWidth = 14
+		val fmt = new DecimalFormat("#.###")
     
-    val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) 
-                  => b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
-     s"${muSigmaStr}   Class likelihood: $prior"
-  }
+		val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => 
+			b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
+		s"${muSigmaStr}   Class likelihood: $prior"
+	}
 }
 
 
-	/**
-	 * <p>Companion object for the Naive Bayes Likelihood class. The singleton
-	 * is used to define the constructor apply for the class.</p>
-	 * @author Patrick Nicolas
-	 * @since March 11, 2014
-	   @note Scala for Machine Learning
-	 */
-
+		/**
+		 * <p>Companion object for the Naive Bayes Likelihood class. The singleton
+		 * is used to define the constructor apply for the class.</p>
+		 * @author Patrick Nicolas
+		 * @since March 11, 2014
+		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
+		 */
 object Likelihood {
-   val MINLOGARG = 1e-32
-   val MINLOGVALUE = -MINLOGARG
+	val MINLOGARG = 1e-32
+	val MINLOGVALUE = -MINLOGARG
    
-   def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] 
-    = new Likelihood[T](label, muSigma, prior)
+	def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] 
+		= new Likelihood[T](label, muSigma, prior)
+    
+    private def check(muSigma: XYTSeries, prior: Double): Unit =  {
+		require(muSigma != null && muSigma.size > 0, "Likelihood.check Cannot create a likelihood for undefined historical mean and standard deviation")
+		require(prior > 0.0  && prior <= 1.0, s"Likelihood.check Prior for the NB prior $prior is out of range")
+	}
 }
 
 

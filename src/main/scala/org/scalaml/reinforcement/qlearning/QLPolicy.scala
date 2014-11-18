@@ -26,7 +26,7 @@ object QLDataVar extends Enumeration {
 
 
 		/**
-		 * <p>Class that encapsulate the attributes of the policy in Q-learning algorithm
+		 * <p>Class that encapsulate the attributes of the policy in Q-learning algorithm</p>
 		 * @author Patrick Nicolas
 		 * @since January 25, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
@@ -60,8 +60,10 @@ final protected class QLData {
 
 
 		/**
-		 * <p>Class that defines the policy for a given set of input and a number of states.</p>
-		 * @constructor Create a policy as a model for Q-learning. [numStates] Number of states for this policy. [input] Input to initialize the policy.
+		 * <p>Class that defines the policy for a given set of input and a number of states.<br><br>
+		 * <b>numStates</b> Number of states for this policy.<br>
+		 * <b>input</b> Input to initialize the policy.</p>
+		 * @constructor Create a policy as a model for Q-learning. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
 		 * @see org.scalaml.design.Model
 		 * 
@@ -73,7 +75,9 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 	import QLDataVar._,  QLPolicy._
 	check(numStates, input)
 	
-     
+		/**
+		 * Initialization of the policy using the input probabilities and rewards
+		 */
 	val qlData = {
 		val data = Array.tabulate(numStates)(v => Array.fill(numStates)(new QLData))
 		input.foreach(in => {  
@@ -83,15 +87,65 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		data
 	}
 
+		/**
+		 * <p>Set the Q value for an action from state from to state to</p>
+		 * @param from Source state for the action for which the value is updated
+		 * @param to destination state for the action for which the value is updated
+		 * @throws IllegalArgumentException if the source or destination states are out of range
+		 */
+	def setQ(from: Int, to: Int, value: Double): Unit = {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.setQ source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.setQ source state $to is out of range")
+		qlData(from)(to).value = value
+	}
    
-	def setQ(from: Int, to: Int, value: Double): Unit = qlData(from)(to).value = value
+		/**
+		 * Retrieve the Q-value for an state transition action from 'state' from to state 'to'
+		 * @param from Source state for the action
+		 * @param to destination state for the action
+		 * @throws IllegalArgumentException if the source or destination states are out of range
+		 */
+	final def Q(from: Int, to: Int): Double = {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.Q source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.Q source state $to is out of range")
+		qlData(from)(to).value
+	}
+	
+		/**
+		 * Retrieve the estimate for an state transition action from 'state' from to state 'to'
+		 * @param from Source state for the action
+		 * @param to destination state for the action
+		 * @throws IllegalArgumentException if the source or destination states are out of range
+		 */
+	final def EQ(from: Int, to: Int): Double = {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.EQ source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.EQ source state $to is out of range")
+		qlData(from)(to).estimate
+	}
+ 
+		/**
+		 * Retrieve the reward for an state transition action from 'state' from to state 'to'
+		 * @param from Source state for the action
+		 * @param to destination state for the action
+		 * @throws IllegalArgumentException if the source or destination states are out of range
+		 */
+	final def R(from: Int, to: Int): Double = {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.R source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.R source state $to is out of range")
+		qlData(from)(to).reward
+	}
    
-	final def Q(from: Int, to: Int): Double = qlData(from)(to).value
-	final def EQ(from: Int, to: Int): Double = qlData(from)(to).estimate
-   
-	final def R(from: Int, to: Int): Double = qlData(from)(to).reward
-   
-	final def P(from: Int, to: Int): Double = qlData(from)(to).probability
+		/**
+		 * Retrieve the probability for an state transition action from 'state' from to state 'to'
+		 * @param from Source state for the action
+		 * @param to destination state for the action
+		 * @throws IllegalArgumentException if the source or destination states are out of range
+		 */
+	final def P(from: Int, to: Int): Double = {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.P source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.P source state $to is out of range")
+		qlData(from)(to).probability
+	}
    
 	override def toString: String = s"\nQ-Policy: Reward: ${toString(REWARD)}"
 
@@ -111,6 +165,10 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		/**
 		 * Companion object to the QLPolicy class of Q-learning algorithm. The purpose of this
 		 * singleton is to validate the class parameters and define its constructor
+		 * 
+		 * @author Patrick Nicolas
+		 * @since January 25, 2014
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 object QLPolicy {
 	final val MAX_NUM_STATES = 2048

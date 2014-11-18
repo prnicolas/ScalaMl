@@ -18,7 +18,7 @@ import HMMConfig._
 		/**
 		 * <p>Implementation of the Beta or backward pass of the 
 		 * HMM algorithm to compute the probability of a sequence of observations. The beta
-		 * matrix is computed as part of the instantiation of the class.<br>
+		 * matrix is computed as part of the instantiation of the class.<br><br>
 		 * <b>lambda</b>	Lambda (pi, A, B) model for the HMM<br>
 		 * <b>obs</b>		Array of observations as integer (categorical data)</p>
 		 * @constructor Create a Beta (or backward) pass for the 1st canonical form of HMM

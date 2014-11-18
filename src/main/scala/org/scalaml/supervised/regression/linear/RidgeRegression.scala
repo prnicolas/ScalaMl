@@ -28,7 +28,7 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Definition of the Ridge regression (linear least squares regression
 		 * with a L2 penalty form). The training is executed during the instantiation
-		 * of the class.<br>
+		 * of the class.<br><br>
 		 * <b>xt</b> Time series of features observations<br>
 		 * <b>y</b> target or labeled output values<br>
 		 * <b>lambda</b> L2 penalty factor.</p>

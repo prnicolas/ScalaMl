@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.95e
+ * Version 0.95f
  */
 package org.scalaml.core
 
@@ -24,15 +24,17 @@ import scala.language.implicitConversions
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
 		 * this generic type to avoid multiple conversion between numerous types.
 		 * The class is parameterized so it can take primitive types to create vector for single
-		 * variable time series or arrays/list to create matrix for multiple variables time series. </p>
-		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: [label] optional name for the time series, [arr] array of values of parameterized types
-		 * @throws IllegalArgumentException If the array of values, [arr] is undefined
+		 * variable time series or arrays/list to create matrix for multiple variables time series.<br><br>
+		 * <b>label</b optional name for the time series<br>
+		 * <b>arr</b> array of values of parameterized types.</p>		 * 
+		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: 
+		 * @throws IllegalArgumentException If the array of values, arr is undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data preprocessing/Time series
 		 */
-class XTSeries[T](val label: String, val arr: Array[T]) { 
+class XTSeries[T](val label: String, arr: Array[T]) { 
 	require(arr != null && arr.size > 0, "XTSeries Cannot create a times series from undefined values")
   
 	def toArray: Array[T] = arr
@@ -129,14 +131,24 @@ class XTSeries[T](val label: String, val arr: Array[T]) {
 
 		/**
 		 * <p>Class that defines a time series for multi-dimensional variables. The class is created
-		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.</p>
-		 * @param _label label for the multi-dimensional time series
-		 * @param _arr Array of vectors
+		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.<br><br>
+		 * <b>label</b> label for the multi-dimensional time series<br>
+		 * <b>arr</b> Array of vectors for time series.</p>
+		 * @constructor Create a multidimensional time series
+		 * @throws IllegalArgumentException If the array of values, arr is undefined
+		 * @author Patrick Nicolas
+		 * @since January, 22, 2014
+		 * @note Scala for Machine Learning Chapter
 		 * 
 		 */
 @implicitNotFound("Conversion from type T to Double undefined")
-class VTSeries[T](val _label: String, val _arr: Array[DVector[T]])(implicit val f: T => Double) extends XTSeries[Array[T]](_label, _arr) {
+final class VTSeries[T](label: String, arr: Array[DVector[T]])(implicit f: T => Double) 
+		extends XTSeries[Array[T]](label, arr) {
    
+		/**
+		 * <p>Normalize this multi-dimensional tiem series
+		 * @return Normalized values as an array or vectors (DblMatrix)
+		 */
 	def normalize(implicit ordering: Ordering[T]): DblMatrix = {
 		val minMax  = toArray.map(x => (x.min, x.max))
 		toArray.zip(minMax).map(z => { 

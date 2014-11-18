@@ -22,7 +22,7 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
-		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)<br>
+		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)<br><br>
 		 * <b>config</b> Configuration for the Multi-layer Perceptron.<br>
 		 * <b>src</b> Source (or input or upstream) neural layer to this connection<br> 
 		 * <b>dst</b> Destination (or output or downstream) neural layer for this connection.<br>

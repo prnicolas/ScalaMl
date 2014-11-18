@@ -25,7 +25,7 @@ import org.scalaml.core.design.PipeOperator
 
 
 		/**
-		 * <p>Define the configuration of the Spark KMeans wrapper.<br>
+		 * <p>Define the configuration of the Spark KMeans wrapper.<br><br>
 		 * <b>K</b> Number of clusters used in Spark KMeans<br>
 		 * <b>numIters</b> Maximum number of iterations allowed for Spark KMeans<br>
 		 * <b>numRuns</b> Number of runs to be executed by Spark KMeans.</p>

@@ -20,7 +20,7 @@ import iitb.Segment.{DataCruncher, LabelMap}
 
 
 		/**
-		 * <p>Class that defines a Recommendation as a data sequence.<br>
+		 * <p>Class that defines a Recommendation as a data sequence.<br><br>
 		 * <b>nLabels</b>  Number of labels (or tags) used in the training of CRF.<br>
 		 * <b>entry</b>  Recommendation or observation as a sequence of words.<br>
 		 * <b>delim</b>  Delimiter of segments in the sequence

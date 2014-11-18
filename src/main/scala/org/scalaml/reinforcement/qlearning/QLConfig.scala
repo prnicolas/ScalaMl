@@ -22,18 +22,24 @@ import scala.collection.mutable.ArrayBuffer
 
 
 		/**
-		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.</p>
-		 * @constructor Create a configuration for the Q-learning algorithm. [alpha] Learning rate for the Q-Learning algorithm. [gamma] Discount rate for the Q-Learning algorithm. [episodeLength] Number of iteration per episode. [numEpisodes] Number of episodes used during training. [minCoverage] Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached. [neighbors] Function that list the available states neighbors to the current state during execution. 
+		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.<br><br>
+		 * <b>alpha</b> Learning rate for the Q-Learning algorithm.<br>
+		 * <b>gamma</b> Discount rate for the Q-Learning algorithm.<br>
+		 * <b>episodeLength</b> Number of iteration per episode.<br>
+		 * <b>numEpisodes</b> Number of episodes used during training.<br>
+		 * <b>minCoverage</b> Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.<br>
+		 * <b>neighbors</b> Function that list the available states neighbors to the current state during execution. </p>
+		 * @constructor Create a configuration for the Q-learning algorithm. 
 		 * @throws IllegalArgumentException if alpha, gamma or maximum iteration are out of range
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 19, 2014
-		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Q-learning
 		 */
 final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: Int, val numEpisodes: Int, val minCoverage: Double, val neighbors: (Int, Int) =>List[Int]) extends Config {
-    import QLConfig._
+	import QLConfig._
     
-    check(alpha, gamma, episodeLength, numEpisodes, minCoverage, neighbors)
+	check(alpha, gamma, episodeLength, numEpisodes, minCoverage, neighbors)
 	val persists = "config/qlearning"
 }
 
@@ -41,6 +47,9 @@ final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: In
 		/**
 		 * Companion object for the configuration of the Q-learning algorithm. This singleton defines
 		 * the constructor for the QLConfig class and validates its parameters.
+		 * @author Patrick Nicolas
+		 * @since January 19, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 object QLConfig {
   	   
@@ -62,7 +71,6 @@ object QLConfig {
 		require(neighbors != null, "QLConfig.check  Function to select neighboring states is undefined")
 	}
 }
-
 
 
 // ----------------------------  EOF --------------------------------------------------------------

@@ -23,7 +23,7 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br>
+		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br><br>
 		 * <b>times</b> Number of executions to be performed during the performance testing
 		 * @constructor Create a performance benchmark. [times] Number of executions to be performed during the performance testing
 		 * @throws IllegalArgumentException if the number of executions is out of range

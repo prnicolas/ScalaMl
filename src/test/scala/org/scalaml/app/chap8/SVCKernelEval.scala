@@ -78,10 +78,10 @@ object SVCKernelEval extends Eval {
 				                   .map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
 		val labels = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
 	       
-        val results = evalKernel(trainingSet, testSet, labels, RbfKernel(GAMMA)) ::
-                      evalKernel(trainingSet, testSet, labels, SigmoidKernel(GAMMA)) ::
+        val results = evalKernel(trainingSet, testSet, labels, new RbfKernel(GAMMA)) ::
+                      evalKernel(trainingSet, testSet, labels, new SigmoidKernel(GAMMA)) ::
                       evalKernel(trainingSet, testSet, labels, LinearKernel) ::
-                      evalKernel(trainingSet, testSet, labels, PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
+                      evalKernel(trainingSet, testSet, labels, new PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
                       List[Double]()
         Display.show(s"SVCKernelEval.run:  $legend completed", logger)
 	}

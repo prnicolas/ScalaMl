@@ -54,9 +54,7 @@ import Gene._
 		 * time series with continuous values (analog of type Double). Continuous values are digitized
 		 * over an interval through a linear segmentation.<br>
 		 * A continuous time series with minimum value, m and maximum value M is discretized over an interval
-		 * [a, b] as x -> (x - m)*(b - a)/(M- n) + a.<br>
-		 * <b>toInt</b>    Function conversion from a Double value to a Int<br>
-		 * <b>toDouble</b>    Function conversion from an Int to a Double</p>
+		 * [a, b] as x -> (x - m)*(b - a)/(M- n) + a.</p>
 		 * @constructor Discretization class that convert a Double to Int and an Int to a Double. [toInt] Function which discretizes a continuous signal or pseudo-continuous data set. [toDouble] Function that converts a discretized time series back to its original values
 		 * @param toInt Function which discretizes a continuous signal or pseudo-continuous data set
 		 * @param toDouble onvert a discretized time series back to its original values
@@ -78,13 +76,13 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * of bits with in this case, two bits allocated to the operator and 
 		 * 32 bits allocated to the value. The floating point value(min, max) is
 		 * digitized as integer [0, 2^32-1]. The discretization function is provided
-		 * implicitly. The bits are implemented by the Java BitSet class.<br>
+		 * implicitly. The bits are implemented by the Java BitSet class.<br><br>
 		 * <b>id</b>   Identifier for the Gene<br>
 		 * <b>target</b>   Target or threshold value.It is a floating point value to be digitized as integer<br>
 		 * <b>op</b> Symbolic operator associated to this gene<br>
 		 * <b>discr</b>  implicit discretization function from Floating point value to integer.</p>
 		 * @constructor Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer
-		 * @throws IllegalArgumentException if operator is undefined
+		 * @throws IllegalArgumentException if operator or id is undefined
 		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) is not provided
 		 * 
 		 * @author Patrick Nicolas
@@ -94,7 +92,7 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 @implicitNotFound("Gene encoding requires double to integer conversion") 
 class Gene(val id: String, val target: Double, val op: Operator)(implicit discr: Discretization) {
 	require(op != null, "Cannot create a gene/predicate with undefined operator")
-	require( id != null && id.length > 0, "Cannot create a signal with undefined id")
+	require(id != null && id.length > 0, "Cannot create a signal with undefined id")
    
 		/**
 		 * Bits encoding of the tuple (value, operator) into bits. The encoding

@@ -19,7 +19,7 @@ import HMMConfig._
 		 * <p>Class that implements the Viterbi algorithm to extract the best sequence
 		 * of hidden states in a HMM given a lambda model and a sequence of integer
 		 * observations. The maximum value of delta is computed recursively during 
-		 * instantiation. <br>
+		 * instantiation.<br><br>
 		 * The recursion throws a Arithmetic or Runtime exception that is to be caught by the client code<br>
 		 * <b>lambda</b> Lambda (pi, A, B) model for the HMM<br>
 		 * <b>obs</b> Array of observations as integer (categorical data)</p>

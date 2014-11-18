@@ -17,7 +17,7 @@ import org.scalaml.core.XTSeries
 
 
 		/**
-		 * <p>Generic message exchanged between a master and worker actors.<br>
+		 * <p>Generic message exchanged between a master and worker actors.<br><br>
 		 * <b>id</b> Unique identifier for this message.</p>
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014

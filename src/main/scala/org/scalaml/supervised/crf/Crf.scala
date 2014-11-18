@@ -29,7 +29,7 @@ import org.scalaml.util.Display
 
 
 		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br>
+		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br><br>
 		 * <b>weights</b>	Weights (or lambda parameters) for this CRF model.</p>
 		 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
 		 * @throws IllegalArgumentException if weights is not properly defined

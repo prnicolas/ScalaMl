@@ -22,7 +22,7 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class<br>
+		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class<br><br>
 		 * <b>xt</b>  Time series of (x,y) pairs of values<br>
 		 * <b>g</b> Implicit conversionm from a double to the type T
 		 * @constructor Create a single linear regression model of type bounded to a Double as a view. 

@@ -20,7 +20,7 @@ import HMMConfig._
 		/**
 		 * <p>Class that defines the Lambda model (pi, A, B) for the HMM. The model is initialized with
 		 * the state transition matrix, emission matrix and initial probabilities for the evaluation and 
-		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the training form.<br>
+		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the training form.<br><br>
 		 * <b>A</b>		State transition matrix<br>
 		 * <b>B</b>		Observations	 or emission matrix<br>
 		 * <b>pi</b>	Initial state probabilities</p>

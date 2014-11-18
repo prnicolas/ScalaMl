@@ -35,7 +35,7 @@ object HMMForm extends Enumeration {
 
 
 		/**
-		 * <p>Generic model for dynamic programming algorithms used in HMM.<br>
+		 * <p>Generic model for dynamic programming algorithms used in HMM.<br><br>
 		 * <b>lambda</b> Lambda model for HMM<br>
 		 * <b>obs</b>  Observations for the HMM</p>
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.

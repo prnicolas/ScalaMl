@@ -24,9 +24,11 @@ import scala.util.Random
 		/**
 		 * <p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
 		 * The search space can be provided by the end user with a list of states and actions or
-		 * automatically created by providing the number of states.</p>
-		 * @constructor Create a state (or search) space. [states] States comprising the search space. [goalIds] List of ids of states that are goals.
-		 * @throws IllegalArgumentException if states or actions list are not well defined
+		 * automatically created by providing the number of states.<br><br>
+		 * <b>states</b> States comprising the search space.<br>
+		 * <b>goalIds</b> List of ids of states that are goals.</p>
+		 * @constructor Create a state (or search) space. 
+		 * @throws IllegalArgumentException if either states or the goal(s) is undefined
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 17, 2014
@@ -40,18 +42,51 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 	private[this] val statesMap: Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
 	private[this] val goalStates = new HashSet[Int]() ++ goalIds
 
+		/**
+		 * <p>Compute the maximum value given a state and policy</p>
+		 * @param state State for which the maximum Q-value is computed
+		 * @param policy Policy for which the maximum Q-value is computed
+		 * @return Maximum Q-value
+		 * @throws IllegalArgumentException if either the state  or the policy is undefined
+		 */
 	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {
+		require(state != null, "QLSpace.maxQ State is undefined")
+		require(policy != null, "QLSpace.maxQ State is undefined")
+		
 		val best = states.filter( _ != state)
 						.maxBy(st => policy.EQ(state.id, st.id))
 		policy.EQ(state.id, best.id)
 	}
     
+		/**
+		 * <p>Select a state randomly from the existing states</p>
+		 * @param r Random generator
+		 * @return randomly selected state
+		 */
 	def init(r: Random): QLState[T] = states(r.nextInt(states.size-1))
    
-	final def nextStates(st: QLState[T]): List[QLState[T]] = st.actions.map(ac => statesMap.get(ac.to).get )
+		/**
+		 * <p>Retrieve the list of the target states for action triggered by this state</p>
+		 * @param st state for which the target states are retrieved
+		 * @return  List of target states (target to the action triggered from this state)
+		 * @throws IllegalArgumenException if either the state or its actions is undefined
+		 */
+	final def nextStates(st: QLState[T]): List[QLState[T]] = {
+		require(st != null, "QLSpace.nextStates state is undefined")
+		require(st.actions != null, "QLSpace.nextStates actions associated to this state are undefiend")
+		st.actions.map(ac => statesMap.get(ac.to).get )
+	}
 
-	@inline
-	final def isGoal(state: QLState[T]): Boolean = goalStates.contains(state.id)
+		/**
+		 * <p>Test if this state is a goal state</p>
+		 * @param state state that is test against goal
+		 * @return true if this state is a goal state, false otherwise
+		 * @throws IllegalArgumentException if the state is undefined
+		 */
+	final def isGoal(state: QLState[T]): Boolean = {
+		require(state != null, "QLSpace.isGoal state is undefined")
+		goalStates.contains(state.id)
+	}
 
 	override def toString: String = 
 		new StringBuilder("States\n")
@@ -73,9 +108,17 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 object QLSpace {		
 		/**
 		 * <p>Create a search space automatically using a scale factor.</p>
-		 * @param number of symbols or states used by the Q-Learning algorithm
+		 * @param numStates Number of symbols or states used by the Q-Learning algorithm
+		 * @param goals Array of id of goal states
+		 * @param features Features set 
+		 * @param neighbors Function constrain to select neighboring states
+		 * @return A new seach space, QLSpace
+		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
 		 */
 	def apply[T](numStates: Int, goals: Array[Int], features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
+		require(numStates >=0, s"QLSpace.apply The number of states $numStates should be >=")
+		require(features != null && features.size > 0, "QLSpace.apply features are undefined")
+		
 		val states = features.zipWithIndex
 						.map(x => {
 							val actions = neighbors(x._2, numStates).map(j =>  new QLAction[T](x._2, j))
@@ -92,8 +135,8 @@ object QLSpace {
 		 
 
 	private def check[T](states: Array[QLState[T]], goalIds: Array[Int]): Unit = {
-		require(states != null && states.size > 1, "States list for QLSpace is undefined")
-		require(goalIds != null && goalIds.size > 0, "List of goal states for QLSpace is undefined")
+		require(states != null && states.size > 1, "QLSpace.check States list for QLSpace is undefined")
+		require(goalIds != null && goalIds.size > 0, "QLSpace.check  List of goal states for QLSpace is undefined")
 	}
 }
 

@@ -20,7 +20,7 @@ import org.scalaml.core.design.Config
 
 		/**
 		 * <p>Class that defines the configuration for the Multi-layer Perceptron. The validation
-		 * of the configuration/tuning parameters for the MLP is defined in this class..<br>
+		 * of the configuration/tuning parameters for the MLP is defined in this class..<br><br>
 		 * <b>alpha</b>  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)<br>
 		 * <b>eta</b>  Learning rate ]0, 1] used in the computation of the gradient of the weights during training<br>
 		 * <b>hidLayers</b> Sequence of number of neurons for the hidden layers.<br>

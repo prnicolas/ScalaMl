@@ -28,7 +28,7 @@ import org.scalaml.scalability.akka.message._
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using a master-worker (or master-slave) design..<br> 
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker (or master-slave) design..<br><br> 
 		 *  <b>xt</b> Time series to be processed.<br> 
 		 *  <b>fct</b> Data transformation<br>
 		 *  <b>partitioner</b> Method to partition time series for concurrent processing.</p>

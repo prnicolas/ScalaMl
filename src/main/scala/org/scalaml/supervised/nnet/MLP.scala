@@ -26,7 +26,7 @@ import org.scalaml.util.Display
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
-		 * This MLP uses the online training strategy suitable for time series.<br>
+		 * This MLP uses the online training strategy suitable for time series.<br><br>
 		 * <b>config</b> configuration parameters class for the MLP<br>
 		 * <b>xt</b> time series of features in the training set<br>
 		 * <b>labels</b> labeled or target observations used for training<br>

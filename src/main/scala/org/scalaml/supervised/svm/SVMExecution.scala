@@ -16,7 +16,7 @@ import libsvm._
 
 		/**
 		 * <p>Protected class that encapsulates the execution parameters for SVM training. The
-		 * class are instantiated by the companion object.<br>
+		 * class are instantiated by the companion object.<br><br>
 		 * <b>cacheSize</b> Size of the cache used in LIBSVM to preserve intermediate computation during training.<br>
 		 * <b>eps</b> Convergence Criteria to exit the training cycle<b>
 		 * <b>nFolds</b> Number of folds used in K-fold validation of the SVM model.</p>

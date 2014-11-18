@@ -18,14 +18,14 @@ import scala.util.Random
 		/**
 		 * <p>Class that implements a parameterized chromosome using an encoding scheme and
 		 * an objective/fitness function. A chromosome is a container or list of Gene that
-		 * represents candidate solution to a problem or candidate model to a dataset.<br>
+		 * represents candidate solution to a problem or candidate model to a dataset.<br><br>
 		 * <b>code</b>  List of Genes or variants (subclassing Gene) composing this chromosomes.</p>
 		 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
-		 * @throws if the genetic code is undefined or empty
+		 * @throws IllegalArgumentException if the genetic code is undefined or empty
 		 * 
 		 * @author Patrick Nicolas
 		 * @since August 27, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
 	require(code != null && code.size > 1, "Chromosome Cannot create a chromosome from undefined genetic code")

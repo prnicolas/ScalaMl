@@ -23,20 +23,20 @@ import org.apache.log4j.Logger
 
 		/**
 		 * <p>Class that defines relative genetic index (index in the genetic code, 
-		 * an operator such as mutation or cross-over acts upon (hierarchical address),>/p>
+		 * an operator such as mutation or cross-over acts upon (hierarchical address)</p>
 		 * @constructor Create a genetic indexer. 
 		 * @param chOpIdx  Index of the gene in the chromosome, that is manipulated by a genetic operator
 		 * @param geneOpIdx Index of the bits in the gene that is manipulated by a genetic operator.
 		 * @author Patrick Nicolas
 		 * @since June 7, 2014
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int)
 
 		/**
 		 * <p>Class that defines a population of chromosomes. The size of the population varies
 		 * over time following successive, iterative selection but is bounded to avoid a potential
-		 * explosion of candidates/chromosomes.<br>
+		 * explosion of candidates/chromosomes.<br><br>
 		 * <b>limit</b>  Maximum number of chromosomes allowed in this population (constrained optimization) <br>
 		 * <b>chromosomes</b> Current pool of chromosomes
 		 * @constructor Create a population of chromosome. [chromosomes] Current pool of chromosomes

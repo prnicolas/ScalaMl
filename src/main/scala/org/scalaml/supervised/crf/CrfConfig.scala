@@ -26,7 +26,7 @@ import org.scalaml.core.types.ScalaMl._
 
 		/**
 		 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
-		 * description of the configuration of CRF used by iitb library <br>
+		 * description of the configuration of CRF used by iitb library <br><br>
 		 * <b>w0</b>   Initial values for the CRF weights/factors (lambdas).<br>
 		 * <b>maxIters</b>   Maximum number of iterations to be used for the training of CRF.<br>
 		 * <b>lambda</b>  L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X).<br>

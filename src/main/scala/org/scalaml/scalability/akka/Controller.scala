@@ -16,7 +16,7 @@ import akka.actor.Actor
 
 
 		/**
-		 * <p>Generic controller actor that defines the three key elements of a distributed data transformation:<r>
+		 * <p>Generic controller actor that defines the three key elements of a distributed data transformation:<br><br>
 		 * <b>xt</b>: Time series to be processed<br>
 		 * <b>fct</b>: Data transformation of type PipeOperator<br>
 		 * <b>partitioner</b>: Methodology to partition a time series in segments or partitions to be processed by workers.</p>

@@ -48,7 +48,7 @@ object SVCEval extends Eval {
 	   
 	   Try {
 	       val xs = DataSource(path, true, false, 1) |> extractor
-	       val config = SVMConfig(new CSVCFormulation(C), RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	       val config = SVMConfig(new CSVCFormulation(C), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
 	  	   val features = XTSeries.transpose(xs.take(xs.size-1))
 		   val svc = SVM[Double](config, features, xs.last)
 		     

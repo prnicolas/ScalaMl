@@ -18,7 +18,7 @@ import HMMConfig._
 
 		/**
 		 * <p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter 
-		 * is computed during instantiation.<br>
+		 * is computed during instantiation.<br><br>
 		 * <b>Lambda</b> Lambda (pi, A, B) model for the HMM<br>
 		 * <b>obs</b>: Array of observations as integer (categorical data)</p> 
 		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). 

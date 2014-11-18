@@ -29,10 +29,10 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic distributed transformation of time series using futures and callbacks.<br>
-		 * 	<b>xt</b> Time series to be processed.<br> 
-		 *  <b>fct</b> Data transformation<br>
-		 *  <b>partitioner</b> Method to partition time series for concurrent processing.</p>
+		 * <p>Generic distributed transformation of time series using futures and callbacks.<br><br>
+		 * <b>xt</b> Time series to be processed.<br> 
+		 * <b>fct</b> Data transformation<br>
+		 * <b>partitioner</b> Method to partition time series for concurrent processing.</p>
 	     *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  
