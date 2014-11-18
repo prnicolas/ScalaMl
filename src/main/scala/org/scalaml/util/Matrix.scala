@@ -38,7 +38,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @param i Row index for the element to return
 		 * @param j Column index for the element to return
 		 * @return element(i)(j) if the row and column indices are not out of bounds
-		 * @throw IllegalArgumentException if either the row index or the col index are out of bopunds
+		 * @throws IllegalArgumentException if either the row index or the col index are out of bopunds
 		 */
 	final def apply(i: Int, j: Int): T = {
 		require(i < nRows, s"Matrix.apply Row index $i is out of bounds")
