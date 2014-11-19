@@ -28,11 +28,11 @@ final class Chap1 extends ScalaMlTest {
 	val chapter: String = "Chap 1"
 		
 	test(s"$chapter Simple Binary Logistic Regression") {
-	   evaluate(LogBinRegressionEval)
+		evaluate(LogBinRegressionEval)
 	}
 	
 	test(s"$chapter JFreeChart Plotting") {
-	   evaluate(PlotterEval)
+		evaluate(PlotterEval)
 	}
 }
 

@@ -81,18 +81,7 @@ object MyEval extends Eval {
 		1
 	}
 }
-
-object MyTest extends ScalaMlTest {
-  	val chapter: String = "MyChapter"
-  	def test1 = evaluate(MyEval, Array.empty)
-}
-
-object ScalaMlTestApp extends App {
-	MyTest.test1
-	println("Completed")
-}
 * 
 */
-
 
 // --------------------------  EOF -------------------------------

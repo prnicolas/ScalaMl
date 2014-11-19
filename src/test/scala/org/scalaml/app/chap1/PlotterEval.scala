@@ -28,7 +28,7 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning
 		 */
 object PlotterEval extends Eval {
-	val name: String = "Eval"
+	val name: String = "PlotterEval"
 		
 	final val CSV_DELIM = ","
 	final val PRICE_COLUMN_INDEX = 6
@@ -40,7 +40,9 @@ object PlotterEval extends Eval {
 				
     private val logger = Logger.getLogger(name)
 	def run(args: Array[String]): Int = {
-        Try {
+		Display.show(s"\n$name Evaluation of JFreeChart library", logger)
+		
+		Try {
 			val src = Source.fromFile(pathName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray	   
 			
@@ -48,25 +50,28 @@ object PlotterEval extends Eval {
 			val volatility = Stats[Double]( cols.map( f => f(HIGH_INDEX).toDouble - f(LOW_INDEX).toDouble ) ).normalize
 			val normVolume =  Stats[Double](cols.map( _(VOL_COLUMN_INDEX).toDouble) ).normalize
 			val volatility_volume: Array[(Double, Double)] = volatility.zip(normVolume)
-		
-			val theme1 = new LightPlotTheme
-		    val plotter1 = new LinePlot(("CSCO 2012-2013 Stock", "cat", "r"), theme1)
-		    plotter1.display(volatility_volume, 200, 200)
 			
-		    val theme2 = new BlackPlotTheme
-		    val plotter2 = new LinePlot(("CSCO 2012-2013 Stock", "cat", "r"), theme2)
-		    plotter2.display(volatility_volume, 300, 100)
+			Display.show(s"$name Line plot for CSCO stock normalized volume", logger)
+			val theme1 = new LightPlotTheme
+			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock", "Volume", "r"), theme1)
+			plotter1.display(normVolume, 200, 200, 1)
+			
+			Display.show(s"$name Line plot for CSCO stock volatility", logger)
+			val theme2 = new BlackPlotTheme
+			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock", "Volatility", "r"), theme2)
+			plotter2.display(volatility, 300, 100, 1)
+		    	
+			Display.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
+			val theme3 = new LightPlotTheme
+			val plotter3 = new ScatterPlot((s"$name: CSCO 2012-2013 Stock", "Volatility vs. Volume", "r"), theme3)
+			plotter3.display(volatility_volume, 200, 200)
 		    
-		    val theme3 = new LightPlotTheme
-		    val plotter3 = new ScatterPlot(("CSCO 2012-2013 Stock", "cat", "r"), theme3)
-		    plotter3.display(volatility_volume, 200, 200)
-		    
-		    src.close
-        } match {
-        	case Success(n) => Display.show("PlotterEval.run", logger)
-        	case Failure(e) => Display.error("PlotterEval.run", logger, e)
-        }
-           
+			src.close
+		} 
+		match {
+			case Success(n) => Display.show(s"$name Test completed", logger)
+			case Failure(e) => Display.error(s"$name Test failed", logger, e)
+		}
 	}
 }
 

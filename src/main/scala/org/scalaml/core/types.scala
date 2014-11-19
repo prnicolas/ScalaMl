@@ -11,6 +11,7 @@
 package org.scalaml.core
 
 import scala.language.implicitConversions
+import java.text.DecimalFormat
 
 
 
@@ -25,7 +26,16 @@ import scala.language.implicitConversions
 		 */
 package object types {  
 
-
+	class Formatter(align: String, fmtStr: String) {
+		val fmt = new DecimalFormat(fmtStr)
+		
+		def description(x: Double): String = s"${String.format(align, fmt.format(x))}"
+		def description(n: Int): String = String.format(align, n.toString)
+		def description(s: String): String =  String.format(align, s)
+	}
+	
+	object ShortFormatter extends Formatter("%8s", "#,##0.000")
+	object longFormatter extends Formatter("%16s", "#,##0.00000000")
 		/**
 		 * <p>Singleton that define the types and conversion between ScalaML types and native Scala types</p>
 		 *  @author Patrick Nicolas
@@ -41,8 +51,41 @@ package object types {
 	  
 		type DblMatrix = DMatrix[Double]
 		type DblVector = Array[Double]
-  	  
+		
 
+		def toString(xLabel: String, yLabel: String, xy: XYTSeries, shortFormat: Boolean): String = {
+			val fmt = if(shortFormat) ShortFormatter else longFormatter
+			
+			val buf = new StringBuilder(s"$xLabel\t$yLabel\n")
+			buf.append(  xy.foldLeft(new StringBuilder)((buf, xy) => 
+				buf.append(s"${fmt.description(xy._1)}${fmt.description(xy._2)}\n")).toString)
+			buf.toString
+		}
+		
+		def toString(x: DblVector, label: String, shortFormat: Boolean): String = {
+			val fmt = if(shortFormat) ShortFormatter else longFormatter
+						
+			val buf = new StringBuilder
+			if(label.size > 0)
+				buf.append(s"${fmt.description(label)}\n")
+			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}${fmt.description(x._1)}\n")).toString)
+			buf.toString
+		}
+
+		
+		def toString(m: Array[Array[Double]], shortFormat: Boolean): String = {	
+			val fmt = if(shortFormat) ShortFormatter else longFormatter
+					
+			val buf = new StringBuilder
+			buf.append(Range(0, m(0).size).foldLeft(new StringBuilder)((buf, n) => buf.append(s"${fmt.description(n)}")).toString)
+			
+			Range(0, m.size).foreach(i => {
+				buf.append(s"\n$i")
+				buf.append(Range(0, m(0).size).foldLeft(new StringBuilder)((buf, j) => buf.append(s"${fmt.description(m(i)(j))}")).toString)
+			})
+			buf.toString
+		}
+		
 		/**
 		 * <p>Generic operator on Vector of parameterized type and a DblVector</p>
 		 * @param v first operand of the operation
@@ -142,6 +185,5 @@ package object types {
 		implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
 	}
 }
-
 
 // ------------------------------------------  EOF -----------------------------------------------------------

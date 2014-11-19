@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95f
+ * Version 0.95e
  */
 package org.scalaml.util
 
@@ -38,7 +38,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @param i Row index for the element to return
 		 * @param j Column index for the element to return
 		 * @return element(i)(j) if the row and column indices are not out of bounds
-		 * @throws IllegalArgumentException if either the row index or the col index are out of bopunds
+		 * @throw IllegalArgumentException if either the row index or the col index are out of bopunds
 		 */
 	final def apply(i: Int, j: Int): T = {
 		require(i < nRows, s"Matrix.apply Row index $i is out of bounds")

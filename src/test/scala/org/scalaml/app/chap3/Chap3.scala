@@ -25,7 +25,7 @@ final class Chap3 extends ScalaMlTest  {
 		
     implicit def double2String(x: Double): String = x.toString
 	test(s"$chapter Moving averages evaluation") {
-	   evaluate(MovingAveragesEval, Array[String]("BAC", "10")) 
+		evaluate(MovingAveragesEval, Array[String]("BAC", "10")) 
 	}
 	
 	test(s"$chapter Discrete Fourier Series synthetic evaluation") {

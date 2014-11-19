@@ -54,11 +54,13 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 			
 			val r = Range(0, nValues)
 			fEst.map(estF => {
-			  r.foldLeft(0.0, 0.0)((s, x) => { 
-				  val diff = (estF(x) - meanFEst(x))/fEst.size 
-				  (s._1 + diff*diff, s._2 + Math.abs(estF(x) - emul(x) ))} )
+				r.foldLeft(0.0, 0.0)((s, x) => { 
+					val diff = (estF(x) - meanFEst(x))/fEst.size 
+					(s._1 + diff*diff, s._2 + Math.abs(estF(x) - emul(x) ))
+				})
 			}).toArray
-		} match {
+		} 
+		match {
 			case Success(xySeries) => Some(xySeries)
 			case Failure(e) => Display.error("BiasVariance.fit ", logger, e); None
 		}

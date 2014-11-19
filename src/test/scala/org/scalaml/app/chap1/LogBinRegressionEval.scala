@@ -34,41 +34,46 @@ object LogBinRegressionEval extends Eval {
 	import YahooFinancials._
 	val name: String = "LogBinRegressionEval"
 	
-    final val NITERS = 300
-    final val EPS = 0.02
-    final val ETA = 0.000002
-    final val path_training = "resources/data/chap1/CSCO.csv"
-    final val path_test = "resources/data/chap1/CSCO2.csv"
-    private val logger = Logger.getLogger(name)
-    		/*
-    		 * Driver code that load, visualize and train labeled data.
-    		 * Classifier is invoked on the model once training is completed.
-    		 */
-    def run(args: Array[String]): Int = {
-	    load(path_training) match {
-	      case Some(volatilityVolume) => {
-	      	
-	        display(volatilityVolume)
+	final val NITERS = 300
+	final val EPS = 0.02
+	final val ETA = 0.000002
+	final val path_training = "resources/data/chap1/CSCO.csv"
+	final val path_test = "resources/data/chap1/CSCO2.csv"
+	private val logger = Logger.getLogger(name)
+    		
+		/**
+		 * Driver code that load, visualize and train labeled data.
+		 * Classifier is invoked on the model once training is completed.	
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n$name Loading history Cisco stock for training logistic regression", logger)
+		
+		load(path_training) match {
+			case Some(volatilityVolume) => {
+				Display.show(s"$name Display of stock volatility vs. volume", logger)
+				display(volatilityVolume)
 	    	
-	        val labels = volatilityVolume.zip(volatilityVolume.map(x => if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
-		    val logit = new LogBinRegression(labels, NITERS, ETA, EPS)
+				val labels = volatilityVolume.zip(volatilityVolume.map(x => 
+					if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
+				val logit = new LogBinRegression(labels, NITERS, ETA, EPS)
 	    	  
-	    	load(path_test) match {
-	    	   case Some(test) =>{
-	    	  	 logit.classify(test(0)) match {
-		            case Some(topCategory) => Display.show(topCategory.toString, logger)
-		            case None => Display.error("Failed to classify", logger)
-		         }
-	    	  	 logit.classify(test(1)) match {
-		            case Some(topCategory) => Display.show(topCategory.toString, logger)
-		            case None => Display.error("Failed to classify", logger)
-		         }
-	    	   }	
-	    	   case None => Display.error(s"Could not load training set for $path_test", logger)
-	    	 }
-	      }
-	      case None => Display.error(s"Could not load test set for $path_training", logger)
-	    }
+				Display.show(s"$name Loading history Cisco stock for testing", logger)
+				load(path_test) match {
+					case Some(test) =>{
+						logit.classify(test(0)) match {
+							case Some(topCategory) => Display.show(s"$name test result ${topCategory.toString}", logger)
+							case None => Display.error(s"$name Failed to classify", logger)
+						}
+						logit.classify(test(1)) match {
+							case Some(topCategory) => Display.show(s"$name test result ${topCategory.toString}", logger)
+							case None => Display.error(s"$name Failed to classify", logger)
+						}
+					}	
+					case None => Display.error(s"$name Could not load training set for $path_test", logger)
+				}
+			}
+			case None => Display.error(s"$name  Could not load test set for $path_training", logger)
+		}
     }
 	
 			/**

@@ -34,14 +34,14 @@ object TransformExample {
 	private val logger = Logger.getLogger("TransformExample")
 	val op1 = new PipeOperator[Int, Double] {
 		override def |> : PartialFunction[Int, Double] = {
-		  case n: Int if(n > 0) => Math.sin(n.toDouble)
+			case n: Int if(n > 0) => Math.sin(n.toDouble)
 		}
 	}
 	
 	def run: Int = { 
-		Display.show("Evaluation of workflow framework", logger)
+		Display.show(s"TransformExample Example of Sinusoidal transformation", logger)
 		val tform = new Transform[Int, Double](op1)
-		Display.show(s"TransformExample.run ${tform |> 6}", logger)
+		Display.show(s"TransformExample ${tform |> 6}", logger)
 	}
 }
 
@@ -56,12 +56,12 @@ object TransformExample {
 		 * @since January 22, 2014
 		 */
 final class Sampler(val samples: Int) extends PipeOperator[Double => Double, DblVector] {
-  require(samples > 0 && samples < 1E+5, s"Sampler: the number of samples $samples is out of range")
+	require(samples > 0 && samples < 1E+5, s"Sampler: the number of samples $samples is out of range")
 	  	  
-   override def |> : PartialFunction[(Double => Double), DblVector] = { 
-     case f: (Double => Double) if(f != null) => 
-    	  Array.tabulate(samples)(n => f(n.toDouble/samples)) 
-   }
+	override def |> : PartialFunction[(Double => Double), DblVector] = { 
+		case f: (Double => Double) if(f != null) => 
+			Array.tabulate(samples)(n => f(n.toDouble/samples)) 
+	}
 }
 
 		/**
@@ -72,16 +72,10 @@ final class Sampler(val samples: Int) extends PipeOperator[Double => Double, Dbl
 		 * @since January 22, 2014
 		 */
 final class Normalizer extends PipeOperator[DblVector, DblVector] {
-  override def |> : PartialFunction[DblVector, DblVector] = { 
-    case x: DblVector if(x != null && x.size > 1) => Stats[Double](x).normalize
-   }
-  /*
-   override def |> (data: DblVector): Option[DblVector] = { 
-  	 require(data != null && data.size > 1, "Normalizer: input vector is undefined")
-  	 Some(Stats[Double](data).normalize)
-   }
-   * 
-   */
+	override def |> : PartialFunction[DblVector, DblVector] = { 
+		case x: DblVector if(x != null && x.size > 1) => 
+			Stats[Double](x).normalize
+	}
 }
 
 		/**
@@ -92,10 +86,10 @@ final class Normalizer extends PipeOperator[DblVector, DblVector] {
 		 * @since January 22, 2014
 		 */
 final class Reducer extends PipeOperator[DblVector, Int] { 
-  override def |> : PartialFunction[DblVector, Int] = { 
-    case x: DblVector if(x != null && x.size > 1) => 
-    	  Range(0, x.size).find(x(_) == 1.0).get
-  }
+	override def |> : PartialFunction[DblVector, Int] = { 
+		case x: DblVector if(x != null && x.size > 1) => 
+			Range(0, x.size).find(x(_) == 1.0).get
+	}
 }
 
 
@@ -108,22 +102,23 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @note Scala for Machine Learning
 	 */
 object WorkflowEval extends Eval {
-   val name: String = "WorkflowEval"
-   private val logger = Logger.getLogger(name)
+	val name: String = "WorkflowEval"
+	private val logger = Logger.getLogger(name)
    
-   def run(args: Array[String]): Int = {
-  	  val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
-	  val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
-		                         with PreprocModule[Double => Double, DblVector] 
-		                                  with ProcModule[DblVector, DblVector] 
-		                                        with PostprocModule[DblVector, Int] {
+	override def run(args: Array[String]): Int = {
+		Display.show(s"\n$name Evaluation for 'log(1+x) + noise' transform", logger)
+		val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
+		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
+							with PreprocModule[Double => Double, DblVector] 
+								with ProcModule[DblVector, DblVector] 
+									with PostprocModule[DblVector, Int] {
 			
 			val preProc: PipeOperator[Double => Double, DblVector] = new Sampler(100)
 			val proc: PipeOperator[DblVector, DblVector] = new Normalizer
 			val postProc: PipeOperator[DblVector, Int] = new Reducer
 		}
 		val result = workflow |> g 
-		Display.show(s"WorkflowEval.run with index = $result", logger)
+		Display.show(s"$name with index $result", logger)
 	}
 }
 
