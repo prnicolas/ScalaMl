@@ -19,13 +19,16 @@ import org.scalaml.util.Display
 		 * <p>Class that update the backward-forward lattice of observations and
 		 * hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to 
 		 * compute the likelihood of the conditional probability p(Y|X) during training. The
-		 * computation is performed as part of the instantiation of the class (type Option[Double] )<br><br>
-		 * <b>config</b>	Configuration for the HMM<br>
-		 * <b>obs</b>		Observations defined as an array of Integer (or categorical data)<br>
-		 * <b>numIters</b>	Number of iterations allowed in the Baum-Welch EM optimization<br>
-		 * <b>eps</b>		Convergence criteria for the exit of the Baum-Welch EM.</p>
+		 * computation is performed as part of the instantiation of the class (type Option[Double] )<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>	Configuration for the HMM
+		 * <b>obs</b>		Observations defined as an array of Integer (or categorical data)
+		 * <b>numIters</b>	Number of iterations allowed in the Baum-Welch EM optimization
+		 * <b>eps</b>		Convergence criteria for the exit of the Baum-Welch EM.
+		 * </span></pre></p>
 		 *  @constructor Create a new BaumWelch algorithm execution instance
 		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 15, 2014
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training

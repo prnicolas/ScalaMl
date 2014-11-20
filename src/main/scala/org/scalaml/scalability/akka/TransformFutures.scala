@@ -27,10 +27,12 @@ import scala.concurrent.duration.Duration
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.<br><br>
-		 * <b>xt</b> Time series to be processed.<br> 
-		 * <b>fct</b> Data transformation<br>
-		 * <b>partitioner</b> Method to partition time series for concurrent processing.</p>
+		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>           Time series to be processed
+		 * <b>fct</b>          Data transformation
+		 * <b>partitioner</b> Method to partition time series for concurrent processing.
+		 * </span></pre></p>
 		 * @constructor Create a distributed transformation for time series. 
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  

@@ -24,9 +24,11 @@ import scala.util.Random
 		/**
 		 * <p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
 		 * The search space can be provided by the end user with a list of states and actions or
-		 * automatically created by providing the number of states.<br><br>
-		 * <b>states</b> States comprising the search space.<br>
-		 * <b>goalIds</b> List of ids of states that are goals.</p>
+		 * automatically created by providing the number of states.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>states</b>    States defined in the Q-learning search space.
+		 * <b>goalIds</b>   List of ids of states that are goals.
+		 * </span></pre></p>
 		 * @constructor Create a state (or search) space. 
 		 * @throws IllegalArgumentException if either states or the goal(s) is undefined
 		 * 

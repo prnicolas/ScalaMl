@@ -20,12 +20,16 @@ import scala.reflect.ClassTag
 	 * <p>Generic data transformation class that process data with input type T
 	 * and output type U. The data transform implements the pipe operator by
 	 * applying the transform function. A transform function can be a filtering,
-	 * smoothing function, a moving average, a classifier.....</p>
+	 * smoothing function, a moving average, a classifier.....<br>
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>op</b>  Data transformation of type <b>PipeOperator</b>
+	 * </span></pre></p>
 	 * @param op pipe operator implementing the function that transform data
 	 * @throws IllegalArgumentException if the transform function is undefined
 	 * @see org.scalaml.core._FCT
 	 * @author Patrick Nicolas
 	 * @since December 19, 2013
+	 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Monadic data transformation
 	 */
 class Transform[-T: ClassTag, +U](op: PipeOperator[T, U]) extends _FCT[Function[T, U]](op.|>)  {
 	require(op != null, "Cannot create a monadic transform with undefined transform function")

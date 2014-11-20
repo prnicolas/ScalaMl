@@ -76,11 +76,13 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * of bits with in this case, two bits allocated to the operator and 
 		 * 32 bits allocated to the value. The floating point value(min, max) is
 		 * digitized as integer [0, 2^32-1]. The discretization function is provided
-		 * implicitly. The bits are implemented by the Java BitSet class.<br><br>
-		 * <b>id</b>   Identifier for the Gene<br>
-		 * <b>target</b>   Target or threshold value.It is a floating point value to be digitized as integer<br>
-		 * <b>op</b> Symbolic operator associated to this gene<br>
-		 * <b>discr</b>  implicit discretization function from Floating point value to integer.</p>
+		 * implicitly. The bits are implemented by the Java BitSet class.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</b>       Identifier for the Gene
+		 * <b>target</b>   Target or threshold value.It is a floating point value to be digitized as integer
+		 * <b>op</b>       Symbolic operator associated to this gene
+		 * <b>discr</b>    implicit discretization function from Floating point value to integer.
+		 * </span></pre></p>
 		 * @constructor Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer
 		 * @throws IllegalArgumentException if operator or id is undefined
 		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) is not provided

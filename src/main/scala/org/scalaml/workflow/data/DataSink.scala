@@ -23,7 +23,9 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Generic class to load or save files into either HDFS or local files system. The persistency
 		 * of data is defined as a data transformation and therefore inherit from the PipeOperator<br>
-		 * <b>sinkName</b> Name of the storage.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>sinkName</b>  Name of the storage (file, database, ..).
+		 * </span></pre></p>
 		 * @constructor Create a DataSink transform associated to a specific path name or database name. 		 
 		 * @throws IllegalArgumentException if the name of the storage is undefined
 		 *

@@ -29,8 +29,10 @@ import org.scalaml.util.Display
 	 * population or a function () => Population{T] that initialize the population. THe
 	 * class has only one public method search.<br>
 	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</br>
-	 * <b>config</b> Configuration parameters for the GA algorithm
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>config</b>   Configuration parameters for the GA algorithm
 	 * <b>score</b> Scoring method for the chromosomes of this population
+	 * </span></pre></p>
 	 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
 
 	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized

@@ -11,9 +11,11 @@ package org.scalaml.reinforcement.qlearning
 
 		/**
 		 * <p>Class that define action between on source state and multiple
-		 * destination states.<br><br>
-		 * <b>from</b> Source state<br>
-		 * <b>to</b> list of destination states</p>
+		 * destination states.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>from</b>   Source state
+		 * <b>to</b>     list of destination states
+		 * </span></pre></p>
 		 * @constructor Create an state transition action for the Q-learning algorithm.
 		 * @throws IllegalArgumentException if the source or destination states ir undefined.
 		 * 

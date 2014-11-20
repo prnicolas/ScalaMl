@@ -17,8 +17,10 @@ import NaiveBayesModel._
 
 		/**
 		 * <b>Abstract class for all the Naive Bayes model. The purpose of the model is to 
-		 * classify a new set of observations.<br><br>
-		 * <b>density</b> Function used in computing the conditional probability p(C|x)</p>
+		 * classify a new set of observations.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>density</b>   Function used in computing the conditional probability <b>p(C|x)</b>
+		 * </span></pre></p>
 		 * @constructor Create a generic Naive Bayes Model using a specific density.
 		 * @throws IllegalArgumentException if density function is undefined
 		 * @author Patrick Nicolas
@@ -45,10 +47,13 @@ object NaiveBayesModel {
 
 
 		/**
-		 * <p>Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and negative outcome and for a specific density function.<br><br>
-		 * <b>positives</b> Priors for the class of positive outcomes.<br>
-		 * <b>negatives</b> Priors for the class of negatives outcomes.<br>
-		 * <b>density</b> Probability density function used in computing the conditional probability p(C|x)</p>
+		 * <p>Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and 
+		 * negative outcome and for a specific density function.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>positives</b>   Priors for the class of positive outcomes.
+		 * <b>negatives</b>   Priors for the class of negatives outcomes.
+		 * <b>density</b>     Probability density function used in computing the conditional probability <b>p(C|x)</b>
+		 * </span></pre></p>
 		 * @constructor Instantiation of a Binomial Naive Bayes model. 
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @see org.scalaml.supervised.bayes.NaiveBayesModel
@@ -96,9 +101,12 @@ object BinNaiveBayesModel {
 
 		/**
 		 * <p>Defines a Multi-class (or multinomial) Naive Bayes model for n classes.The number of classes is defined
-		 * as likelihoodSet.size. The binomial Naive Bayes model, BinNaiveBayesModel, should be used for the two class problem.<br><br>
-		 * <b>likelihoodSet</b> List of likelihood or priors for every classes in the model.<br>
-		 * <b>density</b> Probability density function used in computing the conditional probability p(C|x).</p>
+		 * as likelihoodSet.size. The binomial Naive Bayes model, BinNaiveBayesModel, should be used for the 
+		 * two class problem.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>likelihoodSet</b>  List of likelihood or priors for every classes in the model.
+		 * <b>density</b>        Probability density function used in computing the conditional probability p(C|x).
+		 * </span></pre></p>
 		 * @constructor Instantiates a Multinomial Naive Bayes model (number classes > 2)
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * 

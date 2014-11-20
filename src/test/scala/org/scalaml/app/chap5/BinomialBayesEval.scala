@@ -31,16 +31,16 @@ import org.scalaml.app.Eval
 		 * or ETF ticker symbol, located into a directory
 		 */
 trait BayesEval extends Eval {
-   import org.scalaml.trading.YahooFinancials._
-   final val path = "resources/data/chap5/"
+	import org.scalaml.trading.YahooFinancials._
+	final val path = "resources/data/chap5/"
        
-   def run(args: Array[String]): Int
+	override def run(args: Array[String]): Int
   
-   protected val extractor = toDouble(CLOSE) :: 
-                             ratio (HIGH, LOW) :: 
-                             toDouble(VOLUME) ::
-                             List[Array[String] =>Double]()
-   protected def symbolFiles = DataSource.listSymbolFiles(path)
+	protected val extractor = toDouble(CLOSE) :: 
+								ratio (HIGH, LOW) :: 
+								toDouble(VOLUME) ::
+								List[Array[String] =>Double]()
+	protected def symbolFiles = DataSource.listSymbolFiles(path)
 }
 
 
@@ -53,49 +53,55 @@ object BinomialBayesEval extends BayesEval {
 	private val logger = Logger.getLogger(name)
 	
 	override def run(args: Array[String]): Int = {
-	   require(args != null && args.size >2, "BinomialBayesEval.run incorrect arguments list")
-	   Display.show("Evaluation Multinomial Naive Bayes", logger)	
+		require(args != null && args.size < 2, s"$name.run incorrect arguments list")
+		Display.show(s"$name Evaluation multinomial Naive Bayes", logger)	
 		
-	   val trainValidRatio = args(1).toDouble
-	   val period = args(2).toInt
-	   val description = s"symbol: ${args(0)} smoothing period:$period"
-	   Try {
-		   val input = load(args(0), period)
-	       val labels = XTSeries[(Array[Int], Int)](input.map( x => (x._1.toArray, x._2)).toArray)
-		   val numObsToTrain  = (trainValidRatio*labels.size).floor.toInt
-		   val nb = NaiveBayes[Int](labels.take(numObsToTrain))
-		   validate(labels.drop(numObsToTrain+1), nb)
-	   } match {
-   	      case Success(res) => Display.show(s"BinomialBayesEval.run: $description F1 = ${res.get}", logger)
-      	  case Failure(e) => Display.error("BinomialBayesEval.run ", logger, e)
-      }
+		val trainValidRatio = args(1).toDouble
+		val period = args(2).toInt
+		val description = s"symbol: ${args(0)} smoothing period:$period"
+
+		Try {
+			val input = load(args(0), period)
+			val labels = XTSeries[(Array[Int], Int)](input.map( x => 
+				(x._1.toArray, x._2)).toArray)
+				
+			val numObsToTrain  = (trainValidRatio*labels.size).floor.toInt
+			val nb = NaiveBayes[Int](labels.take(numObsToTrain))
+			validate(labels.drop(numObsToTrain+1), nb)
+		} 
+		match {
+			case Success(res) => Display.show(s"$name results for ${args(0)} $description F1 = ${res.get}", logger)
+			case Failure(e) => Display.error(s"$name.run failed", logger, e)
+		}
 	}
 	
-	private def validate(input:  XTSeries[(Array[Int], Int)], nb: NaiveBayes[Int]): Option[Double] = nb.validate(input, 0)
+	private def validate(input:  XTSeries[(Array[Int], Int)], nb: NaiveBayes[Int]): Option[Double] = 
+		nb.validate(input, 0)
 	
 	
 	private def load(ticker: String, period: Int): List[(List[Int], Int)] = {
-	  val symbol = s"${ticker}.csv"
-      val xs = DataSource(symbol, path, true) |> extractor
-	  val mv = SimpleMovingAverage[Double](period)
+		val symbol = s"${ticker}.csv"
+		val xs = DataSource(symbol, path, true) |> extractor
+		val mv = SimpleMovingAverage[Double](period)
      
-	  val ratios: List[Array[Int]] = xs.map(x => {
-	     val xt = mv get x.toArray
-	     val zValues: Array[(Double, Double)] = x.drop(period).zip(xt.drop(period))
-	     zValues.map(z => if(z._1 > z._2) 1 else 0).toArray
-      })
+		val ratios: List[Array[Int]] = xs.map(x => {
+			val xt = mv get x.toArray
+			val zValues: Array[(Double, Double)] = x.drop(period).zip(xt.drop(period))
+			zValues.map(z => if(z._1 > z._2) 1 else 0).toArray
+		})
 	          
-	           // Compute the difference in price. If the price(t+1) > price(t) then 
-	           // the label is set to 1, 0 otherwise. We need to shift the index by +1
-	           // by dropping the first period +1 price points.
-	  var prev = xs(0)(period)
-	  val label = xs(0).drop(period+1).map( x => {
-	  val y = if( x > prev) 1 else 0
-	     prev = x
-	     y
-	  }).toArray 
-	             // Transpose the list of ratios and zip with the label
-	  ratios.transpose.take(label.size).zip(label) 
+			// Compute the difference in price. If the price(t+1) > price(t) then 
+			// the label is set to 1, 0 otherwise. We need to shift the index by +1
+			// by dropping the first period +1 price points.
+		var prev = xs(0)(period)
+		val label = xs(0).drop(period+1).map( x => {
+			val y = if( x > prev) 1 else 0
+			prev = x
+			y	
+		}).toArray 
+		
+		// Transpose the list of ratios and zip with the label
+		ratios.transpose.take(label.size).zip(label) 
 	}
 }
 

@@ -26,9 +26,11 @@ import scala.language.implicitConversions
 		/**
 		 * <p>Class that defines a Multivariate linear regression. The computation of the regression coefficients uses the 
 		 * Apache commons Math library. The regression model (regression parameters or weights) are
-		 * initialized only if the training was successful.<br><br>
-		 * <b>xt</b> Input multi-dimensional time series for which regression is to be computed.<br>
-		 * <b>y</b> labeled data for the Multivariate linear regression.</p>
+		 * initialized only if the training was successful.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>    Input multi-dimensional time series for which regression is to be computed.
+		 * <b>y</b>     Labeled data for the Multivariate linear regression.
+		 * </span></pre></p>
 		 * @constructor Creates multi-variate linear regression
 		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
 		 * 

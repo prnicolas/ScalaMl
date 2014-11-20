@@ -16,10 +16,12 @@ import libsvm._
 
 		/**
 		 * <p>Protected class that encapsulates the execution parameters for SVM training. The
-		 * class are instantiated by the companion object.<br><br>
-		 * <b>cacheSize</b> Size of the cache used in LIBSVM to preserve intermediate computation during training.<br>
-		 * <b>eps</b> Convergence Criteria to exit the training cycle<b>
-		 * <b>nFolds</b> Number of folds used in K-fold validation of the SVM model.</p>
+		 * class are instantiated by the companion object.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>cacheSize</b>  Size of the cache used in LIBSVM to preserve intermediate computation during training.
+		 * <b>eps</b>         Convergence Criteria to exit the training cycle
+		 * <b>nFolds</b>      Number of folds used in K-fold validation of the SVM model.
+		 * </span></pre></p>
 		 * @constructor Create SVM execution configuration with the following parameters
 		 * @throws IllegalArgumentException if the cache, convergence criteria or number of folds are incorrectly specified.
 		 * 		 

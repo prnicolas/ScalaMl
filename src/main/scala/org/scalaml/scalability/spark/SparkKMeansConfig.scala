@@ -25,13 +25,14 @@ import org.scalaml.core.design.PipeOperator
 
 
 		/**
-		 * <p>Define the configuration of the Spark KMeans wrapper.<br><br>
-		 * <b>K</b> Number of clusters used in Spark KMeans<br>
-		 * <b>numIters</b> Maximum number of iterations allowed for Spark KMeans<br>
-		 * <b>numRuns</b> Number of runs to be executed by Spark KMeans.</p>
+		 * <p>Define the configuration of the Spark KMeans wrapper.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>K</b>         Number of clusters used in Spark KMeans
+		 * <b>numIters</b>  Maximum number of iterations allowed for Spark KMeans
+		 * <b>numRuns</b>   Number of runs to be executed by Spark KMeans.
+		 * </span></pre></p>
 		 * @constructor Create a configuration for the Spark K-means algorithm.
 		 * @throws IllegalArgumentException if any of the parameters is out of range
-		 * 
 		 * @author Patrick Nicolas
 		 * @since April, 2, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark

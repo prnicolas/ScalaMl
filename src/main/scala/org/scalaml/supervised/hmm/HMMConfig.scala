@@ -20,10 +20,12 @@ import org.scalaml.core.design.Config
 		 * <p>Utility class that defined the dimemsion of the matrix
 		 * used in the Hidden Markov Model. The terminology used in the code follows
 		 * the naming convention used in the mathematical expressions presented in
-		 * most of papers and technical books on HMM as well as the book<br><br>
-		 * <b>_T</b> Number of observations<br>
-		 * <b>_N</b> Number of hidden states in the HMM<br>
-		 * <b>_M</b> Number of symbols (or model dimension) for the HMM</p>
+		 * most of papers and technical books on HMM as well as the book<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>_T</b>   Number of observations
+		 * <b>_N</b>   Number of hidden states in the HMM
+		 * <b>_M</b>   Number of symbols (or model dimension) for the HMM
+		 * </span></pre></p>
 		 * @constructor Create a configuration (dimensions) for this HMM
 		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
 		 * @author Patrick Nicolas

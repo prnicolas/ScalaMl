@@ -26,62 +26,62 @@ import scala.util.{Try, Success, Failure}
 		 * @note Scala for Machine Learning
 		 */
 object KMeansEval extends UnsupervisedLearningEval {
-   import org.scalaml.unsupervised.clustering.KMeans
-   import org.scalaml.unsupervised.Distance.euclidean
-   import types.ScalaMl._
+	import org.scalaml.unsupervised.clustering.KMeans
+	import org.scalaml.unsupervised.Distance.euclidean
+	import types.ScalaMl._
    
-   final val START_INDEX = 70
-   final val NUM_SAMPLES = 42
-   
-   private val logger = Logger.getLogger("KMeansEval")
+	final val START_INDEX = 70
+	final val NUM_SAMPLES = 42
+	val name: String = "KMeansEval"
+	private val logger = Logger.getLogger(name)
   
-   override def run(args: Array[String]): Int = {
-      import types.CommonMath._
+	override def run(args: Array[String]): Int = {
+		import types.CommonMath._
         
-      Display.show("Evaluation of K-means clustering", logger)
+		Display.show(s"$name Evaluation of K-means clustering", logger)
       
-      		// nested function to generate K clusters from a set of observations observations
-            // obs. The condition on the argument are caught by the K-means constructor.
-      def run(K: Int, obs: DblMatrix): Unit = {
-         require(obs != null, "KMeansEval.run observations are undefined")
-		 val kmeans = KMeans[Double](K, 150)
+			// nested function to generate K clusters from a set of observations observations
+			// obs. The condition on the argument are caught by the K-means constructor.
+		def run(K: Int, obs: DblMatrix): Unit = {
+			require(obs != null, s"$name.run observations are undefined")
+			val kmeans = KMeans[Double](K, 150)
 		 
-		 val clusters = kmeans |> new XTSeries[DblVector]("x", obs)
-  		 val descriptor = clusters.foldLeft(new StringBuilder)((b, c) => 
-		    b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => b2.append(s"${symbolFiles(mbr)}, ")).toString).append("\n")
-		 )
-		 Display.show(s"${descriptor.toString}\nmeans:\n", logger)		    	                
-		 clusters.foreach(c => Display.show(c.toString, logger))
+			val clusters = kmeans |> new XTSeries[DblVector]("x", obs)
+			val descriptor = clusters.foldLeft(new StringBuilder)((b, c) => 
+				b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => 
+				  		b2.append(s"${symbolFiles(mbr)}, ")).toString).append("\n")
+			)
+			Display.show(s"$name ${descriptor.toString}\nmeans:\n", logger)		    	                
+			clusters.foreach(c => Display.show(s"$name ${c.toString}", logger))
 
-		 Display.show("\nCluster standard deviation:\n", logger)
-		 clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean))
-		         .foreach( Display.show( _ , logger) )
-      }
+			Display.show(s"\n$name Cluster standard deviation:\n", logger)
+			clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean))
+					.foreach( Display.show( _ , logger) )
+		}
 
-      val normalize = true
-      Try {
-         require(symbolFiles.size > 0, "KMeansEval.run The input symbol files are undefined")
+		val normalize = true
+		Try {
+			require(symbolFiles.size > 0, s"$name.run The input symbol files are undefined")
          
-         val prices: Array[List[DblVector]] = symbolFiles.map(s => DataSource(s, path, normalize) |> extractor)
-         prices.find ( _ == List.empty) match {
-      	    case Some(nullObsList) => Display.error("Could not load data", logger)
-      	    case None => {
-      	       val values: DblMatrix = prices.map(x => x(0)).map( _.drop(START_INDEX).take(NUM_SAMPLES))
-      		   args.map(_.toInt).foreach(run(_, values))
-      		   Display.show("KMeansEval.run ", logger)
-      	     }
-         }
-      } match {
-       	 case Success(n) => n
-       	 case Failure(e) => Display.error("KMeansEval.run ", logger, e)
-      }
-   }
+			val prices: Array[List[DblVector]] = symbolFiles.map(s => 
+				DataSource(s, path, normalize) |> extractor)
+
+			prices.find ( _ == List.empty) match {
+				case Some(nullObsList) => Display.error(s"$name Could not load data", logger)
+				case None => {
+					val values: DblMatrix = prices.map(x => x(0))
+												.map( _.drop(START_INDEX)
+												.take(NUM_SAMPLES))
+					args.map(_.toInt).foreach(run(_, values))
+					Display.show(s"$name completed ", logger)
+				}
+			}
+		} 
+		match {
+			case Success(n) => n
+			case Failure(e) => Display.error("KMeansEval.run ", logger, e)
+		}
+	}
 }
-
-
-object KMeansApp extends App {
-   KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
-}
-
 
 // -----------------------------------  EOF ---------------------------------------------------

@@ -20,12 +20,13 @@ import LogisticRegressionOptimizer._
 	/**
 	 * <p>Class that implements the minimization of the loss function for the logistic
 	 * regression classifier. It is implemented as the least squares optimization of the
-	 * Least Square problem defined in Apache Commons Math.<br><br>
-	 * <b>maxIters</b> Maximum number of iterations allowed during training for the minimization of the loss function.
-	 * <b>maxEvals</b> Maximum number of runs or evaluations allowed during training.
-	 * <b>eps</b> Maximum error allowed during training for the minimization of the loss function.
-	 * <b>lsOptimizer</b> Least squares optimizer used during training.
-	 * 
+	 * Least Square problem defined in Apache Commons Math.<br>
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>maxIters</b>     Maximum number of iterations allowed during training for the minimization of the loss function.
+	 * <b>maxEvals</b>     Maximum number of runs or evaluations allowed during training.
+	 * <b>eps</b>          Maximum error allowed during training for the minimization of the loss function.
+	 * <b>lsOptimizer</b>  Least squares optimizer used during training.
+	 * </span></pre></p>
 	 * @constructor Initialize the optimization function for the logistic regression classifier. 	 
 	 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
 	 * @see org.apache.commons.math3.fitting.leastsquares

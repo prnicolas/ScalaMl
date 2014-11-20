@@ -34,10 +34,12 @@ import scala.language.implicitConversions
 
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
-		 * support regularization or penalty terms.<br><br>
-		 * <b>xt</b> Input time series observations.<br>
-		 * <b>labels</b> Labeled class data used during training of the classifier<br>
-		 * <b>optimizer</b> Optimization method used to minimmize the loss function during training</p>* 
+		 * support regularization or penalty terms.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>         Input time series observations.
+		 * <b>labels</b>     Labeled class data used during training of the classifier
+		 * <b>optimizer</b>  Optimization method used to minimmize the loss function during training
+		 * </span></pre></p>
 		 * @constructor Create a logistic regression classifier model.
 		 * @throws IllegalArgumentException if the class parameters are undefined. 
 		 * @see org.apache.commons.math3.fitting.leastsquares.

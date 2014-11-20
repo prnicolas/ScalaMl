@@ -19,13 +19,16 @@ import HMMConfig._
 		 * <p>Class that implements the Viterbi algorithm to extract the best sequence
 		 * of hidden states in a HMM given a lambda model and a sequence of integer
 		 * observations. The maximum value of delta is computed recursively during 
-		 * instantiation.<br><br>
+		 * instantiation.<br>
 		 * The recursion throws a Arithmetic or Runtime exception that is to be caught by the client code<br>
-		 * <b>lambda</b> Lambda (pi, A, B) model for the HMM<br>
-		 * <b>obs</b> Array of observations as integer (categorical data)</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>lambda</b>   Lambda (pi, A, B) model for the HMM
+		 * <b>obs</b>      Array of observations as integer (categorical data)
+		 * </span></pre></p>
 		 *  @constructor Create an instance of the Viterbi algorithm for a predefined Lambda model and set of observations.
 		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
 		 *  @see org.scalaml.hmm.HMMModel
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 17, 2014
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Decoding

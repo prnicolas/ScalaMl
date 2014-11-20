@@ -123,8 +123,10 @@ object DFT {
 		 * <p>Pass-band Filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
 		 * implements the convolution of the filter function and the input time series class.<br>
 		 * The class uses the Apache Commons Math library.<br>
-		 * <b>g</b> Filtering function used in the convolution<br>
-		 * <b>fC</b> Frequency cutoff for this low pass filter.</p>
+		 *  <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *   <b>g</b>   Filtering function used in the convolution
+		 *   <b>fC</b>  Frequency cutoff for this low pass filter.
+		 * </span></pre></p>
 		 * @constructor Create a low-pass, band-pass or high-pass filter using the discrete Fourier transform
 		 * @throws IllegalArgumentException if the filtering function g is undefined.
 		 * @author Patrick Nicolas

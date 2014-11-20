@@ -28,9 +28,11 @@ import scala.collection.mutable.ArrayBuffer
 		 * The model is created or trained during the instantiation of the class. Therefore a model either
 		 * is properly trained or does not exists.<br>
 		 * This implementation uses the LIBSVM library<br>
-		 * <b>config</b>	Configuration of this SVM<br>
-		 * <b>xt</b>		Time series to regress or classify<br>
-		 * <b>labels</b>	Labeled values for the time series used in the training of the SVM.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>	Configuration of this SVM
+		 * <b>xt</b>		Time series to regress or classify
+		 * <b>labels</b>	Labeled values for the time series used in the training of the SVM.
+		 * </span></pre></p>
 		 * @constructor Create a SVM algorithm for a labeled time series given a configuration. 	
 		 * @throws IllegalArgumentException if the configuration or the time series is undefined.
 		 * 

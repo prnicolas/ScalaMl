@@ -36,9 +36,11 @@ trait SVMConfigItem {
 		/**
 		 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
 		 * three elements:<br>
-		 * <b>formulation</b> Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)<br>
-		 * <b<kernel</b> Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems<br>
-		 * <b>exec</b> Execution parameters for the training of the SVM model.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>formulation</b>  Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
+		 * <b<kernel</b>       Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
+		 * <b>exec</b>         Execution parameters for the training of the SVM model.
+		 * </span></pre></p>
 		 * @constructor Create a configuration for this SVM with a given formulation, kernel function and execution parameters.	
 		 * @throws IllegalArgumentException if the formulation, kernel or execution parameter are undefined.
 		 * 

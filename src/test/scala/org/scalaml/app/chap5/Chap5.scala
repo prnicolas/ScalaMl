@@ -14,32 +14,32 @@ import org.scalaml.app.ScalaMlTest
 
 
 final class Chap5 extends ScalaMlTest {
-   val chapter: String = "Chap5"
+	val chapter: String = "Chap5"
   	 
-   test(s"$chapter Binomial Naive Bayes evaluation") {
-  	  evaluate(BinomialBayesEval, Array[String]("0.5", "8"))
+	test(s"$chapter Binomial Naive Bayes evaluation") {
+		evaluate(BinomialBayesEval, Array[String]("0.5", "8"))
   	  
-  	  val TRAIN_VALIDATION_RATIO = "0.8"
-	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4"))
-	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12"))
-	  evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36"))
+		val TRAIN_VALIDATION_RATIO = "0.8"
+		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4"))
+		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12"))
+		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36"))
 	  
-	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "4"))
-	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "12"))
-	  evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "36"))
+		evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "4"))
+		evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "12"))
+		evaluate(BinomialBayesEval, Array[String]("GE", TRAIN_VALIDATION_RATIO, "36"))
 	  
-	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4"))
-	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
-	  evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
-   }
+		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "4"))
+		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
+		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
+	}
    
-   test(s"$chapter Naive Bayes text analysis evaluation") {
-  	   evaluate(TextBayesEval)
-   }
+	test(s"$chapter Naive Bayes text analysis evaluation") {
+		evaluate(TextBayesEval)
+	}
    
-   test(s"$chapter Naive Bayes and function classification") {
-  	   	evaluate(FunctionClassificationEval)
-   }
+	test(s"$chapter Naive Bayes and function classification") {
+		evaluate(FunctionClassificationEval)
+	}
 }
 
 

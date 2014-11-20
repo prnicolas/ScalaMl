@@ -17,8 +17,10 @@ import org.scalaml.core.XTSeries
 
 
 		/**
-		 * <p>Generic message exchanged between a master and worker actors.<br><br>
-		 * <b>id</b> Unique identifier for this message.</p>
+		 * <p>Generic message exchanged between a master and worker actors.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</b>   Unique identifier for this message.
+		 * </span></pre></p>
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
 		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers

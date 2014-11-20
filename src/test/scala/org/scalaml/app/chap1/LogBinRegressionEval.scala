@@ -79,36 +79,36 @@ object LogBinRegressionEval extends Eval {
 			/**
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
-    private def load(fileName: String): Option[XYTSeries] = {
-    	require(fileName != null, "Cannot load data from undefined fileName")
-    	Try {
+	private def load(fileName: String): Option[XYTSeries] = {
+	require(fileName != null, "LogBinRegressionEval.load Cannot load data from undefined fileName")
+		Try {
 			val src =  Source.fromFile(fileName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray
 			val cols = fields.drop(1)
 			val data = transform(cols)
 			src.close
 			data
-    	} match  {
-    		case Success(xySeries) => Some(xySeries)
-    		case Failure(e) => Display.error("LogBinRegressionEval ", logger, e); None
-    	}
-    }
+		} match  {
+			case Success(xySeries) => Some(xySeries)
+			case Failure(e) => Display.error("LogBinRegressionEval.load", logger, e); None
+		}
+	}
     
-    private def transform(cols: Array[Array[String]]): XYTSeries = {
-    	val volatility  = Stats[Double](cols.map(YahooFinancials.volatility)).normalize
+	private def transform(cols: Array[Array[String]]): XYTSeries = {
+		val volatility  = Stats[Double](cols.map(YahooFinancials.volatility)).normalize
 		val volume =  Stats[Double](cols.map(YahooFinancials.volume) ).normalize
 		volatility.zip(volume)
-    }
+	}
     
-    	/**
-    	 * Method to display a time series
-    	 */
-    private def display(volatilityVolume: XYTSeries): Unit = {
-       require(volatilityVolume != null && volatilityVolume.size > 0, "Cannot display an undefined time series")
+		/**
+		 * Method to display a time series
+		 */
+	private def display(volatilityVolume: XYTSeries): Unit = {
+		require(volatilityVolume != null && volatilityVolume.size > 0, "LogBinRegressionEval.displayCannot display an undefined time series")
        
-       val plotter = new ScatterPlot(("CSCO 2012-13 stock price", "Normalized session volatility", "Normalized session Volume"), 
-      		                         new BlackPlotTheme)
-       plotter.display(volatilityVolume, 250, 340)
+		val plotter = new ScatterPlot(("CSCO 2012-13 stock price session volatiity", "Normalized session volatility", "Normalized session Volume"), 
+				new BlackPlotTheme)
+		plotter.display(volatilityVolume, 250, 340)
 	}
 }
 

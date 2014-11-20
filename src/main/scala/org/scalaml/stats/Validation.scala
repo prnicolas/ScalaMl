@@ -50,9 +50,11 @@ import Label._
 		/**
 		 * <p>Immutable class that implements the Validation variables on a results
 		 * of a test run. The counters for TP, TN, FP and FN are computed during instantiation
-		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).<br><br>
-		 * <b>actualExpected</b> Array of pair (actual value, labeled/expected value)<br>
-		 * <b>tpClass</b> Identifier for the class that defined the true positive samples</p>
+		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>actualExpected</b>  Array of pair (actual value, labeled/expected value)
+		 * <b>tpClass</b>         Identifier for the class that defined the true positive samples
+		 * </span></pre></p>
 		 * @constructor Create a class validation instance that compute precision, recall and F1 measure 
 		 * @throws IllegalArgumentException if actualExpected is undefined or has no elements or tpClass is out of range
 		 * 

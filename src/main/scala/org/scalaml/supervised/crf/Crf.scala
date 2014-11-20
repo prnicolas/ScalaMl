@@ -29,8 +29,10 @@ import org.scalaml.util.Display
 
 
 		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br><br>
-		 * <b>weights</b>	Weights (or lambda parameters) for this CRF model.</p>
+		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>weights</b>	Weights (or lambda parameters) for this CRF model.
+		 * </span></pre></p>
 		 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
 		 * @throws IllegalArgumentException if weights is not properly defined
 		 * @see org.scalaml.core.design.Model
@@ -50,12 +52,14 @@ final protected class CrfModel(val weights: DblVector) extends Model {
 		 * define a Feature generator class that inherits the default implementation FeatureGenImpl of iitb features generator.
 		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
 		 * The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.
-		 * <br><br>
-		 * <b>nLabels</b>  Number of labels (or tags) used in tagging training sequences of observations.<br>
-		 * <b>config</b>  Minimum set of configuration parameters required to define the CRF<br>
-		 * <b>delims</b>  Delimiters used in extracting labels and data from the training files<br>
-		 * <b>taggedObs</b>  Identifier for the training data set. The training set of sequences is defined by the raw observations
+		 * <br>
+		 * <per>
+		 * <b>nLabels</b>     Number of labels (or tags) used in tagging training sequences of observations.
+		 * <b>config</b>      Minimum set of configuration parameters required to define the CRF
+		 * <b>delims</b>      Delimiters used in extracting labels and data from the training files
+		 * <b>taggedObs</b>   Identifier for the training data set. The training set of sequences is defined by the raw observations
 		 * and its associated tagged file: <i>file.raw</i> and <i>file.tagged</i> file.</b>
+		 * </span></pre></p>
 		 * @constructor Create a Linear chain conditional random fields. 
 		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either undefined or out of range.
 		 * @see org.scalaml.workflow.PipeOperator

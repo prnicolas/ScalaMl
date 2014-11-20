@@ -18,14 +18,14 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 
 
 		/**
-		 * <p>Class that defined the stateuration	parameters for the XCS algorithm.</p>
-		 * @param maxPopulation  maximum size of the population used to constraint the execution
-		 * of the genetic algorithm
-		 * @param gaConfig stateuration of the genetic algorithm
-		 * @param qConfig stateuration of the Q-Learning algorithm. 
-		 * @param init function to initialize the population of rules (Boost) 			
+		 * <p>Class that defined the configuration parameters for the XCS algorithm.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>gaConfig</p>     Configuration of the Genetic Algorithm used in extracting the fittest rules or classifier
+		 * <b>qlConfig</b>     Configuration parameters for the Q-learning algorithm
+		 * </span></pre></p>
+		 * @constructor Create a configuration for the XCS algorithm 			
 		 * @throws IllegalArgumentException if the maximum population is out of range or one of the
-		 * stateuration class is undefined.
+		 * configuration class is undefined.
 		 *  
 		 * @author Patrick Nicolas
 		 * @since March 22, 2014

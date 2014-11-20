@@ -36,9 +36,11 @@ case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int)
 		/**
 		 * <p>Class that defines a population of chromosomes. The size of the population varies
 		 * over time following successive, iterative selection but is bounded to avoid a potential
-		 * explosion of candidates/chromosomes.<br><br>
-		 * <b>limit</b>  Maximum number of chromosomes allowed in this population (constrained optimization) <br>
-		 * <b>chromosomes</b> Current pool of chromosomes
+		 * explosion of candidates/chromosomes.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>limit</b>        Maximum number of chromosomes allowed in this population (constrained optimization)
+		 * <b>chromosomes</b>  Current pool of chromosomes
+		 * </span></pre></p>
 		 * @constructor Create a population of chromosome. [chromosomes] Current pool of chromosomes
 		 * @throws IllegalArgumenException if the limit is out of range or the pool of chromosomes is undefined
 		 * 

@@ -30,11 +30,12 @@ import org.apache.log4j.Logger
 		/**
 		 * <p>Worker actor responsible for transforming a time series using the 
 		 * PipeOperator |>. The computation is initiated by the Master that acts 
-		 * as the workflow controller.<br><br>
-		 * <b>id</v> Identifier or counter for the worker actors.<br>
-		 * <b>fct</b> Data transformation function to be applied to a time series.</p>
+		 * as the workflow controller.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</v>    Identifier or counter for the worker actors.
+		 * <b>fct</b>   Data transformation function to be applied to a time series.
+		 * </span></pre></p>
 		 * @constructor Create a worker actor. 
-		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers

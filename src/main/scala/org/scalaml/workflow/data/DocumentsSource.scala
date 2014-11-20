@@ -24,7 +24,9 @@ import org.apache.log4j.Logger
 		 * <li>Title</li>
 		 * <li>Content</li>
 		 * </ul>
-		 * <b>pathName</b> relative path for the directory containing the corpus.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>pathName</b>   Relative path for the directory containing the corpus.
+		 * </span></pre></p>
 		 * @constructor Create a source for a set of documents in a given relative path.
 		 * @throws IllegalArgumentException if the path is not defined
 		 * 

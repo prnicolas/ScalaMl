@@ -32,12 +32,14 @@ import scala.collection.mutable.TreeSet
 		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
 		 * The class assume that a digitization function that discrete a continuous value is defined
 		 * implicitly.<br>
-		 * <b>id</b> Label or identifier for the trading signal.<br>
-		 * <b>target</b> Target value (or threshold) used to trigger the signal.<br>
-		 * <b>op</b> Operator that is used to defined the condition such as greater than, equals.... <br>
-		 * <b>xt</b> Times series of single variable the signal acts upon.<br>
-		 * <b>weights</b> Weights applied to each value of the time series (optional).<br>
-		 * <b>discr</b> Discretization function that convert analog or continuous signal to a discrete time series.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</b>        Label or identifier for the trading signal
+		 * <b>target</b>    Target value (or threshold) used to trigger the signal.
+		 * <b>op</b>        Operator that is used to defined the condition such as greater than, equals.... 
+		 * <b>xt</b>        Times series of single variable the signal acts upon.
+		 * <b>weights</b>   Weights applied to each value of the time series (optional).
+		 * <b>discr</b>     Discretization function that convert analog or continuous signal to a discrete time series.
+		 * <br></p>
 		 * @constructor Create a trading signal used for analyzing changes in variables derived from the price and trading volume of a security. 
 		 * @throws IllegalArgumentException if the class parameters are not properily defined.
 		 * @throws ImplicitNotFoundException if the disretization function has not been defined.

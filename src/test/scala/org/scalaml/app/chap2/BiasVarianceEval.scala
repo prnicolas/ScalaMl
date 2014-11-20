@@ -66,7 +66,7 @@ object BiasVarianceEval extends Eval {
 	
 	private def display(estF: List[(Double =>Double, String)], f: Double =>Double): Unit = {
 		import ScalaMl._
-		val plot = new LinePlot((" ", "x", "y"), new LightPlotTheme)
+		val plot = new LinePlot(("Bias-Variance Analysis", "x", "y"), new LightPlotTheme)
 		val data = (Array.tabulate(200)( f(_)), "f") :: estF.foldLeft(List[(DblVector, String)]()) ((xs, g) => 
 				(Array.tabulate(200)(y => g._1( y.toDouble)), g._2) :: xs)
 						

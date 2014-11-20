@@ -26,8 +26,11 @@ import scala.collection.mutable.TreeSet
 		 * <p>Generic class that defines the operator of a trading signal.<br>
 		 * A trading signal is emitted once a value (or data point) in a time series reaches a threshold (upward or downward movement).<br>
 		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
-		 * The signal operator implements the <b>Operator</b> trait defined as an element of a <b>Gene</b> in a genetic algorithm. THe trading signal operators are None, >, < and ==.
-		 * @constructor Create an instance of an operator for a trading signal. [id] Identifier for the operator ("<", ">", ...
+		 * The signal operator implements the <b>Operator</b> trait defined as an element of a <b>Gene</b> in a genetic algorithm. THe trading signal operators are None, >, < and ==.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</b>  Identifier for the operator ("<", ">", ...
+		 * </span></pre></p>
+		 * @constructor Create an instance of an operator for a trading signal. 
 		 * @see org.scalaml.ga.Operator
 		 * 
 		 * @author Patrick Nicolas

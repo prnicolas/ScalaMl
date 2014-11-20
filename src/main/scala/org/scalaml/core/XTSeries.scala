@@ -24,9 +24,11 @@ import scala.language.implicitConversions
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
 		 * this generic type to avoid multiple conversion between numerous types.
 		 * The class is parameterized so it can take primitive types to create vector for single
-		 * variable time series or arrays/list to create matrix for multiple variables time series.<br><br>
-		 * <b>label</b optional name for the time series<br>
-		 * <b>arr</b> array of values of parameterized types.</p>		 * 
+		 * variable time series or arrays/list to create matrix for multiple variables time series.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *   <b>label</b>    Optional name for the time series
+		 *   <b>arr</b>      Array of values of parameterized types.
+		 * </span></pre></p>		 * 
 		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: 
 		 * @throws IllegalArgumentException If the array of values, arr is undefined
 		 * 
@@ -131,15 +133,16 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 
 		/**
 		 * <p>Class that defines a time series for multi-dimensional variables. The class is created
-		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.<br><br>
-		 * <b>label</b> label for the multi-dimensional time series<br>
-		 * <b>arr</b> Array of vectors for time series.</p>
+		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *   <b>label</b>   Label for the multi-dimensional time series
+		 *   <b>arr</b>     Array of vectors for time series.
+		 * </span></pre></p>
 		 * @constructor Create a multidimensional time series
 		 * @throws IllegalArgumentException If the array of values, arr is undefined
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
-		 * @note Scala for Machine Learning Chapter
-		 * 
+		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Conversion from type T to Double undefined")
 final class VTSeries[T](label: String, arr: Array[DVector[T]])(implicit f: T => Double) 

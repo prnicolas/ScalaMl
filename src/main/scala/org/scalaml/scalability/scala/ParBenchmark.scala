@@ -23,8 +23,10 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br><br>
-		 * <b>times</b> Number of executions to be performed during the performance testing
+		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>times</b>  Number of executions to be performed during the performance testing
+		 * </span></pre></p>
 		 * @constructor Create a performance benchmark. [times] Number of executions to be performed during the performance testing
 		 * @throws IllegalArgumentException if the number of executions is out of range
 		 * 
@@ -66,15 +68,19 @@ abstract class ParBenchmark[U](times: Int) {
 
 		/**
 		 * <p>Class to evaluate the performance of the Scala parallel arrays. The
-		 * class override the map, reduceLeft methods to collect timing information</p>
-		 * @constructor Create a performance benchmark for Scala arrays. [u] Parameterized array, [v] Parameterized parallel array. [_times] Number of executions in the performance test.
+		 * class override the map, reduceLeft methods to collect timing information<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>u</b>       Parameterized array
+		 * <b>v</b>       Parameterized parallel array
+		 * <b>times</b>   Number of executions in the performance test.
+		 * </span></pre></p>
+		 * @constructor Create a performance benchmark for Scala arrays. 
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
-		 * 
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 		 */
-class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], _times: Int) extends ParBenchmark[U](_times) {
+class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int) extends ParBenchmark[U](times) {
 	import ParArrayBenchmark._
 	
 	check(u,v)
@@ -140,7 +146,12 @@ object ParArrayBenchmark {
 
 		/**
 		 * <p>Class to evaluate the performance of the Scala parallel map. The
-		 * class override the map, reduceLeft methods to collect timing information</p>
+		 * class override the map, reduceLeft methods to collect timing information<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>u</b>       Parameterized map, <b>Map[Int, U]<\b>
+		 * <b>v</b>       Parameterized parallel map
+		 * <b>times</b>   Number of executions in the performance test.
+		 * </span></pre></p>
 		 * @constructor Create a performance benchmark for Scala arrays. [u] Parameterized map of type Map[Int,U], [v] Parameterized parallel map. [_times] Number of executions in the performance test.
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
 		 * 
@@ -148,7 +159,7 @@ object ParArrayBenchmark {
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 		 */
-final class ParMapBenchmark[U](u: Map[Int, U], v: ParMap[Int, U], _times: Int) extends ParBenchmark[U](_times) {
+final class ParMapBenchmark[U](u: Map[Int, U], v: ParMap[Int, U], times: Int) extends ParBenchmark[U](times) {
 	import ParMapBenchmark._
 	
 	check(u,v)

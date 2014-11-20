@@ -20,9 +20,11 @@ import HMMConfig._
 
 	/**
 	 * <p>Class that encapsulates the execution parameters for the three
-	 * canonical forms of the HMM.<br><br>
-	 * <b>lambda</b>  Lambda model for this HMM<br>
-	 * <b>maxIters</b>  Maximum number of iterations used in training (Baum-Welch)</p>
+	 * canonical forms of the HMM.<br>
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>lambda</b>     Lambda model for this HMM
+	 * <b>maxIters</b>   Maximum number of iterations used in training (Baum-Welch)
+	 * </span></pre></p>
 	 * @constructor Create a new execution state for the HMM for a predefined Lambda model
 	 * @throws IllegalArgumenException if the Lambda model is undefined or the maximum iterations is out of range
 	 * 

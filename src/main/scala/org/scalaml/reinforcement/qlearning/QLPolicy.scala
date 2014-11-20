@@ -60,9 +60,11 @@ final protected class QLData {
 
 
 		/**
-		 * <p>Class that defines the policy for a given set of input and a number of states.<br><br>
-		 * <b>numStates</b> Number of states for this policy.<br>
-		 * <b>input</b> Input to initialize the policy.</p>
+		 * <p>Class that defines the policy for a given set of input and a number of states.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>numStates</b>    Number of states for this policy.
+		 * <b>input</b>       Input to initialize the policy.
+		 * </span></pre></p>
 		 * @constructor Create a policy as a model for Q-learning. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
 		 * @see org.scalaml.design.Model

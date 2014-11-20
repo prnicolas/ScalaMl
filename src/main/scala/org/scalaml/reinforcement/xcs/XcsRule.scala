@@ -24,8 +24,12 @@ import scala.util.Random
 		 * <p>Class that defined a action associated to a sensor and a target value. A typical
 		 * action is a sensor exceeding a target value (or threshold). XCS action are defined
 		 * as gene so they can be chained as chromosomes and define a strategy to optimize the 
-		 * operation of a system.
-		 * @constructor Create an XCS action. [sensorId] identifier of the sensor for which an action may be triggered or fired. [target] threshold value associated to a sensor to trigger the action.
+		 * operation of a system.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>sensorId</b>    Identifier of the sensor for which an action may be triggered or fired.
+		 * <b>target</b> threshold value associated to a sensor to trigger the action.
+		 * </span></pre></p>
+		 * @constructor Create an XCS action. 
 		 * @param sensorId identifier of the sensor for which an action may be triggered or fired
 		 * @param target threshold value associated to a sensor to trigger the action
 		 * 
@@ -44,11 +48,12 @@ object XcsAction {
 		/**
 		 * <p>Class that define a rule or policy in XCS algorithm. The rule is encoded as a gene so
 		 * it can be manipulated by the Genetic Algorithm. A rule is defined by the format:<br>
-		 * IF signal THEN action.<br> The constructor increase a global rules count used to automatically
-		 * assigned a label to each signal/predicate.</p>
-		 * @constructor Create a XCS rule as a pair of signal and action. [signal] Signal or predicated of the rule. [action] XCS action of the rule.
-		 * @param signal  signal or predicated of the rule
-		 * @param action action of the rule
+		 * <i>IF signal THEN action</i>.<br> The constructor increase a global rules count used to automatically
+		 * assigned a label to each signal/predicate.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>signal</b>    Signal or predicated of this rule
+		 * <b>action</b>    XCS action associated with this rule.
+		 * @constructor Create a XCS rule as a pair of signal and action. 
 		 * @throws IllegalArgumenException if the predicate or the action of the rule is undefined
 		 * 
 		 * @author Patrick Nicolas

@@ -21,12 +21,13 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class to emulate the Bias-Variance decomposition using an emulation or synthetic function 
 		 * to generate values. The purpose is to compute the bias and variance of a list of single 
-		 * variable function y = f(x)<br><br>
-		 * <b>emul</b> Emulator for the bias-variance decomposition<br>
-		 * <b>nValues</b> Size of the dataset to use in the computation of Bias and Variance.</p>
+		 * variable function y = f(x)<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>emul</b>     Emulator for the bias-variance decomposition
+		 * <b>nValues</b>  Size of the dataset to use in the computation of Bias and Variance.
+		 * </span></pre></p>
 		 * @constructor Create emulator function to compute the bias and variance of a list of single variable function y = f(x).
 		 * @throws IllegalArgumentException if the emulator is undefiend or the number of values is out of range 
-		 * 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Bias-Variance decomposition

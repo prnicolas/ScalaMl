@@ -29,7 +29,8 @@ import org.apache.log4j.Logger
 		 * K number of clusters. The class uses the Multivariate Normal distribution, Mixture
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
 		 * Commons Math library.<br>
-		 * <b>K</b> Number of clusters used in the Expectation-Maximization algorithm.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>K</b>   Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
 		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. 
 		 * @throws IllegalArgumentException if K is out of range
 		 * @author Patrick Nicolas

@@ -29,13 +29,14 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic distributed transformation of time series using futures and callbacks.<br><br>
-		 * <b>xt</b> Time series to be processed.<br> 
-		 * <b>fct</b> Data transformation<br>
-		 * <b>partitioner</b> Method to partition time series for concurrent processing.</p>
+		 * <p>Generic distributed transformation of time series using futures and callbacks.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>          Time series to be processed.
+		 * <b>fct</b>         Data transformation
+		 * <b>partitioner</b> Method to partition time series for concurrent processing.
+		 * </span></pre></p>
 	     *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
-		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures

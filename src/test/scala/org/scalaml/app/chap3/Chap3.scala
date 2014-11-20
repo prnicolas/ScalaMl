@@ -16,24 +16,24 @@ import scala.language.implicitConversions
 import org.scalaml.app.Eval
 
 trait FilteringEval extends Eval {
-  def run(args: Array[String]): Int
+	def run(args: Array[String]): Int
 }
 
 
 final class Chap3 extends ScalaMlTest  {  
 	val chapter: String = "Chap 3"
 		
-    implicit def double2String(x: Double): String = x.toString
+	implicit def double2String(x: Double): String = x.toString
 	test(s"$chapter Moving averages evaluation") {
 		evaluate(MovingAveragesEval, Array[String]("BAC", "10")) 
 	}
 	
 	test(s"$chapter Discrete Fourier Series synthetic evaluation") {
-	   evaluate(DFTEval)
+		evaluate(DFTEval)
 	}
 	
 	test(s"$chapter Discrete Fourier Series evaluation on stock") {
-	   evaluate(DFTEval, Array[String]("BAC"))
+		evaluate(DFTEval, Array[String]("BAC"))
 	}
 	
 	test(s"$chapter Kalman filter evaluation") {

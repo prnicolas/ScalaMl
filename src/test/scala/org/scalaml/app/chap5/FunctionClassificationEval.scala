@@ -46,88 +46,92 @@ object FunctionClassificationEval extends Eval {
 	val name: String = "NaiveBayesEval"
 	private val logger = Logger.getLogger(name)
 	type Input = Array[(Array[Double], Int)]
-		  
+			
 	val DATA_SIZE = 1025
-    val ALPHA = 1e-3
-    val BETA = 1e-2
-    val GAMMA = ALPHA*0.1
-    val SPECTRUM = 24
+	val ALPHA = 1e-3
+	val BETA = 1e-2
+	val GAMMA = ALPHA*0.1
+	val SPECTRUM = 24
       
 	def run(args: Array[String]): Int = {
 			/**
 			 * Labeled mathematical functions.
 			 */
-	  val functionsGroup = Array[Double => Double] (
-	     (x: Double) => {
-	    	val a = ALPHA*(0.5 + GAMMA*Random.nextDouble)
-	    	val b = BETA*(0.5 + GAMMA*Random.nextDouble) 
-	    	Math.sin(a*x) + Math.cos(b*x)
-	     },
-	     (x: Double) => if( x > 0.48 && x < 0.52) 1.0 else 0.0
-	  )
+		val functionsGroup = Array[Double => Double] (
+			(x: Double) => {
+				val a = ALPHA*(0.5 + GAMMA*Random.nextDouble)
+				val b = BETA*(0.5 + GAMMA*Random.nextDouble) 
+				Math.sin(a*x) + Math.cos(b*x)
+			},
+			(x: Double) => if( x > 0.48 && x < 0.52) 1.0 else 0.0
+		)
 	  
-	  	/**
-	  	 * Training set using the labeled mathematical functions
-	  	 */
-	  def trainingDatasets(numSamples: Int): Input =  {
-         val dataRange = Range(0, DATA_SIZE)
-      	 val data = new Array[(Array[Double], Int)](numSamples)
+		/**
+		 * Training set using the labeled mathematical functions
+		 */
+		def trainingDatasets(numSamples: Int): Input =  {
+			val dataRange = Range(0, DATA_SIZE)
+			val data = new Array[(Array[Double], Int)](numSamples)
       	 
-	     Range(0, numSamples).foreach( n => {
-	    	 val index = Random.nextInt(functionsGroup.size)
-	    	 val res = createDatasets(functionsGroup(index), dataRange)
-	    	 data.update(n, (res, index))
-	     })
-	     data
-      }
+			Range(0, numSamples).foreach( n => {
+				val index = Random.nextInt(functionsGroup.size)
+				val res = createDatasets(functionsGroup(index), dataRange)
+				data.update(n, (res, index))
+			})
+			data
+		}
 	  
 	  
-	  	/**
-	  	 * Method to create datasets for training and testing. It normalizes the values, then computes
-	  	 * the frequencies related to the datasets, ranks the data points in decreasing order of their
-	  	 * frequency and return the SPECTUM indices of the data point with the highest frequency.
-	  	 */
-	  def createDatasets(f: Double =>Double, dataRange: Range): DblVector = {
-         val values = dataRange.map(_ /DATA_SIZE.toDouble).map(f(_))
-	     val min = values.min
-	     val delta = values.max - min
-	     val freq: XTSeries[Double] = (DFT[Double] |> XTSeries[Double](values.map(x =>(x -min)/delta).toArray))
-	     val freQ = freq.toArray.zipWithIndex.sortWith( _._1 > _._1 )
-	     freQ.take(SPECTRUM).map( _._2.toDouble/DATA_SIZE)
-	  }
+		/**
+		 * Method to create datasets for training and testing. It normalizes the values, then computes
+		 * the frequencies related to the datasets, ranks the data points in decreasing order of their
+		 * frequency and return the SPECTUM indices of the data point with the highest frequency.
+		 */
+		def createDatasets(f: Double =>Double, dataRange: Range): DblVector = {
+			val values = dataRange.map(_ /DATA_SIZE.toDouble).map(f(_))
+			val min = values.min
+			val delta = values.max - min
+			val freq: XTSeries[Double] = (DFT[Double] |> XTSeries[Double](values.map(x =>(x -min)/delta).toArray))
 
-	  		/**
-	  		 * Method to generate datasets for testing
-	  		 */
-      def testDataset(f: Double =>Double): DblMatrix = createDatasets(f, Range(0, DATA_SIZE)).map(Array[Double](_))
+			val freQ = freq.toArray
+							.zipWithIndex
+							.sortWith( _._1 > _._1 )
+			freQ.take(SPECTRUM).map( _._2.toDouble/DATA_SIZE)
+		}
 
-    		  /**
-    		   * Our test functions.
-    		   */
-      val g = (x: Double) => Math.cos(ALPHA*x)
-      val h = (x: Double) => if( x >= 0.49 && x <= 0.51) 1.0 else 0.0
+		/**
+		 * Method to generate datasets for testing
+		 */
+		def testDataset(f: Double =>Double): DblMatrix = createDatasets(f, Range(0, DATA_SIZE))
+																.map(Array[Double](_))
+
+		/**
+		 * Our test functions.
+		 */
+		val g = (x: Double) => Math.cos(ALPHA*x)
+		val h = (x: Double) => if( x >= 0.49 && x <= 0.51) 1.0 else 0.0
       
-      	/**
-      	 * Scoring function. The linear comparison is used instead of the Gaussian 
-      	 * distribution because the standard deviation is very small and potentially
-      	 * introduces significant rounding errors
-      	 */
-      def scoring(x: Double*): Double = Math.abs(x(2) - x(0))
+		/**
+		 * Scoring function. The linear comparison is used instead of the Gaussian 
+		 * distribution because the standard deviation is very small and potentially
+		 * introduces significant rounding errors
+		 */
+		def scoring(x: Double*): Double = Math.abs(x(2) - x(0))
       	
-      Try {
-	      val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
-	      Display.show(s"NaiveBayesEval.run model\n${nb.toString}", logger)
+		Try {
+			val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
+			Display.show(s"$name Trained model for function classification\n${nb.toString}", logger)
 	      
-	      val gr = nb |> XTSeries(testDataset(g))
-	      Display.show(s"NaiveBayesEval.run class: ${gr(0)}", logger)
+			val gr = nb |> XTSeries(testDataset(g))
+			Display.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", logger)
 	      	      
-	      val hr = nb |> XTSeries(testDataset(h))
-	      Display.show(s"NaiveBayesEval.run class: ${hr(0)}", logger)
-      } match {
-      	 case Success(res) => res
-      	 case Failure(e) => Display.error("NaiveBayesEval.run", logger, e)
-      }
-      
+			val hr = nb |> XTSeries(testDataset(h))
+			Display.show(s"$name Naive Bayes  classification for 'if(x ~ 0.5) 1.0 else 0' class: ${hr(0)}", logger)
+		}
+		match {
+			case Success(res) => res
+			case Failure(e) => Display.error(s"name.run Naive Bayes Function classification failed", logger, e)
+		}
 	}
 }
 

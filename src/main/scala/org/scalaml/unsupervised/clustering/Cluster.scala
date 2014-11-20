@@ -24,7 +24,9 @@ import XTSeries._
 		 * it contains. The membership of data points to this cluster is done through their index.
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
 		 * contains two data points with the same index.<br>
-		 * <b>center</b> Initial centroid for this cluster</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>center</b>  Initial centroid for this cluster
+		 * </span></pre></p>
 		 * @constructor Instantiate a cluster with an initial centroid. 
 		 * @throws IllegalArgumenException if the center is undefined (null)
 		 * 

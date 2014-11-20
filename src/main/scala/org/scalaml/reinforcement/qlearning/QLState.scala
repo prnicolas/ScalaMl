@@ -15,10 +15,12 @@ import org.scalaml.core.types.ScalaMl._
 		/**
 		* <p>State in the Q-learning. A state is uniquely defined by its identifier and the list of actions that transition
 		* from this state to another state. The list of actions is empty if this state is a goal. A state may have properties of
-		* type T that is independent from the state transition.<br><br>
-		* <b>id</b> Identifier for the state.<br>
-		* <b>actions</b> List of actions for that transition from this state to other states. Each action transition the model to single state.<br>
-		* <b>prop</b> Optional property of this state.
+		* type T that is independent from the state transition.<br>
+		* <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		* <b>id</b>        Identifier for the state.
+		* <b>actions</b>   List of actions for that transition from this state to other states. Each action transition the model to single state.
+		* <b>prop</b>      Optional property of this state.
+		* </span></pre></p>
 		* @constructor Create a state for Q-learning. 
 		* @throws IllegalArgument is list of actions is undefined or the id negative
 		* 

@@ -22,13 +22,15 @@ import scala.collection.mutable.ArrayBuffer
 
 
 		/**
-		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.<br><br>
-		 * <b>alpha</b> Learning rate for the Q-Learning algorithm.<br>
-		 * <b>gamma</b> Discount rate for the Q-Learning algorithm.<br>
-		 * <b>episodeLength</b> Number of iteration per episode.<br>
-		 * <b>numEpisodes</b> Number of episodes used during training.<br>
-		 * <b>minCoverage</b> Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.<br>
-		 * <b>neighbors</b> Function that list the available states neighbors to the current state during execution. </p>
+		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>alpha</b>            Learning rate for the Q-Learning algorithm.
+		 * <b>gamma</b>            Discount rate for the Q-Learning algorithm.
+		 * <b>episodeLength</b>    Maximum number of states visited per episode.
+		 * <b>numEpisodes</b>      Number of episodes used during training.
+		 * <b>minCoverage</b>      Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.
+		 * <b>neighbors</b>        Function that list the available states neighbors to the current state during execution. 
+		 * </span></pre></p>
 		 * @constructor Create a configuration for the Q-learning algorithm. 
 		 * @throws IllegalArgumentException if alpha, gamma or maximum iteration are out of range
 		 * 

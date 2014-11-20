@@ -35,9 +35,11 @@ object HMMForm extends Enumeration {
 
 
 		/**
-		 * <p>Generic model for dynamic programming algorithms used in HMM.<br><br>
-		 * <b>lambda</b> Lambda model for HMM<br>
-		 * <b>obs</b>  Observations for the HMM</p>
+		 * <p>Generic model for dynamic programming algorithms used in HMM.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>lambda</b>   Lambda model for HMM
+		 * <b>obs</b>      Observations for the HMM
+		 * </span></pre></p>
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
 		 * @author Patrick Nicolas
 		 * @since March 29, 2014
@@ -62,8 +64,10 @@ object HMMModel {
 	/**
 	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
 	 * the evaluation form of the HMM.<br>
-	 * <b>lambda</b> Lambda (pi, A, B) model for the HMM<br>
-	 * <b>obs</b> Array of observations as integer (categorical data)</p>
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>lambda</b>   Lambda (pi, A, B) model for the HMM
+	 * <b>obs</b>      Array of observations as integer (categorical data)
+	 * </span></pre></p>
 	 * 
 	 * @author Patrick Nicolas
 	 * @since March 29, 2014
@@ -89,10 +93,12 @@ import HMMForm._
 		/**
 		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
 		 * three canonical forms (Decoding, training and evaluation).<br>
-		 * <b>lambda</b> lambda model generated through training or used as input for the evaluation and decoding phase<br>
-		 * <b>form</b> Canonical form (evaluation or decoding) used in the prediction of sequence<br>
-		 * <b>maxIters</b>  maximum number of iterations used in the Baum-Welch algorithm<br>
-		 * <b>f</b> Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>lambda</b>    lambda model generated through training or used as input for the evaluation and decoding phase
+		 * <b>form</b>      Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * <b>maxIters</b>  Maximum number of iterations used in the Baum-Welch algorithm
+		 * <b>f</b>         Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
+		 * </span></pre></p>
 		 * @constructor Create a HMM algorithm with either a predefined Lambda model for evaluation and prediction or a Lambda model to generate through training
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 

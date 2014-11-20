@@ -22,10 +22,12 @@ import org.scalaml.core.types.ScalaMl.XYTSeries
 		 * The prior consists of a label (index), the mean of the prior of each dimension of the model,
 		 * the standard deviation of the prior of each dimension of the model and the class likeliHood.<br>
 		 * The Naive Bayes assume that the dimension of the model are independent, making the log of 
-		 * the prior additive.<br><br>
-		 * <b>label</b> Name or label of the class or prior for which the likelihood is computed.<br>
-		 * <b>muSigma</b> Array of tuples (mean, standard deviation) of the prior observations for the model.<br>
-		 * <b>prior</b> Probability of occurrence for the class specified by the label.</p> 
+		 * the prior additive.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>label</b>      Name or label of the class or prior for which the likelihood is computed.
+		 * <b>muSigma</b>    Array of tuples (mean, standard deviation) of the prior observations for the model
+		 * <b>prior</b>      Probability of occurrence for the class specified by the label.
+		 * </span></pre></p> 
 		 * @constructor Create a likelihood for a specific class. 
 		 * @throws IllegalArgumentException if the array of mean and standard deviation of the likelihood is undefined 
 		 * of if the class likelihood is out of range ]0,1]

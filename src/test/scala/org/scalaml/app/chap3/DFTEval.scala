@@ -41,11 +41,10 @@ object DFTEval extends FilteringEval {
                             
 	def run(args: Array[String]): Int = {
 		Try {
-			if( args == null && args.length == 0) 
+			if( args == null || args.size == 0) 
 				runSimulation
 			else 
 				runFinancial(args(0))
-	//		Display.show("DFTEval.run completed", logger)
 		} 
 		match {
 			case Success(n) => n
@@ -63,14 +62,14 @@ object DFTEval extends FilteringEval {
      
 		val frequencies = DFT[Double] |> XTSeries[Double](values)
 		DataSink[Double]("output/chap3/smoothed.csv") write frequencies
-		Display.show(s"$name Results simulation: ${ScalaMl.toString(frequencies.toArray, "x/1025", true)}", logger)
+		Display.show(s"$name Results simulation (first 512 frequencies): ${ScalaMl.toString(frequencies.toArray.take(512), "x/1025", true)}", logger)
 	}
    
 	import DTransform._
 	private def runFinancial(symbol: String): Int  = {
 		import ScalaMl._
 		
-		Display.show(s"\n$name Discrete Fourier series with financial data", logger)
+		Display.show(s"\n$name Discrete Fourier series with financial data $symbol", logger)
 		val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
      
 		val price = src |> YahooFinancials.adjClose  
@@ -83,7 +82,7 @@ object DFTEval extends FilteringEval {
 		val filtered = res.map( x => if(x > thresholdValue) x else 0.0)
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
 		
-		Display.show(s"$name Results financial data: ${ScalaMl.toString(filtered, "DTF filtered", true)}", logger)
+		Display.show(s"$name Results financial data(first 512 frequencies): ${ScalaMl.toString(filtered.take(512), "DTF filtered", true)}", logger)
 	}
 }
 

@@ -17,9 +17,11 @@ import SVMModel._
 
 		/**
 		 * <p>Defined a model for support vector machine. The model is composed of the svm_model
-		 * parameters of LIBSVM library and the accuracy computed during training.<br><br>
-		 * <b>svmmodel</b>	LIBSVM model<br>
+		 * parameters of <b>LIBSVM</b> library and the accuracy computed during training.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>svmmodel</b>	Model parameters as defined in <b>LIBSVM</b>
 		 * <b>accuracy</b>	Accuracy of the training process
+		 * </span></pre></p>
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
 		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
 		 * @author Patrick Nicolas

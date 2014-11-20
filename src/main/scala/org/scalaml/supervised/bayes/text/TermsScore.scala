@@ -22,10 +22,12 @@ import TermsScore._
 import DocumentsSource._
 
 		/**
-		 * <p>Class to extract and score terms extracted from a set of news articles.<br><br>
-		 * <b>toDate</b> Function to convert a string date into a Long.<br>
-		 * <b>toWords</b> Function to extracts an array of a keywords from a line.
-		 * <b>lexicon</b> Simple dictionary or map of tuples (words, stem word)
+		 * <p>Class to extract and score terms extracted from a set of news articles.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>toDate</b>    Function to convert a string date into a Long.
+		 * <b>toWords</b>   Function to extracts an array of a keywords from a line.
+		 * <b>lexicon</b>   Simple dictionary or map of tuples (words, stem word)
+		 * </span></pre></p>
 		 * @constructor Instantiates a terms extractor and scoring class. 
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @throws ImplicitNotFoundException if ordering is not defined prior the instantiation of this class

@@ -22,11 +22,13 @@ import org.apache.log4j.Logger
 		 * 1/(1 + exp(-(w0 + w1.x1 + w2.x2)).<br>
 		 * The training (extraction of the weights) is computed as part of the instantiation of the class so 
 		 * the model is either complete or undefined so classification is never done on incomplete (or
-		 * poorly trained) model (computation error, maximum number of iterations exceeded).<br><br>
-		 * <b>labels</b> Data used to train a model<br>
-		 * <b>maxIters</b> Maximum number of iterations used during training<br>
-		 * <b>eta</b> slope used in the computation of the gradient<br>
-		 * <b>eps</b> convergence criteria used to exit the training loop.</p>
+		 * poorly trained) model (computation error, maximum number of iterations exceeded).<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>labels</b>     Data used to train a model
+		 * <b>maxIters</b>   Maximum number of iterations used during training
+		 * <b>eta</b>        Slope used in the computation of the gradient
+		 * <b>eps</b>        Convergence criteria used to exit the training loop.
+		 * </span></pre></p>
 		 * @constructor Create a logistic regression for binary classification 
 		 * @throws IllegalArgumentException if labels are undefined, or the values of maxIters, eta or eps are out of range
 		 * 

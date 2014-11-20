@@ -25,11 +25,13 @@ import DataSource._
 
 		/**
 		 * <p>Generic class to load or save files into either HDFS or local files system.<br>
-		 * <b>pathName</b> Relative path for the data files.<br>
-		 * <b>normalize</b> Flag to normalize data within the range [0,1].<br>
-		 * <b>reverseOrder</b> Flag to re-order/index the data from the last entry to the first entry.<br> 
-		 * <b>headerLines</b> Number of header lines in the file.
-		 * <b>srcFilter</b> Source filter applied to the data source stream.
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>pathName</b>       Relative path for the data files.
+		 * <b>normalize</b>      Flag to normalize data within the range [0,1].
+		 * <b>reverseOrder</b>   Flag to re-order/index the data from the last entry to the first entry.
+		 * <b>headerLines</b>    Number of header lines in the file.
+		 * <b>srcFilter</b>      Source filter applied to the data source stream.
+		 * </span></pre></p>
 		 * @constructor Create a data source. 
 		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value is out of range
 		 * 

@@ -23,8 +23,11 @@ import TermsScore._
 
 		/**
 		 * <p>Class to organize news articles as map of relative frequency of specific keywords extracted from those 
-		 * articles. The tuple (keywords, rel. frequency) are ranked by their date. Dates are implemented as <b>Long</b> for simplicity's sake.<br><br>
-		 * <b>order</b> Implicit ordering instance used in ranking the articles by date.
+		 * articles. The tuple (keywords, rel. frequency) are ranked by their date. Dates are implemented 
+		 * as <b>Long</b> for simplicity's sake.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>order</b>   Implicit ordering instance used in ranking the articles by date.
+		 * </span></pre></p>
 		 * @constructor Create a map of news articles, classified and ordered by their release dates. 
 		 * @throws ImplicitNotFound exception is ordering is not defined prior instantiating this class
 		 * 

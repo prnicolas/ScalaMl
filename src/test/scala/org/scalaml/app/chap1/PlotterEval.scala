@@ -53,17 +53,17 @@ object PlotterEval extends Eval {
 			
 			Display.show(s"$name Line plot for CSCO stock normalized volume", logger)
 			val theme1 = new LightPlotTheme
-			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock", "Volume", "r"), theme1)
+			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock volume", "Volume", "r"), theme1)
 			plotter1.display(normVolume, 200, 200, 1)
 			
 			Display.show(s"$name Line plot for CSCO stock volatility", logger)
 			val theme2 = new BlackPlotTheme
-			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock", "Volatility", "r"), theme2)
+			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock Volatility", "Volatility", "r"), theme2)
 			plotter2.display(volatility, 300, 100, 1)
 		    	
 			Display.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
 			val theme3 = new LightPlotTheme
-			val plotter3 = new ScatterPlot((s"$name: CSCO 2012-2013 Stock", "Volatility vs. Volume", "r"), theme3)
+			val plotter3 = new ScatterPlot((s"$name: CSCO 2012-2013 Stock volatility vs. volume", "Volatility vs. Volume", "r"), theme3)
 			plotter3.display(volatility_volume, 200, 200)
 		    
 			src.close

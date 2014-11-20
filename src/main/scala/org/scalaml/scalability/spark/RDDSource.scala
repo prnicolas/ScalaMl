@@ -30,12 +30,14 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
 	/**
-	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br><br>
-	 * <b>pathName</b> Relative path for data sources<br>
-	 * <b>normalize</b> Flag to specify normalize of data [0, 1]<br>
-	 * <b>reversedOrder</b> Specify that the order of the data in the CSV file has to be revered before processing<br>
-	 * <b>headerLines</b> Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)<br>
-	 * <b>config</b> Configuration for the Spark RDDs
+	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br>
+	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+	 * <b>pathName</b>       Relative path for data sources
+	 * <b>normalize</b>      Flag to specify normalize of data [0, 1]
+	 * <b>reversedOrder</b>  Specify that the order of the data in the CSV file has to be revered before processing
+	 * <b>headerLines</b>    Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
+	 * <b>config</b>         Configuration for the Spark RDDs
+	 * </span></pre></p>
 	 * @constructor Create a RDD associated to a source of data of type DataSource
 	 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
 	 * @see org.scalaml.workflow.data.DataSource

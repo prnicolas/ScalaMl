@@ -14,26 +14,36 @@ import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 
-	/**
-	 * <p>Pre-processing module used in the workflow. This module is "injected" at run-time
-	 * to build a dynamic computation workflow.</p>
-	 */
+
+		/**
+		 * <p>Pre-processing module used in the workflow. This module is "injected" at run-time
+		 * to build a dynamic computation workflow.</p>
+		 * @author Patrick Nicolas
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 */
 trait PreprocModule[-T, +U] {
    val preProc: PipeOperator[T, U]
 }
 
-	/**
-	 * <p>Processing module used in the workflow. This module is "injected" at run-time
-	 * to build a dynamic computation workflow.</p>
-	 */
+		/**
+		 * <p>Processing module used in the workflow. This module is "injected" at run-time
+		 * to build a dynamic computation workflow.</p>
+		 * @author Patrick Nicolas
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 */
 trait ProcModule[-T, +U] {
    val proc: PipeOperator[T, U]
 }
 
-	/**
-	 * <p>Post-processing module used in the workflow. This module is "injected" at run-time
-	 * to build a dynamic computation workflow.</p>
-	 */
+		/**
+		 * <p>Post-processing module used in the workflow. This module is "injected" at run-time
+		 * to build a dynamic computation workflow.</p>
+		 * @author Patrick Nicolas
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 */
 trait PostprocModule[-T, +U] {
    val postProc: PipeOperator[T, U]
 }
@@ -44,6 +54,9 @@ trait PostprocModule[-T, +U] {
 		/**
 		 * <p>Generic workflow using stackable traits/modules which instances
 		 * are initialize at run-time.</p>
+		 * @author Patrick Nicolas
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
 		 */
 class Workflow[T, U, V, W] {
   self: PreprocModule[T, U] with ProcModule[U, V] with PostprocModule[V, W] =>

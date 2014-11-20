@@ -26,11 +26,13 @@ import org.scalaml.util.Display
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
-		 * This MLP uses the online training strategy suitable for time series.<br><br>
-		 * <b>config</b> configuration parameters class for the MLP<br>
-		 * <b>xt</b> time series of features in the training set<br>
-		 * <b>labels</b> labeled or target observations used for training<br>
-		 * <b>objective</b> Objective of the model (classification or regression)</p>
+		 * This MLP uses the online training strategy suitable for time series.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>     Configuration parameters class for the MLP
+		 * <b>xt</b>         Time series of features in the training set
+		 * <b>labels</b>     Labeled or target observations used for training
+		 * <b>objective</b>  Objective of the model (classification or regression)
+		 * </span></pre></p>
 		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. 
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * 

@@ -28,10 +28,12 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Definition of the Ridge regression (linear least squares regression
 		 * with a L2 penalty form). The training is executed during the instantiation
-		 * of the class.<br><br>
-		 * <b>xt</b> Time series of features observations<br>
-		 * <b>y</b> target or labeled output values<br>
-		 * <b>lambda</b> L2 penalty factor.</p>
+		 * of the class.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>       Time series of features observations
+		 * <b>y</b>        Target or labeled output values
+		 * <b>lambda</b>   L2 penalty factor.
+		 * </span></pre></p>
 		 * @constructor Instantiates a Ridge regression model. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
 		 * @see org.apache.commons.math3.stat.regression

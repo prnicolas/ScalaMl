@@ -23,8 +23,10 @@ import scala.collection.mutable.TreeSet
 		/**
 		 * <p>Trading Strategy defined as a list of trading signals. The signals are linked through
 		 * OR boolean operator IF( signal1 == true OR signal2 == true OR .../<br>
-		 * <b>name</b> Id or name of the strategy<br>
-		 * <b>signals</b> List or sequence of trading signals used in this strategy.</p>
+		 * <per>
+		 * <b>name</b>    Identifier or name of the strategy
+		 * <b>signals</b> List or sequence of trading signals used in this strategy.
+		 * </span></pre></p>
 		 * @constructor Create an instance of a trading strategy 
 		 * @throws IllegalArgumenException if the list of signals is either undefined or empty
 		 * 
@@ -42,9 +44,10 @@ case class TradingStrategy(val name: String, signals: List[Signal]) {
 		 * the trading strategy. The strategies are generated as the list of all combination of nSignals trading
 		 * signals, once and only once when requested. The Factory is mainly used for initializing the population for the genetic algorithm or the
 		 * extended learning classifiers.<br>
-		 * <b>nSignals</b> Number of trading signals used in any trading strategy.<br>
-		 * <b>discr</b> Discretization function to convert signal to discrete value and vice versa</p>
-		 * 
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>nSignals</b>   Number of trading signals used in any trading strategy.
+		 * <b>discr</b>      Discretization function to convert signal to discrete value and vice versa
+		 * </span></pre></p>
 		 * @constructor Instantiate a factory for all the combination of nSignals trading signals.
 		 * @throws IllegalArgumentException if the number of signals is less than 1
 		 * 

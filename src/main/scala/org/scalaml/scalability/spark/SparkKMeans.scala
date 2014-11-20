@@ -27,11 +27,13 @@ import org.scalaml.core.design.PipeOperator
 			/**
 			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
 			 * training during instantiation of objects in order to reduce their life-cycle.<br>
-			 * The algorithm implements the default data transformation interface, PipeOperator.<br><br>
-			 * <b>kMeansConfig</b> Configuration of the Spark KMeans<br>
-			 * <b>rddConfig</b> Configuration parameters for the Spark RDD<br>
-			 * <b>xt</b> Time series used for the training of the Spark KMeans<br>
-			 * <b>sc</b> implicit spark context.</p>
+			 * The algorithm implements the default data transformation interface, PipeOperator.<br>
+			 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+			 * <b>kMeansConfig</b>  Configuration of the Spark KMeans
+			 * <b>rddConfig</b>     Configuration parameters for the Spark RDD
+			 * <b>xt</b>            Time series used for the training of the Spark KMeans
+			 * <b>sc</b>            implicit spark context.
+			 * </span></pre></p>
 			 * @constructor Create a wrapper for the Spark K-means algorithm. 
 			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
 			 * 

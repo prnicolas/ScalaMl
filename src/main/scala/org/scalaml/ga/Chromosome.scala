@@ -18,8 +18,10 @@ import scala.util.Random
 		/**
 		 * <p>Class that implements a parameterized chromosome using an encoding scheme and
 		 * an objective/fitness function. A chromosome is a container or list of Gene that
-		 * represents candidate solution to a problem or candidate model to a dataset.<br><br>
-		 * <b>code</b>  List of Genes or variants (subclassing Gene) composing this chromosomes.</p>
+		 * represents candidate solution to a problem or candidate model to a dataset.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>code</b>  List of Genes or sub typescomposing this chromosomes.
+		 * </span></pre></p>
 		 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
 		 * 

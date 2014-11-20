@@ -31,7 +31,7 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
-final protected class DKalmanEval extends FilteringEval {
+final class DKalmanEval extends FilteringEval {
 	import YahooFinancials._, ScalaMl._
 	val name: String = "DKalmanEval"
    
@@ -91,6 +91,10 @@ final protected class DKalmanEval extends FilteringEval {
 			case Failure(e) => Display.error(s"$name Failed", logger, e)
 		}
 	}
+}
+
+object DKalmanEval {
+	def apply: DKalmanEval = new DKalmanEval
 }
 
 // --------------------------------------  EOF -------------------------------

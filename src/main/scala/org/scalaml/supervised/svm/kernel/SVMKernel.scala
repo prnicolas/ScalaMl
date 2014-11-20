@@ -59,8 +59,10 @@ object LinearKernel extends SVMKernel {
 
 		/**
 		 * <p>Definition of the Radial Basis Kernel function. The radial basis function is implemented
-		 * as a Gaussian function.<br><br>
-		 * <b>gamma</b> gamma or scaling parameter for the RBF kernel.</p>
+		 * as a Gaussian function.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>gamma</b>   Gamma or scaling parameter for the RBF kernel.
+		 * </span></pre></p>
 		 * @constructor create a Radial Basis function kernel,
 		 * @throws IllegalArgumentException if gamma is negative or null
 		 * 
@@ -88,8 +90,10 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the Sigmoid Kernel function.<br><br>
-		 * <b>gamma</b> gamma or scaling parameter for the Sigmoid kernel.</p>
+		 * <p>Definition of the Sigmoid Kernel function.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>gamma</b>    Gamma or scaling parameter for the <b>Sigmoid</b> kernel.
+		 * </span></pre></p>
 		 * @throws IllegalArgumentException if gamma is negative or null
 		 * 
 		 * @author Patrick Nicolas
@@ -116,10 +120,12 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the polynomial Kernel function.<br><br>
-		 * <b>gamma</b> gamma or scaling parameter for the polynomial kernel<br>
-		 * <b>coef0</b> b coefficient (order 0) for the polynomial kernel<br>
-		 * <b>degree</b> degree or power of the polynomial kernel.</p>
+		 * <p>Definition of the polynomial Kernel function.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>gamma</b>    Gamma or scaling parameter for the polynomial kernel
+		 * <b>coef0</b>    Intercept or coefficient of order 0 for the polynomial kernel<
+		 * <b>degree</b>   Degree or power of the polynomial kernel.
+		 * </span></pre></p>
 		 * @constructor Create a polynomial kernel functionj with a given gamma, intercept coef and degree
 		 * @throws IllegalArgumentException if gamma is negative or null or if degree < 1
 		 * 

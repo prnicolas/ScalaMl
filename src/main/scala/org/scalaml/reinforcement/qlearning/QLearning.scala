@@ -23,9 +23,11 @@ import org.scalaml.core.design.Model
 
 
 		/**
-		 * <p>Define a model for the Q-learning algorithm as the tuple <optimum policy, training epoch coverage>.<br><br>
-		 * <b>bestPolicy</b> Best policy computed or estimated during training.<br>
-		 * <b>coverage</b> Ratio of training trial or epochs that reach a predefined goal state.</p>
+		 * <p>Define a model for the Q-learning algorithm as the tuple <optimum policy, training epoch coverage>.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>bestPolicy</b>    Best policy computed or estimated during training.
+		 * <b>coverage</b>      Ratio of training trial or epochs that reach a predefined goal state.
+		 * </span></pre></p>
 		 * @constructor Model created during training of Q-learning. 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
@@ -44,7 +46,12 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  exten
 		 * The implementation does not assume that every episode (or training cycle) is successful. 
 		 * At completion of the training, the ratio of labels over initial training set is computed.
 		 * The client code is responsible to evaluate the quality of the model by testing the ratio
-		 * gamma a threshold.</p>
+		 * gamma a threshold.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>    Configuration for the Q-learning algorithm
+		 * <b>qlSpace</b>   Initial search space of states
+		 * <b>qlPolicy</b>  Initial policy for the search
+		 * </span></pre></p>
 		 * @constructor Create a Q-learning algorithm. [config] Configuration for Q-Learning algorithm. [qlSpace] Initial search space. [qlPolicy] Initial set of policies.
 		 * @throws IllegalArgumentException if the configuration, the search space or the initial policies are undefined
 		 * 
@@ -138,6 +145,19 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
   }
 
 
+		/**
+		 * <p>Input to the Q-learning search space (QLSpace) and policy (QLPolicy)<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>from</b>    Source state for the action
+		 * <b>to</b>      Target state for the action
+		 * <b>reward</b>  Reward from transitioning from <b>from</b> to <b>to</b> state
+		 * <b>prob</b>    Probability to transition between <b>from</b> and <b>to</b> states
+		 * </span></pre></p>
+		 * @constructor Create an action input to Q-learning
+		 * @author Patrick Nicolas
+		 * @since January 22, 2014
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 */
 class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
 
 		/**

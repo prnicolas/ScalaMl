@@ -24,10 +24,12 @@ import org.scalaml.util.Display
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids
 		 * are initialized at mid point of K segments of data points after the data points
 		 * are ordered by their variance.<br>
-		 * <b>K</b> Number of clusters<br>
-		 * <b>maxIters</b> Maximum number of iterations allowed for the generation of clusters.<br>
-		 * <b>distance</b> Metric used in computing distance between data points.<br>
-		 * <b>m</b> implicit declaration of manifest of type T to overcome Java erasure of type Array[T] when converting Array of T to Array of double and vice vers</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>K</b>         Number of clusters
+		 * <b>maxIters</b>  Maximum number of iterations allowed for the generation of clusters.
+		 * <b>distance</b>  Metric used in computing distance between data points.
+		 * <b>m</b>         Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
+		 * </span></pre></p>
 		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric. 
 		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 
 		 * iterations is out of range or if the distance metric is undefined.

@@ -35,10 +35,14 @@ case class XcsSensor(val id: String, val value: Double)
 		 * credit to individual rules that improve the performance (or objective
 		 * function) of a system.<br>
 		 * This implementation assumes that the new data (Signal) and reward following the
-		 * previous set of actions on the system are collected at the same time.</p>
-		 * @constructor Create an extended learning classifiers. [config] Configuration the XCS algorithm (GA and Q-Learning parameters). [input] Training episodes used to create the Q-Learning model. [score] Chromosome scoring function. [population] Initial population of classifiers or rule.
-		 * @param config for the XCS algorithm (GA and Q-Learning parameters)
-		 * @param qLabels training episodes used to create the Q-Learning model
+		 * previous set of actions on the system are collected at the same time.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>        Configuration for the XCS algorithm (GA and Q-Learning parameters)
+		 * <b>population</b>    Initial population for the search space of classifiers
+		 * <b>score</b> 		Chromosome scoring function
+		 * <b>input</b>			Input for Q-learning state transition space QLSpace used in training
+		 * </span></pre></p> 
+		 * @constructor Create an extended learning classifiers system.
 		 * @throws IllegalArgumenException if the configuration, input information or training episodes is undefined
 		 * 
 		 * @author Patrick Nicolas

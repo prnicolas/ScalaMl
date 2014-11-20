@@ -31,9 +31,9 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		/**
 		 * <p>Parameterized simple moving average data transformation. The computation is implemented
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
-		 * arithmetic operation on elements of the time series.<br><br>
-		 * <b>period</b> Period or duration of the window in the moving average<br>
-		 * <b>num</b> Implicit numeric required for the summation of values of type T. </p>
+		 * arithmetic operation on elements of the time series.<br></p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;"><b>period</b>  Period or duration of the window in the moving average
+		 * <b>num</b>     Implicit numeric required for the summation of values of type T.</span></pre>
 		 * @constructor Create a simple moving average
 		 * @throws IllegalArgumentExceptionif period is non positive
 		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior instantiation of the moving average
@@ -43,7 +43,8 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
 @implicitNotFound("SimpleMovingAverage Numeric bound has to be implicitly defined for the Simple moving average")
-final protected class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)(implicit num: Numeric[T]) extends MovingAverage[T] {
+final protected class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)(implicit num: Numeric[T]) 
+				extends MovingAverage[T] {
 	require( period > 0 && period < 1e+4, s"SimpleMovingAverage Cannot compute moving average with an incorrect $period")
    
 		/**
@@ -97,9 +98,11 @@ object SimpleMovingAverage {
 
 		/**
 		 * <p>Parameterized exponential moving average data transformation. The computation is implemented
-		 * by the pipe operator |>.<br><br>
-		 * <b>period</b> Period of the window in the moving average.<br>
-		 * <b>alpha</b> Decay factor for the exponential moving average.</p>
+		 * by the pipe operator |>.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *  <b>period</b>  Period of the window in the moving average.
+		 *  <b>alpha</b>   Decay factor for the exponential moving average.
+		 * </span></pre></p>
 		 * @constructor Create an exponential moving average
 		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
@@ -148,8 +151,10 @@ object ExpMovingAverage {
 
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
-		 * by the pipe operator |>.<br><br>
-		 * <b>weights</b> Weights (or coefficients) used in the time window
+		 * by the pipe operator |>.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>weights</b>   Weights (or coefficients) used in the time window
+		 * </span></pre></p>
 		 * @constructor Create a weighted moving average
 		 * @throws IllegalArgumentException if the weights are undefined or not normalized
 		 * @author Patrick Nicolas

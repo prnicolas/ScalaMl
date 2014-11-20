@@ -20,8 +20,10 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Define the replication cycle in the execution of the genetic algorithm optimizer.
 		 *  A replication cycle consists of a selection of chromosomes according to their 
-		 *  fitness/unfitness values, cross-over of pair of chromosomes and mutation<br><br>
-		 *  <b>score</b>   Scoring function of a chromosome.</p>
+		 *  fitness/unfitness values, cross-over of pair of chromosomes and mutation<br>
+		 *  <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *  <b>score</b>   Scoring function of a chromosome.
+		 *  </span></pre></p>
 		 *  @constructor Create a reproduction cycle for the genetic algorithm. 
 		 *  @throws IllegalArgumentException if the chromosome scoring function is undefined
 		 *  		 

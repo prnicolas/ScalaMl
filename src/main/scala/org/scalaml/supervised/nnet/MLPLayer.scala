@@ -21,9 +21,11 @@ import MLP._
 		 * <p>:Class that defines a MLP layer. A MLP layer is built using the
 		 * input vector and add an extra element (or neuron) to account for the intercept
 		 * weight w0. The MLP layer is fully defined by its rank in the Neuron Network with
-		 * input layer having id = 0 and the output layer having id = number of layers -1.<br><br>
-		 * <b>id</b> Identifier or rank of the MLP layer in the network.<br>
-		 * <b>len</b> Number of elements or neuron in the MLP layer.</p>
+		 * input layer having id = 0 and the output layer having id = number of layers -1.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>id</b>    Identifier or rank of the MLP layer in the network.
+		 * <b>len</b>   Number of elements or neuron in the MLP layer.
+		 * </span></pre></p>
 		 * @constructor Create a layer for a multi-layer perceptron. 
 		 * @throws IllegalArgumentException if the class parameters are incorrect
 		 * 

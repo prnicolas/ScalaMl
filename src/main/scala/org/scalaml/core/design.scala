@@ -21,8 +21,10 @@ import scala.reflect.ClassTag
 package object design {
 
 		/**
-		 * <p>Define the configuration trait used in the classifiers and optimizers.</p>
-		 * @constructor [persists] abstract value to be defined by sub-class
+		 * <p>Define the configuration trait used in the classifiers and optimizers.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *   <b>persists</b>   Abstract value to be defined by sub-classes
+		 * </span></pre></p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
@@ -32,7 +34,10 @@ package object design {
 	}
 	
 		/**
-		 * <p>Define the model trait for classification and optimization algorithms.</p>
+		 * <p>Define the model trait for classification and optimization algorithms.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *   <b>persists</b>   Abstract value to be defined by sub-classes
+		 * </span></pre></p>
 		 * @constructor [persists] abstract value to be defined by sub-class
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014

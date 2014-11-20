@@ -20,20 +20,22 @@ import org.scalaml.core.design.Config
 
 		/**
 		 * <p>Class that defines the configuration for the Multi-layer Perceptron. The validation
-		 * of the configuration/tuning parameters for the MLP is defined in this class..<br><br>
-		 * <b>alpha</b>  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)<br>
-		 * <b>eta</b>  Learning rate ]0, 1] used in the computation of the gradient of the weights during training<br>
-		 * <b>hidLayers</b> Sequence of number of neurons for the hidden layers.<br>
-		 * <b>numEpochs</b> Number of epochs or iterations allowed to train the weights/model<br>
-		 * <b>eps</b> Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error<br>		 
-		 * <b>activation</b> activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation</p?
+		 * of the configuration/tuning parameters for the MLP is defined in this class..<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>alpha</b>       Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * <b>eta</b>         Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * <b>hidLayers</b>   Sequence of number of neurons for the hidden layers
+		 * <b>numEpochs</b>   Number of epochs or iterations allowed to train the weights/model
+		 * <b>eps</b>         Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 * <b>activation</b>  Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
+		 * </span></pre></p>
 		 * @constructor Creates a configuration object for the neural network. [alpha] Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing). [eta] Learning rate ]0, 1] used in the computation of the gradient of the weights during training. [hidLayers] Sequence of number of neurons for the hidden layers. [numEpochs] Number of epochs used to train the weights/model. [eps] Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error. [activation] Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
 		 * @throws IllegalArgumentException if one of the class parameters is either out of bounds or undefined * 
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron
 		 */
-class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[Int], val numEpochs: Int, val eps: Double, val activation: Double => Double) 
+final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[Int], val numEpochs: Int, val eps: Double, val activation: Double => Double) 
 								extends Config {
 	import MLPConfig._
 	val persists = "config/mlp"

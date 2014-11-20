@@ -17,10 +17,12 @@ import scala.annotation.implicitNotFound
 
 
 		/**
-		 * <p>Class that contains basic Matrix manipulation methods<br><br>
-		 * <b>nRows</b>  Number of rows in this matrix<br>
-		 * <b>nCols</b>  Number of columns in this matrix<br>
-		 * <b>data</b> Content of this matrix, flatten as an array which size should be nRows*nCols.</p>
+		 * <p>Class that contains basic Matrix manipulation methods<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>nRows</b>   Number of rows in this matrix
+		 * <b>nCols</b>   Number of columns in this matrix
+		 * <b>data</b>    Content of this matrix, flatten as an array which size should be nRows*nCols.
+		 * </span></pre></p>
 		 *  @constructor Create a matrix with a given number of rows, columns and optional content
 		 *  @throws IllegalArgumentException if the parameters are out of bounds
 		 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior the instantiation of a matrix

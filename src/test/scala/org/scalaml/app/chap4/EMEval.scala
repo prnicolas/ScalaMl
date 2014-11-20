@@ -25,56 +25,58 @@ import org.apache.log4j.Logger
 		 * <p>Object to evaluate the Expectation-Maximization algorithm
 		 */
 object EMEval extends UnsupervisedLearningEval {
-   import org.scalaml.unsupervised.em.MultivariateEM
-   import org.scalaml.filtering.SimpleMovingAverage
-   import SimpleMovingAverage._
-   import MultivariateEM._
-    	
-   private val logger = Logger.getLogger("UnsupervisedLearningEval")
+	import org.scalaml.unsupervised.em.MultivariateEM
+	import org.scalaml.filtering.SimpleMovingAverage
+	import SimpleMovingAverage._
+	import MultivariateEM._
+    
+	val name: String = "EMEval"
+	private val logger = Logger.getLogger(name)
    
-   override def run(args: Array[String]): Int = {
-	 require(args != null && args.length == 2, "Cannot evaluate EM with undefined arguments")
-     Display.show("Evaluation of EM clustering", logger)
+	override def run(args: Array[String]): Int = {
+		require(args != null && args.length == 2, s"$name Cannot evaluate EM with undefined arguments")
+		Display.show(s"$name Evaluation of Expectation-Maximization clustering", logger)
      
-	 val K = args(0).toInt
-	 val samplingRate = args(1).toInt
-     val period = 8
-     val smAve = SimpleMovingAverage[Double](period)
+		val K = args(0).toInt
+		val samplingRate = args(1).toInt
+		val period = 8
+		val smAve = SimpleMovingAverage[Double](period)
         
-     		// extracts the observations from a set of csv files.
-     Try {
-	     require(symbolFiles.size > 0, "EMEval.run Symbol files are undefined")
+			// extracts the observations from a set of csv files.
+		Try {
+			require(symbolFiles.size > 0, s"$name.run Symbol files are undefined")
 	     
-	     val obs: DblMatrix = symbolFiles.map(sym => {
-	        val xs = DataSource(sym, path, true) |> extractor
-	        val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
+			val obs: DblMatrix = symbolFiles.map(sym => {
+				val xs = DataSource(sym, path, true) |> extractor
+				val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
 	
-	        val filtered = smAve |> values
-	        filtered.zipWithIndex
-	                .drop(period+1)
-	                .toArray
-	                .filter( _._2 % samplingRate == 0)
-	                .map( _._1)
-	     })
-	     
-	     	// If all the observations are valid
-	     if( obs.find( _ == Array.empty) == None) {  	 
-	        val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
-		    components.foreach( x => {
-		       Display.show(s"\n${x._1}\nMeans: ", logger)
-		       Display.show(x._2.toSeq, logger)
-		       Display.show("Standard Deviations", logger)
-		       Display.show(x._3.toSeq, logger)
+				val filtered = smAve |> values
+				filtered.zipWithIndex
+						.drop(period+1)
+						.toArray
+						.filter( _._2 % samplingRate == 0)
+						.map( _._1)
 			})
-			Display.show("EMEval.run completed", logger)
-		 }
-	     else 
-	    	Display.error("EMEval.run Some observations are corrupted", logger)
-	  }
-    } match {
-	   case Success(n) => n
-	   case Failure(e) => Display.error("EMEval.run", logger, e)
-    }
+	     
+				// If all the observations are valid
+			if( obs.find( _ == Array.empty) == None) {  	 
+				val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
+				components.foreach( x => {
+					Display.show(s"\n$name value: ${x._1}\n$name Means: ", logger)
+					Display.show(x._2.toSeq, logger)
+					Display.show(s"$name Standard Deviations", logger)
+					Display.show(x._3.toSeq, logger)
+				})
+				Display.show(s"$name completed", logger)
+			}
+			else 
+				Display.error(s"$name.run Some observations are corrupted", logger)
+		} 
+		match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name.run EM failed", logger, e)
+		}
+	}
 }
 
 // -----------------------------------  EOF ---------------------------------------------------

@@ -27,10 +27,12 @@ import MLPLayer._
 		 * <li>MLPConnection: Container for all the synapses between two layers</li>
 		 * </ul>
 		 * The parameters of the class and the arguments of its methods are not validated as the class 
-		 * has package scope (protected)<br><br>
-		 * <b>config</b> Configuration parameters for the MLP.<br>
-		 * <b>nInputs</b> Input value for the Network, that is the initial value of the input layer.<br>
-		 * <b>nOutputs</b> Size of the output vector.</p>
+		 * has package scope (protected)<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>     Configuration parameters for the MLP.
+		 * <b>nInputs</b>    Input value for the Network, that is the initial value of the input layer.
+		 * <b>nOutputs</b>   Size of the output vector.
+		 * </span></pre></p>
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
 		 * @constructor MLP model created during training. 
 		 * @author Patrick Nicolas

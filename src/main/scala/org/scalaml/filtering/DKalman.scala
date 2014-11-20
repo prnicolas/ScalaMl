@@ -71,11 +71,13 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 		 * time independent state transition t to t+1, the input matrix B. the measurement dependency matrix, H
 		 * and the error matrix P. This implementation uses the Apache Commons math library. The process and
 		 * measurement white noise is provided as an implicit value.<br>
-		 * <b>A</b> State transition matrix<br>
-		 * <b>B</b> Control state matrix<br>
-		 * <b>H</b> Matrix that defines the dependency of the measurement on the state of the system<br>
-		 * <b>P</b> Covariance error matrix<br>
-		 * <b>qrNoise</b> Implicit value representing the white noise for the process Q and the measurement P.</p> 
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>A</b>       State transition matrix
+		 * <b>B</b>       Control state matrix
+		 * <b>H</b>       Matrix that defines the dependency of the measurement on the state of the system<
+		 * <b>P</b>       Covariance error matrix
+		 * <b>qrNoise</b> Implicit value representing the white noise for the process Q and the measurement P.
+		 * </span></pre></p> 
 		 * @constructor Create a scalar Kalman filter
 		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
 		 * @throws ImplicitNotFoundException if the white noise is not defined prior instantiation of the DKalman class.

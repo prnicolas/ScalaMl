@@ -22,11 +22,14 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
-		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) tuple (weights, deltaWeights)<br><br>
-		 * <b>config</b> Configuration for the Multi-layer Perceptron.<br>
-		 * <b>src</b> Source (or input or upstream) neural layer to this connection<br> 
-		 * <b>dst</b> Destination (or output or downstream) neural layer for this connection.<br>
-		 * <b>mlpObjective</b> Objective of the Neural Network (binary classification, regression...)</p>
+		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) 
+		 * tuple (weights, deltaWeights)<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>config</b>       Configuration for the Multi-layer Perceptron.
+		 * <b>src</b>          Source (or input or upstream) neural layer to this connection
+		 * <b>dst</b>          Destination (or output or downstream) neural layer for this connection.
+		 * <b>mlpObjective</b> Objective of the Neural Network (binary classification, regression...)
+		 * </span></pre></p>
 		 * @constructor Create a MLP connection between two consecutive neural layer. 
 		 * @throws IllegalArgumenException if either the configuration or if the source layer or destination layer is undefined.
 		 * 

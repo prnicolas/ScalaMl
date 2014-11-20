@@ -16,10 +16,12 @@ import akka.actor.Actor
 
 
 		/**
-		 * <p>Generic controller actor that defines the three key elements of a distributed data transformation:<br><br>
-		 * <b>xt</b>: Time series to be processed<br>
-		 * <b>fct</b>: Data transformation of type PipeOperator<br>
-		 * <b>partitioner</b>: Methodology to partition a time series in segments or partitions to be processed by workers.</p>
+		 * <p>Generic controller actor that defines the three key elements of a distributed data transformation:<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xt</b>           Time series to be processed
+		 * <b>fct</b>          Data transformation of type PipeOperator
+		 * <b>partitioner</b>  Methodology to partition a time series in segments or partitions to be processed by workers.
+		 * </span></pre></p>
 		 *  @constructor Create a controller for data transformations: 
 		 *  @throws IllegalArgumentException if one of the class parameters are undefined
 		 *  

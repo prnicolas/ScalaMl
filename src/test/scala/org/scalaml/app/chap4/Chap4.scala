@@ -14,30 +14,34 @@ package org.scalaml.app.chap4
 import org.scalatest.FunSuite
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.DataSource
+import org.scalaml.app.ScalaMlTest
+import org.scalaml.app.Eval
 
-trait UnsupervisedLearningEval {
-   final val path = "resources/data/chap4/"
+trait UnsupervisedLearningEval extends Eval {
+	final val path = "resources/data/chap4/"
        
-   def run(args: Array[String] = Array.empty): Int
-   protected val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
-   protected def symbolFiles = DataSource.listSymbolFiles(path)
+	def run(args: Array[String] = Array.empty): Int
+	protected val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
+	protected def symbolFiles = DataSource.listSymbolFiles(path)
 }
 
 
-final class Chap4 extends FunSuite { 
+final class Chap4 extends ScalaMlTest { 
+	val chapter: String = "Chap 3"
+    
 	test("K-means evaluation") {
-	   val result = KMeansEval.run(Array[String]("2", "3", "4", "7", "9", "10", "13", "15"))
-	   assert(result > 0, "KMeans evaluation failed")
+		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
+		evaluate(KMeansEval, input)
 	}
 	
 	test("Expectation-Maximization evaluation") {
-		EMEval.run(Array[String]("2", "40"))
-        EMEval.run(Array[String]("3", "25"))
-        EMEval.run(Array[String]("4", "15"))
+		evaluate(EMEval, Array[String]("2", "40"))
+		evaluate(EMEval, Array[String]("3", "25"))
+		evaluate(EMEval, Array[String]("4", "15"))
 	}
 	
 	test("Principal Components Evaluation") {
-	   assert(PCAEval.run(Array.empty) >= 0, "Test.chap4 PCA test fails")
+		evaluate(PCAEval)
 	}
 }
 

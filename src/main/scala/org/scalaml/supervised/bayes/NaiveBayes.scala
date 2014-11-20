@@ -33,13 +33,14 @@ import XTSeries._
 		 * of the class to avoid having an uninitialized model. A conversion from a parameterized array, Array[T] 
 		 * to an array of double, DblVector, has to be implicitly defined for training the model.<br>
 		 * As a classifier, the method implement the generic data transformation PipeOperator and the
-		 * Supervised interface.<br><br>
-		 * <b>smoothing</b> Laplace or Lidstone smoothing factor.<br>
-		 * <b>xt</b> Input labeled time series used for training.<br>
-		 * <b>density</b> Density function used to compute the discriminant</p> 
+		 * Supervised interface.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>smoothing</b>   Laplace or Lidstone smoothing factor
+		 * <b>xt</b>          Input labeled time series used for training
+		 * <b>density</b>     Density function used to compute the discriminant
+		 * </span></pre></p> 
 		 * @constructor Instantiate a parameterized NaiveBayes model 
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
-		 * 
 		 * @author Patrick Nicolas
 		 * @since February 13, 2014
 		 * @note Scala for Machine learning Chapter 5 Naive Bayes Model

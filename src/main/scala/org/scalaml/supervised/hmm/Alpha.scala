@@ -18,9 +18,11 @@ import HMMConfig._
 
 		/**
 		 * <p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter 
-		 * is computed during instantiation.<br><br>
-		 * <b>Lambda</b> Lambda (pi, A, B) model for the HMM<br>
-		 * <b>obs</b>: Array of observations as integer (categorical data)</p> 
+		 * is computed during instantiation.<br>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>Lambda</b>   Lambda (pi, A, B) model for the HMM
+		 * <b>obs</b>      Array of observations as integer (categorical data)
+		 * </span></pre></p> 
 		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). 
 		 * @throws IllegalArgumentException if lambda, or  observations are undefined
 		 * @see org.scalaml.supervised.hmm.Pass

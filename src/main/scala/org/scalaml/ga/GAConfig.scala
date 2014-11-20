@@ -19,11 +19,12 @@ import org.scalaml.core.design.Config
 		 * <p>Configuration class that define the key parameters for the execution of the
 		 * genetic algorithm optimizer. Mutation and/or Cross-over parameters may be computed using an attenuator using the
 		 * formula  newValue = oldValue*currentIteration/maximumIterations.<br>
-		 * <b>xover</b> Value of the cross-over parameter, in the range [0.0, 1.0] used to compute the index of bit string representation of the chromosome for cross-over<br>
-		 * <b>mutate</b> Value in the range [0.0, 1.0] used to compute the index of the bit or individual to be mutate in each chromosome.<br>
-		 * <b>maxCycles</b>  Maximum number of iterations allowed by the genetic solver (reproduction cycles).<br>
-		 * <b>softLimit</b>  Soft limit function (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation during optimization.</p>
-		 * 
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <b>xover</b>      Value of the cross-over parameter, in the range [0.0, 1.0] used to compute the index of bit string representation of the chromosome for cross-over
+		 * <b>mutate</b>     Value in the range [0.0, 1.0] used to compute the index of the bit or individual to be mutate in each chromosome.
+		 * <b>maxCycles</b>  Maximum number of iterations allowed by the genetic solver (reproduction cycles).
+		 * <b>softLimit</b>  Soft limit function (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation during optimization.
+		 * </span></pre></p>
 		 * @constructor Create a configuration for the genetic algorithm. [maxPopulationSize]: maximum size of the population (number of chromosomes) allowed during the optimization, [xover] Value of the cross-over parameter, in the range [0,1] used to compute the index of bit string representation of the chromosome for cross-over, [mutate] Value in the range [0.25,0.95] used to compute the index of the bit or individual to be mutate in each chromosome, [maxNumIters]: Maximum number of iterations allowed in the optimization, [attenuatorType]: Type of attenuation function (Linear, Square or Boltzman) used to attenuate the impact of cross-over or mutation operation as the optimization goes along. 
 		 * @throws throw IllegalArgumentException if some of the parameters are out of bounds such as maxPopulationSize > 1 or rejection rate < 0.95
 		 * 	 
