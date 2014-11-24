@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap2
 
@@ -25,21 +25,30 @@ import org.scalaml.app.Eval
 
 
 	/**
-	 * <p>Singleton to test the Transform monadic representation of the Pipe Operator</p>
+	 * <p><b>Purpose</b>Singleton to evaluate the monadic data transformation using 
+	 * dependency injection</p>
 	 * 
 	 * @author Patrick Nicolas
 	 * @since February 4, 2014
+	 * @note Scala for Machine Learning Chapter 2
 	 */
 object TransformExample {
 	private val logger = Logger.getLogger("TransformExample")
+	
 	val op1 = new PipeOperator[Int, Double] {
 		override def |> : PartialFunction[Int, Double] = {
 			case n: Int if(n > 0) => Math.sin(n.toDouble)
 		}
 	}
 	
+		/**
+		 * <p>Execution of the scalatest for generic data transform. 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run: Int = { 
-		Display.show(s"TransformExample Example of Sinusoidal transformation", logger)
+		Display.show(s"** TransformExample Example of Sinusoidal transformation", logger)
 		val tform = new Transform[Int, Double](op1)
 		Display.show(s"TransformExample ${tform |> 6}", logger)
 	}
@@ -104,9 +113,16 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 object WorkflowEval extends Eval {
 	val name: String = "WorkflowEval"
 	private val logger = Logger.getLogger(name)
-   
+	
+		/**
+		 * <p>Execution of the scalatest for dependency injection. 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"\n$name Evaluation for 'log(1+x) + noise' transform", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation for 'log(1+x) + noise' transform", logger)
+		
 		val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
 		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
 							with PreprocModule[Double => Double, DblVector] 

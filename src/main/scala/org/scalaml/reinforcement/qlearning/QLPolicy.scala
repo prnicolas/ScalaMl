@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -149,13 +149,13 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		qlData(from)(to).probability
 	}
    
-	override def toString: String = s"\nQ-Policy: Reward: ${toString(REWARD)}"
+	override def toString: String = s" Reward\n${toString(REWARD)}"
 
 	def toString(varType: QLDataVar): String = { 
 		val buf = new StringBuilder
 		Range(1, numStates).foreach(i => {
 			val line = qlData(i).zipWithIndex
-						.foldLeft(new StringBuilder)((b, qj) => b.append(f"${qj._1.value(varType)}%1.2f,") )
+						.foldLeft(new StringBuilder)((b, qj) => b.append(f"${qj._1.value(varType)}%2.2f, ") )
 			line.setCharAt(line.size-1, '\n')
 			buf.append(line.toString)
 		})

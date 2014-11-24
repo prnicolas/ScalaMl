@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.ga
 
@@ -91,7 +91,7 @@ final class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 */
 	def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
 		require(score != null, "Population.select Cannot select chromosomes in a population with undefined fitness function")
-		require(cutOff > 0.0 && cutOff < 1.0, s"Population.select Cannot select with a cutoff $cutOff out of range")
+		require(cutOff > 0.0 && cutOff < 1.01, s"Population.select Cannot select with a cutoff $cutOff out of range")
 		
 		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {score(xy); s + xy.unfitness })
 		chromosomes foreach( _ /= cumul)

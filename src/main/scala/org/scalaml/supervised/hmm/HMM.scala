@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.hmm
 
@@ -14,12 +14,14 @@ package org.scalaml.supervised.hmm
 import org.scalaml.core.types.ScalaMl._
 import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.core.XTSeries
-import HMM._
 import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
+import scala.annotation.implicitNotFound
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-import HMMConfig._
+import HMM._
+
+
 
 	/**
 	 * <p>Enumeration class to specify the canonical form of the HMM</p>
@@ -33,7 +35,7 @@ object HMMForm extends Enumeration {
 }
 
 
-
+import HMMForm._
 		/**
 		 * <p>Generic model for dynamic programming algorithms used in HMM.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
@@ -78,6 +80,7 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 	protected val ct = Array.fill(lambda.getT)(0.0)
 
 	protected def normalize(t: Int): Unit = {
+		import HMMConfig._
 		require(t >= 0 && t < lambda.getT, s"Incorrect argument $t for normalization")
 		ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
 		alphaBeta /= (t, ct(t))
@@ -85,11 +88,6 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 
 	def getAlphaBeta: Matrix[Double] = alphaBeta
 }
-
-
-
-
-import HMMForm._
 		/**
 		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
 		 * three canonical forms (Decoding, training and evaluation).<br>
@@ -101,16 +99,16 @@ import HMMForm._
 		 * </span></pre></p>
 		 * @constructor Create a HMM algorithm with either a predefined Lambda model for evaluation and prediction or a Lambda model to generate through training
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
-		 * 
+		 * @throws ImplicitNotFoundException if the implicit conversion from DblVector to T is not defined prior the instantiation of the class
 		 * @author Patrick Nicolas
 		 * @since March 23, 2014
-		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 		 */
+@implicitNotFound("HMM Conversion from DblVector to type T undefined")
 final protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T)  
 				extends PipeOperator[DblVector, HMMPredictor] {
-
-	import HMM._
-	check(lambda, form, maxIters)
+	
+	check(lambda, maxIters)
 	
 	private val logger = Logger.getLogger("HMM")
 	private val state = HMMState(lambda, maxIters)
@@ -175,6 +173,7 @@ object HMM {
 	type HMMPredictor = (Double, Array[Int])
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] = 
 		new HMM[T](lambda, form, maxIters)
+		
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  
 		new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
 	
@@ -187,9 +186,8 @@ object HMM {
 	}
 	
 	val MAX_NUM_ITERS = 1024
-	private def check(lambda: HMMLambda, form: HMMForm, maxIters: Int): Unit = {
+	private def check(lambda: HMMLambda, maxIters: Int): Unit = {
 		require(lambda != null, "HMM.check Cannot execute a HMM with undefined lambda model")
-		require(form != null, "HMM.check  Cannot execute a HMM with undefined canonical form")
 		require(maxIters > 1 && maxIters < MAX_NUM_ITERS, s"HMM.check  Maximum number of iterations to train a HMM $maxIters is out of bounds")
 	}
 }

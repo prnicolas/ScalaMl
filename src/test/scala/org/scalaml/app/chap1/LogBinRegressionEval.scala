@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap1
 
@@ -25,28 +25,32 @@ import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
 		/**
-		 * <p>Test driver for the Logistic two-class Regression presented in Chapter 1.</p>
+		 * <p><b>Purpose</b>Singleton to evaluate a simple implementation of a 
+		 * two class logistic regression for a single variable</p>
 		 * @author Patrick Nicolas
 		 * @since December 22, 2013
-		 * @note Scala for Machine Learning.
+		 * @note Scala for Machine Learning chapter 1
 		 */
 object LogBinRegressionEval extends Eval {
 	import YahooFinancials._
 	val name: String = "LogBinRegressionEval"
 	
-	final val NITERS = 300
-	final val EPS = 0.02
-	final val ETA = 0.000002
-	final val path_training = "resources/data/chap1/CSCO.csv"
-	final val path_test = "resources/data/chap1/CSCO2.csv"
+	private val NITERS = 300
+	private val EPS = 0.02
+	private val ETA = 0.000002
+	private val path_training = "resources/data/chap1/CSCO.csv"
+	private val path_test = "resources/data/chap1/CSCO2.csv"
 	private val logger = Logger.getLogger(name)
     		
+
 		/**
-		 * Driver code that load, visualize and train labeled data.
-		 * Classifier is invoked on the model once training is completed.	
+		 * <p>Execution of the scalatest for <p>LogBinRegression</p> class. This method is invoked by the 
+		 * actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n$name Loading history Cisco stock for training logistic regression", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Loading history Cisco stock for training logistic regression", logger)
 		
 		load(path_training) match {
 			case Some(volatilityVolume) => {

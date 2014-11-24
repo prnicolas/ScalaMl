@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.bayes
 
@@ -58,15 +58,19 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 			post + Math.log(if(probability< MINLOGARG) MINLOGVALUE else probability)
 		}) + Math.log(prior)
 	}
-
-	override def toString: String = {
-		val colWidth = 14
-		val fmt = new DecimalFormat("#.###")
-    
-		val muSigmaStr = muSigma.foldLeft(new StringBuilder)((b, m) => 
-			b.append(Display.align(s"(${fmt.format(m._1)},${fmt.format(m._2)}) ", colWidth))).toString
-		s"${muSigmaStr}   Class likelihood: $prior"
+	
+		/**
+		 * <p>Display the content of this Likelihood class with associated labels.</p>
+		 * @param labels Label of variables used to display content
+		 */
+	def toString(labels: Array[String]): String = {
+		import org.scalaml.core.types.ScalaMl
+		ScalaMl.toString(muSigma, "Means", "Standard Deviation", true, labels) + 
+		ScalaMl.toString(prior, "Class likelihood", false)
 	}
+	
+
+	override def toString: String = toString(Array.empty)
 }
 
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.scalability.akka
 
@@ -71,8 +71,8 @@ abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 	protected def aggregate: Seq[Double]
 
 	private def split: Unit = {
-		val partIdx = partitioner.split(xt)
-		partIdx.foreach(n => router ! Activate(0, xt.slice(n, n - partIdx(0)), self) )
+		val indices = partitioner.split(xt)
+		indices.foreach(n => router ! Activate(0, xt.slice(n, n - indices(0)), self) )
 	}
 }
 

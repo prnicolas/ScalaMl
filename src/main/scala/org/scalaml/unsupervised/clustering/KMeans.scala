@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.unsupervised.clustering
 
@@ -93,7 +93,7 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 	private def initialize(xt: XTSeries[Array[T]]): List[Cluster[T]] = {
         
 		val stats = statistics(xt)   // step 1
-		val maxSDevDim = Range(0, stats.size).maxBy (stats( _ ).stdDev )
+		val maxSDevDim = Range(0, stats.size).maxBy(stats( _ ).stdDev )
 		val rankedObs = xt.zipWithIndex
 							.map( x=> (x._1(maxSDevDim), x._2) )
 							.sortWith( _._1  < _._1).toArray // 3
@@ -101,7 +101,7 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		val halfSegSize = ((rankedObs.size>>1)/K).floor.toInt
 
 		val centroids = rankedObs.filter(isContained( _, halfSegSize, rankedObs .size) )
-									.map( x => xt( x._2))
+								.map( x => xt( x._2))
 		Range(0, K).foldLeft(List[Cluster[T]]())((xs, i) => Cluster[T](centroids(i)) :: xs)
 	}
     
@@ -112,6 +112,7 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		xt.toArray.zipWithIndex.filter( x => {
 			val nearestCluster = getNearestCluster(clusters, x._1);
 			val reassigned = nearestCluster != membership(x._2) 
+			
 			clusters(nearestCluster) += x._2
 			membership(x._2) = nearestCluster
 			reassigned

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap12
 
@@ -31,41 +31,46 @@ object ParBenchmarkEval extends Eval {
 	 import scala.util.Random
 	 val name: String = "ParBenchmarkeval"
 	 private val logger = Logger.getLogger(name)
-	 
-	 
-     def run(args: Array[String]): Int = {
-		 Display.show(s"$name evaluation Scala parallel collections", logger)
+	 private val SZ = 1000000
+	 private val NUM_TASKS = 16
+	 private val evalRange = Range(1, NUM_TASKS)
+
+	 	/** <p>Execution of the scalatest for Master-worker design with Akka framework.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	 def run(args: Array[String]): Int = {
+		 Display.show(s"\n** test#${Eval.testCount} $name Scala parallel collections", logger)
 		 
 		 val mapper = new HashMap[String, Double]
 		 val mapped = mapper.map( k => (k._1, k._2/10.0))
 		 
 		 val rand = new ParVector[Float]
-		 Range(0, 1000000).foreach(n => rand.updated(n, n*Random.nextFloat))
-		 rand.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(16))
+		 Range(0, SZ).foreach(n => rand.updated(n, n*Random.nextFloat))
+		 rand.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(NUM_TASKS))
 		 val randExp = rand.map( Math.exp(_) )
 	
-		  
-		 val sz = 1000000
-		 val data = Array.fill(sz)(Random.nextDouble)
-		 val pData = ParArray.fill(sz)(Random.nextDouble)
+		 val data = Array.fill(SZ)(Random.nextDouble)
+		 val pData = ParArray.fill(SZ)(Random.nextDouble)
 		 val times: Int = 25
 		 	 
 		 val benchmark = new ParArrayBenchmark[Double](data, pData, times)
 		 
 		 val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
-		 Range(1, 16).foreach(n => benchmark.map(mapF)(n))
+		 evalRange.foreach(n => benchmark.map(mapF)(n))
 	
 		 val filterF = (x: Double) => (x > 0.8)
-		 Range(1, 16).foreach(n => benchmark.filter(filterF)(n))
+		 evalRange.foreach(n => benchmark.filter(filterF)(n))
 		 
 		 val mapData = new HashMap[Int, Double]
-		 Range(0, sz).foreach(n => mapData.put(n, Random.nextDouble) )
+		 Range(0, SZ).foreach(n => mapData.put(n, Random.nextDouble) )
 		 val parMapData = new ParHashMap[Int, Double]
-		 Range(0, sz).foreach(n => parMapData.put(n, Random.nextDouble) )
+		 Range(0, SZ).foreach(n => parMapData.put(n, Random.nextDouble) )
 		 
 		 val benchmark2 = new ParMapBenchmark[Double](mapData, parMapData, times)
-		 Range(1, 16).foreach(n => benchmark2.map(mapF)(n))
-		 Range(1, 16).foreach(n => benchmark2.filter(filterF)(n))
+		 evalRange.foreach(n => benchmark2.map(mapF)(n))
+		 evalRange.foreach(n => benchmark2.filter(filterF)(n))
 		 1
 	 }
 }

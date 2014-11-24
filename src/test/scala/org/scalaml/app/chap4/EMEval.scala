@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap4
 
@@ -18,6 +18,7 @@ import org.scalaml.core.types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
+import org.scalaml.app.Eval
 
 
 
@@ -32,10 +33,16 @@ object EMEval extends UnsupervisedLearningEval {
     
 	val name: String = "EMEval"
 	private val logger = Logger.getLogger(name)
-   
+
+		/**
+		 * <p>Execution of the scalatest for <b>MultivariateEM</b> class
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.length == 2, s"$name Cannot evaluate EM with undefined arguments")
-		Display.show(s"$name Evaluation of Expectation-Maximization clustering", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Expectation-Maximization clustering", logger)
      
 		val K = args(0).toInt
 		val samplingRate = args(1).toInt

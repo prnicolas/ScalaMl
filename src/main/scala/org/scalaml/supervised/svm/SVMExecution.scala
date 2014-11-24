@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.svm
 
@@ -38,14 +38,18 @@ protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) e
 		param.eps = eps
 	}
 
-	override def toString: String = new StringBuilder("\nCache size: ").append(cacheSize).append("\neps: ").append(eps).toString
+	override def toString: String = s"\nCache size: $cacheSize eps: $eps"
 }
 
 
 
 object SVMExecution {
-	final val DEFAULT_CACHE_SIZE=2000
+	final val DEFAULT_CACHE_SIZE = 1024
+	final val DEFAULT_EPS = 1e-5
 
+	final val MAX_CACHE_SIZE = 1<<16
+	final val EPS_LIMITS = (1e-10, 0.35)
+	
 	def apply(cacheSize: Int, eps: Double, nFolds: Int): SVMExecution = 
 		new SVMExecution(cacheSize, eps,nFolds)
 
@@ -55,12 +59,15 @@ object SVMExecution {
 	def apply(eps: Double): SVMExecution = 
 		new SVMExecution(DEFAULT_CACHE_SIZE, eps, -1)
 	
-	final val MAX_CACHE_SIZE = 1<<8
-	final val EPS_LIMITS = (1e-10, 0.35)
+	def apply: SVMExecution = 
+		new SVMExecution(DEFAULT_CACHE_SIZE, DEFAULT_EPS, -1)
+
+	
 	private def check(cacheSize: Int, eps: Double, nFolds: Int): Unit = {
-		require(cacheSize >= 0 && cacheSize < MAX_CACHE_SIZE, s"SVMExecution.check $cacheSize is out of range")
-		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, s"SVMExecution.check  $eps is out of range")
-		require(nFolds > 1 && nFolds < 10, s"SVMExecution.check THe number of folds for validtion $nFolds is out of range")
+		require(cacheSize >= 0 && cacheSize < MAX_CACHE_SIZE, s"SVMExecution.check cache size $cacheSize is out of range")
+		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, s"SVMExecution.check eps $eps is out of range")
+		require(nFolds == -1 || (nFolds > 0 && nFolds <= 10), 
+			s"SVMExecution.check Number of folds for validation $nFolds is out of range")
 	}
 }
 

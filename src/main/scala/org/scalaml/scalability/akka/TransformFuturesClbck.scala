@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.scalability.akka
 
@@ -88,7 +88,7 @@ abstract class TransformFuturesClbck(_xt: DblSeries, _fct: PipeOperator[DblSerie
 			}
 		}) 
 
-		if( aggregation.find( _ == XTSeries.empty) == None)
+		if( aggregation.find( _.isEmpty) == None)
 			aggregate(aggregation.toArray)
 		else
 			Seq.empty

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.nnet
 
@@ -106,12 +106,12 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 	   
 	override def toString: String = {
 		val buf = new StringBuilder
-		buf.append("\nConnections weights from layer ${src.id} to layer ${dst.id}\n")
+		buf.append(s"\nConnections weights from layer ${src.id} to layer ${dst.id}\n")
 
 		Range(0, dst.len).foreach( i => {
 			Range(0, src.len).foreach(j => {
 				val wij: (Double, Double) = synapses(i)(j)
-				buf.append(s"$i,$j: (${wij._1}, ${wij._2})  ")
+				buf.append(s"$i,$j: (${ScalaMl.toString(wij._1, "", false)}, ${ScalaMl.toString(wij._2, "", false)})  ")
 			})
 			buf.append("\n")
 		})

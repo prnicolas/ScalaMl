@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.core
 
@@ -93,7 +93,9 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 	def take(n: Int): XTSeries[T] = new XTSeries(label, arr.take(n))
 	def takeRight(n: Int): XTSeries[T] = new XTSeries(label, arr.takeRight(n))
   
-	def drop(n: Int):  XTSeries[T] = new XTSeries(label, arr.drop(n))
+	def drop(n: Int): XTSeries[T] = new XTSeries(label, arr.drop(n))
+	
+	def dropRight(n: Int): XTSeries[T] = new XTSeries(label, arr.dropRight(n))
   
 	def map[U: ClassTag](f: T => U): XTSeries[U] = new XTSeries[U](label, arr.map(f(_)))
   

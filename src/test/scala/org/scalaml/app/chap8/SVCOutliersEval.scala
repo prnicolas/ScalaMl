@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap8
 
@@ -25,48 +25,50 @@ import org.scalaml.app.Eval
 
 	
 object SVCOutliersEval extends Eval {
-   val name: String = "SVCOutliersEval"
-   val path = "resources/data/chap8/dividends2.csv"	
-   val NU = 0.2
-   val GAMMA = 0.5
-   val EPS = 1e-3
-   val NFOLDS = 2
+	val name: String = "SVCOutliersEval"
+	val path = "resources/data/chap8/dividends2.csv"	
+
+	val NU = 0.2
+	val GAMMA = 0.5
+	val EPS = 1e-3
+	val NFOLDS = 2
 	
-   private val logger = Logger.getLogger(name)
+	private val logger = Logger.getLogger(name)
 	
-   def run(args: Array[String]): Int = {
-	   Display.show("SVCOutliersEval Evaluation of One class Support Vector Classifier", logger)
-	   val extractor = relPriceChange :: 
-	                   debtToEquity ::
-	                   dividendCoverage ::
-	                   cashPerShareToPrice ::
-	                   epsTrend ::
-	                   dividendTrend :: List[Array[String] =>Double]()
+		/** <p>Execution of the scalatest for the one-class <b>SVC</b> for outliers.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of One class Support Vector Classifier", logger)
+		val extractor = relPriceChange :: 
+						debtToEquity ::
+						dividendCoverage ::
+						cashPerShareToPrice ::
+						epsTrend ::
+						dividendTrend :: List[Array[String] =>Double]()
 	   	   
-	   val filter = (x: Double) => if(x == 0) -1.0 else 1.0
-	   Try {
-	      val xs = DataSource(path, true, false, 1) |> extractor
+		val filter = (x: Double) => if(x == 0) -1.0 else 1.0
+		Try {
+			val xs = DataSource(path, true, false, 1) |> extractor
  	
-	      val config = SVMConfig(new OneSVCFormulation(NU), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
-	  	  val features = XTSeries.transpose(xs.take(xs.size-1))
-		  val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
+			val config = SVMConfig(new OneSVCFormulation(NU), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+			val features = XTSeries.transpose(xs.dropRight(1))
+			val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
      
-		  Display.show(s"SVCOutliersEval.run: ${svc.toString}", logger)   
+			Display.show(s"$name support vector machine model\n ${svc.toString}", logger)   
 		        
-		  svc.accuracy match {
-	  		case Some(acc) => Display.show("SVCOutliersEval.run completed", logger)
-	  		case None => Display.error("Could not validate the training set", logger)
-	  	  }
-	   } match {
-	  	  case Success(n) => n
-	  	  case Failure(e) => Display.error("SVCOutliersEval.run ", logger, e) 
-	   }
+			svc.accuracy match {
+				case Some(acc) => Display.show(s"$name completed", logger)
+				case None => Display.error(s"$name Could not validate the training set", logger)
+			}
+		} match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name.run failed to load source or train SVM", logger, e) 
+		}
 	}
 }
 
-
-object SVCOutliersEvalApp extends App {
-	SVCOutliersEval.run(Array.empty)
-}
 
 // --------------------------  EOF -----------------------------------------------

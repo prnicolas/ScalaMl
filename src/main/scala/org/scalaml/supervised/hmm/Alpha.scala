@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.hmm
 
@@ -35,35 +35,34 @@ final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) 
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
-  val alpha: Double = { 
-  	alphaBeta = lambda.initAlpha(obs)
-  	normalize(0)
-  	sumUp
-  }
+	val alpha: Double = { 
+		alphaBeta = lambda.initAlpha(obs)
+		normalize(0)
+		sumUp
+	}
 
   
-  	/**
-  	 * <p>Compute the sum  log of the conditional probability p(X|Y) for each feature. Exception
-  	 * thrown during the computation are caught in the client code.</p>
-  	 * @return sum of the logarithm of the conditional probability p(xi|Y)
-  	 */
-  def logProb: Double = foldLeft(lambda.getT, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
-  
-  private def sumUp: Double = {	 
-	 foreach(1, lambda.getT, t => {
-		updateAlpha(t)
-		normalize(t)
-	 })
-	 foldLeft(lambda.getN, (s, k) => s + alphaBeta(lambda.d_1, k))
-  }
+		/**
+		 * <p>Compute the sum  log of the conditional probability p(X|Y) for each feature. Exception
+		 * thrown during the computation are caught in the client code.</p>
+		 * @return sum of the logarithm of the conditional probability p(xi|Y)
+		 */
+	def logProb: Double = foldLeft(lambda.getT, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
+			
+	private def sumUp: Double = {	 
+		foreach(1, lambda.getT, t => {
+			updateAlpha(t)
+			normalize(t)
+		})
+		foldLeft(lambda.getN, (s, k) => s + alphaBeta(lambda.d_1, k))
+	}
 
    
-  private def updateAlpha(t: Int): Unit = 
-  	foreach(lambda.getN, i => {
-  		val newValue = lambda.alpha(alphaBeta(t-1, i), i, obs(t))
-  		println(s"$t, $i $newValue")
-  	    alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, obs(t))) 
-    })
+	private def updateAlpha(t: Int): Unit = 
+		foreach(lambda.getN, i => {
+			val newValue = lambda.alpha(alphaBeta(t-1, i), i, obs(t))
+			alphaBeta += (t, i, lambda.alpha(alphaBeta(t-1, i), i, obs(t))) 
+		})
 }
 
 		/**
@@ -72,7 +71,7 @@ final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) 
 		 * @since March 13, 2014
 		 */
 object Alpha {
-  def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
+	def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
 }
 
 

@@ -6,12 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.types.ScalaMl
 import org.scalaml.util.Matrix
 import scala.reflect.ClassTag
 import scala.util.Random
@@ -26,7 +27,10 @@ import HMMConfig._
 		 * <b>B</b>		Observations or emission probabilities matrix
 		 * <b>pi</b>	Initial state probabilities
 		 * </span></pre></p>
-		 * @constructor Create a Lambda model of type HMMLambda with a predefined state transition, emmision matrix and initial probabilities.
+		 * @constructor Create a Lambda model of type HMMLambda with a predefined state transition, Emission matrix and initial probabilities.
+		 * @param A State transition probabilities matrix
+		 * @param B Observations or emission probabilities matrix
+		 * @param pi Initial state probabilities
 		 * @throws IllegalArgumentException if the number of observations, hidden states or symbols
 		 * is out-of bounds
 		 * 
@@ -127,8 +131,8 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
   
   
 	override def toString: String = {
-		val piStr = pi.foldLeft(new StringBuilder)((b, x) => b.append(s"$x,"))
-		s"A:${A.toString}\nB:${B.toString}\npi:${piStr}"
+		val piStr = pi.foldLeft(new StringBuilder)((b, x) => b.append(s"${ScalaMl.toString(x,"", true)}") )
+		s"State transition probabilities A\n${A.toString}\nEmission probabilities B\n${B.toString}\nInitial probabilities pi\n${piStr}"
 	}
   
 	private def alpha0(j : Int, obsIndex: Int): Double = pi(j)*B(j, obsIndex)

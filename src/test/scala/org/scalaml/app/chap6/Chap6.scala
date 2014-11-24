@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap6
 
@@ -19,15 +19,15 @@ final class Chap6 extends ScalaMlTest {
 	val chapter: String = "Chap 6"
 		
 	test(s"$chapter Single linear regression evaluation") {
-	   evaluate(SingleLinearRegressionEval)
+		evaluate(SingleLinearRegressionEval)
 	}
 
 	test(s"$chapter Least squares regression trending evaluation") {
-		evaluate(MultiLinearRegressionEval, Array[String]("trend"))
+		evaluate(MultiLinearRegressionEval, Array[String]("trending"))
 	}
 	
 	test(s"$chapter Least squares regression features selection evaluation") {
-		evaluate(MultiLinearRegressionEval, Array[String]("filter"))
+		evaluate(MultiLinearRegressionEval, Array[String]("features"))
 	}
 	
 	test(s"$chapter Ridge regression evaluation") {

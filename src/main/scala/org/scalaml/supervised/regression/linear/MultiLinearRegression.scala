@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.regression.linear
 
@@ -29,8 +29,7 @@ import scala.language.implicitConversions
 		 * initialized only if the training was successful.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
 		 * <b>xt</b>    Input multi-dimensional time series for which regression is to be computed.
-		 * <b>y</b>     Labeled data for the Multivariate linear regression.
-		 * </span></pre></p>
+		 * <b>y</b>     Labeled data for the Multivariate linear regression.</span></pre></p>
 		 * @constructor Creates multi-variate linear regression
 		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
 		 * 
@@ -87,7 +86,7 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of type Double as output
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
-		case x: Feature if(x != null && model != None && x.size != model.get.size-1) =>  {
+		case x: Feature if(x != null && x.size > 0 && model != None && x.size == model.get.size-1) =>  {
 			val w = model.get.weights
 			x.zip(w.drop(1)).foldLeft(w(0))((s, z) => s + z._1*z._2)
 		}

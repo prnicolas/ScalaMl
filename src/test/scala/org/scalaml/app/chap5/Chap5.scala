@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap5
 
@@ -17,9 +17,9 @@ final class Chap5 extends ScalaMlTest {
 	val chapter: String = "Chap5"
   	 
 	test(s"$chapter Binomial Naive Bayes evaluation") {
-		evaluate(BinomialBayesEval, Array[String]("0.5", "8"))
-  	  
 		val TRAIN_VALIDATION_RATIO = "0.8"
+		evaluate(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))
+  	  
 		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "4"))
 		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "12"))
 		evaluate(BinomialBayesEval, Array[String]("NEM", TRAIN_VALIDATION_RATIO, "36"))

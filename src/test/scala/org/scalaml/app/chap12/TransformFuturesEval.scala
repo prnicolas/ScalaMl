@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap12
 
@@ -59,19 +59,24 @@ object TransformFuturesEval extends Eval {
 	val name: String = "TransformFuturesEval"
 	private val logger = Logger.getLogger(name)
 		
-	val NUM_WORKERS = 8
-	val NUM_DATA_POINTS = 1000000
-	val h = (x:Double) =>	2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
+	private val NUM_WORKERS = 8
+	private val NUM_DATA_POINTS = 1000000
+	private val h = (x:Double) =>	2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
 							Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
 							0.5*Math.cos(Math.PI*0.2*x)  +    // simulated third harmonic 
 							0.2*Random.nextDouble
 
-	val duration = Duration(10000, "millis")
+	private val duration = Duration(10000, "millis")
 	implicit val timeout = new Timeout(duration)
 	implicit val actorSystem = ActorSystem("system") 
-     
+
+		 /** <p>Execution of the scalatest for futures design with Akka framework.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$name evaluation of Akka futures", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Data transformation futures using Akka actors", logger)
 		
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)

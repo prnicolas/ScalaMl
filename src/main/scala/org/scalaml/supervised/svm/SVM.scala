@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.svm
 
@@ -109,8 +109,8 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	def margin: Option[Double] = model match {
 		case Some(m) => {	
 			val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
-			if(wNorm < config.eps)
-				Display.none("SVM.margin sum of squared errors is null", logger)
+			if(wNorm < 1e-12)
+				Display.none(s"SVM.margin sum of squared errors $wNorm is too small", logger)
 			else
 				Some(2.0/Math.sqrt(wNorm))
 		}
@@ -135,7 +135,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 			svm.svm_cross_validation(problem, config.param, config.nFolds, target)
 			target.zip(labels).filter(z => Math.abs(z._1-z._2) < 1e-3).size.toDouble/labels.size
 		}
-		case false => -1.0
+		case false => 0.0
 	}
   
   
@@ -148,7 +148,10 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 			xs
 		}).toArray
 
-	override def toString: String = if(model != None) s"\n${model.get.toString}" else "SVM model undefined"
+	override def toString: String =
+		if(model != None) 
+			s"${config.toString}\n${model.get.toString}" 
+		else "SVM model undefined"
 }
 
 

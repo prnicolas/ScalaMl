@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap8
 
@@ -27,46 +27,51 @@ import org.scalaml.app.Eval
 
 
 object SVCEval extends Eval {
-   val name: String = "SVCEval"
-   final val path = "resources/data/chap8/dividends2.csv"	
-   final val C = 1.0
-   final val GAMMA = 0.5
-   final val EPS = 1e-3
-   final val NFOLDS = 2
+	val name: String = "SVCEval"
+
+	private val path = "resources/data/chap8/dividends2.csv"	
+	private val C = 1.0
+	private val GAMMA = 0.5
+	private val EPS = 1e-3
+	private val NFOLDS = 2
 	
-   private val logger = Logger.getLogger(name)
-   def run(args: Array[String]): Int = {
-	   Display.show("SVCEval: Evaluation of Binary Support Vector Classifier", logger)
-	   val extractor = relPriceChange :: 
-	                   debtToEquity ::
-	                   dividendCoverage ::
-	                   cashPerShareToPrice ::
-	                   epsTrend ::
-	                   shortInterest :: 
-	                   dividendTrend :: 
-	                   List[Array[String] =>Double]()
+	private val logger = Logger.getLogger(name)
+
+		/** <p>Execution of the scalatest for <b>SVC</b> class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n** test#${Eval.testCount} $name Binary Support Vector Classifier", logger)
+
+		val extractor = relPriceChange :: 
+						debtToEquity ::
+						dividendCoverage ::
+						cashPerShareToPrice ::
+						epsTrend ::
+						shortInterest :: 
+						dividendTrend :: 
+						List[Array[String] =>Double]()
 	   
-	   Try {
-	       val xs = DataSource(path, true, false, 1) |> extractor
-	       val config = SVMConfig(new CSVCFormulation(C), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
-	  	   val features = XTSeries.transpose(xs.take(xs.size-1))
-		   val svc = SVM[Double](config, features, xs.last)
+		Try {
+			val xs = DataSource(path, true, false, 1) |> extractor
+			val config = SVMConfig(new CSVCFormulation(C), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+	  	  
+			val features = XTSeries.transpose(xs.dropRight(1))
+			val svc = SVM[Double](config, features, xs.last)
 		     
-		   Display.show(s"SVCEval.run ${svc.toString}", logger)
-		   svc.accuracy match {
-	  	      case Some(acc) => Display.show("SVCEval.run completed", logger)
-	  	      case None => Display.error("SVCEval.run accuracy could not be computed", logger)
-	  	   }
-	  	} match {
-	  		case Success(n) => n
-	  		case Failure(e) => Display.error("SVCEval.run Could not validate the training set", logger, e)
-	  	}
+			Display.show(s"${svc.toString}", logger)
+			svc.accuracy match {
+				case Some(acc) => Display.show(s"$name.run completed", logger)
+				case None => Display.error(s"$name.run accuracy could not be computed", logger)
+			}
+		} 
+		match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name.run Could not validate the training set", logger, e)
+		}
 	}
-}
-
-
-object SVCEvalApp extends App {
-	SVCEval.run(Array.empty)
 }
 
 

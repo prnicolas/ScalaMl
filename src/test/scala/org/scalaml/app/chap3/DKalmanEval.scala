@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap3
 
@@ -19,6 +19,7 @@ import org.scalaml.trading.YahooFinancials
 import scala.annotation.implicitNotFound
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 
 		/**
 		 * <p>Class to evaluate the Kalman filter algorithm on a time series using
@@ -35,17 +36,23 @@ final class DKalmanEval extends FilteringEval {
 	import YahooFinancials._, ScalaMl._
 	val name: String = "DKalmanEval"
    
-	val logger = Logger.getLogger(name)
+	private val logger = Logger.getLogger(name)
      
 		// Noise has to be declared implicitly
 	implicit val qrNoise = QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   
 		// Contract extractor
-	val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
-
+	private val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
+	
+		/**
+		 * <p>Execution of the scalatest for <b>DKalman</b> class 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.size > 0, s"$name Command line DKalmanEval ticker symbol")
      
-		Display.show(s"\n$name Evaluation Kalman filter with no control matrix", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation Kalman filter with no control matrix", logger)
      
 			// H and P0 are the only components that are independent from
 			// input data and smoothing factor. The control matrix B is not defined
@@ -65,7 +72,7 @@ final class DKalmanEval extends FilteringEval {
 
 			// Generate the state as a time series of pair [x(t+1), x(t)]
 			val zt_1 = zSeries.drop(1)
-			val zt = zSeries.take(zSeries.size-1)
+			val zt = zSeries.dropRight(1)
          
 			// Applied the Kalman smoothing for [x(t+1), x(t)]
 			val filtered = DKalman(A, H, P0) |> XTSeries[(Double, Double)](zt_1.zip(zt))

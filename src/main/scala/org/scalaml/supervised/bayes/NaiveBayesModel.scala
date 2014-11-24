@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.bayes
 
@@ -30,6 +30,7 @@ import NaiveBayesModel._
 abstract class NaiveBayesModel[T <% Double](val density: Density) {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
 	def classify(values: Array[T]): Int
+	def toString(labels: Array[String]): String 
 }
 
 
@@ -78,10 +79,12 @@ protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], negati
 		if (positives.score(x, density) > negatives.score(x, density)) 1 else 0
 	}
 	
-	override def toString: String = s"\nPositive cases: ${positives.toString}\nNegative cases: ${negatives.toString}"
+	override def toString(labels: Array[String]): String = {
+		s"\nPositive class\n${positives.toString(labels)}\nNegative class\n${negatives.toString(labels)}"
+	}
+	
+	override def toString: String = s"\nPositive\n${positives.toString}\nNegative\n${negatives.toString}"
 }
-
-
 
 
 		/**
@@ -127,6 +130,14 @@ protected class MultiNaiveBayesModel[T <% Double](likelihoodSet: List[Likelihood
 	override def classify(x: Array[T]): Int = {
 		require(x != null && x.size > 0, "MultiNaiveBayesModel.classify Vector input is undefined")
 		likelihoodSet.sortWith((p1, p2) => p1.score(x, density) > p2.score(x, density)).head.label
+	}
+	
+	override def toString(labels: Array[String]): String = {
+		val buf = new StringBuilder
+		likelihoodSet.zipWithIndex.foreach(l => {
+			buf.append(s"\nclass ${l._2}: ${l._1.toString(labels)}")
+		})
+		buf.toString
 	}
 }
 

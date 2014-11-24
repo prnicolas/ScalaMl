@@ -19,7 +19,7 @@ import org.scalaml.core.types.ScalaMl._
 		* <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
 		* <b>id</b>        Identifier for the state.
 		* <b>actions</b>   List of actions for that transition from this state to other states. Each action transition the model to single state.
-		* <b>prop</b>      Optional property of this state.
+		* <b>property</b>      Optional property of this state.
 		* </span></pre></p>
 		* @constructor Create a state for Q-learning. 
 		* @throws IllegalArgument is list of actions is undefined or the id negative
@@ -31,16 +31,21 @@ import org.scalaml.core.types.ScalaMl._
 protected class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.empty, property: T) {
 	import QLState._
 	check(id, actions)
-	
-	def == (that: QLState[T]): Boolean = that.id == id
+	/*
+	def == (that: QLState[T]): Boolean = {
+		require(that != null, "QLState == left side comparison is undefined")
+		that.id == id
+	}
 	def != (that: QLState[T]): Boolean = ! ==(that)
+	* 
+	*/
 
 		/**
 		 * Test if this state is a goal (or has not actions).
 		 * @return true if the state has no actions, false otherwise
 		 */
 	@inline
-	final def isGoal: Boolean = actions != List.empty
+	final def isGoal: Boolean = !actions.isEmpty
   
 	override def toString: String = 
 		new StringBuilder(s"state: $id ")

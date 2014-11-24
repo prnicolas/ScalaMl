@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap2
 
@@ -20,21 +20,30 @@ import org.scalaml.app.Eval
 
 
 
-	/**
-	 * <p>Singleton to evaluate the Bias-Variance validation class.</p>
-	 * 
-	 * @author Patrick Nicolas
-	 * @since February 1, 2014
-	 * @note Scala for Machine Learning
-	 */
+		/**
+		 * <p><b>Purpose</b>Singleton to evaluate the bias-variance trade-off
+		 * using synthetically generated data</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since February 1, 2014
+		 * @note Scala for Machine Learning  Chapter 2
+		 */
 object BiasVarianceEval extends Eval {
 	val name: String = "BiasVarianceEval"
 		
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 		
 	private val logger = Logger.getLogger(name)
+	
+	
+		/**
+		 * <p>Execution of the scalatest for <p>Bias Variance </p> decomposition. 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n$name Evaluation of Bias Variance decomposition", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Bias Variance decomposition", logger)
 		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)
 	    
@@ -53,7 +62,7 @@ object BiasVarianceEval extends Eval {
 			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
 			modelFit.fit(fEst.map( _._1)) match {
 				case Some(varBias) => {
-					Display.show(s"$name Result variance bias emulation\n${ScalaMl.toString("Variance", "bias", varBias, false)}", logger)
+					Display.show(s"$name Result variance bias emulation\n${ScalaMl.toString(varBias, "Variance", "bias", false)}", logger)
 					true
 				}
 				case None => Display.error(s"$name variance bias model failed", logger);false

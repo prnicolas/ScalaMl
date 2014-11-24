@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap12
 
@@ -20,10 +20,11 @@ import org.scalaml.scalability.akka.Master
 import org.scalaml.filtering.DFT
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable}
-import akka.actor.ActorSystem	
+import akka.actor.ActorSystem
 import org.apache.log4j.Logger
 import org.scalaml.core.types.ScalaMl._
 import XTSeries._
+import org.scalaml.util.Display
 
 
 		/**
@@ -61,8 +62,13 @@ object ActorsManagerEval extends Eval {
 	 
 	implicit val actorSystem = ActorSystem("system") 
 	
+		/** <p>Execution of the scalatest for Master-worker design with Akka framework.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
-  	 
+		Display.show(s"\n** test#${Eval.testCount} $name Master-Worker model for Akka actors", logger)
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
 	
@@ -72,11 +78,6 @@ object ActorsManagerEval extends Eval {
 		actorSystem.shutdown
 		DONE
 	}
-}
-
-
-object ActorsManagerEvalApp extends App {
-	ActorsManagerEval.run(Array.empty)
 }
 
 

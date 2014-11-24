@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.scalability.akka
 
@@ -30,7 +30,7 @@ import akka.actor.Actor
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka
 		 */			
 abstract class Controller(	protected val xt: DblSeries, 
-							protected val  fct: PipeOperator[DblSeries, DblSeries], 
+							protected val fct: PipeOperator[DblSeries, DblSeries], 
 							protected val partitioner: Partitioner) extends Actor {
 	
 	require(xt != null && xt.size > 0, "Master.check Cannot create a master actor to process undefined time series")

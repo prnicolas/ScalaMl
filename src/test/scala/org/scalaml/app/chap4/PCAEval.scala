@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap4
 
@@ -18,6 +18,7 @@ import types.ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.app.Eval
 import XTSeries._
 
 
@@ -40,7 +41,7 @@ object PCAEval extends UnsupervisedLearningEval {
 	private val logger = Logger.getLogger(name)	
 	
 	// Symbol, PE/PS/PB/ROE/OM
-	val data = Array[(String, Array[Double])] (
+	private val data = Array[(String, Array[Double])] (
 		("QCOM", Array[Double](20.8, 5.32, 3.65, 17.65,29.2)),
 		("IBM", Array[Double](13, 1.22, 12.2, 88.1,19.9)),  
 		("BAC", Array[Double](21, 2.0, 0.78, 4.12,24.2)),    
@@ -75,9 +76,14 @@ object PCAEval extends UnsupervisedLearningEval {
 		("K", Array[Double](13.4, 1.6, 6.7, 59.8, 21.3))
 	)
   
-  
+  		/**
+		 * <p>Execution of the scalatest for <b>PCA</b> class
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"$name Evaluation of Principal Component Analysis", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Principal Component Analysis", logger)
   	  
 		import scala.util.{Try, Success, Failure}
 		val pca = new PCA[Double]

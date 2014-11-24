@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap4
 
@@ -17,6 +17,7 @@ import YahooFinancials._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 
 		/**
@@ -29,16 +30,22 @@ object KMeansEval extends UnsupervisedLearningEval {
 	import org.scalaml.unsupervised.clustering.KMeans
 	import org.scalaml.unsupervised.Distance.euclidean
 	import types.ScalaMl._
-   
-	final val START_INDEX = 70
-	final val NUM_SAMPLES = 42
 	val name: String = "KMeansEval"
+   	  
+	private val START_INDEX = 70
+	private val NUM_SAMPLES = 42
 	private val logger = Logger.getLogger(name)
-  
+
+		/**
+		 * <p>Execution of the scalatest for <b>KMeans</b> class
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
 		import types.CommonMath._
         
-		Display.show(s"$name Evaluation of K-means clustering", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of K-means clustering", logger)
       
 			// nested function to generate K clusters from a set of observations observations
 			// obs. The condition on the argument are caught by the K-means constructor.
@@ -66,7 +73,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 			val prices: Array[List[DblVector]] = symbolFiles.map(s => 
 				DataSource(s, path, normalize) |> extractor)
 
-			prices.find ( _ == List.empty) match {
+			prices.find ( _.isEmpty ) match {
 				case Some(nullObsList) => Display.error(s"$name Could not load data", logger)
 				case None => {
 					val values: DblMatrix = prices.map(x => x(0))

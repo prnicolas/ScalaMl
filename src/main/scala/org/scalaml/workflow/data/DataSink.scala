@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.workflow.data
 
@@ -121,13 +121,13 @@ final protected class DataSink[T <% String](sinkName: String) extends PipeOperat
 			match {
 				case Success(k) => k
 				case Failure(e) => {
-					Display.error("DataSink.|> ", logger, e)
+					Display.error("DataSink.|> ", logger)
 	    		  
 					if( printWriter != null) {
 						Try {printWriter.close; 1 }
 						match {
 							case Success(res) => res
-							case Failure(e) => Display.error("DataSink.|> ", logger, e)
+							case Failure(e) => Display.error("DataSink.|> ", logger)
 						}
 					}
 					else Display.error("DataSink.|> no printWrite", logger)

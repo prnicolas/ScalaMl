@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap8
 
@@ -21,30 +21,29 @@ import org.scalaml.app.ScalaMlTest
 	 *  @note Scala for Machine Learning
 	 */
 final class Chap8 extends ScalaMlTest {
-   val chapter = "Chap 8"
+	val chapter = "Chap 8"
   	 
-   test(s"$chapter Support Vector machines margin factor evaluation") {
-  	  evaluate(SVCMarginEval)
-   }
+	test(s"$chapter Impact support Vector machines margin") {
+		evaluate(SVCMarginEval)
+	}
    
-    test(s"$chapter  Support Vector machines kernel function evaluation") { 
-      evaluate(SVCKernelEval)
-    }
+	test(s"$chapter Import support Vector machines kernel function") { 
+		evaluate(SVCKernelEval)
+	}
     
-    test(s"$chapter Support Vector classifier evaluation") {
-	   evaluate(SVCEval)
-    }
+	test(s"$chapter Support Vector classifier") {
+		evaluate(SVCEval)
+	}
     
-    test(s"$chapter One-class Support Vector classifier evaluation") {
-	   evaluate(SVCOutliersEval)
-    }
+	test(s"$chapter One-class Support Vector classifier") {
+		evaluate(SVCOutliersEval)
+	}
+	
+	test(s"$chapter Support Vector regression") {
+		evaluate(SVREval)
+	}
 }
 
-
-object Chap8App extends App {
-	val chap = new Chap8
-	chap.evaluate(SVCMarginEval)
-}
 
 
 // --------------------------- EOF --------------------------------------------------

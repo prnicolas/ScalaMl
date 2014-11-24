@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap12
 
@@ -38,18 +38,25 @@ object SparkKMeansEval extends Eval {
 	val NRUNS = 16
 	val MAXITERS = 200
 	val PATH = "resources/data/chap12/CSCO.csv"
-	  
+	val CACHE = true
+	
+		/**
+		 * <p>Execution of the scalatest for SparkKMeans class. This method is invoked by the 
+		 * actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$name evaluation of MLLib K-means on Spark framework", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name MLLib K-means on Spark framework", logger)
   	
 		Try {
 			val input = extract
 			val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
 
 			val config = new SparkKMeansConfig(K, MAXITERS, NRUNS)
-			implicit val sc = new SparkContext("local", "SparkKMeans")  // no need to load additional jar file
+			implicit val sc = new SparkContext("local[8]", "SparkKMeans")  // no need to load additional jar file
 	
-			val rddConfig = RDDConfig(true, StorageLevel.MEMORY_ONLY)
+			val rddConfig = RDDConfig(CACHE, StorageLevel.MEMORY_ONLY)
 			val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
 		   
 			val obs = Array[Double](0.23, 0.67)

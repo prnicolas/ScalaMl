@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap9
 
@@ -14,27 +14,26 @@ import org.scalaml.app.ScalaMlTest
 
 
 final class Chap9 extends ScalaMlTest {
-  val chapter: String = "Chap 9"
+	val chapter: String = "Chap 9"
   	
-  test(s"$chapter Multi-perceptron eta factor evaluation") {
-	  evaluate(MLPConfigEval, Array[String]("eta"))
-  }
+	test(s"$chapter Multi-perceptron eta factor evaluation") {
+		evaluate(MLPConfigEval, Array[String]("eta"))
+	}
   
-  test(s"$chapter Multi-perceptron alpha factor evaluation") {
-	  evaluate(MLPConfigEval, Array[String]("alpha"))
-  }
+	test(s"$chapter Multi-perceptron alpha factor evaluation") {
+		evaluate(MLPConfigEval, Array[String]("alpha"))
+	}
   
-  test(s"$chapter Multi-perceptron validation") {
-	  evaluate(MLPValidation)
-  }
+	test(s"$chapter Multi-perceptron validation") {
+		evaluate(MLPValidation)
+	}
+	test(s"$chapter Multi-perceptron binomial classification evaluation") {
+		evaluate(BinaryMLPEval)
+	}
   
-  test(s"$chapter Multi-perceptron binomial classification evaluation") {
-	 evaluate(BinaryMLPEval)
-  }
-  
-  test(s"$chapter Multi-perceptron binomial classification evaluation") {
-	 evaluate(MLPEval)
-  }
+	test(s"$chapter Multi-perceptron binomial classification evaluation") {
+		evaluate(MLPEval)
+	}
 }
 
 

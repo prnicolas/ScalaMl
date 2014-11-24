@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap5
 
@@ -33,7 +33,8 @@ import org.scalaml.app.Eval
 trait BayesEval extends Eval {
 	import org.scalaml.trading.YahooFinancials._
 	final val path = "resources/data/chap5/"
-       
+
+	  
 	override def run(args: Array[String]): Int
   
 	protected val extractor = toDouble(CLOSE) :: 
@@ -52,9 +53,15 @@ object BinomialBayesEval extends BayesEval {
 	val name: String = "BinomialBayesEval"
 	private val logger = Logger.getLogger(name)
 	
+		/**
+		 * <p>Execution of the scalatest for <b>NaiveBayes</b> class
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
-		require(args != null && args.size < 2, s"$name.run incorrect arguments list")
-		Display.show(s"$name Evaluation multinomial Naive Bayes", logger)	
+		require(args != null && args.size > 2, s"$name.run incorrect arguments list")
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation multinomial Naive Bayes", logger)	
 		
 		val trainValidRatio = args(1).toDouble
 		val period = args(2).toInt

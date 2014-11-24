@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.util
 
@@ -19,50 +19,82 @@ import org.apache.log4j.Logger
 	 *  @note Scala for Machine Learning
 	 */
 object Display {	
-  val loggerFlag = false
+	val DEFAULT_SHOW_RETURN = 0
+	val DEFAULT_ERROR_RETURN = -1
+	val loggerFlag = false
   
-		// Dump information message onto standard output or logger
+		/**
+		 * Global function that align a label against a boundary. There is no alignment if the 
+		 * size of the placement is smaller than the actual label.
+		 * @param label Label to be aligned
+		 * @param length Length of the box the label has to be aligned
+		 */
+	final def align(label: String, length: Int): String = {
+		require(label != null, "Display.align Label is undefined")
+		require(length < 128, s"Display.align Size of label placement ${label.length} is incorrect")
+		
+		if( length < label.length)
+			label
+		else 
+			label + Range(label.length, length).foldLeft(new StringBuilder)((b, n) =>b.append(" "))
+	}
   
-  final def align(label: String, length: Int): String = {
-  	 if( length < label.size)
-  		label
-  	 else 
-  		label + Range(label.size, length).foldLeft(new StringBuilder)((b, n) =>b.append(" "))
-  }
-  
-  final def show[T](t: T, logger: Logger, alignment: Int = -1) = { 
-  	 val text = if(alignment != -1) align(t.toString, alignment) else t.toString
-     if(loggerFlag) logger.info(text)
-     else Console.println(text)
-     0
-  }
-  final def show[T](seq: Seq[T], logger: Logger): Int = {
-    val info = seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString
-    if( loggerFlag) logger.info(info)
-    else Console.println(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString)
-    0
-  }
+		/**
+		 * Display the value of parameterized type in either standard output,
+		 * or log4j log or both
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @param alignement Align the label within its placement if alignment is greater than the label, no alignment otherwise
+		 */
+	final def show[T](t: T, logger: Logger, alignment: Int = -1): Int = { 
+		val text = if(alignment != -1) align(t.toString, alignment) else t.toString
+		if(loggerFlag) 
+			logger.info(text)
+		else 
+			Console.println(text)
+		DEFAULT_SHOW_RETURN
+	}
+	
+	
+	final def show[T](seq: Seq[T], logger: Logger): Int = {
+		val info = seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString
+		if( loggerFlag) 
+			logger.info(info)
+		else 
+			Console.println(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString)
+		DEFAULT_SHOW_RETURN
+	}
  
 
-  final def error[T](t: T, logger: Logger): Int = error(t, logger, null)
+	final def error[T](t: T, logger: Logger): Int = error(t, logger, null)
 
-  final def error[T](t: T, logger: Logger, e: Throwable): Int = {
-     processError(t, logger, e)
-  	 -1 
-  }
+	final def error[T](t: T, logger: Logger, e: Throwable): Int = {
+		processError(t, logger, e)
+		DEFAULT_ERROR_RETURN
+	}
   
-  final def none[T](t: T, logger: Logger): None.type = none(t, logger, null)
 
-  final def none[T](t: T, logger: Logger, e: Throwable): None.type = {
-     processError(t, logger, e)
-  	 None
-  }
-  private def processError[T](t: T, logger: Logger, e: Throwable): Unit = {
-      val msg = if(e != null) s"Error: ${t.toString} with ${e.toString}" else s"Error: ${t.toString}"
-      if(loggerFlag) logger.error(msg)
-      else Console.println(msg)
-      if( e != null) e.printStackTrace
-  }
+	final def none[T](t: T, logger: Logger): None.type = none(t, logger, null)
+
+
+	final def none[T](t: T, logger: Logger, e: Throwable): None.type = {
+		processError(t, logger, e)
+		None
+	}
+	
+	private def processError[T](t: T, logger: Logger, e: Throwable): Unit = {
+		val msg = if(e != null) 
+			s"Error: ${t.toString} with ${e.toString}" 
+		else 
+			s"Error: ${t.toString}"
+		
+		if(loggerFlag) 
+			logger.error(msg)
+		else 
+			Console.println(msg)
+		
+		if( e != null) e.printStackTrace
+	}
 }
 
 

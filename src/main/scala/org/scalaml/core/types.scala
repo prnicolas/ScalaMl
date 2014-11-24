@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.core
 
@@ -32,6 +32,7 @@ package object types {
 		def description(x: Double): String = s"${String.format(align, fmt.format(x))}"
 		def description(n: Int): String = String.format(align, n.toString)
 		def description(s: String): String =  String.format(align, s)
+		def description[T](t: T): String = String.format(align, t.toString)
 	}
 	
 	object ShortFormatter extends Formatter("%8s", "#,##0.000")
@@ -53,25 +54,43 @@ package object types {
 		type DblVector = Array[Double]
 		
 
-		def toString(xLabel: String, yLabel: String, xy: XYTSeries, shortFormat: Boolean): String = {
+		def toString(xy: XYTSeries, xLabel: String, yLabel: String, shortFormat: Boolean, labels: Array[String] = Array.empty): String = {
+			require(xy != null && xy.size > 0, "ScalaMl.toString XYTSeries is undefined")
+			if(labels.size > 0)
+				require(xy.size == labels.size, s"ScalaMl.toString data size ${xy.size} is difference from number of labels ${labels.size}")
+			
 			val fmt = if(shortFormat) ShortFormatter else longFormatter
 			
 			val buf = new StringBuilder(s"$xLabel\t$yLabel\n")
-			buf.append(  xy.foldLeft(new StringBuilder)((buf, xy) => 
-				buf.append(s"${fmt.description(xy._1)}${fmt.description(xy._2)}\n")).toString)
+			if(labels.size == 0)
+				buf.append(xy.foldLeft(new StringBuilder)((buf, xy) => 
+					buf.append(s"${fmt.description(xy._1)}${fmt.description(xy._2)}\n")).toString)
+			else 
+				buf.append(xy.zip(labels).foldLeft(new StringBuilder)((buf, xy) => 
+					buf.append(s"${fmt.description(xy._2)}${fmt.description(xy._1._1)}${fmt.description(xy._1._2)}\n")).toString)
 			buf.toString
 		}
 		
-		def toString(x: DblVector, label: String, shortFormat: Boolean): String = {
+		def toString[T](x: Array[T], label: String, shortFormat: Boolean): String = {
 			val fmt = if(shortFormat) ShortFormatter else longFormatter
 						
 			val buf = new StringBuilder
 			if(label.size > 0)
 				buf.append(s"${fmt.description(label)}\n")
-			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}${fmt.description(x._1)}\n")).toString)
+			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}   ${fmt.description(x._1)}\n")).toString)
 			buf.toString
 		}
 
+		def toString(x: Double, label: String, shortFormat: Boolean): String = {
+			val fmt = if(shortFormat) ShortFormatter else longFormatter
+						
+			val buf = new StringBuilder
+			if(label.length > 1)
+				buf.append(label)
+			buf.append(s" ${fmt.description(x)}")
+			buf.toString
+		}
+		
 		
 		def toString(m: Array[Array[Double]], shortFormat: Boolean): String = {	
 			val fmt = if(shortFormat) ShortFormatter else longFormatter
@@ -80,7 +99,7 @@ package object types {
 			buf.append(Range(0, m(0).size).foldLeft(new StringBuilder)((buf, n) => buf.append(s"${fmt.description(n)}")).toString)
 			
 			Range(0, m.size).foreach(i => {
-				buf.append(s"\n$i")
+				buf.append(s"\n${fmt.description(i)}")
 				buf.append(Range(0, m(0).size).foldLeft(new StringBuilder)((buf, j) => buf.append(s"${fmt.description(m(i)(j))}")).toString)
 			})
 			buf.toString
@@ -150,7 +169,7 @@ package object types {
 			if( index)
 				v.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}:${x._1}, ")).toString
 			else
-				v.foldLeft(new StringBuilder)((buf, x) => buf.append(s"$x,")).toString.take(v.size-1)
+				v.foldLeft(new StringBuilder)((buf, x) => buf.append(s"$x,")).toString.dropRight(1)
 		}
 
 				/**

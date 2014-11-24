@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap7
 
@@ -17,7 +17,8 @@ import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
-
+import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.types.ScalaMl
 
 
 		/**
@@ -29,33 +30,44 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning
 		 */
 object CrfEval extends Eval {
-  val name: String = "CrfEval"
+	val name: String = "CrfEval"
   	
-  final val LAMBDA = 0.5
-  final val NLABELS = 9
-  final val MAX_ITERS = 100
-  final val W0 = 0.7
-  final val EPS = 1e-3
-  final val PATH = "resources/data/chap7/rating"
+	private val LAMBDA = 0.5
+	private val NLABELS = 9
+	private val MAX_ITERS = 100
+	private val W0 = 0.7
+	private val EPS = 1e-3
+	private val PATH = "resources/data/chap7/rating"
   
-  private val logger = Logger.getLogger(name)
-  
-  def run(args: Array[String]): Int = {
-    Display.show(s"$name evaluation of Conditional Random Fields", logger)
+	private val logger = Logger.getLogger(name)
+
+		/**
+		 * <p>Execution of the scalatest for <b>Crf</b> class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n** test#${Eval.testCount} $name Conditional Random Fields", logger)
     
 
-	val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
-	val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
+		val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
+		val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
-	Try {
-	   Crf(NLABELS, state, delimiters, PATH).weights match {
-	  	 case Some(weights) => weights
-	  	 case None => throw new IllegalStateException("Count not train the CRF model")
-	   }
-	 } match {
-		case Success(weights) => Display.show(s"$name weights=$weights", logger)
-		case Failure(e) => Display.error(s"$name error ", logger, e)
-	 }
+		Try {
+			val crf = Crf(NLABELS, state, delimiters, PATH)
+			crf.weights match {
+				case Some(w) => {
+					Display.show(s"$name weights (lambdas) for conditional random fields", logger)
+					Display.show(s"${ScalaMl.toString(w, "", true)}", logger)
+				}
+				case None => throw new IllegalStateException(s"$name Could not train the CRF model")
+			}
+		} 
+		match {
+			case Success(res) => 1
+			case Failure(e) => Display.error(s"$name CRF modeling failed", logger, e)
+		}
   }
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -88,7 +88,7 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 		} 
 		match {
 			case Success(_model) => Some(_model)
-			case Failure(e) => Display.none("Crf.model ", logger, e)
+			case Failure(e) => Display.none("Crf.model could not be created", logger, e)
 		}
 	}
   
@@ -115,7 +115,6 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 	}
 
 }
-
 
 
 	/**

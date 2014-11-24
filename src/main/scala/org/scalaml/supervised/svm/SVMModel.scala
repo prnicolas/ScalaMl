@@ -6,11 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.svm
 
 import org.scalaml.core.design.Model
+import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.types.ScalaMl.DblMatrix
 import libsvm.svm_model
 import SVMModel._
 
@@ -35,27 +37,26 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
   	 
 	override def toString: String = {
 		val description = new StringBuilder("SVM model\n")
-		val kernel_type: Int  = svmmodel.param.kernel_type
-		description.append(s"${KernelTypes.get(kernel_type).get}\n")
   	  
 		val nodes = svmmodel.SV
 		if(nodes != null && nodes.size > 0) {
 			description.append("SVM nodes:\n")
-			nodes.foreach(w => {
-				w.foreach(c => description.append(s"${c.index}->${c.value}, "))
-				description.append("\n")
+			val _nodes: DblMatrix = Array.tabulate(nodes.size)(n => {
+				val row = nodes(n)
+				row.map(r => r.value)
 			})
+			description.append(ScalaMl.toString(_nodes, true))
 		}
   	  
 		val coefs = svmmodel.sv_coef
 		if(coefs != null && coefs.size > 0) {
-			description.append("SVM basis functions:\n")
+			description.append("\nSVM basis functions:\n")
 			coefs.foreach(w => {
-				w.foreach(c => description.append(s"$c,"))
+				w.foreach(c => description.append(s"${ScalaMl.toString(c, "", true)}\n"))
 				description.append("\n")
 			})
 		}
-		description.append(s"Accuracy: $accuracy\n")
+		description.append(s"Accuracy: ${ScalaMl.toString(accuracy, "", true)}\n")
 		description.toString
 	}
 }

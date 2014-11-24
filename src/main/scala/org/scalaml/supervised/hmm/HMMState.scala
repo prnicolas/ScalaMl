@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.hmm
 
@@ -32,10 +32,8 @@ import HMMConfig._
 	 * @since March 24, 2014
 	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
 	 */
-final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
+final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 	import HMMState._
-
-	check(lambda, maxIters)
   
 	private val logger = Logger.getLogger("HMMState")
 
@@ -55,8 +53,8 @@ final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
  
 	
 	def update(alpha: Matrix[Double], beta: Matrix[Double], A: Matrix[Double], B: Matrix[Double], obs: Array[Int]): Int= {
-			Gamma.update(alpha, beta)
-			DiGamma.update(alpha, beta, A, B, obs)
+		Gamma.update(alpha, beta)
+		DiGamma.update(alpha, beta, A, B, obs)
 	}
   
 	object DiGamma {
@@ -98,8 +96,7 @@ final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 					values += (t, i, alpha(t,i)*beta(t,i))
 					s + values(t,i) 
 				})
-
-				values.cols(t).map( _ / sum)
+				values.row(t).map( _ / sum)
 			})
 		}
   	
@@ -117,14 +114,9 @@ final class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 		 * the constructor of the HMMState class and validate its parameters.
 		 */
 object HMMState {
-	final val DEFAULT_MAXITERS = 512
+	final val DEFAULT_MAXITERS = 128
 	def apply(lambda: HMMLambda, maxIters: Int): HMMState = new HMMState(lambda, maxIters)
 	def apply(lambda: HMMLambda): HMMState = new HMMState(lambda, DEFAULT_MAXITERS)
-	
-	private def check(lambda: HMMLambda, maxIters: Int): Unit = {
-		require(lambda != null, "Cannot initialize the state of the computation of the HMM with undefined model")
-		require( maxIters > 0 &&  maxIters < DEFAULT_MAXITERS, s"Maximum number of iterations $maxIters is out of range")
-	}
 }
 
 // ----------------------------------------  EOF ------------------------------------------------------------

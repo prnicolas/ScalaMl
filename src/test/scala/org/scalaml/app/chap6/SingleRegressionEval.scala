@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap6
 
@@ -14,7 +14,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import YahooFinancials._
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.types.ScalaMl
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.core.XTSeries
@@ -32,46 +32,47 @@ import org.scalaml.app.Eval
 	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
 		 */
 object SingleLinearRegressionEval extends Eval {
-    val name: String = "SingleLinearRegressionEval"			
-	final val path = "resources/data/chap6/CU.csv"
+	val name: String = "SingleLinearRegressionEval"			
+	private val path = "resources/data/chap6/CU.csv"
 	private val logger = Logger.getLogger(name)
-		
+
+		/**
+		 * <p>Execution of the scalatest for <b>SingleLinearRegression</b> class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"$name evaluation of single variate linear regression", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of single variate linear regression", logger)
 		
 		Try {
-		    val price = DataSource(path, false, true, 1) |> adjClose
-		    val xy = price.zipWithIndex.map(x => (x._2.toDouble, x._1.toDouble))
-		    val linRegr = SingleLinearRegression(xy)
+			val price = DataSource(path, false, true, 1) |> adjClose
+			val xy = price.zipWithIndex.map(x => (x._2.toDouble, x._1.toDouble))
+			val linRegr = SingleLinearRegression(xy)
 		    
-		    val slope = linRegr.slope
-		    val intercept = linRegr.intercept
-		    if( slope != None ) {
-		    	Display.show(s"$name y = $slope.x + $intercept", logger)
-		    	Display.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
-		    }
-		    else
-		    	Display.error(s"$name run failed compute slope", logger)
+			val slope = linRegr.slope
+			val intercept = linRegr.intercept
+			if( slope != None ) {
+				Display.show(s"$name Linear regression: ${ScalaMl.toString(slope.get, "y= ", true)}.x + ${ScalaMl.toString(intercept.get, "", true)}", logger)
+				Display.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
+			}
+			else
+				Display.error(s"$name run failed compute slope", logger)
 		    	  
-		  }match {
-		  	case Success(n) => n
-		  	case Failure(e) => Display.error(s"$name failed to be build a model", logger, e)
-		  }
+		}match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name failed to be build a model", logger, e)
+		}
 	}
 	
+	
 	private def lsError(xyt: Array[(Double, Double)], slope: Double, intercept: Double): Double = {
-	   val error = xyt.foldLeft(0.0)((err, xy) => {
-	 	  val diff = xy._2 - slope*xy._1 - intercept
-	      err + diff*diff  
-	   })
-	   Math.sqrt(error/xyt.size)
+		val error = xyt.foldLeft(0.0)((err, xy) => {
+			val diff = xy._2 - slope*xy._1 - intercept
+			err + diff*diff  
+		})
+		Math.sqrt(error/xyt.size)
 	}
 }
-
-
-object SingleLinearRegressionEvalApp extends App {
-	 SingleLinearRegressionEval.run(null)
-}
-
 
 // ----------------------------  EOF ----------------------------------

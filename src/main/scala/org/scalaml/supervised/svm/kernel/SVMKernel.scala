@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.svm.kernel
 
@@ -54,7 +54,7 @@ object LinearKernel extends SVMKernel {
 		param.kernel_type = svm_parameter.LINEAR
 	}
 
-	override def toString: String = "\nLinear kernel"
+	override def toString: String = "Linear kernel"
 }
 
 		/**
@@ -79,13 +79,13 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
 	override def update(param: svm_parameter): Unit = {
-		require(param != null, "RbfKernel.upate LIBSVM svm parameter is undefined") 
+		require(param != null, "RbfKernel.update LIBSVM svm parameter is undefined") 
     	
 		param.kernel_type = svm_parameter.RBF
 		param.gamma = gamma
 	}
     
-	override def toString: String = s"\nRBF $gamma"
+	override def toString: String = s"Radial-basis function with gamma = $gamma"
 }
 
 
@@ -115,7 +115,7 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 		param.gamma = gamma
 	}
     
-	override def toString: String = s"\nSIGMOID $gamma"
+	override def toString: String = s"Sigmoidal function with gamma = $gamma"
 }
 
 
@@ -151,7 +151,7 @@ final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends 
 		param.degree = degree
 	}
     
-	override def toString: String = "\nPOLYNOMIAL " + String.valueOf(gamma) + ", " + String.valueOf(coef0) + ", "+ String.valueOf(degree)
+	override def toString: String = s"Polynomial function with gamma = $gamma, coef = $coef0, degree = $degree"
 }
 
 

@@ -21,6 +21,7 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import scala.util.{Try, Success, Failure}
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
+import org.scalaml.app.Eval
 
 		/**
 		 * <p>Command line application. Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
@@ -34,11 +35,16 @@ object DFTEval extends FilteringEval {
 
 	val name: String = "DFTEval"  
    
-	val logger = Logger.getLogger(name)
-	val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
+	private val logger = Logger.getLogger(name)
+	private val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
 						Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
 						0.5*Math.cos(Math.PI*0.2*x)      // simulated third harmonic
-                            
+		/**
+		 * <p>Execution of the scalatest for <b>DFT</b> class 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
 		Try {
 			if( args == null || args.size == 0) 
@@ -48,14 +54,14 @@ object DFTEval extends FilteringEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error("DFTEval.run failed", logger, e)
+			case Failure(e) => Display.error(s"$name.run failed", logger, e)
 		}
 	}
    
 
 	private def runSimulation: Int = {
 		import ScalaMl._
-		Display.show(s"$name Discrete Fourier series with synthetic data", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Discrete Fourier series with synthetic data", logger)
 		val values = Array.tabulate(1025)(x => h(x/1025))
 			// Original data dump into a CSV file
 		DataSink[Double]("output/chap3/simulated.csv") write values
@@ -69,7 +75,7 @@ object DFTEval extends FilteringEval {
 	private def runFinancial(symbol: String): Int  = {
 		import ScalaMl._
 		
-		Display.show(s"\n$name Discrete Fourier series with financial data $symbol", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
 		val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
      
 		val price = src |> YahooFinancials.adjClose  

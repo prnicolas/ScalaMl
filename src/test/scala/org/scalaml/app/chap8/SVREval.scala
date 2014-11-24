@@ -6,18 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.trading.YahooFinancials
+import org.scalaml.trading.GoogleFinancials
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.SVRFormulation
 import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.types.ScalaMl
-import YahooFinancials._
+import GoogleFinancials._
 import ScalaMl._
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import org.apache.log4j.Logger
@@ -27,63 +27,69 @@ import org.scalaml.app.Eval
 
 
 object SVREval extends Eval {
-   val name: String = "SVREval"
-   final val path = "resources/data/chap8/SPY.csv"
-   final val C = 1
-   final val GAMMA = 0.8
-   final val EPS = 1e-1
-   final val EPSILON = 0.1
+	val name: String = "SVREval"
+
+	private val path = "resources/data/chap8/SPY.csv"
+	private val C = 1
+	private val GAMMA = 0.8
+	private val EPS = 1e-1
+	private val EPSILON = 0.1
    
-   private val logger = Logger.getLogger(name)
-   
-   def run(args: Array[String]): Int = {
-	   Display.show("Evaluation of Support Vector Regression", logger)
-       Try {
-	      val price = DataSource(path, false, true, 1) |> adjClose	
-	  	  val priceIdx = price.zipWithIndex
-	  	  	                  .map( x => (x._1.toDouble, x._2.toDouble))
-	      val linRg = SingleLinearRegression(priceIdx)  	  	
+	private val logger = Logger.getLogger(name)
+
+		/** <p>Execution of the scalatest for evaluating the support vector regression.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n** test#${Eval.testCount} $name Support Vector Regression", logger)
+		Try {
+			val price = DataSource(path, false, true, 1) |> close
+			val priceIdx = price.zipWithIndex
+								.map( x => (x._1.toDouble, x._2.toDouble))
+	      
+			val linRg = SingleLinearRegression(priceIdx)  	  	
 	  	  	 
-	  	  val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
-	  	  val labels = price.toArray
-          val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
-          val svr = SVM[Double](config, features, labels)
-          Display.show(s"SVREval.run: ${svr.toString}", logger)   
+			val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
+			val labels = price.toArray
+			val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
+			val svr = SVM[Double](config, features, labels)
+			Display.show(s"$name support vector machine model\n${svr.toString}", logger)   
           
-          display("Support Vector vs. Linear Regression", 
-            		  collect(svr, linRg, price).toList,
-            		  List[String]("SVR", "Linear regression", "Stock Price"))
-          Display.show("SVREval.run completed", logger)
-	    } match {
-	    	case Success(n) => n
-	    	case Failure(e) => Display.error("SVREval.run", logger, e)
-	    }
-   }
-   
-   import SingleLinearRegression._
-   private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
-  	   import scala.collection.mutable.ArrayBuffer
-
-  	   val collector = Array.fill(3)(new ArrayBuffer[XY])
-  	   Range(1, price.size-2).foldLeft(collector)( (xs, n) => {
-  	 	  xs(0).append((n, (svr |> n.toDouble)))
-  	 	  xs(1).append((n, (lin |> n)))
-  	 	  xs(2).append((n, price(n)))
-  	 	  xs		  
-  	   }).map( _.toArray)
-   }
-   
-   private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {
-  	  import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
-       require(xs != null && xs.size > 0, "Cannot display an undefined time series")
-       
-       val plotter = new ScatterPlot(("Training set", label, "SPY"), new LightPlotTheme)
-       plotter.display(xs, lbls, 250, 340)
+			display("Support Vector vs. Linear Regression", 
+					collect(svr, linRg, price).toList,
+					List[String]("SVR", "Linear regression", "Stock Price"))
+					
+			Display.show(s"$name.run completed", logger)
+		} 
+		match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name.run failed to load source or train SVM", logger, e)
+		}
 	}
-}
+   
+	
+	import SingleLinearRegression._
+	private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
+		import scala.collection.mutable.ArrayBuffer
 
-object SVREvalApp extends App {
-	SVREval.run(Array.empty)
+		val collector = Array.fill(3)(new ArrayBuffer[XY])
+		Range(1, price.size-2).foldLeft(collector)( (xs, n) => {
+			xs(0).append((n, (svr |> n.toDouble)))
+			xs(1).append((n, (lin |> n)))
+			xs(2).append((n, price(n)))
+			xs		  
+		}).map( _.toArray)
+	}
+   
+	private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {
+		import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
+		require(xs != null && xs.size > 0, "Cannot display an undefined time series")
+       
+		val plotter = new ScatterPlot(("Training set", label, "SPY"), new LightPlotTheme)
+		plotter.display(xs, lbls, 250, 340)
+	}
 }
 
 // --------------------------  EOF -----------------------------------------------

@@ -5,7 +5,7 @@
     <artifactId>scalaml_2.11</artifactId>
     <packaging>jar</packaging>
     <description>scalaml</description>
-    <version>0.95</version>
+    <version>0.96</version>
     <name>scalaml</name>
     <organization>
         <name>Patrick Nicolas</name>

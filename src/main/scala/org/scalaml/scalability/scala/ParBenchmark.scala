@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.scalability.scala
 
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 		 */
 abstract class ParBenchmark[U](times: Int) {
-	require(times > 0 && times < 256, s"ParBenchmark number of executions $times is out of range")
+	require(times > 0 && times < 512, s"ParBenchmark number of executions $times is out of range")
 	
 		/**
 		 * <p>Define the map operator for the performance benchmark</p>

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.reinforcement.xcs
 
@@ -20,7 +20,7 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 		/**
 		 * <p>Class that defined the configuration parameters for the XCS algorithm.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>gaConfig</p>     Configuration of the Genetic Algorithm used in extracting the fittest rules or classifier
+		 * <b>gaConfig</b>     Configuration of the Genetic Algorithm used in extracting the fittest rules or classifier
 		 * <b>qlConfig</b>     Configuration parameters for the Q-learning algorithm
 		 * </span></pre></p>
 		 * @constructor Create a configuration for the XCS algorithm 			

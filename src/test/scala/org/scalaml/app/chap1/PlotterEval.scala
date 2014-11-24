@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap1
 
@@ -20,27 +20,35 @@ import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
 		/**
-		 * <p>Singleton to evaluate the different plotting format used in
-		 * the library.</p>
+		 * <p><b>Purpose</b>Singleton to evaluate the different categories of plot
+		 * (line, scatter.)  used inthe Scala for Machine learning</p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since December 22, 2013
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 1
 		 */
 object PlotterEval extends Eval {
 	val name: String = "PlotterEval"
 		
-	final val CSV_DELIM = ","
-	final val PRICE_COLUMN_INDEX = 6
-	final val OPEN_COLUMN_INDEX = 1
-	final val VOL_COLUMN_INDEX = 5
-	final val HIGH_INDEX = 2
-	final val LOW_INDEX = 3
-    final val pathName = "resources/data/chap1/CSCO.csv"
+	private val CSV_DELIM = ","
+	private val PRICE_COLUMN_INDEX = 6
+	private val OPEN_COLUMN_INDEX = 1
+	private val VOL_COLUMN_INDEX = 5
+	private val HIGH_INDEX = 2
+	private val LOW_INDEX = 3
+	private val pathName = "resources/data/chap1/CSCO.csv"
 				
-    private val logger = Logger.getLogger(name)
+	private val logger = Logger.getLogger(name)
+    
+ 
+		/**
+		 * <p>Execution of the scalatest for <p>LinePlot</p> and <p>ScatterPlot</p> classes. 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n$name Evaluation of JFreeChart library", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of JFreeChart library", logger)
 		
 		Try {
 			val src = Source.fromFile(pathName)
@@ -54,12 +62,12 @@ object PlotterEval extends Eval {
 			Display.show(s"$name Line plot for CSCO stock normalized volume", logger)
 			val theme1 = new LightPlotTheme
 			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock volume", "Volume", "r"), theme1)
-			plotter1.display(normVolume, 200, 200, 1)
+			plotter1.display(normVolume, 200, 200)
 			
 			Display.show(s"$name Line plot for CSCO stock volatility", logger)
 			val theme2 = new BlackPlotTheme
 			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock Volatility", "Volatility", "r"), theme2)
-			plotter2.display(volatility, 300, 100, 1)
+			plotter2.display(volatility, 300, 100)
 		    	
 			Display.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
 			val theme3 = new LightPlotTheme

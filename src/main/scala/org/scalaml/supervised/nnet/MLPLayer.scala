@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.nnet
 
@@ -82,10 +82,10 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 	  	  
 	
 	override def toString: String = {
-		val buf = new StringBuilder("\nLayer:")
+		val buf = new StringBuilder
 		
 		buf.append(s"\nLayer: $id output: ")
-		output.foreach(x => buf.append(s"$x,"))
+		output.foreach(x => buf.append(s"${ScalaMl.toString(x,"", true)}"))
 		buf.setCharAt(buf.length-1, ' ')
 		buf.toString
 	}

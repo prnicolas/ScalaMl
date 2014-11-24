@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.regression.linear
 
@@ -53,7 +53,7 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		} 
 		match {
 			case Success(w) => Some(w)
-			case Failure(e) => Display.none("SingleLinearRegression Cannot create a model", logger,e)
+			case Failure(e) => Display.none("SingleLinearRegression Model is undefined", logger,e)
 		}
 	}
 	

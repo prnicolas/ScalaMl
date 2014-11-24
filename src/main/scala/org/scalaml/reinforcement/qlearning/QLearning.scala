@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -18,7 +18,7 @@ import org.scalaml.util.Display
 import org.apache.log4j.Logger
 
 import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
+import scala.util.{Random, Try, Success, Failure}
 import org.scalaml.core.design.Model
 
 
@@ -35,7 +35,7 @@ import org.scalaml.core.design.Model
 		 */
 final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  extends Model {
 	val persists = "models/qlearning"
-	override def toString: String = s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
+	override def toString: String = s"Optimal policy: ${bestPolicy.toString}\nTraining coverage: $coverage" 
 }
 
 		/**
@@ -72,18 +72,24 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 */
 	val model: Option[QLModel[T]] = {
 		val r = new Random(System.currentTimeMillis)
-		val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
-			val completed = train(r)
+		Try {
+			val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
+				val completed = train(r)
 		
-			Display.show(s"\nEpisode # $n completed: $completed", logger)
-			s + (if(completed) 1 else 0)
-		})
-		val coverage = completions.toDouble/config.numEpisodes
+				Display.show(s"Episode # $n completed: $completed", logger)
+				s + (if(completed) 1 else 0)
+			})
+			val coverage = completions.toDouble/config.numEpisodes
 
-		if( coverage >= config.minCoverage )
-			Some(new QLModel[T](qlPolicy, coverage))
-		else 
-			None
+			if( coverage >= config.minCoverage )
+				Some(new QLModel[T](qlPolicy, coverage))
+			else 
+				None
+		}
+		match {
+			case Success(qModel) => qModel
+			case Failure(e) => Display.none("QLearning.model could not be created", logger, e)
+		}
 	}
 
 		/**
@@ -154,6 +160,10 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * <b>prob</b>    Probability to transition between <b>from</b> and <b>to</b> states
 		 * </span></pre></p>
 		 * @constructor Create an action input to Q-learning
+		 * @param from Identifier for the source state
+		 * @param to Identifier for the target or destination state
+		 * @param reward reward (credit or penalty) to transition from state with id <b>from</b> to the state with id <b>to</b>
+		 * @param prob Probability to transition from state <b>from</b> to state <b>to</b>
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning

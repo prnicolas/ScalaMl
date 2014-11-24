@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -48,7 +48,9 @@ import scala.language.implicitConversions
 		 * @since May 11, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
 		 */
-final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer) 
+final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
+											labels: Array[Int], 
+											optimizer: LogisticRegressionOptimizer) 
 					extends PipeOperator[Array[T], Int] {
 	import LogisticRegression._
   
@@ -92,7 +94,7 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], labels: Arra
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 		 */
 	override def |> : PartialFunction[Feature, Int] = {
-		case x: Feature  if(x != null && model != None && model.get.size -1 != x.size) => {				
+		case x: Feature  if(x != null && x.size > 0 && model != None && (model.get.size -1 == x.size)) => {				
 			val w = model.get.weights
 			val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
 			if( logit(z) > 0.5 + MARGIN) 

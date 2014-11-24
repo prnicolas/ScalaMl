@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.svm.formulation
 
@@ -56,7 +56,7 @@ final class CSVCFormulation(c: Double) extends SVMFormulation {
 		param.C = c
 	}
   
-	override def toString: String = s"\nC-SVC: C=${String.valueOf(c)}"
+	override def toString: String = s"C-SVC with C = ${String.valueOf(c)}"
 }
 
 		/**
@@ -74,7 +74,7 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 	require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"NuSVCFormulation: Nu penalty factor $nu is out of range")  
   
 		/**
-		 * <p>Initialize the LIBSVM parameters stateuration</p>
+		 * <p>Initialize the LIBSVM parameters configuration</p>
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -86,7 +86,7 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 		param.p =rho
 	}
   
-	override def toString: String = s"\nNu-SVC: nu= $nu, rho= $rho"
+	override def toString: String = s"Nu-SVC with nu= $nu, rho= $rho"
 }
 
 
@@ -104,7 +104,7 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 	require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"nu penalty factor $nu is out of range")  
   
 		/**
-		 * <p>Initialize the LIBSVM parameters stateuration</p>	 
+		 * <p>Initialize the LIBSVM parameters configuration</p>	 
 		 * @param param svm_parameter LIBSVM instance to initialize	
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -115,7 +115,7 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 		param.nu = nu
 	}
   
-	override def toString: String = s"\nOne-class SVC: nu= $nu"
+	override def toString: String = s"One-class SVC with nu= $nu"
 }
 
 
@@ -147,7 +147,7 @@ final class SVRFormulation(c: Double, epsilon: Double) extends SVMFormulation {
 		param.p = epsilon
 	}
   
-	override def toString: String = s"\nEpsilon-SVR: C = $c, epsilon= $epsilon"
+	override def toString: String = s"Epsilon-SVR with C = $c, epsilon= $epsilon"
 }
 
 

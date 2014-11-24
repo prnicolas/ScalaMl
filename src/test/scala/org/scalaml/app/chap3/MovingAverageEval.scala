@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap3
 
@@ -20,6 +20,7 @@ import YahooFinancials._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
+import org.scalaml.app.Eval
 
 		/**
 		 * Singleton used to test the moving average algorithms
@@ -31,9 +32,16 @@ object MovingAveragesEval extends FilteringEval {
 	val name: String = "MovingAveragesEval"
   	 
 	private val logger = Logger.getLogger(name)
-   
+
+		/**
+		 * <p>Execution of the scalatest for <b>SimpleMovingAveragte</b>, <b>WeightedMovingAverage</b>
+		 * and <b>ExpMovingAverage</b> classes
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"$name Evaluation moving averages", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name Evaluation moving averages", logger)
   	 
 		val symbol = args(0)
 		val p = args(1).toInt

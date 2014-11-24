@@ -6,24 +6,24 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.util
 
 import scala.reflect.ClassTag
 import scala.util.Random
+import org.scalaml.core.types.ScalaMl
 import org.scalaml.core.types.ScalaMl._
 import scala.annotation.implicitNotFound
 
 
 		/**
-		 * <p>Class that contains basic Matrix manipulation methods<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>nRows</b>   Number of rows in this matrix
-		 * <b>nCols</b>   Number of columns in this matrix
-		 * <b>data</b>    Content of this matrix, flatten as an array which size should be nRows*nCols.
-		 * </span></pre></p>
+		 * <p>Class that contains basic Matrix manipulation methods. This class is used to simplify some
+		 * operations in hidden Markov model and Reinforcement learning algorithms.<br>
 		 *  @constructor Create a matrix with a given number of rows, columns and optional content
+		 *  @param nRows Number of rows in this matrix
+		 *  @param nCols Number of columns in this matrix
+		 *  @param data Content of this matrix, flatten as an array which size should be nRows*nCols.
 		 *  @throws IllegalArgumentException if the parameters are out of bounds
 		 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior the instantiation of a matrix
 		 *  @author Patrick Nicolas
@@ -40,7 +40,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @param i Row index for the element to return
 		 * @param j Column index for the element to return
 		 * @return element(i)(j) if the row and column indices are not out of bounds
-		 * @throw IllegalArgumentException if either the row index or the col index are out of bopunds
+		 * @throws IllegalArgumentException if either the row index or the col index are out of bopunds
 		 */
 	final def apply(i: Int, j: Int): T = {
 		require(i < nRows, s"Matrix.apply Row index $i is out of bounds")
@@ -56,21 +56,33 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @return Sum of the difference
 		 */
 	final def diff(that: Matrix[T], distance: (T, T) => Double)(implicit f: T => Double): Double = {
-		require(nRows == that.nRows, s"Matrix.diff cannot compute distance between two matrices of different rows  $nRows with  ${that.nRows}")
-		require(nCols == that.nCols, s"Matrix.diff cannot compare distance between two matrices Matrices of different number of cols, $nCols with ${that.nCols}")
+		require(nRows == that.nRows, s"Matrix.diff The two matrices have different number of rows: $nRows and ${that.nRows}")
+		require(nCols == that.nCols, s"Matrix.diff The two matrices have different number of cols: $nCols and ${that.nCols}")
 
 		data.zip(that.data).foldLeft(0.0)((s, xy) => s + distance(xy._1, xy._2))
 	}
 
 		/**
-		 * Extract a column for this matrix
-		 * @return column at index i if index is in bounds
-		 * @throws IllegalArgumentException if the index i exceeds the number of cols
+		 * Extract the content of a row for this matrix at a given row index
+		 * @param iRow index of the row to extract from the matrix
+		 * @return row at index i if index is in bounds
+		 * @throws IllegalArgumentException if the row index iRow exceeds the number of rows, nRows
 		 */
-	final def cols(i: Int): Array[T] = { 
-		require(i >= 0 & i < nCols, s"Matrix.cols Columns index $i is out of bounds ")
-		val idx = i*nRows
-		data.slice(idx, idx + nRows) 
+	final def row(iRow: Int): Array[T] = { 
+		require(iRow >= 0 & iRow < nRows, s"Matrix.cols The row index $iRow is out of bounds ")
+		val idx = iRow*nCols
+		data.slice(idx, idx + nCols) 
+	}
+	
+		/**
+		 * Extract the content of a column for this matrix at a given row index
+		 * @param iCol index of the column to extract from the matrix
+		 * @return column at index (?, iCol) if index is in bounds
+		 * @throws IllegalArgumentException if the col index iCol exceeds the number of columns, nCols
+		 */
+	final def col(iCol: Int): Array[T] = { 
+		require(iCol >= 0 & iCol < nCols, s"Matrix.cols The column index $iCol is out of bounds ")
+		(iCol until data.size by nCols).map(data(_)).toArray
 	}
 
 		/**
@@ -130,12 +142,12 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 	def fillRandom(mean: Double = 0.0)(implicit f: Double =>T): Unit = 
 		Range(0, data.size).foreach(i => data.update(i,  mean + Random.nextDouble))
    
-
+		
 	override def toString: String = {
 		var count = 0
 		data.foldLeft(new StringBuilder)((b, x) => { 
 			count += 1; 
-			b.append(x).append( if( count % nCols == 0) "\n" else ",")
+			b.append(ScalaMl.toString(x, "", true)).append( if( count % nCols == 0) "\n" else ",")
 		}).toString
 	}
 }
@@ -165,6 +177,27 @@ object Matrix {
 		require(nCols > 0 && nCols < MAX_NUM_COLS, s"Matrix.check Number of rows $nCols is out of range")
 		require(data != null, "Matrix.check Data in undefined")
 	}
+}
+
+
+object MatrixApp extends App {
+	val data = Array.tabulate(15)(n => n)
+	val m = Matrix[Double](5, 3, data)
+	println(s"m(4, 2) = ${m(4, 2)}")
+	println("cols 2 first edition")
+	m.row(4).foreach(println)
+	
+		println("cols 2 second edition")
+	Range(0, m.nCols).foreach(j => println(m(4, j)))
+	
+	println(s"\nMatrix:\n${m.toString}")
+	
+	println("print col first")
+	m.col(2).foreach( println )
+	
+		println("print col second")
+	Range(0, m.nRows).foreach(i => println(m(i, 2)))
+	
 }
 
 // ------------------------------------  EOF ---------------------------------------------

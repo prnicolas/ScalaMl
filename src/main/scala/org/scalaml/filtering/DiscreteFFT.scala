@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.filtering
 
@@ -54,7 +54,7 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 	protected def pad(xt: XTSeries[T], even: Boolean=true)(implicit f: T => Double): DblVector = {
 		val newSize = padSize(xt.size, even)
 		val arr: DblVector = xt  // to force an implicit conversion
-		if( newSize > 0) arr ++ Array.fill(newSize)(0.0)  else arr
+		if( newSize > 0) arr ++ Array.fill(newSize)(0.0) else arr
 	}
 }
 

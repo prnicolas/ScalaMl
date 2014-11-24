@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.bayes
 
@@ -80,8 +80,14 @@ final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], I
 		else 
 			Some(ClassValidation(xt.map(x =>(model.get.classify(x._1), x._2)) , index).f1)
 	
-       
-	override def toString: String = if(model != None) model.get.toString  else "No Naive Bayes model"
+
+	def toString(labels: Array[String]): String = 
+		if(model != None) 
+			model.get.toString(labels)  
+		else 
+			"No Naive Bayes model"
+			
+	override def toString: String = toString(Array.empty)
        
 		/**
 		 * Train the Naive Bayes model on one of the two classes (positive = 1) or negative (=0)
@@ -99,8 +105,6 @@ final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], I
 				values.size.toDouble/xi.size) 
 	}
 }
-
-
 
 		/**
 		 * Singleton that define the constructors for the NaiveBayes classifier and

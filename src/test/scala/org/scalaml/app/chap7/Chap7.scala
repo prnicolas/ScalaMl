@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap7
 
@@ -22,19 +22,19 @@ import org.scalaml.app.ScalaMlTest
 	 * @note Scala for Machine Learning
 	 */
 final class Chap7 extends ScalaMlTest {
-   val chapter: String = "Chap 7"
+	val chapter: String = "Chap 7"
   	 
-   test(s"$chapter Hidden Markov Model evaluation") {
-  	   evaluate(HMMEval, Array[String]("evaluation"))
-   }
+	test(s"$chapter Hidden Markov Model evaluation") {
+		evaluate(HMMEval, Array[String]("evaluation"))
+	}
    
-   test(s"$chapter Hidden Markov Model training") {
-  	   evaluate(HMMEval, Array[String]("training"))
-   }
+	test(s"$chapter Hidden Markov Model training") {
+		evaluate(HMMEval, Array[String]("training"))
+	}
    
-   test(s"$chapter Conditional Random Fields evaluation") {
-  	  evaluate(CrfEval)
-   }
+	test(s"$chapter Conditional Random Fields evaluation") {
+		evaluate(CrfEval)
+	}
 }
 
 // --------------------------------  EOF -------------------------------

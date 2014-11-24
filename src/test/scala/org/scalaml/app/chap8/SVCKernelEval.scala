@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap8
 
@@ -38,36 +38,48 @@ object SVCKernelEval extends Eval {
 	import scala.util.Random
 	
 	val name: String = "SVCKernelEval"
-    final val EPS = 0.0001
-    final val C = 1.0
-    final val GAMMA = 0.8
-    final val N = 100
-    final val COEF0 = 0.5
-    final val DEGREE = 2
-    type Features = XTSeries[DblVector]
+	private val EPS = 0.001
+	private val C = 1.0
+	private val GAMMA = 0.8
+	private val N = 100
+	private val COEF0 = 0.5
+	private val DEGREE = 2
+	type Features = XTSeries[DblVector]
     
-    private val logger = Logger.getLogger(name)
-    	/**
-    	 * Main routine to compare the impact of different kernel function
-    	 * using a synthetic features with format x = a*random + b*random
-    	 */
-    def run(args: Array[String]): Int = {
-	    Display.show("SVCKernelEval: Comparison of kernel functions for a Binary Support Vector Classifier", logger)
-		compareKernel(0.6, 0.3)
-	    compareKernel(0.7, 0.3)
-	    compareKernel(0.8, 0.3)
-	    compareKernel(1.3, 0.3)
+	private val logger = Logger.getLogger(name)
+
+
+		/** <p>Execution of the scalatest for <b>SVC</b> class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate<br>
+		 * The method compare the impact of different kernel function
+		 * using a synthetic features with format x = a*random + b*random</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
+	def run(args: Array[String]): Int = {
+		Display.show(s"\n** test#${Eval.testCount} $name Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+		Try {
+			compareKernel(0.6, 0.3)
+			compareKernel(0.7, 0.3)
+			compareKernel(0.8, 0.3)
+			compareKernel(1.3, 0.3)
+		} match {
+			case Success(n) => n
+			case Failure(e) => Display.error(s"$name kernel comparison failed", logger, e)
+		}
 	}
     
-    
-    private def genData(variance: Double, mean: Double): DblMatrix = {
-    	val rGen = new Random(System.currentTimeMillis)
-    	Array.tabulate(N)( _ => {rGen.setSeed(rGen.nextLong); Array[Double](rGen.nextDouble, rGen.nextDouble).map(x => variance*x - mean) })
-    }
+	private def genData(variance: Double, mean: Double): DblMatrix = {
+		val rGen = new Random(System.currentTimeMillis)
+		Array.tabulate(N)( _ => {
+			rGen.setSeed(rGen.nextLong)
+			Array[Double](rGen.nextDouble, rGen.nextDouble).map(x => variance*x - mean) 
+		})
+ 	}
 		
 	private def compareKernel(a: Double, b: Double): Int = {
-    	require(a > 0.0 && a < 2.0, s"Cannot compare Kernel with inadequate features a = $a")
-    	require(b > -0.5 && b < 0.5, s"Cannot compare Kernel with inadequate features b = $b")
+		require(a > 0.0 && a < 2.0, s"Cannot compare Kernel with inadequate features a = $a")
+		require(b > -0.5 && b < 0.5, s"Cannot compare Kernel with inadequate features b = $b")
     	   	
 		val trainingSet = genData(a, b) ++ genData(a, 1-b)
 		val testSet = genData(a, b) ++ genData(a, 1-b)
@@ -75,42 +87,41 @@ object SVCKernelEval extends Eval {
 		
 		val legend = s"\nSkewed Random values: a=$a b= $b"
 		display(legend, trainingSet.take(setHalfSize)
-				                   .map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
+									.map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
+		
 		val labels = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
 	       
-        val results = evalKernel(trainingSet, testSet, labels, new RbfKernel(GAMMA)) ::
-                      evalKernel(trainingSet, testSet, labels, new SigmoidKernel(GAMMA)) ::
-                      evalKernel(trainingSet, testSet, labels, LinearKernel) ::
-                      evalKernel(trainingSet, testSet, labels, new PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
-                      List[Double]()
-        Display.show(s"SVCKernelEval.run:  $legend completed", logger)
+		val results = 	evalKernel(trainingSet, testSet, labels, new RbfKernel(GAMMA)) ::
+						evalKernel(trainingSet, testSet, labels, new SigmoidKernel(GAMMA)) ::
+						evalKernel(trainingSet, testSet, labels, LinearKernel) ::
+						evalKernel(trainingSet, testSet, labels, new PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
+						List[Double]()
+						
+		Display.show(s"$name $legend completed", logger)
 	}
+	
 	
 	private def evalKernel(features: DblMatrix, test: DblMatrix, labels: DblVector, kF: SVMKernel): Double = {
 		val config = SVMConfig(new CSVCFormulation(C), kF)
-	    val xt = XTSeries[DblVector](features)
+		val xt = XTSeries[DblVector](features)
 		val svc = SVM[Double](config,  xt, labels)
 		
 		val successes = test.zip(labels)
-		                    .count(tl => {
-		                    	Try((svc |> tl._1) == tl._2)
-		                    	match { 
-		                    	  case Success(n) => true 
-		                    	  case Failure(e) => false }})
+							.count(tl => {
+								Try((svc |> tl._1) == tl._2) match { 
+									case Success(n) => true 
+									case Failure(e) => false 
+								}
+							})
 		successes.toDouble/test.size
 	 }
 
 	private def display(label: String, xy1: XYTSeries, xy2: XYTSeries): Unit = {
-       require(xy1 != null && xy1.size > 0, "Cannot display an undefined time series")
+		require(xy1 != null && xy1.size > 0, s"$name Cannot display an undefined time series")
        
-       val plotter = new ScatterPlot(("Training set", label, "Y"), new BlackPlotTheme)
-       plotter.display(xy1, xy2, 250, 340)
+		val plotter = new ScatterPlot(("Training set", label, "Y"), new BlackPlotTheme)
+		plotter.display(xy1, xy2, 250, 340)
 	}
-}
-
-
-object SVCKernelEvalApp extends App {
-	SVCKernelEval.run(Array.empty)
 }
 
 

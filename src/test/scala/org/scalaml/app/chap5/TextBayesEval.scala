@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app.chap5
 
@@ -50,8 +50,8 @@ import org.scalaml.app.Eval
 object TextBayesEval extends Eval {
 	val name: String = "TextBayesEval"
 
-	final val pathCorpus = "resources/text/chap5/"
-	final val pathLexicon = "resources/text/lexicon.txt"
+	private val pathCorpus = "resources/text/chap5/"
+	private val pathLexicon = "resources/text/lexicon.txt"
     	
 	private val logger = Logger.getLogger(name)
 	
@@ -66,7 +66,7 @@ object TextBayesEval extends Eval {
 		
 		 // Map of keywords which associates keywords with a semantic equivalent (poor man's stemming
 		 // and lemmatization), loaded from a dictionary/lexicon file 
-	 val LEXICON = loadLexicon
+	private val LEXICON = loadLexicon
 
 		
 		 // Regular expression to extract keywords and match them against the lexicon 
@@ -79,15 +79,21 @@ object TextBayesEval extends Eval {
 	}
     
 		// Stock prices for TSLA indexed by their date from the oldest to the newest.	 
-	final val TSLA_QUOTES = Array[Double](
+	private val TSLA_QUOTES = Array[Double](
 		250.56, 254.84, 252.66, 252.94, 253.21, 255.84, 234.41, 241.49, 237.79, 230.97, 
 		233.98, 240.04, 235.84, 234.91, 228.89, 220.17, 220.44, 212.96, 207.32, 212.37, 
 		208.45, 216.97, 230.29, 225.4, 212.22, 207.52, 215.46, 203.93, 204.19, 197.78, 
 		198.09, 201.91, 199.11, 198.12, 197.38, 205.64, 207.99, 209.86, 199.85 )
         
-	
+
+		/**
+		 * <p>Execution of the scalatest for <b>NaiveBayes</b> class for text mining application.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int  = {
-		Display.show(s"$name: Evaluation Multinomial Naive Bayes for text analysis", logger)
+		Display.show(s"\n** test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)
@@ -118,7 +124,8 @@ object TextBayesEval extends Eval {
 					val nb = NaiveBayes[Double](xt)
 			  	   
 					// Display the pairs (mean, standard deviation) for each term.
-					displayResults(columns, nb.toString)
+					val labels: Array[String] = columns.map( _.toString)
+					displayResults(columns, nb.toString(labels))
 				}
 				case None => Display.error(s"$name keywords extraction failed", logger)
 			}
@@ -129,18 +136,16 @@ object TextBayesEval extends Eval {
 		}	
 	}
     
-	private def displayResults(columns: Array[String], results: String): Int = {
-		val buf = new StringBuilder
-		buf.append(s"$name Keywords:\t")
-		columns.foreach( c => buf.append(Display.align(c.toString, 14)))
+	private def displayResults(columns: Array[String], results: String): Int = 
+		Display.show(s"$name Naive Bayes text extraction model\n${results}", logger)
 
-		Display.show(s"$name Naive Bayes extraction model\n ${buf.toString}${results}", logger)
-	}
     
 	private def loadLexicon: Map[String, String] = {
 		val src = Source.fromFile(pathLexicon)
 		val fields = src.getLines.map( _.split(",").map(_.trim))
-		fields.foldLeft(new HashMap[String, String])((hm, field)=> {hm.put(field(0), field(1)); hm}).toMap
+		val lexicon = fields.foldLeft(new HashMap[String, String])((hm, field)=> {hm.put(field(0), field(1)); hm}).toMap
+		src.close
+		lexicon
 	}
 }
 

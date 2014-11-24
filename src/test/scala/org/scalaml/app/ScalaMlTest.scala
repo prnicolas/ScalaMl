@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.app
 
@@ -25,8 +25,9 @@ trait ScalaMlTest extends FunSuite {
 	import scala.concurrent.duration.Duration	
 	import akka.util.Timeout
 	import akka.actor.ActorSystem
-
-	val duration = Duration(12000, "millis")
+	final val DURATION = 1200000
+	
+	val duration = Duration(DURATION, "millis")
 	implicit val timeout = new Timeout(duration)
 	implicit val actorSystem = ActorSystem("system") 
 	val chapter: String
@@ -47,7 +48,7 @@ trait ScalaMlTest extends FunSuite {
 		match {
 			case Success(n) => {
 				if(n >= 0) {
-					println(s"$chapter ${eval.name} succeed with status = $n")
+					Console.println(s"$chapter ${eval.name} succeed with status = $n")
 				}
 				assert(n >= 0, s"$chapter ${eval.name} failed")
 			}
@@ -71,17 +72,14 @@ trait Eval {
 	def run(args: Array[String]): Int
 }
 
-/*
-object MyEval extends Eval {
-    val name: String = "MyEval"
-	override def run(args: Array[String]): Int =  {
-		println("Start eval")
-		Thread.sleep(1000)
-		println("end eval")
-		1
+object Eval {
+	private var testCounter = 0
+	
+	
+	def testCount: String = {
+		testCounter += 1
+		s"$testCounter"
 	}
 }
-* 
-*/
 
 // --------------------------  EOF -------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.95e
+ * Version 0.96
  */
 package org.scalaml.supervised.regression.linear
 
@@ -94,7 +94,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of type Double as output
 		 */
 		override def |> : PartialFunction[Feature, Double] = {
-			case x: Feature if(x != null && model != None && x.size != model.get.size+1) => {
+			case x: Feature if(x != null && model != None && x.size == model.get.size-1) => {
 				val m = model.get
 				x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2)
 			}
