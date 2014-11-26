@@ -15,7 +15,7 @@ import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.util.{Counter, NumericAccumulator, Display}
 import org.scalaml.app.Eval
 

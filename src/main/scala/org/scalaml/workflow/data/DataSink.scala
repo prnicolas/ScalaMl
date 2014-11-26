@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.workflow.data
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import java.io.{FileNotFoundException, IOException, PrintWriter}
 import scala.util.{Try, Success, Failure}
@@ -22,13 +22,10 @@ import org.scalaml.util.Display
 
 		/**
 		 * <p>Generic class to load or save files into either HDFS or local files system. The persistency
-		 * of data is defined as a data transformation and therefore inherit from the PipeOperator<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>sinkName</b>  Name of the storage (file, database, ..).
-		 * </span></pre></p>
+		 * of data is defined as a data transformation and therefore inherit from the PipeOperator</p>
 		 * @constructor Create a DataSink transform associated to a specific path name or database name. 		 
 		 * @throws IllegalArgumentException if the name of the storage is undefined
-		 *
+		 * @param sinkName Name of the storage (file, database, ..).
 		 * @author Patrick Nicolas
 		 * @since December 15, 2013
 		 * @note Scala for Machine Learning

@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import com.typesafe.config.Config
 import akka.actor.Props
 import scala.concurrent.{Await, duration}
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.scalability.spark._
 import org.apache.spark.SparkContext
 import org.apache.spark.storage.StorageLevel

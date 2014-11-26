@@ -10,7 +10,7 @@
  */
 package org.scalaml.app.chap1
 
-import org.scalaml.core.types
+import org.scalaml.core.Types
 import org.scalaml.stats.Stats
 import scala.io.Source
 import org.scalaml.plots._

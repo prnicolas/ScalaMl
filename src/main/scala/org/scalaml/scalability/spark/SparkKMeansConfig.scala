@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.spark
 
@@ -18,20 +18,18 @@ import org.apache.spark.rdd.RDD
 
 import scala.annotation.implicitNotFound
 
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 
 
 
 		/**
-		 * <p>Define the configuration of the Spark KMeans wrapper.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>K</b>         Number of clusters used in Spark KMeans
-		 * <b>numIters</b>  Maximum number of iterations allowed for Spark KMeans
-		 * <b>numRuns</b>   Number of runs to be executed by Spark KMeans.
-		 * </span></pre></p>
+		 * <p>Define the configuration of the Spark KMeans wrapper.</p>
 		 * @constructor Create a configuration for the Spark K-means algorithm.
+		 * @param K Number of clusters used in Spark KMeans
+		 * @param numIter  Maximum number of iterations allowed for Spark KMeans
+		 * @param numRuns  Number of runs to be executed by Spark KMeans.
 		 * @throws IllegalArgumentException if any of the parameters is out of range
 		 * @author Patrick Nicolas
 		 * @since April, 2, 2014

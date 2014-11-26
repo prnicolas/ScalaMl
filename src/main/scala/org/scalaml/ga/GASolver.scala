@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.ga
 
 import scala.util.Random
 import Chromosome._
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.ga.state._
 import org.scalaml.core.XTSeries
 import org.apache.log4j.Logger
@@ -28,13 +28,10 @@ import org.scalaml.util.Display
 	 * chomosomes. The client code initialize the GA solver with either an initialized
 	 * population or a function () => Population{T] that initialize the population. THe
 	 * class has only one public method search.<br>
-	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</br>
-	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-	 * <b>config</b>   Configuration parameters for the GA algorithm
-	 * <b>score</b> Scoring method for the chromosomes of this population
-	 * </span></pre></p>
+	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
 	 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
-
+	 * @param config  Configuration parameters for the GA algorithm
+	 * @param score Scoring method for the chromosomes of this population
 	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
 	 * 
 	 * @author Patrick Nicolas

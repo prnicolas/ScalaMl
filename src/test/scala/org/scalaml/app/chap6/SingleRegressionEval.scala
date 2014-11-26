@@ -14,7 +14,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import YahooFinancials._
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.core.XTSeries

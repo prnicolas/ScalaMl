@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.app.chap7
 
@@ -15,7 +15,7 @@ import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import scala.io.Source
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import scala.language.implicitConversions
 import org.scalaml.supervised.hmm.HMMConfig
@@ -30,6 +30,7 @@ import org.scalaml.app.Eval
 		 * @since March 28, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov model
 		 */
+
 object HMMEval extends Eval  {
 	import HMM._, HMMForm._
 	val name: String = "HMMEval"
@@ -59,6 +60,7 @@ object HMMEval extends Eval  {
    
 
 	private def runCF2: Int =  {
+	  
 		Display.show(s"\n** test#${Eval.testCount} $name Hidden Markov Model - Training", logger)
   	  
 		val observations = Array[Double](
@@ -80,8 +82,9 @@ object HMMEval extends Eval  {
 			1, 3, 4, 5, 0, 1, 1, 4, 2, 3, 4
 		)
 		val config = new HMMConfig(obsSeq.size, NUM_STATES, NUM_SYMBOLS)
-
-		HMM[Array[Int]](config, obsSeq, EVALUATION, MAX_ITERS, EPS) match {
+		
+		val hmm = HMM[Array[Int]](config, obsSeq, EVALUATION, MAX_ITERS, EPS) 
+		hmm match {
 			case Some( hmm) => Display.show(s"$name (Training):\n${hmm.getModel.toString}", logger)
 			case None => Display.error("$name (Training) lambda model could not be created", logger)
 		}
@@ -129,6 +132,8 @@ object HMMEval extends Eval  {
 			case Failure(e) => Display.error(s"$name .run", logger, e)
 		}
 	}
+
 }
+
 
 // --------------------------------  EOF -------------------------------

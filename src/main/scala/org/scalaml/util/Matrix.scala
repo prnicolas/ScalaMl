@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.util
 
 import scala.reflect.ClassTag
 import scala.util.Random
-import org.scalaml.core.types.ScalaMl
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
 import scala.annotation.implicitNotFound
 
 

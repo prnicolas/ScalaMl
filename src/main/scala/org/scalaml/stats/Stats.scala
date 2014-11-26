@@ -6,21 +6,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.stats
 
 import scala.Array.canBuildFrom
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import Stats._
 
 		/**
 		 *  <p>Parameterized class (view bound T <% Double) that compute and update the statistics (mean,
 		 *  standard deviation) for any set of observations for which the
-		 *  type can be converted to a Double.<br>
-		 *  <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *  <b>values</b>  Vector or array of elements of type T
-		 *  </span></pre></p>
+		 *  type can be converted to a Double.</p>
 		 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
 		 *  @param values vector or array of elements of type T
 		 *  @throws IllegalArgumentException if values is either undefined or have no elements

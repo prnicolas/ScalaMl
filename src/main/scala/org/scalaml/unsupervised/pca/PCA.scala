@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.unsupervised.pca
 
@@ -14,7 +14,7 @@ import org.scalaml.core.XTSeries
 import org.apache.commons.math3.linear._
 import org.apache.commons.math3.stat.correlation.Covariance
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MaxCountExceededException, MathArithmeticException, DimensionMismatchException}
-import org.scalaml.core.types.{CommonMath, ScalaMl}
+import org.scalaml.core.Types.{CommonMath, ScalaMl}
 import org.scalaml.core.design.PipeOperator
 import ScalaMl._
 import org.scalaml.util.Display

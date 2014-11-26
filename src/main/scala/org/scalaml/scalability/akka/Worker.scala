@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.akka
 
 
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.scalability.akka.message._
 import java.io.{IOException, PrintWriter}
 import akka.actor._
@@ -30,12 +30,11 @@ import org.apache.log4j.Logger
 		/**
 		 * <p>Worker actor responsible for transforming a time series using the 
 		 * PipeOperator |>. The computation is initiated by the Master that acts 
-		 * as the workflow controller.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>id</v>    Identifier or counter for the worker actors.
-		 * <b>fct</b>   Data transformation function to be applied to a time series.
-		 * </span></pre></p>
+		 * as the workflow controller.</p>
 		 * @constructor Create a worker actor. 
+		 * @param  id Identifier or counter for the worker actors.
+		 * @param fct Data transformation function to be applied to a time series.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers

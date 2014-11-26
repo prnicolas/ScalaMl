@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.bayes
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.stats.Validation
 import scala.collection.mutable.ArraySeq
 import scala.annotation.implicitNotFound
@@ -35,11 +35,12 @@ import XTSeries._
 		 * As a classifier, the method implement the generic data transformation PipeOperator and the
 		 * Supervised interface.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>smoothing</b>   Laplace or Lidstone smoothing factor
-		 * <b>xt</b>          Input labeled time series used for training
-		 * <b>density</b>     Density function used to compute the discriminant
-		 * </span></pre></p> 
+		 *  Naive Bayes formula: p(C}x) = p(x|C).p(C)/p(x) => p(C|x) = p(x1|C).p(x2|C). .. p(xn|C).p(C)</span></pre></p> 
 		 * @constructor Instantiate a parameterized NaiveBayes model 
+		 * @param smoothing Laplace or Lidstone smoothing factor
+		 * @param xt  Input labeled time series used for training
+		 * @param density Density function used to compute the discriminant
+		 * 
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @author Patrick Nicolas
 		 * @since February 13, 2014

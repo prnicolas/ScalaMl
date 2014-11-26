@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -22,15 +22,13 @@ import iitb.Segment.{DataCruncher, LabelMap}
 		/**
 		 * <p>Class that specifies the regular expressions used to delineates labels, observations
 		 * and sequences in the training files '*.tagged'.
-		 * example in training file<br>
-		 * word1 [dObs] word2 [dObs]... wordn [dLabel] label<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>obsDelim</b>       Delimiters for observation as a sequence of N-grams or words
-		 * <b>labelsDelim</b>    Delimiter between observations string and tag/label
-		 * <b>trainingDelim</b>  Delimiter between training sequences.
-		 * </span></pre></p>
+		 * example in training file</p>
 		 * @constructor Creates a delimiters set for the raw and tagged input (training) for the CRF. [obsDelim]: Delimiters for observation as a sequence of N-grams or words, [labelsDelim] Delimiter between observations string and tag/label, [trainingDelim]: Delimiter between training sequences
 		 * @throws IllegalArgumentException if any of the delimiter is undefined
+		 * @param obsDelim Delimiters for observation as a sequence of N-grams or words
+		 * @param labelsDelim   Delimiter between observations string and tag/label
+		 * @param trainingDelim Delimiter between training sequences.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since April 5, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
@@ -45,15 +43,13 @@ class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainin
 		/**
 		 * <p>Generic class that implements the iterator for sequences (training or validation). The class needs
 		 * to implement the methods of the iitb.CRF.DataIter interface. The class delegates the generation of 
-		 * the training data to the iitb.Segment.DataCruncher class<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>nLabels</b>  Number of labels used in the CRF model
-		 * <b>input</b>    Identifier for the training or tagged files
-		 * <b>delim</b>    Delimiter instance used to break down the training data as sequence, observations and labels
-		 * </span></pre></p>
+		 * the training data to the iitb.Segment.DataCruncher class</p>
 		 * @constructor Create a new CRF sequences iterator for nLabels labels using a given delimiter.
 		 * @throws IllegalArgumentException if nLabel is out of range or the input or delim is undefined
 		 * @throws IOException if the training file '*.tagged' is not found
+		 * @param nLabels Number of labels used in the CRF model
+		 * @param input Identifier for the training or tagged files
+		 * @param delim  Delimiter instance used to break down the training data as sequence, observations and labels
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 5, 2014
@@ -91,8 +87,8 @@ class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter
 	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 	 */
 object CrfSeqIter { 
-	final val MAX_NUM_LABELS = 1000
-	final val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
+	private val MAX_NUM_LABELS = 1000
+	private val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
    
 	def apply(nLabels: Int, input: String, delim: CrfSeqDelimiter): CrfSeqIter = new CrfSeqIter(nLabels, input, delim)
 	def apply(nLabels: Int, input: String): CrfSeqIter = new CrfSeqIter(nLabels, input, DEFAULT_SEQ_DELIMITER)

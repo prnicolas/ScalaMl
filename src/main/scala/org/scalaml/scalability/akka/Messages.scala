@@ -6,9 +6,9 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.95d
  */
-package org.scalaml.scalability.akka.message
+package org.scalaml.scalability.akka
 
 
 import akka.actor._
@@ -18,7 +18,7 @@ import org.scalaml.core.XTSeries
 
 		/**
 		 * <p>Generic message exchanged between a master and worker actors.</p>
-		 * @param id  Unique identifier for this message.
+		 * @param id unique identifier for this message.
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
 		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers

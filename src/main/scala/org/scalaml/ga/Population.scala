@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.ga
 
 import scala.collection.mutable.ArrayBuffer
-import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import Chromosome._
 import java.util.{HashSet, Arrays}
 import Population._
@@ -34,16 +34,14 @@ import org.apache.log4j.Logger
 case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int)
 
 		/**
-		 * <p>Class that defines a population of chromosomes. The size of the population varies
-		 * over time following successive, iterative selection but is bounded to avoid a potential
-		 * explosion of candidates/chromosomes.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>limit</b>        Maximum number of chromosomes allowed in this population (constrained optimization)
-		 * <b>chromosomes</b>  Current pool of chromosomes
-		 * </span></pre></p>
+		 * <p>Class that defines a population of chromosomes. A population is initialized and evolves
+		 * through multiple reproduction cycles. The size of the population varies
+		 * over time following successive, iterative selection but is bounded by an upper limite to avoid a potential
+		 * explosion of the number chromosomes.</p>
 		 * @constructor Create a population of chromosome. [chromosomes] Current pool of chromosomes
 		 * @throws IllegalArgumenException if the limit is out of range or the pool of chromosomes is undefined
-		 * 
+		 * @param limit  Maximum number of chromosomes allowed in this population (constrained optimization)
+		 * @param chromosomes Current pool of chromosomes (type: ArrayBuffer{Chromosome[T]])
 		 * @author Patrick Nicolas
 		 * @since August 25, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
@@ -240,7 +238,7 @@ final class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * and validate its parameters.
 		 */
 object Population{
-	final val MAX_NUM_CHROMOSOMES = 10000
+	private val MAX_NUM_CHROMOSOMES = 10000
    
 	private def check[T <: Gene](limit: Int, chromosomes: Pool[T]): Unit  = {
 		require(chromosomes != null, "Population.check: The population has undefined initial set of chromosomes")

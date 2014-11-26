@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.core
 
@@ -30,15 +30,19 @@ import _FCT._
 		/**
 		 * <p>Monadic container which implements/adapter the most commonly used
 		 * Scala higher order methods.This class should not be used directly as they
-		 * do not validate any method argument and internal state..<br>
-		 * <b>_fct</b> element contained and managed by the monadic class.</p>
+		 * do not validate any method argument and internal state.</p>
+		 * @param _fct element contained and managed by the monadic wrapper
 		 * @constructor Create a monadic container for data transformation.
 		 * @author Patrick Nicolas
 		 * @since December 23, 2013
 		 * @note Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow/Monadic data transformation
 		 */
 class _FCT[+T](val _fct: T) {
-	
+
+		/**
+		 * Access the element of type T contained in this instance
+		 * @return element of type T
+		 */
 	def apply: T = _fct
 		/**
 		 * Implementation of the map method

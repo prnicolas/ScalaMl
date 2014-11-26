@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.svm
 
@@ -35,14 +35,12 @@ trait SVMConfigItem {
 
 		/**
 		 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
-		 * three elements:<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>formulation</b>  Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
-		 * <b<kernel</b>       Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
-		 * <b>exec</b>         Execution parameters for the training of the SVM model.
-		 * </span></pre></p>
+		 * three elements: SVM formulation, Kernel function and the execution parameters.</p>
 		 * @constructor Create a configuration for this SVM with a given formulation, kernel function and execution parameters.	
 		 * @throws IllegalArgumentException if the formulation, kernel or execution parameter are undefined.
+		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
+		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
+		 * @param exec Execution parameters for the training of the SVM model.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
@@ -59,7 +57,6 @@ final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, 
 	kernel.update(param)
 	exec.update(param)
     	
-	
 	override def toString: String = {
 		val buf = new StringBuilder
 		buf.append(s"\nSVM Formulation: ${formulation.toString}\n${kernel.toString}")

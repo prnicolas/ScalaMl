@@ -13,7 +13,7 @@ package org.scalaml.app.chap9
 
 import org.scalaml.supervised.nnet._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.Random
 import MLP._
 import org.apache.log4j.Logger

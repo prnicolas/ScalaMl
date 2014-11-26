@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.workflow.data
 
@@ -23,13 +23,10 @@ import org.apache.log4j.Logger
 		 * <li>date</li>
 		 * <li>Title</li>
 		 * <li>Content</li>
-		 * </ul>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>pathName</b>   Relative path for the directory containing the corpus.
-		 * </span></pre></p>
+		 * </ul></p>
 		 * @constructor Create a source for a set of documents in a given relative path.
 		 * @throws IllegalArgumentException if the path is not defined
-		 * 
+		 * @param pathName Relative path for the directory containing the corpus.
 		 * @author Patrick Nicolas
 		 * @since January 15, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models

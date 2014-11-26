@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.unsupervised.em
 
@@ -18,7 +18,7 @@ import org.apache.commons.math3.distribution.{MixtureMultivariateNormalDistribut
 import scala.collection.JavaConversions._
 import org.apache.commons.math3.exception.{DimensionMismatchException, NumberIsTooSmallException, NumberIsTooLargeException, NotStrictlyPositiveException}
 import scala.util.{Try, Success, Failure}
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import MultivariateEM._
 import XTSeries._
 import org.scalaml.util.Display
@@ -28,11 +28,10 @@ import org.apache.log4j.Logger
 		 * <p>Class that implements the Multivariate Expectation-Maximization algorithm with 
 		 * K number of clusters. The class uses the Multivariate Normal distribution, Mixture
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
-		 * Commons Math library.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>K</b>   Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
+		 * Commons Math library.</p>
 		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. 
 		 * @throws IllegalArgumentException if K is out of range
+		 * X@param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
@@ -51,7 +50,7 @@ final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Ar
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
-			val data: DblMatrix = xt  // force a type conversion
+			val data: DblMatrix = xt.toDblMatrix  // force a type conversion
 		  
 			Try {
 				val multivariateEM = new EM(data)

@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.trading
 
 import org.scalaml.ga.{Operator, Gene, Discretization}
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import Signal._
 import scala.collection.mutable.ListBuffer
 import org.scalaml.core.XTSeries
@@ -22,14 +22,11 @@ import scala.collection.mutable.TreeSet
 
 		/**
 		 * <p>Trading Strategy defined as a list of trading signals. The signals are linked through
-		 * OR boolean operator IF( signal1 == true OR signal2 == true OR .../<br>
-		 * <per>
-		 * <b>name</b>    Identifier or name of the strategy
-		 * <b>signals</b> List or sequence of trading signals used in this strategy.
-		 * </span></pre></p>
+		 * OR boolean operator IF( signal1 == true OR signal2 == true OR ...</p>
 		 * @constructor Create an instance of a trading strategy 
 		 * @throws IllegalArgumenException if the list of signals is either undefined or empty
-		 * 
+		 * @param name Identifier or name of the strategy
+		 * @param signals List or sequence of trading signals used in this strategy.
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014
 		 * @note Scale for Machine Learning Appendix/Finances 101
@@ -43,13 +40,11 @@ case class TradingStrategy(val name: String, signals: List[Signal]) {
 		 * <p>Factory for trading strategies. The factory collects all the trading signals needed to implement
 		 * the trading strategy. The strategies are generated as the list of all combination of nSignals trading
 		 * signals, once and only once when requested. The Factory is mainly used for initializing the population for the genetic algorithm or the
-		 * extended learning classifiers.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>nSignals</b>   Number of trading signals used in any trading strategy.
-		 * <b>discr</b>      Discretization function to convert signal to discrete value and vice versa
-		 * </span></pre></p>
+		 * extended learning classifiers.</p>
 		 * @constructor Instantiate a factory for all the combination of nSignals trading signals.
 		 * @throws IllegalArgumentException if the number of signals is less than 1
+		 * @param nSignals Number of trading signals used in any trading strategy.
+		 * @param discr Discretization function to convert signal to discrete value and vice versa
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014

@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.logistic
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.util.Matrix
 import scala.util.Random
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
@@ -34,16 +34,15 @@ import scala.language.implicitConversions
 
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
-		 * support regularization or penalty terms.<br>
+		 * support regularization or penalty terms.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>xt</b>         Input time series observations.
-		 * <b>labels</b>     Labeled class data used during training of the classifier
-		 * <b>optimizer</b>  Optimization method used to minimmize the loss function during training
-		 * </span></pre></p>
+		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2) + .. + w(n).x(n))) </span></pre></p>
 		 * @constructor Create a logistic regression classifier model.
 		 * @throws IllegalArgumentException if the class parameters are undefined. 
 		 * @see org.apache.commons.math3.fitting.leastsquares.
-		 * 
+		 * @param xt Input time series observations.
+		 * @param labels Labeled class data used during training of the classifier
+		 * @param optimizer Optimization method used to minimmize the loss function during training
 		 * @author Patrick Nicolas
 		 * @since May 11, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression

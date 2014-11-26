@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
 import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
@@ -21,17 +21,14 @@ import MLP._
 		 * <p>:Class that defines a MLP layer. A MLP layer is built using the
 		 * input vector and add an extra element (or neuron) to account for the intercept
 		 * weight w0. The MLP layer is fully defined by its rank in the Neuron Network with
-		 * input layer having id = 0 and the output layer having id = number of layers -1.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>id</b>    Identifier or rank of the MLP layer in the network.
-		 * <b>len</b>   Number of elements or neuron in the MLP layer.
-		 * </span></pre></p>
+		 * input layer having id = 0 and the output layer having id = number of layers -1.</p>
 		 * @constructor Create a layer for a multi-layer perceptron. 
 		 * @throws IllegalArgumentException if the class parameters are incorrect
-		 * 
+		 * @param id Identifier or rank of the MLP layer in the network.
+		 * @param len Number of elements or neuron in the MLP layer.
 		 * @author Patrick Nicolas
 		 * @since May 6, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
 		 */
 
 final protected class MLPLayer(val id: Int, val len: Int) {

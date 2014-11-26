@@ -10,7 +10,8 @@
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.{ScalaMl, CommonMath}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
@@ -29,7 +30,7 @@ import org.scalaml.app.Eval
 object KMeansEval extends UnsupervisedLearningEval {
 	import org.scalaml.unsupervised.clustering.KMeans
 	import org.scalaml.unsupervised.Distance.euclidean
-	import types.ScalaMl._
+	import ScalaMl._
 	val name: String = "KMeansEval"
    	  
 	private val START_INDEX = 70
@@ -43,7 +44,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		import types.CommonMath._
+		import CommonMath._
         
 		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of K-means clustering", logger)
       

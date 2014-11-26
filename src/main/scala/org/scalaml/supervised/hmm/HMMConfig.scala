@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.hmm
 
@@ -20,17 +20,15 @@ import org.scalaml.core.design.Config
 		 * <p>Utility class that defined the dimemsion of the matrix
 		 * used in the Hidden Markov Model. The terminology used in the code follows
 		 * the naming convention used in the mathematical expressions presented in
-		 * most of papers and technical books on HMM as well as the book<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>_T</b>   Number of observations
-		 * <b>_N</b>   Number of hidden states in the HMM
-		 * <b>_M</b>   Number of symbols (or model dimension) for the HMM
-		 * </span></pre></p>
+		 * most of papers and technical books on HMM.</p>
 		 * @constructor Create a configuration (dimensions) for this HMM
+		 * @param _T  Number of observations
+		 * @param _N   Number of hidden states in the HMM
+		 * @param _M   Number of symbols (or model dimension) for the HMM
 		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
 		 * @author Patrick Nicolas
 		 * @since March 27, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 		 */
 class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
 	import HMMConfig._

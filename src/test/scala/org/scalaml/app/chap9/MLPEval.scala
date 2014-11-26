@@ -13,7 +13,7 @@ package org.scalaml.app.chap9
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.supervised.nnet._
 import org.scalaml.trading.GoogleFinancials
-import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import GoogleFinancials._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger

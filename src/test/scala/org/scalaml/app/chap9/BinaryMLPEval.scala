@@ -10,8 +10,8 @@
  */
 package org.scalaml.app.chap9
 
-import org.scalaml.core.types.ScalaMl._
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.MLPConfig
 import org.scalaml.supervised.nnet.MLP
 import org.scalaml.core.XTSeries
@@ -19,6 +19,7 @@ import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import org.scalaml.app.Eval
+import scala.reflect.ClassTag
 
 		/**
 		 * <p>Singleton to evaluate the binary (2 class) multi-layer perceptron.</p>

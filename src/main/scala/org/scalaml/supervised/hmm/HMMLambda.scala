@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.types.ScalaMl._
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.Matrix
 import scala.reflect.ClassTag
 import scala.util.Random
@@ -21,12 +21,7 @@ import HMMConfig._
 		/**
 		 * <p>Class that defines the Lambda model (pi, A, B) for the HMM. The model is initialized with
 		 * the state transition matrix, emission matrix and initial probabilities for the evaluation and 
-		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the training form.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>A</b>		State transition probabilities matrix
-		 * <b>B</b>		Observations or emission probabilities matrix
-		 * <b>pi</b>	Initial state probabilities
-		 * </span></pre></p>
+		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the training form.</p>
 		 * @constructor Create a Lambda model of type HMMLambda with a predefined state transition, Emission matrix and initial probabilities.
 		 * @param A State transition probabilities matrix
 		 * @param B Observations or emission probabilities matrix
@@ -38,7 +33,7 @@ import HMMConfig._
 		 * @since March 6, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
-final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
+final class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
 
 	@inline def getT: Int = numObs
 	@inline def getN: Int = A.nRows

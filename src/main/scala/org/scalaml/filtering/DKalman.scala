@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.filtering
 
@@ -15,7 +15,7 @@ import org.apache.commons.math3.linear._
 import org.apache.commons.math3.filter._
 import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Display
 
@@ -27,8 +27,8 @@ import scala.util.{Try, Success, Failure}
 
 
 		/**
-		 * <p>Case class that defines the white (Gaussian) noise q for the process 
-		 * and the white noise r for the measurement or observation devices. An instance
+		 * <p>Case class that defines the <b>white (Gaussian)</b> noise <b>q</b> for the process 
+		 * and the white noise <b>r</b> for the measurement or observation devices. An instance
 		 * of this class has to be provided implicitly in the scope of the Kalman filter
 		 * instance (DKalman).</p>
 		 * @param qr Tuples that define the mean values of the process and measurement noise.
@@ -70,18 +70,16 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 		 * <p>Kalman filter class that uses a recursive optimal filter. The client code has to provide the
 		 * time independent state transition t to t+1, the input matrix B. the measurement dependency matrix, H
 		 * and the error matrix P. This implementation uses the Apache Commons math library. The process and
-		 * measurement white noise is provided as an implicit value.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>A</b>       State transition matrix
-		 * <b>B</b>       Control state matrix
-		 * <b>H</b>       Matrix that defines the dependency of the measurement on the state of the system<
-		 * <b>P</b>       Covariance error matrix
-		 * <b>qrNoise</b> Implicit value representing the white noise for the process Q and the measurement P.
-		 * </span></pre></p> 
+		 * measurement white noise is provided as an implicit value.</p>
+		 * @param A State transition matrix
+		 * @param B Control state matrix
+		 * @param H Matrix that defines the dependency of the measurement on the state of the system<
+		 * @param P Covariance error matrix
+		 * @param qrNoise Implicit value representing the white noise for the process Q and the measurement P.
 		 * @constructor Create a scalar Kalman filter
 		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
 		 * @throws ImplicitNotFoundException if the white noise is not defined prior instantiation of the DKalman class.
-		 * @see org.apache.commons.math3.filter
+		 * @see org.apache.commons.math3.filter._
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014
 		 * @note Scala for Machine Learning  chapter 3 Data pre-processing / Kalman filter
@@ -136,7 +134,7 @@ final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: Dbl
 	}
   
 	private def newState: DblVector = {
-		import org.scalaml.core.types.CommonMath._
+		import org.scalaml.core.Types.CommonMath._
 		
 		filter.predict
 		x = A.operate(x).add(qrNoise.noisyQ) 

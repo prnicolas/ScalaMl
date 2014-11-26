@@ -10,11 +10,12 @@
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
-import types.ScalaMl._
+import ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
 import org.apache.log4j.Logger
 import org.scalaml.util.Display

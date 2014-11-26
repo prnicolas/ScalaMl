@@ -16,8 +16,8 @@ import YahooFinancials._
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSink
 import org.scalaml.supervised.regression.linear.MultiLinearRegression
-import org.scalaml.core.types.ScalaMl
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.util.Display
 import org.apache.log4j.Logger

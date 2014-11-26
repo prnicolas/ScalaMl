@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.linear
 
 import org.scalaml.core.XTSeries
 import org.apache.commons.math3.stat.regression.SimpleRegression
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
@@ -22,15 +22,15 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class<br>
+		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>xt</b>   Time series of (x,y) pairs of values
-		 * <b>g</b>    Implicit conversion from a <b>Double</b> to the type <b>T</b>
-		 * </span></pre></p>
+		 * regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}<br>
+		 * with f(x|w) = w(0) + w(1).x</span></pre></p>
 		 * @constructor Create a single linear regression model of type bounded to a Double as a view. 
 		 * @throws IllegalArgumentException if the time series is undefined
 		 * @throws implicitNotFound if conversion from type to Double is not implicitly defined
-		 * 
+		 * @param xt Time series of (x,y) pairs of values
+		 * @param g Implicit conversion from a <b>Double</b> to the type <b>T</b>
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression

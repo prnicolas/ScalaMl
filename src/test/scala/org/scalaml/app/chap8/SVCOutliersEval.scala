@@ -13,11 +13,11 @@ package org.scalaml.app.chap8
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm._
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.OneSVCFormulation
 import Fundamentals._
-import types.ScalaMl._
+import Types.ScalaMl._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}

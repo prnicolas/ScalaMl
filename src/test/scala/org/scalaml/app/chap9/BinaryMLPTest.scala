@@ -5,7 +5,7 @@ package org.scalaml.app.chap9
 import org.scalaml.supervised.nnet.MLPConfig
 import org.scalaml.supervised.nnet.MLP
 import scala.util.Random
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval

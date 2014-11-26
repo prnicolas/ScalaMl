@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.nnet
 
 import org.apache.commons.math3.linear.RealMatrix
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.Random
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.Config
@@ -20,16 +20,15 @@ import org.scalaml.core.design.Config
 
 		/**
 		 * <p>Class that defines the configuration for the Multi-layer Perceptron. The validation
-		 * of the configuration/tuning parameters for the MLP is defined in this class..<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>alpha</b>       Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
-		 * <b>eta</b>         Learning rate ]0, 1] used in the computation of the gradient of the weights during training
-		 * <b>hidLayers</b>   Sequence of number of neurons for the hidden layers
-		 * <b>numEpochs</b>   Number of epochs or iterations allowed to train the weights/model
-		 * <b>eps</b>         Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
-		 * <b>activation</b>  Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
-		 * </span></pre></p>
+		 * of the configuration/tuning parameters for the MLP is defined in this class.</p>
 		 * @constructor Creates a configuration object for the neural network. [alpha] Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing). [eta] Learning rate ]0, 1] used in the computation of the gradient of the weights during training. [hidLayers] Sequence of number of neurons for the hidden layers. [numEpochs] Number of epochs used to train the weights/model. [eps] Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error. [activation] Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param hidLayers  Sequence of number of neurons for the hidden layers
+		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
+		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 * @param activation Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
+		 * 
 		 * @throws IllegalArgumentException if one of the class parameters is either out of bounds or undefined * 
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014
@@ -65,10 +64,10 @@ final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[I
 		 * @since May 4, 2014
 		 */
 object MLPConfig {
-	final val EPS: Double = 1e-17
-	final val ALPHA_LIMITS = (0.0, 1.0)
-	final val ETA_LIMITS = (1e-5, 1.0)
-	final val NUM_EPOCHS_LIMITS = (2, 5000)
+	private val EPS: Double = 1e-17
+	private val ALPHA_LIMITS = (0.0, 1.0)
+	private val ETA_LIMITS = (1e-5, 1.0)
+	private val NUM_EPOCHS_LIMITS = (2, 5000)
    
 	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
 		new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, activation)

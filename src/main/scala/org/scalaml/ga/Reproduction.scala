@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.ga
 
 import Chromosome._
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
-import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 
@@ -26,7 +26,7 @@ import org.scalaml.util.Display
 		 *  </span></pre></p>
 		 *  @constructor Create a reproduction cycle for the genetic algorithm. 
 		 *  @throws IllegalArgumentException if the chromosome scoring function is undefined
-		 *  		 
+		 *  @param score Scoring function of a chromosome (unfitness of the candidate solution)
 		 *  @author Patrick Nicolas
 		 *  @since August 28, 2013
 		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components

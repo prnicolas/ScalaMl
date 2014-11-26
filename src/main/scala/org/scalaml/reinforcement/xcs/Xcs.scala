@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.reinforcement.xcs
 
 import org.scalaml.ga._
 import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning._
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 
 
@@ -33,18 +33,13 @@ case class XcsSensor(val id: String, val value: Double)
 		 * <p>Example of implementation of the XCS algorithm with a predefined
 		 * configuration and a set of training episode for the Q-Learning algorithm used to assign
 		 * credit to individual rules that improve the performance (or objective
-		 * function) of a system.<br>
-		 * This implementation assumes that the new data (Signal) and reward following the
-		 * previous set of actions on the system are collected at the same time.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>        Configuration for the XCS algorithm (GA and Q-Learning parameters)
-		 * <b>population</b>    Initial population for the search space of classifiers
-		 * <b>score</b> 		Chromosome scoring function
-		 * <b>input</b>			Input for Q-learning state transition space QLSpace used in training
-		 * </span></pre></p> 
+		 * function) of a system.</p> 
 		 * @constructor Create an extended learning classifiers system.
 		 * @throws IllegalArgumenException if the configuration, input information or training episodes is undefined
-		 * 
+		 * @param config  Configuration for the XCS algorithm (GA and Q-Learning parameters)
+		 * @param population Initial population for the search space of classifiers
+		 * @param score	Chromosome scoring function
+		 * @param input Input for Q-learning state transition space QLSpace used in training
 		 * @author Patrick Nicolas
 		 * @since March 26, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems

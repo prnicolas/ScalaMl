@@ -15,7 +15,7 @@ import scala.collection.mutable.ArrayBuffer
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.workflow._
 import scala.util.Random
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.plots.LightPlotTheme
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Display

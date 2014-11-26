@@ -6,15 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.unsupervised.clustering
 
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.stats.Stats
 import scala.collection.mutable.ListBuffer
 import org.scalaml.unsupervised.Distance.euclidean
-import types.ScalaMl._
+import ScalaMl._
 import XTSeries._
 
 
@@ -23,13 +24,12 @@ import XTSeries._
 		 * A cluster is defined by its center (scalar or vector) and its members (data point)
 		 * it contains. The membership of data points to this cluster is done through their index.
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
-		 * contains two data points with the same index.<br>
+		 * contains two data points with the same index.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>center</b>  Initial centroid for this cluster
-		 * </span></pre></p>
+		 * Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
 		 * @constructor Instantiate a cluster with an initial centroid. 
 		 * @throws IllegalArgumenException if the center is undefined (null)
-		 * 
+		 * @param Initial centroid for this cluster
 		 * @author Patrick Nicolas
 		 * @since February 22, 2014
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering

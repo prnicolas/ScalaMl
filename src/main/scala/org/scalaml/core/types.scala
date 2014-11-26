@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.core
 
@@ -24,7 +24,7 @@ import java.text.DecimalFormat
 		 *  @since February 23, 2014
 		 *  @note Scala for Machine Learning Chapter 3 Data pre-processing/Time series
 		 */
-package object types {  
+object Types {  
 
 	class Formatter(align: String, fmtStr: String) {
 		val fmt = new DecimalFormat(fmtStr)

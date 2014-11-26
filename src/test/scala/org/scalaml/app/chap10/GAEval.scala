@@ -15,12 +15,12 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
 import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
-import org.scalaml.core.types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 import org.scalaml.ga.Gene
 import org.scalaml.app.Eval
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 
 import org.apache.log4j.Logger
 

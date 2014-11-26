@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.MLPConfig._
 import scala.util.Random
 import org.scalaml.core.design.Model
@@ -23,19 +23,16 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
 		 * Perceptron. The connections is composed of all the synapses between any neuron
 		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) 
-		 * tuple (weights, deltaWeights)<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>       Configuration for the Multi-layer Perceptron.
-		 * <b>src</b>          Source (or input or upstream) neural layer to this connection
-		 * <b>dst</b>          Destination (or output or downstream) neural layer for this connection.
-		 * <b>mlpObjective</b> Objective of the Neural Network (binary classification, regression...)
-		 * </span></pre></p>
+		 * tuple (weights, deltaWeights)</p>
 		 * @constructor Create a MLP connection between two consecutive neural layer. 
 		 * @throws IllegalArgumenException if either the configuration or if the source layer or destination layer is undefined.
-		 * 
+		 * @param config  Configuration for the Multi-layer Perceptron.
+		 * @param src  Source (or input or upstream) neural layer to this connection
+		 * @param dst  Destination (or output or downstream) neural layer for this connection.
+		 * @param  mlpObjective Objective of the Neural Network (binary classification, regression...)
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
 		 */
 final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit mlpObjective: MLP.MLPObjective)  {
 	import MLPConnection._
@@ -133,7 +130,7 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		 * Companion object for the connection of Multi-layer perceptron.
 		 */
 object MLPConnection {
-	val BETA = 0.1
+	private val BETA = 0.1
 	
 	private def check(config: MLPConfig, src: MLPLayer, dst: MLPLayer) {
 		require(config != null, "Configuration for the MLP connection is undefined")

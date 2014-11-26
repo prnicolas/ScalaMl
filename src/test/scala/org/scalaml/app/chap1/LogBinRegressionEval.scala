@@ -15,9 +15,9 @@ import java.awt.Color
 import org.scalaml.plots._
 import org.scalaml.stats.Stats
 import org.scalaml.trading.{Signal, YahooFinancials}
-import org.scalaml.core.types
+import org.scalaml.core.Types.ScalaMl
 import Signal._
-import types.ScalaMl._
+import ScalaMl._
 import org.scalaml.supervised.regression.logistic.LogBinRegression
 import scala.util.{Try, Success,Failure}
 import org.apache.log4j.Logger

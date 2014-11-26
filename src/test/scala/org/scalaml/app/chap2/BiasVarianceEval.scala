@@ -12,7 +12,7 @@ package org.scalaml.app.chap2
 
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import scala.util.Random
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display

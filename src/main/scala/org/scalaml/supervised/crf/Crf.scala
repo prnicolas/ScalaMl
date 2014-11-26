@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -20,7 +20,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.supervised.Supervised
 import java.io.IOException
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import CrfConfig._
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
@@ -29,12 +29,10 @@ import org.scalaml.util.Display
 
 
 		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>weights</b>	Weights (or lambda parameters) for this CRF model.
-		 * </span></pre></p>
+		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.</p>
 		 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
 		 * @throws IllegalArgumentException if weights is not properly defined
+		 * @param weights	Weights (or lambda parameters) for this CRF model.
 		 * @see org.scalaml.core.design.Model
 		 * 
 		 * @author Patrick Nicolas

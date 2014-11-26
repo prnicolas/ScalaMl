@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.scala
 
@@ -23,12 +23,10 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>times</b>  Number of executions to be performed during the performance testing
-		 * </span></pre></p>
+		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.</p>
 		 * @constructor Create a performance benchmark. [times] Number of executions to be performed during the performance testing
 		 * @throws IllegalArgumentException if the number of executions is out of range
+		 * @param times Number of executions to be performed during the performance testing
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
@@ -68,13 +66,11 @@ abstract class ParBenchmark[U](times: Int) {
 
 		/**
 		 * <p>Class to evaluate the performance of the Scala parallel arrays. The
-		 * class override the map, reduceLeft methods to collect timing information<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>u</b>       Parameterized array
-		 * <b>v</b>       Parameterized parallel array
-		 * <b>times</b>   Number of executions in the performance test.
-		 * </span></pre></p>
+		 * class override the map, reduceLeft methods to collect timing information.</p>
 		 * @constructor Create a performance benchmark for Scala arrays. 
+		 * @param u  Parameterized array
+		 * @param v Parameterized parallel array
+		 * @param times Number of executions in the performance test.
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
@@ -146,15 +142,12 @@ object ParArrayBenchmark {
 
 		/**
 		 * <p>Class to evaluate the performance of the Scala parallel map. The
-		 * class override the map, reduceLeft methods to collect timing information<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>u</b>       Parameterized map, <b>Map[Int, U]<\b>
-		 * <b>v</b>       Parameterized parallel map
-		 * <b>times</b>   Number of executions in the performance test.
-		 * </span></pre></p>
+		 * class override the map, reduceLeft methods to collect timing information</p>
 		 * @constructor Create a performance benchmark for Scala arrays. [u] Parameterized map of type Map[Int,U], [v] Parameterized parallel map. [_times] Number of executions in the performance test.
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
-		 * 
+		 * @param u  Parameterized map, <b>Map[Int, U]<\b>
+		 * @param v Parameterized parallel map
+		 * @param times Number of executions in the performance test.
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections

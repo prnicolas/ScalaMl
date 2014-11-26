@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.svm
 
@@ -17,14 +17,12 @@ import libsvm._
 		/**
 		 * <p>Protected class that encapsulates the execution parameters for SVM training. The
 		 * class are instantiated by the companion object.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>cacheSize</b>  Size of the cache used in LIBSVM to preserve intermediate computation during training.
-		 * <b>eps</b>         Convergence Criteria to exit the training cycle
-		 * <b>nFolds</b>      Number of folds used in K-fold validation of the SVM model.
-		 * </span></pre></p>
+		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create SVM execution configuration with the following parameters
 		 * @throws IllegalArgumentException if the cache, convergence criteria or number of folds are incorrectly specified.
-		 * 		 
+		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation during training.
+		 * @param eps Convergence Criteria to exit the training cycle
+		 * @param nFolds Number of folds used in K-fold validation of the SVM model.
 		 * @author Patrick Nicolas
 		 * @since April 28, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
@@ -44,11 +42,11 @@ protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) e
 
 
 object SVMExecution {
-	final val DEFAULT_CACHE_SIZE = 1024
-	final val DEFAULT_EPS = 1e-5
+	private val DEFAULT_CACHE_SIZE = 1024
+	private val DEFAULT_EPS = 1e-5
 
-	final val MAX_CACHE_SIZE = 1<<16
-	final val EPS_LIMITS = (1e-10, 0.35)
+	private val MAX_CACHE_SIZE = 1<<16
+	private val EPS_LIMITS = (1e-10, 0.35)
 	
 	def apply(cacheSize: Int, eps: Double, nFolds: Int): SVMExecution = 
 		new SVMExecution(cacheSize, eps,nFolds)

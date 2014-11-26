@@ -6,16 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.linear
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRuntimeException, OutOfRangeException}
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.types.CommonMath._
+import org.scalaml.core.Types.CommonMath._
 import scala.annotation.implicitNotFound
 import org.scalaml.supervised.regression.RegressionModel
 import scala.util.{Try, Success, Failure}
@@ -28,11 +28,12 @@ import scala.language.implicitConversions
 		 * Apache commons Math library. The regression model (regression parameters or weights) are
 		 * initialized only if the training was successful.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>xt</b>    Input multi-dimensional time series for which regression is to be computed.
-		 * <b>y</b>     Labeled data for the Multivariate linear regression.</span></pre></p>
+		 * Ordinary least squares regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}<br>
+		 * with regression model f(x|w) = w(0) + w(1).x(1) + ... + w(n).x(n)</span></pre></p>
 		 * @constructor Creates multi-variate linear regression
 		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
-		 * 
+		 * @param xt Input multi-dimensional time series for which regression is to be computed.
+		 * @param y Labeled data for the Multivariate linear regression
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
@@ -49,7 +50,8 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 	
 	private[this] val model: Option[RegressionModel] = {
 		Try {
-			newSampleData(y, xt.toDblMatrix)
+			val xtv: DblMatrix = xt
+			newSampleData(y, xtv)
 			val wRss = (estimateRegressionParameters, calculateResidualSumOfSquares)
 			RegressionModel(wRss._1, wRss._2)
 		} 

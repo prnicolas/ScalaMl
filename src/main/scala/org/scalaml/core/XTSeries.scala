@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.core
 
 import scala.reflect.ClassTag
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
@@ -24,17 +24,15 @@ import scala.language.implicitConversions
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
 		 * this generic type to avoid multiple conversion between numerous types.
 		 * The class is parameterized so it can take primitive types to create vector for single
-		 * variable time series or arrays/list to create matrix for multiple variables time series.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *   <b>label</b>    Optional name for the time series
-		 *   <b>arr</b>      Array of values of parameterized types.
-		 * </span></pre></p>		 * 
+		 * variable time series or arrays/list to create matrix for multiple variables time series.</p>		 * 
 		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: 
 		 * @throws IllegalArgumentException If the array of values, arr is undefined
+		 * @param label Name for the time series (optional)
+		 * @param arr Array of values of the parameterized T
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
-		 * @note Scala for Machine Learning Chapter 3 Data preprocessing/Time series
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Time series
 		 */
 class XTSeries[T](val label: String, arr: Array[T]) { 
 	require(arr != null && arr.size > 0, "XTSeries Cannot create a times series from undefined values")
@@ -68,8 +66,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 */
 	@implicitNotFound("Conversion from type T to DblVector undefined")
 	def toDblVector(implicit f: T => Double): DblVector = {
-		require( f != null, "Cannot convert the time series to dblVector with undefined conversion")
-		arr.map( f( _ ))
+		require( f != null, "XTSeries.toDblVector Cannot convert the time series to dblVector")
+		arr.map( f( _ ) )
 	}
   
 		/**
@@ -81,7 +79,7 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 */
 	@implicitNotFound("Conversion from type T to DblMatrix undefined")
 	def toDblMatrix(implicit fv: T => DblVector): DblMatrix = {
-		require( fv != null, "Cannot convert the time series to matrix DblMatrix with undefined conversion")
+		require( fv != null, "XTSeries.toDblMatrix Cannot convert the time series to matrix DblMatrix")
 		arr.map( fv( _ ) )
 	}
   
@@ -135,11 +133,9 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 
 		/**
 		 * <p>Class that defines a time series for multi-dimensional variables. The class is created
-		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *   <b>label</b>   Label for the multi-dimensional time series
-		 *   <b>arr</b>     Array of vectors for time series.
-		 * </span></pre></p>
+		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.</p>
+		 * @param label Name for the time series (optional)
+		 * @param arr Array of values of the parameterized T
 		 * @constructor Create a multidimensional time series
 		 * @throws IllegalArgumentException If the array of values, arr is undefined
 		 * @author Patrick Nicolas

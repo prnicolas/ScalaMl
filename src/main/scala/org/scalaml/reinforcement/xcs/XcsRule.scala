@@ -13,7 +13,7 @@ import org.scalaml.trading.Signal
 import org.scalaml.trading.operator.EQUAL
 import org.scalaml.ga.{Operator, Gene, Discretization}
 import org.scalaml.reinforcement.qlearning.QLState
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import XcsRule._
 import org.scalaml.ga.Chromosome
 import scala.util.Random
@@ -24,11 +24,7 @@ import scala.util.Random
 		 * <p>Class that defined a action associated to a sensor and a target value. A typical
 		 * action is a sensor exceeding a target value (or threshold). XCS action are defined
 		 * as gene so they can be chained as chromosomes and define a strategy to optimize the 
-		 * operation of a system.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>sensorId</b>    Identifier of the sensor for which an action may be triggered or fired.
-		 * <b>target</b> threshold value associated to a sensor to trigger the action.
-		 * </span></pre></p>
+		 * operation of a system.</p>
 		 * @constructor Create an XCS action. 
 		 * @param sensorId identifier of the sensor for which an action may be triggered or fired
 		 * @param target threshold value associated to a sensor to trigger the action

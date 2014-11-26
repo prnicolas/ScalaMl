@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.hmm
 
@@ -20,14 +20,11 @@ import HMMConfig._
 
 	/**
 	 * <p>Class that encapsulates the execution parameters for the three
-	 * canonical forms of the HMM.<br>
-	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-	 * <b>lambda</b>     Lambda model for this HMM
-	 * <b>maxIters</b>   Maximum number of iterations used in training (Baum-Welch)
-	 * </span></pre></p>
+	 * canonical forms of the HMM.</p>
 	 * @constructor Create a new execution state for the HMM for a predefined Lambda model
 	 * @throws IllegalArgumenException if the Lambda model is undefined or the maximum iterations is out of range
-	 * 
+	 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+	 * @param >maxIters   Maximum number of iterations used in training (Baum-Welch)
 	 * @author Patrick Nicolas
 	 * @since March 24, 2014
 	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
@@ -114,7 +111,7 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 		 * the constructor of the HMMState class and validate its parameters.
 		 */
 object HMMState {
-	final val DEFAULT_MAXITERS = 128
+	final val DEFAULT_MAXITERS = 256
 	def apply(lambda: HMMLambda, maxIters: Int): HMMState = new HMMState(lambda, maxIters)
 	def apply(lambda: HMMLambda): HMMState = new HMMState(lambda, DEFAULT_MAXITERS)
 }

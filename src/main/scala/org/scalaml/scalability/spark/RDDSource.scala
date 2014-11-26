@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.spark
 
@@ -19,7 +19,7 @@ import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
@@ -30,15 +30,14 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
 	/**
-	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).<br>
-	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-	 * <b>pathName</b>       Relative path for data sources
-	 * <b>normalize</b>      Flag to specify normalize of data [0, 1]
-	 * <b>reversedOrder</b>  Specify that the order of the data in the CSV file has to be revered before processing
-	 * <b>headerLines</b>    Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
-	 * <b>config</b>         Configuration for the Spark RDDs
-	 * </span></pre></p>
+	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
 	 * @constructor Create a RDD associated to a source of data of type DataSource
+	 * @param pathName      Relative path for data sources
+	 * @param normalize    Flag to specify normalize of data [0, 1]
+	 * @param reversedOrder Specify that the order of the data in the CSV file has to be revered before processing
+	 * @param headerLines  Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
+	 * @param config  Configuration for the Spark RDDs
+	 * 
 	 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
 	 * @see org.scalaml.workflow.data.DataSource
 	 * 

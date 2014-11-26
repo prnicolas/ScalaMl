@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.workflow.module
 
@@ -14,7 +14,7 @@ package org.scalaml.workflow.module
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.unsupervised.clustering.Cluster
-import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblVector
 
 	/**
 	 * <p>Clustering module used to instantiate a clustering component in a workflow.</p>

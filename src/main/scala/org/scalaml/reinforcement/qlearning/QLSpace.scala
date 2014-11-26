@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.reinforcement.qlearning
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.Model
 import org.scalaml.util.Display
 
@@ -24,14 +24,11 @@ import scala.util.Random
 		/**
 		 * <p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
 		 * The search space can be provided by the end user with a list of states and actions or
-		 * automatically created by providing the number of states.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>states</b>    States defined in the Q-learning search space.
-		 * <b>goalIds</b>   List of ids of states that are goals.
-		 * </span></pre></p>
+		 * automatically created by providing the number of states.</p>
 		 * @constructor Create a state (or search) space. 
 		 * @throws IllegalArgumentException if either states or the goal(s) is undefined
-		 * 
+		 * @param states States defined in the Q-learning search space.
+		 * @param goalIds List of ids of states that are goals.
 		 * @author Patrick Nicolas
 		 * @since January 17, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning

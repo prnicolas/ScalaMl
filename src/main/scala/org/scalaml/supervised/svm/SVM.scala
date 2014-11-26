@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.svm
 
 import org.scalaml.core.XTSeries
 import libsvm.{svm_problem, svm_node, svm, svm_model}
-import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
@@ -27,15 +27,12 @@ import scala.collection.mutable.ArrayBuffer
 		 * <p>Support Vector Algorithm for time series of vector of element with parameterized types
 		 * The model is created or trained during the instantiation of the class. Therefore a model either
 		 * is properly trained or does not exists.<br>
-		 * This implementation uses the LIBSVM library<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>	Configuration of this SVM
-		 * <b>xt</b>		Time series to regress or classify
-		 * <b>labels</b>	Labeled values for the time series used in the training of the SVM.
-		 * </span></pre></p>
+		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVM algorithm for a labeled time series given a configuration. 	
 		 * @throws IllegalArgumentException if the configuration or the time series is undefined.
-		 * 
+		 * @param configConfiguration of this SVM
+		 * @param xt Time series to regress or classify
+		 * @param labels Labeled values for the time series used in the training of the SVM.
 		 * @author Patrick Nicolas
 		 * @since April 28, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.

@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Matrix
@@ -37,12 +37,10 @@ object HMMForm extends Enumeration {
 
 import HMMForm._
 		/**
-		 * <p>Generic model for dynamic programming algorithms used in HMM.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>lambda</b>   Lambda model for HMM
-		 * <b>obs</b>      Observations for the HMM
-		 * </span></pre></p>
+		 * <p>Generic model for dynamic programming algorithms used in HMM.</p>
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param obs Array of observations as integer (categorical data)
 		 * @author Patrick Nicolas
 		 * @since March 29, 2014
 		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model - Evaluation
@@ -65,12 +63,9 @@ object HMMModel {
 
 	/**
 	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
-	 * the evaluation form of the HMM.<br>
-	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-	 * <b>lambda</b>   Lambda (pi, A, B) model for the HMM
-	 * <b>obs</b>      Array of observations as integer (categorical data)
-	 * </span></pre></p>
-	 * 
+	 * the evaluation form of the HMM.</p>
+	 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+	 * @param obs Array of observations as integer (categorical data)
 	 * @author Patrick Nicolas
 	 * @since March 29, 2014
 	 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model - Evaluation
@@ -92,13 +87,17 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
 		 * three canonical forms (Decoding, training and evaluation).<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>lambda</b>    lambda model generated through training or used as input for the evaluation and decoding phase
-		 * <b>form</b>      Canonical form (evaluation or decoding) used in the prediction of sequence
-		 * <b>maxIters</b>  Maximum number of iterations used in the Baum-Welch algorithm
-		 * <b>f</b>         Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
-		 * </span></pre></p>
+		 * The three canonical forms are defined as
+		 * <b>Evaluation<b> Computation of the probability (or likelihood) of the observed sequence Ot given a Lambda (pi, A, B) model<br>
+		 * <b>Training</b> Generation of the Lambda (pi, A, B)-model given a set of observations and a sequence of states.<br>
+		 * <b>Decoding</b> Extraction the most likely sequence of states {qt} given a set of observations Ot and a Lambda (pi, A, B)-model.</span></pre></p>
 		 * @constructor Create a HMM algorithm with either a predefined Lambda model for evaluation and prediction or a Lambda model to generate through training
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
+		 * @param lambda lambda model generated through training or used as input for the evaluation and decoding phase
+		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
+		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
+		 * 
 		 * @throws ImplicitNotFoundException if the implicit conversion from DblVector to T is not defined prior the instantiation of the class
 		 * @author Patrick Nicolas
 		 * @since March 23, 2014
@@ -153,8 +152,7 @@ final protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form:
 		 * <p>Retrieve the Lambda model associated to this HMM</p>
 		 * @return lambda model
 		 */
-	@inline
-	final def getModel: HMMLambda = state.lambda
+	final def getModel: HMMLambda = lambda
 }
 
 
@@ -182,7 +180,8 @@ object HMM {
 		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
 		if( baumWelchEM.maxLikelihood != None)
 			Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
-		else None
+		else 
+			None
 	}
 	
 	val MAX_NUM_ITERS = 1024

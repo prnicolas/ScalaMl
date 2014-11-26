@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.stats
 
@@ -50,14 +50,12 @@ import Label._
 		/**
 		 * <p>Immutable class that implements the Validation variables on a results
 		 * of a test run. The counters for TP, TN, FP and FN are computed during instantiation
-		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>actualExpected</b>  Array of pair (actual value, labeled/expected value)
-		 * <b>tpClass</b>         Identifier for the class that defined the true positive samples
-		 * </span></pre></p>
+		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).</p>
 		 * @constructor Create a class validation instance that compute precision, recall and F1 measure 
 		 * @throws IllegalArgumentException if actualExpected is undefined or has no elements or tpClass is out of range
-		 * 
+		 * @param actualExpected Array of pair (actual value, labeled/expected value)
+		 * @param tpClass Identifier for the class that defined the true positive samples
+	
 		 * @author Patrick Nicolas
 		 * @since February 1, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Validation

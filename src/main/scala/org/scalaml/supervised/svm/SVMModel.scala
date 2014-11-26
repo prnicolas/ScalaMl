@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.svm
 
 import org.scalaml.core.design.Model
-import org.scalaml.core.types.ScalaMl
-import org.scalaml.core.types.ScalaMl.DblMatrix
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblMatrix
 import libsvm.svm_model
 import SVMModel._
 
@@ -20,12 +20,11 @@ import SVMModel._
 		/**
 		 * <p>Defined a model for support vector machine. The model is composed of the svm_model
 		 * parameters of <b>LIBSVM</b> library and the accuracy computed during training.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>svmmodel</b>	Model parameters as defined in <b>LIBSVM</b>
-		 * <b>accuracy</b>	Accuracy of the training process
-		 * </span></pre></p>
+		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
 		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
+		 * @param svmmodel Model parameters as defined in <b>LIBSVM</b>
+		 * @param accuracy	Accuracy of the training process
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
 		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines

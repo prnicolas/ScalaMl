@@ -12,7 +12,7 @@ package org.scalaml.app.chap3
 
 
 
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials

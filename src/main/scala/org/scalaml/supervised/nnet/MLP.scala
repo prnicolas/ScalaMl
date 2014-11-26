@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.{Random, Try, Success, Failure}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
@@ -26,16 +26,18 @@ import org.scalaml.util.Display
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
-		 * This MLP uses the online training strategy suitable for time series.<br>
+		 * This MLP uses the online training strategy suitable for time series.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>     Configuration parameters class for the MLP
-		 * <b>xt</b>         Time series of features in the training set
-		 * <b>labels</b>     Labeled or target observations used for training
-		 * <b>objective</b>  Objective of the model (classification or regression)
-		 * </span></pre></p>
+		 * Activation function h:  y = h.[w(0) + w(1).x(1) + w(2).x(2) + ... + w(n).x(n)] with weights wi<br>
+		 * Output layer: h(x) = x<br>
+		 * Hidden layers:  h(x) = 1/(1+exp(-x))<br>
+		 * Error back-propagation for neuron i:  error(i) = y(i) - w(0) - w(1).x(1) - w(n).x(n)</span></pre></p>
 		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. 
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
-		 * 
+		 * @param config  Configuration parameters class for the MLP
+		 * @param xt Time series of features in the training set
+		 * @param labels  Labeled or target observations used for training
+		 * @param objective Objective of the model (classification or regression)
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
@@ -122,7 +124,7 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		 * Define the class/trait hierarchy for the objective of the MLP {classification, regression}</p> 
 		 */
 object MLP {
-	final val EPS = 1e-5
+	private val EPS = 1e-5
 
 		/**
 		 * <p>Trait that defined the signature of the objective function.<br>

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.app.chap7
 
@@ -17,8 +17,8 @@ import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
-import org.scalaml.core.types.ScalaMl.DblVector
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl
 
 
 		/**
@@ -70,5 +70,6 @@ object CrfEval extends Eval {
 		}
   }
 }
+
 
 // --------------------------------  EOF -------------------------------

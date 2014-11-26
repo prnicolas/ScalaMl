@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.ga
 
 import java.util.BitSet
 import scala.annotation.implicitNotFound
-import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblVector
 
 
 		/**
@@ -76,20 +76,18 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * of bits with in this case, two bits allocated to the operator and 
 		 * 32 bits allocated to the value. The floating point value(min, max) is
 		 * digitized as integer [0, 2^32-1]. The discretization function is provided
-		 * implicitly. The bits are implemented by the Java BitSet class.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>id</b>       Identifier for the Gene
-		 * <b>target</b>   Target or threshold value.It is a floating point value to be digitized as integer
-		 * <b>op</b>       Symbolic operator associated to this gene
-		 * <b>discr</b>    implicit discretization function from Floating point value to integer.
-		 * </span></pre></p>
+		 * implicitly. The bits are implemented by the Java BitSet class.</p>
 		 * @constructor Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer
 		 * @throws IllegalArgumentException if operator or id is undefined
 		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) is not provided
-		 * 
+		 * @param id  Identifier for the Gene
+		 * @param target  Target or threshold value.It is a floating point value to be digitized as integer
+		 * @param op   Symbolic operator associated to this gene
+		 * @param discr  implicit discretization function from Floating point value to integer.
+
 		 * @author Patrick Nicolas
 		 * @since August 28, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 @implicitNotFound("Gene encoding requires double to integer conversion") 
 class Gene(val id: String, val target: Double, val op: Operator)(implicit discr: Discretization) {
@@ -97,8 +95,8 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit discr:
 	require(id != null && id.length > 0, "Cannot create a signal with undefined id")
    
 		/**
-		 * Bits encoding of the tuple (value, operator) into bits. The encoding
-  		 * is executed as part of the instantiation of a gene class.
+		 * Bits encoding of the tuple (value, operator) into bits {0, 1} executed 
+  		 * as part of the instantiation of a gene class.
   		 */
 	val bits = {
 		val bitset = new BitSet(GENE_SIZE)

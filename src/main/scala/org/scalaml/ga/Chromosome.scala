@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.ga
 
@@ -19,12 +19,11 @@ import scala.util.Random
 		 * <p>Class that implements a parameterized chromosome using an encoding scheme and
 		 * an objective/fitness function. A chromosome is a container or list of Gene that
 		 * represents candidate solution to a problem or candidate model to a dataset.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>code</b>  List of Genes or sub typescomposing this chromosomes.
-		 * </span></pre></p>
+		 * This particular implementation score the chromosome unfitness. The fitness value of
+		 * a chromosome is randomly selected as a high value.</p>
 		 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
-		 * 
+		 * @param code List of Genes or sub typescomposing this chromosomes.
 		 * @author Patrick Nicolas
 		 * @since August 27, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
@@ -144,8 +143,7 @@ object Chromosome {
 	import scala.collection.mutable.ArrayBuffer
 	import java.util.BitSet
   
-	final val EPS = 1e-10
-
+	private val EPS = 1e-10
 
 	def apply[T <: Gene](code: List[T]): Chromosome[T] = new Chromosome[T](code)
 	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = 
@@ -158,7 +156,7 @@ object Chromosome {
 		 * Type for the pool of chromosomes. A Pool of chromosomes is an arbitrary
 		 * array of chromosomes.
 		 */
-  type Pool[T <: Gene] = ArrayBuffer[Chromosome[T]]
+	type Pool[T <: Gene] = ArrayBuffer[Chromosome[T]]
 }
 
 // ------------------------  EOF --------------------------------------

@@ -11,8 +11,8 @@
 package org.scalaml.app.chap6
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.logistic._
 import scala.util.{Random, Try, Success, Failure}
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer

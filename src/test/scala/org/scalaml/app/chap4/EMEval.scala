@@ -14,7 +14,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import YahooFinancials._
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.apache.log4j.Logger

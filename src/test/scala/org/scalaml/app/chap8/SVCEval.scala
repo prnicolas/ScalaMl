@@ -14,7 +14,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm.{SVMConfig, SVM, SVMExecution}
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
 import Fundamentals._

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  * 
  */
 package org.scalaml.supervised.hmm
@@ -19,16 +19,13 @@ import org.scalaml.util.Display
 		 * <p>Class that update the backward-forward lattice of observations and
 		 * hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to 
 		 * compute the likelihood of the conditional probability p(Y|X) during training. The
-		 * computation is performed as part of the instantiation of the class (type Option[Double] )<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>	Configuration for the HMM
-		 * <b>obs</b>		Observations defined as an array of Integer (or categorical data)
-		 * <b>numIters</b>	Number of iterations allowed in the Baum-Welch EM optimization
-		 * <b>eps</b>		Convergence criteria for the exit of the Baum-Welch EM.
-		 * </span></pre></p>
+		 * computation is performed as part of the instantiation of the class (type Option[Double] )</p>
 		 *  @constructor Create a new BaumWelch algorithm execution instance
 		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
-		 *  
+		 *  @param config Configuration parameters class instance for the HMM
+		 *  @param obs Observations defined as an array of Integer (or categorical data)
+		 *  @param numIters	Number of iterations allowed in the Baum-Welch EM optimization
+		 *  @param eps Convergence criteria for the exit of the Baum-Welch EM.
 		 *  @author Patrick Nicolas
 		 *  @since March 15, 2014
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training
@@ -86,13 +83,13 @@ final protected class BaumWelchEM(config: HMMConfig, obs: Array[Int], numIters: 
 		 * @since March 15, 2014
 		 */
 object BaumWelchEM {
-	final val EPS = 1e-3   
+	private val EPS = 1e-3   
 	
 	def apply(config: HMMConfig, labels: Array[Int], numIters: Int, eps: Double): BaumWelchEM = 
 		new BaumWelchEM(config, labels, numIters,eps)
 	
-	final val EPS_LIMITS = (1e-8, 0.1)
-	final val MAX_NUM_ITERS = 1024
+	private val EPS_LIMITS = (1e-8, 0.1)
+	private val MAX_NUM_ITERS = 1024
 	
 	private def check(config: HMMConfig, obs: Array[Int], numIters: Int, eps: Double): Unit = {
 		require(config != null, "BaumWelchEM.check Configuration is undefined")

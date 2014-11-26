@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.spark
 
@@ -18,7 +18,7 @@ import org.apache.spark.rdd.RDD
 
 import scala.annotation.implicitNotFound
 
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 
@@ -27,16 +27,13 @@ import org.scalaml.core.design.PipeOperator
 			/**
 			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
 			 * training during instantiation of objects in order to reduce their life-cycle.<br>
-			 * The algorithm implements the default data transformation interface, PipeOperator.<br>
-			 * <b>kMeansConfig</b>  Configuration of the Spark KMeans<br>
-			 * <b>rddConfig</b>     Configuration parameters for the Spark RDD<br>
-			 * <b>xt</b>            Time series used for the training of the Spark KMeans<br>
-			 * <b>sc</b>            implicit spark context.
-			 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-			 * </span></pre></p>
+			 * The algorithm implements the default data transformation interface, PipeOperator.</p>
 			 * @constructor Create a wrapper for the Spark K-means algorithm. 
 			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
-			 * 
+			 * @param kMeansConfig Configuration of the Spark KMeans<br>
+			 * @param rddConfig Configuration parameters for the Spark RDD<br>
+			 * @param xt Time series used for the training of the Spark KMeans<br>
+			 * @param sc  implicit spark context.
 			 * @author Patrick Nicolas
 			 * @since April 2, 2014
 			 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark

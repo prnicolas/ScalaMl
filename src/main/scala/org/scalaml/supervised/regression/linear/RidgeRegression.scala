@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.linear
 
 import org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
 import org.apache.commons.math3.linear.{RealMatrix, RealVector, QRDecomposition, LUDecomposition}
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import scala.annotation.implicitNotFound
 import org.apache.commons.math3.stat.StatUtils
@@ -28,14 +28,15 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Definition of the Ridge regression (linear least squares regression
 		 * with a L2 penalty form). The training is executed during the instantiation
-		 * of the class.<br>
+		 * of the class.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>xt</b>       Time series of features observations
-		 * <b>y</b>        Target or labeled output values
-		 * <b>lambda</b>   L2 penalty factor.
-		 * </span></pre></p>
+		 * Ridge regression estimate w' = argmin Sum [squares {y(i)  - f(x(i)|w)} + lambda.w.w]<br>
+		 * with regression model f(x|w) = w(0) + w(1).x(1) + ... + w(n).x(n)</span></pre></p>
 		 * @constructor Instantiates a Ridge regression model. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
+		 * @param xt Time series of features observations
+		 * @param y Target or labeled output values
+		 * @param lambda L2 penalty factor.
 		 * @see org.apache.commons.math3.stat.regression
 		 * 
 		 * @author Patrick Nicolas

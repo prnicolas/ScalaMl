@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.trading
 
 import org.scalaml.ga.{Operator, Gene, Discretization}
 import org.scalaml.trading.operator._
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.annotation.implicitNotFound
 import scala.collection.mutable.ListBuffer
 import org.scalaml.core.XTSeries
@@ -31,16 +31,15 @@ import scala.collection.mutable.TreeSet
 		 * A trading signal is emitted once a value (or data point) in a time series reaches a threshold (upward or downward movement).<br>
 		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
 		 * The class assume that a digitization function that discrete a continuous value is defined
-		 * implicitly.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>id</b>        Label or identifier for the trading signal
-		 * <b>target</b>    Target value (or threshold) used to trigger the signal.
-		 * <b>op</b>        Operator that is used to defined the condition such as greater than, equals.... 
-		 * <b>xt</b>        Times series of single variable the signal acts upon.
-		 * <b>weights</b>   Weights applied to each value of the time series (optional).
-		 * <b>discr</b>     Discretization function that convert analog or continuous signal to a discrete time series.
-		 * <br></p>
+		 * implicitly.</p>
 		 * @constructor Create a trading signal used for analyzing changes in variables derived from the price and trading volume of a security. 
+		 * @param id Label or identifier for the trading signal
+		 * @param target Target value (or threshold) used to trigger the signal.
+		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
+		 * @param xt  Times series of single variable the signal acts upon.
+		 * @param weights Weights applied to each value of the time series (optional).
+		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 * 
 		 * @throws IllegalArgumentException if the class parameters are not properily defined.
 		 * @throws ImplicitNotFoundException if the disretization function has not been defined.
 		 * @see org.scalaml.ga.Gene
@@ -87,8 +86,8 @@ class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights
 	 * Companion object to the trading signal class, used to defined constructors.
 	 */
 object Signal {
-	final val EPS = 1e-3
-	final val CSV_DELIM = ",";
+	private val EPS = 1e-3
+	val CSV_DELIM = ",";
 
 	def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, obs, weights)
@@ -108,7 +107,7 @@ object Signal {
 	@inline
 	final def numOperators = operatorFuncMap.size
    
-	final private val MAX_TIME_SERIES_SIZE = 10000000
+    private val MAX_TIME_SERIES_SIZE = 10000000
 	
 	protected def check(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector): Unit = {
 		require( _op != null, "Signal.check Cannot create a signal with undefined operator")

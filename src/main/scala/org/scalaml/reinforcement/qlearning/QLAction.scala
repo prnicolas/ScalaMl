@@ -18,7 +18,8 @@ package org.scalaml.reinforcement.qlearning
 		 * </span></pre></p>
 		 * @constructor Create an state transition action for the Q-learning algorithm.
 		 * @throws IllegalArgumentException if the source or destination states ir undefined.
-		 * 
+		 * @param from Source state in the transition (source of the action)
+		 * @param to List of destination states in the transition (target of the action)
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning

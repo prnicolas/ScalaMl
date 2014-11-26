@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.filtering
 
@@ -15,7 +15,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import scala.util.{Try, Success, Failure}
 import DFT._
 import org.apache.log4j.Logger
@@ -122,11 +122,9 @@ object DFT {
 		/**
 		 * <p>Pass-band Filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
 		 * implements the convolution of the filter function and the input time series class.<br>
-		 * The class uses the Apache Commons Math library.<br>
-		 *  <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *   <b>g</b>   Filtering function used in the convolution
-		 *   <b>fC</b>  Frequency cutoff for this low pass filter.
-		 * </span></pre></p>
+		 * The class uses the Apache Commons Math library.</p>
+		 * @param g   Filtering function y = g(x, fC)used in the convolution
+		 * @param fC  Frequency cutoff for this low pass filter.
 		 * @constructor Create a low-pass, band-pass or high-pass filter using the discrete Fourier transform
 		 * @throws IllegalArgumentException if the filtering function g is undefined.
 		 * @author Patrick Nicolas

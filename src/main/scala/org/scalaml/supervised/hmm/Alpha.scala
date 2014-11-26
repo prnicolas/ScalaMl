@@ -6,24 +6,22 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.util.Matrix
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import HMMConfig._
 
 
 		/**
 		 * <p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter 
-		 * is computed during instantiation.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>Lambda</b>   Lambda (pi, A, B) model for the HMM
-		 * <b>obs</b>      Array of observations as integer (categorical data)
-		 * </span></pre></p> 
+		 * is computed during instantiation.</p> 
 		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). 
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param obs Array of observations as integer (categorical data
 		 * @throws IllegalArgumentException if lambda, or  observations are undefined
 		 * @see org.scalaml.supervised.hmm.Pass
 		 * 

@@ -11,7 +11,7 @@
 package org.scalaml.app.chap3
 
 import scala.util.{Random, Try, Success, Failure}
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.filtering.{DKalman, QRNoise}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}

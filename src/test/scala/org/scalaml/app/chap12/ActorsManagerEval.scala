@@ -22,7 +22,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable}
 import akka.actor.ActorSystem
 import org.apache.log4j.Logger
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import XTSeries._
 import org.scalaml.util.Display
 

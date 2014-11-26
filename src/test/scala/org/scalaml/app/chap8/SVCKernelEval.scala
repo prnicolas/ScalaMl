@@ -14,7 +14,7 @@ import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import XTSeries._
 import org.scalaml.plots.ScatterPlot
 import org.scalaml.plots.BlackPlotTheme
@@ -89,7 +89,7 @@ object SVCKernelEval extends Eval {
 		display(legend, trainingSet.take(setHalfSize)
 									.map(z => (z(0), z(1))), trainingSet.drop(setHalfSize).map(z => (z(0), z(1))))
 		
-		val labels = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
+		val labels: DblVector = Array.fill(N)(0.0) ++ Array.fill(N)(1.0)
 	       
 		val results = 	evalKernel(trainingSet, testSet, labels, new RbfKernel(GAMMA)) ::
 						evalKernel(trainingSet, testSet, labels, new SigmoidKernel(GAMMA)) ::

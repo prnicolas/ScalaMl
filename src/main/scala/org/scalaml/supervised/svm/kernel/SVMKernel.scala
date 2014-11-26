@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.svm.kernel
 
@@ -59,13 +59,10 @@ object LinearKernel extends SVMKernel {
 
 		/**
 		 * <p>Definition of the Radial Basis Kernel function. The radial basis function is implemented
-		 * as a Gaussian function.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>gamma</b>   Gamma or scaling parameter for the RBF kernel.
-		 * </span></pre></p>
+		 * as a Gaussian function.</p>
 		 * @constructor create a Radial Basis function kernel,
 		 * @throws IllegalArgumentException if gamma is negative or null
-		 * 
+		 * @param gamma  Gamma or scaling parameter for the RBF kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions
@@ -90,12 +87,9 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the Sigmoid Kernel function.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>gamma</b>    Gamma or scaling parameter for the <b>Sigmoid</b> kernel.
-		 * </span></pre></p>
+		 * <p>Definition of the Sigmoid Kernel function.</p>
 		 * @throws IllegalArgumentException if gamma is negative or null
-		 * 
+		 * @param gamma  Gamma or scaling parameter for the Sigmoid kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines / Kernel functions
@@ -120,15 +114,12 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the polynomial Kernel function.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>gamma</b>    Gamma or scaling parameter for the polynomial kernel
-		 * <b>coef0</b>    Intercept or coefficient of order 0 for the polynomial kernel<
-		 * <b>degree</b>   Degree or power of the polynomial kernel.
-		 * </span></pre></p>
+		 * <p>Definition of the polynomial Kernel function.</p>
 		 * @constructor Create a polynomial kernel functionj with a given gamma, intercept coef and degree
 		 * @throws IllegalArgumentException if gamma is negative or null or if degree < 1
-		 * 
+		 * @param gamma  Gamma or scaling parameter for the Polynomial kernel.
+		 * @param coef0 Intercept or coefficient of order 0 for the polynomial kernel
+		 * @param degree  Degree or power of the polynomial kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions

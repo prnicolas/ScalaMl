@@ -1,0 +1,184 @@
+/**
+ * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * Version 0.96a
+ */
+package org.scalaml.plots
+
+
+
+import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
+import org.jfree.chart.{ChartFactory, JFreeChart}
+import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
+import org.jfree.chart.ChartFrame
+import org.jfree.util.ShapeUtilities
+import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
+import Plot._
+import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
+import org.jfree.chart.renderer.category.LineAndShapeRenderer
+import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
+import java.util.List
+import org.scalaml.core.Types.ScalaMl
+import org.jfree.data.xy.XYDataset
+import java.awt.geom.Ellipse2D
+import org.jfree.chart.renderer.xy.XYShapeRenderer
+import org.jfree.chart.axis.ValueAxis
+import org.jfree.chart.axis.NumberAxis
+
+import ScalaMl._
+
+	/**
+		 * <p>Class to create a Scatter plot using the JFreeChart library.</p>
+		 * @constructor Create a Scatter plot instance
+		 * @param config  Configuration for the plot of type <b>PlotInfo</b>
+		 * @param theme   Configuration for the display of plots of type <b>PlotTheme</b>
+		 * @throws IllegalArgumentException if the class parameters are undefined
+		 * @see org.jfree
+		 * @author Patrick Nicolas
+		 * @since  November 18, 2013
+		 * @note Scala for Machine Learning
+		 */
+final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, theme) {
+	
+		/**
+		 * Display array of tuple (x,y) in a Scatter plot for a given width and height
+		 * @param xy Array of pair (x,y)
+		 * @param width Width for the display (pixels)
+		 * @param height Heigth of the chart (pixels)
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 */
+	override def display(xy: XYTSeries, width: Int, height : Int): Unit  = {
+		validateDisplay(xy, width, height, "ScatterPlot.display")
+
+		val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+		val seriesCollection = new XYSeriesCollection
+		seriesCollection.addSeries(series)
+		draw(seriesCollection, width, height)
+	}
+	
+		/**
+		 * Display a vector of Double value in a Scatter plot with counts [0, n] on X-Axis and
+		 * vector value on Y-Axis with a given width and height
+		 * @param xy Array of pair (x,y)
+		 * @param width Width for the display (pixels)
+		 * @param height Heigth of the chart (pixels)
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 */
+	override def display(y: DblVector, width: Int, height: Int): Unit = {
+		validateDisplay[Double](y, width, height, "LinePlot.display")
+		
+		val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {s.add(xn._1, xn._2); s})
+		val seriesCollection = new XYSeriesCollection
+		seriesCollection.addSeries(series)
+		draw(seriesCollection, width, height)
+	}
+   
+
+		/**
+		 * Displays two two-dimension datasets (x, y) in this scatter plot
+		 * @param xy1 First Array of pair (x,y) to be displayed
+		 * @param xy2 Second Array of pair (x,y) to be displayed
+		 * @param width Width for the display (pixels)
+		 * @param height Heigth of the chart (pixels)
+		 * @throws IllegalArgumentException if either dataset is undefined or the width or height are out of bounds.
+		 */
+	def display(xy1: XYTSeries, xy2: XYTSeries, width: Int, height : Int): Unit  = {
+		require( xy1 != null && xy1.size >0 , "ScatterPlot.Display Cannot display with first series undefined")
+		require( xy2 != null && xy2.size >0, "ScatterPlot.Display Cannot display with second series undefined ")
+
+		validateDim(width, height, "ScatterPlot.Display")
+
+		val seriesCollection1 = new XYSeriesCollection
+		val seriesCollection2 = new XYSeriesCollection
+		val series1 = xy1.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+		val series2 = xy2.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+		seriesCollection1.addSeries(series1)
+		seriesCollection2.addSeries(series2)
+	  
+		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection1, 
+					PlotOrientation.VERTICAL, true, false, false)
+      
+		val plot = chart.getPlot.asInstanceOf[XYPlot]
+		val renderer1 = new XYDotRenderer
+		plot.setRenderer(0, renderer1)
+		plot.setDomainAxis(0, new NumberAxis("x"))
+		renderer1.setSeriesPaint(0, theme.color(0))
+		renderer1.setDotHeight(4)
+		renderer1.setDotWidth(4)
+      
+		plot.setDataset(1, seriesCollection2)
+		val renderer2 = new XYShapeRenderer
+		plot.setRenderer(1, renderer2)
+		renderer2.setSeriesShape(0, ShapeUtilities.createDiamond(3.0F))
+		renderer2.setSeriesPaint(0, theme.color(1))
+   
+		plot.setBackgroundPaint(theme.paint(width, height))
+		createFrame(config._1, chart)
+	}
+   
+
+	import scala.collection.immutable.List
+	def display(xs: List[XYTSeries], lbls: List[String], w: Int, h : Int): Unit  = {
+		validateDisplay[XYTSeries](xs, w, h, "ScatterPlot.display")
+
+		val seriesCollectionsList = xs.zipWithIndex.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
+			val seriesCollection = new XYSeriesCollection
+			val series = xy._1.foldLeft(new XYSeries(lbls(xy._2)))((s, t) => {
+				s.add(t._1, t._2)
+				s
+			})
+			seriesCollection.addSeries(series)
+			seriesCollection :: xs
+		})
+	  
+		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, 
+					PlotOrientation.VERTICAL, true, false, false)
+		val plot = chart.getPlot.asInstanceOf[XYPlot]
+  	  
+		val renderer1 = new XYDotRenderer
+		plot.setRenderer(0, renderer1)
+		plot.setDomainAxis(0, new NumberAxis("Trading sessions"))
+		renderer1.setSeriesPaint(0, theme.color(0))
+		renderer1.setDotHeight(4)
+		renderer1.setDotWidth(4)
+   
+		val shapes = Array[Shape](ShapeUtilities.createDiamond(3.0F), ShapeUtilities.createRegularCross(2.0F, 2.0F))
+		
+		seriesCollectionsList.dropRight(1).zipWithIndex.foreach( sColi => { 
+			plot.setDataset(sColi._2+1, sColi._1)
+			val renderer = new XYShapeRenderer
+			plot.setRenderer(sColi._2+1, renderer)
+			renderer.setSeriesShape(0, shapes(sColi._2%shapes.size))
+			renderer.setSeriesPaint(0, theme.color(sColi._2+1))
+		})
+   
+		plot.setBackgroundPaint(theme.paint(w, h))
+		createFrame(config._1, chart)
+	}
+   
+	
+	private def draw(seriesCollection: XYSeriesCollection, w: Int, h : Int) {
+		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection, 
+			PlotOrientation.VERTICAL, true, false, false)
+		val plot = chart.getPlot.asInstanceOf[XYPlot]
+		
+		val renderer = new XYDotRenderer
+		plot.setRenderer(renderer)
+		renderer.setSeriesShape(0, ShapeUtilities.createDiamond(4.0F))
+		renderer.setSeriesPaint(0, theme.color(3))
+		renderer.setDotHeight(3)
+		renderer.setDotWidth(3)
+   
+		plot.setBackgroundPaint(theme.paint(w, h))
+		createFrame(config._1, chart)
+	}
+}
+
+
+// ------------------------  EOF ----------------------------------------------

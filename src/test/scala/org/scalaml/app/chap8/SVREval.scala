@@ -16,7 +16,7 @@ import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.SVRFormulation
 import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import GoogleFinancials._
 import ScalaMl._
 import org.scalaml.supervised.regression.linear.SingleLinearRegression

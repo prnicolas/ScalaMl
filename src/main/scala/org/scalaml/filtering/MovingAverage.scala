@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.filtering
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
@@ -20,7 +20,7 @@ import scala.annotation.implicitNotFound
 
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>
-		 * @constructor Generi moving average
+		 * @constructor Generic moving average
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
@@ -31,10 +31,12 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSe
 		/**
 		 * <p>Parameterized simple moving average data transformation. The computation is implemented
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
-		 * arithmetic operation on elements of the time series.<br></p>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;"><b>period</b>  Period or duration of the window in the moving average
-		 * <b>num</b>     Implicit numeric required for the summation of values of type T.</span></pre>
+		 * arithmetic operation on elements of the time series.</p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *  x'(t) = x'(t-1) + [x(t)-x(t-p)]/p  with x' estimate of x</span></pre>
 		 * @constructor Create a simple moving average
+		 * @param period Period or size of the time window, p in the moving average
+		 * @param num instance of Numeric type using for summation
 		 * @throws IllegalArgumentExceptionif period is non positive
 		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior instantiation of the moving average
 		 * 
@@ -49,7 +51,7 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
    
 		/**
 		 * <p>Implementation of the data transformation of a time series of type T to a time series of type Double.</p>
-		* @throws MatchError exception if the input time series is undefined
+		 * @throws MatchError exception if the input time series is undefined
 		 * @return Partial function with time series of type T as input and time series of type Double as output.
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
@@ -98,12 +100,12 @@ object SimpleMovingAverage {
 
 		/**
 		 * <p>Parameterized exponential moving average data transformation. The computation is implemented
-		 * by the pipe operator |>.<br>
+		 * by the pipe operator |>.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *  <b>period</b>  Period of the window in the moving average.
-		 *  <b>alpha</b>   Decay factor for the exponential moving average.
-		 * </span></pre></p>
+		 *  x'(t) = (1- alpha).x'(t-1) + alpha.x(t)  with x' is the estimate of x</span></pre></p>
 		 * @constructor Create an exponential moving average
+		 * @param period Period or size fo the time window in the moving average
+		 * @param alpha Decay factor or coefficient pf the exponential moving average.
 		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
@@ -115,9 +117,9 @@ final class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alph
    
 		/**
 		 * Constructor for the normalized exponential moving average for which alpha = 2.0/(period + 1)
-		 * @param p period for the exponential moving average
+		 * @param period period for the exponential moving average
 		 */
-	def this(p: Int)= this(p,2.0/(p+1))
+	def this(period: Int)= this(period,2.0/(period+1))
   
 		 /**
 		  * <p>Implementation of the data transformation, exponential moving average by overloading the pipe operator.</p> 
@@ -151,11 +153,11 @@ object ExpMovingAverage {
 
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
-		 * by the pipe operator |>.<br>
+		 * by the pipe operator |>.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>weights</b>   Weights (or coefficients) used in the time window
-		 * </span></pre></p>
+		 * x'(t) = { wt.x(t) + wt-1.x(t-1) + wt-2.x(t-2) + .... + wt-p.x(t-p) } /p</span></pre></p>
 		 * @constructor Create a weighted moving average
+		 * @param weights Weights (or coefficients) used in the time window
 		 * @throws IllegalArgumentException if the weights are undefined or not normalized
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014

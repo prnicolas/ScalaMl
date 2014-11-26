@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.bayes
 
@@ -17,12 +17,10 @@ import NaiveBayesModel._
 
 		/**
 		 * <b>Abstract class for all the Naive Bayes model. The purpose of the model is to 
-		 * classify a new set of observations.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>density</b>   Function used in computing the conditional probability <b>p(C|x)</b>
-		 * </span></pre></p>
+		 * classify a new set of observations.</p>
 		 * @constructor Create a generic Naive Bayes Model using a specific density.
 		 * @throws IllegalArgumentException if density function is undefined
+		 * @param density Function used in computing the conditional probability <b>p(C|x)</b>
 		 * @author Patrick Nicolas
 		 * @since March 8, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models

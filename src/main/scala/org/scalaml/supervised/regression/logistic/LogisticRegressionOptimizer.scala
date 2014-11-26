@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.logistic
 
 import org.apache.commons.math3.fitting.leastsquares._
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import LogisticRegressionOptimizer._
 
 
@@ -20,14 +20,12 @@ import LogisticRegressionOptimizer._
 	/**
 	 * <p>Class that implements the minimization of the loss function for the logistic
 	 * regression classifier. It is implemented as the least squares optimization of the
-	 * Least Square problem defined in Apache Commons Math.<br>
-	 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-	 * <b>maxIters</b>     Maximum number of iterations allowed during training for the minimization of the loss function.
-	 * <b>maxEvals</b>     Maximum number of runs or evaluations allowed during training.
-	 * <b>eps</b>          Maximum error allowed during training for the minimization of the loss function.
-	 * <b>lsOptimizer</b>  Least squares optimizer used during training.
-	 * </span></pre></p>
+	 * Least Square problem defined in Apache Commons Math.</p>
 	 * @constructor Initialize the optimization function for the logistic regression classifier. 	 
+	 * @param maxIters Maximum number of iterations allowed during training for the minimization of the loss function.
+	 * @param maxEvals Maximum number of runs or evaluations allowed during training.
+	 * @param eps Maximum error allowed during training for the minimization of the loss function.
+	 * @param lsOptimizer Least squares optimizer used during training.
 	 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
 	 * @see org.apache.commons.math3.fitting.leastsquares
 	 * 
@@ -61,13 +59,13 @@ protected class LogisticRegressionOptimizer(val maxIters: Int,  val maxEvals: In
 		 * its parameters
 		 */
 object LogisticRegressionOptimizer {
-	final val EPS_LIMITS =  (1e-32,  1.0)
-	final val NUM_ITERS_LIMITS = (10, 1000)
-	final val NUM_EVALS_LIMITS = (100, 10000)
+	private val EPS_LIMITS =  (1e-32,  1.0)
+	private val NUM_ITERS_LIMITS = (10, 1000)
+	private val NUM_EVALS_LIMITS = (100, 10000)
 	
-	final val DEFAULT_NUM_ITERS = 50
-	final val DEFAULT_NUM_EVALS = 100
-	final val DEFAULT_EPS = 1e-2
+	private val DEFAULT_NUM_ITERS = 50
+	private val DEFAULT_NUM_EVALS = 100
+	private val DEFAULT_EPS = 1e-2
 	
 	def apply(maxIters: Int, maxEvals: Int, eps: Double, lsOptimizer: LeastSquaresOptimizer): LogisticRegressionOptimizer = 
 		new LogisticRegressionOptimizer(maxIters, maxEvals, eps, lsOptimizer)

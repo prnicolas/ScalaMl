@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -60,13 +60,11 @@ final protected class QLData {
 
 
 		/**
-		 * <p>Class that defines the policy for a given set of input and a number of states.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>numStates</b>    Number of states for this policy.
-		 * <b>input</b>       Input to initialize the policy.
-		 * </span></pre></p>
+		 * <p>Class that defines the policy for a given set of input and a number of states.</p>
 		 * @constructor Create a policy as a model for Q-learning. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
+		 * @param numStates Number of states for this policy.
+		 * @param input Input to initialize the policy.
 		 * @see org.scalaml.design.Model
 		 * 
 		 * @author Patrick Nicolas
@@ -173,7 +171,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 object QLPolicy {
-	final val MAX_NUM_STATES = 2048
+	private val MAX_NUM_STATES = 2048
 	
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
 		require(numStates >0 && numStates < MAX_NUM_STATES, s"QLPolicy.check Number of states $numStates is out of range")

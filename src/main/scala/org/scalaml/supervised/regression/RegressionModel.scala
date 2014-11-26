@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression
 
 
-import org.scalaml.core.types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.Model
 
 

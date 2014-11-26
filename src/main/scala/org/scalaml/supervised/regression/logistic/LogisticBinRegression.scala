@@ -6,30 +6,29 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.regression.logistic
 
-import org.scalaml.core.types
-import types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
+import ScalaMl._
 import org.scalaml.util.Display
 import org.apache.log4j.Logger
 
 
 		/**
 		 * <p>Logistic regression for a binary (2-class) classifier. The number of weights (model) is defined
-		 * by the number of classifiers + 1. The likelihood (conditional probability is computed as 
-		 * 1/(1 + exp(-(w0 + w1.x1 + w2.x2)).<br>
+		 * by the number of classifiers + 1. .<br>
 		 * The training (extraction of the weights) is computed as part of the instantiation of the class so 
 		 * the model is either complete or undefined so classification is never done on incomplete (or
 		 * poorly trained) model (computation error, maximum number of iterations exceeded).<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>labels</b>     Data used to train a model
-		 * <b>maxIters</b>   Maximum number of iterations used during training
-		 * <b>eta</b>        Slope used in the computation of the gradient
-		 * <b>eps</b>        Convergence criteria used to exit the training loop.
-		 * </span></pre></p>
+		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2)))</span></pre></p>
 		 * @constructor Create a logistic regression for binary classification 
+		 * @param labels Data used to train a model
+		 * @param maxIters Maximum number of iterations used during training
+		 * @param eta Slope used in the computation of the gradient
+		 * @param eps Convergence criteria used to exit the training loop.
 		 * @throws IllegalArgumentException if labels are undefined, or the values of maxIters, eta or eps are out of range
 		 * 
 		 * @author Patrick Nicolas
@@ -96,9 +95,10 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 */
 object LogBinRegression {
 	final val DIM = 3
+	private val MAX_NUM_ITERS = 1024
 	
 	private def check(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double): Unit =  {
-		require(maxIters > 10 && maxIters < 10000, s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")
+		require(maxIters > 10 && maxIters < MAX_NUM_ITERS, s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")
 		require(eta < 1e-1 && eta > 1e-7, s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
 		require(eps < 0.25 && eps > 1e-7, s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
 		require(labels != null && labels.size > 1, "LogBinRegression.check  Cannot train with undefined set of observations")

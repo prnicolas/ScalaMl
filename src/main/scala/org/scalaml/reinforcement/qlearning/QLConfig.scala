@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.reinforcement.qlearning
 
 
 import scala.util.Random
 import org.scalaml.util.Matrix
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{Config, PipeOperator}
 import QLearning._
 import org.scalaml.util.Display
@@ -22,17 +22,15 @@ import scala.collection.mutable.ArrayBuffer
 
 
 		/**
-		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>alpha</b>            Learning rate for the Q-Learning algorithm.
-		 * <b>gamma</b>            Discount rate for the Q-Learning algorithm.
-		 * <b>episodeLength</b>    Maximum number of states visited per episode.
-		 * <b>numEpisodes</b>      Number of episodes used during training.
-		 * <b>minCoverage</b>      Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.
-		 * <b>neighbors</b>        Function that list the available states neighbors to the current state during execution. 
-		 * </span></pre></p>
+		 * </p>Parameterized class that defines the configuration parameters for the Q-Learning.</p>
 		 * @constructor Create a configuration for the Q-learning algorithm. 
 		 * @throws IllegalArgumentException if alpha, gamma or maximum iteration are out of range
+		 * @param alpha Learning rate for the Q-Learning algorithm.
+		 * @param gamma  Discount rate for the Q-Learning algorithm.
+		 * @param episodeLength Maximum number of states visited per episode.
+		 * @param numEpisodes  Number of episodes used during training.
+		 * @param minCoverage Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.
+		 * @param neighbors  Function that list the available states neighbors to the current state during execution. 
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 19, 2014
@@ -54,10 +52,9 @@ final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: In
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 object QLConfig {
-  	   
-	final val MAX_EPISODES = 1000
-	final val MAX_MIN_COVERAGE = 0.9
-	final val NO_MIN_COVERAGE = 0.0
+	private val MAX_EPISODES = 1000
+	private val MAX_MIN_COVERAGE = 0.9
+	private val NO_MIN_COVERAGE = 0.0
    
 	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): QLConfig = 
 		new QLConfig(alpha, gamma, episodeLength, numEpisodes, minCoverage,  neighbors)

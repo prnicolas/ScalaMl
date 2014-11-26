@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.scalability.akka
 
@@ -14,7 +14,7 @@ package org.scalaml.scalability.akka
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.mutable.ArrayBuffer
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.scalability.akka.message._
 import akka.actor._
 import akka.util.Timeout
@@ -29,14 +29,14 @@ import org.apache.log4j.Logger
 
 
 		/**
-		 * <p>Generic distributed transformation of time series using futures and callbacks.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>xt</b>          Time series to be processed.
-		 * <b>fct</b>         Data transformation
-		 * <b>partitioner</b> Method to partition time series for concurrent processing.
-		 * </span></pre></p>
+		 * <p>Generic distributed transformation of time series using futures and callbacks.</p>
 	     *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @param xt Time series to be processed
+		 *  @param fct Data transformation of type PipeOperator
+		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
+		 * 
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures

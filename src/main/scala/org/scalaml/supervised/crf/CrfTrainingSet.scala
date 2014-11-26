@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -20,15 +20,13 @@ import iitb.Segment.{DataCruncher, LabelMap}
 
 
 		/**
-		 * <p>Class that defines a Recommendation as a data sequence.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>nLabels</b>   Number of labels (or tags) used in the training of CRF
-		 * <b>entry</b>     Recommendation or observation as a sequence of words.
-		 * <b>delim</b>     Delimiter of segments in the sequence
-		 * </span></pre></p>
+		 * <p>Class that defines a Recommendation as a data sequence.</p>
 		 * @constructor Create a training set for a CRF. [nLabels] Number of labels (or tags) used in the training of CRF. [entry] Recommendation or observation as a sequence of words. [delim] Delimiter of segments in the sequence
 		 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either undefined or out of range
 		 * @see ittb.CRF.DataSequence
+		 * @param nLabels  Number of labels (or tags) used in the training of CRF
+		 * @param entry  Recommendation or observation as a sequence of words.
+		 * @param delim  Delimiter of segments in the sequence
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 2, 2014

@@ -12,10 +12,11 @@ package org.scalaml.app.chap5
 
 
 import org.scalaml.supervised.bayes._
-import org.scalaml.core.{types, XTSeries}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import scala.collection.mutable.ArrayBuffer
-import types.ScalaMl._
+import ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
 import SimpleMovingAverage._
 import scala.collection.immutable.HashSet

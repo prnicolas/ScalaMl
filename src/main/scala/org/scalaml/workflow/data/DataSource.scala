@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.workflow.data
 
@@ -17,24 +17,21 @@ import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
 import org.scalaml.core.design.PipeOperator
 import scala.io.Source
-import org.scalaml.core.types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl._
 import org.apache.log4j.Logger
 import scala.util.{Try, Failure, Success}
 import org.scalaml.util.Display
 import DataSource._
 
 		/**
-		 * <p>Generic class to load or save files into either HDFS or local files system.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>pathName</b>       Relative path for the data files.
-		 * <b>normalize</b>      Flag to normalize data within the range [0,1].
-		 * <b>reverseOrder</b>   Flag to re-order/index the data from the last entry to the first entry.
-		 * <b>headerLines</b>    Number of header lines in the file.
-		 * <b>srcFilter</b>      Source filter applied to the data source stream.
-		 * </span></pre></p>
+		 * <p>Generic class to load or save files into either HDFS or local files system.</p>
 		 * @constructor Create a data source. 
 		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value is out of range
-		 * 
+		 * @param pathName Relative path for the data files.
+		 * @param normalize Flag to normalize data within the range [0,1].
+		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
+		 * @param headerLines Number of header lines in the file.
+		 * @param srcFilter Source filter applied to the data source stream.
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
 		 * @note Scala for Machine Learning

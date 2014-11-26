@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.bayes.text
 
@@ -24,13 +24,10 @@ import TermsScore._
 		/**
 		 * <p>Class to organize news articles as map of relative frequency of specific keywords extracted from those 
 		 * articles. The tuple (keywords, rel. frequency) are ranked by their date. Dates are implemented 
-		 * as <b>Long</b> for simplicity's sake.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>order</b>   Implicit ordering instance used in ranking the articles by date.
-		 * </span></pre></p>
+		 * as <b>Long</b> for simplicity's sake.</p>
 		 * @constructor Create a map of news articles, classified and ordered by their release dates. 
 		 * @throws ImplicitNotFound exception is ordering is not defined prior instantiating this class
-		 * 
+		 * @param order Implicit ordering instance used in ranking the articles by date.
 		 * @author Patrick Nicolas
 		 * @since February 16, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models / Naive Bayes and text mining

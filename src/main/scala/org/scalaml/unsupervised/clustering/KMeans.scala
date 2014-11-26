@@ -6,16 +6,17 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.unsupervised.clustering
 
-import org.scalaml.core.{XTSeries, types}
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import org.scalaml.unsupervised.Distance
-import types.ScalaMl._
+import ScalaMl._
 import KMeans._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
@@ -25,15 +26,15 @@ import org.scalaml.util.Display
 		 * are initialized at mid point of K segments of data points after the data points
 		 * are ordered by their variance.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>K</b>         Number of clusters
-		 * <b>maxIters</b>  Maximum number of iterations allowed for the generation of clusters.
-		 * <b>distance</b>  Metric used in computing distance between data points.
-		 * <b>m</b>         Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
-		 * </span></pre></p>
+		 *  Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
 		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric. 
 		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 
 		 * iterations is out of range or if the distance metric is undefined.
 		 * @throws implicitNotFoundException if the ordering instance is not implicitly defined.
+		 * @param K Number of clusters
+		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
+		 * @param distance Metric used in computing distance between data points.
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014

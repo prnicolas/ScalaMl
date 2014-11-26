@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.types.ScalaMl
+import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
 import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
@@ -28,16 +28,18 @@ import MLPLayer._
 		 * </ul>
 		 * The parameters of the class and the arguments of its methods are not validated as the class 
 		 * has package scope (protected)<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>config</b>     Configuration parameters for the MLP.
-		 * <b>nInputs</b>    Input value for the Network, that is the initial value of the input layer.
-		 * <b>nOutputs</b>   Size of the output vector.
-		 * </span></pre></p>
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">The components of a MLP model are:<br>
+		 * <b>MLPLayer</b> Layer or array of neuron or elements<br>
+		 * <b>MLPSynapse</b> Synapse or connection between neurons of two consecutive layers<br>
+		 * <b>MLPConnection</b> Container for all the synapses between two layers.</span></pre></p>
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
+		 * @param config Configuration parameters for the MLP.
+		 * @param nInputs Input value for the Network, that is the initial value of the input layer.
+		 * @param nOutputs   Size of the output vector.
 		 * @constructor MLP model created during training. 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network Multilayer perceptron Model definition
 		 */
 final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
  					(implicit val mlpObjective: MLP.MLPObjective) extends Model {
@@ -128,8 +130,8 @@ final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
 		 * to validate the class parameters and define its constructors
 		 */
 object MLPModel {
-	val MAX_MLP_NUM_INPUTS = 4096
-	val MAX_MLP_NUM_OUTPUTS = 2048
+	private val MAX_MLP_NUM_INPUTS = 4096
+	private val MAX_MLP_NUM_OUTPUTS = 2048
 	
 	private def check(config: MLPConfig, nInputs: Int, nOutputs: Int): Unit = {
 		require(config != null, "MLPModel Cannot create a model with undefined configuration")

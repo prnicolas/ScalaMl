@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96a
  */
 package org.scalaml.stats
 
 
-import org.scalaml.core.types.ScalaMl.{DblVector, XYTSeries}
+import org.scalaml.core.Types.ScalaMl.{DblVector, XYTSeries}
 import scala.util.{Try, Success, Failure}
 import BiasVarianceEmulator._
 import org.apache.log4j.Logger
@@ -21,12 +21,10 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Class to emulate the Bias-Variance decomposition using an emulation or synthetic function 
 		 * to generate values. The purpose is to compute the bias and variance of a list of single 
-		 * variable function y = f(x)<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>emul</b>     Emulator for the bias-variance decomposition
-		 * <b>nValues</b>  Size of the dataset to use in the computation of Bias and Variance.
-		 * </span></pre></p>
+		 * variable function y = f(x)</p>
 		 * @constructor Create emulator function to compute the bias and variance of a list of single variable function y = f(x).
+		 * @param emul  Emulator for the bias-variance decomposition
+		 * @param nValues Size of the dataset to use in the computation of Bias and Variance.
 		 * @throws IllegalArgumentException if the emulator is undefiend or the number of values is out of range 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
@@ -77,7 +75,7 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Bias-Variance decomposition
 		 */
 object BiasVarianceEmulator {
-	final val NUMVALUES_LIMITS = (20, 20000)
+	private val NUMVALUES_LIMITS = (20, 20000)
 	
 	def apply[T <% Double](emul: Double => Double, nValues: Int): BiasVarianceEmulator[T] 
 		= new BiasVarianceEmulator[T](emul, nValues)
