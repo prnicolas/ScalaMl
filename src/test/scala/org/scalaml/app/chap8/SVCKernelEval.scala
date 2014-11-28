@@ -119,7 +119,7 @@ object SVCKernelEval extends Eval {
 	private def display(label: String, xy1: XYTSeries, xy2: XYTSeries): Unit = {
 		require(xy1 != null && xy1.size > 0, s"$name Cannot display an undefined time series")
        
-		val plotter = new ScatterPlot(("Training set", label, "Y"), new BlackPlotTheme)
+		val plotter = new ScatterPlot((s"SVC Kernel evaluation set", label, "Y"), new BlackPlotTheme)
 		plotter.display(xy1, xy2, 250, 340)
 	}
 }

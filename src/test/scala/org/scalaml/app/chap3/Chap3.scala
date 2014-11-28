@@ -22,6 +22,7 @@ trait FilteringEval extends Eval {
 
 final class Chap3 extends ScalaMlTest  {  
 	val chapter: String = "Chap 3"
+	val maxExecutionTime: Int = 8000
 		
 	implicit def double2String(x: Double): String = x.toString
 	test(s"$chapter Moving averages evaluation") {

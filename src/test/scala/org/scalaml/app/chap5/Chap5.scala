@@ -15,7 +15,8 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap5 extends ScalaMlTest {
 	val chapter: String = "Chap5"
-  	 
+	val maxExecutionTime: Int = 5000
+	
 	test(s"$chapter Binomial Naive Bayes evaluation") {
 		val TRAIN_VALIDATION_RATIO = "0.8"
 		evaluate(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))

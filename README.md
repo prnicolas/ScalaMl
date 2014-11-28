@@ -44,6 +44,8 @@ Update the JVM heap parameters in eclipse.ini file as <i>-Xms512m -Xmx8192m</i> 
 <br>
 <h3>Build</h3>
 The Simple Build Too (SBT) has to be used to build the library from the source code using the <i>build.sbt</i> file in the root directory<br>
+Executing the examples/test in Scala for Machine Learning require sufficient JVM Heap memory (~2G):<br>
+in <i>sbt/conf/sbtconfig.text</i> set Xmx to 2058m or higher, -XX:MaxPermSize to 512m or higher i.e. <b>-Xmx4096m -Xms512m -XX:MaxPermSize=512m</b><br><br>
 Build script for <i>Scala for Machine Learning</i>:<br>
 To build the Scala for Machine Learning library package<i> $(ROOT)/sbt clean publish-local</i><br>
 To build the package including test and resource files<i> $(ROOT)/sbt clean package</i><br>

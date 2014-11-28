@@ -87,7 +87,7 @@ object SVREval extends Eval {
 		import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
 		require(xs != null && xs.size > 0, "Cannot display an undefined time series")
        
-		val plotter = new ScatterPlot(("Training set", label, "SPY"), new LightPlotTheme)
+		val plotter = new ScatterPlot(("SVR SPY prices", label, "SPY"), new LightPlotTheme)
 		plotter.display(xs, lbls, 250, 340)
 	}
 }

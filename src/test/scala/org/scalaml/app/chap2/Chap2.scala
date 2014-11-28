@@ -26,16 +26,17 @@ import org.scalaml.app.ScalaMlTest
 		 * @since February 1, 20
 		 * @note Scala for Machine Learning.
 		 */
-final class Chap2 extends ScalaMlTest {
-   val chapter: String = "Chap 2"
-  	 
-   test(s"$chapter Workflow evaluation") {
-  	  evaluate(WorkflowEval)
-   }
+final class Chap2 extends ScalaMlTest {	
+	val chapter: String = "Chap 2"
+	val maxExecutionTime: Int = 5000
    
-   test(s"$chapter Variance - Bias decomposition evaluation") {
-  	  evaluate(BiasVarianceEval)
-   }
+	test(s"$chapter Workflow evaluation") {
+		evaluate(WorkflowEval)
+	}
+   
+	test(s"$chapter Variance - Bias decomposition evaluation") {
+		evaluate(BiasVarianceEval)
+	}
 }
 
      

@@ -15,23 +15,24 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap9 extends ScalaMlTest {
 	val chapter: String = "Chap 9"
-  	
-	test(s"$chapter Multi-perceptron eta factor evaluation") {
+    val maxExecutionTime: Int = 25000
+    
+	test(s"$chapter Multi-perceptron - eta factor") {
 		evaluate(MLPConfigEval, Array[String]("eta"))
 	}
   
-	test(s"$chapter Multi-perceptron alpha factor evaluation") {
+	test(s"$chapter Multi-perceptron - alpha factor") {
 		evaluate(MLPConfigEval, Array[String]("alpha"))
 	}
   
-	test(s"$chapter Multi-perceptron validation") {
+	test(s"$chapter Multi-perceptron - validation") {
 		evaluate(MLPValidation)
 	}
-	test(s"$chapter Multi-perceptron binomial classification evaluation") {
+	test(s"$chapter Multi-perceptron - Synthetic binomial classification") {
 		evaluate(BinaryMLPEval)
 	}
   
-	test(s"$chapter Multi-perceptron binomial classification evaluation") {
+	test(s"$chapter Multi-perceptron - binomial classification for ETFs correlation") {
 		evaluate(MLPEval)
 	}
 }

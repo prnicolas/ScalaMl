@@ -28,6 +28,7 @@ trait UnsupervisedLearningEval extends Eval {
 
 final class Chap4 extends ScalaMlTest { 
 	val chapter: String = "Chap 3"
+    val maxExecutionTime: Int = 5000
     
 	test("K-means evaluation") {
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")

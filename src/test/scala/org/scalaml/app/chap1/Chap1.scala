@@ -26,7 +26,8 @@ import org.scalaml.app.ScalaMlTest
 		 */
 final class Chap1 extends ScalaMlTest {
 	val chapter: String = "Chap 1"
-		
+	val maxExecutionTime: Int = 5000
+	
 	test(s"$chapter Simple Binary Logistic Regression") {
 		evaluate(LogBinRegressionEval)
 	}

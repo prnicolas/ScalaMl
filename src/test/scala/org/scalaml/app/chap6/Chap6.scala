@@ -17,7 +17,8 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap6 extends ScalaMlTest {
 	val chapter: String = "Chap 6"
-		
+	val maxExecutionTime: Int = 7000
+	
 	test(s"$chapter Single linear regression evaluation") {
 		evaluate(SingleLinearRegressionEval)
 	}

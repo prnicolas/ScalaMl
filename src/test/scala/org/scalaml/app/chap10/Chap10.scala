@@ -16,7 +16,8 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap10 extends ScalaMlTest  {
 	val chapter: String = "Chap 10"
-  	
+	val maxExecutionTime: Int = 12000
+	
 	test(s"$chapter evaluate genetic Algorithm") {
 		evaluate(GAEval)
 	}

@@ -16,6 +16,7 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap11 extends ScalaMlTest { 
 	val chapter: String = "Chapter 11"
+	val maxExecutionTime: Int = 7000
   	 
 	test(s"$chapter QLearning evaluation")  {
 		evaluate(QLearningEval)
