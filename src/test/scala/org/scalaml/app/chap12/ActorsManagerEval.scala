@@ -50,6 +50,8 @@ class DFTMaster(xt: DblSeries, partitioner: Partitioner) extends Master(xt, DFT[
 
 object ActorsManagerEval extends Eval {   
 	val name: String = "ActorsManagerEval"
+	val maxExecutionTime: Int = 10000
+	
 	private val logger = Logger.getLogger(name)
 	
 	val DONE= 0
@@ -68,7 +70,7 @@ object ActorsManagerEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Master-Worker model for Akka actors", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Master-Worker model for Akka actors", logger)
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
 	

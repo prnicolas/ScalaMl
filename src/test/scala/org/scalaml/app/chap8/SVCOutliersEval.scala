@@ -26,6 +26,8 @@ import org.scalaml.app.Eval
 	
 object SVCOutliersEval extends Eval {
 	val name: String = "SVCOutliersEval"
+	val maxExecutionTime: Int = 25000
+	
 	val path = "resources/data/chap8/dividends2.csv"	
 
 	val NU = 0.2
@@ -41,7 +43,7 @@ object SVCOutliersEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of One class Support Vector Classifier", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of One class Support Vector Classifier", logger)
 		val extractor = relPriceChange :: 
 						debtToEquity ::
 						dividendCoverage ::

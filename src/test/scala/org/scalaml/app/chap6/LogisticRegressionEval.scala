@@ -25,6 +25,8 @@ import org.scalaml.app.Eval
 
 object LogisticRegressionEval extends Eval {
 	val name: String = "LogisticRegressionEval"
+	val maxExecutionTime: Int = 50
+	
 	private val logger = Logger.getLogger(name)
 	   
 	private val path = "resources/data/chap6/CU.csv"   
@@ -39,7 +41,7 @@ object LogisticRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Binomial Logistic regression", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Binomial Logistic regression", logger)
 		
 		Try {
 			val src = DataSource(path, true, true, 1)

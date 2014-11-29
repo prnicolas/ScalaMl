@@ -22,7 +22,8 @@ import org.scalaml.app.Eval
 
 object MLPConfigEval extends Eval {
 	val name: String = "MLPConfigEval"
-  	 
+    val maxExecutionTime: Int = 25000
+    
 	private val ALPHA = 0.9
 	private val ETA = 0.1
 	private val SIZE_HIDDEN_LAYER = 5
@@ -39,7 +40,7 @@ object MLPConfigEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"\n** test#${Eval.testCount} $name MLP configuration parameters for ${args(0)}", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name MLP configuration parameters for ${args(0)}", logger)
 	     
 		val noise = () => NOISE_RATIO*Random.nextDouble
 		val f1 = (x: Double) => x*(1.0 + noise())

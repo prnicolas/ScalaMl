@@ -27,7 +27,14 @@ import NaiveBayesModel._
 		 */
 abstract class NaiveBayesModel[T <% Double](val density: Density) {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
-	def classify(values: Array[T]): Int
+	
+		/**
+		 * <p>Classify a new observation (or vector) using the Multinomial Naive Bayes model.</p>
+		 * @param x new observation
+		 * @return the class ID the new observations has been classified.
+		 * @throws IllegalArgumentException if any of the observation is undefined.
+		 */
+	def classify(x: Array[T]): Int
 	def toString(labels: Array[String]): String 
 }
 
@@ -47,16 +54,13 @@ object NaiveBayesModel {
 
 		/**
 		 * <p>Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and 
-		 * negative outcome and for a specific density function.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>positives</b>   Priors for the class of positive outcomes.
-		 * <b>negatives</b>   Priors for the class of negatives outcomes.
-		 * <b>density</b>     Probability density function used in computing the conditional probability <b>p(C|x)</b>
-		 * </span></pre></p>
+		 * negative outcome and for a specific density function.</p>
 		 * @constructor Instantiation of a Binomial Naive Bayes model. 
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @see org.scalaml.supervised.bayes.NaiveBayesModel
-		 * 
+		 * @param positives  Priors for the class of positive outcomes.
+		 * @param negatives  Priors for the class of negatives outcomes.
+		 * @param density Probability density function used in computing the conditional probability <b>p(C|x)</b>
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models / Naive Bayes Classifiers
@@ -103,14 +107,11 @@ object BinNaiveBayesModel {
 		/**
 		 * <p>Defines a Multi-class (or multinomial) Naive Bayes model for n classes.The number of classes is defined
 		 * as likelihoodSet.size. The binomial Naive Bayes model, BinNaiveBayesModel, should be used for the 
-		 * two class problem.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>likelihoodSet</b>  List of likelihood or priors for every classes in the model.
-		 * <b>density</b>        Probability density function used in computing the conditional probability p(C|x).
-		 * </span></pre></p>
+		 * two class problem.</p>
 		 * @constructor Instantiates a Multinomial Naive Bayes model (number classes > 2)
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
-		 * 
+		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
+		 * @param density Probability density function used in computing the conditional probability p(C|x)
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes Classifiers

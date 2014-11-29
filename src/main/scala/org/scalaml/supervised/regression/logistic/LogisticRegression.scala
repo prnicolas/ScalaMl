@@ -84,6 +84,12 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		case Some(m) => Some(m.rss)
 		case None => Display.none("LogisticRegression.tdd model is undefined", logger)
 	}
+	
+		/**
+		 * <p>Test if the model has been trained and is defined.</p>
+		 * @return true is the model has been trained, false otherwise
+		 */
+	final def isModel = model != None
 			
 		/**
 		 * <p>Binary predictor using the Binomial logistic regression and implemented

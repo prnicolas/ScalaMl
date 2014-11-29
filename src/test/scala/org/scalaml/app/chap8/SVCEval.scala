@@ -28,7 +28,8 @@ import org.scalaml.app.Eval
 
 object SVCEval extends Eval {
 	val name: String = "SVCEval"
-
+	val maxExecutionTime: Int = 25000
+	
 	private val path = "resources/data/chap8/dividends2.csv"	
 	private val C = 1.0
 	private val GAMMA = 0.5
@@ -43,7 +44,7 @@ object SVCEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Binary Support Vector Classifier", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Binary Support Vector Classifier", logger)
 
 		val extractor = relPriceChange :: 
 						debtToEquity ::

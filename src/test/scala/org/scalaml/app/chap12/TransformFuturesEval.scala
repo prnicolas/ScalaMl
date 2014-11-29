@@ -57,6 +57,7 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 
 object TransformFuturesEval extends Eval {
 	val name: String = "TransformFuturesEval"
+	val maxExecutionTime: Int = 10000
 	private val logger = Logger.getLogger(name)
 		
 	private val NUM_WORKERS = 8
@@ -76,7 +77,7 @@ object TransformFuturesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Data transformation futures using Akka actors", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Data transformation futures using Akka actors", logger)
 		
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
@@ -97,8 +98,4 @@ object TransformFuturesEval extends Eval {
 	}
 }
 
-
-object TransformFuturesEvalApp extends App {
-	TransformFuturesEval.run(Array.empty)
-}
 // -----------------------------------------------  EOF ---------------------------

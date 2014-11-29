@@ -34,7 +34,8 @@ import org.scalaml.app.Eval
 object LogBinRegressionEval extends Eval {
 	import YahooFinancials._
 	val name: String = "LogBinRegressionEval"
-	
+	val maxExecutionTime: Int = 5000
+		
 	private val NITERS = 300
 	private val EPS = 0.02
 	private val ETA = 0.000002
@@ -50,7 +51,7 @@ object LogBinRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Loading history Cisco stock for training logistic regression", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Loading history Cisco stock for training logistic regression", logger)
 		
 		load(path_training) match {
 			case Some(volatilityVolume) => {

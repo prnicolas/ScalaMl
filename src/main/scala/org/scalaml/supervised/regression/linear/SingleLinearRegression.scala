@@ -74,7 +74,13 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		case Some(m) => Some(m._2)
 		case None => Display.none("SingleLinearRegression.intecept model is undefined", logger)
 	}
-    
+
+		/**
+		 * <p>Test if the model has been trained and is defined.</p>
+		 * @return true is the model has been trained, false otherwise
+		 */
+	final def isModel = model != None
+	
 		/**
 		 * <p>Data transformation that computes the predictive value of a time series
 		 * using a single variable linear regression model. The model is initialized

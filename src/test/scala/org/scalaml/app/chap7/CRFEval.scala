@@ -31,7 +31,8 @@ import org.scalaml.core.Types.ScalaMl
 		 */
 object CrfEval extends Eval {
 	val name: String = "CrfEval"
-  	
+	val maxExecutionTime: Int = 12000
+	
 	private val LAMBDA = 0.5
 	private val NLABELS = 9
 	private val MAX_ITERS = 100
@@ -48,7 +49,7 @@ object CrfEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Conditional Random Fields", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Conditional Random Fields", logger)
     
 
 		val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)

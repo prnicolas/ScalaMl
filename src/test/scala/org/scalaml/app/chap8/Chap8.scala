@@ -22,8 +22,6 @@ import org.scalaml.app.ScalaMlTest
 	 */
 final class Chap8 extends ScalaMlTest {
 	val chapter = "Chap 8"
-	val maxExecutionTime: Int = 25000
-	
 	
 	test(s"$chapter Impact support Vector machines margin") {
 		evaluate(SVCMarginEval)

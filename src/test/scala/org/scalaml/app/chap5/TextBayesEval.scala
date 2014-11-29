@@ -50,7 +50,8 @@ import org.scalaml.app.Eval
 		 */
 object TextBayesEval extends Eval {
 	val name: String = "TextBayesEval"
-
+	val maxExecutionTime: Int = 5000
+	
 	private val pathCorpus = "resources/text/chap5/"
 	private val pathLexicon = "resources/text/lexicon.txt"
     	
@@ -94,7 +95,7 @@ object TextBayesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int  = {
-		Display.show(s"\n** test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)
@@ -107,12 +108,12 @@ object TextBayesEval extends Eval {
 						prevQ = q
 						delta
 					})
-			  	   	
+
 					//Extracts the unique column names as the lemme in the Lexicon.
 					val columns = LEXICON.values
 										.foldLeft(new HashSet[String])((hs, key) => {hs.add(key); hs})
 										.toArray	
-			  	   
+
 					// Computes the relative frequencies of the lemmed terms zipped with
 					// the direction of the stock movement between two consecutive trading sessions.
 					val relFreQ = terms.toOrderedArray
@@ -120,13 +121,13 @@ object TextBayesEval extends Eval {
 										.map(x => (x._1._2, x._2))
 										.map(lbl => (columns.map(f => 
 											if(lbl._1.contains(f)) lbl._1(f) else 0.0), lbl._2) )
-			  	  	                      
+
 					val xt = XTSeries[(DblVector, Int)](relFreQ)
 					val nb = NaiveBayes[Double](xt)
-			  	   
+
 					// Display the pairs (mean, standard deviation) for each term.
 					val labels: Array[String] = columns.map( _.toString)
-					displayResults(columns, nb.toString(labels))
+					Display.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", logger)
 				}
 				case None => Display.error(s"$name keywords extraction failed", logger)
 			}
@@ -136,11 +137,8 @@ object TextBayesEval extends Eval {
 			case Failure(e) => Display.error(s"$name.run Naive Bayes analysis", logger, e)
 		}	
 	}
-    
-	private def displayResults(columns: Array[String], results: String): Int = 
-		Display.show(s"$name Naive Bayes text extraction model\n${results}", logger)
 
-    
+
 	private def loadLexicon: Map[String, String] = {
 		val src = Source.fromFile(pathLexicon)
 		val fields = src.getLines.map( _.split(",").map(_.trim))

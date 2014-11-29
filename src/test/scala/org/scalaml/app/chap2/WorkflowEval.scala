@@ -112,6 +112,8 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 */
 object WorkflowEval extends Eval {
 	val name: String = "WorkflowEval"
+    val maxExecutionTime: Int = 25000
+    
 	private val logger = Logger.getLogger(name)
 	
 		/**
@@ -121,7 +123,7 @@ object WorkflowEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation for 'log(1+x) + noise' transform", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation for 'log(1+x) + noise' transform", logger)
 		
 		val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
 		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 

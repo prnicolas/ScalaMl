@@ -23,7 +23,6 @@ import org.scalaml.app.ScalaMlTest
 	 */
 final class Chap7 extends ScalaMlTest {
 	val chapter: String = "Chap 7"
-	val maxExecutionTime: Int = 12000
 	
 	test(s"$chapter Hidden Markov Model evaluation") {
 		evaluate(HMMEval, Array[String]("evaluation"))

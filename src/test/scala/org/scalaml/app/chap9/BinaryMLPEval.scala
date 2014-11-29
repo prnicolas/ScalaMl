@@ -30,7 +30,8 @@ import scala.reflect.ClassTag
 		 */
 object BinaryMLPEval extends Eval {
 	val name: String = "BinaryMLPEval"
-  	 
+	val maxExecutionTime: Int = 25000
+	
 	private val ALPHA = 0.85
 	private val ETA = 0.01
 	private val SIZE_HIDDEN_LAYER = Array[Int](4)
@@ -48,7 +49,7 @@ object BinaryMLPEval extends Eval {
 	def run(args: Array[String]): Int = {
 		import scala.util.Random
   	  
-		Display.show(s"\n** test#${Eval.testCount} $name Binary Multi-layer perceptron", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Binary Multi-layer perceptron", logger)
         
 		implicit val mlpObjective = new MLP.MLPBinClassifier
 

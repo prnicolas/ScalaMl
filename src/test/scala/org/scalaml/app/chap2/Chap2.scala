@@ -28,7 +28,6 @@ import org.scalaml.app.ScalaMlTest
 		 */
 final class Chap2 extends ScalaMlTest {	
 	val chapter: String = "Chap 2"
-	val maxExecutionTime: Int = 5000
    
 	test(s"$chapter Workflow evaluation") {
 		evaluate(WorkflowEval)

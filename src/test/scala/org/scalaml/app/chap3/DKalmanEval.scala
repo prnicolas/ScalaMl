@@ -35,7 +35,8 @@ import org.scalaml.app.Eval
 final class DKalmanEval extends FilteringEval {
 	import YahooFinancials._, ScalaMl._
 	val name: String = "DKalmanEval"
-   
+    val maxExecutionTime: Int = 25000
+    
 	private val logger = Logger.getLogger(name)
      
 		// Noise has to be declared implicitly
@@ -52,7 +53,7 @@ final class DKalmanEval extends FilteringEval {
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.size > 0, s"$name Command line DKalmanEval ticker symbol")
      
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation Kalman filter with no control matrix", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation Kalman filter with no control matrix", logger)
      
 			// H and P0 are the only components that are independent from
 			// input data and smoothing factor. The control matrix B is not defined
@@ -79,10 +80,13 @@ final class DKalmanEval extends FilteringEval {
 	     
 			// Dump results in output file along the original time series
 			val output = s"output/chap3/kalman_${alpha.toString}.csv"
-			val results = filtered.map(_._1)
+			val results: XTSeries[Double] = filtered.map(_._1)
 			DataSink[Double](output) |> results :: XTSeries[Double](zSeries) :: List[XTSeries[Double]]()
 			val displayedResults: DblVector = results.toArray.take(256)
+			
+			display(zSeries, results.toArray, alpha)
 			Display.show(s"$name results ${ScalaMl.toString(displayedResults, "2-step lag smoother", false)}", logger)
+
 		}
       
 		Try {
@@ -98,10 +102,19 @@ final class DKalmanEval extends FilteringEval {
 			case Failure(e) => Display.error(s"$name Failed", logger, e)
 		}
 	}
+	
+	private def display(z: DblVector, x: DblVector, alpha: Double): Unit =   {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+		
+		val plot = new LinePlot(("Kalman filter", s"Kalman with alpha $alpha", "y"), new LightPlotTheme)
+		val data = (z, "price") :: (x, "Filtered") :: List[(DblVector, String)]()
+		plot.display(data, 340, 280)
+	}
 }
 
 object DKalmanEval {
 	def apply: DKalmanEval = new DKalmanEval
 }
+
 
 // --------------------------------------  EOF -------------------------------

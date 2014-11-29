@@ -89,7 +89,7 @@ object Plot {
 	final def getLocation: (Int, Int) = {
 		count += 1
 		val offset = count * DISPLAY_OFFSET
-		(offset, offset)
+		(offset, offset % 420)
 	}
 
 	private val MIN_DISPLAY_SIZE = 60

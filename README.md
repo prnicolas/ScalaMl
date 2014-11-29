@@ -47,12 +47,15 @@ The Simple Build Too (SBT) has to be used to build the library from the source c
 Executing the examples/test in Scala for Machine Learning require sufficient JVM Heap memory (~2G):<br>
 in <i>sbt/conf/sbtconfig.text</i> set Xmx to 2058m or higher, -XX:MaxPermSize to 512m or higher i.e. <b>-Xmx4096m -Xms512m -XX:MaxPermSize=512m</b><br><br>
 Build script for <i>Scala for Machine Learning</i>:<br>
-To build the Scala for Machine Learning library package<i> $(ROOT)/sbt clean publish-local</i><br>
-To build the package including test and resource files<i> $(ROOT)/sbt clean package</i><br>
-To generate scala doc for the library<i> $(ROOT)/sbt doc</i><br>
-To generate scala doc for the examples<i> $(ROOT)/sbt test:doc</i><br>
-To compile the examples:<i>$(ROOT)/sbt test:compile</i><br>
-To run the tests:<i>$(ROOT)/sbt test:run</i><br>
+To build the Scala for Machine Learning library package<br><i><b> $(ROOT)/sbt clean publish-local</b></i><br>
+To build the package including test and resource files<br><i><b> $(ROOT)/sbt clean package</b></i><br>
+To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
+To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
+To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
+To run one test suite (i.e. Chap 3)<br>
+<i><b>$(ROOT)/sbt<br>
+> test-only *Chap3</b></i>
+To run all tests:<i><b>$(ROOT)/sbt test:run</b></b></i><br>
 <br>
 
 <h2>Appendix</h2>

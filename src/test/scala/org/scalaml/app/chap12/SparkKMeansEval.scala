@@ -33,6 +33,7 @@ import org.scalaml.app.Eval
 object SparkKMeansEval extends Eval {
 	val name: String = "SparkKMeansEval"
 	val logger = Logger.getLogger(name)
+	val maxExecutionTime: Int = 10000
 	
 	val K = 8
 	val NRUNS = 16
@@ -47,7 +48,7 @@ object SparkKMeansEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name MLLib K-means on Spark framework", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name MLLib K-means on Spark framework", logger)
   	
 		Try {
 			val input = extract
@@ -84,11 +85,5 @@ object SparkKMeansEval extends Eval {
 		DataSource(PATH, true) |> extractors
 	}
 }
-
-
-object SparkKMeansEvalApp extends App {
-  SparkKMeansEval.run(Array.empty)
-}
-
 
 // ---------------------------------  EOF -------------------------

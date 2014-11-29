@@ -11,8 +11,8 @@
 package org.scalaml.app.chap3
 
 
-
 import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
@@ -22,6 +22,7 @@ import org.scalaml.util.Display
 import scala.util.{Try, Success, Failure}
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 import org.scalaml.app.Eval
+
 
 		/**
 		 * <p>Command line application. Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
@@ -34,7 +35,8 @@ object DFTEval extends FilteringEval {
 	import org.scalaml.filtering.DFT
 
 	val name: String = "DFTEval"  
-   
+    val maxExecutionTime: Int = 25000
+    
 	private val logger = Logger.getLogger(name)
 	private val h = (x:Double) =>2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
 						Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
@@ -61,7 +63,7 @@ object DFTEval extends FilteringEval {
 
 	private def runSimulation: Int = {
 		import ScalaMl._
-		Display.show(s"\n** test#${Eval.testCount} $name Discrete Fourier series with synthetic data", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with synthetic data", logger)
 		val values = Array.tabulate(1025)(x => h(x/1025))
 			// Original data dump into a CSV file
 		DataSink[Double]("output/chap3/simulated.csv") write values
@@ -71,25 +73,45 @@ object DFTEval extends FilteringEval {
 		Display.show(s"$name Results simulation (first 512 frequencies): ${ScalaMl.toString(frequencies.toArray.take(512), "x/1025", true)}", logger)
 	}
    
-	import DTransform._
 	private def runFinancial(symbol: String): Int  = {
 		import ScalaMl._
 		
-		Display.show(s"\n** test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
 		val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
-     
-		val price = src |> YahooFinancials.adjClose  
-		val filter = new DFTFir[Double](sinc, 4.5)
-         
-		val xtSeries = filter |> price
-		val res: DblVector = xtSeries
-		val thresholdValue = res.max*0.01
+
+		val price = src |> YahooFinancials.adjClose
+		var filtered = filter(0.01, price)
+		filtered = filter(0.005, price)
+
 		val sink2 = DataSink[Double]("output/chap3/filt_" + symbol + ".csv")
-		val filtered = res.map( x => if(x > thresholdValue) x else 0.0)
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
-		
-		Display.show(s"$name Results financial data(first 512 frequencies): ${ScalaMl.toString(filtered.take(512), "DTF filtered", true)}", logger)
+
+		Display.show(s"$name Results financial data(first 256 frequencies): ${ScalaMl.toString(filtered.take(256), "DTF filtered", true)}", logger)
+	}
+	
+	private def filter(cutOff: Double, price: XTSeries[Double]): DblVector = {
+	  	import DTransform._
+	  	val filter = new DFTFir[Double](sinc, cutOff)
+ 
+		val xtSeries = filter |> price
+		val filtered: DblVector = xtSeries
+		display(price, filtered, cutOff)
+		filtered
+	}
+	
+	private def display(x1: DblVector, x2: DblVector, fc: Double): Unit =   {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
+	  
+		val plot = new LinePlot(("Discrete Fourier filter", s"cutoff $fc", "y"), new LightPlotTheme)
+		val _x2 = x2.take(x1.size-24)
+		val data = (x1, "Stock price") :: (_x2, "DFT") :: List[(DblVector, String)]()
+						
+		plot.display(data, 340, 280)
+		val plot2 = new LinePlot(("DFT filtered noise", s"filtered noise $fc", "y"), new BlackPlotTheme)
+		val data2 = x1.zip(_x2).map(z => Math.abs(z._1 - z._2))
+		plot2.display(data2, 340, 280)
 	}
 }
+
 
 // --------------------------------------  EOF -------------------------------

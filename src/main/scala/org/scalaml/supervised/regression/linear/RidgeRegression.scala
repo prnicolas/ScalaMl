@@ -68,7 +68,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 			case Failure(e) => Display.none("RidgeRegression.model could not be trained", logger, e)
 		}
 	}
-    
+
 		/**
 		 * <p>Retrieve the weights of this Ridge regression model. The vector of the
 		 * weights is returned if the model has been successfully created (trained).
@@ -88,18 +88,24 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		case Some(m) => Some(m.rss)
 		case None => Display.none("RidgeRegression.rss model undefined", logger)
 	}
-    
+
+		/**
+		 * <p>Test if the model has been trained and is defined.</p>
+		 * @return true is the model has been trained, false otherwise
+		 */
+	final def isModel = model != None
+	
 		/**
 		 * <p>Data transformation that predicts the value of a vector input using the Ridge regression.</p>
 		 * @throws MatchError if the model is undefined or has an incorrect size
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of type Double as output
 		 */
-		override def |> : PartialFunction[Feature, Double] = {
-			case x: Feature if(x != null && model != None && x.size == model.get.size-1) => {
-				val m = model.get
-				x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2)
-			}
+	override def |> : PartialFunction[Feature, Double] = {
+		case x: Feature if(x != null && model != None && x.size == model.get.size-1) => {
+			val m = model.get
+			x.zip(m.weights.drop(1)).foldLeft(m.weights(0))((s, z) => s + z._1*z._2)
 		}
+	}
 
 		/**
 		 * <p>Override the newXSampleData method of the Common Math class AbstractMultipleLinearRegression</p>

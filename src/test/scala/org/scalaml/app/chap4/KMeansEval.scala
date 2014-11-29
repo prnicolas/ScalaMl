@@ -29,10 +29,12 @@ import org.scalaml.app.Eval
 		 */
 object KMeansEval extends UnsupervisedLearningEval {
 	import org.scalaml.unsupervised.clustering.KMeans
+
 	import org.scalaml.unsupervised.Distance.euclidean
 	import ScalaMl._
 	val name: String = "KMeansEval"
-   	  
+	val maxExecutionTime: Int = 5000
+	
 	private val START_INDEX = 70
 	private val NUM_SAMPLES = 42
 	private val logger = Logger.getLogger(name)
@@ -46,7 +48,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 	override def run(args: Array[String]): Int = {
 		import CommonMath._
         
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of K-means clustering", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of K-means clustering", logger)
       
 			// nested function to generate K clusters from a set of observations observations
 			// obs. The condition on the argument are caught by the K-means constructor.
@@ -70,7 +72,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 		val normalize = true
 		Try {
 			require(symbolFiles.size > 0, s"$name.run The input symbol files are undefined")
-         
+
 			val prices: Array[List[DblVector]] = symbolFiles.map(s => 
 				DataSource(s, path, normalize) |> extractor)
 
@@ -87,7 +89,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error("KMeansEval.run ", logger, e)
+			case Failure(e) => Display.error("$name failed to load data", logger, e)
 		}
 	}
 }

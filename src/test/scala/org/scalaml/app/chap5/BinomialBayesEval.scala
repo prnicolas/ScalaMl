@@ -52,6 +52,7 @@ trait BayesEval extends Eval {
 			 */
 object BinomialBayesEval extends BayesEval {
 	val name: String = "BinomialBayesEval"
+	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)
 	
 		/**
@@ -62,7 +63,7 @@ object BinomialBayesEval extends BayesEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.size > 2, s"$name.run incorrect arguments list")
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation multinomial Naive Bayes", logger)	
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation multinomial Naive Bayes", logger)	
 		
 		val trainValidRatio = args(1).toDouble
 		val period = args(2).toInt

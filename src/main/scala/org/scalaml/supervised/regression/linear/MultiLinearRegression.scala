@@ -81,7 +81,13 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		case None => Display.none("MultiLinearRegression.rss: Model undefined", logger)
 	}
 
-    
+
+		/**
+		 * <p>Test if the model has been trained and is defined.</p>
+		 * @return true is the model has been trained, false otherwise
+		 */
+	final def isModel = model != None
+	
 		/**
 		 * <p>Data transformation that predicts the value of a vector input.</p>
 		 * @throws MatchError if the model is undefined or has an incorrect size

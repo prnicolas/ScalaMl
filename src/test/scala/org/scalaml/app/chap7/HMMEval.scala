@@ -34,7 +34,8 @@ import org.scalaml.app.Eval
 object HMMEval extends Eval  {
 	import HMM._, HMMForm._
 	val name: String = "HMMEval"
-  	 
+	val maxExecutionTime: Int = 12000
+	
 	private val STATES_PATH = "resources/data/chap7/statesprob.csv"
 	private val OBS_PATH = "resources/data/chap7/obsprob.csv"
 	private val CSV_DELIM= ","
@@ -61,7 +62,7 @@ object HMMEval extends Eval  {
 
 	private def runCF2: Int =  {
 	  
-		Display.show(s"\n** test#${Eval.testCount} $name Hidden Markov Model - Training", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Hidden Markov Model - Training", logger)
   	  
 		val observations = Array[Double](
 			0.0, 0.72, 0.78, 0.56, 0.61, 0.56, 0.45, 0.42, 0.46, 0.38, 
@@ -92,7 +93,7 @@ object HMMEval extends Eval  {
    
    
 	private def runCF1: Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Hidden Markov Model - Evaluation", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Hidden Markov Model - Evaluation", logger)
   	  		
 		// State-transition probabilities matrix for HMM
 		val A0 = Array[Array[Double]](

@@ -41,6 +41,8 @@ object GAEval extends Eval {
 	import YahooFinancials._, Chromosome._
 	
 	val name: String = "GAEval"
+	val maxExecutionTime: Int = 12000
+	  	
 	private val logger = Logger.getLogger(name)
       
 	private val path = "resources/data/chap10/GS.csv"
@@ -72,7 +74,7 @@ object GAEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation genetic algorithm", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation genetic algorithm", logger)
   	 
 		Try {
 			val strategies = createStrategies

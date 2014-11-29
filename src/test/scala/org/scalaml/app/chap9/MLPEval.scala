@@ -27,7 +27,8 @@ import org.scalaml.app.Eval
 		 */
 object MLPEval extends Eval {
 	val name: String = "MLPEval"
-  	
+    val maxExecutionTime: Int = 25000
+    
 	private val path = "resources/data/chap9/"
 	private val ALPHA = 0.8; 
 	private val ETA = 0.01
@@ -65,7 +66,7 @@ object MLPEval extends Eval {
 
   	
 	def run(args: Array[String]): Int =  {
-		Display.show(s"\n** test#${Eval.testCount} $name MLP classifier without SoftMax conversion", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name MLP classifier without SoftMax conversion", logger)
        
 		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
 							.map( _ |> GoogleFinancials.close )

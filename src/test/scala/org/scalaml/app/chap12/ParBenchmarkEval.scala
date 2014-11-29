@@ -30,6 +30,8 @@ import org.scalaml.util.Display
 object ParBenchmarkEval extends Eval {
 	 import scala.util.Random
 	 val name: String = "ParBenchmarkeval"
+	 val maxExecutionTime: Int = 10000
+	   	
 	 private val logger = Logger.getLogger(name)
 	 private val SZ = 1000000
 	 private val NUM_TASKS = 16
@@ -41,7 +43,7 @@ object ParBenchmarkEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	 def run(args: Array[String]): Int = {
-		 Display.show(s"\n** test#${Eval.testCount} $name Scala parallel collections", logger)
+		 Display.show(s"\n\n *****  test#${Eval.testCount} $name Scala parallel collections", logger)
 		 
 		 val mapper = new HashMap[String, Double]
 		 val mapped = mapper.map( k => (k._1, k._2/10.0))

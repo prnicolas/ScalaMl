@@ -30,7 +30,8 @@ object MovingAveragesEval extends FilteringEval {
 	import ScalaMl._
 
 	val name: String = "MovingAveragesEval"
-  	 
+    val maxExecutionTime: Int = 25000
+    
 	private val logger = Logger.getLogger(name)
 
 		/**
@@ -41,7 +42,7 @@ object MovingAveragesEval extends FilteringEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation moving averages", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation moving averages", logger)
   	 
 		val symbol = args(0)
 		val p = args(1).toInt

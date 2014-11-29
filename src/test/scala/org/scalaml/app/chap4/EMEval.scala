@@ -32,6 +32,7 @@ object EMEval extends UnsupervisedLearningEval {
 	import MultivariateEM._
     
 	val name: String = "EMEval"
+	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)
 
 		/**
@@ -42,7 +43,7 @@ object EMEval extends UnsupervisedLearningEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.length == 2, s"$name Cannot evaluate EM with undefined arguments")
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Expectation-Maximization clustering", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Expectation-Maximization clustering", logger)
      
 		val K = args(0).toInt
 		val samplingRate = args(1).toInt

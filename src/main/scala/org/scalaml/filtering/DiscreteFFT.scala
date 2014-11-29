@@ -147,9 +147,14 @@ class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
 		case xt: XTSeries[T] if( xt != null && xt.size > 2) => {
+				// Forward computation of the discrete Fourier series
 			val spectrum = fwrd(xt)
-			val filtered = spectrum._2.map( x => x*g(x, fC))
-			XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) )
+				// Computes the frequencies cut-off in data points
+			val cutOff = fC*spectrum._2.size
+				// Applies the cutoff to the original frequencies spectrum
+			val filteredSpectrum = spectrum._2.zipWithIndex.map(x => x._1*g(x._2, cutOff))
+				// Reconstruct the signal.
+			XTSeries[Double](spectrum._1.transform(filteredSpectrum, TransformType.INVERSE) )
 		}
 	} 
 }

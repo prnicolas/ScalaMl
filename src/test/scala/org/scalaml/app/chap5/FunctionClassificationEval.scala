@@ -45,6 +45,8 @@ object FunctionClassificationEval extends Eval {
 	import scala.util.Random
 	
 	val name: String = "NaiveBayesEval"
+	val maxExecutionTime: Int = 5000
+	
 	private val logger = Logger.getLogger(name)
 	type Input = Array[(Array[Double], Int)]
 			
@@ -127,7 +129,7 @@ object FunctionClassificationEval extends Eval {
       	
 		Try {
 			val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
-			Display.show(s"\n** test#${Eval.testCount} $name Trained model for function classification${nb.toString}", logger)
+			Display.show(s"\n\n *****  test#${Eval.testCount} $name Trained model for function classification${nb.toString}", logger)
 	      
 			val gr = nb |> XTSeries(testDataset(g))
 			Display.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", logger)

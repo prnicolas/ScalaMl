@@ -39,6 +39,7 @@ import XTSeries._
 		 */
 object PCAEval extends UnsupervisedLearningEval {	
 	val name: String = "KMeansEval"
+	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)	
 	
 	// Symbol, PE/PS/PB/ROE/OM
@@ -84,7 +85,7 @@ object PCAEval extends UnsupervisedLearningEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Principal Component Analysis", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Principal Component Analysis", logger)
   	  
 		import scala.util.{Try, Success, Failure}
 		val pca = new PCA[Double]

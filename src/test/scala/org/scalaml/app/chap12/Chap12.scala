@@ -16,13 +16,12 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap12 extends ScalaMlTest  {
 	val chapter: String = "Chap 12"
-	val maxExecutionTime: Int = 10000
   	 
 	test(s"$chapter Scala parallel collections") {
-	   evaluate(ParBenchmarkEval)
+		evaluate(ParBenchmarkEval)
 	}
 	test(s"$chapter Akka actors evaluation") {
-	   evaluate(ActorsManagerEval)
+		evaluate(ActorsManagerEval)
 	}
 	
 	test(s"$chapter Akka futures evaluation") {

@@ -11,7 +11,7 @@
 package org.scalaml.app.chap11
 
 import org.scalaml.reinforcement.qlearning._
-import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
+// import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
@@ -30,6 +30,8 @@ object QLearningEval extends Eval {
 	import YahooFinancials._
   
 	val name: String = "QLearningEval"
+	val maxExecutionTime: Int = 7000
+	  
 	private val logger = Logger.getLogger(name)
 	      
 	private val stockPricePath = "resources/data/chap11/IBM.csv"
@@ -50,7 +52,7 @@ object QLearningEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of the Q-learning algorithm", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of the Q-learning algorithm", logger)
        
 		val src = DataSource(stockPricePath, false, false, 1)
 		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)

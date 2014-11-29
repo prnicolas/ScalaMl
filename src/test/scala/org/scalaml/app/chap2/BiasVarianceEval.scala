@@ -30,7 +30,8 @@ import org.scalaml.app.Eval
 		 */
 object BiasVarianceEval extends Eval {
 	val name: String = "BiasVarianceEval"
-		
+    val maxExecutionTime: Int = 5000
+    
 	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 		
 	private val logger = Logger.getLogger(name)
@@ -43,7 +44,7 @@ object BiasVarianceEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Bias Variance decomposition", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Bias Variance decomposition", logger)
 		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)
 	    

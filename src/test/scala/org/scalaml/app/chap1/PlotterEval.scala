@@ -29,6 +29,7 @@ import org.scalaml.app.Eval
 		 */
 object PlotterEval extends Eval {
 	val name: String = "PlotterEval"
+	val maxExecutionTime: Int = 5000
 		
 	private val CSV_DELIM = ","
 	private val PRICE_COLUMN_INDEX = 6
@@ -48,7 +49,7 @@ object PlotterEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of JFreeChart library", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of JFreeChart library", logger)
 		
 		Try {
 			val src = Source.fromFile(pathName)

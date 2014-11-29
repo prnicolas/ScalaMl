@@ -15,7 +15,6 @@ import org.scalaml.app.ScalaMlTest
 
 final class Chap9 extends ScalaMlTest {
 	val chapter: String = "Chap 9"
-    val maxExecutionTime: Int = 25000
     
 	test(s"$chapter Multi-perceptron - eta factor") {
 		evaluate(MLPConfigEval, Array[String]("eta"))

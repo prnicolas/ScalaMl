@@ -45,7 +45,7 @@ import org.jfree.chart.axis.NumberAxis
 		 * @note Scala for Machine Learning
 		 */
 final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, theme)	{
-	private val colors: Array[Color] = Array[Color](Color.gray, Color.black)
+	private val colors: Array[Color] = Array[Color](Color.gray, Color.black, Color.red, Color.blue)
 	private val shapes: Array[Shape] = Array[Shape](ShapeUtilities.createDiamond(1.0F), 
 													ShapeUtilities.createRegularCross(1.0F, 1.0F),
 													ShapeUtilities.createDownTriangle(2.0F))
@@ -88,12 +88,12 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 
 		val seriesCollection = new XYSeriesCollection
 		xys.foreach( xy => {   
-			val xSeries = new XYSeries(config._1 + xy._2)
+			val xSeries = new XYSeries(xy._2)
 			xy._1.zipWithIndex.foreach(z => xSeries.add(z._2.toDouble, z._1))
 			seriesCollection.addSeries(xSeries)
 		})
 
-		val chart = ChartFactory.createXYLineChart(config._2, config._2, config._3, 
+		val chart = ChartFactory.createXYLineChart(s"${config._1} - ${config._2}", config._2, config._3, 
 									seriesCollection, 
 									PlotOrientation.VERTICAL, true, true, false)
 
@@ -105,7 +105,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		val xyLineRenderer: XYLineAndShapeRenderer = plot.getRenderer.asInstanceOf[XYLineAndShapeRenderer]
 
 		Range(0, xys.size) foreach( n => {
-			xyLineRenderer.setSeriesPaint(n, colors(n>>1 % colors.size))
+			xyLineRenderer.setSeriesPaint(n, colors(n % colors.size))
 			xyLineRenderer.setSeriesShapesVisible(n, true)
 			xyLineRenderer.setSeriesShape(n, shapes(n % shapes.size))
 		})

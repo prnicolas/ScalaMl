@@ -17,7 +17,8 @@ import org.scalaml.app.Eval
  */
 object BinaryMLPTest extends Eval {
 	val name: String = "BinaryMLPTest"
-
+	val maxExecutionTime: Int = 25000
+	
 	private val logger = Logger.getLogger(name)
 
 	private val ALPHA = 0.4

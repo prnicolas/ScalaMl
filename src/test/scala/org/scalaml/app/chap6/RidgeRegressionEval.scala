@@ -24,8 +24,11 @@ import ScalaMl._
 
 
 
+
 object RidgeRegressionEval extends Eval {
 	val name: String = "RidgeRegressionEval"
+	val maxExecutionTime: Int = 7000
+	
 	final val path = "resources/data/chap6/CU.csv"
 	final val dataInput = "output/chap6/CU_input.csv"
     
@@ -39,7 +42,7 @@ object RidgeRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of Ridge regression", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Ridge regression", logger)
   	   	 
 		Try {
 			val src = DataSource(path, true, true, 1)
@@ -58,7 +61,7 @@ object RidgeRegressionEval extends Eval {
 			val regression = new RidgeRegression[Double](features, deltaPrice, 0.5)
 
 			regression.weights match {
-				case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name {wi._1}${ScalaMl.toString(wi._2, ": ", true)}", logger))
+				case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name ${wi._1}${ScalaMl.toString(wi._2, ": ", true)}", logger))
 				case None => Display.error(s"$name Ridge regression could not be trained", logger)
 			}
 		    
@@ -66,8 +69,23 @@ object RidgeRegressionEval extends Eval {
 				case Some(rss) => Display.show(s"$name ${ScalaMl.toString(rss, "rss =", false)}", logger)
 				case None => Display.error(s"$name Ridge regression could not be trained", logger)
 			}
-		    
-			Display.show((1 until 10 by 2), logger)
+		
+			
+			val y1 = predict(0.2, deltaPrice, volatility, volume)
+			val y2 = predict(5.0, deltaPrice, volatility, volume)
+			display(deltaPrice, y1, y2, 0.2, 5.0)
+			
+			if( regression.isModel ) {
+				(2 until 10 by 2).foreach( n => { 
+					val lambda = n*0.1
+					val y = predict(lambda, deltaPrice, volatility, volume)
+					Display.show(s"Lambda  $lambda", logger )
+					Display.show(ScalaMl.toString(y, "", true), logger)
+				})
+				1
+			}
+			else
+				-1
 		} match {
 			case Success(n) => n
 			case Failure(e) => Display.error(s"$name.run Could not load data for Ridge regression", logger, e)
@@ -87,8 +105,18 @@ object RidgeRegressionEval extends Eval {
 		
 		val features = XTSeries[DblVector](data.dropRight(1))
 		val regression = new RidgeRegression[Double](features, deltaPrice, lambda)
-		features.foldLeft(0.0)((s, x) => s + (regression |> x))
+		features.map( regression |> _)
  	}
+	
+	private def display(z: DblVector, y1: DblVector, y2: DblVector, lambda1: Double, lambda2: Double): Unit = {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+	  
+		val plot = new LinePlot(("Ridge Regression", s" L2 lambda impact", "y"), new LightPlotTheme)
+		val data = (z, "Delta price") :: 
+					(y1, s"L2 lambda $lambda1") :: 
+					(y2, s"L2 lambda $lambda2") :: List[(DblVector, String)]()
+		plot.display(data, 340, 280)
+	}
 }
 
 

@@ -38,6 +38,8 @@ object SVCKernelEval extends Eval {
 	import scala.util.Random
 	
 	val name: String = "SVCKernelEval"
+	val maxExecutionTime: Int = 25000
+	
 	private val EPS = 0.001
 	private val C = 1.0
 	private val GAMMA = 0.8
@@ -57,7 +59,7 @@ object SVCKernelEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Comparison of kernel functions for a Binary Support Vector Classifier", logger)
 		Try {
 			compareKernel(0.6, 0.3)
 			compareKernel(0.7, 0.3)

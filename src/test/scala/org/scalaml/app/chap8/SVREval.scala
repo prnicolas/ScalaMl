@@ -28,12 +28,13 @@ import org.scalaml.app.Eval
 
 object SVREval extends Eval {
 	val name: String = "SVREval"
-
+	val maxExecutionTime: Int = 25000
+	
 	private val path = "resources/data/chap8/SPY.csv"
-	private val C = 1
-	private val GAMMA = 0.8
-	private val EPS = 1e-1
-	private val EPSILON = 0.1
+	private val C = 12
+	private val GAMMA = 0.3
+	private val EPS = 1e-3
+	private val EPSILON = 2.5
    
 	private val logger = Logger.getLogger(name)
 
@@ -43,15 +44,17 @@ object SVREval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Support Vector Regression", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Support Vector Regression", logger)
 		Try {
 			val price = DataSource(path, false, true, 1) |> close
+			Display.show(ScalaMl.toString(price.toArray, "", true), logger)
 			val priceIdx = price.zipWithIndex
-								.map( x => (x._1.toDouble, x._2.toDouble))
+								.map( x => (x._2.toDouble, x._1.toDouble))
 	      
-			val linRg = SingleLinearRegression(priceIdx)  	  	
+			val linRg = SingleLinearRegression(priceIdx)
 	  	  	 
 			val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
+		//		val config = SVMConfig(new SVRFormulation(C, EPSILON), LinearKernel)
 			val labels = price.toArray
 			val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
 			val svr = SVM[Double](config, features, labels)
@@ -59,7 +62,7 @@ object SVREval extends Eval {
           
 			display("Support Vector vs. Linear Regression", 
 					collect(svr, linRg, price).toList,
-					List[String]("SVR", "Linear regression", "Stock Price"))
+					List[String]("Support vector regression", "Linear regression", "Stock Price"))
 					
 			Display.show(s"$name.run completed", logger)
 		} 
@@ -75,7 +78,7 @@ object SVREval extends Eval {
 		import scala.collection.mutable.ArrayBuffer
 
 		val collector = Array.fill(3)(new ArrayBuffer[XY])
-		Range(1, price.size-2).foldLeft(collector)( (xs, n) => {
+		Range(1, price.size-80).foldLeft(collector)( (xs, n) => {
 			xs(0).append((n, (svr |> n.toDouble)))
 			xs(1).append((n, (lin |> n)))
 			xs(2).append((n, price(n)))
@@ -85,7 +88,7 @@ object SVREval extends Eval {
    
 	private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {
 		import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
-		require(xs != null && xs.size > 0, "Cannot display an undefined time series")
+		require(xs != null && xs.size > 0, s"$name Cannot display an undefined time series")
        
 		val plotter = new ScatterPlot(("SVR SPY prices", label, "SPY"), new LightPlotTheme)
 		plotter.display(xs, lbls, 250, 340)

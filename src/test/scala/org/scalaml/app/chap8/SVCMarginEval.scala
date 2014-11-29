@@ -30,6 +30,7 @@ import org.scalaml.app.Eval
 object SVCMarginEval extends Eval {
 	import scala.util.Random
 	val name: String = "SVCMarginEval"
+	val maxExecutionTime: Int = 25000
 	
 	private val GAMMA = 0.8; val N = 100	
 	private var status: Int = 0

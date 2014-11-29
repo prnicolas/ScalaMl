@@ -34,6 +34,8 @@ import org.scalaml.app.Eval
 			 */
 object MultiLinearRegressionEval extends Eval {
 	val name: String = "MultiLinearRegressionEval"
+	val maxExecutionTime: Int = 7000
+	
 	private val logger = Logger.getLogger(name)
  
 		/**
@@ -72,7 +74,9 @@ object MultiLinearRegressionEval extends Eval {
 				(Array[String]("CNY", "SPY" , "GLD", "TLT"), features.map( _.toArray).transpose),
 				(Array[String]("CNY", "GLD", "TLT"), features.drop(1).map( _.toArray).transpose),
 				(Array[String]("CNY", "SPY", "GLD"), features.take(2).map( _.toArray).transpose),
-				(Array[String]("CNY", "SPY", "TLT"), features.zipWithIndex.filter( _._2 != 1).map( _._1.toArray).transpose),
+				(Array[String]("CNY", "SPY", "TLT"), features.zipWithIndex.filter( _._2 != 1)
+																		.map( _._1.toArray)
+																		.transpose),
 				(Array[String]("CNY", "GLD"), features.slice(1,2).map( _.toArray).transpose)
 			)
 	  	  		
@@ -124,7 +128,7 @@ object MultiLinearRegressionEval extends Eval {
   
   	 
 	private def trendExtraction: Int = {
-		Display.show(s"\n** test#${Eval.testCount} $name Ordinary least squares regression TRENDING", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Ordinary least squares regression TRENDING", logger)
   	   	 
 		val path = "resources/data/chap6/CU.csv"
 		val output = "output/chap6/CU_output.csv"
@@ -135,26 +139,33 @@ object MultiLinearRegressionEval extends Eval {
 			val volatility = src |> YahooFinancials.volatility 
 			val volume = src |> YahooFinancials.volume
 	
-			val deltaPrice = prices.drop(1)
+			val deltaPrice: DblVector = prices.drop(1)
 									.zip(prices.dropRight(1))
 									.map(z => z._1 - z._2)
 	    
 			DataSink[Double](output) |>  XTSeries[Double](deltaPrice) ::
-											volatility :: 
-											volume :: 
-											List[XTSeries[Double]]()
+										volatility :: 
+										volume :: 
+										List[XTSeries[Double]]()
 
 			val data =  volatility.zip(volume)
 									.map(z => Array[Double](z._1, z._2))
-		    
+
+				// Features are volatility and volume
 			val features = XTSeries[DblVector](data.dropRight(1))
 			val regression = MultiLinearRegression[Double](features, deltaPrice)
 
 			regression.weights match {
 				case Some(w) => {
-					val buf = new StringBuilder(s"$name.filter:\n")
+					val buf = new StringBuilder(s"$name Multi-regression weights\n")
 					w.zipWithIndex.foreach( wi => buf.append(s"${wi._1}${wi._2} "))
 					Display.show(buf.toString, logger)
+					
+					Display.show(deltaPrice.toSeq, logger)
+					val trend = data.map( vv => w(0) + vv(0)*w(1) + vv(1)*w(1) )
+					Display.show("trend", logger)
+					Display.show(trend, logger)
+					display(deltaPrice, trend)
 				}
 				case None => Display.error(s"$name Multivariate regression could not be trained", logger)
 			}
@@ -166,7 +177,14 @@ object MultiLinearRegressionEval extends Eval {
 			case Failure(e) => Display.error(s"$name filter failed", logger, e)
 		}
 	}
+	
+	private def display(z: DblVector, x: DblVector): Unit =   {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+		
+		val plot = new LinePlot(("Multi line regression", s"Raw vs. filtered", "y"), new LightPlotTheme)
+		val data = (z, "Delta price") :: (x, "Filtered") :: List[(DblVector, String)]()
+		plot.display(data, 340, 280)
+	}
 }
-
 
 // ----------------------------  EOF ----------------------------------

@@ -32,7 +32,9 @@ import org.scalaml.app.Eval
 	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
 		 */
 object SingleLinearRegressionEval extends Eval {
-	val name: String = "SingleLinearRegressionEval"			
+	val name: String = "SingleLinearRegressionEval"
+	val maxExecutionTime: Int = 7000
+	
 	private val path = "resources/data/chap6/CU.csv"
 	private val logger = Logger.getLogger(name)
 
@@ -43,7 +45,7 @@ object SingleLinearRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"\n** test#${Eval.testCount} $name Evaluation of single variate linear regression", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of single variate linear regression", logger)
 		
 		Try {
 			val price = DataSource(path, false, true, 1) |> adjClose
@@ -64,6 +66,8 @@ object SingleLinearRegressionEval extends Eval {
 			case Failure(e) => Display.error(s"$name failed to be build a model", logger, e)
 		}
 	}
+	
+	
 	
 	
 	private def lsError(xyt: Array[(Double, Double)], slope: Double, intercept: Double): Double = {
