@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -22,6 +22,7 @@ import HMMConfig._
 		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden Markov model (HMM). 
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 * @param obs Array of observations as integer (categorical data
+		 * @param alpha Alpha coefficient for the forward pass in the evaluation form of HMM
 		 * @throws IllegalArgumentException if lambda, or  observations are undefined
 		 * @see org.scalaml.supervised.hmm.Pass
 		 * 
@@ -29,7 +30,7 @@ import HMMConfig._
 		 * @since March 13, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
-final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
+final protected class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
 	/**
 	 * Alpha variable computed through the recursive forward algorithm
 	 */
@@ -45,7 +46,8 @@ final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) 
 		 * thrown during the computation are caught in the client code.</p>
 		 * @return sum of the logarithm of the conditional probability p(xi|Y)
 		 */
-	def logProb: Double = foldLeft(lambda.getT, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
+	def logProb: Double = foldLeft(lambda.getT, 
+		(s, t) => s + Math.log(ct(t)), Math.log(alpha))
 			
 	private def sumUp: Double = {	 
 		foreach(1, lambda.getT, t => {
@@ -67,8 +69,15 @@ final class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) 
 		 * Companion object for the Alpha pass that defines the constructor applhy
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
 object Alpha {
+		/**
+		 * Default constructor for the class Alpha
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param obs Array of observations as integer (categorical data
+		 * @param alpha Alpha coefficient for the forward pass in the evaluation form of HMM
+		 */
 	def apply(lambda: HMMLambda, obs: Array[Int]): Alpha = new Alpha(lambda,obs)
 }
 

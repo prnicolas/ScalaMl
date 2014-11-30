@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -35,7 +35,7 @@ import DocumentsSource._
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes and text mining
 		 */
 @implicitNotFound("Ordering not explicitly defined for NaiveBayesTextScoring class")
-class TermsScore[T <% Long](toDate: String =>T, 
+final class TermsScore[T <% Long](toDate: String =>T, 
 							toWords: String => Array[String], 
 							lexicon: Map[String, String])(implicit order: Ordering[T]) {
 	import TermsScore._, NewsArticles._
@@ -83,7 +83,8 @@ class TermsScore[T <% Long](toDate: String =>T,
    
 
 		/**
-		 * <p>Companion object for TermsScore to define constructors and data type for corpus.</>
+		 * <p>Companion object for TermsScore to define constructors, validate their input
+		 * parameters and define data type for corpus, <b>CorpusType</b>.</>
 		 * @author Patrick Nicolas
 		 * @since April 6, 2014
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes and text mining
@@ -94,8 +95,15 @@ object TermsScore {
 		 * date is bounded (view) to a Long (convertible to a Long).
 		 */
 	type CorpusType[T] = Array[(T, String, String)]
-	def apply[T <% Long](tStamp: String =>T, words: String => Array[String], dict: Map[String, String])(implicit ordering: Ordering[T]): TermsScore[T] = 
-		new TermsScore[T](tStamp, words, dict)
+	
+		/** 
+		 * Default constructor for the class TermsScore
+		 * @param toDate  Function to convert a string date into a Long.
+		 * @param toWords  Function to extracts an array of a keywords from a line.
+		 * @param lexicon  Simple dictionary or map of tuples (words, stem word)
+		 */
+	def apply[T <% Long](tStamp: String =>T, words: String => Array[String], lexicon: Map[String, String])(implicit ordering: Ordering[T]): TermsScore[T] = 
+		new TermsScore[T](tStamp, words, lexicon)
       
 	private def check[T <% Long](toDate: String =>T, toWords: String => Array[String], lexicon: Map[String, String]): Unit = {
 		require(toDate != null, "TermsScore.check Cannot score a text without an extractor for the release date")

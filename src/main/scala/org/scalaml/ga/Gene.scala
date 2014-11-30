@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -38,9 +38,12 @@ trait Operator {
 		 * @param id Operator identifier
 		 * @return Operator associated to this identifier
 		 */
-  def apply(id: Int): Operator
+	def apply(id: Int): Operator
 }
 
+		/**
+		 * Define the Null operator in the symbolic representation of a gene
+		 */
 object NO_OPERATOR extends Operator {
   override def id: Int = -1
   def apply(idx: Int): Operator = NO_OPERATOR
@@ -84,7 +87,7 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * @param target  Target or threshold value.It is a floating point value to be digitized as integer
 		 * @param op   Symbolic operator associated to this gene
 		 * @param discr  implicit discretization function from Floating point value to integer.
-
+		 *
 		 * @author Patrick Nicolas
 		 * @since August 28, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
@@ -188,6 +191,7 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit discr:
 
 		/**
 		 * Textual description of the symbolic representation of this gene
+		 * @return description of gene id, operator and target value
 		 */
 	def symbolic: String = s"$id ${op.toString} $target"
   
@@ -201,11 +205,29 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit discr:
 
 
 		/**
-		 * Companion object for the Gene class to define constants and constructors.
+		 * Companion object for the Gene class to define constants, its constructors
+		 * and duplication of genetic code
+		 * @author Patrick Nicolas
+		 * @since August 28, 2013
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
+		 * 
 		 */
 object Gene {
+  
+		/**
+		 * Default constructor for a Gene
+		 * @param id  Identifier for the Gene
+		 * @param target  Target or threshold value.It is a floating point value to be digitized as integer
+		 * @param op   Symbolic operator associated to this gene
+		 * @param discr  implicit discretization function from Floating point value to integer.
+		 */
 	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Gene = new Gene(id, target, op)
-      
+
+		/**
+		 * Clone the genetic code of this gene
+		 * @param bits Bitset of this gene
+		 * @return duplicate genetic code
+		 */
 	protected def cloneBits(bits: BitSet): BitSet = 
 		Range(0, bits.length).foldLeft(new BitSet)((enc, n) => { 
 			if( bits.get(n)) 
@@ -214,7 +236,8 @@ object Gene {
 		})
     
 
-	private def convert(r: Range, bits: BitSet): Int = r.foldLeft(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
+	private def convert(r: Range, bits: BitSet): Int = 
+		r.foldLeft(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
     
 	final val VALUE_SIZE = 32
 	final val OP_SIZE = 2

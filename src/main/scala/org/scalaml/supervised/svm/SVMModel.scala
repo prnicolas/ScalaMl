@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -22,6 +22,7 @@ import SVMModel._
 		 * parameters of <b>LIBSVM</b> library and the accuracy computed during training.<br>
 		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
+		 * @see LIBSVM
 		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
 		 * @param svmmodel Model parameters as defined in <b>LIBSVM</b>
 		 * @param accuracy	Accuracy of the training process

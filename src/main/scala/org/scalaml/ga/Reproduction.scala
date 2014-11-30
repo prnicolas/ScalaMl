@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -32,7 +32,7 @@ import org.scalaml.util.Display
 		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 
-final class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   
+final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   
 	require(score != null, "Reproduction Chromosome scoring function of GA is undefined")
 	
 		/**
@@ -57,9 +57,18 @@ final class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 		/**
 		 * Companion object for the Reproduction class. This singleton is used
 		 * to define the default constructor of the Reproduction class.
+		 *  @author Patrick Nicolas
+		 *  @since August 28, 2013
+		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 object Reproduction {
-	def apply[T <: Gene](score: Chromosome[T] =>Unit): Reproduction[T] = new Reproduction[T](score)
+	
+		/**
+		 * Default constructor for a reproduction cycle
+		 * @param score Scoring function of a chromosome (unfitness of the candidate solution)
+		 */
+	def apply[T <: Gene](score: Chromosome[T] => Unit): Reproduction[T] = 
+		new Reproduction[T](score)
 }
 
 // ------------------------------  EOF --------------------------------------------------

@@ -1,3 +1,13 @@
+/**
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ *
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * Version 0.96
+ */
 package org.scalaml.app
 
 import org.scalaml.app.chap1._
@@ -18,9 +28,15 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
 
+
+		/**
+		 * <p>Singleton that executes all the test clases in Scala for Machine Learning.<br>
+		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
+		 * command line <i>sbt test:run</i></p>
+		 * @param chapter Name of the chapter for cross-reference
+		 */
 protected object AllTests extends ScalaMlTest {
 	val chapter: String = "All-Tests"
-	val maxExecutionTime: Int = 5000
 	
 	implicit val actorSystem = ActorSystem("system")
 	private val logger = Logger.getLogger("AllTests")
@@ -133,7 +149,7 @@ protected object AllTests extends ScalaMlTest {
 				// Exit if time out 'maxExecutionTime" is exceeded
 				if(System.currentTimeMillis - startTime > eval.maxExecutionTime) {
 					completed = true
-					errorMsg = s"time out after $maxExecutionTime msecs."
+					errorMsg = s"time out after $eval.maxExecutionTime msecs."
 				}
 			}
 			completed

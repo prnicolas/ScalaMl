@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -49,6 +49,9 @@ class CrfTrainingSet(val nLabels: Int, val entry: String, val delim: String) ext
 		/**
 		 * Companion object to the training set for the Conditional Random field. This 
 		 * singleton is used to validate the parameters of the class.
+		 * @author Patrick Nicolas
+		 * @since April 2, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 object CrfTrainingSet {
 	import Crf._

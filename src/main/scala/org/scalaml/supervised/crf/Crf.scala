@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -49,18 +49,14 @@ final protected class CrfModel(val weights: DblVector) extends Model {
 		 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular expression. The class
 		 * define a Feature generator class that inherits the default implementation FeatureGenImpl of iitb features generator.
 		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
-		 * The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.
-		 * <br>
-		 * <per>
-		 * <b>nLabels</b>     Number of labels (or tags) used in tagging training sequences of observations.
-		 * <b>config</b>      Minimum set of configuration parameters required to define the CRF
-		 * <b>delims</b>      Delimiters used in extracting labels and data from the training files
-		 * <b>taggedObs</b>   Identifier for the training data set. The training set of sequences is defined by the raw observations
-		 * and its associated tagged file: <i>file.raw</i> and <i>file.tagged</i> file.</b>
-		 * </span></pre></p>
+		 * The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.</p>
 		 * @constructor Create a Linear chain conditional random fields. 
 		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either undefined or out of range.
 		 * @see org.scalaml.workflow.PipeOperator
+		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
+		 * @param config Minimum set of configuration parameters required to train a CRF model
+		 * @param delims Delimiters used in extracting labels and data from the training files
+		 * @param taggedObs Identifier for the training data set. The training set of sequences is defined by the raw observations
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
@@ -115,13 +111,23 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 }
 
 
-	/**
-	 * Companion object for the Linear chained Conditional random field. The singleton is used
-	 * to define the constructors and validate the class parameters
-	 */
+		/**
+		 * Companion object for the Linear chained Conditional random field. The singleton is used
+		 * to define the constructors and validate the class parameters.
+		 * @author Patrick Nicolas
+		 * @since April 3, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 */
 object Crf {
 	final val NUM_LABELS_LIMITS = (1, 512)
 	
+		/**
+		 * Default constructor for the Crf class
+		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
+		 * @param config Minimum set of configuration parameters required to train a CRF model
+		 * @param delims Delimiters used in extracting labels and data from the training files
+		 * @param taggedObs Identifier for the training data set. The training set of sequences is defined by the raw observations
+		 */
 	def apply(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Crf = 
 		new Crf(nLabels, state, delims, taggedObs)
   

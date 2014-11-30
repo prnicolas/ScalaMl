@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -52,15 +52,33 @@ final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: In
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 object QLConfig {
+
+		/**
+		 * Default constructor for configuration of Q-learning
+		 * @param alpha Learning rate for the Q-Learning algorithm.
+		 * @param gamma  Discount rate for the Q-Learning algorithm.
+		 * @param episodeLength Maximum number of states visited per episode.
+		 * @param numEpisodes  Number of episodes used during training.
+		 * @param minCoverage Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.
+		 * @param neighbors  Function that list the available states neighbors to the current state during execution. 
+		 */
+	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): QLConfig = 
+		new QLConfig(alpha, gamma, episodeLength, numEpisodes, minCoverage,  neighbors)
+
+		/**
+		 * Constructor for configuration of Q-learning with no minimum coverage for the training phase
+		 * @param alpha Learning rate for the Q-Learning algorithm.
+		 * @param gamma  Discount rate for the Q-Learning algorithm.
+		 * @param episodeLength Maximum number of states visited per episode.
+		 * @param numEpisodes  Number of episodes used during training.
+		 * @param neighbors  Function that list the available states neighbors to the current state during execution. 
+		 */
+	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, neighbors: (Int, Int) =>List[Int]): QLConfig = 
+		new QLConfig(alpha, gamma, episodeLength, numEpisodes, NO_MIN_COVERAGE,  neighbors)
+
 	private val MAX_EPISODES = 1000
 	private val MAX_MIN_COVERAGE = 0.9
 	private val NO_MIN_COVERAGE = 0.0
-   
-	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): QLConfig = 
-		new QLConfig(alpha, gamma, episodeLength, numEpisodes, minCoverage,  neighbors)
-   
-	def apply(alpha: Double, gamma: Double, episodeLength: Int, numEpisodes: Int, neighbors: (Int, Int) =>List[Int]): QLConfig = 
-		new QLConfig(alpha, gamma, episodeLength, numEpisodes, NO_MIN_COVERAGE,  neighbors)
 
 	protected def check(alpha: Double,  gamma: Double, episodeLength: Int, numEpisodes: Int, minCoverage: Double,  neighbors: (Int, Int) =>List[Int]): Unit = {
 		require(alpha > 0.0 && alpha < 1.0, s"QLConfig.check Cannot initialize QLearning with incorrect alpha $alpha")

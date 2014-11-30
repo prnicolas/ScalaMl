@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -140,7 +140,11 @@ class Stats[T <% Double](values: DVector[T]) {
 object Stats {
 	final val ZERO_EPS = 1e-32
 	final val INV_SQRT_2PI = 1.0/Math.sqrt(2.0*Math.PI)
-   
+
+		/**
+		 * Default constructor for statistics
+		 * @param values vector or array of elements of type T
+		 */
 	def apply[T <% Double](values: Array[T]): Stats[T] = new Stats[T](values)
 
 		/**

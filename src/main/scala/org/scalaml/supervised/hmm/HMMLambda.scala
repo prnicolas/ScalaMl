@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -33,11 +33,26 @@ import HMMConfig._
 		 * @since March 6, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
-final class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
+final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
 
+		/**
+		 * Retrieve the number of sequential observations used in training
+		 */
 	@inline def getT: Int = numObs
+	
+		/**
+		 * Retrieve the number of states for a sequence of observations
+		 */
 	@inline def getN: Int = A.nRows
+	
+		/**
+		 * Retrieve the number of unique symbols (problem dimension) used in the sequence of observations.
+		 */
 	@inline def getM: Int = B.nCols
+
+		/**
+		 * Index of the last observation
+		 */
 	val d_1 = numObs-1
    
 		/**
@@ -59,21 +74,28 @@ final class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblV
 		 * <p>Update the value alpha by summation on a row of the transition matrix.</p>
 		 * @param a value of the transition probability between state i and i +1
 		 * @param i index of the column of the transition and emission probabilities matrix.
-		 * @param obsIndex index in the observation in the sequence
+		 * @param obsIndx index in the observation in the sequence
 		 * @return updated alpha value
 		 * @throws IllegalArgumentException if index i or obsIndex are out of range.
 		 */
-	final def alpha(a: Double, i: Int, obsIdx: Int): Double = {
+	final def alpha(a: Double, i: Int, obs: Int): Double = {
 		require( i >= 0 && i < getN, s"HMMLambda.alpha Row index in transition and emission probabilities $i matrix is out of bounds")
-		require( obsIdx >= 0, s"HMMLambda.alpha Col index in transition and emission probabilities $obsIdx  matrix is out of bounds")
+		require( obs >= 0, s"HMMLambda.alpha Col index in transition and emission probabilities $obs matrix is out of bounds")
   	  	 
 		val sum = foldLeft(getN, (s, n) => s + a *A(i, n))
-		sum*B(i, obsIdx) 
+		sum*B(i, obs) 
 	}
   	 
- 
-	final def beta(b: Double, i: Int, lObs: Int): Double =  
-		foldLeft(getN, (s, k) => s + b*A(i,k)*B(k, lObs))
+
+		/**
+		 * <p>Compute the Beta value for the current Lambda model
+		 * @param current beta value
+		 * @param i index of the state
+		 * @param obs Index of the observation
+		 * @return Update beta value
+		 */
+	final def beta(b: Double, i: Int, obs: Int): Double =  
+		foldLeft(getN, (s, k) => s + b*A(i,k)*B(k, obs))
   	   
 
 		/**
@@ -90,14 +112,16 @@ final class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblV
 			// Recompute PI
 		pi = Array.tabulate(getN)(i => state.Gamma(0, i) )
   	 
+			// Traverse the list states of the HMM to update the 
+			// transition probabilities matrix A and emission probabilities matrix B
 		foreach(getN, i => {	 
-			// Recompute the state-transition matrix A
+			// Recompute/update  the state-transition matrix A
 			var denominator = state.Gamma.fold(d_1, i)
 			foreach(getN,  k => 
 				A += (i, k, state.DiGamma.fold(d_1, i, k)/denominator)
 			)
    
-			// Recompute the observation emission matrix.
+			// Recompute/update the observation emission matrix.
 			denominator = state.Gamma.fold(getT, i)
 			foreach(getM, k => 
 				B += (i, k, state.Gamma.fold(getT, i, k, obs)/denominator)
@@ -136,12 +160,24 @@ final class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblV
 
 
 		/**
-		 * <p>Companion for the HMMLambda class to define the constructors apply.</p>
+		 * <p>Companion for the HMMLambda class to define the constructors of the class HMMLambda.</p>
+		 * @author Patrick Nicolas
+		 * @since March 6, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
 object HMMLambda {
+		
+		/**
+		 * <p>Constructor for the HMMLambda model of HMM. This constructor takes
+		 * the value of states and the value of symbols. This constructor 
+		 * can be invoked for the evaluation and decoding form of HMM 
+		 * once trained.</p>
+		 * @param states value of the states (as a sequence of floating point values)
+		 * @param symbols values of the symbols  (as a sequence of floating point values)
+		 */
 	def apply(states: Seq[DblVector], symbols: Seq[DblVector]): HMMLambda = {
-		require(states != null && states.size > 0, "Cannot create a HMM lambda model with states")
-		require(symbols != null && symbols.size > 0, "Cannot create a HMM lambda model with states")
+		require(states != null && states.size > 0, "Cannot create a HMM lambda model with underfined states")
+		require(symbols != null && symbols.size > 0, "Cannot create a HMM lambda model with undefined symbol values")
 
 		val pi = Array.fill(states.size)(Random.nextDouble)
 		
@@ -163,8 +199,20 @@ object HMMLambda {
 		new HMMLambda(A, B, pi, states(0).size)
 	}
 	
+		/**
+		 * Default constructor for the HMMLambda model
+		 * @param A State transition probabilities matrix
+		 * @param B Observations or emission probabilities matrix
+		 * @param pi Initial state probabilities
+		 */
 	def apply(A: Matrix[Double], B: Matrix[Double], pi: DblVector, numObs: Int): HMMLambda = new HMMLambda(A, B, pi, numObs)
 	
+		/**
+		 * <p>Constructor for the training canonical form of the HMM (Baum Welch).
+		 * The transition probabilities and emission probabilities are initialized
+		 * as uniform random value [0, 1].</p>
+		 * @param config Configuration for the HMM to generate an initial Lambda model
+		 */
 	def apply(config: HMMConfig): HMMLambda = {
 		 val A = Matrix[Double](config._N)
 		 A.fillRandom(0.0)

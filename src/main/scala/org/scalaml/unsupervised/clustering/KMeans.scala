@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -142,22 +142,54 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		/**
 		 * Companion object to KMeans define the constructors for the K-means algorithm and
 		 * compute the variance of a cluster
+		 * @author Patrick Nicolas
+		 * @since February 23, 2014
+		 * @note Scala for Machine Learning: Chapter 4 Unsupervised learning/Clustering
 		 */
 object KMeans {
 	import org.scalaml.unsupervised.Distance.euclidean
    
-	final val MAX_K = 500
-	final val MAX_ITERATIONS = 5000
-   
+	private val MAX_K = 500
+	private val MAX_ITERATIONS = 5000
+ 
+		/**
+		 * Default constructor for KMeans
+		 * @param K Number of clusters
+		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
+		 * @param distance Metric used in computing distance between data points.
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
+		 */
 	def apply[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
 		new KMeans[T](K, maxIters, distance)
-   
+
+		/**
+		 * Constructor for KMeans using the default Euclidean distance metric
+		 * @param K Number of clusters
+		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
+		 */
 	def apply[T <% Double](K: Int, maxIters: Int)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
 		new KMeans[T](K, maxIters, euclidean)
 
+
+		/**
+		 * Constructor for KMeans using the default Euclidean distance metric 
+		 * with a predefined maximum number of iterations for minimizing the
+		 * reconstruction error
+		 * @param K Number of clusters
+		 */
 	def apply[T <% Double](K: Int)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
 		new KMeans[T](K, MAX_ITERATIONS, euclidean)
-   
+
+		/**
+		 * Computes the standard deviation of the distance of the data point to the
+		 * center of their respective cluster
+		 * @param c List of clusters
+		 * @param xt Input time series
+		 * @param distance Distance metric used in evaluating distances between data points and centroids.
+		 * @throws IllegalArgumentException if one of the parameters is undefined
+		 * @return list of standard deviation values for all the clusters.
+		 */
 	def stdDev[T](c: List[Cluster[T]], xt: XTSeries[Array[T]], distance: (DblVector, Array[T]) => Double): List[Double] =  {
 		require(c != null && c.size > 0, "KMeans.stdDev Cannot compute the variance of undefined clusters")
 		require(xt != null && xt.size > 0, "KMeans.stdDev  Cannot compute the variance of clusters for undefined input datat")

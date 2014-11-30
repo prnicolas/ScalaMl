@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -42,15 +42,20 @@ protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double)
 	check(w0, maxIters, lambda, eps)
 
 	val persists: String = "config/crf"
-    
-		// textual description of the CRF configuration
+
+		/**
+		 * textual description of the CRF configuration
+		 */
 	val params = s"initValue: ${String.valueOf(w0)}, maxIters: ${String.valueOf(maxIters)}, lambda: ${String.valueOf(lambda)}, scale: true, eps: $eps"
 }
 
 
 		/**
 		 * <p>Companion object for the configuration of the conditional random field. The
-		 * singleton is used to define constructors and boundaries for the class parameters..</p>
+		 * singleton is used to define constructors and boundaries for the class parameters</p>
+		 * @author Patrick Nicolas
+		 * @since April 3, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 object CrfConfig {
 	private val INIT_WEIGHTS_LIMITS = (0.1, 2.5)
@@ -58,7 +63,13 @@ object CrfConfig {
 	private val LAMBDA_LIMITS = (1e-15, 1.5)
 	private val EPS_LIMITS = (1e-5, 0.2)
 	
-	
+		/**
+		 * Default constructor for the CrfConfig class
+		 * @param w0 Initial values for the CRF weights/factors (lambdas).
+		 * @param maxIters Maximum number of iterations to be used for the training of CRF.
+		 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X).
+		 * @param eps  Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration.
+		 */
 	def apply(w0: Double, maxIters: Int, lambda: Double, eps:Double): CrfConfig = 
 		new CrfConfig(w0, maxIters, lambda, eps)
 	

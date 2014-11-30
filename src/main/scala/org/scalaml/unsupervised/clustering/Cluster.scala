@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -95,11 +95,22 @@ class Cluster[T <% Double](val center: DblVector) {
 
 
 		/**
-		 * * Companion object for the Cluster class. The singleton is used
-		 *  to define the constructor for this cluster.
+		 * Companion object for the Cluster class. The singleton is used
+		 * to define the constructor for this cluster.
+		 * @author Patrick Nicolas
+		 * @since February 22, 2014
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering
 		 */
 object Cluster {
+		/**
+		 * Default constructor for a cluster
+		 * @param Initial centroid for this cluster
+		 */
 	def apply[T <% Double](center: DblVector): Cluster[T] = new Cluster[T](center)
+	
+		/**
+		 * Constructor for a Cluster with undefined center.
+		 */
 	def apply[T <% Double]: Cluster[T] = new Cluster[T](Array.empty)
 }
 

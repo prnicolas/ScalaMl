@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -68,20 +68,61 @@ object MLPConfig {
 	private val ALPHA_LIMITS = (0.0, 1.0)
 	private val ETA_LIMITS = (1e-5, 1.0)
 	private val NUM_EPOCHS_LIMITS = (2, 5000)
-   
+ 
+		/**
+		 * Default constructor for the MLP class
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param hidLayers  Sequence of number of neurons for the hidden layers
+		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
+		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 * @param activation Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
+		 */
 	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
 		new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, activation)
    
-
+		/**
+		 * Constructor for the MLP class with a single hidden layer
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param numHiddenNeurons Number of neuron or unit in the hidden layer
+		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
+		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 * @param activation Activation function (sigmoid or tanh) that computes the output of hidden layers during forward propagation
+		 */
 	def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, numEpochs: Int, eps: Double, activation: Double => Double): MLPConfig = 
 		new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), numEpochs, eps, activation)
-   
+
+		/**
+		 * Constructor for the MLP class with a logistic function as activation
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param hidLayers  Sequence of number of neurons for the hidden layers
+		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
+		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 */
 	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], numEpochs: Int, eps: Double): MLPConfig = 
 		new MLPConfig(alpha, eta, hiddenLayers, numEpochs, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
-   
+
+		/**
+		 * Constructor for the MLP class with a logistic function as activation and
+		 * a predefined number of epochs.
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param hidLayers  Sequence of number of neurons for the hidden layers
+		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
+		 */
 	def apply(alpha: Double, eta: Double, hiddenLayers: Array[Int], eps: Double): MLPConfig = 
 		new MLPConfig(alpha, eta, hiddenLayers, NUM_EPOCHS_LIMITS._2, eps, (x: Double) => { 1.0/(1.0 + Math.exp(-x))})
       
+		/**
+		 * Constructor for the MLP class with a single hidden layer , a predefined
+		 * number of epochs for training and the logistic function as activation function
+		 * @param alpha  Momentum parameter used to adjust the value of the gradient of the weights with previous value (smoothing)
+		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights during training
+		 * @param numHiddenNeurons Number of neuron or unit in the hidden layer
+		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum weights that minimize the sum of squared error		 
+		 */
 	def apply(alpha: Double, eta: Double, numHiddenNeurons: Int, eps: Double): MLPConfig = 
 		new MLPConfig(alpha, eta, Array[Int](numHiddenNeurons), NUM_EPOCHS_LIMITS._2, eps, (x: Double) => {1.0/(1.0 + Math.exp(-x))})
    

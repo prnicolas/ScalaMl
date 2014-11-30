@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -51,7 +51,6 @@ object CrfEval extends Eval {
 	def run(args: Array[String]): Int = {
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Conditional Random Fields", logger)
     
-
 		val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
 		val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    

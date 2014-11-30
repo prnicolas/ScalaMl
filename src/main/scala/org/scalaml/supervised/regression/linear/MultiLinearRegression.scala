@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -105,12 +105,18 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 
 		/**
 		 * <p>Companion object that defines the 
-		 * constructor for the class MultiLinearRegression.</p>
+		 * constructor for the class MultiLinearRegression and validate
+		 * its parameters</p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
 		 */
 object MultiLinearRegression {
+		/**
+		 * Default constructor for the MultiLinearRegression class
+		 * @param xt Input multi-dimensional time series for which regression is to be computed.
+		 * @param y Labeled data for the Multivariate linear regression
+		 */
 	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = new MultiLinearRegression[T](xt, y)
 		
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {

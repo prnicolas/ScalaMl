@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -30,16 +30,22 @@ import org.apache.log4j.Logger
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
 		 * Commons Math library.</p>
 		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. 
+		 * @see Apache Commons Match org.apache.commons.math3.distribution._
 		 * @throws IllegalArgumentException if K is out of range
-		 * X@param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
+		 * @param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
 		 */
-final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
+final protected class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
 	require( K > 0 && K < MAX_K, s"MultivariateEM Number K of clusters for EM $K is out of range")
 	
 	private val logger = Logger.getLogger("MultivariateEM")
+	
+		/**
+		 * Shorten description of the type for the Guassian
+		 * mixture of expectation maximization defined in Apache Commons Math.
+		 */
 	type EM = MultivariateNormalMixtureExpectationMaximization	
 	
 		/**
@@ -78,13 +84,17 @@ final class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Ar
 		 * @since February 24, 2014
 		 */
 object MultivariateEM { 
-	final val MAX_K = 500
+	private val MAX_K = 500
     
 		/**
 		 * Type EMOutput as a list of tuple (key, array of means, array of standard deviation.</p>
 		 */
 	type EMOutput = List[(Double, DblVector, DblVector)]
 	
+		/**
+		 * Default constructor for the Expectation Maximization
+		 * @param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
+		 */
 	def apply[T <% Double](numComponents: Int) = new MultivariateEM[T](numComponents)
 	
 		/**

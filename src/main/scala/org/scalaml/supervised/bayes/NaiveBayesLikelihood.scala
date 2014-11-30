@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -82,11 +82,17 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 object Likelihood {
 	private val MINLOGARG = 1e-32
 	private val MINLOGVALUE = -MINLOGARG
-   
-	def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] 
-		= new Likelihood[T](label, muSigma, prior)
+
+		/**
+		 * Default constructor for he class Likelihood.
+		 * @param label  Name or label of the class or prior for which the likelihood is computed.
+		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for the model
+		 * @param prior  Probability of occurrence for the class specified by the label.
+		 */
+	def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] = 
+		new Likelihood[T](label, muSigma, prior)
     
-    private def check(muSigma: XYTSeries, prior: Double): Unit =  {
+	private def check(muSigma: XYTSeries, prior: Double): Unit =  {
 		require(muSigma != null && muSigma.size > 0, "Likelihood.check Cannot create a likelihood for undefined historical mean and standard deviation")
 		require(prior > 0.0  && prior <= 1.0, s"Likelihood.check Prior for the NB prior $prior is out of range")
 	}

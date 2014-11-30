@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -82,19 +82,41 @@ class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights
 
 
 
-	/**
-	 * Companion object to the trading signal class, used to defined constructors.
-	 */
+		/**
+		 * Companion object to the trading signal class, used to defined constructors.
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning
+		 * @since March 4, 2014 Appendix Finances 101 / Technical analysis
+		 */
 object Signal {
 	private val EPS = 1e-3
 	val CSV_DELIM = ",";
 
-	def apply(id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = 
-		new Signal(id, target, op, obs, weights)
-	
+		/**
+		 * Default constructor for Signal 
+		 * @param id Label or identifier for the trading signal
+		 * @param target Target value (or threshold) used to trigger the signal.
+		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
+		 * @param xt Times series of single variable the signal acts upon.
+		 * @param weights Weights applied to each value of the time series (optional).
+		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 */
+	def apply(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = 
+		new Signal(id, target, op, xt, weights)
+
+		/**
+		 * Constructor for Signal with undefined weights and observations
+		 * @param id Label or identifier for the trading signal
+		 * @param target Target value (or threshold) used to trigger the signal.
+		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
+		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 */
 	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, Array.empty, Array.empty)
 
+		/**
+		 * Define the ordering of a signal using an anonymous function
+		 */
 	val orderedSignals = Ordering.by((signal: Signal) => signal.id)
    
 	val operatorFuncMap = Map[Operator, (Double, Double) =>Double](
@@ -108,13 +130,12 @@ object Signal {
 	final def numOperators = operatorFuncMap.size
    
     private val MAX_TIME_SERIES_SIZE = 10000000
-	
-	protected def check(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector): Unit = {
+	private def check(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector): Unit = {
 		require( _op != null, "Signal.check Cannot create a signal with undefined operator")
 		require(xt != null, "Signal.check Cannot create a signal with undefined time series input")
-		require(xt.size > 0 && xt.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Size of the time series input, ${xt.size} if out of range")
+		require(xt.size >= 0 && xt.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Size of the time series input, ${xt.size} if out of range")
 		require(weights != null, "Signal.check Cannot create a signal with undefined weights")
-		require(weights.size > 0 && weights.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Number of weights ${weights.size} if out of range")
+		require(weights.size >= 0 && weights.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Number of weights ${weights.size} if out of range")
 		require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
 	}
 }

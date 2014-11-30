@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -95,7 +95,13 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
 object SimpleMovingAverage {
-	def apply[T <% Double](period: Int)(implicit num: Numeric[T]): SimpleMovingAverage[T] = new SimpleMovingAverage[T](period)
+		/**
+		 * Constructor for the SimpleMovingAverage class
+		 * @param period Period or size of the time window, p in the moving average
+		 * @param num implicit instance of Numeric type
+		 */
+	def apply[T <% Double](period: Int)(implicit num: Numeric[T]): SimpleMovingAverage[T] = 
+		new SimpleMovingAverage[T](period)
 }
 
 		/**
@@ -111,7 +117,7 @@ object SimpleMovingAverage {
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-final class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alpha: Double) extends MovingAverage[T]  {
+final protected class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alpha: Double) extends MovingAverage[T]  {
 	require( period > 0, s"ExpMovingAverage Cannot initialize exponential moving average with period = $period")
 	require( alpha > 0 && alpha <= 1.0, s"ExpMovingAverage Cannot initialize exponential with alpha = $alpha")
    
@@ -144,9 +150,18 @@ final class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alph
 	 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 	 */
 object ExpMovingAverage {
+		/**
+		 * Default constructor for the ExpMovingAverage class
+		 * @param period Period or size fo the time window in the moving average
+		 * @param alpha Decay factor or coefficient pf the exponential moving average.
+		 */
 	def apply[T <% Double](period: Int, alpha: Double): ExpMovingAverage[T] = 
 		new ExpMovingAverage[T](period, alpha)
-		
+
+		/**
+		 * Constructor for the ExpMovingAverage class with alpha = 1/(1+p)
+		 * @param period Period or size fo the time window in the moving average
+		 */
 	def apply[T <% Double](period: Int): ExpMovingAverage[T] = 
 		new ExpMovingAverage[T](period)
 }
@@ -191,6 +206,10 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: Dbl
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
 object WeightedMovingAverage {
+		/**
+		 * Default constructor for the weighted moving average
+		 * @param weights Weights (or coefficients) used in the time window
+		 */
 	def apply[T <% Double](weights: DblVector): WeightedMovingAverage[T] = 
 		new WeightedMovingAverage[T](weights)
 }

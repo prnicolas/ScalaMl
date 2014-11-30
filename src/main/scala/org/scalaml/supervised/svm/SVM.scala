@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -28,7 +28,8 @@ import scala.collection.mutable.ArrayBuffer
 		 * The model is created or trained during the instantiation of the class. Therefore a model either
 		 * is properly trained or does not exists.<br>
 		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
-		 * @constructor Create a SVM algorithm for a labeled time series given a configuration. 	
+		 * @constructor Create a SVM algorithm for a labeled time series given a configuration.
+		 * @see LIBSVM 	
 		 * @throws IllegalArgumentException if the configuration or the time series is undefined.
 		 * @param configConfiguration of this SVM
 		 * @param xt Time series to regress or classify
@@ -155,12 +156,28 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		/**
 		 * Companion object for the SVM algorithms. It is used to defined the constructors for 
 		 * the parameterized class SVM
+		 * @author Patrick Nicolas
+		 * @since April 28, 2014
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
 object SVM {
-  
+
+		/**
+		 * Default constructor for the support vector machine
+		 * @param configConfiguration of this SVM
+		 * @param xt Time series to regress or classify
+		 * @param labels Labeled values for the time series used in the training of the SVM.
+		 */
 	def apply[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector): SVM[T] = 
 		new SVM[T](config, xt, labels)
-		
+
+		/**
+		 * Constructor for the support vector machine that uses an array of features
+		 * as observations instead of a time series
+		 * @param configConfiguration of this SVM
+		 * @param ft Array of features used in the regression
+		 * @param labels Labeled values for the time series used in the training of the SVM.
+		 */
 	def apply[T <% Double](config: SVMConfig, ft: Array[Array[T]], labels: DblVector): SVM[T] = 
 		new SVM[T](config, XTSeries[Array[T]](ft), labels)
 		

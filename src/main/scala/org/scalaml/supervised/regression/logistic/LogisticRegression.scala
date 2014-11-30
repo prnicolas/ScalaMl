@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -179,6 +179,9 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 	 * <p>Companion object for the logistic regression. The singleton is used
 	 * for conversion between Apache Common Math Pair Scala tuple and vice versa.
 	 * The singleton is also used to define the constructors
+	 * @author Patrick Nicolas
+	 * @since May 11, 2014
+	 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
 	 */
 object LogisticRegression {
 	final val MARGIN = 0.01
@@ -186,7 +189,13 @@ object LogisticRegression {
 	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
 	implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
 		= new Pair[RealVector,RealMatrix](pair._1, pair._2)
-  	    
+
+		/**
+		 * Default constructor for the logistic regression
+		 * @param xt Input time series observations.
+		 * @param labels Labeled class data used during training of the classifier
+		 * @param optimizer Optimization method used to minimmize the loss function during training
+		 */
 	def apply[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
 		new LogisticRegression[T](xt, labels, optimizer)
   	    	

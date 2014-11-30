@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -37,6 +37,10 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 		 * the client code
 		 */
 	val maxDelta = recurse(lambda.getT, 0)
+	
+		/**
+		 * State of the execution of the decoding form of HMM
+		 */
 	val state = HMMState(lambda)
 
 	private def initial(ti: (Int, Int)): Double = {
@@ -50,7 +54,7 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
    
 	private def recurse(t: Int, j: Int): Double = {
 	  
-		// Initialization of the delta value, return -1.0 in case of error
+			// Initialization of the delta value, return -1.0 in case of error
 		var maxDelta = initial((t, j))
 		if( maxDelta == -1.0) {
 			if( t != obs.size) {
@@ -84,6 +88,11 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 	 * @since March 17, 2014
 	 */
 object ViterbiPath {
+		/**
+		 * Default constructor for the Viterbi algorithm
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param obs Array of observations as integer (categorical data)
+		 */
 	def apply(lambda: HMMLambda, _labels: Array[Int]): ViterbiPath = 
 		new ViterbiPath(lambda, _labels)
 }

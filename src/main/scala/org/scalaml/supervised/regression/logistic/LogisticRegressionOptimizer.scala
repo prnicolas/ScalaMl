@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -17,22 +17,22 @@ import LogisticRegressionOptimizer._
 
 
 
-	/**
-	 * <p>Class that implements the minimization of the loss function for the logistic
-	 * regression classifier. It is implemented as the least squares optimization of the
-	 * Least Square problem defined in Apache Commons Math.</p>
-	 * @constructor Initialize the optimization function for the logistic regression classifier. 	 
-	 * @param maxIters Maximum number of iterations allowed during training for the minimization of the loss function.
-	 * @param maxEvals Maximum number of runs or evaluations allowed during training.
-	 * @param eps Maximum error allowed during training for the minimization of the loss function.
-	 * @param lsOptimizer Least squares optimizer used during training.
-	 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
-	 * @see org.apache.commons.math3.fitting.leastsquares
-	 * 
-	 * @author Patrick Nicolas
-	 * @since May 13, 2014
-	 * @note Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
-	 */
+		/**
+		 * <p>Class that implements the minimization of the loss function for the logistic
+		 * regression classifier. It is implemented as the least squares optimization of the
+		 * Least Square problem defined in Apache Commons Math.</p>
+		 * @constructor Initialize the optimization function for the logistic regression classifier. 	 
+		 * @param maxIters Maximum number of iterations allowed during training for the minimization of the loss function.
+		 * @param maxEvals Maximum number of runs or evaluations allowed during training.
+		 * @param eps Maximum error allowed during training for the minimization of the loss function.
+		 * @param lsOptimizer Least squares optimizer used during training.
+		 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
+		 * @see org.apache.commons.math3.fitting.leastsquares
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 13, 2014
+		 * @note Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
+		 */
 protected class LogisticRegressionOptimizer(val maxIters: Int,  val maxEvals: Int, val eps: Double, lsOptimizer: LeastSquaresOptimizer) {
 	
 	import LogisticRegressionOptimizer._
@@ -57,6 +57,9 @@ protected class LogisticRegressionOptimizer(val maxIters: Int,  val maxEvals: In
 		 * Companion object for the Logistic regression optimizing method. This singleton is
 		 * used to defined the constructor of the class LogisticRegressionOptimizer and validate
 		 * its parameters
+		 * @author Patrick Nicolas
+		 * @since May 13, 2014
+		 * @note Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
 		 */
 object LogisticRegressionOptimizer {
 	private val EPS_LIMITS =  (1e-32,  1.0)
@@ -66,13 +69,31 @@ object LogisticRegressionOptimizer {
 	private val DEFAULT_NUM_ITERS = 50
 	private val DEFAULT_NUM_EVALS = 100
 	private val DEFAULT_EPS = 1e-2
-	
+
+		/**
+		 * Default constructor for the optimizer used in the linear regression
+		 * @param maxIters Maximum number of iterations allowed during training for the minimization of the loss function.
+		 * @param maxEvals Maximum number of runs or evaluations allowed during training.
+		 * @param eps Maximum error allowed during training for the minimization of the loss function.
+		 * @param lsOptimizer Least squares optimizer used during training.
+		 */
 	def apply(maxIters: Int, maxEvals: Int, eps: Double, lsOptimizer: LeastSquaresOptimizer): LogisticRegressionOptimizer = 
 		new LogisticRegressionOptimizer(maxIters, maxEvals, eps, lsOptimizer)
-	
+
+		/**
+		 * Constructor for the optimizer used in the linear regression with a predefined maximum
+		 * number of iterations, maximum number of evaluations
+		 * @param eps Maximum error allowed during training for the minimization of the loss function.
+		 * @param lsOptimizer Least squares optimizer used during training.
+		 */
 	def apply(eps: Double, lsOptimizer: LeastSquaresOptimizer): LogisticRegressionOptimizer = 
 		new LogisticRegressionOptimizer(DEFAULT_NUM_ITERS, DEFAULT_NUM_EVALS, eps, lsOptimizer)
-	
+
+		/**
+		 * Constructor for the optimizer used in the linear regression with a predefined maximum
+		 * number of iterations, maximum number of evaluations and convergence criteria
+		 * @param lsOptimizer Least squares optimizer used during training.
+		 */
 	def apply(lsOptimizer: LeastSquaresOptimizer): LogisticRegressionOptimizer = 
 		new LogisticRegressionOptimizer(DEFAULT_NUM_ITERS, DEFAULT_NUM_EVALS, DEFAULT_EPS, lsOptimizer)
 	

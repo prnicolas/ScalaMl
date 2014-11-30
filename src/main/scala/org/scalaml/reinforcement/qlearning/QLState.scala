@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -49,8 +49,18 @@ protected class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.em
 
 		/**
 		 * Companion object to the State class used for defining constructor and validating its parameters
+		 * @author Patrick Nicolas
+		 * @since January 17, 2014
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 object QLState {
+  
+		/**
+		 * Default constructor for QLState
+		 * @param id Identifier for the state.
+		 * @param actions List of actions for that transition from this state to other states. Each action transition the model to single state.
+		 * @param property Optional property of this state. 
+		 */
 	def apply[T](id: Int, actions: List[QLAction[T]], property: T): QLState[T] = new QLState(id, actions, property)
   
 	protected def check[T](id: Int, actions: List[QLAction[T]]): Unit = {

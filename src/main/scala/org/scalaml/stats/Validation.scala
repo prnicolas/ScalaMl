@@ -1,5 +1,5 @@
  /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -60,7 +60,7 @@ import Label._
 		 * @since February 1, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Validation
 		 */
-final class ClassValidation(actualExpected: Array[(Int, Int)], tpClass: Int) extends Validation {
+final protected class ClassValidation(actualExpected: Array[(Int, Int)], tpClass: Int) extends Validation {
 	require(actualExpected != null && actualExpected.size > 0, "ClassValidation Cannot validate undefined results")
 	require(tpClass >= 0, s"ClassValidation index for true positive class $tpClass is negative") 
    
@@ -131,8 +131,22 @@ final class ClassValidation(actualExpected: Array[(Int, Int)], tpClass: Int) ext
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Validation
 		 */
 object ClassValidation {
- 	def apply(data: Array[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data, tpClass)
- 	def apply(data: XTSeries[(Int, Int)], tpClass: Int): ClassValidation = new ClassValidation(data.toArray, tpClass)
+		/**
+		 * Default constructor for the ClassValidation
+		 * @param actualExpected Array of pair (actual value, labeled/expected value)
+		 * @param tpClass Identifier for the class that defined the true positive samples
+		 */
+ 	def apply(actualExpected: Array[(Int, Int)], tpClass: Int): ClassValidation = 
+ 		new ClassValidation(actualExpected, tpClass)
+
+ 		/**
+		 * Variant of the constructor for the ClassValidation that uses a time series of tuples
+		 * expected, actual values as input
+		 * @param actualExpected Time series pair (actual value, labeled/expected value)
+		 * @param tpClass Identifier for the class that defined the true positive samples
+		 */
+ 	def apply(actualExpected: XTSeries[(Int, Int)], tpClass: Int): ClassValidation = 
+ 		new ClassValidation(actualExpected.toArray, tpClass)
 }
 
 

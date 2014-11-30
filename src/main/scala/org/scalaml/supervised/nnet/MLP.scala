@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -50,6 +50,9 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 	private val logger = Logger.getLogger("MLP")
    
 	var converged = false
+		/**
+		 * Model for the Multi-layer Perceptron of type MLPModel
+		 */
 	val model: Option[MLPModel] = {
 		Try {
 			val _model = new MLPModel(config, xt(0).size, labels(0).size)(mlpObjective)
@@ -121,7 +124,12 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		/**
 		 * <p>Companion object for the Multi-layer Perceptron. The singleton is used to:<br>
 		 * Define several variants of the constructor<br>
-		 * Define the class/trait hierarchy for the objective of the MLP {classification, regression}</p> 
+		 * Define the class/trait hierarchy for the objective of the MLP {classification, regression}</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 8, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
+		 *    
 		 */
 object MLP {
 	private val EPS = 1e-5
@@ -192,15 +200,36 @@ object MLP {
 		}
 	}
 	
-	
+		/**
+		 * Default constructor for the Multi-layer perceptron (type MLP)
+		 * @param config  Configuration parameters class for the MLP
+		 * @param xt Time series of features in the training set
+		 * @param labels  Labeled or target observations used for training
+		 * @param objective Objective of the model (classification or regression)
+		 */
 	def apply[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] = 
 		new MLP[T](config, xt, labels)
-		    
-	def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
-		new MLP[T](config, XTSeries[Array[T]](features), labels)
-    
-	def apply[T <% Double](config: MLPConfig, features: Array[Array[T]], labels: DblVector)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
-		new MLP[T](config, XTSeries[Array[T]](features), labels.map(Array[Double](_)))
+
+		/**
+		 * Constructor for the Multi-layer perceptron (type MLP) that takes an array of observation as argument
+		 * @param config  Configuration parameters class for the MLP
+		 * @param obs Array of observations used in the training set
+		 * @param labels  Labeled or target observations used for training
+		 * @param objective Objective of the model (classification or regression)
+		 */
+	def apply[T <% Double](config: MLPConfig, obs: Array[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+		new MLP[T](config, XTSeries[Array[T]](obs), labels)
+
+			/**
+		 * Constructor for the Multi-layer perceptron (type MLP) that takes an array of observation as 
+		 * argument and a one dimension label data
+		 * @param config  Configuration parameters class for the MLP
+		 * @param obs Array of observations used in the training set
+		 * @param labels  Array of One variable labels
+		 * @param objective Objective of the model (classification or regression)
+		 */
+	def apply[T <% Double](config: MLPConfig, obs: Array[Array[T]], labels: DblVector)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+		new MLP[T](config, XTSeries[Array[T]](obs), labels.map(Array[Double](_)))
             
             
 	private def check[T](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {

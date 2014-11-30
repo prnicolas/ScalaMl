@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -11,7 +11,7 @@
 package org.scalaml.ga
 
 import scala.util.Random
-import Chromosome._
+
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.ga.state._
@@ -19,26 +19,26 @@ import org.scalaml.core.XTSeries
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
+import Chromosome._
 
 
-
-	/**
-	 * <p>Class to select the best solution or Chromosome from an initial population
-	 * or genes pool using a set of policies for selection, mutation and crossover of
-	 * chomosomes. The client code initialize the GA solver with either an initialized
-	 * population or a function () => Population{T] that initialize the population. THe
-	 * class has only one public method search.<br>
-	 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
-	 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
-	 * @param config  Configuration parameters for the GA algorithm
-	 * @param score Scoring method for the chromosomes of this population
-	 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
-	 * 
-	 * @author Patrick Nicolas
-	 * @since August 29, 2013
-	 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
-	 */
-final class GASolver[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit) 
+		/**
+		 * <p>Class to select the best solution or Chromosome from an initial population
+		 * or genes pool using a set of policies for selection, mutation and crossover of
+		 * chomosomes. The client code initialize the GA solver with either an initialized
+		 * population or a function () => Population{T] that initialize the population. THe
+		 * class has only one public method search.<br>
+		 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
+		 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the GA algorithm, [population] Initialized population of chromosomes (solution candidates)
+		 * @param config  Configuration parameters for the GA algorithm
+		 * @param score Scoring method for the chromosomes of this population
+		 * @throws IllegalArgumenException if the configuration is undefined or the population is not initialized
+		 * 
+		 * @author Patrick Nicolas
+		 * @since August 29, 2013
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
+		 */
+final protected class GASolver[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit) 
 			extends PipeOperator[Population[T], Population[T]] {
 
 	require(config != null, "GASolver configuration  is undefined")
@@ -101,12 +101,24 @@ final class GASolver[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit)
 
 		/**
 		 * Object companion for the Solve that defines the two constructors
+		 * @author Patrick Nicolas
+		 * @since August 29, 2013
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
 		 */
 object GASolver {
-  	      
+
+		/**
+		 * Default constructor for the Genetic Algorithm (class GASolver)
+		 * @param config  Configuration parameters for the GA algorithm
+		 * @param score Scoring method for the chromosomes of this population
+		 */
 	def apply[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit): GASolver[T] = 
 		new GASolver[T](config, score)
-  	      
+
+		/**
+		 * Constructor for the Genetic Algorithm (class GASolver) with undefined scoring function
+		 * @param config  Configuration parameters for the GA algorithm
+		 */
 	def apply[T <: Gene](config: GAConfig): GASolver[T] = 
 		new GASolver[T](config, null)
 }

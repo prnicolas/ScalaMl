@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -55,8 +55,8 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 
 object HMMModel {
 	private def check(lambda: HMMLambda, obs: Array[Int]): Unit = {
-		require(lambda != null, "HMMModel.check Cannot create a model (dynamic programming) for HMM with undefined lambda model")
-		require(obs != null && obs.size > 0, "HMMModel.check Cannot create a model (dynamic programming) with undefined observations")
+		require(lambda != null, "HMMModel.check Cannot create a model with undefined lambda model")
+		require(obs != null && obs.size > 0, "HMMModel.check Cannot create a model with undefined observations")
 	}
 }
 
@@ -76,7 +76,8 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 
 	protected def normalize(t: Int): Unit = {
 		import HMMConfig._
-		require(t >= 0 && t < lambda.getT, s"Incorrect argument $t for normalization")
+		require(t >= 0 && t < lambda.getT, s"HMMModel.normalize Incorrect argument t= $t")
+		
 		ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
 		alphaBeta /= (t, ct(t))
 	}
@@ -116,10 +117,9 @@ final protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form:
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
 		 * HMM if form == EVALUATION or decodes a HMM if form == DECODING for a given
 		 * set of observations obs and a lambda model.</p>
-		 * @param obs set of observation of type bounded by Array[Int]
-		 * @return HMMPredictor instance if no computation error occurs, NONE otherwise
+		 * @throws MatchError if the observations sequence is not defined
+		 * @return PartialFunction of a sequence of observations as input and a tuple (likelihood, sequence of observation indices)
 		 */
-		
 	override def |> : PartialFunction[DblVector, HMMPredictor] = {
 		case obs: DblVector if(obs != null && obs.size > 1) => {
 			Try { 
@@ -158,8 +158,8 @@ final protected class HMM[@specialized T <% Array[Int]](lambda: HMMLambda, form:
 
 
 	/**
-	 * <p>Companion object for the HMM that defines a HMMPredictor type and the constructor 
-	 * apply for the HMM.</p>
+	 * <p>Companion object for the HMM that defines a HMMPredictor type and the constructors
+	 * for the HMM and validate its input parameters</p>
 	 * @author Patrick Nicolas
 	 * @since March 11, 2014
 	 */
@@ -169,13 +169,38 @@ object HMM {
 		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
 		 */
 	type HMMPredictor = (Double, Array[Int])
+	
+		/**
+		 * Default constructor for the Hidden Markov Model classifier (HMM)
+		 * @param lambda lambda model generated through training or used as input for the evaluation and decoding phase
+		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
+		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
+		 */
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm, maxIters: Int)(implicit f: DblVector => T): HMM[T] = 
 		new HMM[T](lambda, form, maxIters)
-		
+
+		/**
+		 * Constructor for the Hidden Markov Model classifier (HMM) with a predefined maximum number of iterations
+		 * @param lambda lambda model generated through training or used as input for the evaluation and decoding phase
+		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
+		 */
 	def apply[T <% Array[Int]](lambda: HMMLambda, form: HMMForm)(implicit f: DblVector => T): HMM[T] =  
 		new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
 	
 	
+		/**
+		 * Constructor for the Hidden Markov Model classifier (HMM) which model has
+		 * to be initialized by the Baum-Welch algorithm. The objective is to generate
+		 * the components A, B and pi of the lambda model
+		 * @param config Configuration parameters for the HMM
+		 * @param obsIndx Array of index of observations
+		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
+		 * @param eps Convergence criteria used in the Baum-Welch algorithm (HMM training)
+		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to Array[Int] (Discretization)
+		 */
 	def apply[T <% Array[Int]](config: HMMConfig, obsIndx: Array[Int], form: HMMForm,  maxIters: Int, eps: Double)(implicit f: DblVector => T): Option[HMM[T]] = {
 		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
 		if( baumWelchEM.maxLikelihood != None)

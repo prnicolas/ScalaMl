@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -46,7 +46,7 @@ class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainin
 		 * the training data to the iitb.Segment.DataCruncher class</p>
 		 * @constructor Create a new CRF sequences iterator for nLabels labels using a given delimiter.
 		 * @throws IllegalArgumentException if nLabel is out of range or the input or delim is undefined
-		 * @throws IOException if the training file '*.tagged' is not found
+		 * @see ittb.CRF.DataIter
 		 * @param nLabels Number of labels used in the CRF model
 		 * @param input Identifier for the training or tagged files
 		 * @param delim  Delimiter instance used to break down the training data as sequence, observations and labels
@@ -82,15 +82,30 @@ class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter
 
 
 	/**
-	 * Companion object to SeqIter
+	 * Companion object to SeqIter. This singleton is used to define the constructors 
+	 * and validate their input parameters.
 	 * @author Patrick Nicolas
-	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+	 * @since April 5, 2014
+	 * @note Scala for Machine Learning Chapter 7 Sequential data models / Conditional Random Fields.
 	 */
 object CrfSeqIter { 
 	private val MAX_NUM_LABELS = 1000
 	private val DEFAULT_SEQ_DELIMITER = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
-   
+
+		/**
+		 * Default constructor for the CrfSeqIter (Sequential iterator for training data in CRF)
+		 * @param nLabels Number of labels used in the CRF model
+		 * @param input Identifier for the training or tagged files
+		 * @param delim  Delimiter instance used to break down the training data as sequence, observations and labels
+		 */
 	def apply(nLabels: Int, input: String, delim: CrfSeqDelimiter): CrfSeqIter = new CrfSeqIter(nLabels, input, delim)
+	
+		/**
+		 * Constructor for the CrfSeqIter (Sequential iterator for training data in CRF)
+		 * with a default sequential training data delimiter.
+		 * @param nLabels Number of labels used in the CRF model
+		 * @param input Identifier for the training or tagged files
+		 */
 	def apply(nLabels: Int, input: String): CrfSeqIter = new CrfSeqIter(nLabels, input, DEFAULT_SEQ_DELIMITER)
    
 	private def check(nLabels: Int, input: String, delim: CrfSeqDelimiter): Unit = {

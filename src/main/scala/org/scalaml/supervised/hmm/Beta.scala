@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -57,8 +57,16 @@ protected class Beta(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, ob
 
 		/**
 		 * Companion object for the Beta pass that defines the constructor apply
+		 * @author Patrick Nicolas
+		 * @since March 14, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
 		 */
 object Beta {
+		/**
+		 * Default constructor for the Beta class of forward/backward passes in HMM
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param obs Array of observations as integer (categorical data)
+		 */
 	def apply(lambda: HMMLambda,  obs: Array[Int]): Beta = new Beta(lambda, obs)
 }
 

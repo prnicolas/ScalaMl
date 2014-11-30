@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -115,11 +115,22 @@ final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], I
 		 * @note Scala for Machine learning Chapter 5 Naive Bayes Model
 		 */
 object NaiveBayes {	
-	def apply[T <% Double](smoothing: Double, labelSeries: XTSeries[(Array[T], Int)], density: Density): NaiveBayes[T] 
-		= new NaiveBayes[T](smoothing, labelSeries, density)
+		/**
+		 * Default constructor for the NaiveBayes class
+		 * @param smoothing Laplace or Lidstone smoothing factor
+		 * @param xt  Input labeled time series used for training
+		 * @param density Density function used to compute the discriminant
+		 */
+	def apply[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density): NaiveBayes[T] 
+		= new NaiveBayes[T](smoothing, xt, density)
 		
-    def apply[T](labelSeries: XTSeries[(Array[T], Int)])(implicit f: T => Double): NaiveBayes[T] 
-    	= new NaiveBayes[T](1.0, labelSeries, gauss)
+		/**
+		 * Constructor for the NaiveBayes class with a Laplace smoothing function and
+		 * a Gaussian density function.
+		 * @param xt  Input labeled time series used for training
+		 */
+	def apply[T](xt: XTSeries[(Array[T], Int)])(implicit f: T => Double): NaiveBayes[T] = 
+		new NaiveBayes[T](1.0, xt, gauss)
 	
     private def check[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density): Unit = {
 		require(smoothing > 0.0 && smoothing <= 1.0, s"NaiveBayes: Laplace or Lidstone smoothing factor $smoothing is out of range")

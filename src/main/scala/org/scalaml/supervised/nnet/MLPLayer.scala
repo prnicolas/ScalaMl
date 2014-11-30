@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -92,10 +92,16 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 
 		/**
 		 * Companion object for the MLP layer used to define a default constructor
+		 * and validate its input parameters
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
 		 */
 object MLPLayer {
+		/**
+		 * Default constructor for MLPLayer
+		 * @param id Identifier or rank of the MLP layer in the network.
+		 * @param len Number of elements or neuron in the MLP layer.
+		 */
 	def apply(id: Int, len: Int): MLPLayer = new MLPLayer(id, len)
 	
 	private def check(id: Int, len: Int): Unit = {

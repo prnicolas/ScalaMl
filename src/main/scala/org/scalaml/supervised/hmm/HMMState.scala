@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -18,17 +18,17 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import HMMConfig._
 
-	/**
-	 * <p>Class that encapsulates the execution parameters for the three
-	 * canonical forms of the HMM.</p>
-	 * @constructor Create a new execution state for the HMM for a predefined Lambda model
-	 * @throws IllegalArgumenException if the Lambda model is undefined or the maximum iterations is out of range
-	 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
-	 * @param >maxIters   Maximum number of iterations used in training (Baum-Welch)
-	 * @author Patrick Nicolas
-	 * @since March 24, 2014
-	 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
-	 */
+		/**
+		 * <p>Class that encapsulates the execution parameters for the three
+		 * canonical forms of the HMM.</p>
+		 * @constructor Create a new execution state for the HMM for a predefined Lambda model
+		 * @throws IllegalArgumenException if the Lambda model is undefined or the maximum iterations is out of range
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param >maxIters   Maximum number of iterations used in training (Baum-Welch)
+		 * @author Patrick Nicolas
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
+		 */
 final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 	import HMMState._
   
@@ -108,11 +108,25 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 
 		/**
 		 * Companion object for the HMM state. This singleton is used to define
-		 * the constructor of the HMMState class and validate its parameters.
+		 * the constructors of the HMMState class
+		 * @author Patrick Nicolas
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
 		 */
 object HMMState {
-	final val DEFAULT_MAXITERS = 256
+	val DEFAULT_MAXITERS = 256
+	
+		/**
+		 * Default constructor for the HMMState class
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param >maxIters   Maximum number of iterations used in training (Baum-Welch)
+		 */
 	def apply(lambda: HMMLambda, maxIters: Int): HMMState = new HMMState(lambda, maxIters)
+	
+		/**
+		 * Constructor for the HMMState class with a predefined maximum number of iterations used in Baum-Welch algorithm
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 */
 	def apply(lambda: HMMLambda): HMMState = new HMMState(lambda, DEFAULT_MAXITERS)
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -111,7 +111,7 @@ object QLSpace {
 		 * @param goals Array of id of goal states
 		 * @param features Features set 
 		 * @param neighbors Function constrain to select neighboring states
-		 * @return A new seach space, QLSpace
+		 * @return A new search space, QLSpace
 		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
 		 */
 	def apply[T](numStates: Int, goals: Array[Int], features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
@@ -128,7 +128,15 @@ object QLSpace {
 		new QLSpace[T](states.toArray, goals)
 	}
 	
-	
+		/**
+		 * <p>Create a search space automatically using a scale factor.</p>
+		 * @param numStates Number of symbols or states used by the Q-Learning algorithm
+		 * @param goal Index of the state goal
+		 * @param features Features set 
+		 * @param neighbors Function constrain to select neighboring states
+		 * @return A new search space, QLSpace
+		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
+		 */
 	def apply[T](numStates: Int, goal: Int, features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = 
 		 apply(numStates, Array[Int](goal), features, neighbors)
 		 

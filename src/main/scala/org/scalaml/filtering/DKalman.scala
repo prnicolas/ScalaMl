@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -56,12 +56,15 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 	private def r = white(qr._2) 
   
 		/**
-		 * <p>Create an array of tuple of white noise values for process and white noise values for measurement.</p>
-		 * @param m tuple of mean values of white noise for process and white noise for measurement
-		 * @return Array of tuple of white noise (Q and R) values
+		 * <p>Compute the white noise of the measurement in Kalman filter</p>
+		 * @return Array of two process noise value
 		 */
 	def noisyQ: DblVector = Array[Double](q, q)
-  
+
+		/**
+		 * <p>Compute the white noise of the measurement in Kalman filter</p>
+		 * @return Array of two measurement noise value
+		 */
 	def noisyR: DblVector = Array[Double](r, r)
 }
 

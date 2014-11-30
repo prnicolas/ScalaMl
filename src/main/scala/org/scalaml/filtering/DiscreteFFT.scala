@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -60,10 +60,27 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 
 
 		/**
-		 * <p>Companion object to the class DTransform that define the sinc and sinc2 function.
+		 * <p>Companion object to the class DTransform that define the <b>sinc</b> and <b>sinc2</b> functions.</p>
+		 * @author Patrick Nicolas
+		 * @since February 9, 2014
+		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
 		 */
 object DTransform { 
+
+		/**
+		 * Definition of the sinc convolution function used in discrete Fourier transform based low pass filters
+		 * @param f frequency 
+		 * @param fC frequency cutoff of this low pass filter
+		 * @return 1 if frequency is below cutoff, 0 otherwise
+		 */
 	def sinc(f: Double, fC: Double): Double = if(Math.abs(f) < fC) 1.0 else 0.0
+	
+		/**
+		 * Definition of the sinc2 convolution function used in discrete Fourier transform based low pass filters
+		 * @param f frequency 
+		 * @param fC frequency cutoff of this low pass filter
+		 * @return 1 if frequency is below cutoff, 0 otherwise
+		 */
 	def sinc2(f: Double, fC: Double): Double = if(f*f < fC) 1.0 else 0.0
 }
 
@@ -76,8 +93,8 @@ object DTransform {
 		 * @author Patrick Nicolas
 		 * @since February 12, 2014
 		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
-	 */
-class DFT[T <% Double] extends DTransform[T] {
+		 */
+protected class DFT[T <% Double] extends DTransform[T] {
 	private val logger = Logger.getLogger("DFT")
 	
 		/**
@@ -112,9 +129,15 @@ class DFT[T <% Double] extends DTransform[T] {
 	
 		/**
 		 * Companion object for the Discrete Fourier Cosine and Sine transform.
+		 * @author Patrick Nicolas
+		 * @since February 12, 2014
+		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
 		 */
 object DFT {
 	final val DFT_EPS = 1e-20
+		/**
+		 * Default constructor for the Discrete Fourier Transform
+		 */
 	def apply[T <% Double]: DFT[T] = new DFT[T]
 }
 
@@ -131,7 +154,7 @@ object DFT {
 		 * @since February 9, 2014
 		 * @note Scala for Machine Learning  Chapter 2 Data pre-processing / Fourier analysis / DFT-based filtering
 		 */
-class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T] {
+final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T] {
 	require(g != null, "DFTFir Cannot apply a band pass filter with undefined filter function")
 	require(fC > 0.0, s"DFTFir Relative cutoff value $fC is incorrect")
    

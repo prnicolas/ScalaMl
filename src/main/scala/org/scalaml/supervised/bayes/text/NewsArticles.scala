@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -33,7 +33,7 @@ import TermsScore._
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models / Naive Bayes and text mining
 		 */
 @implicitNotFound("NewsArticle. Ordering not explicitly defined")
-class NewsArticles[T <% Long](implicit order: Ordering[T]) {
+protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 	private[this] val articles = new HashMap[T, Map[String, Double]]
 	
 		/**
@@ -104,12 +104,28 @@ class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 	}
 }
 
-	/**
-	 * Companion object for the NewsArticle Container
-	 */
+
+		/**
+		 * Companion object for the NewsArticle Container. This singleton is used
+		 * to define the constructor of the class NewsArticle and generating a
+		 * textual description of its content
+		 * @author Patrick Nicolas
+		 * @since February 16, 2014
+		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models / Naive Bayes and text mining
+		 */
 object NewsArticles {
+		
+		/**
+		 * Default constructor for the class NewsArticles
+		 * @param date Date as Long, associated to the map of tuples (Keywords, rel. frequency) to be added
+		 * @param weightedTerms map of tuples (Keywords, rel. frequency) extracted from a news article released on a specific date 
+		 */
 	def apply[T <% Long](implicit order: Ordering[T]): NewsArticles[T] = new NewsArticles[T]
-  
+
+		/**
+		 * Function that create a textual representation of weighted terms frequency 
+		 * @param arr Array of tuples (date, Map(term, weights)) for all documents associated to a specific date of type T
+		 */
 	def toString[T](arr: Array[(T, Map[String, Double])]): String =  {
 		val buf = new StringBuilder
 		arr.foreach(x => { 

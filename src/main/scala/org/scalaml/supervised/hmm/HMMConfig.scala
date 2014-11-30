@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -13,7 +13,6 @@ package org.scalaml.supervised.hmm
 
 import org.scalaml.supervised.Supervised
 import org.scalaml.core.design.Config
-
 
 
 		/**
@@ -30,7 +29,7 @@ import org.scalaml.core.design.Config
 		 * @since March 27, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 		 */
-class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
+final class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
 	import HMMConfig._
 	
 	check(_T, _N, _M)
@@ -41,13 +40,47 @@ class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
 		/**
 		 * <p>Companion object for HMMConfig to implement high order method for
 		 * HMMConfig such as foreach, fold and maxBy.
+		 * @author Patrick Nicolas
+		 * @since March 27, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 		 */
 object HMMConfig {
+
+		/**
+		 * Defines the <b>foreach</b> iterator for the elements of a collection between two index
+		 * @param i starting index for the iterator
+		 * @param j ending index for the iterator
+		 * @param f function executed of each element
+		 */
 	def foreach(i: Int, j: Int, f: (Int) => Unit): Unit = Range(i, j).foreach(f)
-	def foreach(i: Int, f: (Int) => Unit): Unit = foreach(0, i, f)  
-	def foldLeft(i: Int, f: (Double, Int) => Double, zero:Double) = Range(0, i).foldLeft(zero)(f)
-	def foldLeft(i: Int, f: (Double, Int) => Double) = Range(0, i).foldLeft(0.0)(f)
-	def maxBy(i: Int, f: Int => Double): Int = Range(0, i).maxBy(f)
+		/**
+		 * Defines the <b>foreach</b> iterator for the first j elements of a collection 
+		 * @param j ending index for the iterator
+		 * @param f function executed of each element
+		 */
+	def foreach(j: Int, f: (Int) => Unit): Unit = foreach(0, j, f)
+	
+		/**
+		 * Implements a fold operator on the first j elements of a collection 
+		 * @param j ending index for the iterator
+		 * @param f reducer function/aggregator executed of each element
+		 * @param zero Initial value for the fold
+		 */
+	def foldLeft(j: Int, f: (Double, Int) => Double, zero: Double) = Range(0, j).foldLeft(zero)(f)
+	
+		/**
+		 * Implements a fold operator on the first j elements of a collection, initialized to 0
+		 * @param j ending index for the iterator
+		 * @param f reducer function/aggregator executed of each element
+		 */
+	def foldLeft(j: Int, f: (Double, Int) => Double) = Range(0, j).foldLeft(0.0)(f)
+	
+		/**
+		 * Compute the maximum value of the first j elements of a collection
+		 * @param j ending index for the iterator
+		 * @param f scoring function executed of each element
+		 */
+	def maxBy(j: Int, f: Int => Double): Int = Range(0, j).maxBy(f)
    
 	val MAX_NUM_STATES = 512
 	val MAX_NUM_OBS = 4096

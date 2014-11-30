@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -171,15 +171,20 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 object QLPolicy {
+		/**
+		 * Default constructor for a Qlearning policy
+		 * @param numStates Number of states for this policy.
+		 * @param input Input (rewards and probability) to initialize the policy.
+		 */
+	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = new QLPolicy[T](numStates, input)
+
 	private val MAX_NUM_STATES = 2048
-	
+
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
 		require(numStates >0 && numStates < MAX_NUM_STATES, s"QLPolicy.check Number of states $numStates is out of range")
 		require(input != null, "QLPolicy.check the input to the Q-leaning policy is undefined")
 		require(input.size > 0 && input.size < MAX_NUM_STATES, s"QLPolicy.check, the size of the input ${input.size} is out of range" )
 	}
-	
-	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = new QLPolicy[T](numStates, input)
 }
 
 

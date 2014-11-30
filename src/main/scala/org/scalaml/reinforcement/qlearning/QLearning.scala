@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -161,16 +161,55 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 */
 class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
 
+
+
 		/**
-		 * Companion object to the Q-Learning class used to define constants and constructor
+		 * Companion object to the Q-Learning class used to define constructors 
+		 * and validate their input parameters
+		 * @author Patrick Nicolas
+		 * @since January 22, 2014
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning Q-learning
 		 */
-object QLearning {   
+object QLearning {  
+		/**
+		 * Default constructor for Q-learning
+		 * @param config Configuration for the Q-learning algorithm
+		 * @param qlSpace Initial search space of states
+		 * @param qlPolicy Initial policy for the search
+		 */
+	def apply[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]): QLearning[T] =
+		new QLearning[T](config, qlSpace, qlPolicy)
+
+		/** 
+		 * Constructor of the Q-learning with a predefined number of states, index of goals,
+		 * input (or initial) states and a features set.
+		 * @param config Configuration for the Q-learning algorithm
+		 * @param numStates Number of states in the model 
+		 * @param goals array of indices of states which are selected as goal state
+		 * @param input Input to the search space as tuple of rewards and probability for each action between states
+		 * @param features Features set as a set of variables of type Array[Int] generated through discretization of signal (floating point values)
+		 * @throws IllegalArgumentException if one of the parameters is undefined or improperly initialized
+		 */
 	def apply[T](config: QLConfig, numStates: Int, goals: Array[Int], input: Array[QLInput], features: Set[T]): QLearning[T] = {
-		require(input != null && input.size > 0, "QLearning Cannot initialize a Q-learning with undefine input")
+		require(input != null && input.size > 0, "QLearning Cannot initialize with undefine input")
+		require(numStates > 2, s"QLearning Cannot initialize with $numStates states")
+		require(goals != null && goals.size > 0, "QLearning Cannot initialize with undefined goals")
+		require(input != null && input.size > 0, "QLearning Cannot initialize with undefined input rewards")
+		require(features != null && features.size > 0, "QLearning Cannot initialize with undefined features")
+		
 		new QLearning[T](config, QLSpace[T](numStates, goals, features, config.neighbors), new QLPolicy[T](numStates, input))
 	}
    
 
+		/** 
+		 * Constructor of the Q-learning with a predefined number of states, index of the goal state,
+		 * input (or initial) states and a features set.
+		 * @param config Configuration for the Q-learning algorithm
+		 * @param numStates Number of states in the model 
+		 * @param goal Index of the goal state
+		 * @param input Input to the search space
+		 * @param features Features set as a set of variables of type Array[Int] generated through discretization of signal (floating point values)
+		 */
 	def apply[T](config: QLConfig, numStates: Int, goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
 		apply[T](config, numStates, Array[Int](goal), input, features)
   

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -98,6 +98,12 @@ protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], negati
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes Classifiers
 		 */
 object BinNaiveBayesModel {
+		/**
+		 * Default constructor for the binary Naive Bayes model as instance of BinNaiveBayesModel
+		 * @param positives  Priors for the class of positive outcomes.
+		 * @param negatives  Priors for the class of negatives outcomes.
+		 * @param density Probability density function used in computing the conditional probability <b>p(C|x)</b>
+		 */
 	def apply[T <% Double](positives: Likelihood[T], negatives: Likelihood[T], density: Density): BinNaiveBayesModel[T] = 
 		new BinNaiveBayesModel(positives, negatives, density)
 }
@@ -151,6 +157,11 @@ protected class MultiNaiveBayesModel[T <% Double](likelihoodSet: List[Likelihood
 		 * @note Scala for Machine Learning
 		 */
 object MultiNaiveBayesModel {
+		/**
+		 * Default constructor for the multinomial Naive Bayes model as instance of MultiNaiveBayesModel
+		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
+		 * @param density Probability density function used in computing the conditional probability p(C|x)
+		 */
 	def apply[T <% Double](likelihoodSet: List[Likelihood[T]], density: Density): MultiNaiveBayesModel[T] = 
 		new MultiNaiveBayesModel[T](likelihoodSet, density)
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -46,7 +46,7 @@ case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int)
 		 * @since August 25, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 		 */
-final class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
+class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	import Population._
 	
 	check(limit, chromosomes)
@@ -107,14 +107,12 @@ final class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * the genes in the chromosomes have identical size.</p>
 		 * @return number of bits in the gene that compose the chromosomes of this population if the population is not empty, -1 otherwise
 		 */
-	@inline
 	final def geneSize: Int = if(chromosomes.size > 0) chromosomes.head.code.head.size else -1
     
 		/**
 		 * <p>Return the number of genes in the chromosomes of this population.</p>
 		 * @return Number of genes in each of the chromosomes of this population if the population is not empty, -1 otherwise
 		 */
-	@inline
 	final def chromosomeSize: Int = if(chromosomes.size > 0) chromosomes.head.size else -1
     
     
@@ -236,21 +234,35 @@ final class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		/**
 		 * Companion object for the Population class that defines its constructor
 		 * and validate its parameters.
+		 * @author Patrick Nicolas
+		 * @since August 25, 2013
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 		 */
 object Population{
+
+		/**
+		 * Default constructor for the population of chromosomes
+		 * @param limit  Maximum number of chromosomes allowed in this population (constrained optimization)
+		 * @param chromosomes Current pool of chromosomes (type: ArrayBuffer{Chromosome[T]])
+		 */
+	def apply[T <: Gene](limit: Int, chromosomes: Pool[T]): Population[T] = 
+		new Population[T](limit, chromosomes)
+
+		/**
+		 * Default constructor for the population of chromosomes
+		 * @param limit  Maximum number of chromosomes allowed in this population (constrained optimization)
+		 * @param chromosomes New list of chromosomes added to the existing pool
+		 */
+	def apply[T <: Gene](limit: Int, chromosomes: List[Chromosome[T]]): Population[T] = 
+		new Population[T](limit, new Pool[T] ++ chromosomes)
+
+
 	private val MAX_NUM_CHROMOSOMES = 10000
-   
 	private def check[T <: Gene](limit: Int, chromosomes: Pool[T]): Unit  = {
 		require(chromosomes != null, "Population.check: The population has undefined initial set of chromosomes")
 		require(chromosomes.size > 0 && chromosomes.size < limit, s"Population.check: The pool of chromosomes ${chromosomes.size} is out of range")
 		require(limit > 1 && limit < MAX_NUM_CHROMOSOMES, s"Maximum number of allowed chromosomes $limit is out of range")
 	}
-
-	def apply[T <: Gene](limit: Int, chromosomes: Pool[T]): Population[T] = 
-		new Population[T](limit, chromosomes)
-		
-	def apply[T <: Gene](maxNumChromosomes: Int, chromosomes: List[Chromosome[T]]): Population[T] = 
-		new Population[T](maxNumChromosomes, new Pool[T] ++ chromosomes)
 }
 
 // -----------------------  EOF -------------------------------------------

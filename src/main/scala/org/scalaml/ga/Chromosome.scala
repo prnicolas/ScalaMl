@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -23,7 +23,7 @@ import scala.util.Random
 		 * a chromosome is randomly selected as a high value.</p>
 		 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
-		 * @param code List of Genes or sub typescomposing this chromosomes.
+		 * @param code List of Genes or sub types composing this chromosomes.
 		 * @author Patrick Nicolas
 		 * @since August 27, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
@@ -145,12 +145,27 @@ object Chromosome {
   
 	private val EPS = 1e-10
 
+		/**
+		 * Default (Generic code) constructor for the Chromosome
+		 * @param code List of Genes or sub types composing this chromosomes.
+		 */
 	def apply[T <: Gene](code: List[T]): Chromosome[T] = new Chromosome[T](code)
-	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = 
+	
+		/**
+		 * Symbolic constructor for the Chromosome
+		 * @param predicates List of predicates of type T for this chromosome
+		 * @param encode Function that convert a predicate to a Gene
+		 * @throws IllegalArgumentException if either the predicates are undefined or the encoding function is undefined
+		 */
+	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = {
+		require(predicates != null && predicates.size > 0, "Chromosome.apply List of predicates is undefined")
+		require(encode != null, "Chromosome.apply Encoding function is undefined")
+
 		new Chromosome[T](if(predicates.size == 1) 
 			List[T](encode(predicates(0)).asInstanceOf[T])
 		else 
 			predicates.foldLeft(List[T]()) ((xs, t) => encode(t).asInstanceOf[T] :: xs))
+	}
 			
 		/**
 		 * Type for the pool of chromosomes. A Pool of chromosomes is an arbitrary
