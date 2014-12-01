@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96c
  */
 package org.scalaml.app
 
@@ -37,8 +37,7 @@ import org.scalaml.util.Display
 		 */
 protected object AllTests extends ScalaMlTest {
 	val chapter: String = "All-Tests"
-	
-	implicit val actorSystem = ActorSystem("system")
+
 	private val logger = Logger.getLogger("AllTests")
 	
 		/**
@@ -96,10 +95,11 @@ protected object AllTests extends ScalaMlTest {
 		run(CrfEval)
 		
 			// Chapter 8
-		run(SVCEval)
+	
 		run(SVCKernelEval)
-		run(SVCOutliersEval)
 		run(SVCMarginEval)
+		run(SVCEval)
+		run(SVCOutliersEval)
 		run(SVREval)	
 		
 			// Chapter 9
@@ -115,6 +115,7 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 11
 		run(QLearningEval)
 		
+		
 			// Chapter 12
 		run(ParBenchmarkEval)
 		run(ActorsManagerEval)
@@ -122,13 +123,13 @@ protected object AllTests extends ScalaMlTest {
 		run(SparkKMeansEval)
 		
 		Display.show(s"$chapter exit", logger)
-		actorSystem.shutdown
+		TestContext.shutdown
 	}
 	
 	private def run(eval: Eval, args: Array[String] = Array.empty) {
 		var completed = false
 	  		// Anonymous Akka actor that wraps the execution of the scala test.
-		val worker = actorSystem.actorOf(Props(new Actor {
+		val worker = TestContext.actorSystem.actorOf(Props(new Actor {
 			def receive = { 
 				case msg: String => {
 					completed = evaluate(eval, args)

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.core
 
@@ -77,7 +77,7 @@ object Types {
 			val buf = new StringBuilder
 			if(label.size > 0)
 				buf.append(s"${fmt.description(label)}\n")
-			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}   ${fmt.description(x._1)}\n")).toString)
+			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}  ${fmt.description(x._1)}\n")).toString)
 			buf.toString
 		}
 

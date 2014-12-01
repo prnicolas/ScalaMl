@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.filtering
 
@@ -156,7 +156,7 @@ object DFT {
 		 */
 final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T] {
 	require(g != null, "DFTFir Cannot apply a band pass filter with undefined filter function")
-	require(fC > 0.0, s"DFTFir Relative cutoff value $fC is incorrect")
+	require(fC > 0.0 && fC < 1.0, s"DFTFir Relative cutoff value $fC is incorrect")
    
 	private val logger = Logger.getLogger("DFTFir")
    
@@ -175,9 +175,9 @@ final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends
 				// Computes the frequencies cut-off in data points
 			val cutOff = fC*spectrum._2.size
 				// Applies the cutoff to the original frequencies spectrum
-			val filteredSpectrum = spectrum._2.zipWithIndex.map(x => x._1*g(x._2, cutOff))
+			val filtered = spectrum._2.zipWithIndex.map(x => x._1*g(x._2, cutOff))
 				// Reconstruct the signal.
-			XTSeries[Double](spectrum._1.transform(filteredSpectrum, TransformType.INVERSE) )
+			XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) )
 		}
 	} 
 }

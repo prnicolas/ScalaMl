@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.app
 
@@ -28,48 +28,12 @@ import akka.actor.ActorRef
 		 */
 trait ScalaMlTest extends FunSuite {
 	val chapter: String
-
 		/**
 		 * <p>Trigger the execution of a Scala test for a specific method and set of arguments.</p>
 		 * @param args argument for the Scala test
 		 * @param method Name of the method to be tested.
 		 */
 	def evaluate(eval: Eval, args: Array[String] = Array.empty): Boolean = {
-	  
-	  /*
-		implicit val actorSystem = ActorSystem("system")
-  		var status: Int = INITIAL_STATUS
-	
-	  		// Anonymous Akka actor that wraps the execution of the scala test.
-		val worker = actorSystem.actorOf(Props(new Actor {
-			def receive = { 
-				case msg: String => {
-					status = eval.run(args)
-					context.stop(self)
-				}
-			}
-		}))
-		var errorMsg = "failed"
-
-		
-			// The main thread blocks until either the maxExecutionTime is reached
-			// of the computation status has been updated...
-		Try {
-			worker ! "Start"
-			val startTime = System.currentTimeMillis
-			while( status == INITIAL_STATUS) {
-				Thread.sleep(200)
-				
-				// Exit if time out 'maxExecutionTime" is exceeded
-				if(System.currentTimeMillis - startTime > maxExecutionTime) {
-					status = TIMEOUT
-					errorMsg = s"time out after $maxExecutionTime msecs."
-				}
-			}
-			status
-		}
-		* 
-		*/
 		Try (eval.run(args) ) match {
 			case Success(n) => {
 				if(n >= 0) 
@@ -106,8 +70,20 @@ object Eval {
 	def testCount: String = {
 		count += 1
 		String.valueOf(count)
+	}	
+}
+
+
+object TestContext { 
+	lazy val actorSystem = {
+		val ctx = ActorSystem("System") 
+		println("Context")
+		ctx
 	}
-			
+	def shutdown: Int = {
+		actorSystem.shutdown
+		0
+	}
 }
 
 /*

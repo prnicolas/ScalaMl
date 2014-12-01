@@ -27,7 +27,7 @@ import org.scalaml.app.Eval
 		 */
 object MLPEval extends Eval {
 	val name: String = "MLPEval"
-    val maxExecutionTime: Int = 25000
+    val maxExecutionTime: Int = 45000
     
 	private val path = "resources/data/chap9/"
 	private val ALPHA = 0.8; 
@@ -76,7 +76,7 @@ object MLPEval extends Eval {
 		test(Array[Int](4), prices)
 		test(Array[Int](4, 4), prices)
 		test(Array[Int](7, 7), prices)
-		test(Array[Int](8, 5, 6), prices)
+		// test(Array[Int](8, 5, 6), prices)
 	}
   
 

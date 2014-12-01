@@ -34,7 +34,8 @@ object MLPConfigEval extends Eval {
 
 	private val logger = Logger.getLogger(name)
 
-		/** <p>Execution of the scalatest for <b>MLP</b> class.
+		/** 
+		 * <p>Execution of the scalatest for <b>MLP</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 

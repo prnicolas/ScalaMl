@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.scalability.akka
 
-
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl._
 import java.io.{IOException, PrintWriter}
 import akka.actor._
@@ -43,14 +43,15 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 								extends Controller(xt, fct, partitioner) {
 
 	private val logger = Logger.getLogger("Master")
-   
+	val MAX_NUM_DATAPOINTS = 128
+    
 	private val workers = List.tabulate(partitioner.numPartitions)(n => 
 		context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
 
 	protected val aggregator = new ListBuffer[DblVector]
    
 	override def preStart: Unit = Display.show("Master.preStart", logger)
-	override def postStop: Unit = Display.show("Master stop", logger)
+	override def postStop: Unit = Display.show("Master postStop", logger)
    
 		/**		 
 		 * <p>Message processing handler for the rmaster for a distributed transformation of time series.<br>
@@ -58,15 +59,14 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 		 * <b>Completed</b> aggregates the results from all the worker actors.</p>
 		 */
 	override def receive = {
-		case Start => split
-		
+		case s: Start => split
 		case msg: Completed => {
-			Display.show(s"Master.receive.Completed from worker ${msg.id}", logger)
-			
 			if(aggregator.size >= partitioner.numPartitions-1) {
-				Display.show(aggregate.take(10), logger)
+				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
+				Display.show(s"Aggregated\n${ScalaMl.toString(aggr, "", true)}", logger)
 				workers.foreach( _ ! PoisonPill)
-				Thread.sleep(1000)
+				
+				Thread.sleep(2000)
 				context.stop(self)
 			}
 			aggregator.append(msg.xt.toArray)
@@ -77,7 +77,7 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 	protected def aggregate: Seq[Double] 
 
 	private def split: Unit = {
-		Display.show("Master.recieve.Start", logger)
+		Display.show("Master.receive => Start", logger)
 		val partIdx = partitioner.split(xt)
 		workers.zip(partIdx).foreach(w => w._1 ! Activate(0, xt.slice(w._2-partIdx(0), w._2), self) )  
 	}

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.supervised.svm
 
@@ -72,12 +72,27 @@ final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, 
 		}
 		buf.toString
 	}
+
+		/**
+		 * Retrieve the convergence criteria of SVMExecution class
+		 * @return convergence criteria
+		 */
+	@inline 
+	final def eps: Double = exec.eps
     
-	@inline def eps: Double = exec.eps
-    
-	@inline def isCrossValidation: Boolean = exec.nFolds > 0
-    
-	@inline def nFolds: Int = exec.nFolds
+		/**
+		 * Test if SVM is configured for cross validation
+		 * @return true if number of folds > 0, false otherwise
+		 */
+	@inline 
+	final def isCrossValidation: Boolean = exec.nFolds > 0
+
+		/**
+		 * <p>Retrieve the number of folds used in the cross-validation
+		 * @return Number of folds used in the cross-validation
+		 */
+	@inline 
+	final def nFolds: Int = exec.nFolds
 }
 
 

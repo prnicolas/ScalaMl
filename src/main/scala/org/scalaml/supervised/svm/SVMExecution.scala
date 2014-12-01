@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.supervised.svm
 
@@ -22,7 +22,8 @@ import libsvm._
 		 * @throws IllegalArgumentException if the cache, convergence criteria or number of folds are incorrectly specified.
 		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation during training.
 		 * @param eps Convergence Criteria to exit the training cycle
-		 * @param nFolds Number of folds used in K-fold validation of the SVM model.
+		 * @param nFolds Number of folds used in K-fold validation of the SVM model. Value -1 indicates no validation
+		 * 
 		 * @author Patrick Nicolas
 		 * @since April 28, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
@@ -40,23 +41,51 @@ protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) e
 }
 
 
-
+		/**
+		 * <p>Companion object to the SVMExecution class. The singleton
+		 * is used to define the constructors and validate their input parameters.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 28, 2014
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
+		 */
 object SVMExecution {
 	private val DEFAULT_CACHE_SIZE = 1024
 	private val DEFAULT_EPS = 1e-5
 
 	private val MAX_CACHE_SIZE = 1<<16
 	private val EPS_LIMITS = (1e-10, 0.35)
-	
+
+		/**
+		 * Default constructor for the SVMExecution class
+		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation during training.
+		 * @param eps Convergence Criteria to exit the training cycle
+		 * @param nFolds Number of folds used in K-fold validation of the SVM model. Value -1 indicates no validation
+		 */
 	def apply(cacheSize: Int, eps: Double, nFolds: Int): SVMExecution = 
 		new SVMExecution(cacheSize, eps,nFolds)
 
+	
+		/**
+		 * Constructor for the SVMExecution class with a default cache size
+		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation during training.
+		 * @param eps Convergence Criteria to exit the training cycle
+		 * @param nFolds Number of folds used in K-fold validation of the SVM model. Value -1 indicates no validation
+		 */
 	def apply(eps: Double, nFolds: Int): SVMExecution = 
 		new SVMExecution(DEFAULT_CACHE_SIZE, eps, nFolds)
 	
+		/**
+		 * Constructor for the SVMExecution class with a default cache size and no validation fold
+		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation during training.
+		 * @param eps Convergence Criteria to exit the training cycle
+		 */
 	def apply(eps: Double): SVMExecution = 
 		new SVMExecution(DEFAULT_CACHE_SIZE, eps, -1)
-	
+
+		/**
+		 * Constructor for the SVMExecution class with a default cache size, default eps  and no validation fold
+		 */
 	def apply: SVMExecution = 
 		new SVMExecution(DEFAULT_CACHE_SIZE, DEFAULT_EPS, -1)
 

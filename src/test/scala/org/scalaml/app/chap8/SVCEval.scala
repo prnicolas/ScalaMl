@@ -41,7 +41,7 @@ object SVCEval extends Eval {
 		/** <p>Execution of the scalatest for <b>SVC</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 * @return -1 in case error, a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Binary Support Vector Classifier", logger)
@@ -57,7 +57,9 @@ object SVCEval extends Eval {
 	   
 		Try {
 			val xs = DataSource(path, true, false, 1) |> extractor
-			val config = SVMConfig(new CSVCFormulation(C), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+			val config = SVMConfig(	new CSVCFormulation(C), 
+									new RbfKernel(GAMMA), 
+									SVMExecution(EPS, NFOLDS))
 	  	  
 			val features = XTSeries.transpose(xs.dropRight(1))
 			val svc = SVM[Double](config, features, xs.last)

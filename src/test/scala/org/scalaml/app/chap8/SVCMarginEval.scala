@@ -10,7 +10,7 @@
  */
 package org.scalaml.app.chap8
 
-import org.scalaml.supervised.svm.{SVMConfig, SVMExecution, SVM}
+import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.supervised.svm.formulation.CSVCFormulation
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
@@ -46,7 +46,7 @@ object SVCMarginEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {   
-		Display.show(s"** $name Evaluation of impact of C penalty on margin of a binary support vector classifier", logger)
+		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of impact of C penalty on margin of a binary support vector classifier", logger)
 		val values = generate
 		Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
 		status

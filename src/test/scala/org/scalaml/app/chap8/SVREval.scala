@@ -54,14 +54,14 @@ object SVREval extends Eval {
 			val linRg = SingleLinearRegression(priceIdx)
 	  	  	 
 			val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
-		//		val config = SVMConfig(new SVRFormulation(C, EPSILON), LinearKernel)
+	
 			val labels = price.toArray
 			val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
 			val svr = SVM[Double](config, features, labels)
 			Display.show(s"$name support vector machine model\n${svr.toString}", logger)   
           
 			display("Support Vector vs. Linear Regression", 
-					collect(svr, linRg, price).toList,
+					collect(svr, linRg, price),
 					List[String]("Support vector regression", "Linear regression", "Stock Price"))
 					
 			Display.show(s"$name.run completed", logger)
@@ -74,7 +74,7 @@ object SVREval extends Eval {
    
 	
 	import SingleLinearRegression._
-	private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): Array[XYTSeries] = {
+	private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): List[XYTSeries] = {
 		import scala.collection.mutable.ArrayBuffer
 
 		val collector = Array.fill(3)(new ArrayBuffer[XY])
@@ -83,7 +83,7 @@ object SVREval extends Eval {
 			xs(1).append((n, (lin |> n)))
 			xs(2).append((n, price(n)))
 			xs		  
-		}).map( _.toArray)
+		}).map( _.toArray).toList
 	}
    
 	private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {

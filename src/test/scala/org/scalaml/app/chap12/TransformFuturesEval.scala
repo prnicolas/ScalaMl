@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96c
  */
 package org.scalaml.app.chap12
 
@@ -28,6 +28,7 @@ import org.scalaml.filtering.DFT
 import org.scalaml.util.Display
 import java.util.concurrent.TimeoutException
 import XTSeries._
+import org.scalaml.app.TestContext
 
 
 		/**
@@ -50,7 +51,7 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 	override protected def aggregate(data: Array[DblSeries]): Seq[Double] = {
 		require(data != null && data.size > 0, "DFTTransformFutures.aggregate Output of one of the worker is undefined")
 		
-		data.map(_.toArray).transpose.map(_.sum).take(10).toSeq
+		data.map(_.toArray).transpose.map(_.sum).take(32).toSeq
 	}
 }
 
@@ -67,9 +68,8 @@ object TransformFuturesEval extends Eval {
 							0.5*Math.cos(Math.PI*0.2*x)  +    // simulated third harmonic 
 							0.2*Random.nextDouble
 
-	private val duration = Duration(10000, "millis")
+	private val duration = Duration(7500, "millis")
 	implicit val timeout = new Timeout(duration)
-	implicit val actorSystem = ActorSystem("system") 
 
 		 /** <p>Execution of the scalatest for futures design with Akka framework.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -82,16 +82,14 @@ object TransformFuturesEval extends Eval {
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
   
-		val master = actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), "DFTTransform")
+		val master = TestContext.actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), "DFTTransform")
 		Try {
 			val future = master ? Start
-			val result = Await.result(future, timeout.duration)
-			actorSystem.shutdown
-			result
+			Await.result(future, timeout.duration)
 		} match {
-			case Success(result) => Display.show(s"TransformFuturesEval.run: ${result.toString}", logger)
+			case Success(result) => Display.show(s"TransformFuturesEval results: ${result.toString}", logger)
 			case Failure(e) => e match {
-				case ex: TimeoutException => Display.show("TransformFuturesEval.run completed", logger)
+				case ex: TimeoutException => Display.show("TransformFuturesEval.run timeout", logger)
 				case ex: Throwable => Display.error("TransformFuturesEval.run completed", logger, e)
 			}
 		}

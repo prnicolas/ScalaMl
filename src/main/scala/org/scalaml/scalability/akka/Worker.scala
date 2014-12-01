@@ -6,12 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.scalability.akka
 
 
 import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.scalability.akka.message._
 import java.io.{IOException, PrintWriter}
 import akka.actor._
@@ -53,13 +54,20 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 	override def receive = {
 		case msg: Activate => {
 			val msgId = msg.id+id
-			Display.show(s"Worker.receive.Activate ${msgId}", logger)
-			msg.sender ! Completed(msgId, transform(msg.xt))
+			Display.show(s"Worker_${id}.receive => Activate message ${msgId}", logger)
+			val output: XTSeries[Double] = transform(msg.xt)
+			Display.show(results(output.take(10)), logger)
+			msg.sender ! Completed(msgId, output)
 		}
 		case _ => Display.error(s"WorkerActor${id}.receive Message not recognized", logger)
 	}
 
 	private def transform(xt: DblSeries): DblSeries =  fct |> xt
+	
+	private def results(output: XTSeries[Double]): String = {
+		val res = output.foldLeft(new StringBuilder)((b, o) => b.append(s"${ScalaMl.toString(o, "", true)} "))
+		s"Worker_$id results: ${res.toString}"
+	}
 }
 
 

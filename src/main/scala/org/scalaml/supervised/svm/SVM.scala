@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96a
+ * Version 0.96c
  */
 package org.scalaml.supervised.svm
 
@@ -48,6 +48,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	type SVMNodes = Array[Array[svm_node]]
 
 	private val logger = Logger.getLogger("SVM")
+	private val normEPS = config.eps*1e-9
     
 	private[this] val model: Option[SVMModel] = {
 		val problem = new svm_problem
@@ -107,7 +108,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	def margin: Option[Double] = model match {
 		case Some(m) => {	
 			val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
-			if(wNorm < 1e-12)
+			if(wNorm < normEPS)
 				Display.none(s"SVM.margin sum of squared errors $wNorm is too small", logger)
 			else
 				Some(2.0/Math.sqrt(wNorm))
@@ -129,9 +130,10 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 
 	private def accuracy(problem: svm_problem): Double = config.isCrossValidation match { 
 		case true => {
+		  
 			val target = new Array[Double](labels.size)
 			svm.svm_cross_validation(problem, config.param, config.nFolds, target)
-			target.zip(labels).filter(z => Math.abs(z._1-z._2) < 1e-3).size.toDouble/labels.size
+			target.zip(labels).filter(z => Math.abs(z._1-z._2) < config.eps).size.toDouble/labels.size
 		}
 		case false => 0.0
 	}

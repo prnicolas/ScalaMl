@@ -30,10 +30,10 @@ object SVCOutliersEval extends Eval {
 	
 	val path = "resources/data/chap8/dividends2.csv"	
 
-	val NU = 0.2
-	val GAMMA = 0.5
-	val EPS = 1e-3
-	val NFOLDS = 2
+	private val NU = 0.2
+	private val GAMMA = 0.5
+	private val EPS = 1e-3
+	private val NFOLDS = 2
 	
 	private val logger = Logger.getLogger(name)
 	

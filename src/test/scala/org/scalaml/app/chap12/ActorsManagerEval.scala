@@ -13,7 +13,7 @@ package org.scalaml.app.chap12
 import org.scalaml.app.Eval
 import scala.util.Random
 import org.scalaml.scalability.akka.Partitioner
-import org.scalaml.scalability.akka.message._
+import org.scalaml.scalability.akka.message.Start
 import org.scalaml.core.XTSeries
 import akka.actor.Props
 import org.scalaml.scalability.akka.Master
@@ -25,6 +25,7 @@ import org.apache.log4j.Logger
 import org.scalaml.core.Types.ScalaMl._
 import XTSeries._
 import org.scalaml.util.Display
+import org.scalaml.app.TestContext
 
 
 		/**
@@ -61,10 +62,9 @@ object ActorsManagerEval extends Eval {
 							Math.cos(Math.PI*0.05*x) +   	// simulated second harmonic
 							0.5*Math.cos(Math.PI*0.2*x) + 	// simulated third harmonic 
 							0.2*Random.nextDouble			// noise
-	 
-	implicit val actorSystem = ActorSystem("system") 
 	
-		/** <p>Execution of the scalatest for Master-worker design with Akka framework.
+		/** 
+		 * <p>Execution of the scalatest for Master-worker design with Akka framework.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
@@ -74,13 +74,12 @@ object ActorsManagerEval extends Eval {
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
 	
-		val master = actorSystem.actorOf(Props(new DFTMaster(xt, partitioner)), "Master")
-		master ! Start
+		val master = TestContext.actorSystem.actorOf(Props(new DFTMaster(xt, partitioner)), "Master")
+		
+		master ! Start(1)
 		Thread.sleep(5000)
-		actorSystem.shutdown
 		DONE
 	}
 }
-
 
 // ----------------------------------  EOF ------------------------
