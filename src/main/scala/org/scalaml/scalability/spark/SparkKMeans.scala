@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.scalability.spark
 
@@ -19,25 +19,26 @@ import org.apache.spark.rdd.RDD
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 
 
 
-			/**
-			 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
-			 * training during instantiation of objects in order to reduce their life-cycle.<br>
-			 * The algorithm implements the default data transformation interface, PipeOperator.</p>
-			 * @constructor Create a wrapper for the Spark K-means algorithm. 
-			 * @throws IllegalArgumentException if the configuration or the time series is undefined.
-			 * @param kMeansConfig Configuration of the Spark KMeans<br>
-			 * @param rddConfig Configuration parameters for the Spark RDD<br>
-			 * @param xt Time series used for the training of the Spark KMeans<br>
-			 * @param sc  implicit spark context.
-			 * @author Patrick Nicolas
-			 * @since April 2, 2014
-			 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark
-			 */
+		/**
+		 * <p>Class wrapper for the Spark KMeans implementation. The model is fully generated through
+		 * training during instantiation of objects in order to reduce their life-cycle.<br>
+		 * The algorithm implements the default data transformation interface, PipeOperator.</p>
+		 * @constructor Create a wrapper for the Spark K-means algorithm. 
+		 * @throws IllegalArgumentException if the configuration or the time series is undefined.
+		 * @param kMeansConfig Configuration of the Spark KMeans<br>
+		 * @param rddConfig Configuration parameters for the Spark RDD<br>
+		 * @param xt Time series used for the training of the Spark KMeans<br>
+		 * @param sc  implicit spark context.
+		 * @author Patrick Nicolas
+		 * @since April 2, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib
+		 */
 @implicitNotFound("Spark context is implicitely undefined")
 final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext) 
 			extends PipeOperator[DblVector, Int] {
@@ -45,7 +46,7 @@ final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, x
 	import SparkKMeans._
 	check(kMeansConfig, rddConfig, xt)
 	
-	private val model = kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig))
+	private val model: KMeansModel = kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig))
   
 		/**
 		 * <p>Method that classify a new data point in any of the cluster.</p>
@@ -57,11 +58,32 @@ final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, x
 		case x: DblVector if(x != null && x.size > 0 && model != null) =>
 			model.predict(new DenseVector(x))
 	}
+	
+		
+	override def toString: String = {
+		val buf = new StringBuilder
+		buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
+		model.clusterCenters.zipWithIndex.foreach(ctr =>buf.append(s"#${ctr._2}: ${ScalaMl.toString(ctr._1.toArray)}\n"))
+		buf.toString
+	}
 }
 
 
-
+		/**
+		 * <p>Companion object for the Spark K-means class. The singleton
+		 * defines the constructors and validate its parameters.</p>
+		 * @author Patrick Nicolas
+		 * @since April 2, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib
+		 */
 object SparkKMeans {
+		/**
+		 * Default constructor for SparkKMeans class
+		 * @param kMeansConfig Configuration of the Spark KMeans<br>
+		 * @param rddConfig Configuration parameters for the Spark RDD<br>
+		 * @param xt Time series used for the training of the Spark KMeans<br>
+		 * @param sc  implicit spark context.
+		 */
 	def apply(config: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext): SparkKMeans = 
 		new SparkKMeans(config, rddConfig, xt)
 	

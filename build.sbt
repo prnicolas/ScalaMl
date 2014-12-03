@@ -4,7 +4,7 @@ name := "scalaml"
 
 version := "0.96"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.10.4"
 
 // The build script assumes that the following jar file are
 // included in the lib
@@ -13,11 +13,13 @@ scalaVersion := "2.11.2"
 libraryDependencies ++= Seq(
    "org.apache.commons" % "commons-math3" % "3.3",
    "org.jfree" % "jfreechart" % "1.0.17",
-   "com.typesafe.akka" %% "akka-actor" % "2.3.6",
-   "org.apache.spark" % "spark-core_2.10" % "1.0.2",
-   "org.apache.spark" % "spark-mllib_2.10" % "1.0.2",
+   "com.typesafe.akka" %% "akka-actor" % "2.2.3",
+   "org.apache.spark" %% "spark-core" % "1.0.2",
+   "org.apache.spark" %% "spark-mllib" % "1.0.2",
    "org.scalatest" %% "scalatest" % "2.1.6"
 )
+
+resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 
 // Options for the Scala compiler should be customize
 scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings")

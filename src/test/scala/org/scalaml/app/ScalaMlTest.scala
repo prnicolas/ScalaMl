@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.app
 
@@ -70,8 +70,9 @@ object Eval {
 	def testCount: String = {
 		count += 1
 		String.valueOf(count)
-	}	
+	}
 }
+
 
 
 object TestContext { 
@@ -80,37 +81,15 @@ object TestContext {
 		println("Context")
 		ctx
 	}
+	
+	private val ELAPSE_TIME = 10000
+	
 	def shutdown: Int = {
+		Thread.sleep(ELAPSE_TIME)
 		actorSystem.shutdown
 		0
 	}
 }
 
-/*
-object MyEval extends Eval {
-  val name: String = "Hello"
-  def run(args: Array[String]): Int = {
-    println("Start run")
-    	Thread.sleep(4000)
-    	println("End run")
-    	1
-  }
-}
-
-object MyScalaMlTest extends ScalaMlTest {
-  val maxExecutionTime: Int = 10000
-  val chapter: String  = "CC"
-	def test {
-		evaluate(MyEval)
-	}
-}
-
-object MyApp extends App {
-	MyScalaMlTest.test
-	println("End")
-	
-}
-* 
-*/
 
 // --------------------------  EOF -------------------------------

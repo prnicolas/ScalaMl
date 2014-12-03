@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration debug="true" xmlns:log4j="http://jakarta.apache.org/log4j/"> 
+<log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/"> 
   <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender" >
     <param name="File" value="logs/scalaml.log"/>
     <layout class="org.apache.log4j.PatternLayout">
@@ -10,7 +10,7 @@
   </appender>
  
   <root>
-    <priority value ="info"></priority>
+    <priority value ="error"></priority>
     <appender-ref ref="fileAppender" />
   </root>
  </log4j:configuration>

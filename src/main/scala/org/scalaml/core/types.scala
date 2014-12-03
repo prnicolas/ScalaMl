@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.core
 
@@ -70,6 +70,7 @@ object Types {
 					buf.append(s"${fmt.description(xy._2)}${fmt.description(xy._1._1)}${fmt.description(xy._1._2)}\n")).toString)
 			buf.toString
 		}
+
 		
 		def toString[T](x: Array[T], label: String, shortFormat: Boolean): String = {
 			val fmt = if(shortFormat) ShortFormatter else longFormatter
@@ -80,6 +81,11 @@ object Types {
 			buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x._2}  ${fmt.description(x._1)}\n")).toString)
 			buf.toString
 		}
+		
+		
+		def toString(x:DblVector): String = 
+			x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => 
+				buf.append(s"${x._2}  ${ShortFormatter.description(x._1)} ")).toString
 
 		def toString(x: Double, label: String, shortFormat: Boolean): String = {
 			val fmt = if(shortFormat) ShortFormatter else longFormatter

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.scalability.spark
 
@@ -21,8 +21,6 @@ import scala.annotation.implicitNotFound
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-
-
 
 		/**
 		 * <p>Define the configuration of the Spark KMeans wrapper.</p>
@@ -52,12 +50,23 @@ final class SparkKMeansConfig(K: Int, maxNumIters: Int, numRuns: Int =1) {
 	}
 }
 
-
+		/**
+		 * <p>Companion object for the Spark K-means configuration class. The singleton
+		 * defines the constructors and validate its parameters.</p>
+		 * @author Patrick Nicolas
+		 * @since April 2, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib
+		 *
+		 */
 object SparkKMeansConfig {	
+	private val MAX_NUM_CLUSTERS = 500
+	private val MAX_NUM_ITERS = 250
+	private val MAX_NUM_RUNS = 500
+	
 	private def check(K: Int, maxNumIters: Int, numRuns: Int): Unit = {
-		require( K > 0 && K  < 500, "Number of clusters K $K is out of range")
-		require( maxNumIters > 0 && maxNumIters  < 500, s"Maximum number of iterations $maxNumIters is out of range")
-		require( numRuns > 0 && numRuns  < 500, s"Maximum number of runs for K-means $numRuns is out of range")
+		require( K > 0 && K  < MAX_NUM_CLUSTERS, "Number of clusters K $K is out of range")
+		require( maxNumIters > 0 && maxNumIters  < MAX_NUM_ITERS, s"Maximum number of iterations $maxNumIters is out of range")
+		require( numRuns > 0 && numRuns  < MAX_NUM_RUNS, s"Maximum number of runs for K-means $numRuns is out of range")
 	}
 }
 

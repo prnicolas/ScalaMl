@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.app
 
@@ -45,7 +45,7 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters.
 		 */
 	def test: Unit = {
-			// Chapter 6
+			// Chapter 1
 		run(LogBinRegressionEval)
 		run(PlotterEval)
 		
@@ -115,18 +115,17 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 11
 		run(QLearningEval)
 		
-		
 			// Chapter 12
 		run(ParBenchmarkEval)
 		run(ActorsManagerEval)
 		run(TransformFuturesEval)
 		run(SparkKMeansEval)
-		
-		Display.show(s"$chapter exit", logger)
 		TestContext.shutdown
+		Display.show(s"$chapter exit", logger)
 	}
 	
 	private def run(eval: Eval, args: Array[String] = Array.empty) {
+	  		println(s"Start ${eval.name}")
 		var completed = false
 	  		// Anonymous Akka actor that wraps the execution of the scala test.
 		val worker = TestContext.actorSystem.actorOf(Props(new Actor {
@@ -153,6 +152,7 @@ protected object AllTests extends ScalaMlTest {
 					errorMsg = s"time out after $eval.maxExecutionTime msecs."
 				}
 			}
+			println(s"End ${eval.name}")
 			completed
 		} match {
 			case Success(n) => Display.show(s"$chapter done", logger)

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.scalability.akka
 
@@ -48,7 +48,7 @@ abstract class TransformFutures(_xt: DblSeries, _fct: PipeOperator[DblSeries, Db
 		 * <b>Start</b> to initiate the future computation of transformation of time series.<.p>
 		 */
 	override def receive = {
-		case Start => Display.show(compute(transform), logger)
+		case s: Start => compute(transform)
 		case _ => Display.show("TransformFutures.receive Message not recognized", logger)
 	}
   

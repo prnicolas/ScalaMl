@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.scalability.akka
 
@@ -23,7 +23,8 @@ import org.scalaml.core.design.PipeOperator
 import XTSeries._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
-import akka.routing.RoundRobinPool
+// import akka.routing.RoundRobinPool for Akka 2.3.6
+import akka.routing.RoundRobinRouter
 import scala.collection.mutable.ListBuffer
 
 
@@ -35,7 +36,6 @@ import scala.collection.mutable.ListBuffer
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
 		 * 
-		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers
@@ -44,11 +44,14 @@ abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 							extends Controller(xt, fct, partitioner) {	
 
 	private val logger = Logger.getLogger("MasterWithRouter")
-	
+	private val SLEEP = 1500
 	private val aggregator = new ListBuffer[DblVector]
+	
+	// Akka version 2.3.4 and higher 
+	//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
+	//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 	private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
-		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
-
+		.withRouter(RoundRobinRouter(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 		/**
 		 * <p>Message processing handler for the routing master for a distributed transformation of time series.<br>
 		 * <b>Start</b> to partition the original time series and launch data transformation on worker actors.<br> 
@@ -60,7 +63,7 @@ abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 		case msg: Completed => {
 			aggregate
 			router ! Terminate
-			Thread.sleep(1500)
+			Thread.sleep(SLEEP)
 			context.stop(self)
 		}
 		case _ => Display.error("MasterWithRouter.recieve Message not recognized", logger)

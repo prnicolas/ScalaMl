@@ -32,19 +32,31 @@ import org.scalaml.app.TestContext
 		 * <p>Specialized Akka master actor for the distributed discrete Fourier transform.</p>
 		 * @constructor Create a master actor for the distributed discrete Fourier transform. [xt] time series to be processed. [partitioner] Partitioning methodology for distributing time series across a cluster of worker actors.
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
+		 * @param xt Time series to be processed
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since June 5, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Akka
 		 */
-class DFTMaster(xt: DblSeries, partitioner: Partitioner) extends Master(xt, DFT[Double], partitioner) {
+protected class DFTMaster(xt: DblSeries, partitioner: Partitioner) extends Master(xt, DFT[Double], partitioner) {
 	
 		/**
 		 * <p>Aggregation of the results for the discrete Fourier transform for each worker actor.</p>
 		 * @return Sequence of frequencies 
 		 */
-	override protected def aggregate: Seq[Double] = 
-	  aggregator.transpose.map( _.sum).toSeq
+	override protected def aggregate: Seq[Double] = {
+		val results = aggregator.transpose.map( _.sum).toSeq
+		println(s"DFT display${results.size}")
+		display(results.toArray)
+		results
+	}
+		
+	private def display(x: DblVector): Unit =   {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+		val plot = new LinePlot(("Distributed DFT- Akka", "Akka DFT reduction", "freq."), new LightPlotTheme)
+		plot.display(x.take(128), 340, 280)
+	}
 }
 
 
@@ -58,6 +70,7 @@ object ActorsManagerEval extends Eval {
 	val DONE= 0
 	val NUM_WORKERS = 4
 	val NUM_DATA_POINTS = 1000000
+		// Synthetic generation function for multi-frequencies signals
 	val h = (x:Double) =>	2.0*Math.cos(Math.PI*0.005*x) +	// simulated first harmonic
 							Math.cos(Math.PI*0.05*x) +   	// simulated second harmonic
 							0.5*Math.cos(Math.PI*0.2*x) + 	// simulated third harmonic 

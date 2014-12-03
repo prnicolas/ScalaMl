@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96c
+ * Version 0.96d
  */
 package org.scalaml.app.chap12
 
@@ -25,21 +25,22 @@ import org.apache.spark.storage.StorageLevel
 import org.scalaml.scalability.akka._
 import org.scalaml.scalability.scala._
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
+import org.apache.log4j.{Logger, Level}
 import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
+import org.apache.spark.SparkConf
 
 
 object SparkKMeansEval extends Eval {
 	val name: String = "SparkKMeansEval"
-	val logger = Logger.getLogger(name)
-	val maxExecutionTime: Int = 10000
+	private val logger = Logger.getLogger(name)
+	val maxExecutionTime: Int = 5000
 	
-	val K = 8
-	val NRUNS = 16
-	val MAXITERS = 200
-	val PATH = "resources/data/chap12/CSCO.csv"
-	val CACHE = true
+	private val K = 8
+	private val NRUNS = 16
+	private val MAXITERS = 200
+	private val PATH = "resources/data/chap12/CSCO.csv"
+	private val CACHE = true
 	
 		/**
 		 * <p>Execution of the scalatest for SparkKMeans class. This method is invoked by the 
@@ -53,20 +54,31 @@ object SparkKMeansEval extends Eval {
 		Try {
 			val input = extract
 			val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
-
+			
+				// Disable Info for the Spark logger.
+			Logger.getRootLogger.setLevel(Level.ERROR)
+			val sparkConf = new SparkConf().setMaster("local[8]")
+											.setAppName("SparkKMeans")
+											.set("spark.executor.memory", "2048m")
+											
 			val config = new SparkKMeansConfig(K, MAXITERS, NRUNS)
-			implicit val sc = new SparkContext("local[8]", "SparkKMeans")  // no need to load additional jar file
+			implicit val sc = new SparkContext(sparkConf)  // no need to load additional jar file
 	
 			val rddConfig = RDDConfig(CACHE, StorageLevel.MEMORY_ONLY)
 			val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
-		   
+			
+			Display.show(s"\n${sparkKMeans.toString}\nPrediction:\n", logger)
 			val obs = Array[Double](0.23, 0.67)
 			val clusterId1 = sparkKMeans |> obs
-			Display.show(s"$name  (${obs(0)},${obs(1)}) = $clusterId1", logger)
+			Display.show(s"(${obs(0)},${obs(1)}) => Cluster #$clusterId1", logger)
 
 			val obs2 = Array[Double](0.56, 0.11)
 			val clusterId2 = sparkKMeans |> obs2 
-			Display.show(s"$name (${obs2(0)},${obs2(1)}) =  $clusterId2", logger)
+			Display.show(s"(${obs2(0)},${obs2(1)}) => Cluster #$clusterId2", logger)
+			
+			// SparkContext is cleaned up gracefully
+			sc.stop
+			Display.show("Completed", logger)
 		}
 		match {
 			case Success(n) => n
