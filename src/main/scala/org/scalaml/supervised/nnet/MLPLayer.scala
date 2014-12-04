@@ -34,8 +34,17 @@ import MLP._
 final protected class MLPLayer(val id: Int, val len: Int) {
 	import MLPLayer._
 	check(id, len)
-   
-	val output = new DblVector(len) // used for forward propagation
+
+		/**
+		 * Values of the output vector (Output layer). It is used in
+		 * forward propagation.
+		 */
+	val output = new DblVector(len) 
+	
+		/**
+		 * Difference for the propagated error on the source or upstream
+		 * layer
+		 */
 	val delta = new DblVector(len)  // used for back propagation
 	output.update(0, 1.0)
 
@@ -83,8 +92,7 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		
 		buf.append(s"\nLayer: $id output: ")
 		output.foreach(x => buf.append(s"${ScalaMl.toString(x,"", true)}"))
-		buf.setCharAt(buf.length-1, ' ')
-		buf.toString
+		buf.toString.substring(0, buf.length-1)
 	}
 }
 

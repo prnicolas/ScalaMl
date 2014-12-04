@@ -50,7 +50,7 @@ case class TradingStrategy(val name: String, signals: List[Signal]) {
 		 * @author Patrick Nicolas
 		 * @since May 7, 2014
 		 * @note Scala for Machine Learning Chapter 10: Genetic Algorithms 
-	 */
+		 */
 class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 	import org.scalaml.ga.Chromosome
 	import Chromosome._

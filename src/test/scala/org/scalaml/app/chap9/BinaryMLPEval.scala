@@ -6,20 +6,23 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.96d
  */
 package org.scalaml.app.chap9
 
-import org.scalaml.core.Types.ScalaMl._
+import scala.util.{Try, Success, Failure}
+import scala.reflect.ClassTag
+import org.apache.log4j.Logger
+
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.MLPConfig
 import org.scalaml.supervised.nnet.MLP
 import org.scalaml.core.XTSeries
-import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
-import scala.reflect.ClassTag
+
+import ScalaMl._
+
 
 		/**
 		 * <p>Singleton to evaluate the binary (2 class) multi-layer perceptron.</p>

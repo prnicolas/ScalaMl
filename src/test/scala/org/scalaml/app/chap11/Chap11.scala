@@ -13,11 +13,23 @@ package org.scalaml.app.chap11
 import org.scalaml.app.ScalaMlTest
 
 
-
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 11 Reinforcement learning<br>
+		 * <ul>
+		 * 	 <li>QLearning</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning
+		 */
 final class Chap11 extends ScalaMlTest { 
+		/**
+		 * Name of the chapter the tests are related to
+		 */
 	val chapter: String = "Chapter 11"
   	 
-	test(s"$chapter QLearning evaluation")  {
+	test(s"$chapter QLearning reinforcement learning")  {
 		evaluate(QLearningEval)
  	}
 }

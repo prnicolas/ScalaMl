@@ -29,8 +29,11 @@ import scala.collection.mutable.ListBuffer
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.</p>
-		 *  @constructor Create a distributed transformation for time series. 
+		 * <p>Generic implementation of the distributed transformation of time series using a master-worker and router.
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 *  The routing actor is defined by the class <b>akka.routing.RoundRobinRouter</b> for Akka 2.2.4 and earlier version.<br>
+		 *  This class is deprecated in Akka 2.3.4 and later and should be replaced by the class <b>akka.routing.RoundRobinPool.</b></span></pre></p> 
+		 *  @constructor Create a distributed transformation for time series using actors and a routing actor.
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
@@ -47,9 +50,9 @@ abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 	private val SLEEP = 1500
 	private val aggregator = new ListBuffer[DblVector]
 	
-	// Akka version 2.3.4 and higher 
-	//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
-	//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
+			// Akka version 2.3.4 and higher 
+			//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
+			//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 	private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
 		.withRouter(RoundRobinRouter(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 		/**

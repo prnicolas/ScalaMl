@@ -24,7 +24,10 @@ import org.scalaml.util.Display
 		 * <p>Implementation of the Multi-layer Perceptron as a Feed-foward
 		 * Neural Network. The class uses the standard pattern of machine
 		 * learning algorithm:<br>
-		 * Model are created through training during instantiation of the class<br>
+		 * Model are created through training during instantiation of the class. The model is 
+		 * created even in the training does not converged towards a stable network of synapse weights. In 
+		 * this case the client code is responsible for checking the value of the state variable converge 
+		 * and perform a validation run.<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
 		 * This MLP uses the online training strategy suitable for time series.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
@@ -48,17 +51,22 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 	
 	check(config, xt, labels)
 	private val logger = Logger.getLogger("MLP")
-   
-	var converged = false
+	
+	
+	private[this] var converged = false
+	
 		/**
-		 * Model for the Multi-layer Perceptron of type MLPModel
+		 * Model for the Multi-layer Perceptron of type MLPModel. This implementation
+		 * allows the model to be created even in the training does not converged towards
+		 * a stable network of synapse weights. The client code is responsible for 
+		 * evaluating the value of the state variable converge and perform a validation run
 		 */
 	val model: Option[MLPModel] = {
 		Try {
 			val _model = new MLPModel(config, xt(0).size, labels(0).size)(mlpObjective)
 				// Scaling or normalization factor for the sum of the squared error
 			val errScale = 1.0/(labels(0).size*xt.size)
-	  	
+
 				// Apply the exit condition for this online training strategy
 			converged = Range(0, config.numEpochs).find( _ => {
 				xt.toArray.zip(labels).foldLeft(0.0)( (s, xtlbl) => 
@@ -73,7 +81,14 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		}
 	}
    
-   	
+		
+		/**
+		 * Test whether the model has converged. In some cases, a MLP model
+		 * may be created although the training has not converged.
+		 * @return true if the training execution converges, false otherwise
+		 */
+	@inline
+	final def hasConverged: Boolean = converged
 		/**
 		 * <p>Define the predictive function of the classifier or regression as a data
 		 * transformation by overriding the pipe operator |>.</p>
@@ -100,7 +115,7 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 	final def accuracy(threshold: Double): Option[Double] = {
 		if( model != None ) {
 				// counts the number of data points for which the 
-			val correct = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
+			val nCorrects = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
 				
 				val output = model.get.getOutput(xtl._1)
 				val _sse = xtl._2.zip(output.drop(1)).foldLeft(0.0)((err,tp) => { 
@@ -113,7 +128,7 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 					s + 1
 				else s
 			})
-			Some(correct.toDouble/xt.size)  // normalization
+			Some(nCorrects.toDouble/xt.size)  // normalization
 		}
 		else 
 			Display.none("MLP.accuracy ", logger)
@@ -129,7 +144,6 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
-		 *    
 		 */
 object MLP {
 	private val EPS = 1e-5
@@ -195,7 +209,7 @@ object MLP {
 			val softmaxValues = new DblVector(y.size)
 			val expY = y.map( Math.exp(_))
 			val expYSum = expY.sum
-			expY.map( _ /expYSum).copyToArray(softmaxValues , 1)
+			expY.map( _ /expYSum).copyToArray(softmaxValues, 1)
 			softmaxValues
 		}
 	}

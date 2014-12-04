@@ -10,14 +10,14 @@
  */
 package org.scalaml.supervised.nnet
 
+import scala.util.Random
+import scala.collection.mutable.ListBuffer
+
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.MLPConfig._
-import scala.util.Random
 import org.scalaml.core.design.Model
-import scala.collection.mutable.ListBuffer
-import ScalaMl._
 import org.scalaml.supervised.nnet.MLP.MLPObjective
-
+import ScalaMl._
 
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
@@ -63,10 +63,11 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 			else 
 				sum
 		})
-		(if(isOutLayer) 
+		val out = if(isOutLayer) 
 			mlpObjective(_output) 
 		else 
-			_output).copyToArray(dst.output, 1)     
+			_output
+		out.copyToArray(dst.output, 1)     
 	}
 
 
@@ -79,6 +80,9 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		Range(1, src.len).foreach(i => {
 			val err = Range(1, dst.len).foldLeft(0.0)((s, j) => 
 					s + synapses(j)(i)._1*dst.delta(j) )
+					
+				// The delta value is computed as the derivative of the 
+				// output value adjusted for the backpropaged error, err
 			src.delta(i) =  src.output(i)* (1.0- src.output(i))*err
 		})
 
@@ -128,6 +132,9 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 
 		/**
 		 * Companion object for the connection of Multi-layer perceptron.
+		 * @author Patrick Nicolas
+		 * @since May 5, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
 		 */
 object MLPConnection {
 	private val BETA = 0.1

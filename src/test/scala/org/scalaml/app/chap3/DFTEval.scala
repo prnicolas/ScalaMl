@@ -10,22 +10,23 @@
  */
 package org.scalaml.app.chap3
 
+import scala.util.{Try, Success, Failure}
+
+import org.apache.log4j.Logger
 
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
-import scala.util.{Try, Success, Failure}
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 import org.scalaml.app.Eval
 
+import YahooFinancials._
 
 		/**
-		 * <p>Command line application. Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
+		 * <p> Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 8, 2014

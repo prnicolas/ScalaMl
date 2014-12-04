@@ -10,16 +10,21 @@
  */
 package org.scalaml.filtering
 
-import org.apache.commons.math3.transform._
-import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
-import org.scalaml.core.Types.ScalaMl._
 import scala.util.{Try, Success, Failure}
-import DFT._
+
+import org.apache.commons.math3.transform._
 import org.apache.log4j.Logger
+
 import org.scalaml.util.Display
+import org.scalaml.core.XTSeries
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Types.ScalaMl._
+
+import DFT._
+
+
 
 
 		/**
@@ -35,11 +40,14 @@ import org.scalaml.util.Display
 trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 
 	private[this] def padSize(xtSz: Int, even: Boolean= true): Int = {
-		require(xtSz > 0, s"DTransform.padSize Cannot pad a series of size $xtSz for the Discrete Fourier")
-  	 
+		require(xtSz > 0, s"DTransform.padSize Cannot pad a series of size $xtSz")
+
+			// Compute the size-boundaring for the padding
 		val sz = if( even ) xtSz else xtSz-1
 		if( (sz & (sz-1)) == 0)  
 			0
+			// Compute size of the padding for the DFT 
+			// by extracting the related bit position
 		else {
 			var bitPos = 0
 			do {
@@ -49,12 +57,28 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 			(if(even) (1<<bitPos) else (1<<bitPos)+1) - xtSz
 		}
 	}
-   
+
+		/**
+		 * <p>Pads the input time series with zero values to reach the next
+		 * boundary of 2 at power of N.<br> The input parameters are validated by 
+		 * the client code.</p>
+		 * @param xt input time series to filter
+		 * @param even flag that specifies if the boundary for the data is an even number
+		 * @param f implicit conversion of type T to Double
+		 * @throws ImplicitNotFoundException if the implicit conversion T => Double is undefined
+		 * @return New input array padded for the DFT
+		 */
 	@implicitNotFound("Conversion to Double is needed to pad a DFT transform")
 	protected def pad(xt: XTSeries[T], even: Boolean=true)(implicit f: T => Double): DblVector = {
 		val newSize = padSize(xt.size, even)
 		val arr: DblVector = xt  // to force an implicit conversion
-		if( newSize > 0) arr ++ Array.fill(newSize)(0.0) else arr
+		
+			// Fill up the remaining array with 0.0 if the size of the 
+			// padding exceeds the size of the time series.
+		if( newSize > 0)
+			arr ++ Array.fill(newSize)(0.0) 
+		else 
+			arr
 	}
 }
 
@@ -116,11 +140,14 @@ protected class DFT[T <% Double] extends DTransform[T] {
 		 * @return a tuple of Transformer instance and vector of frequencies.
 		 */
 	protected def fwrd(xt: XTSeries[T]): (RealTransformer, DblVector) = {
+			// Select which Fourier series should be selected (even as Sine)
+			// If the first value is 0.0 (or close) conise otherwise
 		val rdt =  if( Math.abs(xt.head) < DFT_EPS)
 			new FastSineTransformer(DstNormalization.STANDARD_DST_I)
 		else 
 			new FastCosineTransformer(DctNormalization.STANDARD_DCT_I)
-   
+
+			// Apply the forward transform to the padded time series
 		(rdt, rdt.transform(pad(xt, xt.head == 0.0), TransformType.FORWARD))
 	}
 }

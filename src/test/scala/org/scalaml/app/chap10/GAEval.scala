@@ -10,22 +10,20 @@
  */
 package org.scalaml.app.chap10
 
+import scala.collection.mutable.ArrayBuffer
+import scala.util.{Try, Success, Failure}
+
+import org.apache.log4j.Logger
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
 import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
-import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
-import org.scalaml.ga.Gene
 import org.scalaml.app.Eval
-import org.scalaml.core.Types.ScalaMl
-
-import org.apache.log4j.Logger
-
-import scala.collection.mutable.ArrayBuffer
-import scala.util.{Try, Success, Failure}
+import ScalaMl._
 
 		/**
 		 * <p>Purpose: Evaluate the convergence a genetic algorithm optimizer for extract the best trading
@@ -46,7 +44,7 @@ object GAEval extends Eval {
 	private val logger = Logger.getLogger(name)
       
 	private val path = "resources/data/chap10/GS.csv"
-	private val XOVER = 0.8				// Probability or ratio for cross-over
+	private val XOVER = 0.8					// Probability or ratio for cross-over
 	private val MU = 0.4					// Probability or ratio for mutation
 	private val MAX_CYCLES = 400			// Maximum number of iterations during the optimization
 	private val CUTOFF_SLOPE = -0.003		// Slope for the linear soft limit
@@ -57,7 +55,7 @@ object GAEval extends Eval {
 	private val softLimit = (n: Int) => CUTOFF_SLOPE*n + CUTOFF_INTERCEPT	   
 	private val NUM_SIGNALS_PER_STRATEGY = 3 // Number of trading signals per trading strategy (= number of genes in a chromosome)
    	    
-		// Default data conv
+		// Default data conversion
 	implicit val digitize = new Discretization(R)
    
 

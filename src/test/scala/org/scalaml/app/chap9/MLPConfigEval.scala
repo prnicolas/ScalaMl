@@ -10,14 +10,17 @@
  */
 package org.scalaml.app.chap9
 
+import scala.util.{Random, Try, Success, Failure}
+
+import org.apache.log4j.Logger
 
 import org.scalaml.supervised.nnet._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import scala.util.{Random, Try, Success, Failure}
-import org.apache.log4j.Logger
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
+
+import ScalaMl._
 
 
 object MLPConfigEval extends Eval {

@@ -10,12 +10,13 @@
  */
 package org.scalaml.ga
 
-import Chromosome._
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
+
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
+import Chromosome._
 
 		/**
 		 * <p>Define the replication cycle in the execution of the genetic algorithm optimizer.
@@ -31,7 +32,6 @@ import org.scalaml.util.Display
 		 *  @since August 28, 2013
 		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
-
 final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   
 	require(score != null, "Reproduction Chromosome scoring function of GA is undefined")
 	

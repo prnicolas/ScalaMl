@@ -10,20 +10,18 @@
  */
 package org.scalaml.filtering
 
+import scala.Array.canBuildFrom
+import scala.annotation.implicitNotFound
+import scala.util.{Try, Success, Failure, Random}
 
 import org.apache.commons.math3.linear._
 import org.apache.commons.math3.filter._
 import org.apache.log4j.Logger
+
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.Display
-
-import scala.util.Random
-import scala.Array.canBuildFrom
-import scala.annotation.implicitNotFound
-import scala.util.{Try, Success, Failure}
-
 
 
 		/**
@@ -130,19 +128,30 @@ final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: Dbl
 		 */
 	private def initialize(input: DblVector): Unit = {  	
 		val pModel = new DefaultProcessModel(A, B, Q, input, P)
-		val mModel = new DefaultMeasurementModel(H, R)                 
-
+		val mModel = new DefaultMeasurementModel(H, R)
+			// Create a Kalman filter with a model pModel for the process
+			// and a model mModel for the measurement.
 		filter = new KalmanFilter(pModel, mModel)
+			// Conversion to Apache Commons Math internal types
 		x = new ArrayRealVector(input)
 	}
   
+		/**
+		 * Compute the new state of the Kalman iterative computation
+		 */
 	private def newState: DblVector = {
 		import org.scalaml.core.Types.CommonMath._
 		
+			// Update the filter with the predictive value for x
+			// and update it with the A transition matrix with the process noise qr.Q
 		filter.predict
 		x = A.operate(x).add(qrNoise.noisyQ) 
 
+			// Compute the measured value z with the new update input value 
+			// using the measurement-statement dependency matrix H
 		val z = H.operate(x).add(qrNoise.noisyR)
+		
+			// Update the filter with the new estimated measured value z
 		filter.correct(z)
 		filter.getStateEstimation	
 	}
@@ -189,10 +198,10 @@ object DKalman {
 
   
 	private def check(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix): Unit = {
-		require(A != null && H != null && P != null, "Cannot create a Kalman filter with undefined parameters")
-		require( A.size ==B.size && A(0).size == B(0).size, s"Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and B(${B.size}x${B(0).size})")
-		require( A.size == H.size && A(0).size == H(0).size, s"Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and H(${H.size}x${H(0).size})")
-		require( A.size == P.size && A(0).size == P(0).size, s"Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and P(${P.size}x${P(0).size})")
+		require(A != null && H != null && P != null, "DKalman.check Cannot create a Kalman filter with undefined parameters")
+		require( A.size ==B.size && A(0).size == B(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and B(${B.size}x${B(0).size})")
+		require( A.size == H.size && A(0).size == H(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and H(${H.size}x${H(0).size})")
+		require( A.size == P.size && A(0).size == P(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and P(${P.size}x${P(0).size})")
 	}
 }
 

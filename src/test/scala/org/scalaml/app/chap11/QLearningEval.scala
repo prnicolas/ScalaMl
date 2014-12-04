@@ -46,7 +46,8 @@ object QLearningEval extends Eval {
 	private val NUM_EPISODES = 60
 	private val MIN_ACCURACY = 0.55
     
-		/** <p>Execution of the scalatest for <b>QLearning</b> class.
+		/** 
+		 * <p>Execution of the scalatest for <b>QLearning</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 

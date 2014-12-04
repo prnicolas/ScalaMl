@@ -10,10 +10,12 @@
  */
 package org.scalaml.ga
 
+import scala.util.Random
 import scala.annotation.implicitNotFound
+
 import Gene._
 import Chromosome._
-import scala.util.Random
+
 
 		/**
 		 * <p>Class that implements a parameterized chromosome using an encoding scheme and
@@ -67,11 +69,12 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @throws IllegalArgumentException if mu is out of range
 		 * @return A new mutated chromosome
 		 */
-	def ^ (gIdx: GeneticIndices): Chromosome[T] = {             	       
+	def ^ (gIdx: GeneticIndices): Chromosome[T] = {
 			// Get the mutation index in the gene to mutate, chOpIdx
 		val mutated = code(gIdx.chOpIdx) ^ gIdx
 		val xs = Range(0, code.size).map(i => 
-			if(i == gIdx.chOpIdx) mutated.asInstanceOf[T] else code(i)).toList
+			if(i == gIdx.chOpIdx) mutated.asInstanceOf[T] else code(i)
+		).toList
 		Chromosome[T](xs)
 	}
      

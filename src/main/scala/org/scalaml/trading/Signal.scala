@@ -41,7 +41,7 @@ import scala.collection.mutable.TreeSet
 		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
 		 * 
 		 * @throws IllegalArgumentException if the class parameters are not properily defined.
-		 * @throws ImplicitNotFoundException if the disretization function has not been defined.
+		 * @throws ImplicitNotFoundException if the discretization function has not been defined.
 		 * @see org.scalaml.ga.Gene
 		 * 
 		 * @author Patrick Nicolas
@@ -49,10 +49,10 @@ import scala.collection.mutable.TreeSet
 		 * @since March 4, 2014 Appendix Finances 101 / Technical analysis
 		 */
 @implicitNotFound("Signal does not have a discretization function implicitly defined")
-class Signal(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) 
-					extends Gene(_id, _target, _op) {
+final class Signal(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) 
+					extends Gene(id, target, op) {
 	import Signal._
-	check(_id, _target, _op, xt, weights)
+	check(id, target, op, xt, weights)
    
 		/**
 		 * Computation of the score of this trading signal by comparing a value with the threshold, value

@@ -10,14 +10,16 @@
  */
 package org.scalaml.ga
 
-import scala.collection.mutable.ArrayBuffer
-import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import Chromosome._
 import java.util.{HashSet, Arrays}
-import Population._
+import scala.collection.mutable.ArrayBuffer
+
+import org.apache.log4j.Logger
+
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
+import Chromosome._
+import Population._
 
 
 
@@ -73,8 +75,8 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @throws IllegalArgumentException if the newCode is either undefined or has an incorrect size.
 		 */
 	protected def += (newCode: List[T]): Unit = {
-		require(newCode != null, "Population.+=: Cannot add an undefined chromosome to this population")
-		require(newCode.size == chromosomes(0).size, s"Population.+=: The number of genes ${newCode.size} is inconsistent the chromosome size ${chromosomes(0).size}")
+		require(newCode != null, "Population.+=: Cannot add an undefined chromosome")
+		require(newCode.size == chromosomes(0).size, s"Population.+=: The number of genes ${newCode.size} is inconsistent with the chromosome size ${chromosomes(0).size}")
 		chromosomes += new Chromosome[T](newCode)
 	}
   
@@ -88,10 +90,13 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @throws IllegalArgumenException if the cutoff is out of bounds or the scoring function is undefined
 		 */
 	def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
-		require(score != null, "Population.select Cannot select chromosomes in a population with undefined fitness function")
+		require(score != null, "Population.select Cannot select chromosomes with undefined fitness function")
 		require(cutOff > 0.0 && cutOff < 1.01, s"Population.select Cannot select with a cutoff $cutOff out of range")
 		
-		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {score(xy); s + xy.unfitness })
+		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {
+			score(xy)
+			s + xy.unfitness 
+		})
 		chromosomes foreach( _ /= cumul)
 		val newChromosomes = chromosomes.sortWith(_.unfitness < _.unfitness)
 
@@ -115,7 +120,6 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 */
 	final def chromosomeSize: Int = if(chromosomes.size > 0) chromosomes.head.size else -1
     
-    
 		/**
 		 * <p>Applies the cross-over operator on the population by pairing
 		 * the half most fit chromosomes with the half least fit chromosomes.</p>
@@ -129,7 +133,10 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 			val mid = size>>1
 			val bottom = chromosomes.slice(mid,  size)              
 			val gIdx = geneticIndices(xOver)
-			val offSprings = chromosomes.take(mid).zip(bottom).map(p => p._1 +- (p._2, gIdx)).unzip
+			val offSprings = chromosomes.take(mid)
+										.zip(bottom)
+										.map(p => p._1 +- (p._2, gIdx))
+										.unzip
 			chromosomes ++= offSprings._1 ++ offSprings._2
 		}
 	}
@@ -222,10 +229,18 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	
 	private[this] def geneticIndices(prob: Double): GeneticIndices = {
 		var idx = (prob*chromosomeSize).floor.toInt
-		val chIdx = if(idx == 0) 1 else if(idx == chromosomeSize) chromosomeSize-1 else idx
+		val chIdx = if(idx == 0) 
+						1 
+					else 
+						if(idx == chromosomeSize) chromosomeSize-1 else idx
 	        
 		idx = (prob*geneSize).floor.toInt
-		val gIdx = if(idx == 0) 1 else if(idx == geneSize) geneSize-1 else idx
+		val gIdx = if(idx == 0) 
+						1 
+					else if(idx == geneSize) 
+						geneSize-1 
+					else 
+						idx
 		GeneticIndices(chIdx, gIdx)	
 	}
 }
@@ -255,7 +270,6 @@ object Population{
 		 */
 	def apply[T <: Gene](limit: Int, chromosomes: List[Chromosome[T]]): Population[T] = 
 		new Population[T](limit, new Pool[T] ++ chromosomes)
-
 
 	private val MAX_NUM_CHROMOSOMES = 10000
 	private def check[T <: Gene](limit: Int, chromosomes: Pool[T]): Unit  = {

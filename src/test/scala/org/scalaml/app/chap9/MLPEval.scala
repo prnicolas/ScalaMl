@@ -46,7 +46,7 @@ object MLPEval extends Eval {
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	val TEST_CASES = List[Array[String]](
+	private val STUDIES = List[Array[String]](
 		Array[String]("FXY", "FXC", "GLD", "FXA"),
 		Array[String]("FXE", "FXF", "FXB", "CYB"),
 		Array[String]("FXE", "FXC", "GLD", "FXA", "FXY", "FXB"),
@@ -55,16 +55,12 @@ object MLPEval extends Eval {
 		symbols	
 	)
   
-  
-	private val index: Map[String, Int] = {
-		import scala.collection.mutable.HashMap
-  		 
-		val _index = new HashMap[String, Int]
-		symbols.zipWithIndex.foldLeft(new HashMap[String, Int])((mp, si) 
-				=> {mp.put(si._1, si._2); mp}).toMap
-	}
-
-  	
+  		/**
+		 * <p>Execution of the scalatest for <b>MLP</b> class 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int =  {
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name MLP classifier without SoftMax conversion", logger)
        
@@ -86,15 +82,17 @@ object MLPEval extends Eval {
   
 		val startTime = System.currentTimeMillis
 		val config = MLPConfig(ALPHA, ETA, hidLayers, NUM_EPOCHS, EPS)
-		TEST_CASES.foreach(etfs => eval(prices, config, etfs))
+		
+		STUDIES.foreach(etfs => eval(prices, config, etfs))
 		Display.show(s"$name Duration ${(System.currentTimeMillis - startTime)} msecs.", logger)	
 	}
 
-	private def eval(obs: DblMatrix, config: MLPConfig, etfsSet: Array[String]): Int = {
-		accuracy(etfsSet, obs, config) match {
-			case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-			case None => Display.error(s"$name could not compute the accuracy", logger)
-		}
+	private def eval(obs: DblMatrix, 
+					config: MLPConfig, 
+					etfsSet: Array[String]): Int = accuracy(etfsSet, obs, config) match {
+	  
+		case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
+		case None => Display.error(s"$name could not compute the accuracy", logger)
 	}
  
 
@@ -110,7 +108,15 @@ object MLPEval extends Eval {
 		classifier.accuracy(THRESHOLD)
 	}
   
-  
+    
+	private val index: Map[String, Int] = {
+		import scala.collection.mutable.HashMap
+  		 
+		val _index = new HashMap[String, Int]
+		symbols.zipWithIndex.foldLeft(new HashMap[String, Int])((mp, si) 
+				=> {mp.put(si._1, si._2); mp}).toMap
+	}
+
 	private def toString(symbols: Array[String]): String = 
 		new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s"$s ")).toString)
 				.append(s"=> ${symbols(0)}").toString

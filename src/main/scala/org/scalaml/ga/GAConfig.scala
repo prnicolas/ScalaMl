@@ -13,8 +13,6 @@ package org.scalaml.ga
 import org.scalaml.core.design.Config
 
 
-
-
 		/**
 		 * <p>Configuration class that define the key parameters for the execution of the
 		 * genetic algorithm optimizer. Mutation and/or Cross-over parameters may be computed using an attenuator using the

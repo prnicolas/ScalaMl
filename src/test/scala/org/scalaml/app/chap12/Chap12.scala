@@ -13,22 +13,37 @@ package org.scalaml.app.chap12
 import org.scalaml.app.ScalaMlTest
 
 
-
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 12 Scalable frameworks<br>
+		 * <ul>
+		 * 	 <li>Scala parallel collections</li>
+		 * 	 <li>Akka actors Master-worker</li>
+		 *   <li>Akka futures</li>
+		 *   <li>Apache Spark MLlib-K-mean</li>  
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks
+		 */
 final class Chap12 extends ScalaMlTest  {
-	val chapter: String = "Chap 12"
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 12"
   	 
 	test(s"$chapter Scala parallel collections") {
 		evaluate(ParBenchmarkEval)
 	}
-	test(s"$chapter Akka actors evaluation") {
+	test(s"$chapter Akka actors Master-worker") {
 		evaluate(ActorsManagerEval)
 	}
 	
-	test(s"$chapter Akka futures evaluation") {
+	test(s"$chapter Akka futures") {
 		evaluate(TransformFuturesEval)
 	}
 
-	test(s"$chapter Spark K-means evaluation") {
+	test(s"$chapter Apache Spark MLlib-K-means") {
 		evaluate(SparkKMeansEval)
 	}
 }

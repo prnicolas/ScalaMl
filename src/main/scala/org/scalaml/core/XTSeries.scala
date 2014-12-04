@@ -10,15 +10,18 @@
  */
 package org.scalaml.core
 
-import scala.reflect.ClassTag
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.stats.Stats
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import scala.reflect.ClassTag
 import scala.language.implicitConversions
+
+import org.apache.log4j.Logger
+
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.stats.Stats
+import org.scalaml.util.Display
+import ScalaMl._
 
 		/**
 		 * <p>Generic class for time series. Any type from different libraries are converted into 

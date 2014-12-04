@@ -13,25 +13,42 @@ package org.scalaml.app.chap9
 import org.scalaml.app.ScalaMlTest
 
 
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 9 Artificial neural networks<br>
+		 * <ul>
+		 * 	 <li>Multi-layer perceptron - eta factor</li>
+		 *   <li>Multi-layer perceptron - alpha factor</li>
+		 *   <li>Multi-layer perceptron - validation</li>
+		 *   <li>Multi-layer perceptron - Synthetic binomial classification</li>
+		 *   <li>Multi-layer perceptron - binomial classification for ETFs</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial neural networks
+		 */
 final class Chap9 extends ScalaMlTest {
-	val chapter: String = "Chap 9"
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 9"
     
-	test(s"$chapter Multi-perceptron - eta factor") {
+	test(s"$chapter Multi-layer perceptron - eta factor") {
 		evaluate(MLPConfigEval, Array[String]("eta"))
 	}
   
-	test(s"$chapter Multi-perceptron - alpha factor") {
+	test(s"$chapter Multi-layer perceptron - alpha factor") {
 		evaluate(MLPConfigEval, Array[String]("alpha"))
 	}
   
-	test(s"$chapter Multi-perceptron - validation") {
+	test(s"$chapter Multi-layer perceptron - validation") {
 		evaluate(MLPValidation)
 	}
-	test(s"$chapter Multi-perceptron - Synthetic binomial classification") {
+	test(s"$chapter Multi-layer perceptron - Synthetic binomial classification") {
 		evaluate(BinaryMLPEval)
 	}
   
-	test(s"$chapter Multi-perceptron - binomial classification for ETFs correlation") {
+	test(s"$chapter Multi-layer perceptron - binomial classification for ETFs") {
 		evaluate(MLPEval)
 	}
 }

@@ -16,18 +16,21 @@ import org.scalaml.app.ScalaMlTest
 
 
 		/**
-		 * <p>Test driver for the techniques described in this chapter<br>
+		 * <p>Test driver for the techniques described in the chapter 2 "Hello World!"<br>
 		 * <ul>
 		 *   <li>JDependency injection base workflow</li>
 		 *   <li>Bias-Variance decomposition</li>
 		 * </ul></p>
-		 * 
+		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since February 1, 20
-		 * @note Scala for Machine Learning.
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning chapter 2 "Hello World!"
 		 */
-final class Chap2 extends ScalaMlTest {	
-	val chapter: String = "Chap 2"
+final class Chap2 extends ScalaMlTest {
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 2"
    
 	test(s"$chapter Workflow evaluation") {
 		evaluate(WorkflowEval)

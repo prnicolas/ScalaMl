@@ -10,11 +10,9 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
-/**
- *  @author Patrick Nicolas
- *  @date Sep 20, 2014
- *  @project Book
- */
+
+
+
 object BinaryMLPTest extends Eval {
 	val name: String = "BinaryMLPTest"
 	val maxExecutionTime: Int = 25000

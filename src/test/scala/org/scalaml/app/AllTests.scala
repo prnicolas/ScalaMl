@@ -10,6 +10,7 @@
  */
 package org.scalaml.app
 
+
 import org.scalaml.app.chap1._
 import org.scalaml.app.chap2._
 import org.scalaml.app.chap3._
@@ -22,8 +23,6 @@ import org.scalaml.app.chap9._
 import org.scalaml.app.chap10._
 import org.scalaml.app.chap11._
 import org.scalaml.app.chap12._
-import akka.actor.{ActorSystem, Actor, Props, ActorRef}
-import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
@@ -32,11 +31,13 @@ import org.scalaml.util.Display
 		/**
 		 * <p>Singleton that executes all the test clases in Scala for Machine Learning.<br>
 		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
-		 * command line <i>sbt test:run</i></p>
-		 * @param chapter Name of the chapter for cross-reference
+		 * command line <i>sbt test:run</i><br>
+		 * Each test is implemented as an actor that terminates when either the test completes
+		 * or the time out is exceeded.</p>
+		 * @param Name of the chapter or 'test-run" if the tests for all teh chapters are executed.
 		 */
 protected object AllTests extends ScalaMlTest {
-	val chapter: String = "All-Tests"
+	val chapter: String = "test-run"
 
 	private val logger = Logger.getLogger("AllTests")
 	
@@ -124,16 +125,21 @@ protected object AllTests extends ScalaMlTest {
 		Display.show(s"$chapter exit", logger)
 	}
 	
-	private def run(eval: Eval, args: Array[String] = Array.empty) {
+	private def run(eval: Eval, args: Array[String] = Array.empty): Unit = {
+		import akka.actor.{ActorSystem, Actor, Props, ActorRef}
+		import scala.util.{Try, Success, Failure}
+		
 	  		println(s"Start ${eval.name}")
 		var completed = false
-	  		// Anonymous Akka actor that wraps the execution of the scala test.
+	  		
+			// Anonymous Akka actor that wraps the execution of the scala test.
 		val worker = TestContext.actorSystem.actorOf(Props(new Actor {
 			def receive = { 
 				case msg: String => {
 					completed = evaluate(eval, args)
 					context.stop(self)
 				}
+				case _ => { } // Ignore
 			}
 		}))
 		var errorMsg = "failed"
@@ -154,15 +160,19 @@ protected object AllTests extends ScalaMlTest {
 			}
 			println(s"End ${eval.name}")
 			completed
-		} match {
-			case Success(n) => Display.show(s"$chapter done", logger)
+		} 
+	  	match {
+			case Success(n) => { } // No message needed
 			case Failure(e) => Display.error(s"$chapter failed ", logger, e)
 		}
 	}
 }
 
 
-
+		/**
+		 * <p>Driver called by simple build tool (SBT) as test:run
+		 * @author Patrick Nicolas
+		 */
 object AllTestsApp extends App  {
 	AllTests.test
 }

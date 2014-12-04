@@ -10,12 +10,12 @@
  */
 package org.scalaml.filtering
 
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.PipeOperator
 import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.design.PipeOperator
 
 
 		/**
@@ -56,7 +56,11 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 0) => {
+			
+				// Create a sliding window as a array of pairs of 
+				// values (x(t), x(t-p))
 			val slider = xt.take(xt.size - period).zip(xt.drop(period) )
+				// Compute the average value over the time window
 			val a0 =  xt.take(period).toArray.sum/period
 			var a: Double = a0
 
@@ -77,7 +81,10 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 */
 	def get : PartialFunction[DblVector, DblVector] = {
 		case data: DblVector if(data != null && data.size > 0) => {
+				// Create a sliding window as a array of pairs of 
+				// values (x(t), x(t-p))
 			val slider = data.take(data.size - period).zip(data.drop(period) )
+				// Compute the average value over the time window
 			val a0 = data.take(period).sum/period
       
 			var a = a0
@@ -136,8 +143,12 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](period:
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
 			val alpha_1 = 1-alpha
 			var y: Double = xt(0)
-			
-			xt.map(x => {val z = x*alpha + y*alpha_1; y = z;  z })
+				// Applies the exponential smoothing formula for each data pojnt
+			xt.map(x => {
+				val z = x*alpha + y*alpha_1
+				y = z
+				z 
+			})
 		}
 	}
 }
@@ -188,10 +199,14 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: Dbl
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
+			
+				// Compute the smoothed time series by apply zipping a
+				// time window (array slice) and normalized weights distribution
+				// and computing their dot production
 			val smoothed =  Range(weights.size, xt.size).map( i => {
 				xt.toArray.slice(i- weights.size , i)
-							.zip(weights)
-							.foldLeft(0.0)((s, x) => s + x._1*x._2)
+						.zip(weights)
+						.foldLeft(0.0)((s, x) => s + x._1*x._2)  // dot product
 			})
 			XTSeries[Double](Array.fill(weights.size)(0.0) ++ smoothed)
 		}

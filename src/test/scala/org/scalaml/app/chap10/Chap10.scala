@@ -13,11 +13,23 @@ package org.scalaml.app.chap10
 import org.scalaml.app.ScalaMlTest
 
 
-
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 10 Genetic algorithm<br>
+		 * <ul>
+		 * 	 <li>Genetic algorithm</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 10 Genetic algorithm
+		 */
 final class Chap10 extends ScalaMlTest  {
-	val chapter: String = "Chap 10"
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 10"
 	
-	test(s"$chapter evaluate genetic Algorithm") {
+	test(s"$chapter Genetic algorithm") {
 		evaluate(GAEval)
 	}
 }

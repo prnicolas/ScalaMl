@@ -12,6 +12,7 @@ package org.scalaml.ga
 
 import java.util.BitSet
 import scala.annotation.implicitNotFound
+
 import org.scalaml.core.Types.ScalaMl.DblVector
 
 
@@ -45,8 +46,8 @@ trait Operator {
 		 * Define the Null operator in the symbolic representation of a gene
 		 */
 object NO_OPERATOR extends Operator {
-  override def id: Int = -1
-  def apply(idx: Int): Operator = NO_OPERATOR
+	override def id: Int = -1
+	def apply(idx: Int): Operator = NO_OPERATOR
 }
 
 
@@ -67,7 +68,7 @@ import Gene._
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
 		 */
 case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
-   def this(R: Int) = this((x: Double) => (x*R).floor.toInt, (n: Int) => n/R)
+	def this(R: Int) = this((x: Double) => (x*R).floor.toInt, (n: Int) => n/R)
 }
 
  
@@ -103,8 +104,8 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit discr:
   		 */
 	val bits = {
 		val bitset = new BitSet(GENE_SIZE)
-		rOp foreach( i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
-		rValue foreach( i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
+		rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
+		rValue foreach(i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
 		bitset	
 	}
   
@@ -141,7 +142,10 @@ class Gene(val id: String, val target: Double, val op: Operator)(implicit discr:
        
 		val clonedBits = cloneBits(bits)
 		Range(gIdx.geneOpIdx, bits.size).foreach(n => 
-			if( that.bits.get(n) ) clonedBits.set(n) else clonedBits.clear(n)
+			if( that.bits.get(n) ) 
+				clonedBits.set(n) 
+			else 
+				clonedBits.clear(n)
 		)
  	
 		val valOp = decode(clonedBits)

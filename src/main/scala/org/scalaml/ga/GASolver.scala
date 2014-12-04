@@ -12,11 +12,12 @@ package org.scalaml.ga
 
 import scala.util.Random
 
+import org.apache.log4j.Logger
+
 import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.ga.state._
-import org.scalaml.core.XTSeries
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
 import Chromosome._
@@ -38,7 +39,7 @@ import Chromosome._
 		 * @since August 29, 2013
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
 		 */
-final protected class GASolver[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit) 
+final protected class GASolver[T <: Gene](config: GAConfig, score: Chromosome[T] => Unit) 
 			extends PipeOperator[Population[T], Population[T]] {
 
 	require(config != null, "GASolver configuration  is undefined")

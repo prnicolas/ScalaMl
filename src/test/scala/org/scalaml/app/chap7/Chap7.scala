@@ -14,25 +14,33 @@ import org.scalaml.app.ScalaMlTest
 
 
 
-	/**
-	 * Test class to execute the test cases presented in Chapter7
-	 * 
-	 * @author Patrick Nicolas
-	 * @since March 25, 2014
-	 * @note Scala for Machine Learning
-	 */
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 7 Sequential data models<br>
+		 * <ul>
+		 * 	 <li>Hidden Markov Model evaluation form</li>
+		 *   <li>Hidden Markov Model training form</li>
+		 *   <li>Conditional Random Fields</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 7 Sequential data model
+		 */
 final class Chap7 extends ScalaMlTest {
-	val chapter: String = "Chap 7"
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 7"
 	
-	test(s"$chapter Hidden Markov Model evaluation") {
+	test(s"$chapter Hidden Markov Model evaluation form") {
 		evaluate(HMMEval, Array[String]("evaluation"))
 	}
    
-	test(s"$chapter Hidden Markov Model training") {
+	test(s"$chapter Hidden Markov Model training form") {
 		evaluate(HMMEval, Array[String]("training"))
 	}
 
-	test(s"$chapter Conditional Random Fields evaluation") {
+	test(s"$chapter Conditional Random Fields") {
 		evaluate(CrfEval)
 	}
 }

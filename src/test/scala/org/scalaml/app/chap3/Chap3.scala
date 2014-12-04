@@ -15,29 +15,58 @@ import org.scalaml.app.ScalaMlTest
 import scala.language.implicitConversions
 import org.scalaml.app.Eval
 
+
+		/**
+		 * Trait to evaluate the filtering techniques presented in Chapter 3
+		 * @see org.scalaml.app.Eval
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing
+		 */
 trait FilteringEval extends Eval {
+	
+		/** 
+		 * <p>Execution of the scalatest for filtering technique.</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String]): Int
 }
 
 
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 3 Data pre-processing<br>
+		 * <ul>
+		 * 	 <li>Moving averages</li>
+		 *   <li>Discrete Fourier Series with Synthetic time series</li>
+		 *   <li>Discrete Fourier Series for financial analysis</li>
+		 *   <li>Kalman filter for financial analysis</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing
+		 */
 final class Chap3 extends ScalaMlTest  {  
+		/**
+		 * Name of the chapter the tests are related to
+		 */
 	val chapter: String = "Chap 3"
-	val maxExecutionTime: Int = 8000
 		
 	implicit def double2String(x: Double): String = x.toString
-	test(s"$chapter Moving averages evaluation") {
+	test(s"$chapter Moving averages") {
 		evaluate(MovingAveragesEval, Array[String]("BAC", "10")) 
 	}
 	
-	test(s"$chapter Discrete Fourier Series synthetic evaluation") {
+	test(s"$chapter Discrete Fourier Series with Synthetic time series") {
 		evaluate(DFTEval)
 	}
 	
-	test(s"$chapter Discrete Fourier Series evaluation on stock") {
+	test(s"$chapter Discrete Fourier Series for financial analysis") {
 		evaluate(DFTEval, Array[String]("BAC"))
 	}
 	
-	test(s"$chapter Kalman filter evaluation") {
+	test(s"$chapter Kalman filter for financial analysis") {
 	   evaluate(new DKalmanEval, Array[String]("BAC"))
 	}
 }

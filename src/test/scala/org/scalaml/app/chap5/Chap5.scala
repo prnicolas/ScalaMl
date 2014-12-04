@@ -13,11 +13,27 @@ package org.scalaml.app.chap5
 import org.scalaml.app.ScalaMlTest
 
 
+
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 5 Naive Bayes models<br>
+		 * <ul>
+		 * 	 <li>Binomial Naive Bayes</li>
+		 *   <li>Naive Bayes text analysis</li>
+		 *   <li>Naive Bayes and function classification</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
+		 */
 final class Chap5 extends ScalaMlTest {
+		/**
+		 * Name of the chapter the tests are related to
+		 */
 	val chapter: String = "Chap5"
 
 	
-	test(s"$chapter Binomial Naive Bayes evaluation") {
+	test(s"$chapter Binomial Naive Bayes") {
 		val TRAIN_VALIDATION_RATIO = "0.8"
 		evaluate(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))
   	  
@@ -34,7 +50,7 @@ final class Chap5 extends ScalaMlTest {
 		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
 	}
    
-	test(s"$chapter Naive Bayes text analysis evaluation") {
+	test(s"$chapter Naive Bayes text analysis") {
 		evaluate(TextBayesEval)
 	}
    

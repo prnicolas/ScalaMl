@@ -38,7 +38,7 @@ final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[I
 								extends Config {
 	import MLPConfig._
 	val persists = "config/mlp"
-	  
+
 	check(alpha, eta, numEpochs, activation)
 
 		/**
@@ -46,7 +46,7 @@ final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[I
 		 * @return 1 if there is no hidden layers, the id of the last hidden layer + 1, otherwise
 		 */
 	final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
-    
+
 		/**
 		 * <p>Return the number of hidden layers in this Neural network.</p>
 		 * @return 0 if there is no hidden layer, the size of the hidLayer array or sequence otherwise
@@ -62,6 +62,7 @@ final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[I
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 4, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron
 		 */
 object MLPConfig {
 	private val EPS: Double = 1e-17

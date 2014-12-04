@@ -15,23 +15,27 @@ import org.scalaml.app.ScalaMlTest
 
 
 		/**
-		 * <p>Test driver for the techniques described in this chapter<br>
+		 * <p>Test driver for the techniques described in the Chapter 1 Getting started<br>
 		 * <ul>
+		 * 	 <li>Logistic Binary classifier</li>
 		 *   <li>JFreeChart plots</li>
-		 *   <li>Logistic Binary classifier</li>
 		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since December 11, 2013
-		 * @note Scala for Machine Learning.
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 1 Getting Started
 		 */
 final class Chap1 extends ScalaMlTest {
-	val chapter: String = "Chap 1"
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 1"
 	
 	test(s"$chapter Simple Binary Logistic Regression") {
 		evaluate(LogBinRegressionEval)
 	}
 	
-	test(s"$chapter JFreeChart Plotting") {
+	test(s"$chapter JFreeChart Plots") {
 		evaluate(PlotterEval)
 	}
 }

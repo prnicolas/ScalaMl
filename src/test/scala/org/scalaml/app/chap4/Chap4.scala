@@ -14,34 +14,60 @@ package org.scalaml.app.chap4
 import org.scalatest.FunSuite
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.app.ScalaMlTest
-import org.scalaml.app.Eval
+import org.scalaml.app.{ScalaMlTest, Eval}
 
+
+		/**
+		 * Trait to evaluate the filtering techniques presented in Chapter 4
+		 * @see org.scalaml.app.Eval
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing
+		 */
 trait UnsupervisedLearningEval extends Eval {
 	final val path = "resources/data/chap4/"
-       
+
+		/**
+		 * <p>Execution of the scalatest for Unsupervised techniques.</p>
+		 * @param args array of arguments used in the test
+		 * @return -1 in case error a positive or null value if the test succeeds. 
+		 */
 	def run(args: Array[String] = Array.empty): Int
+	
 	protected val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
 	protected def symbolFiles = DataSource.listSymbolFiles(path)
 }
 
-
+		/**
+		 * <p>Test driver for the techniques described in the Chapter 4 Unsupervised learning<br>
+		 * <ul>
+		 * 	 <li>K-means clustering</li>
+		 *   <li>Expectation-Maximization clustering</li>
+		 *   <li>Principal Components Analysis</li>
+		 * </ul></p>
+		 * @see org.scalaml.app.ScalaMlTest
+		 * @author Patrick Nicolas
+		 * @since May 28, 2014
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning
+		 */
 final class Chap4 extends ScalaMlTest { 
-	val chapter: String = "Chap 3"
-    val maxExecutionTime: Int = 5000
+		/**
+		 * Name of the chapter the tests are related to
+		 */
+	val chapter: String = "Chapter 3"
     
-	test("K-means evaluation") {
+	test(s"$chapter K-means clustering") {
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
 		evaluate(KMeansEval, input)
 	}
 	
-	test("Expectation-Maximization evaluation") {
+	test(s"$chapter Expectation-Maximization clustering") {
 		evaluate(EMEval, Array[String]("2", "40"))
 		evaluate(EMEval, Array[String]("3", "25"))
 		evaluate(EMEval, Array[String]("4", "15"))
 	}
 	
-	test("Principal Components Evaluation") {
+	test(s"$chapter Principal Components Analysis") {
 		evaluate(PCAEval)
 	}
 }
