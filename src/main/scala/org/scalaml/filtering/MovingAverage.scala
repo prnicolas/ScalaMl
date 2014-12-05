@@ -14,9 +14,9 @@ import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-
+import ScalaMl._
 
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>

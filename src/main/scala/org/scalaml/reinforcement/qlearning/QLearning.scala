@@ -10,16 +10,11 @@
  */
 package org.scalaml.reinforcement.qlearning
 
-import org.scalaml.util.Matrix
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.{Config, PipeOperator}
-import org.scalaml.util.Display
-
 import org.apache.log4j.Logger
 
-import scala.collection.mutable.ArrayBuffer
-import scala.util.{Random, Try, Success, Failure}
-import org.scalaml.core.design.Model
+import org.scalaml.util.{Matrix, Display}
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.design.{Config, PipeOperator, Model}
 
 
 		/**
@@ -27,12 +22,18 @@ import org.scalaml.core.design.Model
 		 * @constructor Model created during training of Q-learning. 
 		 * @param bestPolicy Best policy computed or estimated during training.
 		 * @param coverage  Ratio of training trial or epochs that reach a predefined goal state.
+		 * @see org.scalaml.core.design.Model
+		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  extends Model {
-	val persists = "models/qlearning"
+	
+		/**
+		 * Name of the file that persists the model for Q-learning
+		 */
+	protected val persists = "model/qlearning"
 	override def toString: String = s"Optimal policy: ${bestPolicy.toString}\nTraining coverage: $coverage" 
 }
 
@@ -52,14 +53,19 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  exten
 		 * @param config Configuration for the Q-learning algorithm
 		 * @param qlSpace Initial search space of states
 		 * @param qlPolicy Initial policy for the search
+		 * @seep org.scalaml.core.design.PipeOperator
+		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning Q-learning
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning / Q-learning
 		 */
 final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]) 
 								extends PipeOperator[QLState[T], QLState[T]]  {
-   
+
+	import scala.collection.mutable.ArrayBuffer
+	import scala.util.{Random, Try, Success, Failure}
 	import QLearning._
+	
 	private val logger = Logger.getLogger("QLearning")
 	check(config, qlSpace, qlPolicy)
    
@@ -154,12 +160,12 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * @param from Identifier for the source state
 		 * @param to Identifier for the target or destination state
 		 * @param reward reward (credit or penalty) to transition from state with id <b>from</b> to the state with id <b>to</b>
-		 * @param prob Probability to transition from state <b>from</b> to state <b>to</b>
+		 * @param probability Probability to transition from state <b>from</b> to state <b>to</b>
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
-class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
+final class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val probability: Double = 1.0)
 
 
 

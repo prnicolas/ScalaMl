@@ -10,21 +10,24 @@
  */
 package org.scalaml.workflow.data
 
+import org.apache.log4j.Logger
 
 import org.scalaml.core.XTSeries
-import java.io.{FileNotFoundException, IOException}
 import org.scalaml.stats.Stats
-import scala.Array.canBuildFrom
 import org.scalaml.core.design.PipeOperator
-import scala.io.Source
-import org.scalaml.core.Types.ScalaMl._
-import org.apache.log4j.Logger
-import scala.util.{Try, Failure, Success}
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.Display
-import DataSource._
+
+import DataSource._, ScalaMl._
 
 		/**
-		 * <p>Generic class to load or save files into either HDFS or local files system.</p>
+		 * <p>Generic class to load or save files into either HDFS or local files system. The
+		 * data source loads content from 
+		 * <ul>
+		 *   <li>A file if the path name is a csv delimited file</li>
+		 *   <li>A list of files if the path name is a directory contains csv delimited files</li>
+		 *   <li>A list of csv delimited files associated to a list of symbol as 'symbol" => "symbol.csv"</li>
+		 * </ul></p>
 		 * @constructor Create a data source. 
 		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value is out of range
 		 * @param pathName Relative path for the data files.
@@ -32,22 +35,30 @@ import DataSource._
 		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
 		 * @param headerLines Number of header lines in the file.
 		 * @param srcFilter Source filter applied to the data source stream.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
 		 * @note Scala for Machine Learning
 		 */
-final class DataSource(	pathName: String, 
+final class DataSource(pathName: String, 
 						normalize: Boolean, 
 						reverseOrder: Boolean, 
 						headerLines: Int = 1, 
 						srcFilter: Option[Fields => Boolean]= None) 
-						extends PipeOperator[List[Fields =>Double], List[DblVector]] {
+					extends PipeOperator[List[Fields =>Double], List[DblVector]] {
 	   
 	import scala.io.Source
+	import scala.util.{Try, Failure, Success}
+	
 	check(pathName, headerLines)
 	
 	private val logger = Logger.getLogger("DataSource")
-   
+
+		/**
+		 * List of CSV files contained in a directory defined in the path if 
+		 * it is a directory. The list contains the name of the path is 
+		 * it is a file
+		 */
 	val fileList = {
 		import java.io.File
    
@@ -166,7 +177,8 @@ final class DataSource(	pathName: String,
 			val textFields = (fields(0), results)
 			src.close
 			textFields
-		} match {
+		} 
+		match {
 			case Success(textFields) => Some(textFields)
 			case Failure(e) => Display.none("DataSource.load ", logger, e)
 		}
@@ -174,16 +186,18 @@ final class DataSource(	pathName: String,
 }
 
 
-
+		/**
+		 * Companion object for the DataSource class. The singleton is used
+		 * to define the DataSource constructors and validate their parameters
+		 * 
+		 * @author Patrick Nicolas
+		 * @since December 11, 2013
+		 * @note Scala for Machine Learning
+		 */
 object DataSource {
 	final val CSV_DELIM = ","
 	type Fields = Array[String]
-  	
-	private def check(pathName: String, headerLines: Int): Unit =  {
-		require(pathName != null && pathName.length > 1, "DataSource.check Cannot create a data source with undefined path")
-		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines for header $headerLines")
-	}
-     
+
 		/**
 		 * <p>Generate a list of CSV files within a directory, associated with a list of symbol:<br>
 		 * symbol => directoryName/symbol.csv
@@ -191,23 +205,57 @@ object DataSource {
 		 */
 	def listSymbolFiles(directoryName: String): Array[String] = {
 		require(directoryName != null, "DataSource.listSymbolFiles Directory name is undefined")
-       
+
 		val directory = new java.io.File(directoryName)
 		val filesList =  directory.listFiles
 		if( filesList != null)  directory.listFiles.map( _.getName) else Array.empty
 	}
-  
+
+		/**
+		 * Default constructor for the DataSource
+		 * @param pathName Relative path for the data files.
+		 * @param normalize Flag to normalize data within the range [0,1].
+		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
+		 * @param headerLines Number of header lines in the file.
+		 * @param srcFilter Source filter applied to the data source stream.
+		 */
 	def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int, filter: Option[Array[String] => Boolean]): DataSource = 
 			new DataSource(pathName, normalize, reverseOrder, headerLines, filter)
-	
+
+		/**
+		 * Constructor for the DataSource without field filtering
+		 * @param pathName Relative path for the data files.
+		 * @param normalize Flag to normalize data within the range [0,1].
+		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
+		 * @param headerLines Number of header lines in the file.
+		 */
 	def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int): DataSource = 
 	  		new DataSource(pathName, normalize, reverseOrder, headerLines, None)
 	
+		/**
+		 * Constructor for the DataSource without field filtering, headerlines. The extraction
+		 * of the content does not alter the order of the datarows in the file.
+		 * @param pathName Relative path for the data files.
+		 * @param normalize Flag to normalize data within the range [0,1].
+		 */
 	def apply(pathName: String, normalize: Boolean): DataSource = 
-	  		new DataSource(pathName, normalize, true)
-	
+		new DataSource(pathName, normalize, true)
+
+		/**
+		 * Constructor for the DataSource without field filtering, headerlines. The extraction
+		 * of the content does not alter the order of the datarows in the file.
+		 * @param symName Name of the symbol associated to a file in a directory for which the content is to be extracted
+		 * @param pathName Relative path for the data files.
+		 * @param normalize Flag to normalize data within the range [0,1].
+		 */
 	def apply(symName: String, pathName: String, normalize: Boolean): DataSource = 
-	  		new DataSource(s"$pathName$symName", normalize, true)
+		new DataSource(s"$pathName$symName", normalize, true)
+
+	
+	private def check(pathName: String, headerLines: Int): Unit =  {
+		require(pathName != null && pathName.length > 1, "DataSource.check Cannot create a data source with undefined path")
+		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines for header $headerLines")
+	}
 }
 
 // ----------------------------------   EOF ----------------------------------------------

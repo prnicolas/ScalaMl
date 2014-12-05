@@ -78,7 +78,7 @@ object DFTEval extends FilteringEval {
 		import ScalaMl._
 		
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
-		val src = new DataSource("resources/data/chap3/" + symbol + ".csv", false, true)
+		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, -1, None)
 
 		val price = src |> YahooFinancials.adjClose
 		var filtered = filter(0.01, price)

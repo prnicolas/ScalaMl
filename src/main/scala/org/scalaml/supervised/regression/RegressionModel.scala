@@ -20,13 +20,18 @@ import org.scalaml.core.design.Model
 		 * @param weights Weights or parameters of the regression computed during the training of the model (class instantiation)<br>
 		 * @param rss Residual sum of the squares computed during training</p>
 		 * @constructor Create a (linear or logistic) regression model. 
+		 * @see org.scalaml.core.design.Model
 		 * 
 		 * @author Patrick Nicolas
-		 * @since @since January 09, 2014
+		 * @since January 09, 2014
 		 * @note Scala for Machine learning Chapter 6 Regression and regularization.
 		 */
 case class RegressionModel(val weights: DblVector, val rss: Double) extends Model {
-	val persists = "models/regression"
+	
+		/**
+		 * Name of the file that persists the model parameters of a regression model (weights)
+		 */
+	protected val persists = "model/regression"
 
 		/**
 		 * Return the number of weights or regression parameters in this model

@@ -37,6 +37,8 @@ import MLPLayer._
 		 * @param nInputs Input value for the Network, that is the initial value of the input layer.
 		 * @param nOutputs   Size of the output vector.
 		 * @constructor MLP model created during training. 
+		 * @see org.scalaml.core.design.Model
+		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network Multilayer perceptron Model definition
@@ -47,7 +49,11 @@ final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
 	import MLPModel._
 
 	check(config, nInputs, nOutputs)
-    val persists = "model/mlp"
+	
+		/**
+		 * Name of the file that persists the model parameters of the Multi-layer perceptron
+		 */
+	protected val persists = "model/mlp"
 	private val topology =	if( config.nHiddens == 0)
 								Array[Int](nInputs, nOutputs) 
 							else 

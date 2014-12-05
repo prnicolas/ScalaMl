@@ -41,6 +41,8 @@ import HMMForm._
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
+		 * @see org.scalaml.core.design.Model
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 29, 2014
 		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model - Evaluation
@@ -49,10 +51,17 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 	import HMMModel._
 	
 	check(lambda, obs)
-	val persists = "models/hmm"
+			
+		/**
+		 * Name of the file that persists the model parameters for the HMM
+		 */
+	protected val persists = "model/hmm"
 }
 
 
+		/**
+		 * Companion object for the HMM model parameters
+		 */
 object HMMModel {
 	private def check(lambda: HMMLambda, obs: Array[Int]): Unit = {
 		require(lambda != null, "HMMModel.check Cannot create a model with undefined lambda model")

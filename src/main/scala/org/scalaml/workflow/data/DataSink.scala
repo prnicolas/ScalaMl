@@ -10,14 +10,14 @@
  */
 package org.scalaml.workflow.data
 
-
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.PipeOperator
-import java.io.{FileNotFoundException, IOException, PrintWriter}
 import scala.util.{Try, Success, Failure}
+
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.util.{Display, FileUtils}
+import ScalaMl._
 
 
 		/**
@@ -45,34 +45,7 @@ final protected class DataSink[T <% String](sinkName: String) extends PipeOperat
 		 * @return true if the content has been successfully stored, false otherwise
 		 * @throws IllegalArgumentException If the content is not defined.
 		 */
-	def write(content: String): Boolean = {
-		require(content != null && content.length > 1, "DataSink.write content undefined")
-		
-		import java.io.{PrintWriter, IOException, FileNotFoundException}
-     
-		var printWriter: PrintWriter = null
-		Try {
-			printWriter = new PrintWriter(sinkName)
-			printWriter.write(content)
-			true
-		} match {
-			case Success(res) => res
-			case Failure(e) => {
-				Display.error("DataSink.write: failed writing into file", logger, e)
-    		 
-				if( printWriter != null) {
-					Try { printWriter.close; false }
-					match {
-						case Success(res) => res
-						case Failure(e) =>  Display.error("DataSink.write", logger, e); false
-					}
-				}
-				else false
-			}
-		}
-	}
-
-   
+	def write(content: String): Boolean = FileUtils.write(content, sinkName, "DataSink")
 
 		/**
 		 * <p>Write the content of a vector into the storage with sinkName as identifier.</p>
@@ -95,7 +68,7 @@ final protected class DataSink[T <% String](sinkName: String) extends PipeOperat
 		 */
 	override def |> : PartialFunction[List[XTSeries[T]], Int] = {
 		case xs: List[XTSeries[T]] if(xs != null && xs.length > 0) => {
-			import java.io.{PrintWriter, IOException, FileNotFoundException}
+			import java.io.PrintWriter
 			
 			var printWriter: PrintWriter = null
 			Try {

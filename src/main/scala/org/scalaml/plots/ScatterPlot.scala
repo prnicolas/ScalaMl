@@ -10,28 +10,20 @@
  */
 package org.scalaml.plots
 
-
-
-import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
-import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
+import java.util.List
+	
+import org.jfree.data.xy.{XYSeriesCollection, XYSeries, XYDataset}
+import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
+import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
 import org.jfree.chart.{ChartFactory, JFreeChart}
 import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
 import org.jfree.chart.ChartFrame
-import org.jfree.util.ShapeUtilities
-import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
-import Plot._
-import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
+import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer, XYShapeRenderer}
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
-import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
-import java.util.List
-import org.scalaml.core.Types.ScalaMl
-import org.jfree.data.xy.XYDataset
-import java.awt.geom.Ellipse2D
-import org.jfree.chart.renderer.xy.XYShapeRenderer
-import org.jfree.chart.axis.ValueAxis
-import org.jfree.chart.axis.NumberAxis
+import org.jfree.chart.axis.{ValueAxis, NumberAxis}
+import org.jfree.util.ShapeUtilities
 
-import ScalaMl._
+import Plot._
 
 	/**
 		 * <p>Class to create a Scatter plot using the JFreeChart library.</p>
@@ -45,6 +37,9 @@ import ScalaMl._
 		 * @note Scala for Machine Learning
 		 */
 final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, theme) {
+	import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+	import java.awt.geom.Ellipse2D
+	import org.scalaml.core.Types.ScalaMl._
 	
 		/**
 		 * Display array of tuple (x,y) in a Scatter plot for a given width and height

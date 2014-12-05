@@ -37,7 +37,11 @@ import org.scalaml.core.design.Config
 final class MLPConfig(val alpha: Double, val eta: Double, val hidLayers: Array[Int], val numEpochs: Int, val eps: Double, val activation: Double => Double) 
 								extends Config {
 	import MLPConfig._
-	val persists = "config/mlp"
+	
+		/**
+		 * Name of the file that persists the configuration of the MLP algorithm
+		 */
+	protected val persists = "config/mlp"
 
 	check(alpha, eta, numEpochs, activation)
 

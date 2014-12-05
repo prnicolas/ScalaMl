@@ -11,27 +11,19 @@
 package org.scalaml.plots
 
 
-
-import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
 import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
-import org.jfree.chart.{ChartFactory, JFreeChart}
-import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
-import org.jfree.chart.ChartFrame
-import org.jfree.util.ShapeUtilities
-import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
-import Plot._
 import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
-import org.jfree.chart.renderer.category.LineAndShapeRenderer
 import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
-import java.util.List
-import org.scalaml.core.Types.ScalaMl._
 import org.jfree.data.xy.XYDataset
-import java.awt.geom.Ellipse2D
-import org.jfree.chart.renderer.xy.XYShapeRenderer
-import org.jfree.chart.axis.ValueAxis
-import org.jfree.chart.axis.NumberAxis
+import org.jfree.chart.{ChartFactory, JFreeChart, ChartFrame}
+import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
+import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer, XYShapeRenderer}
+import org.jfree.chart.renderer.category.LineAndShapeRenderer
+import org.jfree.chart.axis.{ValueAxis, NumberAxis}
+import org.jfree.util.ShapeUtilities
 
-
+import org.scalaml.core.Types.ScalaMl
+import Plot._, ScalaMl._
 
 		/**
 		 * <p>Class to create a Line plot using the JFreeChart library.<br>
@@ -45,6 +37,9 @@ import org.jfree.chart.axis.NumberAxis
 		 * @note Scala for Machine Learning
 		 */
 final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, theme)	{
+	import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+	import java.awt.geom.Ellipse2D
+
 	private val colors: Array[Color] = Array[Color](Color.gray, Color.black, Color.red, Color.blue)
 	private val shapes: Array[Shape] = Array[Shape](ShapeUtilities.createDiamond(1.0F), 
 													ShapeUtilities.createRegularCross(1.0F, 1.0F),

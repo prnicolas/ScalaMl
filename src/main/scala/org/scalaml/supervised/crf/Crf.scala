@@ -42,7 +42,10 @@ import org.scalaml.util.Display
 final protected class CrfModel(val weights: DblVector) extends Model {
 	require(weights != null && weights.size > 0, "CrfModel Cannot create a model with undefined weights")
   
-	val persists = "models/crf"  
+		/**
+		 * Name of the file that persists the model parameters for the Conditional Random Fields
+		 */
+	protected val persists = "model/crf"  
 }
 
 		/**

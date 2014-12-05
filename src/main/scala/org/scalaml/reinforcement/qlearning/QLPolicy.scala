@@ -12,9 +12,6 @@ package org.scalaml.reinforcement.qlearning
 
 import org.scalaml.util.Matrix
 
-
-
-
 		/**
 		 * <p>Enumerator to define the type of a parameters used to update the policy during
 		 * the training of Q-learning model.</p>
@@ -69,7 +66,7 @@ final protected class QLData {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 25, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning / Q-learning
 		 */
 final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 	import QLDataVar._,  QLPolicy._
@@ -80,9 +77,9 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 */
 	val qlData = {
 		val data = Array.tabulate(numStates)(v => Array.fill(numStates)(new QLData))
-		input.foreach(in => {  
-			data(in.from)(in.to).reward = in.reward
-			data(in.from)(in.to).probability = in.prob
+		input.foreach(i => {  
+			data(i.from)(i.to).reward = i.reward
+			data(i.from)(i.to).probability = i.probability
 		})
 		data
 	}

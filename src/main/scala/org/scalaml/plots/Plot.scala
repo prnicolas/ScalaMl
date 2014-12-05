@@ -10,34 +10,26 @@
  */
 package org.scalaml.plots
 
-
-
-import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+import org.jfree.data.xy.XYDataset
 import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
+import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
 import org.jfree.chart.{ChartFactory, JFreeChart}
 import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
-import org.jfree.chart.ChartFrame
-import org.jfree.util.ShapeUtilities
-import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
-import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
-import org.jfree.chart.renderer.category.LineAndShapeRenderer
-import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
-import java.util.List
-import org.scalaml.core.Types.ScalaMl._
-import org.jfree.data.xy.XYDataset
-import java.awt.geom.Ellipse2D
 import org.jfree.chart.renderer.xy.XYShapeRenderer
-import org.jfree.chart.axis.ValueAxis
-import org.jfree.chart.axis.NumberAxis
-import Plot._
+import org.jfree.chart.axis.{ValueAxis, NumberAxis}
+import org.jfree.chart.ChartFrame
+import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
+import org.jfree.chart.renderer.category.LineAndShapeRenderer
 
+import org.jfree.util.ShapeUtilities
+
+import org.scalaml.core.Types.ScalaMl
+import Plot._
 
 object ChartType extends Enumeration {
 	type ChartType = Value
 	val LINE, TIME_SERIES, SCATTER, BAR = Value
 }
-
-
 
 		/**
 		 * <p>Generic plotting class that uses the JFreeChart library.<br>
@@ -49,7 +41,11 @@ object ChartType extends Enumeration {
 		 * @note Scala for Machine Learning
 		 */
 abstract class Plot(config: PlotInfo, theme: PlotTheme) {
-	import Plot._
+	import java.util.List
+	import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+	import java.awt.geom.Ellipse2D
+	import ScalaMl._
+	
 	require(config != null, "Plot Cannot create a plot with undefined stateuration")
 	require(theme != null, "Plot Cannot create a plot with undefined theme")
 
@@ -80,7 +76,12 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 }
 
 
-
+		/**
+		 * Companion object for the Plot class
+		 * @author Patrick Nicolas
+		 * @since  November 18, 2013
+		 * @note Scala for Machine Learning
+		 */
 object Plot {
 	type PlotInfo = (String, String, String)
 	final val DISPLAY_OFFSET = 25
@@ -95,18 +96,40 @@ object Plot {
 	private val MIN_DISPLAY_SIZE = 60
 	private val MAX_DISPLAY_SIZE = 1280
 	
+		/**
+		 * Validate the display dimension for a particular plot
+		 * @param y Array of values to be plotted
+		 * @param height  Height of the display
+		 * @param width Width of the display
+		 * @param comment Comments to be added to the chart or plot
+		 * @throw IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 */
 	def validateDisplay[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
 		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
 		validateDim(width, height, comment)
 	}
-	
+
+		/**
+		 * Validate the display dimension for a particular plot
+		 * @param y List of values to be plotted
+		 * @param height  Height of the display
+		 * @param width Width of the display
+		 * @param comment Comments to be added to the chart or plot
+		 * @throw IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 */
 	import scala.collection.immutable.List
 	def validateDisplay[T](y: List[T], width: Int, height: Int, comment: String): Unit = {
 		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
 		validateDim(width, height, comment)
 	}
 	
-	
+		/**
+		 * Validate the display dimension for a particular plot
+		 * @param height  Height of the display
+		 * @param width Width of the display
+		 * @param comment Comments to be added to the chart or plot
+		 * @throw IllegalArgumentException if the display height or width is out or range
+		 */
 	def validateDim(width: Int, height: Int, comment: String): Unit = {
 		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, s"$comment Width $width is out of range")
 		require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, s"$comment  height $height is out of range")

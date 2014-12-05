@@ -25,6 +25,8 @@ import org.scalaml.core.design.Config
 		 * @param _N   Number of hidden states in the HMM
 		 * @param _M   Number of symbols (or model dimension) for the HMM
 		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
+		 * @see org.scalaml.core.design.Config
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 27, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
@@ -33,7 +35,11 @@ final class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
 	import HMMConfig._
 	
 	check(_T, _N, _M)
-	val persists = "config/hmm"
+			
+		/**
+		 * Name of the file that persists the configuration of the HMM algorithm
+		 */
+	protected val persists = "config/hmm"
 }
 
 

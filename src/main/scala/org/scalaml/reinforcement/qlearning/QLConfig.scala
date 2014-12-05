@@ -10,14 +10,7 @@
  */
 package org.scalaml.reinforcement.qlearning
 
-
-import scala.util.Random
-import org.scalaml.util.Matrix
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.{Config, PipeOperator}
-import QLearning._
-import org.scalaml.util.Display
-import scala.collection.mutable.ArrayBuffer
+import org.scalaml.core.design.Config
 
 
 
@@ -31,16 +24,26 @@ import scala.collection.mutable.ArrayBuffer
 		 * @param numEpisodes  Number of episodes used during training.
 		 * @param minCoverage Minimum coverage allowed during the training of the Q-learning model. The coverage is the percentage of episodes for which the goal state is reached.
 		 * @param neighbors  Function that list the available states neighbors to the current state during execution. 
+		 * @see org.scalaml.core.design.Config
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 19, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Q-learning
 		 */
-final class QLConfig(val alpha: Double, val gamma: Double, val episodeLength: Int, val numEpisodes: Int, val minCoverage: Double, val neighbors: (Int, Int) =>List[Int]) extends Config {
+class QLConfig(	val alpha: Double, 
+				val gamma: Double, 
+				val episodeLength: Int, 
+				val numEpisodes: Int, 
+				val minCoverage: Double, 
+				val neighbors: (Int, Int) =>List[Int]) extends Config {
 	import QLConfig._
     
 	check(alpha, gamma, episodeLength, numEpisodes, minCoverage, neighbors)
-	val persists = "config/qlearning"
+	
+		/**
+		 * Name of the file that persists the configuration of the Q-learning algorithm
+		 */
+	protected val persists = "config/qlearning"
 }
 
 

@@ -9,7 +9,13 @@
  * Version 0.96d
  */
 package org.scalaml.core
+
 import scala.reflect.ClassTag
+import scala.util.{Try, Success, Failure}
+
+import org.apache.log4j.Logger
+
+import org.scalaml.util.Display
 
 		/**
 		 * <p>Package that encapsulate the high level trait used in
@@ -19,31 +25,62 @@ import scala.reflect.ClassTag
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
 package object design {
+	import org.scalaml.util.FileUtils
 
 		/**
-		 * <p>Define the configuration trait used in the classifiers and optimizers.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * <b>persists</b>   Abstract value to be defined by sub-classes</span></pre></p>
+		 * <p>Define the configuration trait used in the classifiers and optimizers.</p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Config {
-		val persists: String
+			
+		/**
+		 * Name of the file that persists the model
+		 */
+		protected val persists: String
+		
+		/**
+		 * Read the configuration of this object from a file <b>persists</b>
+		 * @param content Configuration to write into file
+		 * @return Configuration parameters if successful, None otherwise
+		 */
+		def <<(content: String): Option[String] = FileUtils.read(persists, getClass.getName)
+	
+		/**
+		 * Write the configuration parameters associated to this object into a file
+		 * @param content to write into a file
+		 * @return true if the write operation is successful, false otherwise
+		 */
+		def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
 	}
 	
 		/**
-		 * <p>Define the model trait for classification and optimization algorithms.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 *   <b>persists</b>   Abstract value to be defined by sub-classes
-		 * </span></pre></p>
-		 * @constructor [persists] abstract value to be defined by sub-class
+		 * <p>Define the model trait for classification and optimization algorithms.</p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
-	trait Model { 
-		val persists: String
+	trait Model {
+			
+		/**
+		 * Name of the file that persists the model
+		 */
+		protected val persists: String
+					
+		/**
+		 * Read the model of this object from a file <b>persists</b>
+		 * @param content Model description to write into file
+		 * @return Model parameters if successful, None otherwise
+		 */
+		def <<(content: String): Option[String] = FileUtils.read(persists, getClass.getName)
+
+		/**
+		 * Write the configuration parameters associated to this object into a file
+		 * @param content to write into a file
+		 * @return true if the write operation is successful, false otherwise
+		 */
+		def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
 	}
 	
 	
@@ -61,6 +98,9 @@ package object design {
 		 * Companion object for the PipeOperator trait. It used to 
 		 * define the identity (or zero) element as an instance that
 		 * implement the |> operator as an identity function.
+		 * @author Patrick Nicolas
+		 * @since March 4, 2014
+		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 	object PipeOperator {
 		def identity[T: ClassTag] = new PipeOperator[T,T] { 

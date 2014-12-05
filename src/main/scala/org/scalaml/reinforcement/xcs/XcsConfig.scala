@@ -10,11 +10,10 @@
  */
 package org.scalaml.reinforcement.xcs
 
-import scala.io.Source
 
-import org.scalaml.ga.{Chromosome, GAConfig, Population}
-import org.scalaml.trading.Signal
+import org.scalaml.ga.GAConfig
 import org.scalaml.reinforcement.qlearning.QLConfig
+import org.scalaml.core.design.Config
 
 
 		/**
@@ -23,14 +22,20 @@ import org.scalaml.reinforcement.qlearning.QLConfig
 		 * @throws IllegalArgumentException if the maximum population is out of range or one of the
 		 * configuration class is undefined.
 		 * @param gaConfig  Configuration of the Genetic Algorithm used in extracting the fittest rules or classifier
-		 * @param qlConfig  Configuration parameters for the Q-learning algorithm
+		 * @param qlConfig  Configuration parameters for the Q-learning algorithm.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 22, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Extended learning classifier systems
 		 */
-final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) {
+final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) extends Config {
 	require(gaConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined GA configuration")
 	require(qlConfig != null, "XcsConfig.check Cannot initialize XCS algorithm with undefined Q-Learning configuration")
+	
+		/**
+		 * Name of the file that persists the configuration of the XCS algorithm
+		 */
+	protected val persists = "config/xcs"
 }
 
 

@@ -22,8 +22,6 @@ import java.io.IOException
 import org.scalaml.core.Types.ScalaMl._
 
 
-
-
 		/**
 		 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates a textual
 		 * description of the configuration of CRF used by iitb library</p>
@@ -32,6 +30,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @param maxIters Maximum number of iterations to be used for the training of CRF.
 		 * @param lambda L2-regularization penalty function 1/square(sigma) used in the log likelihood log p(Y|X).
 		 * @param eps  Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit from the training iteration.
+		 * @see org.scalaml.core.design.Config
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
@@ -41,7 +40,12 @@ protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double)
 	import CrfConfig._
 	check(w0, maxIters, lambda, eps)
 
-	val persists: String = "config/crf"
+		/**
+		 * Name of the file that persists the configuration of the CRF algorithm
+		 */
+	protected val persists: String = "config/crf"
+		
+	
 
 		/**
 		 * textual description of the CRF configuration

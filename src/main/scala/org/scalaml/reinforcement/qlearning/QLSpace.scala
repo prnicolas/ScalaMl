@@ -11,15 +11,11 @@
 package org.scalaml.reinforcement.qlearning
 
 
+
 import org.scalaml.util.Matrix
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.Model
 import org.scalaml.util.Display
-
-import scala.collection.immutable.HashSet
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
-
 
 		/**
 		 * <p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
@@ -34,9 +30,11 @@ import scala.util.Random
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
+	import scala.collection.immutable.HashSet
+	import scala.collection.mutable.ListBuffer
+	import scala.util.Random
 	import QLSpace._
 	check(states, goalIds)
-	
 	
 	private[this] val statesMap: Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
 	private[this] val goalStates = new HashSet[Int]() ++ goalIds
@@ -50,7 +48,7 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 */
 	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {
 		require(state != null, "QLSpace.maxQ State is undefined")
-		require(policy != null, "QLSpace.maxQ State is undefined")
+		require(policy != null, "QLSpace.maxQ Policy is undefined")
 		
 		val best = states.filter( _ != state)
 						.maxBy(st => policy.EQ(state.id, st.id))

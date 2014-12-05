@@ -10,23 +10,25 @@
  */
 package org.scalaml.app.chap11
 
+import org.apache.log4j.Logger
+
 import org.scalaml.reinforcement.qlearning._
-// import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
-import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.trading.YahooFinancials
 import org.scalaml.util.{Counter, NumericAccumulator, Display}
 import org.scalaml.app.Eval
 
-import org.apache.log4j.Logger
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+
+
 
 
 
 	 
 object QLearningEval extends Eval {
+	import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 	import YahooFinancials._
   
 	val name: String = "QLearningEval"
@@ -61,7 +63,7 @@ object QLearningEval extends Eval {
 		val optionSrc = DataSource(optionPricePath, false, false, 1)
 		optionSrc.extract match {
 			case Some(v) => {
-				val qLearning = createModel(ibmOption, v)
+				val qLearning = initModel(ibmOption, v)
 				if( qLearning.model != None)
 					Display.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
 				else
@@ -72,14 +74,15 @@ object QLearningEval extends Eval {
 	}
     
 	
-	private def createModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
+	private def initModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
 		val fMap = ibmOption.approximate(oPrice)
       
 		val input = new ArrayBuffer[QLInput]
 		val profits = fMap.values.zipWithIndex
 		profits.foreach(v1 => 
 			profits.foreach( v2 => 
-				input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1)))
+				input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1))
+			)
 		)
    	      
 		val goal = input.maxBy( _.reward).to  

@@ -10,11 +10,12 @@
  */
 package org.scalaml.supervised.svm
 
+import libsvm.svm_model
+
 import org.scalaml.core.design.Model
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblMatrix
-import libsvm.svm_model
-import SVMModel._
+
 
 
 		/**
@@ -23,9 +24,11 @@ import SVMModel._
 		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
 		 * @see LIBSVM
+		 * @see org.scalaml.core.design.Model
 		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
 		 * @param svmmodel Model parameters as defined in <b>LIBSVM</b>
-		 * @param accuracy	Accuracy of the training process
+		 * @param accuracy	Accuracy of the model from the training process
+		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
 		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines
@@ -33,7 +36,10 @@ import SVMModel._
 final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Model {
 	require(svmmodel != null, "SVMModel LIBSVM model smmodel is undefined")
 	
-	val persists = "models/svm"
+		/**
+		 * Name of the file that persists the model parameters for the support vector machine
+		 */
+	protected val persists = "models/svm"
   	 
 	override def toString: String = {
 		val description = new StringBuilder("SVM model\n")
@@ -61,19 +67,5 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 	}
 }
 
-
-		/**
-		 * Companion object for the SVM model. This singleton defines
-		 * the type and description of the kernel available to SVM
-		 */
-object SVMModel {
-	val KernelTypes = Map[Int, String]( 
-		0 -> "linear kernel", 
-		1 -> "Polynomial kernel", 
-		2 -> "RBF kernel", 
-		3 -> "Sigmoid kernel", 
-		4 -> "Custom kernel", 
-		5 -> "Laplace kernel" )
-}
 
 // -------------------------  EOF ------------------------------

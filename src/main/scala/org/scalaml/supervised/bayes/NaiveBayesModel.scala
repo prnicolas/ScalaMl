@@ -11,6 +11,7 @@
 package org.scalaml.supervised.bayes
 
 import org.scalaml.stats.Stats
+import org.scalaml.core.design.Model
 import NaiveBayesModel._
 
 
@@ -25,9 +26,13 @@ import NaiveBayesModel._
 		 * @since March 8, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 		 */
-abstract class NaiveBayesModel[T <% Double](val density: Density) {
+abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model {
 	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
 	
+		/**
+		 * Name of the file that persists the model for the Naive Bayes model
+		 */
+	protected val persists: String = "model/nb"
 		/**
 		 * <p>Classify a new observation (or vector) using the Multinomial Naive Bayes model.</p>
 		 * @param x new observation
@@ -67,6 +72,7 @@ object NaiveBayesModel {
 		 */
 protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], negatives: Likelihood[T], density: Density) 
 			extends NaiveBayesModel[T](density) {
+	
 	require(positives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine positive labels")
 	require(negatives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine negative labels")
     

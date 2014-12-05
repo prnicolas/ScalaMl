@@ -51,10 +51,14 @@ final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, 
 	import SVMConfig._
 	
 	check(formulation, kernel, exec)
-	val persists = "config/svm"
+	
+		/**
+		 * Name of the file that persists the configuration of the support vector machine algorithm
+		 */
+	protected val persists = "config/svm"
 
 		/**
-		 * Parameter set used in LIBSVM
+		 * Configuration parameters set used in LIBSVM
 		 */
 	val  param = new svm_parameter
 	formulation.update(param)

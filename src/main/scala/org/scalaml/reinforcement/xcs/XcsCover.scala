@@ -42,7 +42,8 @@ object XcsCover {
 		require(actions.size >0 && actions.size < MAX_NUM_ACTIONS, s"XcsCover.cover The number of actions per state ${actions.size} if out of range")
 		
 		actions.foldLeft(List[XcsRule]()) ((xs, act) => {
-			val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(Signal.numOperators)))
+			val rIdx = Random.nextInt(Signal.numOperators)
+			val signal = Signal(sensor.id, sensor.value, new SOperator(rIdx))
 			new XcsRule(signal, XcsAction(act, Random)) :: xs
 		})
 	} 
