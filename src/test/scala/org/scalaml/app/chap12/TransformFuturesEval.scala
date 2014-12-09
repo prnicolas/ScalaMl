@@ -6,30 +6,26 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap12
 
-import scala.collection.GenTraversableOnce
+import org.apache.log4j.Logger	
 import akka.pattern.ask
-import org.scalaml.app.Eval
-import org.apache.log4j.Logger
+import akka.actor.{ActorSystem, Props}
+import akka.util.Timeout
+
+import org.scalaml.app.{Eval, TestContext}
 import org.scalaml.core.XTSeries
+import org.scalaml.core.XTSeries.DblSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.scalability.akka.Partitioner
 import org.scalaml.scalability.akka.message._
-import akka.actor.ActorSystem
-import scala.concurrent.Await
-import akka.actor.Props
-import scala.util.{Random, Try, Success, Failure}
 import org.scalaml.scalability.akka.TransformFutures
-import scala.concurrent.duration._
-import akka.util.Timeout
+import org.scalaml.app.TestContext
 import org.scalaml.filtering.DFT
 import org.scalaml.util.Display
-import java.util.concurrent.TimeoutException
-import XTSeries._
-import org.scalaml.app.TestContext
-import org.scalaml.core.Types.ScalaMl
+
 
 		/**
 		 * <p>Specialized Akka futures for the distributed discrete Fourier transform.</p>
@@ -59,8 +55,26 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 }
 
 
+
+		/**
+		 * <p><b>Purpose</b>: Singleton to evaluate Scala/Akka futures</p>
+		 * 
+		 * @author Patrick Nicolas 
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Akka framework / futures
+		 */
 object TransformFuturesEval extends Eval {
+	import java.util.concurrent.TimeoutException
+	import scala.util.{Random, Try, Success, Failure}
+	import scala.concurrent.Await
+	import scala.concurrent.duration.Duration
+  
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "TransformFuturesEval"
+	/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 10000
 	private val logger = Logger.getLogger(name)
 		
@@ -89,13 +103,15 @@ object TransformFuturesEval extends Eval {
 		Try {
 			val future = master ? Start(0)
 			Await.result(future, timeout.duration)
-		} match {
+		} 
+		match {
 			case Success(result) => Display.show("TransformFuturesEval completed", logger)
 			case Failure(e) => e match {
 				case ex: TimeoutException => Display.show(s"TransformFuturesEval.run timeout", logger)
 				case ex: Throwable => Display.error("TransformFuturesEval.run completed", logger, e)
 			}
 		}
+		TestContext.shutdown
 	}
 }
 

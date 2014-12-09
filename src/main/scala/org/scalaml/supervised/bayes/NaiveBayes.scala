@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.bayes
 
@@ -44,7 +44,7 @@ import XTSeries._
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @author Patrick Nicolas
 		 * @since February 13, 2014
-		 * @note Scala for Machine learning Chapter 5 Naive Bayes Model
+		 * @note Scala for Machine learning Chapter 5 Naive Bayes Models
 		 */
 final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)], density: Density)
 		extends PipeOperator[XTSeries[Array[T]], Array[Int]] with Supervised[T] {
@@ -60,7 +60,8 @@ final class NaiveBayes[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], I
 		}
 		
 		/**
-		 * <p>Run-time classification of a time series using the Naive Bayes model</p>
+		 * <p>Run-time classification of a time series using the Naive Bayes model. The method invoke
+		 * the actual classification method in one of the NaiveBayes models.</p>
 		 * @throws MatchError if the input time series is undefined or have no elements or the model was not properly trained
 		 * @return PartialFunction of time series of elements of type T as input to the Naive Bayes and array of class indices as output
 		 */

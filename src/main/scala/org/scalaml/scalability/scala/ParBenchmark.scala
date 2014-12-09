@@ -6,21 +6,21 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.scala
 
 
 import scala.collection.parallel.ForkJoinTaskSupport
 import scala.concurrent.forkjoin.ForkJoinPool
-import scala.Array.fallbackCanBuildFrom
 import scala.collection.parallel.mutable.{ParArray, ParMap, ParHashMap}
 import scala.collection.mutable.{Map, HashMap}
-import org.scalaml.util.Display
 import scala.collection.parallel.immutable.ParVector
 import org.apache.log4j.Logger
 
-
+import org.scalaml.util.Display
+import org.scalaml.core.Types.ScalaMl
+import ScalaMl.DblVector
 
 		/**
 		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.</p>
@@ -39,15 +39,17 @@ abstract class ParBenchmark[U](times: Int) {
 		 * <p>Define the map operator for the performance benchmark</p>
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel collection relative to the non-parallel collection
 		 */
-	def map(f: U => U)(nTasks: Int): Unit 
+	def map(f: U => U)(nTasks: Int): Double
 	
 		/**
 		 * <p>Define the filter operator for the performance benchmark</p>
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel collection relative to the non-parallel collection
 		 */
-	def filter(f: U => Boolean)(nTasks: Int): Unit
+	def filter(f: U => Boolean)(nTasks: Int): Double
    
 	
 		/**<p>Method to compute the execution time for a higher order Scala method 
@@ -58,6 +60,7 @@ abstract class ParBenchmark[U](times: Int) {
 	protected def timing(g: Int => Unit ): Long = {
 		require(g != null, "ParBenchmark.timing argument undefined")
 		
+			// Measure duration of 'times' execution of g
 		var startTime = System.currentTimeMillis
 		Range(0, times).foreach(g)
 		System.currentTimeMillis - startTime
@@ -72,6 +75,7 @@ abstract class ParBenchmark[U](times: Int) {
 		 * @param v Parameterized parallel array
 		 * @param times Number of executions in the performance test.
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
@@ -86,50 +90,69 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int) extends ParB
 		 * <p>Define the map operator for the performance benchmark of the Scala array</p>
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
-	override def map(f: U => U)(nTasks: Int): Unit = {
+	override def map(f: U => U)(nTasks: Int): Double = {
 		require(f != null, "ParArrayBenchmark.map: Cannot execute a map on the data set with undefined operator" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParArrayBenchmark.map number of concurrent tasks $nTasks is out of range")
+		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
-
 		val duration = timing(_ => u.map(f)).toDouble
 		val ratio = timing( _ => v.map(f) )/duration
-		Display.show(s"$nTasks, $ratio", logger)
+		
+		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}", logger)
+		ratio
 	}
 	
 		/**
 		 * <p>Define the filter operator for the performance benchmark of Scala arrays</p>
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
-	override def filter(f: U => Boolean)(nTasks: Int): Unit = {
-		require(f != null, "ParArrayBenchmark.filter: Cannot reduce data set with undefined operator" )
+	override def filter(f: U => Boolean)(nTasks: Int): Double = {
+		require(f != null, "ParArrayBenchmark.filter: operator on data set is undefined" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParArrayBenchmark.filter number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 
 		val duration = timing(_ => u.filter(f)).toDouble
 		val ratio = timing( _ => v.filter(f) )/duration
-		Display.show(s"$nTasks, $ratio", logger)
+		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		ratio
 	}
 	
 		/**
 		 * <p>Implements a reducer operator for the performance benchmark of Scala arrays</p>
 		 * @param f function invoked by the reducer
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
-	def reduce(f: (U,U) => U)(nTasks: Int): Unit = {
-		require(f != null, "ParArrayBenchmark: Cannot reduce data set with undefined operator" )	
+	def reduce(f: (U,U) => U)(nTasks: Int): Double = {
+		require(f != null, "ParArrayBenchmark.reduce: operator on data set is undefined")
+		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParArrayBenchmark.filter number of concurrent tasks $nTasks is out of range")
+
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 
 		val duration = timing(_ => u.reduceLeft(f)).toDouble
 		val ratio = timing( _ => v.reduceLeft(f) )/duration
-		Display.show(s"$nTasks, $ratio", logger)
+		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		ratio
 	}
 }
 
 
+		/**
+		 * <p>Companion object for the class ParArrayBenchmark. This singleton
+		 * is used to define constant and validate the class parameters.</p>
+		 * @author Patrick Nicolas
+		 * @since March 17, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
+		 */
 object ParArrayBenchmark {
+		/**
+		 * Maximum number of concurrent tasks used in process an array
+		 */
 	val MAX_NUM_TASKS = 64
 	
 	protected def check[U](u: Array[U], v: ParArray[U]): Unit = {
@@ -162,35 +185,51 @@ final class ParMapBenchmark[U](u: Map[Int, U], v: ParMap[Int, U], times: Int) ex
 		 * <p>Define the map operator for the performance benchmark of the Scala map</p>
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
 		 */
-	override def map(f: U=> U)(nTasks: Int): Unit = {
+	override def map(f: U => U)(nTasks: Int): Double = {
 		require(f != null, "ParMapBenchmark: Cannot execute a map on the data set with undefined operator" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParMapBenchmark.map number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.map(e => (e._1, f(e._2)))).toDouble
 		val ratio = timing( _ => v.map(e => (e._1, f(e._2))) )/duration
-		Display.show(s"$nTasks, $ratio", logger)
+		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		ratio
 	}
 	
 		/**
 		 * <p>Define the filter operator for the performance benchmark of Scala map</p>
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
+		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
 		 */
-	override def filter( f: U => Boolean)(nTasks: Int): Unit = {
+	override def filter( f: U => Boolean)(nTasks: Int): Double = {
 		require(f != null, "ParMapBenchmark: Cannot execute a map on the data set with undefined operator" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParMapBenchmark.filter number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.filter(e => f(e._2))).toDouble
 		val ratio = timing( _ => v.filter(e => f(e._2)))/duration
-		Display.show(s"$nTasks, $ratio", logger)
+		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		ratio
 	}
 }
 
 
+
+		/**
+		 * <p>Companion object for the class ParMapBenchmark. This singleton
+		 * is used to define constant and validate the class parameters.</p>
+		 * @author Patrick Nicolas
+		 * @since March 17, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
+		 */
 object ParMapBenchmark {
+  
+		/**
+		 * Maximum number of concurrent tasks used in process a parallel map
+		 */
 	val MAX_NUM_TASKS = 64
 	
 	protected def check[U](u: Map[Int, U], v: ParMap[Int, U]): Unit = {

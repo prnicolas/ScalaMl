@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app
 
@@ -26,8 +26,6 @@ import org.scalaml.app.chap12._
 import org.apache.log4j.Logger
 import org.scalaml.util.Display
 
-
-
 		/**
 		 * <p>Singleton that executes all the test clases in Scala for Machine Learning.<br>
 		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
@@ -46,6 +44,8 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters.
 		 */
 	def test: Unit = {
+		TestContext.init
+
 			// Chapter 1
 		run(LogBinRegressionEval)
 		run(PlotterEval)
@@ -53,9 +53,10 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 2
 		run(BiasVarianceEval)
 		run(WorkflowEval)
-			
+		
 			//Chapter 3
-		run(MovingAveragesEval, Array[String]("BAC", "10")) 
+		run(MovingAveragesEval, Array[String]("BAC", "60")) 
+		
 		run(DFTEval)
 		run(DFTEval, Array[String]("BAC"))
 		run(new DKalmanEval, Array[String]("BAC"))
@@ -117,19 +118,21 @@ protected object AllTests extends ScalaMlTest {
 		run(QLearningEval)
 		
 			// Chapter 12
-		run(ParBenchmarkEval)
-		run(ActorsManagerEval)
+		run(ParBenchmarkEval, Array[String]("array"))
+		run(ParBenchmarkEval, Array[String]("map"))
+		run(ActorsManagerEval, Array[String]("no-router"))
+		run(ActorsManagerEval, Array[String]("router"))
 		run(TransformFuturesEval)
 		run(SparkKMeansEval)
-		TestContext.shutdown
-		Display.show(s"$chapter exit", logger)
+	
+		TestContext.shutdownAll
 	}
+	
 	
 	private def run(eval: Eval, args: Array[String] = Array.empty): Unit = {
 		import akka.actor.{ActorSystem, Actor, Props, ActorRef}
 		import scala.util.{Try, Success, Failure}
 		
-	  		println(s"Start ${eval.name}")
 		var completed = false
 	  		
 			// Anonymous Akka actor that wraps the execution of the scala test.

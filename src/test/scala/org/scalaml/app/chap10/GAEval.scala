@@ -6,14 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap10
 
-import scala.collection.mutable.ArrayBuffer
-import scala.util.{Try, Success, Failure}
 
-import org.apache.log4j.Logger
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
@@ -23,22 +20,29 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
-import ScalaMl._
 
 		/**
-		 * <p>Purpose: Evaluate the convergence a genetic algorithm optimizer for extract the best trading
+		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract the best trading
 		 * strategy for predicting the price movement of a stock.</p>
 		 * 
 		 * @see org.scalaml.gaGene 
 		 * @see org.scalaml.trading.TradingStrategy
 		 * @author Patrick Nicolas
-		 * @date August 10, 2014
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/GA for trading strategies/Test case
 		 */
 object GAEval extends Eval {
-	import YahooFinancials._, Chromosome._
+	import scala.collection.mutable.ArrayBuffer
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import YahooFinancials._, Chromosome._, ScalaMl._
 	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "GAEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 12000
 	  	
 	private val logger = Logger.getLogger(name)

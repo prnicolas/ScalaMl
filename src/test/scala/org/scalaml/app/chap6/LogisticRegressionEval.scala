@@ -6,25 +6,40 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap6
 
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Types.ScalaMl
-import org.scalaml.supervised.regression.logistic._
-import scala.util.{Random, Try, Success, Failure}
+import org.apache.log4j.Logger
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
+
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.supervised.regression.logistic.{LogisticRegressionOptimizer, LogisticRegression}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
 
 
+		/**
+		 * <p><b>Purpose:</b> Singleton to evaluate the logistic regression classifier on 
+		 * technical analysis of an Exchange Traded Fund.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Logistic regression
+		 */
 object LogisticRegressionEval extends Eval {
+	import scala.util.{Random, Try, Success, Failure}
+	import ScalaMl._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "LogisticRegressionEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 50
 	
 	private val logger = Logger.getLogger(name)

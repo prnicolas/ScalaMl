@@ -6,18 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.regression.linear
 
+import scala.annotation.implicitNotFound
+
+import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
 import org.apache.commons.math3.stat.regression.SimpleRegression
-import org.scalaml.core.Types.ScalaMl._
+
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-import scala.annotation.implicitNotFound
-import scala.util.{Try, Success, Failure}
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import ScalaMl._
 
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
@@ -33,22 +35,30 @@ import org.scalaml.util.Display
 		 * @param g Implicit conversion from a <b>Double</b> to the type <b>T</b>
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / One variate linear regression
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
 final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
 				extends PipeOperator[Double, T] {
+	
+	import scala.util.{Try, Success, Failure}
 	require(xt != null && xt.size > 0, "SingleLinearRegression. Cannot create a simple linear regression with undefined time series")
 	
 	type XY = (Double, Double)
 	private val logger = Logger.getLogger("SingleLinearRegression")
 	
-			// Create the model during instantiation 
+			// Create the model during instantiation. The model is 
+			// actually create (!= None) if the regression coefficients can be computed.
 	private[this] val model: Option[XY] = {
 		Try {
+				// Convert the time series into a observations matrix
 			val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
+				
+				// Invoke Apache commons math library for the simple regression
 			val regr = new SimpleRegression(true)
 			regr.addData(data)
+			
+				// returns the slope and intercept from Apache commons math library
 			(regr.getSlope, regr.getIntercept)
 		} 
 		match {
@@ -89,6 +99,7 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		 * @return PartialFunction of a Double value as input and the value computed using the model as output
 		 */	
 	override def |> : PartialFunction[Double, T] = {
+			// Compute the linear function y = slope.x + intercept
 		case x: Double if(model != None) => model.get._1*x + model.get._2
 	}
 }

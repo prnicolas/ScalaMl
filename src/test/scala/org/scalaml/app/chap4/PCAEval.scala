@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap4
 
@@ -14,17 +14,12 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import YahooFinancials._
-import ScalaMl._
 import org.scalaml.unsupervised.pca.PCA
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
-import XTSeries._
-
 
 		/**
-		 * <p>Class to evaluate the Principal Components Algorithm to extract principal
+		 * <p><b>Purpose:</b> Singleton to evaluate the Principal Components Algorithm to extract principal
 		 * components from a set of observations consisting of the following corporate
 		 * financial fundamental metrics:<br>
 		 * PE: Price Earning ratio<br>
@@ -38,7 +33,16 @@ import XTSeries._
 		 * @note Scala for Machine Learning Chapter 4: Unsupervised learning $Principal Components Analysis
 		 */
 object PCAEval extends UnsupervisedLearningEval {	
+	import org.apache.log4j.Logger
+	import XTSeries._, YahooFinancials._, ScalaMl._
+  
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "KMeansEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)	
 	

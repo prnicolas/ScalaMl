@@ -6,13 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap11
 
-import org.apache.log4j.Logger
-
-import org.scalaml.reinforcement.qlearning._
+import org.scalaml.reinforcement.qlearning.{QLearning, QLInput, QLConfig}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
@@ -20,18 +18,25 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.util.{Counter, NumericAccumulator, Display}
 import org.scalaml.app.Eval
 
-
-
-
-
-
-
-	 
+		 /**
+		 * <p><b>Purpose</b>: Singleton to Q-Learning algorithm to extract
+		 * best trading policies.</p>
+		 * 
+		 * @author Patrick Nicolas 
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Q-Learning
+		 */
 object QLearningEval extends Eval {
 	import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+	import org.apache.log4j.Logger
 	import YahooFinancials._
   
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "QLearningEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 7000
 	  
 	private val logger = Logger.getLogger(name)
@@ -63,7 +68,7 @@ object QLearningEval extends Eval {
 		val optionSrc = DataSource(optionPricePath, false, false, 1)
 		optionSrc.extract match {
 			case Some(v) => {
-				val qLearning = initModel(ibmOption, v)
+				val qLearning = createModel(ibmOption, v)
 				if( qLearning.model != None)
 					Display.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
 				else
@@ -74,15 +79,14 @@ object QLearningEval extends Eval {
 	}
     
 	
-	private def initModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
+	private def createModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
 		val fMap = ibmOption.approximate(oPrice)
       
 		val input = new ArrayBuffer[QLInput]
 		val profits = fMap.values.zipWithIndex
 		profits.foreach(v1 => 
 			profits.foreach( v2 => 
-				input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1))
-			)
+				input.append(new QLInput(v1._2, v2._2, v1._1 - v2._1)))
 		)
    	      
 		val goal = input.maxBy( _.reward).to  

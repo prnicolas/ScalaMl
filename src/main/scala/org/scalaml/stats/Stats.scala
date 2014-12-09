@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.stats
 
@@ -17,7 +17,8 @@ import Stats._
 		/**
 		 *  <p>Parameterized class (view bound T <% Double) that compute and update the statistics (mean,
 		 *  standard deviation) for any set of observations for which the
-		 *  type can be converted to a Double.</p>
+		 *  type can be converted to a Double.<br>
+		 *  This class is immutable as no elements can be added to the original set of values.</p>
 		 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
 		 *  @param values vector or array of elements of type T
 		 *  @throws IllegalArgumentException if values is either undefined or have no elements
@@ -27,20 +28,32 @@ import Stats._
 		 */
 class Stats[T <% Double](values: DVector[T]) {
 	require( values != null && values.size > 0, "Cannot initialize stats with undefined data")
-	 
-	private[this] var counters = values.foldLeft((Double.MaxValue, Double.MinValue, 0.0, 0.0))((c, x) => {
-		(if(x < c._1) x else c._1, if(x > c._2) x else c._2,  c._3 + x, c._4 + x*x ) })
-		
+
+	private class _Stats(var minValue: Double, var maxValue: Double, var sum: Double, var sumSqr: Double)
+	
+		// 
+	private[this] val _stats = {
+		val _stats = new _Stats(Double.MaxValue, Double.MinValue, 0.0, 0.0)
+	
+		values.foreach(x => {
+			if(x < _stats.minValue) x else _stats.minValue
+			if(x > _stats.maxValue) x else _stats.maxValue 
+			_stats.sum + x
+			_stats.sumSqr + x*x
+		})
+		_stats
+	}
+	
 		/**
 		 * Arithmetic mean of the vector of values
 		 */
 	@inline
-	lazy val mean = counters._3/values.size
+	lazy val mean = _stats.sum/values.size
 	
 		/**
 		 * Computation of variance for the array values
 		 */
-	lazy val variance = (counters._4 - mean*mean*values.size)/(values.size-1)
+	lazy val variance = (_stats.sumSqr - mean*mean*values.size)/(values.size-1)
 		 
 		/**
 		 * Computation of standard deviation for the array values
@@ -51,13 +64,13 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * Computation of minimun values of a vector. This values is
 		 * computed during instantiation
 		 */
-	lazy val min = counters._1
+	lazy val min = _stats.minValue
 	
 		/**
 		 * Computation of minimun values of a vector. This values is
 		 * computed during instantiation
 		 */
-	lazy val max = counters._2
+	lazy val max = _stats.maxValue
 	
 		/**
 		 * Compute the Lidsstone smoothing factor for a set of values
@@ -70,7 +83,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		require( smoothing >0.0 && smoothing <= 1.0, s"Stats.lidstoneMean Lidstone smoothing factor $smoothing is out of range")
 		require(dim > 0, s"Stats.lidstoneMean Dimension for Lidstone factor $dim is out of range")
 
-		(counters._3 + smoothing)/(values.size + smoothing*dim)
+		(_stats.sum + smoothing)/(values.size + smoothing*dim)
 	}
 	
     
@@ -82,7 +95,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		 */
 	final def laplaceMean(dim: Int): Double = {
 		require(dim > 0, s"Stats.laplaceMean Dimension for Lidstone factor $dim is out of range")
-		(counters._3 + 1.0)/(values.size + dim)
+		(_stats.sum+ 1.0)/(values.size + dim)
 	}
 
 		/**

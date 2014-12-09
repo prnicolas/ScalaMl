@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.spark
 
@@ -26,25 +26,34 @@ import org.apache.log4j.Logger
 import org.apache.spark.rdd.EmptyRDD
 
 
+		/**
+		 * <p>Class to encapsulate a simple configuration of an RDD.</p>
+		 * @param cache Flag to specify if the RDD should be cached (maintained) in memory
+		 * @param persist define the storage level for the RDD
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 1, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
+		 */
 case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
-	/**
-	 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
-	 * @constructor Create a RDD associated to a source of data of type DataSource
-	 * @param pathName      Relative path for data sources
-	 * @param normalize    Flag to specify normalize of data [0, 1]
-	 * @param reversedOrder Specify that the order of the data in the CSV file has to be revered before processing
-	 * @param headerLines  Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
-	 * @param config  Configuration for the Spark RDDs
-	 * 
-	 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
-	 * @see org.scalaml.workflow.data.DataSource
-	 * 
-	 * @author Patrick Nicolas
-	 * @since April 1, 2014
-	 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Apache Spark
-	 */
+		/**
+		 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
+		 * @constructor Create a RDD associated to a source of data of type DataSource
+		 * @param pathName      Relative path for data sources
+		 * @param normalize    Flag to specify normalize of data [0, 1]
+		 * @param reversedOrder Specify that the order of the data in the CSV file has to be revered before processing
+		 * @param headerLines  Number of lines dedicated to header information (usually 0 if pure data file, 1 for column header name)
+		 * @param config  Configuration for the Spark RDDs
+		 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
+		 * @see org.scalaml.workflow.data.DataSource
+		 * @see org.apache.spark.rdd._
+		 * 
+		 * @author Patrick Nicolas
+		 * @since April 1, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
+		 */
 @implicitNotFound("Spark context is implicitly undefined")
 final class RDDSource(pathName: String, normalize: Boolean, reverseOrder: Boolean, headerLines: Int, config: RDDConfig)(implicit sc: SparkContext)  
 				extends PipeOperator[Array[String] =>DblVector, RDD[DblVector]] {
@@ -78,10 +87,13 @@ final class RDDSource(pathName: String, normalize: Boolean, reverseOrder: Boolea
 
 
    
-	/**
-	 * Companion object to RDDSource used to defines several version of constructors
-	 * and the conversion from time series to RDD
-	 */
+		/**
+		 * Companion object to RDDSource used to defines several version of constructors
+		 * and the conversion from time series to RDD
+		 * @author Patrick Nicolas
+		 * @since April 1, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
+		 */
 object RDDSource {
 	import org.apache.spark.mllib.linalg.{Vector, DenseVector}
 
@@ -106,7 +118,7 @@ object RDDSource {
 		require(xt != null && xt.size > 0, "RDDSource.convert Cannot generate a RDD from undefined time series")
 		require(rddConfig != null, "RDDSource.convert  Cannot generate a RDD from a time series without an RDD configuration")
 
-		val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map( x => new DenseVector(x)))
+		val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map(new DenseVector(_)))
 		rdd.persist(rddConfig.persist)
 		if( rddConfig.cache)
 			rdd.cache

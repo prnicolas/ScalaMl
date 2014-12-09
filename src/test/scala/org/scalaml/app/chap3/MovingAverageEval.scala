@@ -6,30 +6,36 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap3
-
-
 
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
+import org.scalaml.filtering.{SimpleMovingAverage, WeightedMovingAverage, ExpMovingAverage}
 import org.scalaml.app.Eval
+import XTSeries.DblSeries
 
 		/**
-		 * Singleton used to test the moving average algorithms
+		 * <p><b>Purpose:</b>Singleton used to test the moving average algorithms
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
 object MovingAveragesEval extends FilteringEval {
-	import org.scalaml.filtering._
-	import ScalaMl._
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import ScalaMl._, YahooFinancials._
 
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "MovingAveragesEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
     val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
@@ -43,37 +49,56 @@ object MovingAveragesEval extends FilteringEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation moving averages", logger)
-  	 
-		val symbol = args(0)
-		val p = args(1).toInt
-		val p_2 = p >>1
-		val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
-		val weights: DblVector = w map { _ / w.sum }
-		ScalaMl.toString(weights, "Weights", false)
-     
-		val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
-		Try {
-			val price = dataSource |> YahooFinancials.adjClose
-			val sMvAve = SimpleMovingAverage[Double](p)  
-			val wMvAve = WeightedMovingAverage[Double](weights)
-			val eMvAve = ExpMovingAverage[Double](p)
+		if(args.size > 1) {
+			val symbol = args(0)
+			val p = args(1).toInt
+			val p_2 = p >>1
+			val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
+			val weights: DblVector = w map { _ / w.sum }
+			Display.show(ScalaMl.toString(weights, "Weights", true), logger)
+	     
+			val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
+			Try {
+				val price = dataSource |> YahooFinancials.adjClose
+				val sMvAve = SimpleMovingAverage[Double](p)  
+				val wMvAve = WeightedMovingAverage[Double](weights)
+				val eMvAve = ExpMovingAverage[Double](p)
+		
+				val dataSink = DataSink[Double]("output/chap3/mvaverage" + p.toString + ".csv")
+				val results = price :: sMvAve.|>(price) :: 
+										eMvAve.|>(price) :: 
+										wMvAve.|>(price) :: 
+										List[DblSeries]()
 	
-			val dataSink = DataSink[Double]("output/chap3/mvaverage" + p.toString + ".csv")
-			val results = price :: sMvAve.|>(price) :: 
-									sMvAve.|>(price) :: 
-									sMvAve.|>(price) :: 
-									List[XTSeries[Double]]()
-
-			dataSink |> results
-			Display.show(s"$name Results of different moving average", logger)
+				dataSink |> results
+				Display.show(s"$name Results of different moving average", logger)
+				results.foreach(ts => Display.show(ScalaMl.toString(ts, "X", true), logger))
+				
+				display(List[DblSeries](results(0), results(1)), List[String]("Stock price", "Simple Moving Average"))
+				display(List[DblSeries](results(0), results(2)), List[String]("Stock price", "Exponential Moving Average"))
+				display(List[DblSeries](results(0), results(3)), List[String]("Stock price", "Weighted Moving Average"))
+			}
+			match {
+				case Success(n) => n
+				case Failure(e) => Display.error(s"$name Computation of moving averages failed", logger, e)
+			}
 		}
-		match {
-			case Success(n) => n
-			case Failure(e) => Display.error(s"$name Computation of moving averages failed", logger, e)
-		}
+		else 
+			Display.error(s"$name Incorrect arguments for command line", logger)
+	}
+	
+	private def display(results: List[DblSeries], labels: List[String]): Int = {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
+		
+		val plot = new LinePlot(("Moving Averages", "Trading sessions", "Stock price"), new LightPlotTheme)
+		val dataPoints: Array[(DblVector, String)] = results.map(_.toArray).toArray.zip(labels)
+		plot.display(dataPoints.toList, 340, 270)
+		1
 	}
 }
 
-
+object MyApp extends App {
+  MovingAveragesEval.run(Array[String]("BAC", "60"))
+}
 
 // --------------------------------------  EOF -------------------------------

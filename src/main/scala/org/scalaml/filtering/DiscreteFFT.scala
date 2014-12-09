@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.filtering
 
-import scala.Array.canBuildFrom
+
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
 
@@ -20,9 +20,8 @@ import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.Types.ScalaMl._
-
-import DFT._
+import org.scalaml.core.Types.ScalaMl
+import DFT._, ScalaMl._
 
 
 
@@ -33,9 +32,10 @@ import DFT._
 		 * to the next power to 2. The internal method assumes that the implicit conversion
 		 * from T to Double is defined.</p>
 		 * @constructor Create a generic Fourier transform as a data transformation
+		 * @see org.scala.commons.math3.transform
 		 * @author Patrick Nicolas
 		 * @since February 9, 2014
-		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Discrete Fourier transform
 		 */
 trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 

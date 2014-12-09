@@ -6,17 +6,17 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.filtering
 
-import scala.Array.canBuildFrom
+
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-import ScalaMl._
+import ScalaMl._, XTSeries._
 
 		/**
 		 * <p>Parameterized moving average (view bound with Double) data transformation</p>
@@ -25,7 +25,7 @@ import ScalaMl._
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], XTSeries[Double]] 
+abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], DblSeries] 
 
 
 		/**
@@ -54,7 +54,7 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 * @throws MatchError exception if the input time series is undefined
 		 * @return Partial function with time series of type T as input and time series of type Double as output.
 		 */
-	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 0) => {
 			
 				// Create a sliding window as a array of pairs of 
@@ -86,7 +86,9 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 			val slider = data.take(data.size - period).zip(data.drop(period) )
 				// Compute the average value over the time window
 			val a0 = data.take(period).sum/period
-      
+
+				// Apply the slding window 'slider' across the time series
+				// then flatten the matrix into a vector of DOuble
 			var a = a0
 			Array[Array[Double]]( 
 				Array.fill(period)(0.0), a0,  slider.map(x => {a += (x._2 - x._1) /period; a }) 
@@ -139,7 +141,7 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](period:
 		  * @throws MatchError if the input time series is undefined
 		  * @return PartialFunction of time series of type T and a time series of Double elements as output
 		  */
-	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
 			val alpha_1 = 1-alpha
 			var y: Double = xt(0)
@@ -197,7 +199,7 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: Dbl
 		 * @throws MatchError if the input time series is undefined
 		 * @return PartialFunction of type vector of Double for input to the transformation, and type vector of Double for output.
 		 */
-	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
+	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
 			
 				// Compute the smoothed time series by apply zipping a
@@ -208,6 +210,7 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: Dbl
 						.zip(weights)
 						.foldLeft(0.0)((s, x) => s + x._1*x._2)  // dot product
 			})
+				// Create a time series with the weighted data points
 			XTSeries[Double](Array.fill(weights.size)(0.0) ++ smoothed)
 		}
 	}

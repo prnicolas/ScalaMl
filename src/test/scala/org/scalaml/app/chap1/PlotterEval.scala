@@ -6,16 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap1
 
 import org.scalaml.core.Types
 import org.scalaml.stats.Stats
-import scala.io.Source
 import org.scalaml.plots._
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
@@ -24,11 +21,20 @@ import org.scalaml.app.Eval
 		 * (line, scatter.)  used inthe Scala for Machine learning</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @since December 22, 2013
 		 * @note Scala for Machine Learning Chapter 1
 		 */
 object PlotterEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import scala.io.Source
+	import org.apache.log4j.Logger
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "PlotterEval"
+	  	/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 5000
 		
 	private val CSV_DELIM = ","

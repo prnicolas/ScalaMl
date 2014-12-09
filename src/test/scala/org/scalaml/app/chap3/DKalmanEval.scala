@@ -6,18 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap3
 
 import scala.util.{Random, Try, Success, Failure}
+import scala.annotation.implicitNotFound
+
+import org.apache.log4j.Logger
+
+import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.filtering.{DKalman, QRNoise}
-import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import scala.annotation.implicitNotFound
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
@@ -34,7 +36,14 @@ import org.scalaml.app.Eval
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
 final class DKalmanEval extends FilteringEval {
 	import YahooFinancials._, ScalaMl._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "DKalmanEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
     val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
@@ -115,6 +124,5 @@ final class DKalmanEval extends FilteringEval {
 object DKalmanEval {
 	def apply: DKalmanEval = new DKalmanEval
 }
-
 
 // --------------------------------------  EOF -------------------------------

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.core
 
@@ -106,7 +106,7 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 	def zip[U](that: XTSeries[U]): XTSeries[(T, U)] = XTSeries[(T,U)](arr.zip(that.toArray))
   
 	def slice(start: Int, end: Int): XTSeries[T] = {
-		require(start < arr.size && end <= arr.size && start < end, "Slice of XTSeries is incorrectly specified")
+		require(start < arr.size && end <= arr.size && start < end, s"XTSeries.slice starting $start or ending $end index incorrect")
 		new XTSeries[T](label, arr.slice(start, end))
 	}
   

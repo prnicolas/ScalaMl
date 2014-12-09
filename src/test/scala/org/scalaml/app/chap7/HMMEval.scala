@@ -6,34 +6,37 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.util.Matrix
-import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
-import scala.io.Source
-import org.scalaml.core.Types.ScalaMl._
-import scala.util.{Try, Success, Failure}
-import scala.language.implicitConversions
-import org.scalaml.supervised.hmm.HMMConfig
+import org.scalaml.util.{Matrix, Display}
+import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda, HMMConfig}
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.app.Eval
 
 		/**
-		 * <p>Singleton for the evaluation of Hidden Markov Models presented in chapter 7<br>
+		 * <p><b>Purpose:</b> Singleton for the evaluation of Hidden Markov Models presented in chapter 7<br>
 		 * Symbols: Stock up/down (1, 0)<br>
 		 * States: 6 normalized ratio of % bullish investors / % bearish investors discretized in 6 different levels<br>
 		 * </p>
 		 * @author Patrick Nicolas
-		 * @since March 28, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov model
 		 */
-
 object HMMEval extends Eval  {
+	import scala.io.Source	
+	import scala.util.{Try, Success, Failure}
+	import scala.language.implicitConversions
+	import org.apache.log4j.Logger
 	import HMM._, HMMForm._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "HMMEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 12000
 	
 	private val STATES_PATH = "resources/data/chap7/statesprob.csv"

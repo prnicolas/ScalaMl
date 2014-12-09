@@ -6,36 +6,45 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap12
 
-import scala.collection.mutable.HashMap
-import scala.collection.parallel.immutable.ParVector
-import scala.collection.parallel.mutable.ParArray
-import scala.collection.parallel.ForkJoinTaskSupport
-import org.scalaml.scalability.scala.ParArrayBenchmark
-import scala.collection.parallel.mutable.ParHashMap
-import org.scalaml.scalability.scala.ParMapBenchmark
-import scala.concurrent.forkjoin.ForkJoinPool
+import org.scalaml.scalability.scala.{ParArrayBenchmark, ParMapBenchmark}
 import org.scalaml.app.Eval
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
+import org.scalaml.core.Types.ScalaMl.DblVector
 
-
-
-
-
-
+	/**
+	 * <p><b>Purpose</b>: Singleton to evaluate the performance of Scala parallel arrays
+	 * and maps.</p>
+	 * 
+	 * @author Patrick Nicolas 
+	 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
+	 */
 object ParBenchmarkEval extends Eval {
 	 import scala.util.Random
+	 import scala.collection.mutable.HashMap
+	 import scala.collection.parallel.immutable.ParVector
+	 import scala.collection.parallel.mutable.{ParArray, ParHashMap}
+	 import scala.collection.parallel.ForkJoinTaskSupport
+	 import scala.concurrent.forkjoin.ForkJoinPool
+	 import org.apache.log4j.Logger
+	 
+	 	/**
+		 * Name of the evaluation 
+		 */
 	 val name: String = "ParBenchmarkeval"
+	   	/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	 val maxExecutionTime: Int = 10000
 	   	
 	 private val logger = Logger.getLogger(name)
-	 private val SZ = 1000000
+	 private val SZ = 250000
 	 private val NUM_TASKS = 16
 	 private val evalRange = Range(1, NUM_TASKS)
+	 private val TIMES = 30
 
 	 	/** <p>Execution of the scalatest for Master-worker design with Akka framework.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -45,37 +54,68 @@ object ParBenchmarkEval extends Eval {
 	 def run(args: Array[String]): Int = {
 		 Display.show(s"\n\n *****  test#${Eval.testCount} $name Scala parallel collections", logger)
 		 
-		 val mapper = new HashMap[String, Double]
-		 val mapped = mapper.map( k => (k._1, k._2/10.0))
-		 
-		 val rand = new ParVector[Float]
-		 Range(0, SZ).foreach(n => rand.updated(n, n*Random.nextFloat))
-		 rand.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(NUM_TASKS))
-		 val randExp = rand.map( Math.exp(_) )
-	
+		 if( args.size > 0) {
+			 	// Arbitrary map function
+			 val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
+				// Arbitrary filter function
+			 val filterF = (x: Double) => (x > 0.8)
+			 	// Arbitrary reduce function
+			 val reduceF = (x:Double, y:Double) => (x+y)*x
+			 
+			 Display.show(s"Duration parallel collection relative to non-parallel collection for NUM_TASKS tasks\nIter\tRatio", logger)
+			 if(args(0) == "array")
+				 evaluateParArray(mapF, filterF, reduceF)
+			else
+				evaluateParMap(mapF, filterF)
+			0
+		 }
+		 else 
+			 Display.error(s"$name incorrect command line, argument should be 'array' or 'map'", logger)
+	}
+	 
+	private def evaluateParArray(mapF: Double => Double, filterF: Double => Boolean, reduceF: (Double, Double) => Double): Unit =  {
+			// Generate random vector for both the non-parallel and parallel array
 		 val data = Array.fill(SZ)(Random.nextDouble)
 		 val pData = ParArray.fill(SZ)(Random.nextDouble)
-		 val times: Int = 25
-		 	 
-		 val benchmark = new ParArrayBenchmark[Double](data, pData, times)
-		 
-		 val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
-		 evalRange.foreach(n => benchmark.map(mapF)(n))
 	
-		 val filterF = (x: Double) => (x > 0.8)
-		 evalRange.foreach(n => benchmark.filter(filterF)(n))
+		 	// Initialized and execute the benchmark for the parallel array
+		 val benchmark = new ParArrayBenchmark[Double](data, pData, TIMES)
 		 
+		 Display.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
+		 val ratios = new Array[Double](NUM_TASKS)
+		 evalRange.foreach(n => ratios.update(n, benchmark.map(mapF)(n)))
+		 display(ratios.drop(1), "ParArray.map")
+		 
+		 Display.show("Filter for (x: Double) => (x > 0.8)", logger)
+		 evalRange.foreach(n => ratios.update(n, benchmark.filter(filterF)(n)))
+		 display(ratios.drop(1), "ParArray.filter")
+	}
+	
+	private def evaluateParMap(mapF: Double => Double, filterF: Double => Boolean): Unit = {
 		 val mapData = new HashMap[Int, Double]
 		 Range(0, SZ).foreach(n => mapData.put(n, Random.nextDouble) )
 		 val parMapData = new ParHashMap[Int, Double]
 		 Range(0, SZ).foreach(n => parMapData.put(n, Random.nextDouble) )
 		 
-		 val benchmark2 = new ParMapBenchmark[Double](mapData, parMapData, times)
-		 evalRange.foreach(n => benchmark2.map(mapF)(n))
-		 evalRange.foreach(n => benchmark2.filter(filterF)(n))
-		 1
-	 }
+		  	// Initialized and execute the benchmark for the parallel map
+		 val benchmark = new ParMapBenchmark[Double](mapData, parMapData, TIMES)
+		 Display.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
+	
+		 val ratios = new Array[Double](NUM_TASKS)
+		 evalRange.foreach(n => ratios.update(n, benchmark.map(mapF)(n)))
+		 display(ratios.drop(1), "ParMap.map")
+		 
+		 Display.show("Filter for (x: Double) => (x > 0.8)", logger)
+		 evalRange.foreach(n => ratios.update(n, benchmark.filter(filterF)(n)))
+		 display(ratios.drop(1), "ParMap.filter")
+	}
+	
+	
+	private def display(x: DblVector, label: String): Unit =   {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+		val plot = new LinePlot(("Scala parallel collections", s"Number of tasks for $label", "Rel. timing"), new LightPlotTheme)
+		plot.display(x, 340, 280)
+	}
 }
-
 
 // -------------------------------------------  EOF --------------------------------------------------

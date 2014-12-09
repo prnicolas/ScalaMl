@@ -6,22 +6,23 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap2
 
+import scala.util.Random
 import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
+
+import org.apache.log4j.Logger
+
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.workflow._
-import scala.util.Random
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.plots.LightPlotTheme
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.PipeOperator
+import org.scalaml.plots.LightPlotTheme
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
-
 
 
 	/**
@@ -29,7 +30,6 @@ import org.scalaml.app.Eval
 	 * dependency injection</p>
 	 * 
 	 * @author Patrick Nicolas
-	 * @since February 4, 2014
 	 * @note Scala for Machine Learning Chapter 2
 	 */
 object TransformExample {
@@ -111,7 +111,13 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @note Scala for Machine Learning
 	 */
 object WorkflowEval extends Eval {
+  		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "WorkflowEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
     val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)

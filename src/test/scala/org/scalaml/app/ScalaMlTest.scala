@@ -6,19 +6,21 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app
 
 import org.scalatest.FunSuite
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Try, Success, Failure}
+import scala.util.{Try, Success, Failure, Properties}
 import scala.concurrent.duration.Duration
 import akka.util.Timeout
 import akka.actor.ActorSystem
 import akka.actor.Actor
 import akka.actor.Props
 import akka.actor.ActorRef
+
+import org.scalaml.util.Display
 
 	/**
 		 * <p>Generic template for the scalatest invocation.</p>
@@ -27,6 +29,9 @@ import akka.actor.ActorRef
 		 * @note Scala for Machine Learning
 		 */
 trait ScalaMlTest extends FunSuite {
+	import org.apache.log4j.Logger
+	private val logger = Logger.getLogger("TestContext")
+
 	val chapter: String
 		/**
 		 * <p>Trigger the execution of a Scala test for a specific method and set of arguments.</p>
@@ -37,11 +42,12 @@ trait ScalaMlTest extends FunSuite {
 		Try (eval.run(args) ) match {
 			case Success(n) => {
 				if(n >= 0) 
-					Console.println(s"$chapter ${eval.name} succeed with status = $n")
+					Display.show(s"$chapter ${eval.name} succeed with status = $n", logger)
 				assert(n >= 0, s"$chapter ${eval.name} Failed")
 				true
 			}
 			case Failure(e) => {
+				Display.show(s"$chapter ${eval.name} ${e.getMessage}", logger)
 				assert(false, s"$chapter ${eval.name} Failed")
 				true
 			}
@@ -56,14 +62,20 @@ trait ScalaMlTest extends FunSuite {
 		 * @note Scala for Machine Learning
 		 */
 trait Eval {
+  		/**
+		 * Name of the evaluation 
+		 */
 	val name: String
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int
-	
 		/**
 		 * <p>Execution of scalatest case.</p>
 		 */
 	def run(args: Array[String]): Int
 }
+
 
 object Eval {
 	var count = 0
@@ -74,19 +86,70 @@ object Eval {
 }
 
 
-
+		/**
+		 * Singleton that defines the actor context for
+		 * all the tests. In the case of sbt test:run execution, the
+		 * context is initialized only once before execution of all the tests.
+		 * and shutdown after the execution of all the tests.
+		 */
 object TestContext { 
+	import org.apache.log4j.Logger
+	private val logger = Logger.getLogger("TestContext")
+	
+	var allRuns = false
 	lazy val actorSystem = {
 		val ctx = ActorSystem("System") 
 		println("Context")
 		ctx
 	}
 	
-	private val ELAPSE_TIME = 10000
+	private val ELAPSE_TIME = 4000
 	
+		/**
+		 * Method to validate the version of Scala and Java JDK used.
+		 */
+	def init: Unit = {
+		Display.show(s"TestContext.init\nUser: ${Properties.userName}, OS: ${Properties.osName}", logger)
+		if( !Properties.isWin && !Properties.isMac)
+			Display.show("The library has not be tested for this Operating System", logger)
+			
+		Display.show(s"Java version: ${Properties.javaVersion}", logger)
+		if(!Properties.isJavaAtLeast("1.7"))
+			Display.show("Incompatible version of Java, should be 1.7 or later", logger)
+			
+		val scalaVersion = Properties.versionNumberString
+		Display.show(s"Scala version: $scalaVersion", logger)
+		scalaVersion.charAt(2) match {
+			case '9' => Display.show("Scala version should be 2.10.2 or higher", logger)
+			case '1' => {
+				scalaVersion.charAt(3) match {
+					case '0' => Display.show("Compatible Akka version should be 2.2.3 or lower", logger)
+					case '1' => Display.show("Compatible Akka version should be 2.3.4 or higher", logger)
+				}
+			}
+			case _ => Display.show("Could not initialize", logger)
+		}
+		allRuns = true
+	}
+	
+		/**
+		 * Shutdown in-conditionally the Akka actor system, after a
+		 * specific amount of time. This function is called by test:run
+		 */
+	def shutdownAll: Unit = {
+		Thread.sleep((ELAPSE_TIME<<1))
+		actorSystem.shutdown
+		Console.println("test:run completed", logger)
+	}
+	
+		/**
+		 * Shutdown the Akka actor system for individual scalatest
+		 * @return 0 for success
+		 */
 	def shutdown: Int = {
 		Thread.sleep(ELAPSE_TIME)
-		actorSystem.shutdown
+		if( !allRuns )
+			actorSystem.shutdown
 		0
 	}
 }

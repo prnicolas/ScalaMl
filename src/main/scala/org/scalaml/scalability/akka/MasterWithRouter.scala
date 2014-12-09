@@ -6,26 +6,25 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka
 
-
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.scalability.akka.message._
-import akka.routing.RoundRobinRouter
+import scala.util.{Random, Properties}
+import scala.collection.mutable.ListBuffer
+import org.apache.log4j.Logger
 import akka.actor.{ActorRef, Props, Actor, actorRef2Scala}
 import akka.util.Timeout
-import scala.util.Random
-import org.scalaml.filtering.DFT
+import akka.routing._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import XTSeries._
-import org.apache.log4j.Logger
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.scalability.akka.message.{Start, Completed, Activate, Terminate}
+import org.scalaml.filtering.DFT
 import org.scalaml.util.Display
-// import akka.routing.RoundRobinPool for Akka 2.3.6
-import akka.routing.RoundRobinRouter
-import scala.collection.mutable.ListBuffer
+import XTSeries.DblSeries
+import akka.actor.PoisonPill
 
 
 		/**
@@ -38,46 +37,63 @@ import scala.collection.mutable.ListBuffer
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
-		 * 
+		 * 	@param aggr User defined function for aggregating results from a group of worker actors
+		 *  @see org.scalaml.scalability.akka.Controller
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers
 		 */		
-abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) 
+abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner, aggr: (List[DblVector]) => Seq[Double]) 
 							extends Controller(xt, fct, partitioner) {	
 
 	private val logger = Logger.getLogger("MasterWithRouter")
 	private val SLEEP = 1500
-	private val aggregator = new ListBuffer[DblVector]
+	protected val MAX_NUM_DATAPOINTS = 128
+		
+	protected val aggregator = new ListBuffer[DblVector]
 	
 			// Akka version 2.3.4 and higher 
 			//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
 			//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
-	private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
-		.withRouter(RoundRobinRouter(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
+	println(s"Scala version: ${Properties.versionNumberString}, ${Properties.versionMsg}" )
+	
+	private val router = context.actorOf(Props(new Worker(0, fct))
+		.withRouter(RoundRobinRouter(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))
+		
+		
 		/**
 		 * <p>Message processing handler for the routing master for a distributed transformation of time series.<br>
 		 * <b>Start</b> to partition the original time series and launch data transformation on worker actors.<br> 
 		 * <b>Completed</b> aggregates the results from all the worker actors.</p>
 		 */
 	override def receive = {
+			// Partition the original time series
 		case msg: Start => split
-
+		
+			// If all workers have returned their results....
+			// aggregate the results using a user defined function 
+			// and finally stop the router supervisor before the master stops itself..
 		case msg: Completed => {
-			aggregate
-			router ! Terminate
-			Thread.sleep(SLEEP)
-			context.stop(self)
+			if(aggregator.size >= partitioner.numPartitions-1) {
+				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
+				Display.show(s"Aggregated\n${ScalaMl.toString(aggr)}", logger)
+				
+			//	router ! Terminate
+				context.stop(self)
+			}
+			aggregator.append(msg.xt.toArray)
 		}
-		case _ => Display.error("MasterWithRouter.recieve Message not recognized", logger)
+		case _ => Display.error("MasterWithRouter.receive Message not recognized", logger)
 	} 
 	
 	
-	protected def aggregate: Seq[Double]
+	protected def aggregate: Seq[Double] = aggr(aggregator.toList)
 
 	private def split: Unit = {
+		Display.show("MasterWithRouter.receive => Start", logger)
 		val indices = partitioner.split(xt)
-		indices.foreach(n => router ! Activate(0, xt.slice(n, n - indices(0)), self) )
+		indices.foreach(n => router ! Activate(0, xt.slice(n - indices(0), n)) )
 	}
 }
 

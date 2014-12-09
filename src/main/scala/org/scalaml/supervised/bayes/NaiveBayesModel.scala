@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.bayes
 
@@ -49,7 +49,6 @@ abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model 
 		 * is used to define the signature of the Density function.
 		 */
 object NaiveBayesModel {
-	
 		/**
 		 * <p>Signature of the Density function used in Naive Bayes Model.
 		 */
@@ -73,8 +72,8 @@ object NaiveBayesModel {
 protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], negatives: Likelihood[T], density: Density) 
 			extends NaiveBayesModel[T](density) {
 	
-	require(positives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine positive labels")
-	require(negatives !=null, "BinNaiveBayesModel Cannot classify an observation with undefine negative labels")
+	require(positives != null, "BinNaiveBayesModel Cannot classify an observation with undefine positive labels")
+	require(negatives != null, "BinNaiveBayesModel Cannot classify an observation with undefine negative labels")
     
 		/**
 		 * <p>Classify a new observation (features vector) using the Binomial Naive Bayes model.</p>
@@ -84,6 +83,8 @@ protected class BinNaiveBayesModel[T <% Double](positives: Likelihood[T], negati
 		 */
 	override def classify(x: Array[T]): Int = {
 		require(x != null && x.size > 0, "BinNaiveBayesModel.classify Cannot classify an undefined observation")
+		
+		// Simply select one of the two classes with the highers log posterior probability
 		if (positives.score(x, density) > negatives.score(x, density)) 1 else 0
 	}
 	
@@ -140,7 +141,10 @@ protected class MultiNaiveBayesModel[T <% Double](likelihoodSet: List[Likelihood
 		 */
 	override def classify(x: Array[T]): Int = {
 		require(x != null && x.size > 0, "MultiNaiveBayesModel.classify Vector input is undefined")
-		likelihoodSet.sortWith((p1, p2) => p1.score(x, density) > p2.score(x, density)).head.label
+			// The classification is performed by ordering the class according to the
+			// log of their posterior probability and selecting the top one (highest posterior probability)
+		likelihoodSet.sortWith((p1, p2) => 
+			p1.score(x, density) > p2.score(x, density)).head.label
 	}
 	
 	override def toString(labels: Array[String]): String = {

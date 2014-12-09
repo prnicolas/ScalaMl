@@ -6,25 +6,34 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap9
 
-
-import org.scalaml.supervised.nnet._
+import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import scala.util.Random
-import MLP._
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
 
-
+		/**
+		 * <p><b>Purpose:</b>Singleton to va;odate the Multi-layer perceptron using
+		 * randomly generated synthetic data.</p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 9: Artificial Neural Network / Evaluation
+		 */
 object MLPValidation extends Eval {
+	import scala.util.Random
+	import org.apache.log4j.Logger
+	import MLP._
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "MLPValidation"
-    val maxExecutionTime: Int = 25000
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 25000
 	private val logger = Logger.getLogger(name)
    
 	private val ALPHA = 0.8

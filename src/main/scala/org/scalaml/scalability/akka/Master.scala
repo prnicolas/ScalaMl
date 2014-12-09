@@ -6,24 +6,23 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka
 
-import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.Types.ScalaMl._
-import java.io.{IOException, PrintWriter}
-import akka.actor._
-import org.scalaml.stats.Stats
-import org.scalaml.util.Display
-import org.scalaml.filtering.DFT
-import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
-import XTSeries._
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
+
 import org.apache.log4j.Logger
+import akka.actor.{Props, PoisonPill}
+
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.XTSeries
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.stats.Stats
+import org.scalaml.util.Display
 import org.scalaml.scalability.akka.message._
+import ScalaMl._, XTSeries._
 
 
 
@@ -34,21 +33,22 @@ import org.scalaml.scalability.akka.message._
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
-		 * 
+		 *  @param aggr User defined function for aggregating results from a group of worker actors
+		 *  @see org.scalaml.scalability.akka.Controller
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Master-workers
 		 */		
-abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) 
+abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner, aggr: (List[DblVector]) => Seq[Double]) 
 								extends Controller(xt, fct, partitioner) {
 
 	private val logger = Logger.getLogger("Master")
-	val MAX_NUM_DATAPOINTS = 128
-    
+	protected val MAX_NUM_DATAPOINTS = 128
+	protected val aggregator = new ListBuffer[DblVector]
+	
 	private val workers = List.tabulate(partitioner.numPartitions)(n => 
 		context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
-
-	protected val aggregator = new ListBuffer[DblVector]
    
 	override def preStart: Unit = Display.show("Master.preStart", logger)
 	override def postStop: Unit = Display.show("Master postStop", logger)
@@ -59,14 +59,20 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 		 * <b>Completed</b> aggregates the results from all the worker actors.</p>
 		 */
 	override def receive = {
+			// Partition the original time series
 		case s: Start => split
+		
+			// Process completed message from any of the worker
 		case msg: Completed => {
+			
+			// If all workers have returned their results....
+			// aggregate the results using a user defined function 
+			// and finally stop the worker actors before the master stop itself
 			if(aggregator.size >= partitioner.numPartitions-1) {
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
 				Display.show(s"Aggregated\n${ScalaMl.toString(aggr)}", logger)
-				workers.foreach( _ ! PoisonPill)
 				
-				Thread.sleep(2000)
+				// Terminate itself after stopping the workers.
 				context.stop(self)
 			}
 			aggregator.append(msg.xt.toArray)
@@ -74,12 +80,13 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 		case _ => Display.error("Message not recognized and ignored", logger)
 	}
 	
-	protected def aggregate: Seq[Double] 
+	protected def aggregate: Seq[Double] = aggr(aggregator.toList)
 
 	private def split: Unit = {
 		Display.show("Master.receive => Start", logger)
-		val partIdx = partitioner.split(xt)
-		workers.zip(partIdx).foreach(w => w._1 ! Activate(0, xt.slice(w._2-partIdx(0), w._2), self) )  
+		val indices = partitioner.split(xt)
+		workers.zip(indices).foreach(w => 
+			w._1 ! Activate(0, xt.slice(w._2 - indices(0), w._2)) )  
 	}
 }
 

@@ -10,10 +10,11 @@
  */
 package org.scalaml.supervised.regression.logistic
 
-import org.scalaml.core.Types.ScalaMl
-import ScalaMl._
-import org.scalaml.util.Display
 import org.apache.log4j.Logger
+
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.util.Display
+
 
 
 		/**
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger
 final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double) {
 	import LogBinRegression._
 	
-
+		// The weights define the model for this simple logistic regression
 	private[this] val weights = train
 	private val logger = Logger.getLogger("LogBinRegression")
 
@@ -49,8 +50,9 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 */
 	def classify(xy: XY): Option[(Boolean, Double)] = weights match {
 		case Some(w) => { 
+				// compute the logit of w0 + w1.x1 + w2.x2 
 			val likelihood =  sigmoid(w(0) + xy._1*w(1) + xy._2*w(2))
-			Some(likelihood > 0.5, likelihood)
+			Some(likelihood > HYPERPLANE, likelihood)
 		}
 		case None => Display.none("LogBinRegression.classify failed", logger)
 	}
@@ -64,19 +66,22 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 	private[this] def train: Option[DblVector] = {
 		import scala.util.Random    
 		val w = Array.tabulate(DIM)( x=> Random.nextDouble-1.0) 
-    	
+    
+			// Iterates through the computation of the predicted value z
+			// and the derivative dw
 		(0 until maxIters).find( _ => {
 			val deltaW = labels.foldLeft(Array.fill(DIM)(0.0)) ((dw, y) => {  
 				val z = sigmoid(w(0) + w(1)*y._1._1 +  w(2)*y._1._2)
 				dw.map(dx => dx + (y._2 - z)*(y._1._1 + y._1._2))
 			})
 
+				// Applies the descent gradient formula.
 			val nextW = Array.fill(DIM)(0.0)
 							 .zipWithIndex.map( nw => w(nw._2) + eta*deltaW(nw._2))
 			val diff = Math.abs(nextW.sum - w.sum)
 	    	
 			nextW.copyToArray(w)
-			diff < eps
+			diff < eps	// Exit condition
 		}) match {
 			case Some(iters) => Some(w)
 			case None => Display.none("LogBinRegression.train failed to converge", logger)
@@ -95,12 +100,15 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 */
 object LogBinRegression {
 	final val DIM = 3
+	final val HYPERPLANE = 0.5
 	private val MAX_NUM_ITERS = 1024
+	private val ETA_LIMITS = (1e-7, 1e-1)
+	private val EPS_LIMITS = (1e-10, 0.25)
 	
 	private def check(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double): Unit =  {
 		require(maxIters > 10 && maxIters < MAX_NUM_ITERS, s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")
-		require(eta < 1e-1 && eta > 1e-7, s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
-		require(eps < 0.25 && eps > 1e-7, s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
+		require(eta > ETA_LIMITS._1 && eta < ETA_LIMITS._2, s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
+		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
 		require(labels != null && labels.size > 1, "LogBinRegression.check  Cannot train with undefined set of observations")
 	}
 }

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka
 
@@ -30,16 +30,17 @@ import scala.concurrent.duration.Duration
 		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.</p>
 		 * @constructor Create a distributed transformation for time series. 
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out of range.
-		 *  @param xt Time series to be processed
-		 *  @param fct Data transformation of type PipeOperator
-		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
+		 * @param xt Time series to be processed
+		 * @param fct Data transformation of type PipeOperator
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
+		 * @see org.scalaml.scalability.akka.Controller
 		 * 
-		 *  @author Patrick Nicolas
-		 *  @since March 30, 2014
-		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures
+		 * @author Patrick Nicolas
+		 * @since March 30, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable Frameworks / Akka / Futures
 		 */			
-abstract class TransformFutures(_xt: DblSeries, _fct: PipeOperator[DblSeries, DblSeries], _partitioner: Partitioner)(implicit timeout: Timeout) 
-					extends Controller(_xt, _fct, _partitioner) {
+abstract class TransformFutures(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner)(implicit timeout: Timeout) 
+					extends Controller(xt, fct, partitioner) {
 		
 	private val logger = Logger.getLogger("TransformFutures")
 
@@ -55,7 +56,8 @@ abstract class TransformFutures(_xt: DblSeries, _fct: PipeOperator[DblSeries, Db
 	
 	private def transform: Array[Future[DblSeries]] = {   
 		val partIdx = partitioner.split(xt)
-		val partitions: Iterable[DblSeries] = partIdx.map(n => XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
+		val partitions: Iterable[DblSeries] = partIdx.map(n => 
+							XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
 
 		val futures = new Array[Future[DblSeries]](partIdx.size)
 		partitions.zipWithIndex.foreach(pi => {
@@ -73,7 +75,7 @@ abstract class TransformFutures(_xt: DblSeries, _fct: PipeOperator[DblSeries, Db
 		 * @throws IllegalArgumentException if futures are undefined
 		 */
 	private def compute(futures: Array[Future[DblSeries]]): Seq[Double] = {
-		require(futures != null && futures.size > 0, "Cannot delegate computation to undefined futures")
+		require(futures != null && futures.size > 0, "TransformFutures.compute Undefined futures")
   	  
 		val results = futures.map(Await.result(_, timeout.duration))
 		aggregate(results)

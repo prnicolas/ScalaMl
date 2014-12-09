@@ -6,36 +6,38 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap2
 
+import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
+
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
-import scala.util.Random
 import org.scalaml.core.Types.ScalaMl
-import scala.util.{Try, Success, Failure}
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
-
-
 
 		/**
 		 * <p><b>Purpose</b>Singleton to evaluate the bias-variance trade-off
 		 * using synthetically generated data</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @since February 1, 2014
 		 * @note Scala for Machine Learning  Chapter 2
 		 */
 object BiasVarianceEval extends Eval {
+	import scala.util.{Try, Success, Failure, Random}
+	import org.apache.log4j.Logger
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "BiasVarianceEval"
-    val maxExecutionTime: Int = 5000
-    
-	import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 5000
 		
 	private val logger = Logger.getLogger(name)
-	
 	
 		/**
 		 * <p>Execution of the scalatest for <p>Bias Variance </p> decomposition. 

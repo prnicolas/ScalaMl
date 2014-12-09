@@ -6,26 +6,37 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
-import org.scalaml.supervised.svm._
 import org.scalaml.core.{XTSeries, Types}
+import org.scalaml.supervised.svm.{SVM, SVMConfig, SVMExecution}
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.OneSVCFormulation
-import Fundamentals._
-import Types.ScalaMl._
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
 
-	
+
+		/**
+		 * <p><b>Purpose:</b>Singleton to evaluate the on-class SVM for anomalies or outliers detection.</p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
+		 */
 object SVCOutliersEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import Fundamentals._, Types.ScalaMl._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "SVCOutliersEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 25000
 	
 	val path = "resources/data/chap8/dividends2.csv"	

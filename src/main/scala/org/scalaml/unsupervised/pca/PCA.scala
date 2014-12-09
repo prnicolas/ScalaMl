@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.unsupervised.pca
 
@@ -50,16 +50,29 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 	override def |> : PartialFunction[XTSeries[Array[T]], (DblMatrix, DblVector)] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0) => {
 			Try {
+				// Compute the zScore of the time series (1)
 				zScoring(xt) match {
-					case Some(observation) => {
+					case Some(observation) => {	
+					  
+						// Forces a conversion
 						val obs: DblMatrix = observation  
+						// Compute the covariance matrix related to the observations in the time series (3)
 						val covariance = new Covariance(obs).getCovarianceMatrix
+						
+						// Create a Eigenvalue and Eigenvectors decomposition (4)
 						val transform = new EigenDecomposition(covariance)
+						
+						// Retrieve the principal components (or direction)
 						val eigenVectors = transform.getV
+						
+						// Retrieve the eigen values
 						val eigenValues = new ArrayRealVector(transform.getRealEigenvalues)
-						(obs.multiply(eigenVectors).getData, eigenValues.toArray)
+					
+						val cov = obs.multiply(eigenVectors).getData
+						// Return the tuple (Covariance matrix, Eigenvalues)
+						(cov, eigenValues.toArray)
 					}
-					case None => throw new Exception("zScoring failed")
+					case None => throw new IllegalStateException("zScoring failed")
 				}
 			} 
 			match {

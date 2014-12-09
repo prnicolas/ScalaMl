@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.unsupervised.em
 
@@ -38,7 +38,7 @@ import org.apache.log4j.Logger
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
 		 */
 final protected class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
-	require( K > 0 && K < MAX_K, s"MultivariateEM Number K of clusters for EM $K is out of range")
+	require( K > 0 && K < MAX_K, s"MultivariateEM: Number K of clusters for EM $K is out of range")
 	
 	private val logger = Logger.getLogger("MultivariateEM")
 	
@@ -56,14 +56,23 @@ final protected class MultivariateEM[T <% Double](K: Int) extends PipeOperator[X
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
+			
+				// Convert the time series of observations to a matrix (2)
 			val data: DblMatrix = xt.toDblMatrix  // force a type conversion
 		  
 			Try {
+				// Instantiate the algorithm then compute the estimate step
 				val multivariateEM = new EM(data)
 				val est = estimate(data, K)
+				
+				// Extract the mixture of Gaussian distribution from the dataset (3)
 				multivariateEM.fit(est)
-				 
+			
+				// Start the M-step by invoking Commons Math getFittedModel (4)
 				val newMixture = multivariateEM.getFittedModel
+				
+				// Convert the Java type of Commons Math lib to Scala types
+				// then extracts the key, mean and standard deviation
 				val components = newMixture.getComponents.toList
 				components.map(p => 
 					(p.getKey.toDouble, p.getValue.getMeans, p.getValue.getStandardDeviations))

@@ -6,38 +6,24 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap5
 
-
-import org.scalaml.supervised.bayes._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
-import scala.collection.mutable.ArrayBuffer
-import ScalaMl._
 import org.scalaml.filtering.SimpleMovingAverage
-import SimpleMovingAverage._
-import scala.collection.mutable.HashSet
-import org.scalaml.supervised.bayes.NaiveBayes
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.stats.Stats
-import org.scalaml.supervised.bayes.text.TermsScore
-import DocumentsSource._
-import scala.language.postfixOps
-import scala.util.{Try, Success, Failure}
-import org.scalaml.supervised.bayes.text.NewsArticles
-import java.text.DecimalFormat
-import scala.io.Source
-import scala.collection.mutable.HashMap
+import org.scalaml.supervised.bayes.NaiveBayes
+import org.scalaml.supervised.bayes.text.{TermsScore, NewsArticles}
 import org.scalaml.app.Eval
 
 
-
 		/**
-		 * <p>Text retrieval application of the Naive Bayes algorithm. The test consists of:<br>
+		 * <p><b>Purpose:</b> Singleton to evaluate a text retrieval application using the 
+		 * Naive Bayes algorithm. The test consists of:<br>
 		 * <ul>
 		 * 	<li>Collecting and organizing news articles regarding a specific stock</li>
 		 *  <li>Extracting and scoring the essential keywords</li>
@@ -49,7 +35,20 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Model
 		 */
 object TextBayesEval extends Eval {
+	import java.text.DecimalFormat
+	import scala.util.{Try, Success, Failure}
+	import scala.io.Source
+	import scala.collection.mutable.{ArrayBuffer, HashMap, HashSet}
+	import org.apache.log4j.Logger
+	import ScalaMl._, DocumentsSource._, SimpleMovingAverage._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "TextBayesEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 5000
 	
 	private val pathCorpus = "resources/text/chap5/"
@@ -126,7 +125,7 @@ object TextBayesEval extends Eval {
 					val nb = NaiveBayes[Double](xt)
 
 					// Display the pairs (mean, standard deviation) for each term.
-					val labels: Array[String] = columns.map( _.toString)
+					val labels: Array[String] = columns.map( _.toString).toArray
 					Display.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", logger)
 				}
 				case None => Display.error(s"$name keywords extraction failed", logger)

@@ -6,28 +6,38 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm.{SVMConfig, SVM, SVMExecution}
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
-import Fundamentals._
-import ScalaMl._
-import SVMConfig._
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
 
 
+		/**
+		 * <p><b>Purpose:</b> Singleton for the evaluation of the support vector machine classifier </p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines.
+		 */
 object SVCEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import Fundamentals._, SVMConfig._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "SVCEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 25000
 	
 	private val path = "resources/data/chap8/dividends2.csv"	

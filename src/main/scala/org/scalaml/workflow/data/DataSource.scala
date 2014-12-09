@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.workflow.data
 
@@ -239,7 +239,7 @@ object DataSource {
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 */
 	def apply(pathName: String, normalize: Boolean): DataSource = 
-		new DataSource(pathName, normalize, true)
+		new DataSource(pathName, normalize, true, 1, None)
 
 		/**
 		 * Constructor for the DataSource without field filtering, headerlines. The extraction
@@ -249,9 +249,8 @@ object DataSource {
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 */
 	def apply(symName: String, pathName: String, normalize: Boolean): DataSource = 
-		new DataSource(s"$pathName$symName", normalize, true)
+		new DataSource(s"$pathName$symName", normalize, true, 1, None)
 
-	
 	private def check(pathName: String, headerLines: Int): Unit =  {
 		require(pathName != null && pathName.length > 1, "DataSource.check Cannot create a data source with undefined path")
 		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines for header $headerLines")

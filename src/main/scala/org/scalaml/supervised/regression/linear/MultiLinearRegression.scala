@@ -6,34 +6,37 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.regression.linear
 
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
+import org.apache.log4j.Logger
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
 import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRuntimeException, OutOfRangeException}
+
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.Types.CommonMath._
-import scala.annotation.implicitNotFound
+import org.scalaml.core.Types.CommonMath
 import org.scalaml.supervised.regression.RegressionModel
-import scala.util.{Try, Success, Failure}
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
-import scala.language.implicitConversions
+import ScalaMl._, CommonMath._
+
 
 		/**
 		 * <p>Class that defines a Multivariate linear regression. The computation of the regression coefficients uses the 
 		 * Apache commons Math library. The regression model (regression parameters or weights) are
 		 * initialized only if the training was successful.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
-		 * Ordinary least squares regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}<br>
+		 * Ordinary least squares regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}
 		 * with regression model f(x|w) = w(0) + w(1).x(1) + ... + w(n).x(n)</span></pre></p>
 		 * @constructor Creates multi-variate linear regression
 		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
 		 * @param xt Input multi-dimensional time series for which regression is to be computed.
 		 * @param y Labeled data for the Multivariate linear regression
+		 * @see org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
+		 * @see org.scalaml.core.design.PipeOperator
+		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
@@ -41,6 +44,7 @@ import scala.language.implicitConversions
 final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector) 
 					extends OLSMultipleLinearRegression with PipeOperator[Array[T], Double] {
 
+	import scala.util.{Try, Success, Failure}
 	import MultiLinearRegression._
 
 	check(xt, y)
@@ -48,16 +52,27 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
     type Feature = Array[T]
 	private val logger = Logger.getLogger("MultiLinearRegression")
 	
+		/**
+		 * The model is created using by OLSMultipleLinearRegression class of Apache
+		 * commons math. The model is set to None if the regression weights cannot be computed.
+		 */
 	private[this] val model: Option[RegressionModel] = {
 		Try {
-			val xtv: DblMatrix = xt
+			// Force a conversion to DblMatrix 
+			val xtv: DblMatrix = xt 
+			
+				// Create a sample for the label y
 			newSampleData(y, xtv)
+			
+				// Invoke methods of the OLSMultipleLinearRegression class from commons math.
 			val wRss = (estimateRegressionParameters, calculateResidualSumOfSquares)
+			
+				// Create a regression model with the weights and the resisual sum of squared errorrs
 			RegressionModel(wRss._1, wRss._2)
 		} 
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => Display.none("MultiLinearRegression.model ", logger, e)
+			case Failure(e) => Display.none("MultiLinearRegression model undefined", logger, e)
 		}
 	}
 	
@@ -95,7 +110,9 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
 		case x: Feature if(x != null && x.size > 0 && model != None && x.size == model.get.size-1) =>  {
+				// Retrieve the regression weights (or coefs)
 			val w = model.get.weights
+					// Compute the dot product with w0 + w1.x1 + .. wn.xn
 			x.zip(w.drop(1)).foldLeft(w(0))((s, z) => s + z._1*z._2)
 		}
 	}
@@ -104,12 +121,12 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 
 
 		/**
-		 * <p>Companion object that defines the 
-		 * constructor for the class MultiLinearRegression and validate
-		 * its parameters</p>
+		 * <p>Companion object that defines the constructor for the class MultiLinearRegression 
+		 * and validate its parameters</p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
 		 */
 object MultiLinearRegression {
 		/**

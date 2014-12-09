@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka
 
@@ -48,30 +48,50 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 	override def postStop: Unit = Display.show(s"WorkerActor${id}.postStop", logger)
  
 		/**
-		 * <p>Event loop of the work actor that process two messages<br>
-		 * Activate to start processing for the current iteration<br>
+		 * <p>Event loop of the work actor that process two messages:
+		 * <ul>
+		 *  <li>Activate: to start processing this assigned partition</li>
+		 *  <li>Terminate: To stop this worker actor
+		 *  </ul>
 		 */
 	override def receive = {
 		case msg: Activate => {
+				// Increment the messages id
 			val msgId = msg.id+id
 			Display.show(s"Worker_${id}.receive => Activate message ${msgId}", logger)
-			val output: XTSeries[Double] = transform(msg.xt)
-			Display.show(results(output.take(10)), logger)
-			msg.sender ! Completed(msgId, output)
+			
+				// Execute the data transformation
+			val output: DblSeries = fct |> msg.xt
+			Display.show(results(output.take(NUM_DATAPOINTS_DISPLAY)), logger)
+			
+				// Returns the results for processing this partition
+			sender ! Completed(msgId, output)
+			context.stop(self)
 		}
+			// Stop itself after receiving a Terminate message from the master
+	//	case Terminate => {} //context.stop(self)
 		case _ => Display.error(s"WorkerActor${id}.receive Message not recognized", logger)
 	}
 
-	private def transform(xt: DblSeries): DblSeries =  fct |> xt
+//	private def transform(xt: DblSeries): DblSeries =  fct |> xt
 	
 	private def results(output: XTSeries[Double]): String = {
-		val res = output.foldLeft(new StringBuilder)((b, o) => b.append(s"${ScalaMl.toString(o, "", true)} "))
+		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => b.append(s"${ScalaMl.toString(o, "", false)} "))
 		s"Worker_$id results: ${res.toString}"
 	}
 }
 
-
+		/**
+		 * Companion object for the worker actor. The singleton is used to validate
+		 * the parameters of the Worker class
+		 * 
+		 * @author Patrick Nicolas
+		 * @since March 24, 2014
+		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 */
 object Worker {
+	private val NUM_DATAPOINTS_DISPLAY = 12
+	
 	private def check(id: Int, fct: PipeOperator[DblSeries, DblSeries]): Unit = {
 		require(id >= 0, s"Worker.check Id $id is out of range")
 		require(fct != null, "Worker.check Cannot create a master actor with undefined data transformation function")

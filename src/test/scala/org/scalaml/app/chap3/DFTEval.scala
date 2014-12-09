@@ -10,10 +10,6 @@
  */
 package org.scalaml.app.chap3
 
-import scala.util.{Try, Success, Failure}
-
-import org.apache.log4j.Logger
-
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
@@ -23,19 +19,23 @@ import org.scalaml.util.Display
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 import org.scalaml.app.Eval
 
-import YahooFinancials._
-
 		/**
-		 * <p> Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
-		 * 
+		 * <p><b>Purpose</b>:Singleton used to evaluate the Discrete Sine and Cosine Fourier transform.</p>
 		 * @author Patrick Nicolas
-		 * @since February 8, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning  Chapter 3 Data pre-processing / Discrete Fourier transform
 		 */
 object DFTEval extends FilteringEval {	
-	import org.scalaml.filtering.DFT
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import YahooFinancials._
 
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "DFTEval"  
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
     val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
@@ -78,7 +78,7 @@ object DFTEval extends FilteringEval {
 		import ScalaMl._
 		
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
-		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, -1, None)
+		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, -1)
 
 		val price = src |> YahooFinancials.adjClose
 		var filtered = filter(0.01, price)

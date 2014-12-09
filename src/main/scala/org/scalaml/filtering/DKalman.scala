@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.filtering
 
@@ -156,7 +156,9 @@ final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: Dbl
 		filter.getStateEstimation	
 	}
   
-  
+		/**
+		 * Compute the least squared errors of two vectors of type 'RealVector'
+		 */
 	private def lsError(x: RealVector, z: RealVector): Double = {
 		val sumSqr = x.toArray.zip(z.toArray)
 							.map(xz => (xz._1 - xz._2))

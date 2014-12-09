@@ -6,36 +6,42 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap12
 
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.storage.StorageLevel
 
 import org.scalaml.core.XTSeries
-import scala.util.Random
-import scala.io.Source
-import scala.concurrent.ExecutionContext.Implicits.global
-import com.typesafe.config.Config
-import akka.actor.Props
-import scala.concurrent.{Await, duration}
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.scalability.spark._
-import org.apache.spark.SparkContext
-import org.apache.spark.storage.StorageLevel
-import org.scalaml.scalability.akka._
-import org.scalaml.scalability.scala._
+import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.scalability.spark.{SparkKMeansConfig, RDDConfig, SparkKMeans}
 import org.scalaml.util.Display
-import org.apache.log4j.{Logger, Level}
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
-import org.apache.spark.SparkConf
 
 
+		/**
+		 * <p><b>Purpose</b>: Singleton to evaluate the Apache Spark/MLlib
+		 * K-means algorithm.</p>
+		 * 
+		 * @author Patrick Nicolas 
+		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark / MLlib
+		 */
 object SparkKMeansEval extends Eval {
-	val name: String = "SparkKMeansEval"
-	private val logger = Logger.getLogger(name)
-	val maxExecutionTime: Int = 5000
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.{Logger, Level}
 	
+		/**
+		 * Name of the evaluation 
+		 */
+	val name: String = "SparkKMeansEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 5000
+	  	
+	private val logger = Logger.getLogger(name)
+
 	private val K = 8
 	private val NRUNS = 16
 	private val MAXITERS = 200
@@ -53,7 +59,8 @@ object SparkKMeansEval extends Eval {
   	
 		Try {
 			val input = extract
-			val volatilityVol = input(0).zip(input(1)).map( x => Array[Double](x._1, x._2))
+			val volatilityVol = input(0).zip(input(1))
+										.map( x => Array[Double](x._1, x._2))
 			
 				// Disable Info for the Spark logger.
 			Logger.getRootLogger.setLevel(Level.ERROR)

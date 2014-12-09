@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.unsupervised.clustering
 
@@ -47,7 +47,10 @@ class Cluster[T <% Double](val center: DblVector) {
 		 */
 	def += (n:Int): Unit = members.append(n)
    
-
+		/**
+		 * Return the number of data points in this cluster
+		 * @return number of members in the clsuter
+		 */
 	final def size: Int = members.size
    
 		/**
@@ -57,9 +60,16 @@ class Cluster[T <% Double](val center: DblVector) {
 		 * @return a new cluster with the recomputed center.
 		 */
 	final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
-		require(xt != null && xt.size > 0, "Cluster.moveCenter Cannot migrate undefined times series values within the cluster" )
-  	   
-		val sums = members.map(xt(_).map(_.toDouble)).toList.transpose.map( _.sum)
+		require(xt != null && xt.size > 0, "Cluster.moveCenter Cannot relocate time series datapoint" )
+  	 
+			// Compute the sum of the value of each dimension 
+			// of the time series ...
+		val sums = members.map(xt(_).map(_.toDouble))
+							.toList
+							.transpose
+							.map( _.sum)
+							
+			// then average it by the number  of data points in the cluster
 		Cluster[T](sums.map( _ / members.size).toArray)
 	}
    
@@ -76,8 +86,16 @@ class Cluster[T <% Double](val center: DblVector) {
 		require(distance != null, 
 			"Cluster.stdDev Cannot compute the standard deviation within a cluster with undefined distance")
 		require(members.size > 0, "Cluster.stdDev this cluster has no member")
-
-		Stats[Double](members.map( xt( _)).map( distance(center, _)).toArray).stdDev
+		
+			// Extract the vector of the distance between each data
+			// point and the current center of the cluster.
+		val ts: DblVector  = members.map( xt( _))				// convert a vector
+									.map( distance(center, _))	// compute the distance between point and center
+									.toArray
+									
+			// Compute the standard deviation of the distance between the
+			// data points and the center of the cluster using the Stats class
+		Stats[Double](ts).stdDev
 	}
    
 		/**
@@ -113,7 +131,5 @@ object Cluster {
 		 */
 	def apply[T <% Double]: Cluster[T] = new Cluster[T](Array.empty)
 }
-
-
 
 // ----------------------------  EOF -------------------------------------------

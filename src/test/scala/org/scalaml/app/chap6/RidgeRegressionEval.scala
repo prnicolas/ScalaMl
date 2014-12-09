@@ -6,34 +6,43 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap6
 
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.linear.RidgeRegression
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
-import ScalaMl._
 
-
-
-
+		/**
+		 * <p><b>Purpose:</b> Singleton to evaluate the Ridge regression classifier on 
+		 * technical analysis of an Exchange Traded Fund.</p>
+		 * 
+		 * @author Patrick Nicolas
+		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Riedge regression
+		 */
 object RidgeRegressionEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import ScalaMl._, YahooFinancials._
+  
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "RidgeRegressionEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 7000
 	
-	final val path = "resources/data/chap6/CU.csv"
-	final val dataInput = "output/chap6/CU_input.csv"
+	private val path = "resources/data/chap6/CU.csv"
+	private val dataInput = "output/chap6/CU_input.csv"
     
 	private val logger = Logger.getLogger(name)	 
-	
 	
 		 /**
 		 * <p>Execution of the scalatest for <b>RidgeRegression</b> class.
@@ -50,12 +59,14 @@ object RidgeRegressionEval extends Eval {
 			val volatility = src |> YahooFinancials.volatility 
 			val volume = src |> YahooFinancials.volume
 		
-			val deltaPrice = XTSeries[Double](price.drop(1).zip(price.dropRight(1)).map( z => z._1 - z._2))
+			val deltaPrice = XTSeries[Double](price.drop(1).zip(price.dropRight(1))
+															.map( z => z._1 - z._2))
 		
 			DataSink[Double](dataInput) |> deltaPrice :: 
 										volatility :: 
 										volume :: List[XTSeries[Double]]()
-			val data =  volatility.zip(volume).map(z => Array[Double](z._1, z._2))
+			val data =  volatility.zip(volume)
+									.map(z => Array[Double](z._1, z._2))
 		
 			val features = XTSeries[DblVector](data.dropRight(1))
 			val regression = new RidgeRegression[Double](features, deltaPrice, 0.5)

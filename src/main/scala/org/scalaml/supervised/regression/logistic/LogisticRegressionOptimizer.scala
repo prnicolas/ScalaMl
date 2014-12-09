@@ -12,9 +12,9 @@ package org.scalaml.supervised.regression.logistic
 
 import org.apache.commons.math3.fitting.leastsquares._
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
-import org.scalaml.core.Types.ScalaMl._
-import LogisticRegressionOptimizer._
 
+import org.scalaml.core.Types.ScalaMl
+import LogisticRegressionOptimizer._
 
 
 		/**
@@ -28,13 +28,14 @@ import LogisticRegressionOptimizer._
 		 * @param lsOptimizer Least squares optimizer used during training.
 		 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
 		 * @see org.apache.commons.math3.fitting.leastsquares
+		 * @see org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 13, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
 		 */
 protected class LogisticRegressionOptimizer(val maxIters: Int,  val maxEvals: Int, val eps: Double, lsOptimizer: LeastSquaresOptimizer) {
-	
+	import ScalaMl._
 	import LogisticRegressionOptimizer._
 	
 	check(maxIters, maxEvals, eps, lsOptimizer)

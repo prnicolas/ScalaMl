@@ -6,33 +6,35 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap9
 
-import scala.util.{Try, Success, Failure}
-import scala.reflect.ClassTag
-import org.apache.log4j.Logger
-
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.supervised.nnet.MLPConfig
-import org.scalaml.supervised.nnet.MLP
+import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
 import org.scalaml.util.Display
 import org.scalaml.app.Eval
 
-import ScalaMl._
-
-
 		/**
-		 * <p>Singleton to evaluate the binary (2 class) multi-layer perceptron.</p>
+		 * <p><b>Purpose:</b>Singleton to evaluate the binary (2 class) multi-layer perceptron.</p>
 		 * 
 		 *  @author Patrick Nicolas
-		 *  @since July 20, 2014
 		 *  @note Scala for Machine Learning Chapter 9: Artificial Neural Network/Evaluation/Test case
 		 */
 object BinaryMLPEval extends Eval {
+	import scala.util.{Try, Success, Failure}	
+	import scala.reflect.ClassTag
+	import org.apache.log4j.Logger
+	import ScalaMl._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "BinaryMLPEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 25000
 	
 	private val ALPHA = 0.85

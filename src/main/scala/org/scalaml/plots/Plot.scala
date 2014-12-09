@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.plots
 
@@ -46,7 +46,7 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 	import java.awt.geom.Ellipse2D
 	import ScalaMl._
 	
-	require(config != null, "Plot Cannot create a plot with undefined stateuration")
+	require(config != null, "Plot Cannot create a plot with undefined configuration")
 	require(theme != null, "Plot Cannot create a plot with undefined theme")
 
 		/**
@@ -56,6 +56,8 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 		 * @param height Heigth of the chart (pixels)
 		 */
 	def display(xy: XYTSeries, width: Int, height: Int): Unit
+	
+	def display(xy: XYTSeries): Unit = display(xy, DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
 		/**
 		 * Display a vector of Double value in a 2D plot with counts [0, n] on X-Axis and
@@ -65,6 +67,8 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 		 * @param height Heigth of the chart (pixels)
 		 */
 	def display(y: DblVector, width: Int, height: Int): Unit
+	
+	def display(y: DblVector): Unit = display(y, DEFAULT_WIDTH, DEFAULT_HEIGHT)
    
 	protected[this] def createFrame(id: String, chart: JFreeChart): Unit = {
 		val frame = new ChartFrame(s"Chart ${count+1}: $id", chart)
@@ -93,6 +97,9 @@ object Plot {
 		(offset, offset % 420)
 	}
 
+	private val DEFAULT_WIDTH = 320
+	private val DEFAULT_HEIGHT = 240
+	
 	private val MIN_DISPLAY_SIZE = 60
 	private val MAX_DISPLAY_SIZE = 1280
 	
@@ -102,7 +109,7 @@ object Plot {
 		 * @param height  Height of the display
 		 * @param width Width of the display
 		 * @param comment Comments to be added to the chart or plot
-		 * @throw IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 * @throws IllegalArgumentException if the display height or width is out or range or the values are undefined
 		 */
 	def validateDisplay[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
 		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
@@ -115,7 +122,7 @@ object Plot {
 		 * @param height  Height of the display
 		 * @param width Width of the display
 		 * @param comment Comments to be added to the chart or plot
-		 * @throw IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 * @throws IllegalArgumentException if the display height or width is out or range or the values are undefined
 		 */
 	import scala.collection.immutable.List
 	def validateDisplay[T](y: List[T], width: Int, height: Int, comment: String): Unit = {
@@ -128,7 +135,7 @@ object Plot {
 		 * @param height  Height of the display
 		 * @param width Width of the display
 		 * @param comment Comments to be added to the chart or plot
-		 * @throw IllegalArgumentException if the display height or width is out or range
+		 * @throws IllegalArgumentException if the display height or width is out or range
 		 */
 	def validateDim(width: Int, height: Int, comment: String): Unit = {
 		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, s"$comment Width $width is out of range")

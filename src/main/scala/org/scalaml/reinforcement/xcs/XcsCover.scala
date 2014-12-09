@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.reinforcement.xcs
 
@@ -42,8 +42,7 @@ object XcsCover {
 		require(actions.size >0 && actions.size < MAX_NUM_ACTIONS, s"XcsCover.cover The number of actions per state ${actions.size} if out of range")
 		
 		actions.foldLeft(List[XcsRule]()) ((xs, act) => {
-			val rIdx = Random.nextInt(Signal.numOperators)
-			val signal = Signal(sensor.id, sensor.value, new SOperator(rIdx))
+			val signal = Signal(sensor.id, sensor.value, new SOperator(Random.nextInt(Signal.numOperators)))
 			new XcsRule(signal, XcsAction(act, Random)) :: xs
 		})
 	} 

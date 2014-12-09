@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka
 
@@ -41,8 +41,8 @@ import org.apache.log4j.Logger
 		 *  @since March 30, 2014
 		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures
 		 */			
-abstract class TransformFuturesClbck(_xt: DblSeries, _fct: PipeOperator[DblSeries, DblSeries], _partitioner: Partitioner) 
-									extends Controller(_xt, _fct, _partitioner) {
+abstract class TransformFuturesClbck(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner) 
+									extends Controller(xt, fct, partitioner) {
 	private val logger = Logger.getLogger("TransformFuturesClbck")
 	
 		/**

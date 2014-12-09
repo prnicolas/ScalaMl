@@ -6,33 +6,35 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap6
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import YahooFinancials._
 import org.scalaml.core.Types.ScalaMl
-import org.apache.log4j.Logger
 import org.scalaml.util.Display
 import org.scalaml.core.XTSeries
-import scala.util.{Try, Success, Failure}
-import XTSeries._
 import org.scalaml.app.Eval
 
-
-
 		/**
-		 * <p>Singleton to evaluate the single variate linear regression.</p>
-		 * 
+		 * <p><b>Purpose:</b> Singleton to evaluate the single variate linear regression.</p>
 		 * @author Patrick Nicolas
-		 * @since April 23, 2014
 	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
 		 */
 object SingleLinearRegressionEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import YahooFinancials._, XTSeries._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "SingleLinearRegressionEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 7000
 	
 	private val path = "resources/data/chap6/CU.csv"

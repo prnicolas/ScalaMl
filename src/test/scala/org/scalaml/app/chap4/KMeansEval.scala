@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap4
 
@@ -14,25 +14,28 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.{ScalaMl, CommonMath}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import YahooFinancials._
+import org.scalaml.unsupervised.clustering.KMeans
+import org.scalaml.unsupervised.Distance.euclidean
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
 
-
 		/**
-		 * <p>Singleton to evaluate the KMeans algorithm</p>
+		 * <p><b>Purpose:</b> Singleton to evaluate the KMeans algorithm</p>
 		 * @author Patrick Nicolas
-		 * @since February 3, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Clustering / K-means
 		 */
 object KMeansEval extends UnsupervisedLearningEval {
-	import org.scalaml.unsupervised.clustering.KMeans
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import YahooFinancials._,  ScalaMl._
 
-	import org.scalaml.unsupervised.Distance.euclidean
-	import ScalaMl._
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "KMeansEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 5000
 	
 	private val START_INDEX = 70

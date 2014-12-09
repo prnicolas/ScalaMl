@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.scalability.akka.message
 
@@ -21,7 +21,7 @@ import org.scalaml.core.XTSeries
 		 * @param id  Unique identifier for this message.
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework / Akka / Master-workers
 		 */
 sealed abstract class Message(val id: Int)
 
@@ -30,7 +30,7 @@ sealed abstract class Message(val id: Int)
 		 * @param i unique identifier for this message.
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework / Akka / Master-workers
 		 */
 case class Terminate(i: Int) extends Message(i)
 
@@ -39,7 +39,7 @@ case class Terminate(i: Int) extends Message(i)
 		 * @param i unique identifier for this message.
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 * @note Scala for Machine learning Chapter 12 Scalable Framework / Akka / Master-workers
 		 */
 case class Start(i: Int =0) extends Message(i)
 
@@ -49,7 +49,7 @@ case class Start(i: Int =0) extends Message(i)
 		 * @param xt time series transformed (or processed)
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 * @note Scala for Machine learning Chapter 12 Scalable Frameworks / Akka / Master-workers
 		 */
 case class Completed(i: Int, xt: XTSeries[Double]) extends Message(i)
 
@@ -59,9 +59,9 @@ case class Completed(i: Int, xt: XTSeries[Double]) extends Message(i)
 		 * @param xt time series to transform (or process)
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014
-		 * @note Scala for Machine learning Chapter 12 Scalable Framework/Akka/Master-workers
+		 * @note Scala for Machine learning Chapter 12 Scalable Frameworks / Akka / Master-workers
 		 */
-case class Activate(i: Int, xt: XTSeries[Double], val sender: ActorRef) extends Message(i)
+case class Activate(i: Int, xt: XTSeries[Double]) extends Message(i)
 
 
 

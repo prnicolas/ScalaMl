@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap8
 
@@ -14,22 +14,31 @@ import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.supervised.svm.formulation.CSVCFormulation
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.Types.ScalaMl
-import XTSeries._
-import org.scalaml.plots.ScatterPlot
-import org.scalaml.plots.BlackPlotTheme
-import XTSeries._
+import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
 
-
-
-
+		/**
+		 * <p>Singleton to evaluate the impact of margin value on =
+		 * on the accuracy of the classification of a binary support vector
+		 * classifier using synthetic features. The synthetic values are generated
+		 * using a combination of random generators. </p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
+		 */
 object SVCMarginEval extends Eval {
 	import scala.util.Random
+	import org.apache.log4j.Logger
+	import XTSeries._, ScalaMl._
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "SVCMarginEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 25000
 	
 	private val GAMMA = 0.8; val N = 100	

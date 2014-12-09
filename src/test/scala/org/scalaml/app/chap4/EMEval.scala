@@ -6,32 +6,37 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap4
 
 import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import YahooFinancials._
-import org.scalaml.core.Types.ScalaMl._
-import scala.util.{Try, Success, Failure}
+import org.scalaml.unsupervised.em.MultivariateEM
+import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
 
 
-
 		/**
-		 * <p>Object to evaluate the Expectation-Maximization algorithm
+		 * <p><b>Purpose:</b>Singleton to  evaluate the Expectation-Maximization algorithm
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
 		 */
 object EMEval extends UnsupervisedLearningEval {
-	import org.scalaml.unsupervised.em.MultivariateEM
-	import org.scalaml.filtering.SimpleMovingAverage
-	import SimpleMovingAverage._
-	import MultivariateEM._
-    
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import SimpleMovingAverage._, MultivariateEM._, YahooFinancials._
+ 
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "EMEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)
 

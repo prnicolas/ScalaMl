@@ -6,28 +6,36 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.supervised.nnet._
+import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.trading.GoogleFinancials
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import GoogleFinancials._
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
 import org.scalaml.app.Eval
 
 
-
 		/**
-		 * <p>Singleton to evaluate the Multi-layer perceptron by classifying
+		 * <p><b>Purpose:</b>Singleton to evaluate the Multi-layer perceptron by classifying
 		 * Exchange Traded funds (ETF)</p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 9: Artificial Neural Network / Evaluation
 		 */
 object MLPEval extends Eval {
+	import GoogleFinancials._
+	import org.apache.log4j.Logger
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "MLPEval"
-    val maxExecutionTime: Int = 45000
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 45000
     
 	private val path = "resources/data/chap9/"
 	private val ALPHA = 0.8; 

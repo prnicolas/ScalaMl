@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.bayes
 
@@ -48,12 +48,17 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 * @return log of the conditional probability p(C|x)
 		 */
 	final def score(obs: Array[T], density: Density): Double = {
-		require(obs != null && obs.size > 0, "Likelihood.score Cannot compute conditional prob with NB for undefined observations")
-		require(density != null, "Likelihood.score Cannot compute conditional prob with NB for undefined prob density")
-
+		require(obs != null && obs.size > 0, "Likelihood.score Undefined observations")
+		require(density != null, "Likelihood.score Undefined probability density")
+		
+			// Compute the Log of sum of the likelihood and the class prior probability
+			// The log likelihood is computed by adding the log of the density for each dimension.
 		(obs, muSigma).zipped.foldLeft(0.0)((post, xms) => {
-			val probability = density(xms._2._1, xms._2._2, xms._1)
-			post + Math.log(if(probability< MINLOGARG) MINLOGVALUE else probability)
+			val mean = xms._2._1
+			val stdDev = xms._2._2
+			val _obs = xms._1
+			val logLikelihood = density(mean, stdDev, _obs)
+			post + Math.log(if(logLikelihood <  MINLOGARG) MINLOGVALUE else logLikelihood)
 		}) + Math.log(prior)
 	}
 	

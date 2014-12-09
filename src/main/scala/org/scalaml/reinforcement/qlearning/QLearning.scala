@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -53,11 +53,9 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double)  exten
 		 * @param config Configuration for the Q-learning algorithm
 		 * @param qlSpace Initial search space of states
 		 * @param qlPolicy Initial policy for the search
-		 * @seep org.scalaml.core.design.PipeOperator
-		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning / Q-learning
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning Q-learning
 		 */
 final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]) 
 								extends PipeOperator[QLState[T], QLState[T]]  {
@@ -160,12 +158,12 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * @param from Identifier for the source state
 		 * @param to Identifier for the target or destination state
 		 * @param reward reward (credit or penalty) to transition from state with id <b>from</b> to the state with id <b>to</b>
-		 * @param probability Probability to transition from state <b>from</b> to state <b>to</b>
+		 * @param prob Probability to transition from state <b>from</b> to state <b>to</b>
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
-final class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val probability: Double = 1.0)
+class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
 
 
 

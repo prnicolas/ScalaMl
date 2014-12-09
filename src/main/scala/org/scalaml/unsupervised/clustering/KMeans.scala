@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.unsupervised.clustering
 
@@ -38,7 +38,7 @@ import org.scalaml.util.Display
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014
-		 * @note Scala for Machine Learning: Chapter 4 Unsupervised learning/Clustering
+		 * @note Scala for Machine Learning: Chapter 4 Unsupervised learning / Clustering / K-means
 		 */
 @implicitNotFound("Ordering not implicitly defined for K-means")
 final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
@@ -68,9 +68,15 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 				val reassigned = assignToClusters(xt, clusters, membership) //2
 				var newClusters: List[Cluster[T]] = List.empty			   		 
 		
-				// Reassign iteratively data points to 
-				// existing clusters. The clusters are re-created at each iterations
+				// Reassign iteratively the data points to existing clusters. 
+				// The clusters are re-created at each iterations. The iteration
+				// stops when there is no more data point to re-assigned
 				Range(0,  maxIters).find( _ => {
+					
+					// Walk through each cluster. If a cluster is empty
+					// the data points are redistributed across all the clusters
+					// using the standard deviation, otherwise the observations are moved 
+					// within the clusters
 					newClusters = clusters.map( c => {
 						if( c.size > 0) 
 							c.moveCenter(xt) 
@@ -78,6 +84,7 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 							clusters.filter( _.size > 0).maxBy( _.stdDev(xt, distance) )
 					}) 
 
+					// Re-assign the observations to the clusters
 					assignToClusters(xt, newClusters, membership) > 0
 				}) 
 				match {    // Failed if the maximum number of iterations is reached.
@@ -92,28 +99,51 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		 * Buckets initialization of centroids and clusters. 
 		 */
 	private def initialize(xt: XTSeries[Array[T]]): List[Cluster[T]] = {
-        
-		val stats = statistics(xt)   // step 1
+
+			// Compute the statistics related to the time series (1)
+		val stats = statistics(xt)   
+			// Extract the dimension with the highest standard deviation (2)
 		val maxSDevDim = Range(0, stats.size).maxBy(stats( _ ).stdDev )
+		
+			// Rank the observations according to their increasing
+			// order of their maximum standard deviation 
 		val rankedObs = xt.zipWithIndex
 							.map( x=> (x._1(maxSDevDim), x._2) )
-							.sortWith( _._1  < _._1).toArray // 3
-	    
+							.sortWith( _._1  < _._1).toArray // Sorted
+	 
+			// Break down the ranked observations into K buckets
 		val halfSegSize = ((rankedObs.size>>1)/K).floor.toInt
-
+		
+			// Compute the centroids (or center) of each cluster as the mean
+			// position of each bucket.
 		val centroids = rankedObs.filter(isContained( _, halfSegSize, rankedObs .size) )
 								.map( x => xt( x._2))
-		Range(0, K).foldLeft(List[Cluster[T]]())((xs, i) => Cluster[T](centroids(i)) :: xs)
+								
+			// Create a list of K cluster with their associated centroids=
+		Range(0, K).foldLeft(List[Cluster[T]]())((xs, i) 
+					=> Cluster[T](centroids(i)) :: xs)
 	}
     
 
-	final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = (t._2 % hSz == 0) && (t._2 %(hSz<<1) != 0)
-			
+	final private def isContained(t: (T,Int), hSz: Int, dim: Int): Boolean = 
+		(t._2 % hSz == 0) && (t._2 %(hSz<<1) != 0)
+
+		/**
+		 * The method computes the index of the cluster which is the closest
+		 * to each observation, then re-assign them to the nearest cluste.
+		 */
 	private def assignToClusters(xt: XTSeries[Array[T]], clusters: List[Cluster[T]], membership: Array[Int]): Int =  {
-		xt.toArray.zipWithIndex.filter( x => {
+		
+			// Filter to compute the index of the cluster which is 
+			// the closest to the data point x
+		xt.toArray.zipWithIndex
+					.filter( x => { 
 			val nearestCluster = getNearestCluster(clusters, x._1);
+			
+			// re-assign if the observations does not belong to this nearest cluster
 			val reassigned = nearestCluster != membership(x._2) 
 			
+			// Add the observation to this cluster
 			clusters(nearestCluster) += x._2
 			membership(x._2) = nearestCluster
 			reassigned

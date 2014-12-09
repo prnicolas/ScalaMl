@@ -6,31 +6,34 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.util.Matrix
-import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda}
 import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
-import scala.util.{Try, Success, Failure}
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.{Display, Matrix}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.Types.ScalaMl
 
 
 		/**
-		 * Singleton for the evaluation of Conditional Random Fields
-		 * presented in chapter 7
-		 * 
+		 * <p><b>Purpose:</b>Singleton for the evaluation of Conditional Random Fields
+		 * for sentiment analysis.</p>
 		 * @author Patrick Nicolas
-		 * @since March 28, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning  Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 object CrfEval extends Eval {
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "CrfEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 12000
 	
 	private val LAMBDA = 0.5

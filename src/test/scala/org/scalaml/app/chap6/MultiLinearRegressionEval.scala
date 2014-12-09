@@ -6,34 +6,41 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap6
 
-import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
-import YahooFinancials._
 import org.scalaml.core.XTSeries
-import org.scalaml.workflow.data.DataSink
-import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.workflow.data.{DataSink, DataSource}
+import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.util.Display
-import org.apache.log4j.Logger
-import scala.collection.mutable.ListBuffer
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
 
 
-			/**
-			 * <p>Singleton to test the multi-variate least squares regression. The evaluation
-			 * is composed of two tests<br>
-			 * Trend analysis and filter: MultiLinearRegressionEval.filter<br>
-			 * Features selection: MultiLinearRegressionEval.featuresSelection
-			 */
+		/**
+		 * <p><b>Purpose:</b> Singleton to test the multi-variate least squares regression. The evaluation
+		 * is composed of two tests<br>
+		 * Trend analysis and filter: MultiLinearRegressionEval.filter<br>
+		 * Features selection: MultiLinearRegressionEval.featuresSelection.</p>
+		 * @author Patrick Nicolas
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression 
+		 */
 object MultiLinearRegressionEval extends Eval {
+	import scala.collection.mutable.ListBuffer	
+	import scala.util.{Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import YahooFinancials._, ScalaMl._
+
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "MultiLinearRegressionEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 7000
 	
 	private val logger = Logger.getLogger(name)

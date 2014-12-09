@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96
+ * Version 0.97
  */
 package org.scalaml.app.chap8
 
@@ -14,13 +14,9 @@ import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import XTSeries._
-import org.scalaml.plots.ScatterPlot
-import org.scalaml.plots.BlackPlotTheme
-import org.apache.log4j.Logger
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
 import org.scalaml.util.Display
-import scala.util.{Try, Success, Failure}
 import org.scalaml.app.Eval
 
 
@@ -28,16 +24,22 @@ import org.scalaml.app.Eval
 		 * <p>Singleton to evaluate the impact of different Kernel functions
 		 * on the accuracy of the classification of a binary support vector
 		 * classifier using synthetic features. The synthetic values are generated
-		 * from </p>
-		 * 
+		 * using a combination of random generators. </p>
 		 * @author Patrick Nicolas
-		 * @since April 24, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
 object SVCKernelEval extends Eval {
-	import scala.util.Random
+	import scala.util.{Random, Try, Success, Failure}
+	import org.apache.log4j.Logger
+	import ScalaMl._, XTSeries._
 	
+		/**
+		 * Name of the evaluation 
+		 */
 	val name: String = "SVCKernelEval"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
 	val maxExecutionTime: Int = 25000
 	
 	private val EPS = 0.001

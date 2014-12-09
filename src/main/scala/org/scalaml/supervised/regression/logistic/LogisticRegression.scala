@@ -6,31 +6,27 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.96d
+ * Version 0.97
  */
 package org.scalaml.supervised.regression.logistic
 
-
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.Matrix
-import scala.util.Random
+import org.apache.log4j.Logger
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
 import org.apache.commons.math3.optim.{SimpleVectorValueChecker, PointVectorValuePair, ConvergenceChecker}
-import org.apache.commons.math3.linear.{RealVector, RealMatrix, MatrixUtils,Array2DRowRealMatrix, ArrayRealVector}
+import org.apache.commons.math3.linear.{RealVector, RealMatrix, MatrixUtils,Array2DRowRealMatrix, ArrayRealVector, DiagonalMatrix}
 import org.apache.commons.math3.fitting.leastsquares.{LeastSquaresOptimizer, MultivariateJacobianFunction, LeastSquaresBuilder, LeastSquaresProblem}
 import org.apache.commons.math3.util.Pair
 import org.apache.commons.math3.optim.ConvergenceChecker
-import LogisticRegression._
 import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
+
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.util.{Matrix, Display}
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
-import scala.util.{Try, Success, Failure}
-import XTSeries._
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
-import org.apache.commons.math3.linear.DiagonalMatrix
-import scala.language.implicitConversions
+import XTSeries._, ScalaMl._
+
+
 
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
@@ -45,12 +41,14 @@ import scala.language.implicitConversions
 		 * @param optimizer Optimization method used to minimmize the loss function during training
 		 * @author Patrick Nicolas
 		 * @since May 11, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / Logistic regression
 		 */
 final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
 											labels: Array[Int], 
 											optimizer: LogisticRegressionOptimizer) 
 					extends PipeOperator[Array[T], Int] {
+	
+	import scala.util.{Try, Success, Failure}
 	import LogisticRegression._
   
 	type Feature = Array[T]
@@ -94,28 +92,37 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		/**
 		 * <p>Binary predictor using the Binomial logistic regression and implemented
 		 * as a data transformation (PipeOperator). The predictor relies on a margin
-		 * error to associated to the outcome 0 or 1.</p>
+		 * error to associated to the outcome 0 or 1.<br>
+		 * The condition can be either </p>
 		 * @throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 		 */
 	override def |> : PartialFunction[Feature, Int] = {
-		case x: Feature  if(x != null && x.size > 0 && model != None && (model.get.size -1 == x.size)) => {				
-			val w = model.get.weights
-			val z = x.zip(w.drop(1)).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
-			if( logit(z) > 0.5 + MARGIN) 
+		case x: Feature  if(x != null && x.size > 0 && model != None && (model.get.size -1 == x.size)) => {	
+				// Get the weights ws1 to 2n
+			val w = model.get.weights.drop(1)
+			
+				// Compute the predictive value as z = w0 + w1.x1 + ... wn.xn
+			val z = x.zip(w).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
+			if( z > HYPERPLANE)
+		//	if( logit(z) > 0.5 + MARGIN) 
 				1 
 			else 
 				0
 		}
 	}
 	
+		/**
+		 * Compute the sigmoid of the argument
+		 */
 	@inline
 	private def logit(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
 	
-	
-	final val initWeight = 0.5
+		/**
+		 * Training method for the logistic regression
+		 */
 	private def train: RegressionModel = {
-		val weights0 = Array.fill(xt(0).size +1)(initWeight)
+		val weights0 = Array.fill(xt(0).size +1)(INITIAL_WEIGHT)
           
 		/*
 		 * <p>Anonymous Class that defines the computation of the value of
@@ -129,27 +136,36 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 
 				val _w = w.toArray 	  
 					// computes the pair (function value, derivative value)
+					// The derivative is computed as logit(1 - logit)
 				val gradient = xt.toArray.map( g => {  
-				val exponent = g.zip(_w.drop(1))
+					val exponent = g.zip(_w.drop(1))
 									.foldLeft(_w(0))((s,z) => s + z._1*z._2)
 					val f = logit(exponent)
 					(f, f*(1.0-f))
 				})
-		  	  
+	
+					// Compute the Jacobian (matrix of first derivatives)
+					// using the gradient 
 				val jacobian = Array.ofDim[Double](xt.size, weights0.size)
 				xt.toArray.zipWithIndex.foreach(xi => {    // 1
 					val df: Double = gradient(xi._2)._2
 							Range(0, xi._1.size).foreach(j => jacobian(xi._2)(j+1) = xi._1(j)*df)
 							jacobian(xi._2)(0) = 1.0
 				})
-	          
+
+					// Need to return the gradient and Jacobian using Apache
+					// Commons math types.
 				(new ArrayRealVector(gradient.map(_._1)), new Array2DRowRealMatrix(jacobian))
 			}
 		}
 
         	
 		val exitCheck = new ConvergenceChecker[PointVectorValuePair] {
-			
+				/**
+				 * Apply a converge criteria using the difference in values
+				 * between two consecutive iterations and the number of iterations
+				 * not to exceed the maximum allowed.
+				 */
 			override def converged(iteration: Int, prev: PointVectorValuePair, current: PointVectorValuePair): Boolean =  {
 				val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
 					val diff = z._1 - z._2
@@ -184,7 +200,21 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 	 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Logistic regression
 	 */
 object LogisticRegression {
+		
+		/**
+		 * Class class discriminant for the logit function
+		 */
+	final val INITIAL_WEIGHT = 0.5
+	
+		/**
+		 * Bias or margin used for one of the class in the logistic regression
+		 */
 	final val MARGIN = 0.01
+	
+		/**
+		 * Adjusted class discriminant value for the linear exponent fo the logit
+		 */
+	final val HYPERPLANE = - Math.log(1.0/(MARGIN + INITIAL_WEIGHT) -1)
    
 	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
 	implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
