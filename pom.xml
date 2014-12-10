@@ -8,7 +8,7 @@
     <version>0.9</version>
     <name>scalaml</name>
     <organization>
-        <name>Patrick Nicolas</name>
+        <name>PatrickNicolas</name>
     </organization>
     <dependencies>
         <dependency>
