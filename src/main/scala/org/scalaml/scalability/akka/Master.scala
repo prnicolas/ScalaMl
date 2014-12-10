@@ -16,13 +16,13 @@ import scala.collection.mutable.ListBuffer
 import org.apache.log4j.Logger
 import akka.actor.{Props, PoisonPill}
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.stats.Stats
-import org.scalaml.util.Display
+import org.scalaml.util.{Display, ToString}
 import org.scalaml.scalability.akka.message._
-import ScalaMl._, XTSeries._
+import XTSeries._
 
 
 
@@ -70,7 +70,7 @@ abstract class Master(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], pa
 			// and finally stop the worker actors before the master stop itself
 			if(aggregator.size >= partitioner.numPartitions-1) {
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
-				Display.show(s"Aggregated\n${ScalaMl.toString(aggr)}", logger)
+				Display.show(s"Aggregated\n${ToString.toString(aggr)}", logger)
 				
 				// Terminate itself after stopping the workers.
 				context.stop(self)

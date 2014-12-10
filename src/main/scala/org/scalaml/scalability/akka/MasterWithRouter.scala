@@ -12,19 +12,20 @@ package org.scalaml.scalability.akka
 
 import scala.util.{Random, Properties}
 import scala.collection.mutable.ListBuffer
+
 import org.apache.log4j.Logger
-import akka.actor.{ActorRef, Props, Actor, actorRef2Scala}
+import akka.actor.{ActorRef, Props, Actor, actorRef2Scala, PoisonPill}
 import akka.util.Timeout
 import akka.routing._
+
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.scalability.akka.message.{Start, Completed, Activate, Terminate}
 import org.scalaml.filtering.DFT
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import XTSeries.DblSeries
-import akka.actor.PoisonPill
+
 
 
 		/**
@@ -77,7 +78,7 @@ abstract class MasterWithRouter(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 		case msg: Completed => {
 			if(aggregator.size >= partitioner.numPartitions-1) {
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
-				Display.show(s"Aggregated\n${ScalaMl.toString(aggr)}", logger)
+				Display.show(s"Aggregated\n${ToString.toString(aggr)}", logger)
 				
 			//	router ! Terminate
 				context.stop(self)

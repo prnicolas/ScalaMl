@@ -28,6 +28,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 *  @param data Content of this matrix, flatten as an array which size should be nRows*nCols.
 		 *  @throws IllegalArgumentException if the parameters are out of bounds
 		 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior the instantiation of a matrix
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since Feb 23, 2014
 		 *  @note Scala for Machine Learning
@@ -149,7 +150,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		var count = 0
 		data.foldLeft(new StringBuilder)((b, x) => { 
 			count += 1; 
-			b.append(ScalaMl.toString(x, "", true)).append( if( count % nCols == 0) "\n" else ",")
+			b.append(ToString.toString(x, "", true)).append( if( count % nCols == 0) "\n" else ",")
 		}).toString
 	}
 }
@@ -182,24 +183,5 @@ object Matrix {
 }
 
 
-object MatrixApp extends App {
-	val data = Array.tabulate(15)(n => n)
-	val m = Matrix[Double](5, 3, data)
-	println(s"m(4, 2) = ${m(4, 2)}")
-	println("cols 2 first edition")
-	m.row(4).foreach(println)
-	
-		println("cols 2 second edition")
-	Range(0, m.nCols).foreach(j => println(m(4, j)))
-	
-	println(s"\nMatrix:\n${m.toString}")
-	
-	println("print col first")
-	m.col(2).foreach( println )
-	
-		println("print col second")
-	Range(0, m.nRows).foreach(i => println(m(i, 2)))
-	
-}
 
 // ------------------------------------  EOF ---------------------------------------------

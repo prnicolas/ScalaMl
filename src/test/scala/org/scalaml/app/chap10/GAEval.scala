@@ -16,11 +16,10 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
 import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
-import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
-
+import org.scalaml.core.Types.ScalaMl.DblVector
 		/**
 		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract the best trading
 		 * strategy for predicting the price movement of a stock.</p>
@@ -34,7 +33,7 @@ object GAEval extends Eval {
 	import scala.collection.mutable.ArrayBuffer
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
-	import YahooFinancials._, Chromosome._, ScalaMl._
+	import YahooFinancials._, Chromosome._
 	
 		/**
 		 * Name of the evaluation 
@@ -128,7 +127,7 @@ object GAEval extends Eval {
 		val relCloseOpen = src |> YahooFinancials.relCloseOpen
 
 		Display.show(s"$name Delta price:\n", logger)
-		Display.show(s"${ScalaMl.toString(deltaPrice, "", true)}", logger)
+		Display.show(s"${ToString.toString(deltaPrice, "", true)}", logger)
 		
 			// Generate the trading strategies as a unique combinations of 
 			// NUM_SIGNALS_PER_STRATEGY trading signals (genes).

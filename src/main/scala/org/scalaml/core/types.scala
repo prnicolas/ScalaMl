@@ -10,8 +10,6 @@
  */
 package org.scalaml.core
 
-import scala.language.implicitConversions
-import java.text.DecimalFormat
 
 
 
@@ -24,8 +22,9 @@ import java.text.DecimalFormat
 		 *  @since February 23, 2014
 		 *  @note Scala for Machine Learning Chapter 3 Data pre-processing/Time series
 		 */
-object Types {  
-
+object Types {
+	import scala.language.implicitConversions
+	/*
 	class Formatter(align: String, fmtStr: String) {
 		val fmt = new DecimalFormat(fmtStr)
 		
@@ -37,6 +36,8 @@ object Types {
 	
 	object ShortFormatter extends Formatter("%8s", "#,##0.000")
 	object longFormatter extends Formatter("%16s", "#,##0.00000000")
+	* 
+	*/
 		/**
 		 * <p>Singleton that define the types and conversion between ScalaML types and native Scala types</p>
 		 *  @author Patrick Nicolas
@@ -53,11 +54,11 @@ object Types {
 		type DblMatrix = DMatrix[Double]
 		type DblVector = Array[Double]
 		
-
+		/*
 		def toString(xy: XYTSeries, xLabel: String, yLabel: String, shortFormat: Boolean, labels: Array[String] = Array.empty): String = {
-			require(xy != null && xy.size > 0, "ScalaMl.toString XYTSeries is undefined")
+			require(xy != null && xy.size > 0, "ToString.toString XYTSeries is undefined")
 			if(labels.size > 0)
-				require(xy.size == labels.size, s"ScalaMl.toString data size ${xy.size} is difference from number of labels ${labels.size}")
+				require(xy.size == labels.size, s"ToString.toString data size ${xy.size} is difference from number of labels ${labels.size}")
 			
 			val fmt = if(shortFormat) ShortFormatter else longFormatter
 			
@@ -110,6 +111,8 @@ object Types {
 			})
 			buf.toString
 		}
+		* 
+		*/
 		
 		/**
 		 * <p>Generic operator on Vector of parameterized type and a DblVector</p>

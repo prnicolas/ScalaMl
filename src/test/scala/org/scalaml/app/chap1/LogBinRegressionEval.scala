@@ -49,7 +49,7 @@ object LogBinRegressionEval extends Eval {
     		
 
 		/**
-		 * <p>Execution of the scalatest for <p>LogBinRegression</p> class. This method is invoked by the 
+		 * <p>Execution of the scalatest for <b>LogBinRegression</b> class. This method is invoked by the 
 		 * actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 

@@ -11,10 +11,9 @@
 package org.scalaml.app.chap7
 
 import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
-import org.scalaml.util.{Display, Matrix}
+import org.scalaml.util.{Display, Matrix, ToString}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.Types.ScalaMl
 
 
 		/**
@@ -62,7 +61,7 @@ object CrfEval extends Eval {
 			crf.weights match {
 				case Some(w) => {
 					Display.show(s"$name weights (lambdas) for conditional random fields", logger)
-					Display.show(s"${ScalaMl.toString(w, "", true)}", logger)
+					Display.show(s"${ToString.toString(w, "", true)}", logger)
 				}
 				case None => throw new IllegalStateException(s"$name Could not train the CRF model")
 			}

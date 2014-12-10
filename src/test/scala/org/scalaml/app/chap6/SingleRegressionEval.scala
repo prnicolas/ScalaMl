@@ -13,8 +13,7 @@ package org.scalaml.app.chap6
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.core.XTSeries
 import org.scalaml.app.Eval
 
@@ -57,7 +56,7 @@ object SingleLinearRegressionEval extends Eval {
 			val slope = linRegr.slope
 			val intercept = linRegr.intercept
 			if( slope != None ) {
-				Display.show(s"$name Linear regression: ${ScalaMl.toString(slope.get, "y= ", true)}.x + ${ScalaMl.toString(intercept.get, "", true)}", logger)
+				Display.show(s"$name Linear regression: ${ToString.toString(slope.get, "y= ", true)}.x + ${ToString.toString(intercept.get, "", true)}", logger)
 				Display.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
 			}
 			else

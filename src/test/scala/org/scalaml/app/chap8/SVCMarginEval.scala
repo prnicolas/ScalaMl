@@ -16,7 +16,7 @@ import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 		/**
@@ -77,7 +77,7 @@ object SVCMarginEval extends Eval {
 		val svc = SVM[Double](config, XTSeries[DblVector](features), lbl)
 		
 		svc.margin match {
-			case Some(mrgn) => Display.show(s"\n$name Evaluation of margin for SVC with C = ${c.floor} is ${ScalaMl.toString(mrgn, "", true)}", logger)
+			case Some(mrgn) => Display.show(s"\n$name Evaluation of margin for SVC with C = ${c.floor} is ${ToString.toString(mrgn, "", true)}", logger)
 			case None => {status = 1; Display.show(s"$name SVRFormulation  training failed", logger) }
 		}
 	}

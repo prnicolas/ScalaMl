@@ -12,11 +12,11 @@ package org.scalaml.app.chap6
 
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix, XY}
 import org.scalaml.workflow.data.{DataSink, DataSource}
 import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.filtering.SimpleMovingAverage
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 
@@ -32,7 +32,7 @@ object MultiLinearRegressionEval extends Eval {
 	import scala.collection.mutable.ListBuffer	
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
-	import YahooFinancials._, ScalaMl._
+	import YahooFinancials._
 
 		/**
 		 * Name of the evaluation 
@@ -113,9 +113,9 @@ object MultiLinearRegressionEval extends Eval {
 		
 		regression.weights.get.zipWithIndex.foreach(w => {
 			if( buf.length < 2) 
-				buf.append(s"${featureLabels(w._2)}=${ScalaMl.toString(w._1, "", true)}")
+				buf.append(s"${featureLabels(w._2)}=${ToString.toString(w._1, "", true)}")
 			else 
-				buf.append(s" + ${ScalaMl.toString(w._1, "", true)}.${featureLabels(w._2)}")
+				buf.append(s" + ${ToString.toString(w._1, "", true)}.${featureLabels(w._2)}")
 		})
 		buf.append(s"\n$name RSS: ${regression.rss.get}").toString
 	}

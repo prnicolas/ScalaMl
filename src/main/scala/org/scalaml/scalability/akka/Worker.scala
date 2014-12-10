@@ -10,22 +10,21 @@
  */
 package org.scalaml.scalability.akka
 
-
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Types.ScalaMl
-import org.scalaml.scalability.akka.message._
-import java.io.{IOException, PrintWriter}
-import akka.actor._
-import org.scalaml.stats.Stats
-import org.scalaml.util.Display
-import org.scalaml.filtering.DFT
-import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
-import XTSeries._
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-import org.apache.log4j.Logger
 
+import org.apache.log4j.Logger
+import akka.actor._
+
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.XTSeries
+import org.scalaml.core.design.PipeOperator
+import org.scalaml.scalability.akka.message._
+import org.scalaml.stats.Stats
+import org.scalaml.util.{ToString, Display}
+import org.scalaml.filtering.DFT
+
+import XTSeries._
 
 
 		/**
@@ -76,7 +75,7 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 //	private def transform(xt: DblSeries): DblSeries =  fct |> xt
 	
 	private def results(output: XTSeries[Double]): String = {
-		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => b.append(s"${ScalaMl.toString(o, "", false)} "))
+		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => b.append(s"${ToString.toString(o, "", false)} "))
 		s"Worker_$id results: ${res.toString}"
 	}
 }

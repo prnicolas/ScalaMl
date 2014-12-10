@@ -67,7 +67,7 @@ final class Chap3 extends ScalaMlTest  {
 	}
 	
 	test(s"$chapter Kalman filter for financial analysis") {
-	   evaluate(new DKalmanEval, Array[String]("BAC"))
+	   evaluate(DKalmanEval, Array[String]("BAC"))
 	}
 }
 

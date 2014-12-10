@@ -78,7 +78,7 @@ trait Eval {
 
 
 object Eval {
-	var count = 0
+	var count: Int = _
 	def testCount: String = {
 		count += 1
 		String.valueOf(count)
@@ -97,12 +97,8 @@ object TestContext {
 	private val logger = Logger.getLogger("TestContext")
 	
 	var allRuns = false
-	lazy val actorSystem = {
-		val ctx = ActorSystem("System") 
-		println("Context")
-		ctx
-	}
-	
+	lazy val actorSystem = ActorSystem("System") 
+
 	private val ELAPSE_TIME = 4000
 	
 		/**
@@ -130,6 +126,7 @@ object TestContext {
 			case _ => Display.show("Could not initialize", logger)
 		}
 		allRuns = true
+		Eval.count = 0
 	}
 	
 		/**
@@ -139,7 +136,7 @@ object TestContext {
 	def shutdownAll: Unit = {
 		Thread.sleep((ELAPSE_TIME<<1))
 		actorSystem.shutdown
-		Console.println("test:run completed", logger)
+		Display.show(s"test:run completed after ${Eval.count +1} tests", logger)
 	}
 	
 		/**

@@ -11,9 +11,8 @@
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.Matrix
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.util.{ToString, Matrix}
 import scala.reflect.ClassTag
 import scala.util.Random
 import HMMConfig._
@@ -150,7 +149,7 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
   
   
 	override def toString: String = {
-		val piStr = pi.foldLeft(new StringBuilder)((b, x) => b.append(s"${ScalaMl.toString(x,"", true)}") )
+		val piStr = pi.foldLeft(new StringBuilder)((b, x) => b.append(s"${ToString.toString(x,"", true)}") )
 		s"State transition probabilities A\n${A.toString}\nEmission probabilities B\n${B.toString}\nInitial probabilities pi\n${piStr}"
 	}
   

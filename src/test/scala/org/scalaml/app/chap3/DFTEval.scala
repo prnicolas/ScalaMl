@@ -10,12 +10,11 @@
  */
 package org.scalaml.app.chap3
 
-import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 import org.scalaml.app.Eval
 
@@ -63,7 +62,6 @@ object DFTEval extends FilteringEval {
    
 
 	private def runSimulation: Int = {
-		import ScalaMl._
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with synthetic data", logger)
 		val values = Array.tabulate(1025)(x => h(x/1025))
 			// Original data dump into a CSV file
@@ -71,12 +69,10 @@ object DFTEval extends FilteringEval {
      
 		val frequencies = DFT[Double] |> XTSeries[Double](values)
 		DataSink[Double]("output/chap3/smoothed.csv") write frequencies
-		Display.show(s"$name Results simulation (first 512 frequencies): ${ScalaMl.toString(frequencies.toArray.take(512), "x/1025", true)}", logger)
+		Display.show(s"$name Results simulation (first 512 frequencies): ${ToString.toString(frequencies.toArray.take(512), "x/1025", true)}", logger)
 	}
    
 	private def runFinancial(symbol: String): Int  = {
-		import ScalaMl._
-		
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Discrete Fourier series with financial data $symbol", logger)
 		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, -1)
 
@@ -87,7 +83,7 @@ object DFTEval extends FilteringEval {
 		val sink2 = DataSink[Double]("output/chap3/filt_" + symbol + ".csv")
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
 
-		Display.show(s"$name Results financial data(first 256 frequencies): ${ScalaMl.toString(filtered.take(256), "DTF filtered", true)}", logger)
+		Display.show(s"$name Results financial data(first 256 frequencies): ${ToString.toString(filtered.take(256), "DTF filtered", true)}", logger)
 	}
 	
 	private def filter(cutOff: Double, price: XTSeries[Double]): DblVector = {

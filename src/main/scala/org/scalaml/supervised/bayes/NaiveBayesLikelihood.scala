@@ -12,9 +12,9 @@ package org.scalaml.supervised.bayes
 
 import org.scalaml.stats.Stats
 import NaiveBayesModel._
-import Likelihood._
-import java.text.DecimalFormat
-import org.scalaml.util.Display
+
+// import java.text.DecimalFormat
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.core.Types.ScalaMl.XYTSeries
 
 		/**
@@ -68,8 +68,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 */
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
-		ScalaMl.toString(muSigma, "Means", "Standard Deviation", true, labels) + 
-		ScalaMl.toString(prior, "Class likelihood", false)
+		ToString.toString(muSigma, "Means", "Standard Deviation", true, labels) + 
+		ToString.toString(prior, "Class likelihood", false)
 	}
 	
 

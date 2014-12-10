@@ -20,7 +20,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.filtering.{DKalman, QRNoise}
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.Display
+import org.scalaml.util.{Display, ToString}
 import org.scalaml.app.Eval
 
 		/**
@@ -34,7 +34,7 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Kalman filter require implicit conversion Double to String")
-final class DKalmanEval extends FilteringEval {
+object DKalmanEval extends FilteringEval {
 	import YahooFinancials._, ScalaMl._
 	
 		/**
@@ -94,7 +94,7 @@ final class DKalmanEval extends FilteringEval {
 			val displayedResults: DblVector = results.toArray.take(256)
 			
 			display(zSeries, results.toArray, alpha)
-			Display.show(s"$name results ${ScalaMl.toString(displayedResults, "2-step lag smoother", false)}", logger)
+			Display.show(s"$name results ${ToString.toString(displayedResults, "2-step lag smoother", false)}", logger)
 
 		}
       
@@ -121,8 +121,11 @@ final class DKalmanEval extends FilteringEval {
 	}
 }
 
+/*
 object DKalmanEval {
 	def apply: DKalmanEval = new DKalmanEval
 }
+* 
+*/
 
 // --------------------------------------  EOF -------------------------------

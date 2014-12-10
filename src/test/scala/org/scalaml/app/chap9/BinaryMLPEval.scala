@@ -13,7 +13,7 @@ package org.scalaml.app.chap9
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 		/**
@@ -73,7 +73,7 @@ object BinaryMLPEval extends Eval {
 			if(output(0) - xy._2(0) < 0.25) s + 1 else s
 		})
 
-		Display.show(s"$name Accuracy: ${ScalaMl.toString(correct.toDouble/x.size, "", true)}", logger)
+		Display.show(s"$name Accuracy: ${ToString.toString(correct.toDouble/x.size, "", true)}", logger)
 		val x0 = 0.9
 		val y0 = 0.8
 		Try(mlpClassifier |> Array[Double](x0, y0))

@@ -19,7 +19,7 @@ import org.apache.spark.rdd.RDD
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.util.ToString
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 
@@ -63,7 +63,7 @@ final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, x
 	override def toString: String = {
 		val buf = new StringBuilder
 		buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
-		model.clusterCenters.zipWithIndex.foreach(ctr =>buf.append(s"#${ctr._2}: ${ScalaMl.toString(ctr._1.toArray)}\n"))
+		model.clusterCenters.zipWithIndex.foreach(ctr =>buf.append(s"#${ctr._2}: ${ToString.toString(ctr._1.toArray)}\n"))
 		buf.toString
 	}
 }

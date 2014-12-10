@@ -15,7 +15,7 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.linear.RidgeRegression
-import org.scalaml.util.Display
+import org.scalaml.util.{Display, ToString}
 import org.scalaml.app.Eval
 
 		/**
@@ -72,12 +72,12 @@ object RidgeRegressionEval extends Eval {
 			val regression = new RidgeRegression[Double](features, deltaPrice, 0.5)
 
 			regression.weights match {
-				case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name ${wi._1}${ScalaMl.toString(wi._2, ": ", true)}", logger))
+				case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name ${wi._1}${ToString.toString(wi._2, ": ", true)}", logger))
 				case None => Display.error(s"$name Ridge regression could not be trained", logger)
 			}
 		    
 			regression.rss match {
-				case Some(rss) => Display.show(s"$name ${ScalaMl.toString(rss, "rss =", false)}", logger)
+				case Some(rss) => Display.show(s"$name ${ToString.toString(rss, "rss =", false)}", logger)
 				case None => Display.error(s"$name Ridge regression could not be trained", logger)
 			}
 		
@@ -91,7 +91,7 @@ object RidgeRegressionEval extends Eval {
 					val lambda = n*0.1
 					val y = predict(lambda, deltaPrice, volatility, volume)
 					Display.show(s"Lambda  $lambda", logger )
-					Display.show(ScalaMl.toString(y, "", true), logger)
+					Display.show(ToString.toString(y, "", true), logger)
 				})
 				1
 			}

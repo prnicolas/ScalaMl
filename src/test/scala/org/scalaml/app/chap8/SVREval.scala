@@ -18,7 +18,7 @@ import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 
@@ -31,7 +31,6 @@ object SVREval extends Eval {
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
 	import GoogleFinancials._, ScalaMl._
-	
 		/**
 		 * Name of the evaluation 
 		 */
@@ -58,7 +57,7 @@ object SVREval extends Eval {
 		Display.show(s"\n\n *****  test#${Eval.testCount} $name Support Vector Regression", logger)
 		Try {
 			val price = DataSource(path, false, true, 1) |> close
-			Display.show(ScalaMl.toString(price.toArray, "", true), logger)
+			Display.show(ToString.toString(price.toArray, "", true), logger)
 			val priceIdx = price.zipWithIndex
 								.map( x => (x._2.toDouble, x._1.toDouble))
 	      

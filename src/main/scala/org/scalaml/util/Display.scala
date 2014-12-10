@@ -19,8 +19,8 @@ import org.apache.log4j.Logger
 	 *  @note Scala for Machine Learning
 	 */
 object Display {	
-	val DEFAULT_SHOW_RETURN = 0
-	val DEFAULT_ERROR_RETURN = -1
+	private val DEFAULT_SHOW_RETURN = 0
+	private val DEFAULT_ERROR_RETURN = -1
 	val loggerFlag = false
   
 		/**

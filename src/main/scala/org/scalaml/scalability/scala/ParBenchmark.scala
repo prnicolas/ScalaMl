@@ -10,7 +10,6 @@
  */
 package org.scalaml.scalability.scala
 
-
 import scala.collection.parallel.ForkJoinTaskSupport
 import scala.concurrent.forkjoin.ForkJoinPool
 import scala.collection.parallel.mutable.{ParArray, ParMap, ParHashMap}
@@ -18,9 +17,8 @@ import scala.collection.mutable.{Map, HashMap}
 import scala.collection.parallel.immutable.ParVector
 import org.apache.log4j.Logger
 
-import org.scalaml.util.Display
-import org.scalaml.core.Types.ScalaMl
-import ScalaMl.DblVector
+import org.scalaml.util.{ToString, Display}
+import org.scalaml.core.Types.ScalaMl.DblVector
 
 		/**
 		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.</p>
@@ -100,7 +98,7 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int) extends ParB
 		val duration = timing(_ => u.map(f)).toDouble
 		val ratio = timing( _ => v.map(f) )/duration
 		
-		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}", logger)
+		Display.show(s"$nTasks\t${ToString.toString(ratio, "", true)}", logger)
 		ratio
 	}
 	
@@ -118,7 +116,7 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int) extends ParB
 
 		val duration = timing(_ => u.filter(f)).toDouble
 		val ratio = timing( _ => v.filter(f) )/duration
-		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		Display.show(s"$nTasks\t${ToString.toString(ratio, "", true)}",logger)
 		ratio
 	}
 	
@@ -136,7 +134,7 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int) extends ParB
 
 		val duration = timing(_ => u.reduceLeft(f)).toDouble
 		val ratio = timing( _ => v.reduceLeft(f) )/duration
-		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		Display.show(s"$nTasks\t${ToString.toString(ratio, "", true)}",logger)
 		ratio
 	}
 }
@@ -194,7 +192,7 @@ final class ParMapBenchmark[U](u: Map[Int, U], v: ParMap[Int, U], times: Int) ex
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.map(e => (e._1, f(e._2)))).toDouble
 		val ratio = timing( _ => v.map(e => (e._1, f(e._2))) )/duration
-		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		Display.show(s"$nTasks\t${ToString.toString(ratio, "", true)}",logger)
 		ratio
 	}
 	
@@ -211,7 +209,7 @@ final class ParMapBenchmark[U](u: Map[Int, U], v: ParMap[Int, U], times: Int) ex
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.filter(e => f(e._2))).toDouble
 		val ratio = timing( _ => v.filter(e => f(e._2)))/duration
-		Display.show(s"$nTasks\t${ScalaMl.toString(ratio, "", true)}",logger)
+		Display.show(s"$nTasks\t${ToString.toString(ratio, "", true)}",logger)
 		ratio
 	}
 }

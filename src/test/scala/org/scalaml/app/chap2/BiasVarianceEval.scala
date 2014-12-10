@@ -11,10 +11,9 @@
 package org.scalaml.app.chap2
 
 import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
-
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 		/**
@@ -65,7 +64,7 @@ object BiasVarianceEval extends Eval {
 			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
 			modelFit.fit(fEst.map( _._1)) match {
 				case Some(varBias) => {
-					Display.show(s"$name Result variance bias emulation\n${ScalaMl.toString(varBias, "Variance", "bias", false)}", logger)
+					Display.show(s"$name Result variance bias emulation\n${ToString.toString(varBias, "Variance", "bias", false)}", logger)
 					true
 				}
 				case None => Display.error(s"$name variance bias model failed", logger);false

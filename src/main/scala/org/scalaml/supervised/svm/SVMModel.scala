@@ -15,7 +15,7 @@ import libsvm.svm_model
 import org.scalaml.core.design.Model
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblMatrix
-
+import org.scalaml.util.ToString
 
 
 		/**
@@ -51,18 +51,18 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 				val row = nodes(n)
 				row.map(r => r.value)
 			})
-			description.append(ScalaMl.toString(_nodes, true))
+			description.append(ToString.toString(_nodes, true))
 		}
   	  
 		val coefs = svmmodel.sv_coef
 		if(coefs != null && coefs.size > 0) {
 			description.append("\nSVM basis functions:\n")
 			coefs.foreach(w => {
-				w.foreach(c => description.append(s"${ScalaMl.toString(c, "", true)}\n"))
+				w.foreach(c => description.append(s"${ToString.toString(c, "", true)}\n"))
 				description.append("\n")
 			})
 		}
-		description.append(s"Accuracy: ${ScalaMl.toString(accuracy, "", true)}\n")
+		description.append(s"Accuracy: ${ToString.toString(accuracy, "", true)}\n")
 		description.toString
 	}
 }

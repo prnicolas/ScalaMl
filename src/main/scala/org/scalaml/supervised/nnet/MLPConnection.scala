@@ -13,11 +13,11 @@ package org.scalaml.supervised.nnet
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.supervised.nnet.MLPConfig._
 import org.scalaml.core.design.Model
 import org.scalaml.supervised.nnet.MLP.MLPObjective
-import ScalaMl._
+import org.scalaml.util.ToString
 
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
@@ -112,7 +112,7 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		Range(0, dst.len).foreach( i => {
 			Range(0, src.len).foreach(j => {
 				val wij: (Double, Double) = synapses(i)(j)
-				buf.append(s"$i,$j: (${ScalaMl.toString(wij._1, "", false)}, ${ScalaMl.toString(wij._2, "", false)})  ")
+				buf.append(s"$i,$j: (${ToString.toString(wij._1, "", false)}, ${ToString.toString(wij._2, "", false)})  ")
 			})
 			buf.append("\n")
 		})

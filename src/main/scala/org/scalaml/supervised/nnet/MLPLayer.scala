@@ -10,11 +10,12 @@
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl
 import scala.util.Random
+
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.Model
+import org.scalaml.util.ToString
 import scala.collection.mutable.ListBuffer
-import ScalaMl._
 import MLP._
 
 		/**
@@ -91,7 +92,7 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		val buf = new StringBuilder
 		
 		buf.append(s"\nLayer: $id output: ")
-		output.foreach(x => buf.append(s"${ScalaMl.toString(x,"", true)}"))
+		output.foreach(x => buf.append(s"${ToString.toString(x,"", true)}"))
 		buf.toString.substring(0, buf.length-1)
 	}
 }

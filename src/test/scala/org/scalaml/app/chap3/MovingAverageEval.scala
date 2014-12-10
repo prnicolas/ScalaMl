@@ -10,11 +10,11 @@
  */
 package org.scalaml.app.chap3
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.filtering.{SimpleMovingAverage, WeightedMovingAverage, ExpMovingAverage}
 import org.scalaml.app.Eval
 import XTSeries.DblSeries
@@ -27,7 +27,7 @@ import XTSeries.DblSeries
 object MovingAveragesEval extends FilteringEval {
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
-	import ScalaMl._, YahooFinancials._
+	import YahooFinancials._
 
 		/**
 		 * Name of the evaluation 
@@ -55,7 +55,7 @@ object MovingAveragesEval extends FilteringEval {
 			val p_2 = p >>1
 			val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
 			val weights: DblVector = w map { _ / w.sum }
-			Display.show(ScalaMl.toString(weights, "Weights", true), logger)
+			Display.show(ToString.toString(weights, "Weights", true), logger)
 	     
 			val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
 			Try {
@@ -72,7 +72,7 @@ object MovingAveragesEval extends FilteringEval {
 	
 				dataSink |> results
 				Display.show(s"$name Results of different moving average", logger)
-				results.foreach(ts => Display.show(ScalaMl.toString(ts, "X", true), logger))
+				results.foreach(ts => Display.show(ToString.toString(ts.toArray, "X", true), logger))
 				
 				display(List[DblSeries](results(0), results(1)), List[String]("Stock price", "Simple Moving Average"))
 				display(List[DblSeries](results(0), results(2)), List[String]("Stock price", "Exponential Moving Average"))
@@ -95,10 +95,6 @@ object MovingAveragesEval extends FilteringEval {
 		plot.display(dataPoints.toList, 340, 270)
 		1
 	}
-}
-
-object MyApp extends App {
-  MovingAveragesEval.run(Array[String]("BAC", "60"))
 }
 
 // --------------------------------------  EOF -------------------------------

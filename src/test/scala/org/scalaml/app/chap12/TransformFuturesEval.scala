@@ -24,7 +24,7 @@ import org.scalaml.scalability.akka.message._
 import org.scalaml.scalability.akka.TransformFutures
 import org.scalaml.app.TestContext
 import org.scalaml.filtering.DFT
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 
 
 		/**
@@ -49,7 +49,7 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 		require(data != null && data.size > 0, "DFTTransformFutures.aggregate Output of one of the workers undefined")
 		
 		val results = data.map(_.toArray).transpose.map(_.sum).take(SPECTRUM_WIDTH)
-		Display.show(s"Index  Frequencies\n${ScalaMl.toString(results, "", true)}", logger)
+		Display.show(s"Index  Frequencies\n${ToString.toString(results, "", true)}", logger)
 		results.toSeq
 	}
 }

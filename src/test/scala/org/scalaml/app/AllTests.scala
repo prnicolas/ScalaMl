@@ -10,7 +10,7 @@
  */
 package org.scalaml.app
 
-
+import org.scalaml.app.core._
 import org.scalaml.app.chap1._
 import org.scalaml.app.chap2._
 import org.scalaml.app.chap3._
@@ -32,7 +32,6 @@ import org.scalaml.util.Display
 		 * command line <i>sbt test:run</i><br>
 		 * Each test is implemented as an actor that terminates when either the test completes
 		 * or the time out is exceeded.</p>
-		 * @param Name of the chapter or 'test-run" if the tests for all teh chapters are executed.
 		 */
 protected object AllTests extends ScalaMlTest {
 	val chapter: String = "test-run"
@@ -45,7 +44,9 @@ protected object AllTests extends ScalaMlTest {
 		 */
 	def test: Unit = {
 		TestContext.init
-
+			// Core or util
+		run(MatrixEval)
+		
 			// Chapter 1
 		run(LogBinRegressionEval)
 		run(PlotterEval)
@@ -59,7 +60,7 @@ protected object AllTests extends ScalaMlTest {
 		
 		run(DFTEval)
 		run(DFTEval, Array[String]("BAC"))
-		run(new DKalmanEval, Array[String]("BAC"))
+		run(DKalmanEval, Array[String]("BAC"))
 	
 			// Chapter 4
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
@@ -120,7 +121,7 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 12
 		run(ParBenchmarkEval, Array[String]("array"))
 		run(ParBenchmarkEval, Array[String]("map"))
-		run(ActorsManagerEval, Array[String]("no-router"))
+		run(ActorsManagerEval, Array[String]("norouter"))
 		run(ActorsManagerEval, Array[String]("router"))
 		run(TransformFuturesEval)
 		run(SparkKMeansEval)
@@ -138,6 +139,8 @@ protected object AllTests extends ScalaMlTest {
 			// Anonymous Akka actor that wraps the execution of the scala test.
 		val worker = TestContext.actorSystem.actorOf(Props(new Actor {
 			def receive = { 
+					// Launch the execution of a test within 
+					// the event handler of the worker actor.
 				case msg: String => {
 					completed = evaluate(eval, args)
 					context.stop(self)
@@ -161,7 +164,7 @@ protected object AllTests extends ScalaMlTest {
 					errorMsg = s"time out after $eval.maxExecutionTime msecs."
 				}
 			}
-			println(s"End ${eval.name}")
+			Display.show(s"End ${eval.name}", logger)
 			completed
 		} 
 	  	match {

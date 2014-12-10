@@ -14,11 +14,11 @@ import org.apache.log4j.Logger
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.{DblMatrix, DblVector}
 import org.scalaml.supervised.regression.logistic.{LogisticRegressionOptimizer, LogisticRegression}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.Display
+import org.scalaml.util.{ToString, Display}
 import org.scalaml.app.Eval
 
 
@@ -31,8 +31,7 @@ import org.scalaml.app.Eval
 		 */
 object LogisticRegressionEval extends Eval {
 	import scala.util.{Random, Try, Success, Failure}
-	import ScalaMl._
-	
+
 		/**
 		 * Name of the evaluation 
 		 */
@@ -90,8 +89,8 @@ object LogisticRegressionEval extends Eval {
   
 
 	private def toString(regression: LogisticRegression[Double]): String = {
-		val buf = new StringBuilder(s"Regression model RSS = ${ScalaMl.toString(regression.rss.get, "", true)}\nWeights: ")
-		regression.weights.get.foreach(w => buf.append(s"${ScalaMl.toString(w, "", false)}"))
+		val buf = new StringBuilder(s"Regression model RSS = ${ToString.toString(regression.rss.get, "", true)}\nWeights: ")
+		regression.weights.get.foreach(w => buf.append(s"${ToString.toString(w, "", false)}"))
 		buf.toString
 	}
 }
