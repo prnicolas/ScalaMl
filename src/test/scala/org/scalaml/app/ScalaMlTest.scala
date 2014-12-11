@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -74,6 +74,11 @@ trait Eval {
 		 * <p>Execution of scalatest case.</p>
 		 */
 	def run(args: Array[String]): Int
+	
+	protected def header: String = {
+		Eval.count += 1
+		s"\n\n *****  test#${Eval.count} $name"
+	}
 }
 
 
@@ -82,6 +87,11 @@ object Eval {
 	def testCount: String = {
 		count += 1
 		String.valueOf(count)
+	}
+	
+	def toString(name: String): String = {
+		count += 1
+		s"\n\n *****  test#${count} $name"
 	}
 }
 
@@ -119,7 +129,7 @@ object TestContext {
 			case '9' => Display.show("Scala version should be 2.10.2 or higher", logger)
 			case '1' => {
 				scalaVersion.charAt(3) match {
-					case '0' => Display.show("Compatible Akka version should be 2.2.3 or lower", logger)
+					case '0' => Display.show("Compatible Akka version should be 2.2.4 or lower", logger)
 					case '1' => Display.show("Compatible Akka version should be 2.3.4 or higher", logger)
 				}
 			}

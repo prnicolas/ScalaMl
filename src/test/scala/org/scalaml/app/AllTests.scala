@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -43,10 +43,8 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters.
 		 */
 	def test: Unit = {
-		TestContext.init
 			// Core or util
 		run(MatrixEval)
-		
 			// Chapter 1
 		run(LogBinRegressionEval)
 		run(PlotterEval)
@@ -60,6 +58,7 @@ protected object AllTests extends ScalaMlTest {
 		
 		run(DFTEval)
 		run(DFTEval, Array[String]("BAC"))
+
 		run(DKalmanEval, Array[String]("BAC"))
 	
 			// Chapter 4
@@ -125,8 +124,6 @@ protected object AllTests extends ScalaMlTest {
 		run(ActorsManagerEval, Array[String]("router"))
 		run(TransformFuturesEval)
 		run(SparkKMeansEval)
-	
-		TestContext.shutdownAll
 	}
 	
 	
@@ -180,6 +177,11 @@ protected object AllTests extends ScalaMlTest {
 		 * @author Patrick Nicolas
 		 */
 object AllTestsApp extends App  {
+	TestContext.init
 	AllTests.test
+	TestContext.shutdownAll
+	println("end")
 }
 
+
+// ------------------------------------  EOF ----------------------------------------------------

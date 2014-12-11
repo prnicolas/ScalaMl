@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -253,7 +253,7 @@ object DataSource {
 
 	private def check(pathName: String, headerLines: Int): Unit =  {
 		require(pathName != null && pathName.length > 1, "DataSource.check Cannot create a data source with undefined path")
-		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines for header $headerLines")
+		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines: $headerLines")
 	}
 }
 

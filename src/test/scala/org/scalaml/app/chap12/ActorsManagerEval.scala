@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -93,7 +93,7 @@ object ActorsManagerEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Master-Worker model for Akka actors", logger)
+		Display.show(s"$header Master-Worker model for Akka actors", logger)
 		
 		if(args.size > 0) {
 			val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
@@ -133,12 +133,6 @@ object ActorsManagerEval extends Eval {
 		else
 			Display.error(s"$name Master-Worker model, arguments undefined", logger)
 	}
-
-}
-
-
-object MyApp extends App {
-	ActorsManagerEval.run(Array[String]("router"))
 }
 
 // ----------------------------------  EOF ------------------------

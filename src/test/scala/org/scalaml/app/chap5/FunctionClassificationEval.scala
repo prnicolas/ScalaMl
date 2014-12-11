@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -129,7 +129,7 @@ object FunctionClassificationEval extends Eval {
       	
 		Try {
 			val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
-			Display.show(s"\n\n *****  test#${Eval.testCount} $name Trained model for function classification${nb.toString}", logger)
+			Display.show(s"$header Trained model for function classification${nb.toString}", logger)
 	      
 			val gr = nb |> XTSeries(testDataset(g))
 			Display.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", logger)

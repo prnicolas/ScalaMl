@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -135,7 +135,7 @@ object MultiLinearRegressionEval extends Eval {
   
   	 
 	private def trendExtraction: Int = {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Ordinary least squares regression TRENDING", logger)
+		Display.show(s"$header Ordinary least squares regression TRENDING", logger)
   	   	 
 		val path = "resources/data/chap6/CU.csv"
 		val output = "output/chap6/CU_output.csv"

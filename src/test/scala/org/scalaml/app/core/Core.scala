@@ -8,38 +8,32 @@
  * 
  * Version 0.97
  */
-package org.scalaml.app.chap2
-
+package org.scalaml.app.core
 
 import org.scalaml.app.ScalaMlTest
 
 
 
 		/**
-		 * <p>Test driver for the techniques described in the chapter 2 "Hello World!"<br>
+		 * <p>Test driver for the techniques described in the Chapter 1 Getting started<br>
 		 * <ul>
-		 *   <li>JDependency injection base workflow</li>
-		 *   <li>Bias-Variance decomposition</li>
+		 * 	 <li>Logistic Binary classifier</li>
+		 *   <li>JFreeChart plots</li>
 		 * </ul></p>
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
 		 * @since May 28, 2014
-		 * @note Scala for Machine Learning chapter 2 "Hello World!"
+		 * @note Scala for Machine Learning Chapter 1 Getting Started
 		 */
-final class Chap2 extends ScalaMlTest {
+final class Core extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
-	val chapter: String = "Chapter 2"
-   
-	test(s"$chapter Workflow evaluation") {
-		evaluate(WorkflowEval)
-	}
-   
-	test(s"$chapter Variance - Bias decomposition evaluation") {
-		evaluate(BiasVarianceEval)
+	val chapter: String = "Core"
+	
+	test(s"$chapter Simple matrix manipulation") {
+		evaluate(MatrixEval)
 	}
 }
 
-     
-// -------------------------------------  EOF -----------------------------------------
+// --------------------  EOF --------------------------------------

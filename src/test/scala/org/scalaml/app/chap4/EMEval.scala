@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -48,7 +48,7 @@ object EMEval extends UnsupervisedLearningEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.length == 2, s"$name Cannot evaluate EM with undefined arguments")
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of Expectation-Maximization clustering", logger)
+		Display.show(s"$header Evaluation of Expectation-Maximization clustering", logger)
      
 		val K = args(0).toInt
 		val samplingRate = args(1).toInt

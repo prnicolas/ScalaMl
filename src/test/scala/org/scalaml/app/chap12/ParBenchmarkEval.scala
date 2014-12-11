@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -38,13 +38,13 @@ object ParBenchmarkEval extends Eval {
 	   	/**
 		 * Maximum duration allowed for the execution of the evaluation
 		 */
-	 val maxExecutionTime: Int = 10000
+	 val maxExecutionTime: Int = 30000
 	   	
 	 private val logger = Logger.getLogger(name)
-	 private val SZ = 250000
-	 private val NUM_TASKS = 16
+	 private val SZ = 100000
+	 private val NUM_TASKS = 8
 	 private val evalRange = Range(1, NUM_TASKS)
-	 private val TIMES = 30
+	 private val TIMES = 20
 
 	 	/** <p>Execution of the scalatest for Master-worker design with Akka framework.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -52,7 +52,7 @@ object ParBenchmarkEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	 def run(args: Array[String]): Int = {
-		 Display.show(s"\n\n *****  test#${Eval.testCount} $name Scala parallel collections", logger)
+		 Display.show(s"$header Scala parallel collections", logger)
 		 
 		 if( args.size > 0) {
 			 	// Arbitrary map function

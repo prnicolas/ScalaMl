@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -48,7 +48,7 @@ object MovingAveragesEval extends FilteringEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation moving averages", logger)
+		Display.show(s"$header Evaluation moving averages", logger)
 		if(args.size > 1) {
 			val symbol = args(0)
 			val p = args(1).toInt

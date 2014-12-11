@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -31,13 +31,13 @@ class Stats[T <% Double](values: DVector[T]) {
 
 	private class _Stats(var minValue: Double, var maxValue: Double, var sum: Double, var sumSqr: Double)
 	
-		// 
+		// Create the statistics used in the computation of the mean and variance
 	private[this] val _stats = {
 		val _stats = new _Stats(Double.MaxValue, Double.MinValue, 0.0, 0.0)
 	
 		values.foreach(x => {
-			if(x < _stats.minValue) x else _stats.minValue
-			if(x > _stats.maxValue) x else _stats.maxValue 
+			if(x < _stats.minValue) _stats.minValue = x
+			if(x > _stats.maxValue) _stats.maxValue = x
 			_stats.sum + x
 			_stats.sumSqr + x*x
 		})

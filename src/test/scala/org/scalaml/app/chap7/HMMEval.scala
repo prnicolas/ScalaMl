@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -64,7 +64,7 @@ object HMMEval extends Eval  {
    
 
 	private def runCF2: Int =  {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Hidden Markov Model - Training", logger)
+		Display.show(s"$header Hidden Markov Model - Training", logger)
   	  
 		val observations = Array[Double](
 			0.0, 0.72, 0.78, 0.56, 0.61, 0.56, 0.45, 0.42, 0.46, 0.38, 
@@ -95,7 +95,7 @@ object HMMEval extends Eval  {
    
    
 	private def runCF1: Int = {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Hidden Markov Model - Evaluation", logger)
+		Display.show(s"$header Hidden Markov Model - Evaluation", logger)
   	  		
 		// State-transition probabilities matrix for HMM
 		val A0 = Array[Array[Double]](

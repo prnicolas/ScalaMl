@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -60,7 +60,7 @@ object QLearningEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of the Q-learning algorithm", logger)
+		Display.show(s"$header Evaluation of the Q-learning algorithm", logger)
        
 		val src = DataSource(stockPricePath, false, false, 1)
 		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -50,7 +50,8 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
-		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
+		 * out of bounds.
 		 */
 	override def display(xy: XYTSeries, w: Int, h: Int): Unit  = {
 		validateDisplay[XY](xy, w, h, "LinePlot.display")
@@ -66,7 +67,8 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
-		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
+		 * out of bounds.
 		 */
 	override def display(y: DblVector, w: Int, h: Int): Unit  = {
 		validateDisplay[Double](y, w, h, "LinePlot.display")

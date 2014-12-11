@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -51,7 +51,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 	override def run(args: Array[String]): Int = {
 		import CommonMath._
         
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name Evaluation of K-means clustering", logger)
+		Display.show(s"$header Evaluation of K-means clustering", logger)
       
 			// nested function to generate K clusters from a set of observations observations
 			// obs. The condition on the argument are caught by the K-means constructor.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013, 2014, 2015  by Patrick Nicolas - Scala for Machine Learning - All rights reserved
+ * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
@@ -70,7 +70,7 @@ object MLPEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name MLP classifier without SoftMax conversion", logger)
+		Display.show(s"$header MLP classifier without SoftMax conversion", logger)
        
 		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
 							.map( _ |> GoogleFinancials.close )
