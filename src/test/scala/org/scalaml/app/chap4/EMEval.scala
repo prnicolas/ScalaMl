@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap4
 
@@ -16,7 +16,7 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.unsupervised.em.MultivariateEM
 import org.scalaml.filtering.SimpleMovingAverage
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -48,7 +48,7 @@ object EMEval extends UnsupervisedLearningEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.length == 2, s"$name Cannot evaluate EM with undefined arguments")
-		Display.show(s"$header Evaluation of Expectation-Maximization clustering", logger)
+		DisplayUtils.show(s"$header Evaluation of Expectation-Maximization clustering", logger)
      
 		val K = args(0).toInt
 		val samplingRate = args(1).toInt
@@ -75,19 +75,19 @@ object EMEval extends UnsupervisedLearningEval {
 			if( obs.find( _ == Array.empty) == None) {  	 
 				val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
 				components.foreach( x => {
-					Display.show(s"\n$name value: ${x._1}\n$name Means: ", logger)
-					Display.show(x._2.toSeq, logger)
-					Display.show(s"$name Standard Deviations", logger)
-					Display.show(x._3.toSeq, logger)
+					DisplayUtils.show(s"\n$name value: ${x._1}\n$name Means: ", logger)
+					DisplayUtils.show(x._2.toSeq, logger)
+					DisplayUtils.show(s"$name Standard Deviations", logger)
+					DisplayUtils.show(x._3.toSeq, logger)
 				})
-				Display.show(s"$name completed", logger)
+				DisplayUtils.show(s"$name completed", logger)
 			}
 			else 
-				Display.error(s"$name.run Some observations are corrupted", logger)
+				DisplayUtils.error(s"$name.run Some observations are corrupted", logger)
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run EM failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run EM failed", logger, e)
 		}
 	}
 }

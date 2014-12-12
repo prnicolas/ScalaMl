@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.stats
 
@@ -19,7 +20,7 @@ import Stats._
 		 *  standard deviation) for any set of observations for which the
 		 *  type can be converted to a Double.<br>
 		 *  This class is immutable as no elements can be added to the original set of values.</p>
-		 *  @constructor Create an immutable statistics instance for a vector of type T  [values] vector of type bounded to a double 
+		 *  @constructor Create an immutable statistics instance for a vector of type T 
 		 *  @param values vector or array of elements of type T
 		 *  @throws IllegalArgumentException if values is either undefined or have no elements
 		 *  @author Patrick Nicolas
@@ -80,7 +81,8 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @throws IllegalArgumentException if either the smoothing or dimension of the model is out of range
 		 */
 	final def lidstoneMean(smoothing: Double, dim: Int): Double = {
-		require( smoothing >0.0 && smoothing <= 1.0, s"Stats.lidstoneMean Lidstone smoothing factor $smoothing is out of range")
+		require( smoothing >0.0 && smoothing <= 1.0, 
+				s"Stats.lidstoneMean Lidstone smoothing factor $smoothing is out of range")
 		require(dim > 0, s"Stats.lidstoneMean Dimension for Lidstone factor $dim is out of range")
 
 		(_stats.sum + smoothing)/(values.size + smoothing*dim)
@@ -169,7 +171,8 @@ object Stats {
 		 * @throws IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
 		 */
 	final def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
-		require(Math.abs(stdDev) >= ZERO_EPS, s"Stats.gauss Standard deviation $stdDev is close to zero")
+		require(Math.abs(stdDev) >= ZERO_EPS, 
+				s"Stats.gauss Standard deviation $stdDev is close to zero")
 		require(values != null && values.size > 0, "Stats.gauss Values are undefined")
       
 		values.map( x => {
@@ -187,7 +190,8 @@ object Stats {
 		 * @throws IllegalArgumentExeption if stdDev is close t zero
 		 */
 	final def gauss(mean: Double, stdDev: Double, x:Double): Double = {
-		require(Math.abs(stdDev) >= ZERO_EPS, s"Stats.gauss, Gauss standard deviation $stdDev is close to zero")
+		require(Math.abs(stdDev) >= ZERO_EPS, 
+				s"Stats.gauss, Gauss standard deviation $stdDev is close to zero")
 		val y = x - mean
 		INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y /stdDev)
 	}
@@ -207,7 +211,8 @@ object Stats {
 		 * <p>Compute the Normal (Normalized Gaussian) density (mean = 0, standard deviation = 1.0)</p>
 		 * @param x list of parameters
 		 * @return Gaussian probability
-		 * @throws IllegalArgumentExeption if stdDev is close to zero or the number of parameters is less than 3
+		 * @throws IllegalArgumentExeption if stdDev is close to zero or the number of parameters 
+		 * is less than 3
 		 */
 	final def normal(x: Double*): Double = gauss(0.0, 1.0, x(0))
 
@@ -219,7 +224,8 @@ object Stats {
 	final def bernoulli(mean: Double, p: Int): Double = mean*p + (1-mean)*(1-p)
 
 		/**
-		 * Compute the Bernoulli density given a mean and number of trials with a variable list of parameters
+		 * Compute the Bernoulli density given a mean and number of trials with a variable list 
+		 * of parameters
 		 * @param x list of parameters
 		 * @return Bernoulli probability 
 		 * @throws IllegalArgumentExeption if the number of parameters is less than 3

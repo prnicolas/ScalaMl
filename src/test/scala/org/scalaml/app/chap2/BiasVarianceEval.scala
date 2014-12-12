@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap2
 
 import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 		/**
@@ -45,9 +45,10 @@ object BiasVarianceEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of Bias Variance decomposition", logger)
+		DisplayUtils.show(s"$header Evaluation of Bias Variance decomposition", logger)
 		
-		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble - 0.5)))) - 30.0*(Random.nextDouble-0.5)
+		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble-0.5)))) 
+																	- 30.0*(Random.nextDouble-0.5)
 	    
 		val emul = (x: Double) => 0.2*x*(1.0 + Math.sin(x*0.05))
 		val fEst = List[(Double=>Double, String)] (
@@ -57,28 +58,31 @@ object BiasVarianceEval extends Eval {
 		)
         
 			// Uses jFreeChart to display the test data and the three models.
-		Display.show(s"$name plot for Bias Variance decomposition", logger)
+		DisplayUtils.show(s"$name plot for Bias Variance decomposition", logger)
 		display(fEst, testData)
 		
 		Try {
 			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
 			modelFit.fit(fEst.map( _._1)) match {
+			  
 				case Some(varBias) => {
-					Display.show(s"$name Result variance bias emulation\n${ToString.toString(varBias, "Variance", "bias", false)}", logger)
+					val result = FormatUtils.format(varBias, "Variance", "bias", FormatUtils.ShortFormat)
+					DisplayUtils.show(s"$name Result variance bias emulation\n${result}", logger)
 					true
 				}
-				case None => Display.error(s"$name variance bias model failed", logger);false
+				case None => DisplayUtils.error(s"$name variance bias model failed", logger);false
 		  }
 		} match {
-			case Success(succeed) => Display.show(s"$name Completed successfully", logger); 0
-			case Failure(e) => Display.error(s"$name Failed to find a good fit", logger, e); -1
+			case Success(succeed) => DisplayUtils.show(s"$name Completed successfully", logger); 0
+			case Failure(e) => DisplayUtils.error(s"$name Failed to find a good fit", logger, e); -1
 		}
 	}
 	
 	private def display(estF: List[(Double =>Double, String)], f: Double =>Double): Unit = {
 		import ScalaMl._
 		val plot = new LinePlot(("Bias-Variance Analysis", "x", "y"), new LightPlotTheme)
-		val data = (Array.tabulate(200)( f(_)), "f") :: estF.foldLeft(List[(DblVector, String)]()) ((xs, g) => 
+		
+		val data = (Array.tabulate(200)( f(_)), "f") :: estF.foldLeft(List[(DblVector, String)]())((xs, g) => 
 				(Array.tabulate(200)(y => g._1( y.toDouble)), g._2) :: xs)
 						
 		plot.display(data, 340, 280)

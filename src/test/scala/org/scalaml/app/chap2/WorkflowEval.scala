@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap2
 
@@ -21,7 +21,7 @@ import org.scalaml.workflow._
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.plots.LightPlotTheme
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -48,9 +48,9 @@ object TransformExample {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run: Int = { 
-		Display.show(s"** TransformExample Example of Sinusoidal transformation", logger)
+		DisplayUtils.show(s"** TransformExample Example of Sinusoidal transformation", logger)
 		val tform = new Transform[Int, Double](op1)
-		Display.show(s"TransformExample ${tform |> 6}", logger)
+		DisplayUtils.show(s"TransformExample ${tform |> 6}", logger)
 	}
 }
 
@@ -129,7 +129,7 @@ object WorkflowEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation for 'log(1+x) + noise' transform", logger)
+		DisplayUtils.show(s"$header Evaluation for 'log(1+x) + noise' transform", logger)
 		
 		val g = (x: Double) => Math.log(x + 1.0) + Random.nextDouble
 		val workflow = new Workflow[Double => Double, DblVector, DblVector, Int] 
@@ -142,7 +142,7 @@ object WorkflowEval extends Eval {
 			val postProc: PipeOperator[DblVector, Int] = new Reducer
 		}
 		val result = workflow |> g 
-		Display.show(s"$name with index $result", logger)
+		DisplayUtils.show(s"$name with index $result", logger)
 	}
 }
 

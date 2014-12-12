@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.scalability.spark
 
@@ -19,7 +19,7 @@ import org.apache.spark.rdd.RDD
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.ToString
+import org.scalaml.util.FormatUtils
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 
@@ -40,8 +40,11 @@ import org.scalaml.core.design.PipeOperator
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib
 		 */
 @implicitNotFound("Spark context is implicitely undefined")
-final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext) 
-			extends PipeOperator[DblVector, Int] {
+final class SparkKMeans(
+		kMeansConfig: SparkKMeansConfig, 
+		rddConfig: RDDConfig, 
+		xt: XTSeries[DblVector])
+		(implicit sc: SparkContext)	extends PipeOperator[DblVector, Int] {
 
 	import SparkKMeans._
 	check(kMeansConfig, rddConfig, xt)
@@ -63,7 +66,8 @@ final class SparkKMeans(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, x
 	override def toString: String = {
 		val buf = new StringBuilder
 		buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
-		model.clusterCenters.zipWithIndex.foreach(ctr =>buf.append(s"#${ctr._2}: ${ToString.toString(ctr._1.toArray)}\n"))
+		model.clusterCenters.zipWithIndex.foreach(ctr => 
+				buf.append(s"#${ctr._2}: ${FormatUtils.format(ctr._1.toArray)}\n"))
 		buf.toString
 	}
 }
@@ -84,10 +88,18 @@ object SparkKMeans {
 		 * @param xt Time series used for the training of the Spark KMeans<br>
 		 * @param sc  implicit spark context.
 		 */
-	def apply(config: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector])(implicit sc: SparkContext): SparkKMeans = 
-		new SparkKMeans(config, rddConfig, xt)
+	def apply(
+			config: SparkKMeansConfig, 
+			rddConfig: RDDConfig, 
+			xt: XTSeries[DblVector])
+			(implicit sc: SparkContext): SparkKMeans = 
+				new SparkKMeans(config, rddConfig, xt)
 	
-	private def check(kMeansConfig: SparkKMeansConfig, rddConfig: RDDConfig, xt: XTSeries[DblVector]): Unit = {
+	private def check(
+			kMeansConfig: SparkKMeansConfig, 
+			rddConfig: RDDConfig, 
+			xt: XTSeries[DblVector]): Unit = {
+	  
 		require(kMeansConfig != null, "Cannot a K-means model without a stateuration")
 		require(rddConfig != null, "Cannot execute a K-means on non-stateured RDD")
 		require(xt != null && xt.size > 0, "Cannot execute a K-means on undefined input time series")

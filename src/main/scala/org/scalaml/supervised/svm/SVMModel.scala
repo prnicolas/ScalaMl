@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.svm
 
@@ -15,7 +15,7 @@ import libsvm.svm_model
 import org.scalaml.core.design.Model
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblMatrix
-import org.scalaml.util.ToString
+import org.scalaml.util.FormatUtils
 
 
 		/**
@@ -51,18 +51,18 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 				val row = nodes(n)
 				row.map(r => r.value)
 			})
-			description.append(ToString.toString(_nodes, true))
+			description.append(FormatUtils.format(_nodes, FormatUtils.ShortFormat))
 		}
   	  
 		val coefs = svmmodel.sv_coef
 		if(coefs != null && coefs.size > 0) {
 			description.append("\nSVM basis functions:\n")
 			coefs.foreach(w => {
-				w.foreach(c => description.append(s"${ToString.toString(c, "", true)}\n"))
+				w.foreach(c => description.append(s"${FormatUtils.format(c,"",FormatUtils.ShortFormat)}\n"))
 				description.append("\n")
 			})
 		}
-		description.append(s"Accuracy: ${ToString.toString(accuracy, "", true)}\n")
+		description.append(s"Accuracy: ${FormatUtils.format(accuracy,"",FormatUtils.ShortFormat)}\n")
 		description.toString
 	}
 }

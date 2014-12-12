@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.core
 
 import org.scalaml.app.Eval
-import org.scalaml.util.{Matrix, Display, ToString}
+import org.scalaml.util.{Matrix, DisplayUtils, FormatUtils}
 
 		/**
 		 * <p><b>Purpose</b>Singleton to evaluate the implementation of a simple matrix</p>
@@ -38,21 +38,21 @@ object MatrixEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Matrix operations", logger)
+		DisplayUtils.show(s"$header Matrix operations", logger)
 		val nCols = 5
 		val nRows = 7
 		val data = Array.tabulate(nCols*nRows)(_ => Random.nextDouble)
 		val m = Matrix[Double](nRows, nCols, data)
 		
 		Try {
-			Display.show(s"$name input matrix\n${m.toString}", logger)
-			Display.show(s"$name Column 2: ${ToString.toString(m.col(2))}", logger)
-			Display.show(s"$name Row 4   : ${ToString.toString(m.row(4))}", logger)
-			Display.show(s"$name transposed matrix\n${m.transpose.toString}", logger)
+			DisplayUtils.show(s"$name input matrix\n${m.toString}", logger)
+			DisplayUtils.show(s"$name Column 2: ${FormatUtils.format(m.col(2))}", logger)
+			DisplayUtils.show(s"$name Row 4   : ${FormatUtils.format(m.row(4))}", logger)
+			DisplayUtils.show(s"$name transposed matrix\n${m.transpose.toString}", logger)
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name failed", logger, e)
 		}
 	}
 }

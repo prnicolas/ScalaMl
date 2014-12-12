@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.workflow.data
 
@@ -16,7 +16,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.stats.Stats
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 import DataSource._, ScalaMl._
 
@@ -84,7 +84,7 @@ final class DataSource(pathName: String,
 			fields
 		} match {
 			case Success(fields) => Some(fields)
-			case Failure(e) => Display.none("DataSource.loadConvert ", logger, e)
+			case Failure(e) => DisplayUtils.none("DataSource.loadConvert ", logger, e)
 		}
 	}
    
@@ -105,7 +105,7 @@ final class DataSource(pathName: String,
 					else
 						extr map {t => data._2.map(t(_) ) }
 				}
-				case None => Display.error("DataSource.|> ", logger); List.empty
+				case None => DisplayUtils.error("DataSource.|> ", logger); List.empty
 			}
 		}	
 	}
@@ -130,7 +130,7 @@ final class DataSource(pathName: String,
 				else 
 					XTSeries[Double](data._2.map( extr(_)))
 			}
-			case None => Display.error("DataSource.|> ", logger); XTSeries.empty
+			case None => DisplayUtils.error("DataSource.|> ", logger); XTSeries.empty
 		}
 	}
    
@@ -142,7 +142,7 @@ final class DataSource(pathName: String,
 	def extract : Option[DblVector] = 
 		Try (Source.fromFile(pathName).getLines.drop(headerLines).map( _.toDouble ).toArray ) match {
 			case Success(x) => Some(x)
-			case Failure(e) => Display.none("DataSource.load ", logger, e)
+			case Failure(e) => DisplayUtils.none("DataSource.load ", logger, e)
 		}
   	 
    
@@ -157,7 +157,7 @@ final class DataSource(pathName: String,
 				else 
 					XTSeries[DblVector](data._2.map( extr(_)))
 			}
-			case None => Display.error("DataSource.load ", logger); XTSeries.empty
+			case None => DisplayUtils.error("DataSource.load ", logger); XTSeries.empty
 		}
 	}
 	
@@ -180,7 +180,7 @@ final class DataSource(pathName: String,
 		} 
 		match {
 			case Success(textFields) => Some(textFields)
-			case Failure(e) => Display.none("DataSource.load ", logger, e)
+			case Failure(e) => DisplayUtils.none("DataSource.load ", logger, e)
 		}
 	}
 }

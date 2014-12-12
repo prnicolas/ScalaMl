@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.plots
 
@@ -46,7 +47,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 													ShapeUtilities.createDownTriangle(2.0F))
 													
 		/**
-		 * Display array of tuple (x,y) in a Line plot for a given width and height
+		 * DisplayUtils array of tuple (x,y) in a Line plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
@@ -54,7 +55,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * out of bounds.
 		 */
 	override def display(xy: XYTSeries, w: Int, h: Int): Unit  = {
-		validateDisplay[XY](xy, w, h, "LinePlot.display")
+		validateDisplayUtils[XY](xy, w, h, "LinePlot.display")
        
 		val catDataset = new DefaultCategoryDataset
 		xy.foreach( x => catDataset.addValue(x._1, config._2, String.valueOf(x._2.toInt) ))
@@ -62,7 +63,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 	}		 
 
 		/**
-		 * Display a vector of Double value in a Line plot with counts [0, n] on X-Axis and
+		 * DisplayUtils a vector of Double value in a Line plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
@@ -71,7 +72,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * out of bounds.
 		 */
 	override def display(y: DblVector, w: Int, h: Int): Unit  = {
-		validateDisplay[Double](y, w, h, "LinePlot.display")
+		validateDisplayUtils[Double](y, w, h, "LinePlot.display")
 		
 		val catDataset = new DefaultCategoryDataset
 		y.zipWithIndex.foreach( x =>catDataset.addValue(x._1, config._2, String.valueOf(x._2)))
@@ -81,7 +82,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 	import scala.collection.immutable.List
 	def display(xys: List[(DblVector, String)], w: Int, h: Int): Unit  = {
 		import scala.collection.JavaConversions._
-		validateDisplay[(DblVector, String)](xys, w, h, "LinePlot.display")
+		validateDisplayUtils[(DblVector, String)](xys, w, h, "LinePlot.display")
 
 		val seriesCollection = new XYSeriesCollection
 		xys.foreach( xy => {   

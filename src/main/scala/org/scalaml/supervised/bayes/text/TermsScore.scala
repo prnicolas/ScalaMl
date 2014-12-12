@@ -2,30 +2,31 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.bayes.text
 
 import org.scalaml.workflow.data.DocumentsSource
 import org.scalaml.util.Counter
-import scala.collection.mutable.HashMap
 import scala.annotation.implicitNotFound
+import scala.collection._
 import scala.util.{Try, Success, Failure}
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.apache.log4j.Logger
 
-import TermsScore._
-import DocumentsSource._
+import TermsScore._, DocumentsSource._
 
 		/**
 		 * <p>Class to extract and score terms extracted from a set of news articles.></p>
 		 * @constructor Instantiates a terms extractor and scoring class. 
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
-		 * @throws ImplicitNotFoundException if ordering is not defined prior the instantiation of this class
+		 * @throws ImplicitNotFoundException if ordering is not defined prior the instantiation 
+		 * of this class
 		 * @param toDate  Function to convert a string date into a Long.
 		 * @param toWords  Function to extracts an array of a keywords from a line.
 		 * @param lexicon  Simple dictionary or map of tuples (words, stem word)
@@ -37,7 +38,7 @@ import DocumentsSource._
 @implicitNotFound("Ordering not explicitly defined for NaiveBayesTextScoring class")
 final class TermsScore[T <% Long](toDate: String =>T, 
 							toWords: String => Array[String], 
-							lexicon: Map[String, String])(implicit order: Ordering[T]) {
+							lexicon: immutable.Map[String, String])(implicit order: Ordering[T]) {
 	import TermsScore._, NewsArticles._
 
 	check(toDate, toWords, lexicon)
@@ -62,12 +63,13 @@ final class TermsScore[T <% Long](toDate: String =>T,
 			articles
 		} match {
 			case Success(newsarticles) => Some(newsarticles)
-			case Failure(e) => Display.none("TermsScore.score ", logger, e)
+			case Failure(e) => DisplayUtils.none("TermsScore.score ", logger, e)
 		}
 	}
 
 	private[this] def count(term: String): Counter[String] = {
-		require(term != null && term.length > 0, "TermsScore.count: Cannot count the number of words in undefined text")
+		require(term != null && term.length > 0, 
+				"TermsScore.count: Cannot count the number of words in undefined text")
 
 		toWords(term).foldLeft(new Counter[String])((cnt, w) => 
 			if( lexicon.contains(w)) cnt + lexicon(w) else cnt )
@@ -75,7 +77,8 @@ final class TermsScore[T <% Long](toDate: String =>T,
    
 
 	private[this] def rank(corpus: Corpus): CorpusType[T] = {
-		require( corpus!= null && corpus.size > 0, "TermsScore.rank: Cannot order an undefined corpus of document")
+		require( corpus!= null && corpus.size > 0, 
+				"TermsScore.rank: Cannot order an undefined corpus of document")
    	  
 		corpus.map(doc => (toDate(doc._1.trim), doc._2, doc._3)).sortWith( _._1 < _._1)
 	}
@@ -91,8 +94,8 @@ final class TermsScore[T <% Long](toDate: String =>T,
 		 */
 object TermsScore {
 		/**
-		 * <p>Define the type for a corpus as a array of tuples (date, document title, document content). The type for
-		 * date is bounded (view) to a Long (convertible to a Long).
+		 * <p>Define the type for a corpus as a array of tuples (date, document title, document 
+		 * content). The type for date is bounded (view) to a Long (convertible to a Long).</p>
 		 */
 	type CorpusType[T] = Array[(T, String, String)]
 	
@@ -102,13 +105,24 @@ object TermsScore {
 		 * @param toWords  Function to extracts an array of a keywords from a line.
 		 * @param lexicon  Simple dictionary or map of tuples (words, stem word)
 		 */
-	def apply[T <% Long](tStamp: String =>T, words: String => Array[String], lexicon: Map[String, String])(implicit ordering: Ordering[T]): TermsScore[T] = 
+	def apply[T <% Long](
+			tStamp: 	String =>T, 
+			words: 		String => Array[String], 
+			lexicon:  immutable.Map[String, String])(implicit ordering: Ordering[T]): TermsScore[T] = 
 		new TermsScore[T](tStamp, words, lexicon)
-      
-	private def check[T <% Long](toDate: String =>T, toWords: String => Array[String], lexicon: Map[String, String]): Unit = {
-		require(toDate != null, "TermsScore.check Cannot score a text without an extractor for the release date")
-		require(toWords != null, "TermsScore.check Cannot score a text without a word extractor")
-		require(lexicon != null && lexicon.size > 0, "TermsScore.check Cannot score a text without a lexicon")
+ 
+		
+	private def check[T <% Long](
+			toDate: 	String =>T, 
+			toWords: 	String => Array[String], 
+			lexicon: 	immutable.Map[String, String]): Unit = {
+		
+		require(toDate != null, 
+				"TermsScore.check Cannot score a text without an extractor for the release date")
+		require(toWords != null, 
+				"TermsScore.check Cannot score a text without a word extractor")
+		require(lexicon != null && lexicon.size > 0, 
+				"TermsScore.check Cannot score a text without a lexicon")
 	}
 }
 

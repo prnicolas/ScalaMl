@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap4
 
@@ -15,7 +15,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.unsupervised.pca.PCA
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
@@ -89,14 +89,14 @@ object PCAEval extends UnsupervisedLearningEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of Principal Component Analysis", logger)
+		DisplayUtils.show(s"$header Evaluation of Principal Component Analysis", logger)
   	  
 		import scala.util.{Try, Success, Failure}
 		val pca = new PCA[Double]
 		  
 		Try(pca |> XTSeries[DblVector](data.map( _._2.take(3)) ) ) match {
-			case Success(covariance) => Display.show(s"$name Results\n${this.toString(covariance)}", logger)
-			case Failure(e) => Display.error(s"$name.run Principal Component Analysis failed", logger, e)
+			case Success(covariance) => DisplayUtils.show(s"$name Results\n${this.toString(covariance)}", logger)
+			case Failure(e) => DisplayUtils.error(s"$name.run Principal Component Analysis failed", logger, e)
 		}
 	}
    

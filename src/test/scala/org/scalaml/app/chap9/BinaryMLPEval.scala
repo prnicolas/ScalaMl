@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 		/**
@@ -54,7 +54,7 @@ object BinaryMLPEval extends Eval {
 	def run(args: Array[String]): Int = {
 		import scala.util.Random
   	  
-		Display.show(s"$header Binary Multi-layer perceptron", logger)
+		DisplayUtils.show(s"$header Binary Multi-layer perceptron", logger)
         
 		implicit val mlpObjective = new MLP.MLPBinClassifier
 
@@ -73,13 +73,14 @@ object BinaryMLPEval extends Eval {
 			if(output(0) - xy._2(0) < 0.25) s + 1 else s
 		})
 
-		Display.show(s"$name Accuracy: ${ToString.toString(correct.toDouble/x.size, "", true)}", logger)
+		val result = FormatUtils.format(correct.toDouble/x.size, "", FormatUtils.MediumFormat)
+		DisplayUtils.show(s"$name Accuracy: $result", logger)
 		val x0 = 0.9
 		val y0 = 0.8
 		Try(mlpClassifier |> Array[Double](x0, y0))
 		match {
-			case Success(output) => Display.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
-			case Failure(e) => Display.error(s"$name run", logger, e)
+			case Success(output) => DisplayUtils.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
+			case Failure(e) => DisplayUtils.error(s"$name run", logger, e)
 		}     
 	}
 }

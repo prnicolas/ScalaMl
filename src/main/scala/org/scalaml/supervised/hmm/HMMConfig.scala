@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.hmm
 
@@ -91,9 +92,12 @@ object HMMConfig {
 	val MAX_NUM_STATES = 512
 	val MAX_NUM_OBS = 4096
 	private def check(_T: Int, _N: Int, _M: Int): Unit =  {
-		require( _T > 0 && _T < MAX_NUM_OBS, s"Number of observations ${_T} in HMM lambda model is out of bounds")
-		require( _N > 0 && _N < MAX_NUM_STATES, s"Number of States ${_N} in HMM lambda model is out of bounds")
-		require( _M > 0 && _M < MAX_NUM_OBS, s"Number of symbols ${_M} in HMM lambda model is out of bounds")
+		require( _T > 0 && _T < MAX_NUM_OBS, 
+		    s"Number of observations ${_T} in HMM lambda model is out of bounds")
+		require( _N > 0 && _N < MAX_NUM_STATES, 
+		    s"Number of States ${_N} in HMM lambda model is out of bounds")
+		require( _M > 0 && _M < MAX_NUM_OBS, 
+		    s"Number of symbols ${_M} in HMM lambda model is out of bounds")
 	}
 }
 

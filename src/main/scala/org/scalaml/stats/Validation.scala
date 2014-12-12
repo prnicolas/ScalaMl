@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.stats
 
@@ -52,7 +53,8 @@ import Label._
 		 * of a test run. The counters for TP, TN, FP and FN are computed during instantiation
 		 * to the class, Accuracy, precision and recall are computed at run-time (lazy values).</p>
 		 * @constructor Create a class validation instance that compute precision, recall and F1 measure 
-		 * @throws IllegalArgumentException if actualExpected is undefined or has no elements or tpClass is out of range
+		 * @throws IllegalArgumentException if actualExpected is undefined or has no elements or 
+		 * tpClass is out of range
 		 * @param actualExpected Array of pair (actual value, labeled/expected value)
 		 * @param tpClass Identifier for the class that defined the true positive samples
 	
@@ -60,8 +62,12 @@ import Label._
 		 * @since February 1, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / Validation
 		 */
-final protected class ClassValidation(actualExpected: Array[(Int, Int)], tpClass: Int) extends Validation {
-	require(actualExpected != null && actualExpected.size > 0, "ClassValidation Cannot validate undefined results")
+final protected class ClassValidation(
+		actualExpected: Array[(Int, Int)], 
+		tpClass: Int) extends Validation {
+  
+	require(actualExpected != null && actualExpected.size > 0, 
+			"ClassValidation Cannot validate undefined results")
 	require(tpClass >= 0, s"ClassValidation index for true positive class $tpClass is negative") 
    
 	private[this] val counters = 

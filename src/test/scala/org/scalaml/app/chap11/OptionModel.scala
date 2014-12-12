@@ -6,9 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap11
+
+import scala.collection._
+
+import org.apache.log4j.Logger
 
 import org.scalaml.reinforcement.qlearning
 import org.scalaml.plots.{ScatterPlot, LinePlot, LightPlotTheme}
@@ -16,13 +20,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.util.{Counter, NumericAccumulator, Display}
-
-import org.apache.log4j.Logger
-
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.HashMap
-
+import org.scalaml.util.{Counter, NumericAccumulator, DisplayUtils}
 
 
 
@@ -44,7 +42,7 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 	}
    	
 	def approximate(y: DblVector): Map[Array[Int], Double] = {
-		val mapper = new HashMap[Int, Array[Int]]
+		val mapper = new mutable.HashMap[Int, Array[Int]]
   	    
 		val acc = new NumericAccumulator[Int]
 		propsList.map( _.toArray)
@@ -69,7 +67,11 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 }
 
 
-class OptionProperty(timeToExp: Double, relVolatility: Double, volatilityByVol: Double, relPriceToStrike: Double) {
+class OptionProperty(
+		timeToExp: Double, 
+		relVolatility: Double, 
+		volatilityByVol: Double, 
+		relPriceToStrike: Double) {
    val toArray = Array[Double](timeToExp, relVolatility, volatilityByVol, relPriceToStrike)
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap8
 
@@ -16,7 +16,7 @@ import org.scalaml.supervised.svm.kernel._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -61,7 +61,7 @@ object SVCKernelEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+		DisplayUtils.show(s"$header Comparison of kernel functions for a Binary Support Vector Classifier", logger)
 		Try {
 			compareKernel(0.6, 0.3)
 			compareKernel(0.7, 0.3)
@@ -69,7 +69,7 @@ object SVCKernelEval extends Eval {
 			compareKernel(1.3, 0.3)
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name kernel comparison failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name kernel comparison failed", logger, e)
 		}
 	}
     
@@ -101,7 +101,7 @@ object SVCKernelEval extends Eval {
 						evalKernel(trainingSet, testSet, labels, new PolynomialKernel(GAMMA, COEF0, DEGREE)) ::
 						List[Double]()
 						
-		Display.show(s"$name $legend completed", logger)
+		DisplayUtils.show(s"$name $legend completed", logger)
 	}
 	
 	

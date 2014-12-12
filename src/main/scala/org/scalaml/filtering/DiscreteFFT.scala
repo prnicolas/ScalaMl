@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.filtering
 
@@ -17,7 +18,7 @@ import scala.util.{Try, Success, Failure}
 import org.apache.commons.math3.transform._
 import org.apache.log4j.Logger
 
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
@@ -84,7 +85,8 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 
 
 		/**
-		 * <p>Companion object to the class DTransform that define the <b>sinc</b> and <b>sinc2</b> functions.</p>
+		 * <p>Companion object to the class DTransform that define the <b>sinc</b> and <b>sinc2</b> 
+		 * functions.</p>
 		 * @author Patrick Nicolas
 		 * @since February 9, 2014
 		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
@@ -92,7 +94,8 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 object DTransform { 
 
 		/**
-		 * Definition of the sinc convolution function used in discrete Fourier transform based low pass filters
+		 * Definition of the sinc convolution function used in discrete Fourier transform based 
+		 * low pass filters
 		 * @param f frequency 
 		 * @param fC frequency cutoff of this low pass filter
 		 * @return 1 if frequency is below cutoff, 0 otherwise
@@ -100,7 +103,8 @@ object DTransform {
 	def sinc(f: Double, fC: Double): Double = if(Math.abs(f) < fC) 1.0 else 0.0
 	
 		/**
-		 * Definition of the sinc2 convolution function used in discrete Fourier transform based low pass filters
+		 * Definition of the sinc2 convolution function used in discrete Fourier transform based 
+		 * low pass filters
 		 * @param f frequency 
 		 * @param fC frequency cutoff of this low pass filter
 		 * @return 1 if frequency is below cutoff, 0 otherwise
@@ -122,11 +126,12 @@ protected class DFT[T <% Double] extends DTransform[T] {
 	private val logger = Logger.getLogger("DFT")
 	
 		/**
-		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform (time series
-		 * of frequency values). The type of transform is define at run-time the first value is close to zero (Sine transform)
-		 * or not (Cosine transform).</p>
+		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform 
+		 * (time series of frequency values). The type of transform is define at run-time the first 
+		 * value is close to zero (Sine transform) or not (Cosine transform).</p>
 		 * @throws MatchError if the input time series is undefined or its size is less or equal to 2
-		 * @return PartialFunction of type vector of Double for input to the Discrete Fourier Transform, and type vector of Double for output as a time series of frequencies..
+		 * @return PartialFunction of type vector of Double for input to the Discrete Fourier Transform, 
+		 * and type vector of Double for output as a time series of frequencies..
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 2) => XTSeries[Double](fwrd(xt)._2)
@@ -134,7 +139,8 @@ protected class DFT[T <% Double] extends DTransform[T] {
    
 
 		/**
-		 * <p>Extraction of frequencies from a time series using the Discrete Sine and Cosine transform.<br>	 
+		 * <p>Extraction of frequencies from a time series using the Discrete Sine and Cosine 
+		 * transforms.<br>	 
 		 * Exception thrown by the Apache Commons Math library are caught at a higher level.</p>
 		 * @param xt times series input to the Discrete Fourier Transform
 		 * @return a tuple of Transformer instance and vector of frequencies.
@@ -175,11 +181,12 @@ object DFT {
 		 * The class uses the Apache Commons Math library.</p>
 		 * @param g   Filtering function y = g(x, fC)used in the convolution
 		 * @param fC  Frequency cutoff for this low pass filter.
-		 * @constructor Create a low-pass, band-pass or high-pass filter using the discrete Fourier transform
+		 * @constructor Create a low-pass filter using the discrete Fourier transform
 		 * @throws IllegalArgumentException if the filtering function g is undefined.
 		 * @author Patrick Nicolas
 		 * @since February 9, 2014
-		 * @note Scala for Machine Learning  Chapter 2 Data pre-processing / Fourier analysis / DFT-based filtering
+		 * @note Scala for Machine Learning  Chapter 2 Data pre-processing / Fourier analysis / 
+		 * DFT-based filtering
 		 */
 final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T] {
 	require(g != null, "DFTFir Cannot apply a band pass filter with undefined filter function")
@@ -188,11 +195,12 @@ final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends
 	private val logger = Logger.getLogger("DFTFir")
    
 		/**
-		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform (time series
-		 * of frequency values). The type of transform is define at run-time the first value is close to zero (Sine transform)
-		 * or not (Cosine transform).</p>
+		 * <p>Overload the pipe operator to compute the Discrete Fourier Cosine or Sine transform 
+		 * (time series of frequency values). The type of transform is define at run-time the first 
+		 * value is close to zero (Sine transform) or not (Cosine transform).</p>
 		 * @throws MatchError if the input time series is undefined
-   		 * @return PartialFunction of time series of elements of type T as input to the Discrete Fourier filter and time series of frequencies of type Double as output
+		 * @return PartialFunction of time series of elements of type T as input to the Discrete 
+		 * Fourier filter and time series of frequencies of type Double as output
 		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {

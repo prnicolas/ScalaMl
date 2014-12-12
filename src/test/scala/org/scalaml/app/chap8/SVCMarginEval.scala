@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap8
 
@@ -16,7 +16,7 @@ import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 		/**
@@ -55,7 +55,7 @@ object SVCMarginEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {   
-		Display.show(s"$header Evaluation of impact of C penalty on margin of a binary support vector classifier", logger)
+		DisplayUtils.show(s"$header Evaluation of impact of C penalty on margin of a binary support vector classifier", logger)
 		val values = generate
 		Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
 		status
@@ -77,8 +77,13 @@ object SVCMarginEval extends Eval {
 		val svc = SVM[Double](config, XTSeries[DblVector](features), lbl)
 		
 		svc.margin match {
-			case Some(mrgn) => Display.show(s"\n$name Evaluation of margin for SVC with C = ${c.floor} is ${ToString.toString(mrgn, "", true)}", logger)
-			case None => {status = 1; Display.show(s"$name SVRFormulation  training failed", logger) }
+			case Some(margin) => {
+				val margin_str = FormatUtils.format(margin, "", FormatUtils.ShortFormat)
+				DisplayUtils.show(s"\n$name Margin for SVC with C = ${c.floor} is ${}", logger)
+			}
+			case None => {
+				DisplayUtils.show(s"$name SVRFormulation  training failed", logger) 
+			}
 		}
 	}
 }

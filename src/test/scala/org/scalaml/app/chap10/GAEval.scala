@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap10
 
@@ -17,7 +17,7 @@ import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFa
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
 import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
 import org.scalaml.core.XTSeries
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
 		/**
@@ -75,7 +75,7 @@ object GAEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		Display.show(s"$header Evaluation genetic algorithm", logger)
+		DisplayUtils.show(s"$header Evaluation genetic algorithm", logger)
   	 
 		Try {
 			val strategies = createStrategies
@@ -89,12 +89,12 @@ object GAEval extends Eval {
 			val best = gaSolver |> population
 			best.fittest(2)
 				.getOrElse(ArrayBuffer.empty)
-				.foreach(ch => Display.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
+				.foreach(ch => DisplayUtils.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
 	        
-			Display.show(s"$name run completed", logger)
+			DisplayUtils.show(s"$name run completed", logger)
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name failed", logger, e)
 		}
 	}
    
@@ -126,8 +126,8 @@ object GAEval extends Eval {
 		// Relative difference between close and open price
 		val relCloseOpen = src |> YahooFinancials.relCloseOpen
 
-		Display.show(s"$name Delta price:\n", logger)
-		Display.show(s"${ToString.toString(deltaPrice, "", true)}", logger)
+		DisplayUtils.show(s"$name Delta price:\n", logger)
+		DisplayUtils.show(s"${FormatUtils.format(deltaPrice, "", FormatUtils.ShortFormat)}", logger)
 		
 			// Generate the trading strategies as a unique combinations of 
 			// NUM_SIGNALS_PER_STRATEGY trading signals (genes).

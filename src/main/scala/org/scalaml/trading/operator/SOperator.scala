@@ -6,20 +6,23 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.trading.operator
 
-import org.scalaml.ga.{Operator, Gene, Discretization}
+
+import org.scalaml.ga.Operator
+
+/*
 import org.scalaml.core.Types.ScalaMl._
 import scala.annotation.implicitNotFound
 import org.scalaml.trading.Signal
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{ListBuffer, ArrayBuffer}
 import org.scalaml.core.XTSeries
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.ArrayBuffer
-import org.scalaml.util.Display
-import scala.collection.mutable.TreeSet
+import scala.collection._
+import org.scalaml.util.DisplayUtils
+* 
+*/
 
 
 		/**

@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.ga
 
@@ -23,7 +24,7 @@ import Chromosome._
 		 * represents candidate solution to a problem or candidate model to a dataset.<br>
 		 * This particular implementation score the chromosome unfitness. The fitness value of
 		 * a chromosome is randomly selected as a high value.</p>
-		 * @constructor Create a chromosome with the parameterized sbutype of Gene. [code]: Code genetic code or list of Gene that is to be encoded with 0,1 bits
+		 * @constructor Create a chromosome with the parameterized sbutype of Gene
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
 		 * @param code List of Genes or sub types composing this chromosomes.
 		 * @author Patrick Nicolas
@@ -31,7 +32,8 @@ import Chromosome._
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
-	require(code != null && code.size > 1, "Chromosome Cannot create a chromosome from undefined genetic code")
+	require(code != null && code.size > 1, 
+			"Chromosome Cannot create a chromosome from undefined genetic code")
 	var unfitness: Double = 1000*(1.0 + Random.nextDouble)
    
    
@@ -40,17 +42,19 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * is hierarchical. The algorithm selects the gene associated to the cross-over index, 
 		 * swap all the genes of higher index (below or after the cross-over gene) between
 		 * the two parents and finally swap the bits within the cross-over gene.<br>
-		 * The cross over operation generates two off springs from the two original parents. The off-springs
-		 * are added to the current population along with the parents.</p>
+		 * The cross over operation generates two off springs from the two original parents. 
+		 * The off-springs are added to the current population along with the parents.</p>
 		 * @param that other parent chromosome
 		 * @param gIdx Genetic index for the cross-over.
-		 * @throws IllegalArgumentException if the other chromosome is undefined, or have a different size 
-		 * or if the cross-over factor is out of range.
+		 * @throws IllegalArgumentException if the other chromosome is undefined, or have a 
+		 * different size  or if the cross-over factor is out of range.
 		 * @return the pair of offspring chromosomes
 		 */
 	def +- (that: Chromosome[T], gIdx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
-		require(that != null, "Chromosome.+- Cannot cross-over this chromosome with an undefined parent")
-		require(this.size == that.size, s"Chromosome.+- Cannot cross-over chromosomes of different size this ${size} and that ${that.size}")
+		require(that != null, 
+				"Chromosome.+-  Cannot cross-over chromosome with an undefined parent")
+		require(this.size == that.size, 
+				s"Chromosome.+- Chromosomes ${size} and that ${that.size} have different size")
      
 			// First use the global index (module the number of gene
 		val xoverIdx = gIdx.chOpIdx
@@ -86,7 +90,8 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @throws IllegalArgumentException if the normalization factor is less than EPS
 		 */
 	def /= (normalizeFactor: Double): Unit = {
-		require( Math.abs(normalizeFactor) > Chromosome.EPS, s"Chromosome./= Cannot normalize with $normalizeFactor > ${Chromosome.EPS}")
+		require( Math.abs(normalizeFactor) > Chromosome.EPS, 
+				s"Chromosome./= Cannot normalize with $normalizeFactor > ${Chromosome.EPS}")
 		unfitness /= normalizeFactor
 	}
 
@@ -95,7 +100,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @param d implicit conversion of Gene to the parameterized type T which is a sub-class of Gene
 		 * @throws ImplicitNotFoundException if the implicit conversion d is undefined.
 		 */
-	@implicitNotFound("Chromosome.decode Conversion from Gene to parameterized type undefined in decoding chromosome")
+	@implicitNotFound("Chromosome.decode Conversion from Gene to parameterized type is undefined")
 	def decode(implicit d: Gene => T): List[T] = code.map( d(_)) 
 
 		/**
@@ -126,7 +131,8 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 */
 	final def symbolic(comment: String = ""): String = 
 		new StringBuilder(comment)
-			.append(code.foldLeft(new StringBuilder)((buf,gene) => buf.append(s"${gene.symbolic} ")).toString)
+			.append(code.foldLeft(new StringBuilder)((buf,gene) => 
+					buf.append(s"${gene.symbolic} ")).toString)
 			.append(s" score: $unfitness").toString
     
 	private[this] def spliceGene(gIdx: GeneticIndices, thatCode: T): (T, T) = {
@@ -158,10 +164,12 @@ object Chromosome {
 		 * Symbolic constructor for the Chromosome
 		 * @param predicates List of predicates of type T for this chromosome
 		 * @param encode Function that convert a predicate to a Gene
-		 * @throws IllegalArgumentException if either the predicates are undefined or the encoding function is undefined
+		 * @throws IllegalArgumentException if either the predicates are undefined or the encoding 
+		 * function is undefined
 		 */
 	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = {
-		require(predicates != null && predicates.size > 0, "Chromosome.apply List of predicates is undefined")
+		require(predicates != null && predicates.size > 0, 
+				"Chromosome.apply List of predicates is undefined")
 		require(encode != null, "Chromosome.apply Encoding function is undefined")
 
 		new Chromosome[T](if(predicates.size == 1) 

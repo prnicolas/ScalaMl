@@ -6,20 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.trading
 
 import org.scalaml.ga.{Operator, Gene, Discretization}
 import org.scalaml.trading.operator._
-import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.Types.ScalaMl.DblVector
 import scala.annotation.implicitNotFound
-import scala.collection.mutable.ListBuffer
 import org.scalaml.core.XTSeries
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.ArrayBuffer
-import org.scalaml.util.Display
-import scala.collection.mutable.TreeSet
+import org.scalaml.util.DisplayUtils
 
 
 
@@ -52,7 +48,7 @@ import scala.collection.mutable.TreeSet
 final class Signal(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) 
 					extends Gene(id, target, op) {
 	import Signal._
-	check(id, target, op, xt, weights)
+	check(id, op, xt, weights)
    
 		/**
 		 * Computation of the score of this trading signal by comparing a value with the threshold, value
@@ -99,9 +95,11 @@ object Signal {
 		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
 		 * @param xt Times series of single variable the signal acts upon.
 		 * @param weights Weights applied to each value of the time series (optional).
-		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 * @param discr Discretization function that convert analog or continuous signal to a 
+		 * discrete time series.
 		 */
-	def apply(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization): Signal = 
+	def apply(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)
+			(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, xt, weights)
 
 		/**
@@ -109,7 +107,8 @@ object Signal {
 		 * @param id Label or identifier for the trading signal
 		 * @param target Target value (or threshold) used to trigger the signal.
 		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
-		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 * @param discr Discretization function that convert analog or continuous signal to a 
+		 * discrete time series.
 		 */
 	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, Array.empty, Array.empty)
@@ -129,14 +128,17 @@ object Signal {
 	@inline
 	final def numOperators = operatorFuncMap.size
    
-    private val MAX_TIME_SERIES_SIZE = 10000000
-	private def check(_id: String, _target: Double, _op: Operator, xt: DblVector, weights: DblVector): Unit = {
-		require( _op != null, "Signal.check Cannot create a signal with undefined operator")
+	private val MAX_TIME_SERIES_SIZE = 10000000
+	private def check(id: String, op: Operator, xt: DblVector, weights: DblVector): Unit = {
+		require(op != null, "Signal.check Cannot create a signal with undefined operator")
 		require(xt != null, "Signal.check Cannot create a signal with undefined time series input")
-		require(xt.size >= 0 && xt.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Size of the time series input, ${xt.size} if out of range")
+		require(xt.size >= 0 && xt.size < MAX_TIME_SERIES_SIZE, 
+				s"Signalcheck Size of the time series input, ${xt.size} if out of range")
 		require(weights != null, "Signal.check Cannot create a signal with undefined weights")
-		require(weights.size >= 0 && weights.size < MAX_TIME_SERIES_SIZE, s"Signalcheck Number of weights ${weights.size} if out of range")
-		require(xt.size == weights.size, s"Signal The number of weights ${xt.size} is different from the size of data ${xt.size}")
+		require(weights.size >= 0 && weights.size < MAX_TIME_SERIES_SIZE, 
+				s"Signalcheck Number of weights ${weights.size} if out of range")
+		require(xt.size == weights.size, 
+				s"Signal The number of weights ${xt.size} is != size of data ${xt.size}")
 	}
 }
 

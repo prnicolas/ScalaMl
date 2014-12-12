@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.core
 
@@ -16,7 +17,8 @@ import scala.language.higherKinds
 		 * <p>Generic definition of a Monad used as a template for creating transforms.</p>
 		 * @author Patrick Nicolas
 		 * @since December 21, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow/Monadic data transformation
+		 * @note Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow / 
+		 * Monadic data transformation
 		 */
 trait Monad[M[_]] {
 	def apply[T](t: T): M[T]
@@ -35,7 +37,8 @@ import _FCT._
 		 * @constructor Create a monadic container for data transformation.
 		 * @author Patrick Nicolas
 		 * @since December 23, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow/Monadic data transformation
+		 * @note Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow / 
+		 * Monadic data transformation
 		 */
 class _FCT[+T](val _fct: T) {
 
@@ -82,7 +85,6 @@ class _FCT[+T](val _fct: T) {
 		 * value. Its main purpose is to define a constructor and the Zero method.
 		 */
 object _FCT {
-     
 		/**
 		 * Define the zero value for the FCT monad.
 		 * @param fct contained (i.e. data transformation) element

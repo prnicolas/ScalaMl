@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.nnet
 
@@ -16,7 +17,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import XTSeries._
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 
 
@@ -30,12 +31,14 @@ import org.scalaml.util.Display
 		 * and perform a validation run.<br>
 		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
 		 * This MLP uses the online training strategy suitable for time series.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * Activation function h:  y = h.[w(0) + w(1).x(1) + w(2).x(2) + ... + w(n).x(n)] with weights wi<br>
 		 * Output layer: h(x) = x<br>
 		 * Hidden layers:  h(x) = 1/(1+exp(-x))<br>
 		 * Error back-propagation for neuron i:  error(i) = y(i) - w(0) - w(1).x(1) - w(n).x(n)</span></pre></p>
-		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time series and target or labeled data. 
+		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time 
+		 * series and target or labeled data. 
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
 		 * @param config  Configuration parameters class for the MLP
 		 * @param xt Time series of features in the training set
@@ -43,10 +46,14 @@ import org.scalaml.util.Display
 		 * @param objective Objective of the model (classification or regression)
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / 
+		 * Multilayer perceptron/Training cycle/epoch
 		 */
-final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix)
-				(implicit mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
+final protected class MLP[T <% Double](
+		config: MLPConfig, 
+		xt: XTSeries[Array[T]], 
+		labels: DblMatrix)
+		(implicit mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
 	import MLP._
 	
 	check(config, xt, labels)
@@ -77,7 +84,7 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		}
 		match {
 			case Success(_model) => Some(_model)
-			case Failure(e) => Display.none("MLP.model ", logger, e)
+			case Failure(e) => DisplayUtils.none("MLP.model ", logger, e)
 		}
 	}
    
@@ -93,13 +100,14 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		 * <p>Define the predictive function of the classifier or regression as a data
 		 * transformation by overriding the pipe operator |>.</p>
 		 * @throws MatchError if the model is undefined or the input string has an incorrect size
-		 * @return PartialFunction of features vector of type Array[T] as input and the predicted vector values as output
+		 * @return PartialFunction of features vector of type Array[T] as input and 
+		 * the predicted vector values as output
 		 */
 	override def |> : PartialFunction[Array[T], DblVector] = {
 		case x: Array[T] if(x != null && model != None && x.size == dimension(xt)) => {
 			Try(model.get.getOutput(x)) match {
 				case Success(y) => y
-				case Failure(e) => Display.error("MLP.|> ", logger, e); Array.empty
+				case Failure(e) => DisplayUtils.error("MLP.|> ", logger, e); Array.empty
 			}
 		}
 	}
@@ -108,8 +116,10 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		/**
 		 * <p>Computes the accuracy of the training session. The accuracy is estimated
 		 * as the percentage of the training data points for which the square root of 
-		 * the sum of squares error, normalized by the size of the  training set exceed a predefined threshold.</p>
-		 * @param threshold threshold applied to the square root of the sum of squares error to validate the data point
+		 * the sum of squares error, normalized by the size of the  training set exceed a 
+		 * predefined threshold.</p>
+		 * @param threshold threshold applied to the square root of the sum of squares error to 
+		 * validate the data point
 		 * @return accuracy value [0, 1] if model exits, None otherwise
 		 */
 	final def accuracy(threshold: Double): Option[Double] = {
@@ -131,7 +141,7 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 			Some(nCorrects.toDouble/xt.size)  // normalization
 		}
 		else 
-			Display.none("MLP.accuracy ", logger)
+			DisplayUtils.none("MLP.accuracy ", logger)
 	}
 }
 
@@ -143,7 +153,8 @@ final protected class MLP[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]]
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network/Multilayer perceptron/Training cycle/epoch
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / 
+		 * Multilayer perceptron/Training cycle/epoch
 		 */
 object MLP {
 	private val EPS = 1e-5
@@ -221,18 +232,27 @@ object MLP {
 		 * @param labels  Labeled or target observations used for training
 		 * @param objective Objective of the model (classification or regression)
 		 */
-	def apply[T <% Double](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] = 
+	def apply[T <% Double](
+			config: MLPConfig, 
+			xt: XTSeries[Array[T]], 
+			labels: DblMatrix)
+			(implicit mlpObjective: MLP.MLPObjective): MLP[T] = 
 		new MLP[T](config, xt, labels)
 
 		/**
-		 * Constructor for the Multi-layer perceptron (type MLP) that takes an array of observation as argument
+		 * Constructor for the Multi-layer perceptron (type MLP) that takes an array of 
+		 * observation as argument
 		 * @param config  Configuration parameters class for the MLP
 		 * @param obs Array of observations used in the training set
 		 * @param labels  Labeled or target observations used for training
 		 * @param objective Objective of the model (classification or regression)
 		 */
-	def apply[T <% Double](config: MLPConfig, obs: Array[Array[T]], labels: DblMatrix)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
-		new MLP[T](config, XTSeries[Array[T]](obs), labels)
+	def apply[T <% Double](
+			config: MLPConfig, 
+			obs: Array[Array[T]], 
+			labels: DblMatrix)
+			(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+					new MLP[T](config, XTSeries[Array[T]](obs), labels)
 
 			/**
 		 * Constructor for the Multi-layer perceptron (type MLP) that takes an array of observation as 
@@ -242,17 +262,25 @@ object MLP {
 		 * @param labels  Array of One variable labels
 		 * @param objective Objective of the model (classification or regression)
 		 */
-	def apply[T <% Double](config: MLPConfig, obs: Array[Array[T]], labels: DblVector)(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+	def apply[T <% Double](
+			config: MLPConfig, 
+			obs: Array[Array[T]], 
+			labels: DblVector)
+			(implicit mlpObjective: MLP.MLPObjective): MLP[T] =
+			  
 		new MLP[T](config, XTSeries[Array[T]](obs), labels.map(Array[Double](_)))
             
             
 	private def check[T](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
-		require(config != null, "Cannot train a multilayer perceptron without stateuration parameters")
-		require(xt != null && xt.size > 0, "Features for the MLP are undefined")
-		require(labels != null && labels.size > 0, "Labeled observations for the MLP are undefined")
-		require(xt.size == labels.size, s"Number of features for MLP ${xt.size} is different from number of labels ${labels.size}")
+		require(config != null, 
+				"Cannot train a multilayer perceptron without stateuration parameters")
+		require(xt != null && xt.size > 0, 
+				"Features for the MLP are undefined")
+		require(labels != null && labels.size > 0, 
+				"Labeled observations for the MLP are undefined")
+		require(xt.size == labels.size, 
+		 		s"Number of features for MLP ${xt.size} is different from number of labels ${labels.size}")
 	}
 }
-
 
 // ----------------------------------------------  EOF ------------------------------------

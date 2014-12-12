@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap12
 
@@ -16,7 +16,7 @@ import org.apache.spark.storage.StorageLevel
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.scalability.spark.{SparkKMeansConfig, RDDConfig, SparkKMeans}
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -55,7 +55,7 @@ object SparkKMeansEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header MLLib K-means on Spark framework", logger)
+		DisplayUtils.show(s"$header MLLib K-means on Spark framework", logger)
   	
 		Try {
 			val input = extract
@@ -74,22 +74,22 @@ object SparkKMeansEval extends Eval {
 			val rddConfig = RDDConfig(CACHE, StorageLevel.MEMORY_ONLY)
 			val sparkKMeans = SparkKMeans(config, rddConfig, XTSeries[DblVector](volatilityVol))
 			
-			Display.show(s"\n${sparkKMeans.toString}\nPrediction:\n", logger)
+			DisplayUtils.show(s"\n${sparkKMeans.toString}\nPrediction:\n", logger)
 			val obs = Array[Double](0.23, 0.67)
 			val clusterId1 = sparkKMeans |> obs
-			Display.show(s"(${obs(0)},${obs(1)}) => Cluster #$clusterId1", logger)
+			DisplayUtils.show(s"(${obs(0)},${obs(1)}) => Cluster #$clusterId1", logger)
 
 			val obs2 = Array[Double](0.56, 0.11)
 			val clusterId2 = sparkKMeans |> obs2 
-			Display.show(s"(${obs2(0)},${obs2(1)}) => Cluster #$clusterId2", logger)
+			DisplayUtils.show(s"(${obs2(0)},${obs2(1)}) => Cluster #$clusterId2", logger)
 			
 			// SparkContext is cleaned up gracefully
 			sc.stop
-			Display.show("Completed", logger)
+			DisplayUtils.show("Completed", logger)
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name run failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name run failed", logger, e)
 		}
 	}
   

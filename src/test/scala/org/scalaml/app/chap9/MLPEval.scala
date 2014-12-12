@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap9
 
@@ -14,7 +14,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.trading.GoogleFinancials
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -70,13 +70,13 @@ object MLPEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"$header MLP classifier without SoftMax conversion", logger)
+		DisplayUtils.show(s"$header MLP classifier without SoftMax conversion", logger)
        
 		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
 							.map( _ |> GoogleFinancials.close )
 							.map( _.toArray)
   	 
-		Display.show(s"$name size: ${prices(0).size}", logger)
+		DisplayUtils.show(s"$name size: ${prices(0).size}", logger)
 		test(Array[Int](4), prices)
 		test(Array[Int](4, 4), prices)
 		test(Array[Int](7, 7), prices)
@@ -86,21 +86,21 @@ object MLPEval extends Eval {
 
 	private def test(hidLayers: Array[Int], prices: DblMatrix): Int = {
 		val networkArchitecture = hidLayers.foldLeft(new StringBuilder)((b,n)=>b.append(s"$n ")).toString
-		Display.show(s"$name \n${hidLayers.size} layers: ( ${networkArchitecture})", logger)
+		DisplayUtils.show(s"$name \n${hidLayers.size} layers: ( ${networkArchitecture})", logger)
   
 		val startTime = System.currentTimeMillis
 		val config = MLPConfig(ALPHA, ETA, hidLayers, NUM_EPOCHS, EPS)
 		
 		STUDIES.foreach(etfs => eval(prices, config, etfs))
-		Display.show(s"$name Duration ${(System.currentTimeMillis - startTime)} msecs.", logger)	
+		DisplayUtils.show(s"$name Duration ${(System.currentTimeMillis - startTime)} msecs.", logger)	
 	}
 
 	private def eval(obs: DblMatrix, 
 					config: MLPConfig, 
 					etfsSet: Array[String]): Int = accuracy(etfsSet, obs, config) match {
 	  
-		case Some(acc) => Display.show(s"$name accuracy: $acc", logger)
-		case None => Display.error(s"$name could not compute the accuracy", logger)
+		case Some(acc) => DisplayUtils.show(s"$name accuracy: $acc", logger)
+		case None => DisplayUtils.error(s"$name could not compute the accuracy", logger)
 	}
  
 

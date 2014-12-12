@@ -4,7 +4,7 @@ package org.scalaml.app.chap9
 
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -64,7 +64,7 @@ object BinaryMLPTest extends Eval {
 				s
 		})
 	
-		Display.show(s"$name Accuracy is ${correct.toDouble/x.size}, it should be 1.0", logger)
+		DisplayUtils.show(s"$name Accuracy is ${correct.toDouble/x.size}, it should be 1.0", logger)
 	}
 }
 

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.util
 
@@ -59,8 +59,10 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @return Sum of the difference
 		 */
 	final def diff(that: Matrix[T], distance: (T, T) => Double)(implicit f: T => Double): Double = {
-		require(nRows == that.nRows, s"Matrix.diff The two matrices have different number of rows: $nRows and ${that.nRows}")
-		require(nCols == that.nCols, s"Matrix.diff The two matrices have different number of cols: $nCols and ${that.nCols}")
+		require(nRows == that.nRows, 
+				s"Matrix.diff Matrices have different number of rows: $nRows and ${that.nRows}")
+		require(nCols == that.nCols, 
+				s"Matrix.diff Matrices have different number of cols: $nCols and ${that.nCols}")
 
 		data.zip(that.data).foldLeft(0.0)((s, xy) => s + distance(xy._1, xy._2))
 	}
@@ -150,7 +152,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		var count = 0
 		data.foldLeft(new StringBuilder)((b, x) => { 
 			count += 1; 
-			b.append(ToString.toString(x, "", true)).append( if( count % nCols == 0) "\n" else ",")
+			b.append(FormatUtils.format(x, "", FormatUtils.ShortFormat)).append( if( count % nCols == 0) "\n" else ",")
 		}).toString
 	}
 }

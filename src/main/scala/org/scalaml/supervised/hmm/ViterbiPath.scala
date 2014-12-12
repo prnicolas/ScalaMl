@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.hmm
 
@@ -20,14 +21,17 @@ import HMMConfig._
 		 * of hidden states in a HMM given a lambda model and a sequence of integer
 		 * observations. The maximum value of delta is computed recursively during 
 		 * instantiation.</p>
-		 *  @constructor Create an instance of the Viterbi algorithm for a predefined Lambda model and set of observations.
-		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+		 *  @constructor Create an instance of the Viterbi algorithm for a predefined Lambda model 
+		 *  and set of observations.
+		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of 
+		 *  eps is out of range
 		 *  @see org.scalaml.hmm.HMMModel
-		 *  @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 *  @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
+		 *  probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 *  @param obs Array of observations as integer (categorical data)
 		 *  @author Patrick Nicolas
 		 *  @since March 17, 2014
-		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Decoding
+		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model/Decoding
 		 */
 final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda, obs) {
 
@@ -90,11 +94,12 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 object ViterbiPath {
 		/**
 		 * Default constructor for the Viterbi algorithm
-		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
+		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMLambda, _labels: Array[Int]): ViterbiPath = 
-		new ViterbiPath(lambda, _labels)
+			new ViterbiPath(lambda, _labels)
 }
 
 

@@ -2,23 +2,23 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.reinforcement.qlearning
 
-
-import org.scalaml.util.Matrix
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.Model
-import org.scalaml.util.Display
-
-import scala.collection.immutable.HashSet
+import scala.collection._
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
+
+import org.scalaml.core.design.Model
+import org.scalaml.core.Types.ScalaMl.{DblVector}
+import org.scalaml.util.{DisplayUtils, Matrix}
+
 
 
 		/**
@@ -38,8 +38,8 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 	check(states, goalIds)
 	
 	
-	private[this] val statesMap: Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
-	private[this] val goalStates = new HashSet[Int]() ++ goalIds
+	private[this] val statesMap: immutable.Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
+	private[this] val goalStates = new immutable.HashSet[Int]() ++ goalIds
 
 		/**
 		 * <p>Compute the maximum value given a state and policy</p>
@@ -72,7 +72,7 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 */
 	final def nextStates(st: QLState[T]): List[QLState[T]] = {
 		require(st != null, "QLSpace.nextStates state is undefined")
-		require(st.actions != null, "QLSpace.nextStates actions associated to this state are undefiend")
+		require(st.actions != null, "QLSpace.nextStates actions associated to this state undefined")
 		st.actions.map(ac => statesMap.get(ac.to).get )
 	}
 
@@ -114,13 +114,17 @@ object QLSpace {
 		 * @return A new search space, QLSpace
 		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
 		 */
-	def apply[T](numStates: Int, goals: Array[Int], features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
-		require(numStates >=0, s"QLSpace.apply The number of states $numStates should be >=")
+	def apply[T](numStates: Int, 
+			goals: Array[Int], 
+			features: Set[T], 
+			neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
+		
+		require(numStates >=0, s"QLSpace.apply The number of states $numStates should be positive")
 		require(features != null && features.size > 0, "QLSpace.apply features are undefined")
 		
 		val states = features.zipWithIndex
 						.map(x => {
-							val actions = neighbors(x._2, numStates).map(j =>  new QLAction[T](x._2, j))
+							val actions = neighbors(x._2,numStates).map(j =>new QLAction[T](x._2, j))
 																.filter(x._2 != _.to)
 							QLState[T](x._2, actions, x._1)
 						})
@@ -137,13 +141,18 @@ object QLSpace {
 		 * @return A new search space, QLSpace
 		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
 		 */
-	def apply[T](numStates: Int, goal: Int, features: Set[T], neighbors: (Int, Int) => List[Int]): QLSpace[T] = 
+	def apply[T](numStates: Int, 
+			goal: Int, 
+			features: immutable.Set[T], 
+			neighbors: (Int, Int) => List[Int]): QLSpace[T] = 
 		 apply(numStates, Array[Int](goal), features, neighbors)
 		 
 
 	private def check[T](states: Array[QLState[T]], goalIds: Array[Int]): Unit = {
-		require(states != null && states.size > 1, "QLSpace.check States list for QLSpace is undefined")
-		require(goalIds != null && goalIds.size > 0, "QLSpace.check  List of goal states for QLSpace is undefined")
+		require(states != null && states.size > 1, 
+				"QLSpace.check States list for QLSpace is undefined")
+		require(goalIds != null && goalIds.size > 0, 
+				"QLSpace.check  List of goal states for QLSpace is undefined")
 	}
 }
 

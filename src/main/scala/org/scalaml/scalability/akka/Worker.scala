@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.scalability.akka
 
@@ -21,7 +22,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.scalability.akka.message._
 import org.scalaml.stats.Stats
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.filtering.DFT
 
 import XTSeries._
@@ -44,7 +45,7 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 	check(id, fct)
 	
 	private val logger = Logger.getLogger("WorkerActor")
-	override def postStop: Unit = Display.show(s"WorkerActor${id}.postStop", logger)
+	override def postStop: Unit = DisplayUtils.show(s"WorkerActor${id}.postStop", logger)
  
 		/**
 		 * <p>Event loop of the work actor that process two messages:
@@ -57,11 +58,11 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 		case msg: Activate => {
 				// Increment the messages id
 			val msgId = msg.id+id
-			Display.show(s"Worker_${id}.receive => Activate message ${msgId}", logger)
+			DisplayUtils.show(s"Worker_${id}.receive => Activate message ${msgId}", logger)
 			
 				// Execute the data transformation
 			val output: DblSeries = fct |> msg.xt
-			Display.show(results(output.take(NUM_DATAPOINTS_DISPLAY)), logger)
+			DisplayUtils.show(results(output.take(NUM_DATAPOINTS_DISPLAY)), logger)
 			
 				// Returns the results for processing this partition
 			sender ! Completed(msgId, output)
@@ -69,13 +70,14 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 		}
 			// Stop itself after receiving a Terminate message from the master
 	//	case Terminate => {} //context.stop(self)
-		case _ => Display.error(s"WorkerActor${id}.receive Message not recognized", logger)
+		case _ => DisplayUtils.error(s"WorkerActor${id}.receive Message not recognized", logger)
 	}
 
 //	private def transform(xt: DblSeries): DblSeries =  fct |> xt
 	
 	private def results(output: XTSeries[Double]): String = {
-		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => b.append(s"${ToString.toString(o, "", false)} "))
+		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => 
+				b.append(s"${FormatUtils.format(o, "", FormatUtils.MediumFormat)} "))
 		s"Worker_$id results: ${res.toString}"
 	}
 }
@@ -93,12 +95,9 @@ object Worker {
 	
 	private def check(id: Int, fct: PipeOperator[DblSeries, DblSeries]): Unit = {
 		require(id >= 0, s"Worker.check Id $id is out of range")
-		require(fct != null, "Worker.check Cannot create a master actor with undefined data transformation function")
+		require(fct != null, 
+		    "Worker.check Cannot create a master actor with undefined data transformation function")
 	}
 }
-
-
-
-
 
 // ---------------------------------  EOF -------------------------

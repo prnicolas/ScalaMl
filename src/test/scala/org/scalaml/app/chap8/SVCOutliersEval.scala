@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap8
 
@@ -16,7 +16,7 @@ import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.supervised.svm.{SVM, SVMConfig, SVMExecution}
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.OneSVCFormulation
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -54,7 +54,7 @@ object SVCOutliersEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of One class Support Vector Classifier", logger)
+		DisplayUtils.show(s"$header Evaluation of One class Support Vector Classifier", logger)
 		val extractor = relPriceChange :: 
 						debtToEquity ::
 						dividendCoverage ::
@@ -70,15 +70,15 @@ object SVCOutliersEval extends Eval {
 			val features = XTSeries.transpose(xs.dropRight(1))
 			val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
      
-			Display.show(s"$name support vector machine model\n ${svc.toString}", logger)   
+			DisplayUtils.show(s"$name support vector machine model\n ${svc.toString}", logger)   
 		        
 			svc.accuracy match {
-				case Some(acc) => Display.show(s"$name completed", logger)
-				case None => Display.error(s"$name Could not validate the training set", logger)
+				case Some(acc) => DisplayUtils.show(s"$name completed", logger)
+				case None => DisplayUtils.error(s"$name Could not validate the training set", logger)
 			}
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run failed to load source or train SVM", logger, e) 
+			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", logger, e) 
 		}
 	}
 }

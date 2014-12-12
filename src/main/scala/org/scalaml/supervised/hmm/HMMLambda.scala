@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import org.scalaml.util.{ToString, Matrix}
+import org.scalaml.util.{FormatUtils, Matrix}
 import scala.reflect.ClassTag
 import scala.util.Random
 import HMMConfig._
@@ -20,8 +20,10 @@ import HMMConfig._
 		/**
 		 * <p>Class that defines the Lambda model (pi, A, B) for the HMM. The model is initialized with
 		 * the state transition matrix, emission matrix and initial probabilities for the evaluation and 
-		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the training form.</p>
-		 * @constructor Create a Lambda model of type HMMLambda with a predefined state transition, Emission matrix and initial probabilities.
+		 * decoding canonical forms. These elements have to be computed using Baum_Welch for the 
+		 * training form.</p>
+		 * @constructor Create a Lambda model of type HMMLambda with a predefined state transition, 
+		 * Emission matrix and initial probabilities.
 		 * @param A State transition probabilities matrix
 		 * @param B Observations or emission probabilities matrix
 		 * @param pi Initial state probabilities
@@ -30,9 +32,13 @@ import HMMConfig._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 6, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model
 		 */
-final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], var pi: DblVector, val numObs: Int) {
+final protected class HMMLambda(
+		val A: Matrix[Double], 
+		val B: Matrix[Double], 
+		var pi: DblVector, 
+		val numObs: Int) {
 
 		/**
 		 * Retrieve the number of sequential observations used in training
@@ -61,7 +67,8 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
 		 * @throws IllegalArgumentException if obsSeqNum is undefined
 		 */
 	def initAlpha(obsSeqNum: Array[Int]): Matrix[Double] = {
-		require( obsSeqNum != null && obsSeqNum.size > 0, "HMMLambda.initAlpha Cannot initialize HMM alpha with undefined obs sequence index")
+		require( obsSeqNum != null && obsSeqNum.size > 0, 
+				"HMMLambda.initAlpha Cannot initialize HMM alpha with undefined obs sequence index")
   	
 		Range(0, getN).foldLeft(Matrix[Double](getT, getN))((m, j) => {
 			m += (0, j, alpha0(j, obsSeqNum(0)))
@@ -78,8 +85,10 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
 		 * @throws IllegalArgumentException if index i or obsIndex are out of range.
 		 */
 	final def alpha(a: Double, i: Int, obs: Int): Double = {
-		require( i >= 0 && i < getN, s"HMMLambda.alpha Row index in transition and emission probabilities $i matrix is out of bounds")
-		require( obs >= 0, s"HMMLambda.alpha Col index in transition and emission probabilities $obs matrix is out of bounds")
+		require( i >= 0 && i < getN, 
+				s"HMMLambda.alpha Row index $i in transition and emission  matrix is out of bounds")
+		require( obs >= 0, 
+				s"HMMLambda.alpha Observation $obs is out of bounds")
   	  	 
 		val sum = foldLeft(getN, (s, n) => s + a *A(i, n))
 		sum*B(i, obs) 
@@ -102,11 +111,14 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
 		 * iteration. Arithmetic exception are caught by client code.</p>
 		 * @param state Current state of the HMM execution 
 		 * @param obs sequence of observations used in the estimate 
-		 * @throws IllegalArgumentException if the HMM parameters are undefined or the sequence of observations is undefined.
+		 * @throws IllegalArgumentException if the HMM parameters are undefined or the sequence 
+		 * of observations is undefined.
 		 */
 	def estimate(state: HMMState, obs: Array[Int]): Unit = {
-		require(state != null, "HMMLambda.estimate Cannot estimate the log likelihood of HMM with undefined parameters")
-		require(obs != null && obs.size > 0, "HMMLambda.estimate Cannot estimate the log likelihood of HMM for undefined observations")
+		require(state != null, 
+				"HMMLambda.estimate Cannot estimate the log likelihood of HMM with undefined parameters")
+		require(obs != null && obs.size > 0, 
+				"HMMLambda.estimate Cannot estimate the log likelihood of HMM for undefined observations")
   	       
 			// Recompute PI
 		pi = Array.tabulate(getN)(i => state.Gamma(0, i) )
@@ -149,8 +161,10 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
   
   
 	override def toString: String = {
-		val piStr = pi.foldLeft(new StringBuilder)((b, x) => b.append(s"${ToString.toString(x,"", true)}") )
-		s"State transition probabilities A\n${A.toString}\nEmission probabilities B\n${B.toString}\nInitial probabilities pi\n${piStr}"
+		val piStr = pi.foldLeft(new StringBuilder)((b, x) => 
+				b.append(s"${FormatUtils.format(x,"", FormatUtils.ShortFormat)}") )
+				
+		s"State transition probs A\n${A.toString}\nEmission probs B\n${B.toString}\nInitial probs pi\n${piStr}"
 	}
   
 	private def alpha0(j : Int, obsIndex: Int): Double = pi(j)*B(j, obsIndex)
@@ -162,7 +176,7 @@ final protected class HMMLambda(val A: Matrix[Double], val B: Matrix[Double], va
 		 * <p>Companion for the HMMLambda class to define the constructors of the class HMMLambda.</p>
 		 * @author Patrick Nicolas
 		 * @since March 6, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Evaluation
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model 
 		 */
 object HMMLambda {
 		
@@ -175,8 +189,10 @@ object HMMLambda {
 		 * @param symbols values of the symbols  (as a sequence of floating point values)
 		 */
 	def apply(states: Seq[DblVector], symbols: Seq[DblVector]): HMMLambda = {
-		require(states != null && states.size > 0, "Cannot create a HMM lambda model with underfined states")
-		require(symbols != null && symbols.size > 0, "Cannot create a HMM lambda model with undefined symbol values")
+		require(states != null && states.size > 0, 
+				"Cannot create a HMM lambda model with underfined states")
+		require(symbols != null && symbols.size > 0, 
+				"Cannot create a HMM lambda model with undefined symbol values")
 
 		val pi = Array.fill(states.size)(Random.nextDouble)
 		
@@ -203,8 +219,13 @@ object HMMLambda {
 		 * @param A State transition probabilities matrix
 		 * @param B Observations or emission probabilities matrix
 		 * @param pi Initial state probabilities
+		 * @param numObs number of observed stated
 		 */
-	def apply(A: Matrix[Double], B: Matrix[Double], pi: DblVector, numObs: Int): HMMLambda = new HMMLambda(A, B, pi, numObs)
+	def apply(
+			A: Matrix[Double], 
+			B: Matrix[Double], 
+			pi: DblVector, 
+			numObs: Int): HMMLambda = new HMMLambda(A, B, pi, numObs)
 	
 		/**
 		 * <p>Constructor for the training canonical form of the HMM (Baum Welch).

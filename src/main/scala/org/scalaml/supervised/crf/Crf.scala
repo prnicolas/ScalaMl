@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -24,13 +25,13 @@ import org.scalaml.core.Types.ScalaMl._
 import CrfConfig._
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 
 
 		/**
 		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.</p>
-		 * @constructor Instantiate a model for CRF after training is completed.[weights] Weights or coefficients of the CRF
+		 * @constructor Instantiate a model for CRF after training is completed.
 		 * @throws IllegalArgumentException if weights is not properly defined
 		 * @param weights	Weights (or lambda parameters) for this CRF model.
 		 * @see org.scalaml.core.design.Model
@@ -40,7 +41,8 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 final protected class CrfModel(val weights: DblVector) extends Model {
-	require(weights != null && weights.size > 0, "CrfModel Cannot create a model with undefined weights")
+	require(weights != null && weights.size > 0, 
+			"CrfModel Cannot create a model with undefined weights")
   
 		/**
 		 * Name of the file that persists the model parameters for the Conditional Random Fields
@@ -49,17 +51,21 @@ final protected class CrfModel(val weights: DblVector) extends Model {
 }
 
 		/**
-		 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular expression. The class
-		 * define a Feature generator class that inherits the default implementation FeatureGenImpl of iitb features generator.
+		 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular 
+		 * expression. The class define a Feature generator class that inherits the default 
+		 * implementation FeatureGenImpl of iitb features generator.<br>
 		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
-		 * The training set of sequences is defined by the raw observations and its associated tagged files, taggedObs.raw and taggedObs.tagged files.</p>
+		 * The training set of sequences is defined by the raw observations and its associated 
+		 * tagged files, taggedObs.raw and taggedObs.tagged files.</p>
 		 * @constructor Create a Linear chain conditional random fields. 
-		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either undefined or out of range.
+		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either 
+		 * undefined or out of range.
 		 * @see org.scalaml.workflow.PipeOperator
 		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
 		 * @param config Minimum set of configuration parameters required to train a CRF model
 		 * @param delims Delimiters used in extracting labels and data from the training files
-		 * @param taggedObs Identifier for the training data set. The training set of sequences is defined by the raw observations
+		 * @param taggedObs Identifier for the training data set. The training set of sequences 
+		 * is defined by the raw observations
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
@@ -72,7 +78,8 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
   
 	private val logger = Logger.getLogger("Crf")
   
-	class TaggingGenerator(nLabels: Int) extends FeatureGenImpl(new CompleteModel(nLabels) , nLabels, true)
+	class TaggingGenerator(nLabels: Int) 	
+			extends FeatureGenImpl(new CompleteModel(nLabels),nLabels, true)
 		
 	private[this] val features = new TaggingGenerator(nLabels)
 	private[this] lazy val crf = new CRF(nLabels, features, config.params)
@@ -85,14 +92,15 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 		} 
 		match {
 			case Success(_model) => Some(_model)
-			case Failure(e) => Display.none("Crf.model could not be created", logger, e)
+			case Failure(e) => DisplayUtils.none("Crf.model could not be created", logger, e)
 		}
 	}
   
 		/**
 		 * <p>Predictive method for the conditional random field.</p>
 		 * @throws MatchError if the model is undefined or the input string has an incorrect size
-		 * @return PartialFunction of feature of type String as input and the predicted value of type Double as output
+		 * @return PartialFunction of feature of type String as input and the predicted value 
+		 * of type Double as output
 		 */
 	override def |> : PartialFunction[String, Double] = {
 		case obs: String if(obs != null && obs.length > 1 && model != None) => {
@@ -108,7 +116,7 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 		 */
 	final def weights: Option[DblVector] = model match {
 		case Some(m) => Some(m.weights)
-		case None => Display.none("Crf.weights Model undefined", logger)
+		case None => DisplayUtils.none("Crf.weights Model undefined", logger)
 	}
 
 }
@@ -129,14 +137,21 @@ object Crf {
 		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
 		 * @param config Minimum set of configuration parameters required to train a CRF model
 		 * @param delims Delimiters used in extracting labels and data from the training files
-		 * @param taggedObs Identifier for the training data set. The training set of sequences is defined by the raw observations
+		 * @param taggedObs Identifier for the training data set. The training set of sequences 
+		 * is defined by the raw observations
 		 */
 	def apply(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Crf = 
 		new Crf(nLabels, state, delims, taggedObs)
   
   
-	private def check(nLabels: Int, state: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String): Unit = {
-		require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, s"Number of labels for generating tags for CRF $nLabels is out of range")
+	private def check(
+			nLabels: Int, 
+			state: CrfConfig, 
+			delims: CrfSeqDelimiter, 
+			taggedObs: String): Unit = {
+	  
+		require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, 
+				s"Number of labels for generating tags for CRF $nLabels is out of range")
 		require(state != null, "Configuration of the linear Chain CRF is undefined")
 		require(delims != null, "delimiters used in the CRF training files are undefined")
 		require(taggedObs != null, "Tagged observations used in the CRF training files are undefined")

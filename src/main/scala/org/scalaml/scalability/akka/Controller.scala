@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.scalability.akka
 
@@ -19,36 +20,31 @@ import org.scalaml.core.XTSeries.DblSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
 
 		/**
-		 * <p>Generic controller actor that defines the three key elements of a distributed data transformation</p>
+		 * <p>Generic controller actor that defines the three key elements of a distributed 
+		 * data transformation</p>
 		 *  @constructor Create a controller for data transformations: 
 		 *  @throws IllegalArgumentException if one of the class parameters are undefined
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
-		 *  @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
+		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 *  processed by workers.
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 30, 2014
-		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka
-		 */			
-abstract class Controller(	protected val xt: DblSeries, 
-							protected val fct: PipeOperator[DblSeries, DblSeries], 
-							protected val partitioner: Partitioner) extends Actor {
-	
-	require(xt != null && xt.size > 0, "Master.check Cannot create a master actor to process undefined time series")
-	require(fct != null, "Master.check Cannot create a master actor with undefined data transformation function")
-	require(partitioner != null, "Master.check Cannot create a master actor with undefined data partitioner")
-	
-		/**
-		 * Aggregation structure
+		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks / Akka
 		 */
-//	protected val aggregator = new ListBuffer[DblVector]
+abstract class Controller(
+		protected val xt: DblSeries, 
+		protected val fct: PipeOperator[DblSeries, DblSeries], 
+		protected val partitioner: Partitioner
+		) extends Actor {
 	
-		/**
-		 * Method to aggregate the result of the computation or data 
-		 * transformation from multiple worker actors
-		 * @return sequence of floating point values (value, frequencies,...)
-		 */
-//	protected def aggregate: Seq[Double]
+	require(xt != null && xt.size > 0, 
+			"Master.check Cannot create the master actor, undefined time series")
+	require(fct != null, 
+			"Master.check Cannot create the  master actor, undefined data transformation")
+	require(partitioner != null, 
+			"Master.check Cannot create the master actor, undefined data partitioner")
 }
 
 
@@ -65,7 +61,8 @@ abstract class Controller(	protected val xt: DblSeries,
 		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers
 		 */
 final class Partitioner(val numPartitions: Int) {
-	require(numPartitions > 1 && numPartitions < 128, s"Partitioner Number of partitions $numPartitions is out of range")
+	require(numPartitions > 1 && numPartitions < 128, 
+			s"Partitioner Number of partitions $numPartitions is out of range")
 	
 		/**
 		 * Method to split a given time series into 'numPartitions' for concurrent processing

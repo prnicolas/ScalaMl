@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.nnet
 
@@ -17,7 +17,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.supervised.nnet.MLPConfig._
 import org.scalaml.core.design.Model
 import org.scalaml.supervised.nnet.MLP.MLPObjective
-import org.scalaml.util.ToString
+import org.scalaml.util.FormatUtils
 
 		/**
 		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
@@ -112,7 +112,9 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		Range(0, dst.len).foreach( i => {
 			Range(0, src.len).foreach(j => {
 				val wij: (Double, Double) = synapses(i)(j)
-				buf.append(s"$i,$j: (${ToString.toString(wij._1, "", false)}, ${ToString.toString(wij._2, "", false)})  ")
+				val weights_str = FormatUtils.format(wij._1, "", FormatUtils.MediumFormat)
+				val dWeights_str = FormatUtils.format(wij._2, "", FormatUtils.MediumFormat)
+				buf.append(s"$i,$j: ($weights_str, $dWeights_str)  ")
 			})
 			buf.append("\n")
 		})
@@ -134,7 +136,8 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		 * Companion object for the connection of Multi-layer perceptron.
 		 * @author Patrick Nicolas
 		 * @since May 5, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
+		 * / Model definition
 		 */
 object MLPConnection {
 	private val BETA = 0.1

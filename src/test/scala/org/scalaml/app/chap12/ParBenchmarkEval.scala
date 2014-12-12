@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap12
 
 import org.scalaml.scalability.scala.{ParArrayBenchmark, ParMapBenchmark}
 import org.scalaml.app.Eval
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.core.Types.ScalaMl.DblVector
 
 	/**
@@ -52,7 +52,7 @@ object ParBenchmarkEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	 def run(args: Array[String]): Int = {
-		 Display.show(s"$header Scala parallel collections", logger)
+		 DisplayUtils.show(s"$header Scala parallel collections", logger)
 		 
 		 if( args.size > 0) {
 			 	// Arbitrary map function
@@ -62,7 +62,7 @@ object ParBenchmarkEval extends Eval {
 			 	// Arbitrary reduce function
 			 val reduceF = (x:Double, y:Double) => (x+y)*x
 			 
-			 Display.show(s"Duration parallel collection relative to non-parallel collection for NUM_TASKS tasks\nIter\tRatio", logger)
+			 DisplayUtils.show(s"Duration parallel collection relative to non-parallel collection for NUM_TASKS tasks\nIter\tRatio", logger)
 			 if(args(0) == "array")
 				 evaluateParArray(mapF, filterF, reduceF)
 			else
@@ -70,7 +70,7 @@ object ParBenchmarkEval extends Eval {
 			0
 		 }
 		 else 
-			 Display.error(s"$name incorrect command line, argument should be 'array' or 'map'", logger)
+			 DisplayUtils.error(s"$name incorrect command line, argument should be 'array' or 'map'", logger)
 	}
 	 
 	private def evaluateParArray(mapF: Double => Double, filterF: Double => Boolean, reduceF: (Double, Double) => Double): Unit =  {
@@ -81,12 +81,12 @@ object ParBenchmarkEval extends Eval {
 		 	// Initialized and execute the benchmark for the parallel array
 		 val benchmark = new ParArrayBenchmark[Double](data, pData, TIMES)
 		 
-		 Display.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
+		 DisplayUtils.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
 		 val ratios = new Array[Double](NUM_TASKS)
 		 evalRange.foreach(n => ratios.update(n, benchmark.map(mapF)(n)))
 		 display(ratios.drop(1), "ParArray.map")
 		 
-		 Display.show("Filter for (x: Double) => (x > 0.8)", logger)
+		 DisplayUtils.show("Filter for (x: Double) => (x > 0.8)", logger)
 		 evalRange.foreach(n => ratios.update(n, benchmark.filter(filterF)(n)))
 		 display(ratios.drop(1), "ParArray.filter")
 	}
@@ -98,14 +98,14 @@ object ParBenchmarkEval extends Eval {
 		 Range(0, SZ).foreach(n => parMapData.put(n, Random.nextDouble) )
 		 
 		  	// Initialized and execute the benchmark for the parallel map
-		 val benchmark = new ParMapBenchmark[Double](mapData, parMapData, TIMES)
-		 Display.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
+		 val benchmark = new ParMapBenchmark[Double](mapData.toMap, parMapData, TIMES)
+		 DisplayUtils.show("Mapper for (x: Double) => Math.sin(x*0.01) + Math.exp(-x)", logger)
 	
 		 val ratios = new Array[Double](NUM_TASKS)
 		 evalRange.foreach(n => ratios.update(n, benchmark.map(mapF)(n)))
 		 display(ratios.drop(1), "ParMap.map")
 		 
-		 Display.show("Filter for (x: Double) => (x > 0.8)", logger)
+		 DisplayUtils.show("Filter for (x: Double) => (x > 0.8)", logger)
 		 evalRange.foreach(n => ratios.update(n, benchmark.filter(filterF)(n)))
 		 display(ratios.drop(1), "ParMap.filter")
 	}

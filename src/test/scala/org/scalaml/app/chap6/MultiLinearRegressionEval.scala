@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap6
 
@@ -16,7 +16,7 @@ import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix, XY}
 import org.scalaml.workflow.data.{DataSink, DataSource}
 import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.filtering.SimpleMovingAverage
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 
@@ -59,7 +59,7 @@ object MultiLinearRegressionEval extends Eval {
 			featuresSelection	  		 
    
 	private def featuresSelection: Int = {
-		Display.show(s"\n$name Ordinary least squares regression FEATURE SELECTION", logger)
+		DisplayUtils.show(s"\n$name Ordinary least squares regression FEATURE SELECTION", logger)
   	  
 		val path = "resources/data/chap6/"
 		val output = "output/chap6/CNY_output.csv"
@@ -88,7 +88,7 @@ object MultiLinearRegressionEval extends Eval {
 			)
 	  	  		
 			featuresList.foreach(ft => 
-				Display.show(s"${getRss(XTSeries[DblVector](ft._2), input(0), ft._1)}", logger ))  	  
+				DisplayUtils.show(s"${getRss(XTSeries[DblVector](ft._2), input(0), ft._1)}", logger ))  	  
 
 				// Compute the mean square error for each solution.
 			val errors = featuresList.map(ft => rssSum(XTSeries[DblVector](ft._2), input(0))._1)
@@ -96,14 +96,14 @@ object MultiLinearRegressionEval extends Eval {
 
 			Range(0, featuresList.size).foreach(n => {
 				val featureLabel = featuresList(n)._1.foldLeft(new StringBuilder)((b, symbol) => b.append(s"$symbol ")).toString
-				Display.show(s"MSE for ${featureLabel} ${errors(n)}", logger )
+				DisplayUtils.show(s"MSE for ${featureLabel} ${errors(n)}", logger )
 			})
 
-			Display.show(s"\n$name Residual error $tss", logger)
+			DisplayUtils.show(s"\n$name Residual error $tss", logger)
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name Inference test", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name Inference test", logger, e)
 		}
 	}
   	  
@@ -113,9 +113,9 @@ object MultiLinearRegressionEval extends Eval {
 		
 		regression.weights.get.zipWithIndex.foreach(w => {
 			if( buf.length < 2) 
-				buf.append(s"${featureLabels(w._2)}=${ToString.toString(w._1, "", true)}")
+				buf.append(s"${featureLabels(w._2)}=${FormatUtils.format(w._1, "", FormatUtils.ShortFormat)}")
 			else 
-				buf.append(s" + ${ToString.toString(w._1, "", true)}.${featureLabels(w._2)}")
+				buf.append(s" + ${FormatUtils.format(w._1,"",FormatUtils.ShortFormat)}.${featureLabels(w._2)}")
 		})
 		buf.append(s"\n$name RSS: ${regression.rss.get}").toString
 	}
@@ -135,7 +135,7 @@ object MultiLinearRegressionEval extends Eval {
   
   	 
 	private def trendExtraction: Int = {
-		Display.show(s"$header Ordinary least squares regression TRENDING", logger)
+		DisplayUtils.show(s"$header Ordinary least squares regression TRENDING", logger)
   	   	 
 		val path = "resources/data/chap6/CU.csv"
 		val output = "output/chap6/CU_output.csv"
@@ -166,22 +166,22 @@ object MultiLinearRegressionEval extends Eval {
 				case Some(w) => {
 					val buf = new StringBuilder(s"$name Multi-regression weights\n")
 					w.zipWithIndex.foreach( wi => buf.append(s"${wi._1}${wi._2} "))
-					Display.show(buf.toString, logger)
+					DisplayUtils.show(buf.toString, logger)
 					
-					Display.show(deltaPrice.toSeq, logger)
+					DisplayUtils.show(deltaPrice.toSeq, logger)
 					val trend = data.map( vv => w(0) + vv(0)*w(1) + vv(1)*w(1) )
-					Display.show("trend", logger)
-					Display.show(trend, logger)
+					DisplayUtils.show("trend", logger)
+					DisplayUtils.show(trend, logger)
 					display(deltaPrice, trend)
 				}
-				case None => Display.error(s"$name Multivariate regression could not be trained", logger)
+				case None => DisplayUtils.error(s"$name Multivariate regression could not be trained", logger)
 			}
-			Display.show(s"$name.filter Completed", logger)
+			DisplayUtils.show(s"$name.filter Completed", logger)
 		}
   	 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name filter failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name filter failed", logger, e)
 		}
 	}
 	

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap5
 
@@ -14,7 +14,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import org.scalaml.filtering.SimpleMovingAverage
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.stats.Stats
 import org.scalaml.supervised.bayes.NaiveBayes
 import org.scalaml.supervised.bayes.text.{TermsScore, NewsArticles}
@@ -38,7 +38,7 @@ object TextBayesEval extends Eval {
 	import java.text.DecimalFormat
 	import scala.util.{Try, Success, Failure}
 	import scala.io.Source
-	import scala.collection.mutable.{ArrayBuffer, HashMap, HashSet}
+	import scala.collection._
 	import org.apache.log4j.Logger
 	import ScalaMl._, DocumentsSource._, SimpleMovingAverage._
 	
@@ -94,7 +94,7 @@ object TextBayesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int  = {
-		Display.show(s"\n\n *****  test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
+		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)
@@ -110,7 +110,7 @@ object TextBayesEval extends Eval {
 
 					//Extracts the unique column names as the lemme in the Lexicon.
 					val columns = LEXICON.values
-										.foldLeft(new HashSet[String])((hs, key) => {hs.add(key); hs})
+										.foldLeft(new mutable.HashSet[String])((hs, key) => {hs.add(key); hs})
 										.toArray	
 
 					// Computes the relative frequencies of the lemmed terms zipped with
@@ -119,29 +119,33 @@ object TextBayesEval extends Eval {
 										.zip(diff)
 										.map(x => (x._1._2, x._2))
 										.map(lbl => (columns.map(f => 
-											if(lbl._1.contains(f)) lbl._1(f) else 0.0), lbl._2) )
+												if(lbl._1.contains(f)) lbl._1(f) else 0.0), lbl._2) )
 
 					val xt = XTSeries[(DblVector, Int)](relFreQ)
 					val nb = NaiveBayes[Double](xt)
 
-					// Display the pairs (mean, standard deviation) for each term.
+					// DisplayUtils the pairs (mean, standard deviation) for each term.
 					val labels: Array[String] = columns.map( _.toString).toArray
-					Display.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", logger)
+					DisplayUtils.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", logger)
 				}
-				case None => Display.error(s"$name keywords extraction failed", logger)
+				case None => DisplayUtils.error(s"$name keywords extraction failed", logger)
 			}
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run Naive Bayes analysis", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run Naive Bayes analysis", logger, e)
 		}	
 	}
 
 
-	private def loadLexicon: Map[String, String] = {
+	private def loadLexicon: immutable.Map[String, String] = {
 		val src = Source.fromFile(pathLexicon)
 		val fields = src.getLines.map( _.split(",").map(_.trim))
-		val lexicon = fields.foldLeft(new HashMap[String, String])((hm, field)=> {hm.put(field(0), field(1)); hm}).toMap
+		val lexicon = fields.foldLeft(new mutable.HashMap[String, String])((hm, field) => {
+			hm.put(field(0), field(1))
+			hm
+		}).toMap
+		
 		src.close
 		lexicon
 	}

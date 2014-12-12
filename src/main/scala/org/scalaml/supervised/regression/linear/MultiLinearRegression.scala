@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.regression.linear
 
@@ -19,7 +19,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.CommonMath
 import org.scalaml.supervised.regression.RegressionModel
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import ScalaMl._, CommonMath._
 
 
@@ -72,7 +72,7 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		} 
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => Display.none("MultiLinearRegression model undefined", logger, e)
+			case Failure(e) => DisplayUtils.none("MultiLinearRegression model undefined", logger, e)
 		}
 	}
 	
@@ -83,7 +83,7 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 */
 	final def weights: Option[DblVector] = model match {
 		case Some(m) => Some(m.weights)
-		case None => Display.none("MultiLinearRegression.weights: Model undefined", logger)
+		case None => DisplayUtils.none("MultiLinearRegression.weights: Model undefined", logger)
 	}
 	
 		/**
@@ -93,7 +93,7 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 */
 	final def rss: Option[Double] = model match {
 		case Some(m) => Some(m.rss)
-		case None => Display.none("MultiLinearRegression.rss: Model undefined", logger)
+		case None => DisplayUtils.none("MultiLinearRegression.rss: Model undefined", logger)
 	}
 
 

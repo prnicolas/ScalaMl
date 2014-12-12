@@ -14,7 +14,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.filtering.{DFTFir, DFT, DTransform}
 import org.scalaml.app.Eval
 
@@ -58,13 +58,13 @@ object DFTEval extends FilteringEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
 		}
 	}
    
 
 	private def runSimulation: Int = {
-		Display.show(s"$header Discrete Fourier series with synthetic data", logger)
+		DisplayUtils.show(s"$header Discrete Fourier series with synthetic data", logger)
 		val values = Array.tabulate(1025)(x => h(x/1025.0))
 			// Original data dump into a CSV file
 		DataSink[Double]("output/chap3/simulated.csv") write values
@@ -72,12 +72,12 @@ object DFTEval extends FilteringEval {
 		val frequencies = DFT[Double] |> XTSeries[Double](values)
 		DataSink[Double]("output/chap3/smoothed.csv") write frequencies
 		
-		val results = ToString.toString(frequencies.toArray.take(128), "x/1025", true)
-		Display.show(s"$name Results simulation first 128 fequencies: ${results}", logger)
+		val results = FormatUtils.format(frequencies.toArray.take(128), "x/1025", FormatUtils.ShortFormat)
+		DisplayUtils.show(s"$name Results simulation first 128 fequencies: ${results}", logger)
 	}
    
 	private def runFinancial(symbol: String): Int  = {
-		Display.show(s"$header Discrete Fourier series with financial data $symbol", logger)
+		DisplayUtils.show(s"$header Discrete Fourier series with financial data $symbol", logger)
 		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, 1)
 
 		val price = src |> YahooFinancials.adjClose
@@ -87,8 +87,8 @@ object DFTEval extends FilteringEval {
 		val sink2 = DataSink[Double]("output/chap3/filt_" + symbol + ".csv")
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
 
-		val results = ToString.toString(filtered.take(256), "DTF filtered", true)
-		Display.show(s"$name Result first 256 frequencies: $results", logger)
+		val result = FormatUtils.format(filtered.take(256), "DTF filtered", FormatUtils.ShortFormat)
+		DisplayUtils.show(s"$name Result first 256 frequencies: $result", logger)
 	}
 	
 	private def filter(cutOff: Double, price: XTSeries[Double]): DblVector = {

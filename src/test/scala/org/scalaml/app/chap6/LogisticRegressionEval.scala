@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap6
 
@@ -18,7 +18,7 @@ import org.scalaml.core.Types.ScalaMl.{DblMatrix, DblVector}
 import org.scalaml.supervised.regression.logistic.{LogisticRegressionOptimizer, LogisticRegression}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 
@@ -55,7 +55,7 @@ object LogisticRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of Binomial Logistic regression", logger)
+		DisplayUtils.show(s"$header Evaluation of Binomial Logistic regression", logger)
 		
 		Try {
 			val src = DataSource(path, true, true, 1)
@@ -73,24 +73,29 @@ object LogisticRegressionEval extends Eval {
 			val regression = LogisticRegression[Double](XTSeries[DblVector](features), deltaPrice, lsOptimizer)
 
 			
-			Display.show(s"$name ${toString(regression)}",  logger)		
+			DisplayUtils.show(s"$name ${toString(regression)}",  logger)		
 			val predicted = features.map(ft => (regression |> ft))
-	//		Display.show(s"$name Results of logistic regression prediction versus actual", logger)
+	//		DisplayUtils.show(s"$name Results of logistic regression prediction versus actual", logger)
 			
 			val comparison = predicted.zip(deltaPrice).map(pd => if(pd._1 == pd._2) 1 else 0)
 			val accuracy = comparison.sum.toDouble/deltaPrice.size
-			Display.show(s"$name Accuracy: $accuracy", logger)
+			DisplayUtils.show(s"$name Accuracy: $accuracy", logger)
 		} 
 		match {
 			case Success(n) =>n
-			case Failure(e) => Display.error(s"${name}.run", logger, e)
+			case Failure(e) => DisplayUtils.error(s"${name}.run", logger, e)
 		}
 	}
   
 
 	private def toString(regression: LogisticRegression[Double]): String = {
-		val buf = new StringBuilder(s"Regression model RSS = ${ToString.toString(regression.rss.get, "", true)}\nWeights: ")
-		regression.weights.get.foreach(w => buf.append(s"${ToString.toString(w, "", false)}"))
+		val result = FormatUtils.format(regression.rss.get, "", FormatUtils.ShortFormat)
+		val buf = new StringBuilder(s"Regression model RSS = ${}\nWeights: ")
+		
+		regression.weights.get.foreach(w => {
+				val result = FormatUtils.format(w, "", FormatUtils.MediumFormat)
+				buf.append(s"$result")
+		})
 		buf.toString
 	}
 }

@@ -2,15 +2,15 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.filtering
 
-import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure, Random}
 
@@ -21,7 +21,7 @@ import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 
 		/**
@@ -39,7 +39,8 @@ import org.scalaml.util.Display
 		 * @note Scala for Machine Learning chapter 3 Data pre-processing / Kalman filter
 		 */
 case class QRNoise(qr: XY, white: Double=> Double) {
-	require( white != null, "Cannot define the noise for the Kalman filter with undefined white noise function")
+	require( white != null, 
+			"Cannot define the noise for the Kalman filter with undefined white noise function")
   
 		/**
 		 * <p>Compute the white noise for process Q</p>
@@ -68,10 +69,10 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 
 
 		/**
-		 * <p>Kalman filter class that uses a recursive optimal filter. The client code has to provide the
-		 * time independent state transition t to t+1, the input matrix B. the measurement dependency matrix, H
-		 * and the error matrix P. This implementation uses the Apache Commons math library. The process and
-		 * measurement white noise is provided as an implicit value.</p>
+		 * <p>Kalman filter class that uses a recursive optimal filter. The client code has to 
+		 * provide the time independent state transition t to t+1, the input matrix B. the measurement 
+		 * dependency matrix, H and the error matrix P. This implementation uses the Apache Commons 
+		 * math library. The process and measurement white noise is provided as an implicit value.</p>
 		 * @param A State transition matrix
 		 * @param B Control state matrix
 		 * @param H Matrix that defines the dependency of the measurement on the state of the system<
@@ -86,8 +87,11 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 		 * @note Scala for Machine Learning  chapter 3 Data pre-processing / Kalman filter
 		 */
 @implicitNotFound("White noise, QRNoise, has to be implicitly defined for Kalman filter")
-final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix)(implicit qrNoise: QRNoise) 
-				extends PipeOperator[XTSeries[XY], XTSeries[XY]] {
+final protected class DKalman(
+		A: DblMatrix,  
+		B: DblMatrix,  
+		H: DblMatrix, 
+		P: DblMatrix)(implicit qrNoise: QRNoise) extends PipeOperator[XTSeries[XY], XTSeries[XY]] {
 	
 	import DKalman._
    
@@ -112,7 +116,8 @@ final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: Dbl
 		 * exception thrown by the Apache Commons Math library are internally caught in case of 
 		 * computational failure and the data transformation return None.</p>
 		 * @throws MatchError if the input time series is undefined or have no elements
-		 * @return PartialFunction of time series of elements of type T as input to the Discrete Fourier filter and time series of frequencies of type Double as output
+		 * @return PartialFunction of time series of elements of type T as input to the Discrete 
+		 * Fourier filter and time series of frequencies of type Double as output
 		 */
 	override def |> : PartialFunction[XTSeries[XY], XTSeries[XY]] = {
 		case xt: XTSeries[XY] if(xt != null && xt.length > 0) => xt.map( y => {
@@ -175,7 +180,8 @@ final protected class DKalman(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: Dbl
 		 * @note Scala for Machine Learning  chapter 3 Data pre-processing / Kalman filter
 		 */
 object DKalman {
-	private def noControl(nCols: Int, nRows: Int): DblMatrix = Array.fill(nCols)(Array.fill(nRows)(0.0))
+	private def noControl(nCols: Int, nRows: Int): DblMatrix = 
+			Array.fill(nCols)(Array.fill(nRows)(0.0))
 		   
 		/**
 		 * <p>Constructor for the Kalman filter with Control Matrix B</p>
@@ -183,7 +189,8 @@ object DKalman {
 		 * @param B Control state matrix
 		 * @param H Matrix that defines the dependency of the measurement on the state of the system
 		 * @param P Covariance error matrix
-		 * @param qrNoise Implicit value representing the white noise for the process Q and the measurement P
+		 * @param qrNoise Implicit value representing the white noise for the process Q and the 
+		 * measurement P
 		  */
 	def apply(A: DblMatrix, B: DblMatrix, H: DblMatrix, P: DblMatrix)(implicit qrNoise: QRNoise): DKalman = 
 		new DKalman(A, B, H,P)(qrNoise)
@@ -193,17 +200,22 @@ object DKalman {
 		 * @param A State transition matrix  [
 		 * @param H Matrix that defines the dependency of the measurement on the state of the system
 		 * @param P Covariance error matrix
-		 * @param qrNoise Implicit value representing the white noise for the process Q and the measurement P
+		 * @param qrNoise Implicit value representing the white noise for the process Q and the 
+		 * measurement P
 		  */
 	def apply(A: DblMatrix, H: DblMatrix, P: DblMatrix)(implicit qrNoise: QRNoise): DKalman = 
 		new DKalman(A, noControl(A.size, A(0).size), H,P)(qrNoise)
 
   
-	private def check(A: DblMatrix,  B: DblMatrix,  H: DblMatrix, P: DblMatrix): Unit = {
-		require(A != null && H != null && P != null, "DKalman.check Cannot create a Kalman filter with undefined parameters")
-		require( A.size ==B.size && A(0).size == B(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and B(${B.size}x${B(0).size})")
-		require( A.size == H.size && A(0).size == H(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and H(${H.size}x${H(0).size})")
-		require( A.size == P.size && A(0).size == P(0).size, s"DKalman.check Incorrect dimension in Kalman filter A(${A.size}x${A(0).size}) and P(${P.size}x${P(0).size})")
+	private def check(A: DblMatrix,  B: DblMatrix, H: DblMatrix, P: DblMatrix): Unit = {
+		require(A != null && H != null && P != null, 
+				"DKalman.check Cannot create a Kalman filter with undefined parameters")
+		require( A.size ==B.size && A(0).size == B(0).size, 
+				s"DKalman.check Incorrect dimension A(${A.size}x${A(0).size}) or B(${B.size}x${B(0).size})")
+		require( A.size == H.size && A(0).size == H(0).size, 
+				s"DKalman.check Incorrect dimension  A(${A.size}x${A(0).size}) or H(${H.size}x${H(0).size})")
+		require( A.size == P.size && A(0).size == P(0).size, 
+				s"DKalman.check Incorrect dimension A(${A.size}x${A(0).size}) or P(${P.size}x${P(0).size})")
 	}
 }
 

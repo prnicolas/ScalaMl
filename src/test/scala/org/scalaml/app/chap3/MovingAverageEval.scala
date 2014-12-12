@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap3
 
@@ -14,7 +14,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.filtering.{SimpleMovingAverage, WeightedMovingAverage, ExpMovingAverage}
 import org.scalaml.app.Eval
 import XTSeries.DblSeries
@@ -48,14 +48,14 @@ object MovingAveragesEval extends FilteringEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation moving averages", logger)
+		DisplayUtils.show(s"$header Evaluation moving averages", logger)
 		if(args.size > 1) {
 			val symbol = args(0)
 			val p = args(1).toInt
 			val p_2 = p >>1
 			val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
 			val weights: DblVector = w map { _ / w.sum }
-			Display.show(ToString.toString(weights, "Weights", true), logger)
+			DisplayUtils.show(FormatUtils.format(weights, "Weights", FormatUtils.ShortFormat), logger)
 	     
 			val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
 			Try {
@@ -71,20 +71,25 @@ object MovingAveragesEval extends FilteringEval {
 										List[DblSeries]()
 	
 				dataSink |> results
-				Display.show(s"$name Results of different moving average", logger)
-				results.foreach(ts => Display.show(ToString.toString(ts.toArray, "X", true), logger))
+				DisplayUtils.show(s"$name Results of different moving average", logger)
+				results.foreach(ts => {
+						DisplayUtils.show(FormatUtils.format(ts.toArray, "X", FormatUtils.ShortFormat), logger)
+				})
 				
-				display(List[DblSeries](results(0), results(1)), List[String]("Stock price", "Simple Moving Average"))
-				display(List[DblSeries](results(0), results(2)), List[String]("Stock price", "Exponential Moving Average"))
-				display(List[DblSeries](results(0), results(3)), List[String]("Stock price", "Weighted Moving Average"))
+				display(List[DblSeries](results(0), results(1)), 
+						List[String]("Stock price", "Simple Moving Average"))
+				display(List[DblSeries](results(0), results(2)), 
+						List[String]("Stock price", "Exponential Moving Average"))
+				display(List[DblSeries](results(0), results(3)), 
+						List[String]("Stock price", "Weighted Moving Average"))
 			}
 			match {
 				case Success(n) => n
-				case Failure(e) => Display.error(s"$name Computation of moving averages failed", logger, e)
+				case Failure(e) => DisplayUtils.error(s"$name Computation of moving averages failed", logger, e)
 			}
 		}
 		else 
-			Display.error(s"$name Incorrect arguments for command line", logger)
+			DisplayUtils.error(s"$name Incorrect arguments for command line", logger)
 	}
 	
 	private def display(results: List[DblSeries], labels: List[String]): Int = {

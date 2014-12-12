@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap6
 
@@ -15,7 +15,7 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.linear.RidgeRegression
-import org.scalaml.util.{Display, ToString}
+import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.app.Eval
 
 		/**
@@ -51,7 +51,7 @@ object RidgeRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of Ridge regression", logger)
+		DisplayUtils.show(s"$header Evaluation of Ridge regression", logger)
   	   	 
 		Try {
 			val src = DataSource(path, true, true, 1)
@@ -72,13 +72,21 @@ object RidgeRegressionEval extends Eval {
 			val regression = new RidgeRegression[Double](features, deltaPrice, 0.5)
 
 			regression.weights match {
-				case Some(w) => w.zipWithIndex.foreach( wi => Display.show(s"$name ${wi._1}${ToString.toString(wi._2, ": ", true)}", logger))
-				case None => Display.error(s"$name Ridge regression could not be trained", logger)
+				case Some(w) => {
+					w.zipWithIndex.foreach( wi => {
+						val weights_str = FormatUtils.format(wi._2, ": ", FormatUtils.ShortFormat)
+						DisplayUtils.show(s"$name ${wi._1}$weights_str", logger)
+					})
+				}
+				case None => DisplayUtils.error(s"$name Ridge regression could not be trained", logger)
 			}
 		    
 			regression.rss match {
-				case Some(rss) => Display.show(s"$name ${ToString.toString(rss, "rss =", false)}", logger)
-				case None => Display.error(s"$name Ridge regression could not be trained", logger)
+				case Some(rss) => {
+					val result = FormatUtils.format(rss, "rss =", FormatUtils.MediumFormat)
+					DisplayUtils.show(s"$name $result", logger)
+				}
+				case None => DisplayUtils.error(s"$name Ridge regression could not be trained", logger)
 			}
 		
 			
@@ -90,8 +98,8 @@ object RidgeRegressionEval extends Eval {
 				(2 until 10 by 2).foreach( n => { 
 					val lambda = n*0.1
 					val y = predict(lambda, deltaPrice, volatility, volume)
-					Display.show(s"Lambda  $lambda", logger )
-					Display.show(ToString.toString(y, "", true), logger)
+					DisplayUtils.show(s"Lambda  $lambda", logger )
+					DisplayUtils.show(FormatUtils.format(y, "", FormatUtils.ShortFormat), logger)
 				})
 				1
 			}
@@ -99,7 +107,7 @@ object RidgeRegressionEval extends Eval {
 				-1
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run Could not load data for Ridge regression", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run Could not load data for Ridge regression", logger, e)
 		}
  	}
    

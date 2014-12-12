@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap3
 
@@ -20,7 +20,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.filtering.{DKalman, QRNoise}
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{Display, ToString}
+import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.app.Eval
 
 		/**
@@ -62,7 +62,7 @@ object DKalmanEval extends FilteringEval {
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.size > 0, s"$name Command line DKalmanEval ticker symbol")
      
-		Display.show(s"$header Evaluation Kalman filter with no control matrix", logger)
+		DisplayUtils.show(s"$header Evaluation Kalman filter with no control matrix", logger)
      
 			// H and P0 are the only components that are independent from
 			// input data and smoothing factor. The control matrix B is not defined
@@ -94,7 +94,8 @@ object DKalmanEval extends FilteringEval {
 			val displayedResults: DblVector = results.toArray.take(256)
 			
 			display(zSeries, results.toArray, alpha)
-			Display.show(s"$name results ${ToString.toString(displayedResults, "2-step lag smoother", false)}", logger)
+			val result = FormatUtils.format(displayedResults, "2-step lag smoother", FormatUtils.LongFormat)
+			DisplayUtils.show(s"$name results $result", logger)
 
 		}
       
@@ -108,7 +109,7 @@ object DKalmanEval extends FilteringEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name Failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name Failed", logger, e)
 		}
 	}
 	

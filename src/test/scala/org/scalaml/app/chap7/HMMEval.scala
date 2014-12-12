@@ -6,11 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.util.{Matrix, Display}
+import org.scalaml.util.{Matrix, DisplayUtils}
 import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda, HMMConfig}
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.app.Eval
@@ -59,12 +59,12 @@ object HMMEval extends Eval  {
 	def run(args: Array[String]): Int = args(0) match {
 		case "evaluation" => runCF1
 		case "training" => runCF2
-		case _ => Display.error(s"$name.run: Incorrect argument $args", logger)
+		case _ => DisplayUtils.error(s"$name.run: Incorrect argument $args", logger)
 	}
    
 
 	private def runCF2: Int =  {
-		Display.show(s"$header Hidden Markov Model - Training", logger)
+		DisplayUtils.show(s"$header Hidden Markov Model - Training", logger)
   	  
 		val observations = Array[Double](
 			0.0, 0.72, 0.78, 0.56, 0.61, 0.56, 0.45, 0.42, 0.46, 0.38, 
@@ -88,14 +88,14 @@ object HMMEval extends Eval  {
 		
 		val hmm = HMM[Array[Int]](config, obsSeq, EVALUATION, MAX_ITERS, EPS) 
 		hmm match {
-			case Some( hmm) => Display.show(s"$name (Training):\n${hmm.getModel.toString}", logger)
-			case None => Display.error("$name (Training) lambda model could not be created", logger)
+			case Some( hmm) => DisplayUtils.show(s"$name (Training):\n${hmm.getModel.toString}", logger)
+			case None => DisplayUtils.error("$name (Training) lambda model could not be created", logger)
 		}
 	}
    
    
 	private def runCF1: Int = {
-		Display.show(s"$header Hidden Markov Model - Evaluation", logger)
+		DisplayUtils.show(s"$header Hidden Markov Model - Evaluation", logger)
   	  		
 		// State-transition probabilities matrix for HMM
 		val A0 = Array[Array[Double]](
@@ -130,9 +130,9 @@ object HMMEval extends Eval  {
 		Try( hmm |> observedSeq ) match {
 			case Success(predictor) => {
 				val indices = predictor._2.foldLeft(new StringBuilder)((b, p) => b.append(s"$p, "))
-				Display.show(s"$name (Evaluation) Likelihood: ${predictor._1.toString}\nindices: $indices", logger)
+				DisplayUtils.show(s"$name (Evaluation) Likelihood: ${predictor._1.toString}\nindices: $indices", logger)
 			}
-			case Failure(e) => Display.error(s"$name .run", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name .run", logger, e)
 		}
 	}
 

@@ -2,26 +2,29 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  * 
  */
 package org.scalaml.supervised.hmm
 
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 	
 		/**
 		 * <p>Class that update the backward-forward lattice of observations and
 		 * hidden states for HMM using the Baum-Welch algorithm. The algorithm is used to 
 		 * compute the likelihood of the conditional probability p(Y|X) during training. The
 		 * computation is performed as part of the instantiation of the class (type Option[Double] )</p>
-		 *  @constructor Create a new Baum-Welch expectation maximization instance to train a model given a set of observations.
-		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of eps is out of range
+		 *  @constructor Create a new Baum-Welch expectation maximization instance to train a model 
+		 *  given a set of observations.
+		 *  @throws IllegalArgumentException if lambda, params and observations are undefined or 
+		 *  eps is out of range
 		 *  @param config Configuration parameters class instance for the HMM
 		 *  @param obs Observations defined as an array of Integer (or categorical data)
 		 *  @param numIters	Number of iterations allowed in the Baum-Welch EM optimization
@@ -29,10 +32,14 @@ import org.scalaml.util.Display
 		 *  @see org.scalaml.supervised.hmm.HMMModel
 		 *  @author Patrick Nicolas
 		 *  @since March 15, 2014
-		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training
+		 *  @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model / 
+		 *  Training
 		 */
-final protected class BaumWelchEM(config: HMMConfig, obs: Array[Int], numIters: Int, eps: Double) 
-						extends HMMModel(HMMLambda(config), obs) {
+final protected class BaumWelchEM(
+		config: HMMConfig, 
+		obs: Array[Int], 
+		numIters: Int, 
+		eps: Double)	extends HMMModel(HMMLambda(config), obs) {
 	import BaumWelchEM._
 	
 	check(config, obs, numIters, eps)
@@ -67,7 +74,7 @@ final protected class BaumWelchEM(config: HMMConfig, obs: Array[Int], numIters: 
 				state.lambda.normalize
 				Some(likelihood)
 			}
-			case Failure(e) => Display.none("BaumWelchEM.maxLikelihood", logger, e)
+			case Failure(e) => DisplayUtils.none("BaumWelchEM.maxLikelihood", logger, e)
 		}
 	}
    
@@ -87,7 +94,8 @@ final protected class BaumWelchEM(config: HMMConfig, obs: Array[Int], numIters: 
 		 * @see org.scalaml.supervised.hmm.HMMModel
 		 * @author Patrick Nicolas
 		 * @since March 15, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model - Training
+		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model / 
+		 * Training
 		 */
 object BaumWelchEM {
 	private val EPS = 1e-3   
@@ -108,8 +116,10 @@ object BaumWelchEM {
 	private def check(config: HMMConfig, obs: Array[Int], numIters: Int, eps: Double): Unit = {
 		require(config != null, "BaumWelchEM.check Configuration is undefined")
 		require(obs != null && obs.size > 0, "BaumWelchEM.check Observations are undefined")
-		require(numIters > 1 && numIters < MAX_NUM_ITERS, s"BaumWelchEM.check Maximum number of iterations $numIters is out of range")
-		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, s"BaumWelchEM.check Convergence criteria for HMM Baum_Welch $eps is out of range")
+		require(numIters > 1 && numIters < MAX_NUM_ITERS, 
+				s"BaumWelchEM.check Maximum number of iterations $numIters is out of range")
+		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, 
+				s"BaumWelchEM.check Convergence criteria for HMM Baum_Welch $eps is out of range")
 	}
 
 }

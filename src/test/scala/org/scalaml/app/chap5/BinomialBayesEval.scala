@@ -6,9 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap5
+
+import scala.util.{Try, Success, Failure}
+import scala.collection._
+import org.apache.log4j.Logger
 
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.XTSeries
@@ -16,7 +20,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.supervised.bayes.NaiveBayes
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -49,10 +53,6 @@ trait BayesEval extends Eval {
 		 * @note Scala for Machine learning Chapter 5 Naive Bayes Models
 		 */
 object BinomialBayesEval extends BayesEval {
-	import scala.util.{Try, Success, Failure}
-	import scala.collection.mutable.ArrayBuffer
-	import scala.collection.immutable.HashSet
-	import org.apache.log4j.Logger
 	import ScalaMl._, SimpleMovingAverage._
   
 		/**
@@ -73,7 +73,7 @@ object BinomialBayesEval extends BayesEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require(args != null && args.size > 2, s"$name.run incorrect arguments list")
-		Display.show(s"$header Evaluation multinomial Naive Bayes", logger)	
+		DisplayUtils.show(s"$header Evaluation multinomial Naive Bayes", logger)	
 		
 		val trainValidRatio = args(1).toDouble
 		val period = args(2).toInt
@@ -89,8 +89,8 @@ object BinomialBayesEval extends BayesEval {
 			validate(labels.drop(numObsToTrain+1), nb)
 		} 
 		match {
-			case Success(res) => Display.show(s"$name results for ${args(0)} $description F1 = ${res.get}", logger)
-			case Failure(e) => Display.error(s"$name.run failed", logger, e)
+			case Success(res) => DisplayUtils.show(s"$name results for ${args(0)} $description F1 = ${res.get}", logger)
+			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
 		}
 	}
 	

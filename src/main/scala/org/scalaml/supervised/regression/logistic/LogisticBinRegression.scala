@@ -13,7 +13,7 @@ package org.scalaml.supervised.regression.logistic
 import org.apache.log4j.Logger
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 
 
@@ -54,7 +54,7 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 			val likelihood =  sigmoid(w(0) + xy._1*w(1) + xy._2*w(2))
 			Some(likelihood > HYPERPLANE, likelihood)
 		}
-		case None => Display.none("LogBinRegression.classify failed", logger)
+		case None => DisplayUtils.none("LogBinRegression.classify failed", logger)
 	}
 	
 	
@@ -84,7 +84,7 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 			diff < eps	// Exit condition
 		}) match {
 			case Some(iters) => Some(w)
-			case None => Display.none("LogBinRegression.train failed to converge", logger)
+			case None => DisplayUtils.none("LogBinRegression.train failed to converge", logger)
 		}
 	}
 	

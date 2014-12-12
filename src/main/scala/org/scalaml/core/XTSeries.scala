@@ -2,33 +2,35 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.core
 
-import scala.Array.canBuildFrom
 import scala.annotation.implicitNotFound
+import scala.collection._
 import scala.util.{Try, Success, Failure}
 import scala.reflect.ClassTag
 import scala.language.implicitConversions
 
 import org.apache.log4j.Logger
 
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix, DVector}
 import org.scalaml.stats.Stats
-import org.scalaml.util.Display
-import ScalaMl._
+import org.scalaml.util.DisplayUtils
+
 
 		/**
 		 * <p>Generic class for time series. Any type from different libraries are converted into 
 		 * this generic type to avoid multiple conversion between numerous types.
 		 * The class is parameterized so it can take primitive types to create vector for single
 		 * variable time series or arrays/list to create matrix for multiple variables time series.</p>		 * 
-		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and an array of values: 
+		 * @constructor Create a new parameterized time series XTSeries[T] with a label(id) and 
+		 * an array of values: 
 		 * @throws IllegalArgumentException If the array of values, arr is undefined
 		 * @param label Name for the time series (optional)
 		 * @param arr Array of values of the parameterized T
@@ -38,7 +40,7 @@ import ScalaMl._
 		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Time series
 		 */
 class XTSeries[T](val label: String, arr: Array[T]) { 
-	require(arr != null && arr.size > 0, "XTSeries Cannot create a times series from undefined values")
+	require(arr != null && arr.size > 0, "XTSeries Cannot create a times series qirh undefined values")
   
 	def toArray: Array[T] = arr
 	def toList: List[T] = arr.toList
@@ -51,7 +53,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * in the comparison.
 		 * @param that other series  this series is compared to
 		 * @throws IllegalArgumenException if the argument is null
-		 * @return true if the series are identical, false if the other time series, 'that' is null or is different from this time series
+		 * @return true if the series are identical, false if the other time series, 'that' is null 
+		 * or is different from this time series
 		 */
 	def == (that: XTSeries[T]): Boolean = {
 		require(that != null, "Cannot compare this time series with undefined time series")
@@ -64,7 +67,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * <p>Convert a this time series into a vector of Double floating point values.</p>
 		 * @param f  implicit conversion of type T to Double
 		 * @return Vector of double values (DblVector)
-		 * @throws IllegalArgumentException if the implicit conversion T to DblMatrix is explicitly provided as a null function
+		 * @throws IllegalArgumentException if the implicit conversion T to DblMatrix is 
+		 * explicitly provided as a null function
 		 * @throws implicitNotFound if the implicit conversion is undefined
 		 */
 	@implicitNotFound("Conversion from type T to DblVector undefined")
@@ -77,7 +81,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * <p>Convert a this time series into a matrix of Double floating point values.</p>
 		 * @param fv  implicit conversion of type T to DblVector
 		 * @return Matrix of double values (DblMatrix)
-		 * @throws IllegalArgumentException if the implicit conversion T to DblVector is explicitly provided as a null function.
+		 * @throws IllegalArgumentException if the implicit conversion T to DblVector is explicitly 
+		 * provided as a null function.
 		 * @throws implicitNotFound if the implicit conversion is undefined
 		 */
 	@implicitNotFound("Conversion from type T to DblMatrix undefined")
@@ -106,7 +111,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 	def zip[U](that: XTSeries[U]): XTSeries[(T, U)] = XTSeries[(T,U)](arr.zip(that.toArray))
   
 	def slice(start: Int, end: Int): XTSeries[T] = {
-		require(start < arr.size && end <= arr.size && start < end, s"XTSeries.slice starting $start or ending $end index incorrect")
+		require(start < arr.size && end <= arr.size && start < end, 
+				s"XTSeries.slice starting $start or ending $end index incorrect")
 		new XTSeries[T](label, arr.slice(start, end))
 	}
   
@@ -119,7 +125,8 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 	final def min(implicit cmp: Ordering[T]): T = arr.min
   
  
-	override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => b.append(s"$x\n") ).toString
+	override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => 
+			b.append(s"$x\n") ).toString
   
 	final val size: Int = arr.size
 
@@ -190,8 +197,11 @@ object XTSeries {
 		
 	implicit def xTseries[T](xt: XTSeries[T]) = new XTSeries[T]("", xt.toArray)
    
-	implicit def series2DblVector[T](xt: XTSeries[T])(implicit f: T => Double): DblVector = xt.toDblVector(f)
-	implicit def series2DblMatrix[T](xt: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = xt.toDblMatrix(fv)
+	implicit def series2DblVector[T](xt: XTSeries[T])(implicit f: T => Double): DblVector = 
+			xt.toDblVector(f)
+			
+	implicit def series2DblMatrix[T](xt: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = 
+			xt.toDblMatrix(fv)
    
 	def dimension[T](xt: XTSeries[Array[T]]): Int = xt.toArray(0).size
    
@@ -207,8 +217,10 @@ object XTSeries {
 		 * @return normalized time series as double elements if max > min, None otherwise
 		 */
 	@implicitNotFound("Ordering for normalization is undefined")
-	def normalize[T <% Double](xt: XTSeries[T])(implicit ordering: Ordering[T]): Option[XTSeries[Double]] = {
-		require(xt != null && xt.size > 0, "XTSeries.normalize Cannot normalize an undefined time series")
+	def normalize[T <% Double](xt: XTSeries[T])(implicit ordering: Ordering[T]): Option[DblSeries] = {
+		require(xt != null && xt.size > 0, 
+				"XTSeries.normalize Cannot normalize an undefined time series")
+				
 		val mn = xt.min
 		val range = xt.max - mn
 		if(range < EPS) None  else Some(xt.map(x => (x -mn)/range))
@@ -223,7 +235,8 @@ object XTSeries {
 		 */
 	@implicitNotFound("Ordering for normalization is undefined")
 	def normalize[T <% Double](x: Array[T])(implicit ordering: Ordering[T]): Option[DblVector] = {
-		require(x != null && x.size > 0, "XTSeries.normalize  Cannot normalize an undefined time vector")
+		require(x != null && x.size > 0, 
+				"XTSeries.normalize  Cannot normalize an undefined time vector")
   	   
 		val mn = x.min
 		val range = x.max - mn
@@ -239,9 +252,12 @@ object XTSeries {
 		 * @return normalized time series as double elements if max > min, None otherwise
 		 */
 	@implicitNotFound("Ordering for normalizatoin is undefined")
-	def normalize[T <% Double](xt: XTSeries[Array[T]])(implicit order: Ordering[T], m: Manifest[T]): Option[XTSeries[DblVector]] = {
-		require(xt != null && xt.size > 0, "XTSeries.normalize Cannot normalize an undefined time series of elements")
-		require(xt(0).size > 0, "XTSeries.normalize Incorrect function to normalize a single dimension time series")
+	def normalize[T <% Double](xt: XTSeries[Array[T]])(implicit order: Ordering[T], m: Manifest[T]): 
+			Option[DblVecSeries] = {
+		require(xt != null && xt.size > 0, 
+				"XTSeries.normalize Cannot normalize an undefined time series of elements")
+		require(xt(0).size > 0, 
+				"XTSeries.normalize Incorrect function to normalize a single dimension time series")
   	   	   
 		var k = 0;
 		val res = new Array[Array[T]](xt.size)
@@ -278,7 +294,7 @@ object XTSeries {
 			new XTSeries[DblVector](xt.label, arr)
 		} match {
 			case Success(xt) => Some(xt)
-			case Failure(e) => Display.none("XTSeries.normalize", logger, e)
+			case Failure(e) => DisplayUtils.none("XTSeries.normalize", logger, e)
 		}
 	}
    
@@ -311,7 +327,7 @@ object XTSeries {
 			new XTSeries[DblVector](xt.label, arr)
 		} match {
 			case Success(xt) => Some(xt)
-			case Failure(e) => Display.none("XTSeries.zScoring", logger, e)
+			case Failure(e) => DisplayUtils.none("XTSeries.zScoring", logger, e)
 		}
 	}
    

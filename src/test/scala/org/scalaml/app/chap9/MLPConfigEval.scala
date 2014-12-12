@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
@@ -54,7 +54,7 @@ object MLPConfigEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"$header MLP configuration parameters for ${args(0)}", logger)
+		DisplayUtils.show(s"$header MLP configuration parameters for ${args(0)}", logger)
 	     
 		val noise = () => NOISE_RATIO*Random.nextDouble
 		val f1 = (x: Double) => x*(1.0 + noise())
@@ -96,12 +96,12 @@ object MLPConfigEval extends Eval {
 				val mlp = MLP[Double](config, features, labels)
 				if( mlp.model == None )
 					throw new IllegalStateException(s"$name run failed for eta = $eta and alpha = $alpha")  
-				Display.show(s"$name run for eta = $eta and alpha = $alpha ${mlp.model.get.toString}", logger)
+				DisplayUtils.show(s"$name run for eta = $eta and alpha = $alpha ${mlp.model.get.toString}", logger)
 			})
 			1
 		} match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name run", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name run", logger, e)
 		}
 	}
 }

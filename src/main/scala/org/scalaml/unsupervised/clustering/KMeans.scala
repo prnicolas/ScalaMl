@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.unsupervised.clustering
 
@@ -19,7 +19,7 @@ import org.scalaml.unsupervised.Distance
 import ScalaMl._
 import KMeans._
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 		/**
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids

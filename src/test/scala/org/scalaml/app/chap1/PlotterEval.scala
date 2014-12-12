@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap1
 
 import org.scalaml.core.Types
 import org.scalaml.stats.Stats
 import org.scalaml.plots._
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
@@ -55,7 +55,7 @@ object PlotterEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Evaluation of JFreeChart library", logger)
+		DisplayUtils.show(s"$header Evaluation of JFreeChart library", logger)
 		
 		Try {
 			val src = Source.fromFile(pathName)
@@ -66,17 +66,17 @@ object PlotterEval extends Eval {
 			val normVolume =  Stats[Double](cols.map( _(VOL_COLUMN_INDEX).toDouble) ).normalize
 			val volatility_volume: Array[(Double, Double)] = volatility.zip(normVolume)
 			
-			Display.show(s"$name Line plot for CSCO stock normalized volume", logger)
+			DisplayUtils.show(s"$name Line plot for CSCO stock normalized volume", logger)
 			val theme1 = new LightPlotTheme
 			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock volume", "Volume", "r"), theme1)
 			plotter1.display(normVolume, 200, 200)
 			
-			Display.show(s"$name Line plot for CSCO stock volatility", logger)
+			DisplayUtils.show(s"$name Line plot for CSCO stock volatility", logger)
 			val theme2 = new BlackPlotTheme
 			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock Volatility", "Volatility", "r"), theme2)
 			plotter2.display(volatility, 300, 100)
 		    	
-			Display.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
+			DisplayUtils.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
 			val theme3 = new LightPlotTheme
 			val plotter3 = new ScatterPlot((s"$name: CSCO 2012-2013 Stock volatility vs. volume", "Volatility vs. Volume", "r"), theme3)
 			plotter3.display(volatility_volume, 200, 200)
@@ -84,8 +84,8 @@ object PlotterEval extends Eval {
 			src.close
 		} 
 		match {
-			case Success(n) => Display.show(s"$name Test completed", logger)
-			case Failure(e) => Display.error(s"$name Test failed", logger, e)
+			case Success(n) => DisplayUtils.show(s"$name Test completed", logger)
+			case Failure(e) => DisplayUtils.error(s"$name Test failed", logger, e)
 		}
 	}
 }

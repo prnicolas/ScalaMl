@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.bayes
 
@@ -14,7 +15,7 @@ import org.scalaml.stats.Stats
 import NaiveBayesModel._
 
 // import java.text.DecimalFormat
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.core.Types.ScalaMl.XYTSeries
 
 		/**
@@ -24,8 +25,8 @@ import org.scalaml.core.Types.ScalaMl.XYTSeries
 		 * The Naive Bayes assume that the dimension of the model are independent, making the log of 
 		 * the prior additive.</p> 
 		 * @constructor Create a likelihood for a specific class. 
-		 * @throws IllegalArgumentException if the array of mean and standard deviation of the likelihood is undefined 
-		 * of if the class likelihood is out of range ]0,1]
+		 * @throws IllegalArgumentException if the array of mean and standard deviation of the 
+		 * likelihood is undefined or if the class likelihood is out of range ]0,1]
 		 * @param label  Name or label of the class or prior for which the likelihood is computed.
 		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for the model
 		 * @param prior  Probability of occurrence for the class specified by the label.
@@ -40,8 +41,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 	check(muSigma, prior)
   
 		/**
-		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an observation obs and
-		 * a probability density distribution.</p>
+		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an 
+		 * observation obs and a probability density distribution.</p>
 		 * @param obs parameterized observation 
 		 * @param density probability density function (default Gauss)
 		 * @throws IllegalArgumentException if the density is undefined or the observations are undefined
@@ -63,13 +64,13 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 	}
 	
 		/**
-		 * <p>Display the content of this Likelihood class with associated labels.</p>
+		 * <p>DisplayUtils the content of this Likelihood class with associated labels.</p>
 		 * @param labels Label of variables used to display content
 		 */
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
-		ToString.toString(muSigma, "Means", "Standard Deviation", true, labels) + 
-		ToString.toString(prior, "Class likelihood", false)
+		FormatUtils.format(muSigma, "Means", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
+		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)
 	}
 	
 
@@ -91,15 +92,18 @@ object Likelihood {
 		/**
 		 * Default constructor for he class Likelihood.
 		 * @param label  Name or label of the class or prior for which the likelihood is computed.
-		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for the model
+		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations 
+		 * for the model
 		 * @param prior  Probability of occurrence for the class specified by the label.
 		 */
 	def apply[T <% Double](label: Int, muSigma: XYTSeries, prior: Double): Likelihood[T] = 
 		new Likelihood[T](label, muSigma, prior)
     
 	private def check(muSigma: XYTSeries, prior: Double): Unit =  {
-		require(muSigma != null && muSigma.size > 0, "Likelihood.check Cannot create a likelihood for undefined historical mean and standard deviation")
-		require(prior > 0.0  && prior <= 1.0, s"Likelihood.check Prior for the NB prior $prior is out of range")
+		require(muSigma != null && muSigma.size > 0, 
+				"Likelihood.check Historical mean and standard deviation is undefined")
+		require(prior > 0.0  && prior <= 1.0, 
+				s"Likelihood.check Prior for the NB prior $prior is out of range")
 	}
 }
 

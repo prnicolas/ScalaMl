@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap6
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.core.XTSeries
 import org.scalaml.app.Eval
 
@@ -46,7 +46,7 @@ object SingleLinearRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int =  {
-		Display.show(s"$header Evaluation of single variate linear regression", logger)
+		DisplayUtils.show(s"$header Evaluation of single variate linear regression", logger)
 		
 		Try {
 			val price = DataSource(path, false, true, 1) |> adjClose
@@ -55,20 +55,21 @@ object SingleLinearRegressionEval extends Eval {
 		    
 			val slope = linRegr.slope
 			val intercept = linRegr.intercept
+			
 			if( slope != None ) {
-				Display.show(s"$name Linear regression: ${ToString.toString(slope.get, "y= ", true)}.x + ${ToString.toString(intercept.get, "", true)}", logger)
-				Display.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
+				val slope_str = FormatUtils.format(slope.get, "y= ", FormatUtils.ShortFormat)
+				val intercept_str = FormatUtils.format(intercept.get, "y= ", FormatUtils.ShortFormat)
+				DisplayUtils.show(s"$name Linear regression: $slope_str.x + $intercept_str", logger)
+				DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
 			}
 			else
-				Display.error(s"$name run failed compute slope", logger)
-		    	  
-		}match {
+				DisplayUtils.error(s"$name run failed compute slope", logger)	  
+		}
+		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name failed to be build a model", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name failed to be build a model", logger, e)
 		}
 	}
-	
-	
 	
 	
 	private def lsError(xyt: Array[(Double, Double)], slope: Double, intercept: Double): Double = {

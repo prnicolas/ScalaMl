@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap8
 
@@ -17,7 +17,7 @@ import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -54,7 +54,7 @@ object SVCEval extends Eval {
 		 * @return -1 in case error, a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Binary Support Vector Classifier", logger)
+		DisplayUtils.show(s"$header Binary Support Vector Classifier", logger)
 
 		val extractor = relPriceChange :: 
 						debtToEquity ::
@@ -74,15 +74,15 @@ object SVCEval extends Eval {
 			val features = XTSeries.transpose(xs.dropRight(1))
 			val svc = SVM[Double](config, features, xs.last)
 		     
-			Display.show(s"${svc.toString}", logger)
+			DisplayUtils.show(s"${svc.toString}", logger)
 			svc.accuracy match {
-				case Some(acc) => Display.show(s"$name.run completed", logger)
-				case None => Display.error(s"$name.run accuracy could not be computed", logger)
+				case Some(acc) => DisplayUtils.show(s"$name.run completed", logger)
+				case None => DisplayUtils.error(s"$name.run accuracy could not be computed", logger)
 			}
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run Could not validate the training set", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run Could not validate the training set", logger, e)
 		}
 	}
 }

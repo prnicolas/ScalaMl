@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app
 
@@ -20,7 +20,7 @@ import akka.actor.Actor
 import akka.actor.Props
 import akka.actor.ActorRef
 
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 	/**
 		 * <p>Generic template for the scalatest invocation.</p>
@@ -42,12 +42,12 @@ trait ScalaMlTest extends FunSuite {
 		Try (eval.run(args) ) match {
 			case Success(n) => {
 				if(n >= 0) 
-					Display.show(s"$chapter ${eval.name} succeed with status = $n", logger)
+					DisplayUtils.show(s"$chapter ${eval.name} succeed with status = $n", logger)
 				assert(n >= 0, s"$chapter ${eval.name} Failed")
 				true
 			}
 			case Failure(e) => {
-				Display.show(s"$chapter ${eval.name} ${e.getMessage}", logger)
+				DisplayUtils.show(s"$chapter ${eval.name} ${e.getMessage}", logger)
 				assert(false, s"$chapter ${eval.name} Failed")
 				true
 			}
@@ -115,25 +115,25 @@ object TestContext {
 		 * Method to validate the version of Scala and Java JDK used.
 		 */
 	def init: Unit = {
-		Display.show(s"TestContext.init\nUser: ${Properties.userName}, OS: ${Properties.osName}", logger)
+		DisplayUtils.show(s"TestContext.init\nUser: ${Properties.userName}, OS: ${Properties.osName}", logger)
 		if( !Properties.isWin && !Properties.isMac)
-			Display.show("The library has not be tested for this Operating System", logger)
+			DisplayUtils.show("The library has not be tested for this Operating System", logger)
 			
-		Display.show(s"Java version: ${Properties.javaVersion}", logger)
+		DisplayUtils.show(s"Java version: ${Properties.javaVersion}", logger)
 		if(!Properties.isJavaAtLeast("1.7"))
-			Display.show("Incompatible version of Java, should be 1.7 or later", logger)
+			DisplayUtils.show("Incompatible version of Java, should be 1.7 or later", logger)
 			
 		val scalaVersion = Properties.versionNumberString
-		Display.show(s"Scala version: $scalaVersion", logger)
+		DisplayUtils.show(s"Scala version: $scalaVersion", logger)
 		scalaVersion.charAt(2) match {
-			case '9' => Display.show("Scala version should be 2.10.2 or higher", logger)
+			case '9' => DisplayUtils.show("Scala version should be 2.10.2 or higher", logger)
 			case '1' => {
 				scalaVersion.charAt(3) match {
-					case '0' => Display.show("Compatible Akka version should be 2.2.4 or lower", logger)
-					case '1' => Display.show("Compatible Akka version should be 2.3.4 or higher", logger)
+					case '0' => DisplayUtils.show("Compatible Akka version should be 2.2.4 or lower", logger)
+					case '1' => DisplayUtils.show("Compatible Akka version should be 2.3.4 or higher", logger)
 				}
 			}
-			case _ => Display.show("Could not initialize", logger)
+			case _ => DisplayUtils.show("Could not initialize", logger)
 		}
 		allRuns = true
 		Eval.count = 0
@@ -146,7 +146,7 @@ object TestContext {
 	def shutdownAll: Unit = {
 		Thread.sleep((ELAPSE_TIME<<1))
 		actorSystem.shutdown
-		Display.show(s"test:run completed after ${Eval.count +1} tests", logger)
+		DisplayUtils.show(s"test:run completed after ${Eval.count +1} tests", logger)
 	}
 	
 		/**

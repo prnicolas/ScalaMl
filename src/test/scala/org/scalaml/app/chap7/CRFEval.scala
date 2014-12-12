@@ -6,12 +6,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap7
 
 import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
-import org.scalaml.util.{Display, Matrix, ToString}
+import org.scalaml.util.{DisplayUtils, Matrix, FormatUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
 
@@ -51,7 +51,7 @@ object CrfEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Conditional Random Fields", logger)
+		DisplayUtils.show(s"$header Conditional Random Fields", logger)
     
 		val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
 		val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
@@ -60,15 +60,15 @@ object CrfEval extends Eval {
 			val crf = Crf(NLABELS, state, delimiters, PATH)
 			crf.weights match {
 				case Some(w) => {
-					Display.show(s"$name weights (lambdas) for conditional random fields", logger)
-					Display.show(s"${ToString.toString(w, "", true)}", logger)
+					DisplayUtils.show(s"$name weights (lambdas) for conditional random fields", logger)
+					DisplayUtils.show(s"${FormatUtils.format(w, "", FormatUtils.ShortFormat)}", logger)
 				}
 				case None => throw new IllegalStateException(s"$name Could not train the CRF model")
 			}
 		} 
 		match {
 			case Success(res) => 1
-			case Failure(e) => Display.error(s"$name CRF modeling failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name CRF modeling failed", logger, e)
 		}
   }
 }

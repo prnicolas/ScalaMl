@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.scalability.akka
 
@@ -21,26 +22,31 @@ import akka.util.Timeout
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import XTSeries._
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.apache.log4j.Logger
 import scala.concurrent.duration.Duration
 
 
 		/**
-		 * <p>Generic implementation of the distributed transformation of time series using blocking futures.</p>
+		 * <p>Generic implementation of the distributed transformation of time series using 
+		 * blocking futures.</p>
 		 * @constructor Create a distributed transformation for time series. 
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 * @param xt Time series to be processed
 		 * @param fct Data transformation of type PipeOperator
-		 * @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers.
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 * processed by workers.
 		 * @see org.scalaml.scalability.akka.Controller
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 30, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable Frameworks / Akka / Futures
 		 */			
-abstract class TransformFutures(xt: DblSeries, fct: PipeOperator[DblSeries, DblSeries], partitioner: Partitioner)(implicit timeout: Timeout) 
-					extends Controller(xt, fct, partitioner) {
+abstract class TransformFutures(
+		xt: DblSeries, 
+		fct: PipeOperator[DblSeries, DblSeries], 
+		partitioner: Partitioner)
+		(implicit timeout: Timeout) extends Controller(xt, fct, partitioner) {
 		
 	private val logger = Logger.getLogger("TransformFutures")
 
@@ -50,7 +56,7 @@ abstract class TransformFutures(xt: DblSeries, fct: PipeOperator[DblSeries, DblS
 		 */
 	override def receive = {
 		case s: Start => compute(transform)
-		case _ => Display.show("TransformFutures.receive Message not recognized", logger)
+		case _ => DisplayUtils.show("TransformFutures.receive Message not recognized", logger)
 	}
   
 	

@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -176,14 +177,18 @@ object QLPolicy {
 		 * @param numStates Number of states for this policy.
 		 * @param input Input (rewards and probability) to initialize the policy.
 		 */
-	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = new QLPolicy[T](numStates, input)
+	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = 
+			new QLPolicy[T](numStates, input)
 
 	private val MAX_NUM_STATES = 2048
 
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
-		require(numStates >0 && numStates < MAX_NUM_STATES, s"QLPolicy.check Number of states $numStates is out of range")
-		require(input != null, "QLPolicy.check the input to the Q-leaning policy is undefined")
-		require(input.size > 0 && input.size < MAX_NUM_STATES, s"QLPolicy.check, the size of the input ${input.size} is out of range" )
+		require(numStates >0 && numStates < MAX_NUM_STATES, 
+				s"QLPolicy.check Number of states $numStates is out of range")
+		require(input != null, 
+				"QLPolicy.check the input to the Q-leaning policy is undefined")
+		require(input.size > 0 && input.size < MAX_NUM_STATES, 
+				s"QLPolicy.check, the size of the input ${input.size} is out of range" )
 	}
 }
 

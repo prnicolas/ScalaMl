@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.ga
 
@@ -54,12 +54,12 @@ object NO_OPERATOR extends Operator {
 import Gene._
 
 		/**
-		 * <p>Class for the conversion between time series with disctete values (digital of type Int) and 
-		 * time series with continuous values (analog of type Double). Continuous values are digitized
-		 * over an interval through a linear segmentation.<br>
-		 * A continuous time series with minimum value, m and maximum value M is discretized over an interval
-		 * [a, b] as x -> (x - m)*(b - a)/(M- n) + a.</p>
-		 * @constructor Discretization class that convert a Double to Int and an Int to a Double. [toInt] Function which discretizes a continuous signal or pseudo-continuous data set. [toDouble] Function that converts a discretized time series back to its original values
+		 * <p>Class for the conversion between time series with disctete values (digital of type Int)
+		 *  and time series with continuous values (analog of type Double). Continuous values 
+		 *  are digitized over an interval through a linear segmentation.<br>
+		 *  A continuous time series with minimum value, m and maximum value M is discretized over 
+		 *  an interval [a, b] as x -> (x - m)*(b - a)/(M- n) + a.</p>
+		 * @constructor Discretization class that convert a Double to Int and an Int to a Double.
 		 * @param toInt Function which discretizes a continuous signal or pseudo-continuous data set
 		 * @param toDouble onvert a discretized time series back to its original values
 		 * 
@@ -81,11 +81,13 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * 32 bits allocated to the value. The floating point value(min, max) is
 		 * digitized as integer [0, 2^32-1]. The discretization function is provided
 		 * implicitly. The bits are implemented by the Java BitSet class.</p>
-		 * @constructor Create a gene instance. [value] Floating point value to be digitized as integer, [op] Logical operator of type Operator, [discr]: Implicit discretization function from Floating point value to integer
+		 * @constructor Create a gene instance. 
 		 * @throws IllegalArgumentException if operator or id is undefined
-		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) is not provided
+		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) 
+		 * is not provided
 		 * @param id  Identifier for the Gene
-		 * @param target  Target or threshold value.It is a floating point value to be digitized as integer
+		 * @param target  Target or threshold value.It is a floating point value to be digitized 
+		 * as integer
 		 * @param op   Symbolic operator associated to this gene
 		 * @param discr  implicit discretization function from Floating point value to integer.
 		 *
@@ -94,14 +96,18 @@ case class Discretization(toInt: Double => Int, toDouble: Int => Double) {
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 @implicitNotFound("Gene encoding requires double to integer conversion") 
-class Gene(val id: String, val target: Double, val op: Operator)(implicit discr: Discretization) {
+class Gene(
+		val id: String, 
+		val target: Double, 
+		val op: Operator)(implicit discr: Discretization) {
+  
 	require(op != null, "Cannot create a gene/predicate with undefined operator")
 	require(id != null && id.length > 0, "Cannot create a signal with undefined id")
    
 		/**
 		 * Bits encoding of the tuple (value, operator) into bits {0, 1} executed 
-  		 * as part of the instantiation of a gene class.
-  		 */
+  	 * as part of the instantiation of a gene class.
+     */
 	val bits = {
 		val bitset = new BitSet(GENE_SIZE)
 		rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
@@ -225,7 +231,8 @@ object Gene {
 		 * @param op   Symbolic operator associated to this gene
 		 * @param discr  implicit discretization function from Floating point value to integer.
 		 */
-	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Gene = new Gene(id, target, op)
+	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Gene = 
+				new Gene(id, target, op)
 
 		/**
 		 * Clone the genetic code of this gene

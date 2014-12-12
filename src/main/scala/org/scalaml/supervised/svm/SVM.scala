@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.svm
 
@@ -18,7 +18,7 @@ import org.scalaml.util.Matrix
 import scala.util.{Try, Success, Failure}
 import XTSeries._
 import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import scala.collection.mutable.ArrayBuffer
 
 
@@ -74,7 +74,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		} 
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => Display.none("SVM.model", logger, e)
+			case Failure(e) => DisplayUtils.none("SVM.model", logger, e)
 		}
 	}
   
@@ -97,7 +97,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 			})
 			Some(Math.sqrt(z)/xt.size)
 		}
-		case None =>  Display.none("SVM.mse model is undefined", logger)
+		case None =>  DisplayUtils.none("SVM.mse model is undefined", logger)
 	}
   
 
@@ -109,11 +109,11 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		case Some(m) => {	
 			val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
 			if(wNorm < normEPS)
-				Display.none(s"SVM.margin sum of squared errors $wNorm is too small", logger)
+				DisplayUtils.none(s"SVM.margin sum of squared errors $wNorm is too small", logger)
 			else
 				Some(2.0/Math.sqrt(wNorm))
 		}
-		case None => Display.none("SVM.margin model is undefined", logger)
+		case None => DisplayUtils.none("SVM.margin model is undefined", logger)
 	}
   
 

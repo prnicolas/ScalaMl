@@ -6,12 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.util
 
-
-
+import scala.io.Source._
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+	
 		/**
 		 * Basic utility singleton to read and write content from and to a file
 		 * @author Patrick Nicolas
@@ -19,9 +21,6 @@ package org.scalaml.util
 		 * @note Scala for Machine Learning
 		 */
 object FileUtils {
-	import org.apache.log4j.Logger
-	import scala.util.{Try, Success, Failure}
-	
 	private val logger = Logger.getLogger("FileUtils")
 
 		/**
@@ -30,10 +29,9 @@ object FileUtils {
 		 * @param className Name of the class to read from 
 		 * @return Content of the file if successful, None otherwise
 		 */
-	def read(toFile: String, className: String): Option[String] = 
-		Try (scala.io.Source.fromFile(toFile).mkString) match {
-			case Success(content) => Some(content)
-			case Failure(e) => Display.none(s"$className.<< failed for $toFile", logger, e)
+	def read(toFile: String, className: String): Option[String] = Try(fromFile(toFile).mkString) match {
+		case Success(content) => Some(content)
+		case Failure(e) => DisplayUtils.none(s"$className.<< failed for $toFile", logger, e)
 	}
 		
 		/**
@@ -55,15 +53,15 @@ object FileUtils {
 		} 
 		match {
 			case Failure(e) => {
-				Display.error(s"$className.write failed for $pathName", logger, e)
+				DisplayUtils.error(s"$className.write failed for $pathName", logger, e)
 				if( printWriter != null) {
 					Try(printWriter.close) match {
 						case Success(res) => res
-						case Failure(e) =>  Display.error(s"$className.write failed for $pathName", logger, e)
+						case Failure(e) =>  DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
 					}
 				}
 			}
-			case _ => {}
+			case Success(s) => { }
 		}
 		status
 	}

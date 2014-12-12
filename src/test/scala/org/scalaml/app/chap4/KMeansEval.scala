@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap4
 
@@ -16,7 +16,7 @@ import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.unsupervised.clustering.KMeans
 import org.scalaml.unsupervised.Distance.euclidean
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
@@ -51,7 +51,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 	override def run(args: Array[String]): Int = {
 		import CommonMath._
         
-		Display.show(s"$header Evaluation of K-means clustering", logger)
+		DisplayUtils.show(s"$header Evaluation of K-means clustering", logger)
       
 			// nested function to generate K clusters from a set of observations observations
 			// obs. The condition on the argument are caught by the K-means constructor.
@@ -64,12 +64,12 @@ object KMeansEval extends UnsupervisedLearningEval {
 				b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => 
 				  		b2.append(s"${symbolFiles(mbr)}, ")).toString).append("\n")
 			)
-			Display.show(s"$name ${descriptor.toString}\nmeans:\n", logger)		    	                
-			clusters.foreach(c => Display.show(s"$name ${c.toString}", logger))
+			DisplayUtils.show(s"$name ${descriptor.toString}\nmeans:\n", logger)		    	                
+			clusters.foreach(c => DisplayUtils.show(s"$name ${c.toString}", logger))
 
-			Display.show(s"\n$name Cluster standard deviation:\n", logger)
+			DisplayUtils.show(s"\n$name Cluster standard deviation:\n", logger)
 			clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean))
-					.foreach( Display.show( _ , logger) )
+					.foreach( DisplayUtils.show( _ , logger) )
 		}
 
 		val normalize = true
@@ -80,19 +80,19 @@ object KMeansEval extends UnsupervisedLearningEval {
 				DataSource(s, path, normalize) |> extractor)
 
 			prices.find ( _.isEmpty ) match {
-				case Some(nullObsList) => Display.error(s"$name Could not load data", logger)
+				case Some(nullObsList) => DisplayUtils.error(s"$name Could not load data", logger)
 				case None => {
 					val values: DblMatrix = prices.map(x => x(0))
 												.map( _.drop(START_INDEX)
 												.take(NUM_SAMPLES))
 					args.map(_.toInt).foreach(run(_, values))
-					Display.show(s"$name completed ", logger)
+					DisplayUtils.show(s"$name completed ", logger)
 				}
 			}
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error("$name failed to load data", logger, e)
+			case Failure(e) => DisplayUtils.error("$name failed to load data", logger, e)
 		}
 	}
 }

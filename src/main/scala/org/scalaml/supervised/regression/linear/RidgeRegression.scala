@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.regression.linear
 
@@ -20,7 +20,7 @@ import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import ScalaMl._
 
 
@@ -79,7 +79,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		} 
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => Display.none("RidgeRegression model undefined", logger, e)
+			case Failure(e) => DisplayUtils.none("RidgeRegression model undefined", logger, e)
 		}
 	}
 
@@ -90,7 +90,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 */
 	final def weights: Option[DblVector] = model match {
 		case Some(m) => Some(m.weights)
-		case None =>  Display.none("RidgeRegression.weights model undefined", logger)
+		case None =>  DisplayUtils.none("RidgeRegression.weights model undefined", logger)
 	}
     
 		/**
@@ -100,7 +100,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 */
 	final def rss: Option[Double] = model match {
 		case Some(m) => Some(m.rss)
-		case None => Display.none("RidgeRegression.rss model undefined", logger)
+		case None => DisplayUtils.none("RidgeRegression.rss model undefined", logger)
 	}
 
 		/**

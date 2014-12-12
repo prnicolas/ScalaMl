@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.nnet
 
@@ -14,7 +14,7 @@ import scala.util.Random
 
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.Model
-import org.scalaml.util.ToString
+import org.scalaml.util.FormatUtils
 import scala.collection.mutable.ListBuffer
 import MLP._
 
@@ -92,7 +92,7 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		val buf = new StringBuilder
 		
 		buf.append(s"\nLayer: $id output: ")
-		output.foreach(x => buf.append(s"${ToString.toString(x,"", true)}"))
+		output.foreach(x => buf.append(s"${FormatUtils.format(x,"", FormatUtils.ShortFormat)}"))
 		buf.toString.substring(0, buf.length-1)
 	}
 }

@@ -6,10 +6,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app
 
+import org.apache.log4j.Logger
 import org.scalaml.app.core._
 import org.scalaml.app.chap1._
 import org.scalaml.app.chap2._
@@ -23,8 +24,7 @@ import org.scalaml.app.chap9._
 import org.scalaml.app.chap10._
 import org.scalaml.app.chap11._
 import org.scalaml.app.chap12._
-import org.apache.log4j.Logger
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 
 		/**
 		 * <p>Singleton that executes all the test clases in Scala for Machine Learning.<br>
@@ -161,12 +161,12 @@ protected object AllTests extends ScalaMlTest {
 					errorMsg = s"time out after $eval.maxExecutionTime msecs."
 				}
 			}
-			Display.show(s"End ${eval.name}", logger)
+			DisplayUtils.show(s"End ${eval.name}", logger)
 			completed
 		} 
 	  	match {
 			case Success(n) => { } // No message needed
-			case Failure(e) => Display.error(s"$chapter failed ", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$chapter failed ", logger, e)
 		}
 	}
 }

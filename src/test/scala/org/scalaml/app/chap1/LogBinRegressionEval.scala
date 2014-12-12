@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap1
 
@@ -15,7 +15,7 @@ import org.scalaml.stats.Stats
 import org.scalaml.trading.{Signal, YahooFinancials}
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.logistic.LogBinRegression
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
@@ -55,33 +55,33 @@ object LogBinRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Loading history Cisco stock for training logistic regression", logger)
+		DisplayUtils.show(s"$header Loading history Cisco stock for training logistic regression", logger)
 		
 		load(path_training) match {
 			case Some(volatilityVolume) => {
-				Display.show(s"$name Display of stock volatility vs. volume", logger)
+				DisplayUtils.show(s"$name DisplayUtils of stock volatility vs. volume", logger)
 				display(volatilityVolume)
 	    	
 				val labels = volatilityVolume.zip(volatilityVolume.map(x => 
 					if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
 				val logit = new LogBinRegression(labels, NITERS, ETA, EPS)
 	    	  
-				Display.show(s"$name Loading history Cisco stock for testing", logger)
+				DisplayUtils.show(s"$name Loading history Cisco stock for testing", logger)
 				load(path_test) match {
 					case Some(test) =>{
 						logit.classify(test(0)) match {
-							case Some(topCategory) => Display.show(s"$name test result ${topCategory.toString}", logger)
-							case None => Display.error(s"$name Failed to classify", logger)
+							case Some(topCategory) => DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
+							case None => DisplayUtils.error(s"$name Failed to classify", logger)
 						}
 						logit.classify(test(1)) match {
-							case Some(topCategory) => Display.show(s"$name test result ${topCategory.toString}", logger)
-							case None => Display.error(s"$name Failed to classify", logger)
+							case Some(topCategory) => DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
+							case None => DisplayUtils.error(s"$name Failed to classify", logger)
 						}
 					}	
-					case None => Display.error(s"$name Could not load training set for $path_test", logger)
+					case None => DisplayUtils.error(s"$name Could not load training set for $path_test", logger)
 				}
 			}
-			case None => Display.error(s"$name  Could not load test set for $path_training", logger)
+			case None => DisplayUtils.error(s"$name  Could not load test set for $path_training", logger)
 		}
     }
 	
@@ -99,7 +99,7 @@ object LogBinRegressionEval extends Eval {
 			data
 		} match  {
 			case Success(xySeries) => Some(xySeries)
-			case Failure(e) => Display.error("LogBinRegressionEval.load", logger, e); None
+			case Failure(e) => DisplayUtils.error("LogBinRegressionEval.load", logger, e); None
 		}
 	}
     

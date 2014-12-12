@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.unsupervised.clustering
 
@@ -105,9 +105,9 @@ class Cluster[T <% Double](val center: DblVector) {
 	final def getMembers: List[Int] = members.toList
    
 	override def toString: String = {
-		val membersToString = members.foldLeft(new StringBuffer)((b, n) => b.append(s"$n,")).toString
-		val centerToString = center.foldLeft(new StringBuffer)((b, x) => b.append(s"$x,")).toString
-		s"${centerToString}\n${membersToString}"
+		val membersFormatUtils = members.foldLeft(new StringBuffer)((b, n) => b.append(s"$n,")).toString
+		val centerFormatUtils = center.foldLeft(new StringBuffer)((b, x) => b.append(s"$x,")).toString
+		s"${centerFormatUtils}\n${membersFormatUtils}"
 	}
 }
 

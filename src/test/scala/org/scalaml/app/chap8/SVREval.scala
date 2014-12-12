@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap8
 
@@ -18,7 +18,7 @@ import org.scalaml.supervised.svm.{SVMConfig, SVM}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 
 
@@ -54,10 +54,10 @@ object SVREval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Support Vector Regression", logger)
+		DisplayUtils.show(s"$header Support Vector Regression", logger)
 		Try {
 			val price = DataSource(path, false, true, 1) |> close
-			Display.show(ToString.toString(price.toArray, "", true), logger)
+			DisplayUtils.show(FormatUtils.format(price.toArray, "", FormatUtils.ShortFormat), logger)
 			val priceIdx = price.zipWithIndex
 								.map( x => (x._2.toDouble, x._1.toDouble))
 	      
@@ -68,17 +68,17 @@ object SVREval extends Eval {
 			val labels = price.toArray
 			val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
 			val svr = SVM[Double](config, features, labels)
-			Display.show(s"$name support vector machine model\n${svr.toString}", logger)   
+			DisplayUtils.show(s"$name support vector machine model\n${svr.toString}", logger)   
           
 			display("Support Vector vs. Linear Regression", 
 					collect(svr, linRg, price),
 					List[String]("Support vector regression", "Linear regression", "Stock Price"))
 					
-			Display.show(s"$name.run completed", logger)
+			DisplayUtils.show(s"$name.run completed", logger)
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => Display.error(s"$name.run failed to load source or train SVM", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", logger, e)
 		}
 	}
    

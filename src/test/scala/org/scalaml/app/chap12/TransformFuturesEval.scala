@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap12
 
@@ -24,7 +24,7 @@ import org.scalaml.scalability.akka.message._
 import org.scalaml.scalability.akka.TransformFutures
 import org.scalaml.app.TestContext
 import org.scalaml.filtering.DFT
-import org.scalaml.util.{ToString, Display}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 
 
 		/**
@@ -49,7 +49,7 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 		require(data != null && data.size > 0, "DFTTransformFutures.aggregate Output of one of the workers undefined")
 		
 		val results = data.map(_.toArray).transpose.map(_.sum).take(SPECTRUM_WIDTH)
-		Display.show(s"Index  Frequencies\n${ToString.toString(results, "", true)}", logger)
+		DisplayUtils.show(s"Index  Frequencies\n${FormatUtils.format(results, "", FormatUtils.ShortFormat)}", logger)
 		results.toSeq
 	}
 }
@@ -94,7 +94,7 @@ object TransformFuturesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Data transformation futures using Akka actors", logger)
+		DisplayUtils.show(s"$header Data transformation futures using Akka actors", logger)
 		
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
@@ -105,10 +105,10 @@ object TransformFuturesEval extends Eval {
 			Await.result(future, timeout.duration)
 		} 
 		match {
-			case Success(result) => Display.show("TransformFuturesEval completed", logger)
+			case Success(result) => DisplayUtils.show("TransformFuturesEval completed", logger)
 			case Failure(e) => e match {
-				case ex: TimeoutException => Display.show(s"TransformFuturesEval.run timeout", logger)
-				case ex: Throwable => Display.error("TransformFuturesEval.run completed", logger, e)
+				case ex: TimeoutException => DisplayUtils.show(s"TransformFuturesEval.run timeout", logger)
+				case ex: Throwable => DisplayUtils.error("TransformFuturesEval.run completed", logger, e)
 			}
 		}
 		TestContext.shutdown

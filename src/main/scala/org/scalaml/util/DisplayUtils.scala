@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.util
 
@@ -18,7 +18,7 @@ import org.apache.log4j.Logger
 	 *  @since December 3,  2013
 	 *  @note Scala for Machine Learning
 	 */
-object Display {	
+object DisplayUtils {	
 	private val DEFAULT_SHOW_RETURN = 0
 	private val DEFAULT_ERROR_RETURN = -1
 	val loggerFlag = false
@@ -30,8 +30,8 @@ object Display {
 		 * @param length Length of the box the label has to be aligned
 		 */
 	final def align(label: String, length: Int): String = {
-		require(label != null, "Display.align Label is undefined")
-		require(length < 128, s"Display.align Size of label placement ${label.length} is incorrect")
+		require(label != null, "DisplayUtils.align Label is undefined")
+		require(length < 128, s"DisplayUtils.align Size of label placement ${label.length} is incorrect")
 		
 		if( length < label.length)
 			label
@@ -40,7 +40,7 @@ object Display {
 	}
   
 		/**
-		 * Display the value of parameterized type in either standard output,
+		 * DisplayUtils the value of parameterized type in either standard output,
 		 * or log4j log or both
 		 * @param t value to be displayed
 		 * @param logger Reference to the log4j log appender

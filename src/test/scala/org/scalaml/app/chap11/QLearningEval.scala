@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap11
 
@@ -15,7 +15,7 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{Counter, NumericAccumulator, Display}
+import org.scalaml.util.{Counter, NumericAccumulator, DisplayUtils}
 import org.scalaml.app.Eval
 
 		 /**
@@ -60,7 +60,7 @@ object QLearningEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		Display.show(s"$header Evaluation of the Q-learning algorithm", logger)
+		DisplayUtils.show(s"$header Evaluation of the Q-learning algorithm", logger)
        
 		val src = DataSource(stockPricePath, false, false, 1)
 		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, FUNCTION_APPROX_STEP)
@@ -70,11 +70,11 @@ object QLearningEval extends Eval {
 			case Some(v) => {
 				val qLearning = createModel(ibmOption, v)
 				if( qLearning.model != None)
-					Display.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
+					DisplayUtils.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
 				else
-					Display.error(s"$name Failed to create a Q-learning model", logger)
+					DisplayUtils.error(s"$name Failed to create a Q-learning model", logger)
 			}
-			case None => Display.error(s"$name Failed extracting option prices", logger)
+			case None => DisplayUtils.error(s"$name Failed extracting option prices", logger)
 		}
 	}
     
@@ -90,9 +90,8 @@ object QLearningEval extends Eval {
 		)
    	      
 		val goal = input.maxBy( _.reward).to  
-		Display.show(s"$name Goal state: ${goal.toString}", logger)
+		DisplayUtils.show(s"$name Goal state: ${goal.toString}", logger)
       
-	  
 		val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, getNeighbors)
 		QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
 	}

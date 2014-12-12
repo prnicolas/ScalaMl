@@ -6,11 +6,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap12
 
+import scala.util.Random
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Awaitable}
+import scala.collection._
 import org.apache.log4j.Logger
+
 import akka.actor.{Props, ActorSystem}
 import org.scalaml.app.{Eval, TestContext}
 import org.scalaml.core.XTSeries
@@ -18,40 +23,49 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.scalability.akka.{Partitioner, Master, MasterWithRouter, Controller}
 import org.scalaml.scalability.akka.message.Start
 import org.scalaml.filtering.DFT
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import XTSeries.DblSeries
 
 
 		/**
-		 * <p>Specialized Akka master actor for the distributed discrete Fourier transform without routing.</p>
-		 * @constructor Create a master actor for the distributed discrete Fourier transform. [xt] time series to be processed. [partitioner] Partitioning methodology for distributing time series across a cluster of worker actors.
+		 * <p>Specialized Akka master actor for the distributed discrete Fourier transform without 
+		 * routing.</p>
+		 * @constructor Create a master actor for the distributed discrete Fourier transform. 
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
 		 * @param xt Time series to be processed
-		 * @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers
-		 * @param aggrFrequencies User defined aggregation and monitoring method
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 * processed by workers
+		 * @param aggrFreq User defined aggregation and monitoring method
 		 * 
 		 * @author Patrick Nicolas
 		 * @since June 5, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Akka
 		 */
-protected class DFTMaster(xt: DblSeries, partitioner: Partitioner, aggrFrequencies: (List[DblVector]) => Seq[Double]) 
-	extends Master(xt, DFT[Double], partitioner, aggrFrequencies)
+protected class DFTMaster(
+		xt: DblSeries, 
+		partitioner: Partitioner, 
+		aggrFreq: List[DblVector]=>immutable.Seq[Double]) 
+				extends Master(xt, DFT[Double], partitioner, aggrFreq)
 
 
 		/**
 		 * <p>Specialized Akka master actor for the distributed discrete Fourier transform routing.</p>
-		 * @constructor Create a master actor for the distributed discrete Fourier transform. [xt] time series to be processed. [partitioner] Partitioning methodology for distributing time series across a cluster of worker actors.
+		 * @constructor Create a master actor for the distributed discrete Fourier transform. 
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
 		 * @param xt Time series to be processed
-		 * @param partitioner Methodology to partition a time series in segments or partitions to be processed by workers
-		 * @param aggrFrequencies User defined aggregation and monitoring method
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 * processed by workers
+		 * @param aggrFreq User defined aggregation and monitoring method
 		 * 
 		 * @author Patrick Nicolas
 		 * @since June 5, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Akka
 		 */
-protected class DFTMasterWithRouter(xt: DblSeries, partitioner: Partitioner, aggrFrequencies: (List[DblVector]) => Seq[Double]) 
-	extends MasterWithRouter(xt, DFT[Double], partitioner, aggrFrequencies) 
+protected class DFTMasterWithRouter(
+		xt: 				DblSeries, 
+		partitioner: Partitioner, 
+		aggrFreq: 	List[DblVector] => immutable.Seq[Double]) 
+				extends MasterWithRouter(xt, DFT[Double], partitioner, aggrFreq) 
 
 
 		/**
@@ -61,12 +75,7 @@ protected class DFTMasterWithRouter(xt: DblSeries, partitioner: Partitioner, agg
 		 * @author Patrick Nicolas 
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Akka actors
 		 */
-object ActorsManagerEval extends Eval { 
-	import scala.util.Random
-	import scala.concurrent.duration.Duration
-	import scala.concurrent.{Await, Awaitable}
-	import org.apache.log4j.Logger
-	
+object ActorsManagerEval extends Eval { 	
 		/**
 		 * Name of the evaluation 
 		 */
@@ -93,26 +102,28 @@ object ActorsManagerEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Display.show(s"$header Master-Worker model for Akka actors", logger)
+		DisplayUtils.show(s"$header Master-Worker model for Akka actors", logger)
 		
 		if(args.size > 0) {
 			val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 			val partitioner = new Partitioner(NUM_WORKERS)
 			
 			val displaySize = if( args(0) == "router" ) 64 else 256
+		
 				// User defined method that define the aggregation of the results 
 				// for the discrete Fourier transform for each worker actor
-			def aggrFrequencies(aggrBuffer: List[DblVector]): Seq[Double] = {
+			def aggrFrequencies(aggrBuffer: List[DblVector]): immutable.Seq[Double] = {
 				def display(x: DblVector): Unit =   {
 					import org.scalaml.plots.{LinePlot, LightPlotTheme}
-					val plot = new LinePlot(("Distributed DFT- Akka", s"Frequencies distribution with ${args(0)}", "freq."), new LightPlotTheme)
+					val plot = new LinePlot(("Distributed DFT- Akka", 
+							s"Frequencies distribution with ${args(0)}", "freq."), new LightPlotTheme)
 					plot.display(x.take(displaySize), 340, 280)
 				}
 				
 				// Aggregate the results by transposing the observations
 				// and sum the value for each dimension...
 				val results = aggrBuffer.transpose.map( _.sum).toSeq
-				Display.show(s"DFT display${results.size}", logger)
+				DisplayUtils.show(s"DFT display${results.size}", logger)
 				display(results.toArray)
 				results
 			}
@@ -120,7 +131,8 @@ object ActorsManagerEval extends Eval {
 				// The argument specifies if the group of worker actors is supervised
 				// by a routing actor or not..
 			val controller = if(args(0) == "router")
-				TestContext.actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, aggrFrequencies)), "MasterWithRouter")
+				TestContext.actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, aggrFrequencies)), 
+						"MasterWithRouter")
 			else
 				TestContext.actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), "Master")
 		
@@ -131,7 +143,7 @@ object ActorsManagerEval extends Eval {
 			TestContext.shutdown
 		}
 		else
-			Display.error(s"$name Master-Worker model, arguments undefined", logger)
+			DisplayUtils.error(s"$name Master-Worker model, arguments undefined", logger)
 	}
 }
 

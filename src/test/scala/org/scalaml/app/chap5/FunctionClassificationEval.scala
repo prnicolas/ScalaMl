@@ -6,16 +6,20 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap5
+
+import scala.util.{Try, Success, Failure, Random}
+import scala.collection._
+import org.apache.log4j.Logger
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.supervised.bayes.NaiveBayes
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.filtering.DFT
 import org.scalaml.app.Eval
 
@@ -32,10 +36,6 @@ import org.scalaml.app.Eval
 		 * @note: Scala for Machine Learning Chapter 5: Naive Bayes Models
 		 */
 object FunctionClassificationEval extends Eval {
-	import scala.util.{Try, Success, Failure, Random}
-	import scala.collection.immutable.HashSet
-	import scala.collection.mutable.ArrayBuffer
-	import org.apache.log4j.Logger
 	import ScalaMl._,  SimpleMovingAverage._
 	
 		/**
@@ -95,6 +95,9 @@ object FunctionClassificationEval extends Eval {
 		 * Method to create datasets for training and testing. It normalizes the values, then computes
 		 * the frequencies related to the datasets, ranks the data points in decreasing order of their
 		 * frequency and return the SPECTUM indices of the data point with the highest frequency.
+		 * @param f Transformation of Double floating point values
+		 * @param dataRange Range of the data to be selected for the Discrete Fourier series
+		 * @return normalized vector of frequencies
 		 */
 		def createDatasets(f: Double =>Double, dataRange: Range): DblVector = {
 			val values = dataRange.map(_ /DATA_SIZE.toDouble).map(f(_))
@@ -105,6 +108,7 @@ object FunctionClassificationEval extends Eval {
 			val freQ = freq.toArray
 							.zipWithIndex
 							.sortWith( _._1 > _._1 )
+							
 			freQ.take(SPECTRUM).map( _._2.toDouble/DATA_SIZE)
 		}
 
@@ -129,17 +133,17 @@ object FunctionClassificationEval extends Eval {
       	
 		Try {
 			val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
-			Display.show(s"$header Trained model for function classification${nb.toString}", logger)
+			DisplayUtils.show(s"$header Trained model for function classification${nb.toString}", logger)
 	      
 			val gr = nb |> XTSeries(testDataset(g))
-			Display.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", logger)
+			DisplayUtils.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", logger)
 	      	      
 			val hr = nb |> XTSeries(testDataset(h))
-			Display.show(s"$name Naive Bayes classification for 'if(x ~ 0.5) 1.0 else 0' class: ${hr(0)}", logger)
+			DisplayUtils.show(s"$name Naive Bayes classification for 'if(x ~ 0.5) 1.0 else 0' class: ${hr(0)}", logger)
 		}
 		match {
 			case Success(res) => res
-			case Failure(e) => Display.error(s"name.run Naive Bayes Function classification failed", logger, e)
+			case Failure(e) => DisplayUtils.error(s"name.run Naive Bayes Function classification failed", logger, e)
 		}
 	}
 }

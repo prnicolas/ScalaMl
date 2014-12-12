@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.plots
 
@@ -50,7 +51,7 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 	require(theme != null, "Plot Cannot create a plot with undefined theme")
 
 		/**
-		 * Display array of tuple (x,y) in a 2D plot for a given width and height
+		 * DisplayUtils array of tuple (x,y) in a 2D plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
@@ -60,7 +61,7 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 	def display(xy: XYTSeries): Unit = display(xy, DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
 		/**
-		 * Display a vector of Double value in a 2D plot with counts [0, n] on X-Axis and
+		 * DisplayUtils a vector of Double value in a 2D plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
@@ -109,9 +110,10 @@ object Plot {
 		 * @param height  Height of the display
 		 * @param width Width of the display
 		 * @param comment Comments to be added to the chart or plot
-		 * @throws IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 * @throws IllegalArgumentException if the display height or width is out or range or 
+		 * the values are undefined
 		 */
-	def validateDisplay[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
+	def validateDisplayUtils[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
 		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
 		validateDim(width, height, comment)
 	}
@@ -122,10 +124,11 @@ object Plot {
 		 * @param height  Height of the display
 		 * @param width Width of the display
 		 * @param comment Comments to be added to the chart or plot
-		 * @throws IllegalArgumentException if the display height or width is out or range or the values are undefined
+		 * @throws IllegalArgumentException if the display height or width is out or range or 
+		 * the values are undefined
 		 */
 	import scala.collection.immutable.List
-	def validateDisplay[T](y: List[T], width: Int, height: Int, comment: String): Unit = {
+	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String): Unit = {
 		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
 		validateDim(width, height, comment)
 	}
@@ -138,8 +141,10 @@ object Plot {
 		 * @throws IllegalArgumentException if the display height or width is out or range
 		 */
 	def validateDim(width: Int, height: Int, comment: String): Unit = {
-		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, s"$comment Width $width is out of range")
-		require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, s"$comment  height $height is out of range")
+		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, 
+				s"$comment Width $width is out of range")
+		require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, 
+				s"$comment  height $height is out of range")
 	}
 }
 

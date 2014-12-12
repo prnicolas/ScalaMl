@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.workflow.data
 
@@ -16,7 +16,7 @@ import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.util.{Display, FileUtils}
+import org.scalaml.util.{DisplayUtils, FileUtils}
 import ScalaMl._
 
 
@@ -91,16 +91,16 @@ final protected class DataSink[T <% String](sinkName: String) extends PipeOperat
 			match {
 				case Success(k) => k
 				case Failure(e) => {
-					Display.error("DataSink.|> ", logger)
+					DisplayUtils.error("DataSink.|> ", logger)
 	    		  
 					if( printWriter != null) {
 						Try {printWriter.close; 1 }
 						match {
 							case Success(res) => res
-							case Failure(e) => Display.error("DataSink.|> ", logger)
+							case Failure(e) => DisplayUtils.error("DataSink.|> ", logger)
 						}
 					}
-					else Display.error("DataSink.|> no printWrite", logger)
+					else DisplayUtils.error("DataSink.|> no printWrite", logger)
 				}
 			}
 		}

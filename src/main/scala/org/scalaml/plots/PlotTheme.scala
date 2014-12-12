@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
@@ -19,10 +20,12 @@ import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
 		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 trait PlotTheme {
+	import BasicStroke._
 	protected[this] val strokeList = Array[Stroke](
 		new BasicStroke(1.0f),
-		new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f, Array[Float](1.0f, 1.0f), 0.0f),
-		new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f, Array[Float](3.0f, 3.0f), 0.0f)
+		new BasicStroke(1.0f, CAP_BUTT, JOIN_BEVEL, 8.0f, Array[Float](1.0f, 1.0f), 0.0f),
+		new BasicStroke(1.0f, CAP_BUTT, JOIN_BEVEL, 8.0f,
+				Array[Float](3.0f, 3.0f), 0.0f)
 	)
 
 	def stroke(index: Int) = strokeList(index % strokeList.size)
@@ -102,7 +105,7 @@ final class LightPlotTheme extends PlotTheme {
 		 * @return Background color 
 		 */
 	override def paint(width: Int, height: Int): Paint = 
-		new GradientPaint(0, 0, Color.white, width, height, Color.lightGray, false)
+			new GradientPaint(0, 0, Color.white, width, height, Color.lightGray, false)
 }
 
 // ----------------------------------  EOF --------------------------------------------------------------

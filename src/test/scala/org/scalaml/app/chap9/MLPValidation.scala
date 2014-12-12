@@ -6,13 +6,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 
@@ -49,7 +49,7 @@ object MLPValidation extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(arg: Array[String]) : Int =  {
-		Display.show(s"$header Validation MLP with synthetic data", logger)
+		DisplayUtils.show(s"$header Validation MLP with synthetic data", logger)
         
 		val x = Array.fill(TEST_SIZE)(Array[Double](0.2 + 0.4*Random.nextDouble, 0.2*Random.nextDouble))  
 		val y = Array.tabulate(TEST_SIZE)(n => Array[Double](n/TEST_SIZE+ 0.1))  	 
@@ -58,9 +58,9 @@ object MLPValidation extends Eval {
   	  
 		implicit val mlpObjective = new MLP.MLPBinClassifier
 		if( MLP[Double](state, x, y).model == None ) 
-			Display.error(s"$name Failed to train the model for alpha = $ALPHA, eta = $ETA", logger)
+			DisplayUtils.error(s"$name Failed to train the model for alpha = $ALPHA, eta = $ETA", logger)
 		else
-			Display.show(s"$name Creation of MLP model succeeds", logger)
+			DisplayUtils.show(s"$name Creation of MLP model succeeds", logger)
 	}
 }
 

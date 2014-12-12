@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -21,7 +21,7 @@ import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismat
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.{Matrix, Display}
+import org.scalaml.util.{Matrix, DisplayUtils}
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import XTSeries._, ScalaMl._
@@ -60,7 +60,7 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		Try(train)
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => Display.error("LogisticRegression", logger, e); None
+			case Failure(e) => DisplayUtils.error("LogisticRegression", logger, e); None
 		}
 	}
 	
@@ -70,7 +70,7 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 */
 	final def weights: Option[DblVector] = model match {
 		case Some(m) => Some(m.weights)
-		case None => Display.none("LogisticRegression.weights model is undefined", logger)
+		case None => DisplayUtils.none("LogisticRegression.weights model is undefined", logger)
 	}
 	
 	
@@ -80,7 +80,7 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 */
 	final def rss: Option[Double] = model match {
 		case Some(m) => Some(m.rss)
-		case None => Display.none("LogisticRegression.tdd model is undefined", logger)
+		case None => DisplayUtils.none("LogisticRegression.tdd model is undefined", logger)
 	}
 	
 		/**

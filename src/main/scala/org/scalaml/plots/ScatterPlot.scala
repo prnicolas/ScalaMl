@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.plots
 
@@ -42,14 +43,15 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 	import org.scalaml.core.Types.ScalaMl._
 	
 		/**
-		 * Display array of tuple (x,y) in a Scatter plot for a given width and height
+		 * DisplayUtils array of tuple (x,y) in a Scatter plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
-		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
+		 * are out of bounds.
 		 */
 	override def display(xy: XYTSeries, width: Int, height : Int): Unit  = {
-		validateDisplay(xy, width, height, "ScatterPlot.display")
+		validateDisplayUtils(xy, width, height, "ScatterPlot.display")
 
 		val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
 		val seriesCollection = new XYSeriesCollection
@@ -58,17 +60,21 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 	}
 	
 		/**
-		 * Display a vector of Double value in a Scatter plot with counts [0, n] on X-Axis and
+		 * DisplayUtils a vector of Double value in a Scatter plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
-		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are out of bounds.
+		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
+		 * are out of bounds.
 		 */
 	override def display(y: DblVector, width: Int, height: Int): Unit = {
-		validateDisplay[Double](y, width, height, "LinePlot.display")
+		validateDisplayUtils[Double](y, width, height, "LinePlot.display")
 		
-		val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {s.add(xn._1, xn._2); s})
+		val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {
+				s.add(xn._1, xn._2)
+				s
+		})
 		val seriesCollection = new XYSeriesCollection
 		seriesCollection.addSeries(series)
 		draw(seriesCollection, width, height)
@@ -76,18 +82,21 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
    
 
 		/**
-		 * Displays two two-dimension datasets (x, y) in this scatter plot
+		 * DisplayUtilss two two-dimension datasets (x, y) in this scatter plot
 		 * @param xy1 First Array of pair (x,y) to be displayed
 		 * @param xy2 Second Array of pair (x,y) to be displayed
 		 * @param width Width for the display (pixels)
 		 * @param height Heigth of the chart (pixels)
-		 * @throws IllegalArgumentException if either dataset is undefined or the width or height are out of bounds.
+		 * @throws IllegalArgumentException if either dataset is undefined or the width or height 
+		 * are out of bounds.
 		 */
 	def display(xy1: XYTSeries, xy2: XYTSeries, width: Int, height : Int): Unit  = {
-		require( xy1 != null && xy1.size >0 , "ScatterPlot.Display Cannot display with first series undefined")
-		require( xy2 != null && xy2.size >0, "ScatterPlot.Display Cannot display with second series undefined ")
+		require( xy1 != null && xy1.size >0 , 
+				"ScatterPlot.DisplayUtils Cannot display with first series undefined")
+		require( xy2 != null && xy2.size >0, 
+				"ScatterPlot.DisplayUtils Cannot display with second series undefined ")
 
-		validateDim(width, height, "ScatterPlot.Display")
+		validateDim(width, height, "ScatterPlot.DisplayUtils")
 
 		val seriesCollection1 = new XYSeriesCollection
 		val seriesCollection2 = new XYSeriesCollection
@@ -120,9 +129,10 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 
 	import scala.collection.immutable.List
 	def display(xs: List[XYTSeries], lbls: List[String], w: Int, h : Int): Unit  = {
-		validateDisplay[XYTSeries](xs, w, h, "ScatterPlot.display")
+		validateDisplayUtils[XYTSeries](xs, w, h, "ScatterPlot.display")
 
-		val seriesCollectionsList = xs.zipWithIndex.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
+		val seriesCollectionsList = xs.zipWithIndex
+				.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
 			val seriesCollection = new XYSeriesCollection
 			val series = xy._1.foldLeft(new XYSeries(lbls(xy._2)))((s, t) => {
 				s.add(t._1, t._2)
@@ -143,7 +153,8 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		renderer1.setDotHeight(4)
 		renderer1.setDotWidth(4)
    
-		val shapes = Array[Shape](ShapeUtilities.createDiamond(3.0F), ShapeUtilities.createRegularCross(2.0F, 2.0F))
+		val shapes = Array[Shape](ShapeUtilities.createDiamond(3.0F), 
+				ShapeUtilities.createRegularCross(2.0F, 2.0F))
 		
 		seriesCollectionsList.dropRight(1).zipWithIndex.foreach( sColi => { 
 			plot.setDataset(sColi._2+1, sColi._1)

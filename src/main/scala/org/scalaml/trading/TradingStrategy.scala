@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.trading
 
@@ -16,7 +16,7 @@ import Signal._
 import scala.collection.mutable.ListBuffer
 import org.scalaml.core.XTSeries
 
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import scala.collection.mutable.TreeSet
 
 

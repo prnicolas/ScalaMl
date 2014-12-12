@@ -2,11 +2,12 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.filtering
 
@@ -32,27 +33,32 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], DblS
 		 * <p>Parameterized simple moving average data transformation. The computation is implemented
 		 * by the pipe operator |>. The numeric type has to be implicitly defined in order to execute
 		 * arithmetic operation on elements of the time series.</p>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 *  x'(t) = x'(t-1) + [x(t)-x(t-p)]/p  with x' estimate of x</span></pre>
 		 * @constructor Create a simple moving average
 		 * @param period Period or size of the time window, p in the moving average
 		 * @param num instance of Numeric type using for summation
 		 * @throws IllegalArgumentExceptionif period is non positive
-		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior instantiation of the moving average
+		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior 
+		 * instantiation of the moving average
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-@implicitNotFound("SimpleMovingAverage Numeric bound has to be implicitly defined for the Simple moving average")
-final protected class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)(implicit num: Numeric[T]) 
-				extends MovingAverage[T] {
-	require( period > 0 && period < 1e+4, s"SimpleMovingAverage Cannot compute moving average with an incorrect $period")
+@implicitNotFound("SimpleMovingAverage Numeric bound has to be implicitly defined")
+final protected class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)
+		(implicit num: Numeric[T]) 	extends MovingAverage[T] {
+	require( period > 0 && period < 1e+4, 
+			s"SimpleMovingAverage Cannot compute moving average with an incorrect $period")
    
 		/**
-		 * <p>Implementation of the data transformation of a time series of type T to a time series of type Double.</p>
+		 * <p>Implementation of the data transformation of a time series of type T to a time series 
+		 * of type Double.</p>
 		 * @throws MatchError exception if the input time series is undefined
-		 * @return Partial function with time series of type T as input and time series of type Double as output.
+		 * @return Partial function with time series of type T as input and time series of type 
+		 * Double as output.
 		 */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 0) => {
@@ -77,7 +83,8 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		/**
 		 * <p>Implementation of the data transformation of a vector of double values.</p>
 		 * @throws MatchError if the input time series is undefined
-		 * @return PartialFunction of type vector of Double for input to the transformation, and type vector of Double for output.
+		 * @return PartialFunction of type vector of Double for input to the transformation, and 
+		 * type vector of Double for output.
 		 */
 	def get : PartialFunction[DblVector, DblVector] = {
 		case data: DblVector if(data != null && data.size > 0) => {
@@ -114,9 +121,10 @@ object SimpleMovingAverage {
 }
 
 		/**
-		 * <p>Parameterized exponential moving average data transformation. The computation is implemented
-		 * by the pipe operator |>.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <p>Parameterized exponential moving average data transformation. The computation is 
+		 * implemented by the pipe operator |>.
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 *  x'(t) = (1- alpha).x'(t-1) + alpha.x(t)  with x' is the estimate of x</span></pre></p>
 		 * @constructor Create an exponential moving average
 		 * @param period Period or size fo the time window in the moving average
@@ -126,9 +134,14 @@ object SimpleMovingAverage {
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-final protected class ExpMovingAverage[@specialized(Double) T <% Double](period: Int, alpha: Double) extends MovingAverage[T]  {
-	require( period > 0, s"ExpMovingAverage Cannot initialize exponential moving average with period = $period")
-	require( alpha > 0 && alpha <= 1.0, s"ExpMovingAverage Cannot initialize exponential with alpha = $alpha")
+final protected class ExpMovingAverage[@specialized(Double) T <% Double](
+		period: Int, 
+		alpha: Double) extends MovingAverage[T]  {
+	
+  require( period > 0, 
+			s"ExpMovingAverage Cannot initialize exponential moving average with period = $period")
+	require( alpha > 0 && alpha <= 1.0, 
+			s"ExpMovingAverage Cannot initialize exponential with alpha = $alpha")
    
 		/**
 		 * Constructor for the normalized exponential moving average for which alpha = 2.0/(period + 1)
@@ -137,9 +150,11 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](period:
 	def this(period: Int)= this(period,2.0/(period+1))
   
 		 /**
-		  * <p>Implementation of the data transformation, exponential moving average by overloading the pipe operator.</p> 
+		  * <p>Implementation of the data transformation, exponential moving average by overloading 
+		  * the pipe operator.</p> 
 		  * @throws MatchError if the input time series is undefined
-		  * @return PartialFunction of time series of type T and a time series of Double elements as output
+		  * @return PartialFunction of time series of type T and a time series of Double elements 
+		  * as output
 		  */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
@@ -182,7 +197,8 @@ object ExpMovingAverage {
 		/**
 		 * <p>Parameterized weighted average data transformation. The computation is implemented
 		 * by the pipe operator |>.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * x'(t) = { wt.x(t) + wt-1.x(t-1) + wt-2.x(t-2) + .... + wt-p.x(t-p) } /p</span></pre></p>
 		 * @constructor Create a weighted moving average
 		 * @param weights Weights (or coefficients) used in the time window
@@ -191,13 +207,19 @@ object ExpMovingAverage {
 		 * @since February 7, 2014
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-final class WeightedMovingAverage[@specialized(Double) T <% Double](weights: DblVector) extends MovingAverage[T]  {
-	require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, "WeightedMovingAverage Weights are not defined or normalized")
+final class WeightedMovingAverage[@specialized(Double) T <% Double](
+		weights: DblVector
+		) extends MovingAverage[T]  {
+  
+	require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, 
+			"WeightedMovingAverage Weights are not defined or normalized")
      
 		/**
-		 * <p>Implementation of the data transformation, weighted moving average by overloading the pipe operator.</p>
+		 * <p>Implementation of the data transformation, weighted moving average by overloading 
+		 * the pipe operator.</p>
 		 * @throws MatchError if the input time series is undefined
-		 * @return PartialFunction of type vector of Double for input to the transformation, and type vector of Double for output.
+		 * @return PartialFunction of type vector of Double for input to the transformation, and 
+		 * type vector of Double for output.
 		 */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
 		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97
+ * Version 0.97.2
  */
 package org.scalaml.unsupervised.pca
 
@@ -17,7 +17,7 @@ import org.apache.commons.math3.exception.{MathIllegalArgumentException, MaxCoun
 import org.scalaml.core.Types.{CommonMath, ScalaMl}
 import org.scalaml.core.design.PipeOperator
 import ScalaMl._
-import org.scalaml.util.Display
+import org.scalaml.util.DisplayUtils
 import org.apache.log4j.Logger
 import scala.util.{Try, Success, Failure}
 
@@ -77,7 +77,7 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 			} 
 			match {
 				case Success(eigenResults) => eigenResults
-				case Failure(e) => Display.error("PCA.|> zScoring ", logger, e); (Array.empty, Array.empty)
+				case Failure(e) => DisplayUtils.error("PCA.|> zScoring ", logger, e); (Array.empty, Array.empty)
 			}
 		}
 	}
