@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -16,9 +17,11 @@ import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.app.Eval
 
 		/**
-		 * <p><b>Purpose:</b> Singleton for the evaluation of Hidden Markov Models presented in chapter 7<br>
+		 * <p><b>Purpose:</b> Singleton for the evaluation of Hidden Markov Models presented in 
+		 * chapter 7<br>
 		 * Symbols: Stock up/down (1, 0)<br>
-		 * States: 6 normalized ratio of % bullish investors / % bearish investors discretized in 6 different levels<br>
+		 * States: 6 normalized ratio of % bullish investors / % bearish investors discretized in 
+		 * 6 different levels<br>
 		 * </p>
 		 * @author Patrick Nicolas
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov model
@@ -130,7 +133,7 @@ object HMMEval extends Eval  {
 		Try( hmm |> observedSeq ) match {
 			case Success(predictor) => {
 				val indices = predictor._2.foldLeft(new StringBuilder)((b, p) => b.append(s"$p, "))
-				DisplayUtils.show(s"$name (Evaluation) Likelihood: ${predictor._1.toString}\nindices: $indices", logger)
+				DisplayUtils.show(s"$name Likelihood: ${predictor._1.toString}\nindices: $indices", logger)
 			}
 			case Failure(e) => DisplayUtils.error(s"$name .run", logger, e)
 		}

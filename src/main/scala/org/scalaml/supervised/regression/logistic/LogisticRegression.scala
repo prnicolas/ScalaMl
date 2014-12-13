@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -31,7 +32,8 @@ import XTSeries._, ScalaMl._
 		/**
 		 * <p>Logistic regression classifier. This implementation of the logistic regression does not 
 		 * support regularization or penalty terms.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2) + .. + w(n).x(n))) </span></pre></p>
 		 * @constructor Create a logistic regression classifier model.
 		 * @throws IllegalArgumentException if the class parameters are undefined. 
@@ -94,11 +96,13 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 * as a data transformation (PipeOperator). The predictor relies on a margin
 		 * error to associated to the outcome 0 or 1.<br>
 		 * The condition can be either </p>
-		 * @throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
+		 * @throws MatchError if the model is undefined or has an incorrect size or the input feature 
+		 * is undefined
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 		 */
 	override def |> : PartialFunction[Feature, Int] = {
-		case x: Feature  if(x != null && x.size > 0 && model != None && (model.get.size -1 == x.size)) => {	
+		case x: Feature  if(x != null && x.size > 0 && model != None && 
+				(model.get.size -1 == x.size)) => {	
 				// Get the weights ws1 to 2n
 			val w = model.get.weights.drop(1)
 			
@@ -130,9 +134,10 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 */
 		val lrJacobian = new MultivariateJacobianFunction {
 			override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
-				require(w != null, "MultivariateJacobianFunction undefined weight for computing the Jacobian matrix")
+				require(w != null, 
+						"MultivariateJacobianFunction undefined weight for computing the Jacobian matrix")
 				require(w.toArray.length == dimension(xt)+1, 
-					s"MultivariateJacobianFunction number of weights ${w.toArray.length} should match the dimension of the time series ${dimension(xt)+1}")
+						s"MultivariateJacobianFunction Number of weights ${w.toArray.length} != dimension  ${dimension(xt)+1}")
 
 				val _w = w.toArray 	  
 					// computes the pair (function value, derivative value)
@@ -166,7 +171,10 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 				 * between two consecutive iterations and the number of iterations
 				 * not to exceed the maximum allowed.
 				 */
-			override def converged(iteration: Int, prev: PointVectorValuePair, current: PointVectorValuePair): Boolean =  {
+			override def converged(
+					iteration: Int, 
+					prev: PointVectorValuePair, 
+					current: PointVectorValuePair): Boolean =  {
 				val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
 					val diff = z._1 - z._2
 							s + diff*diff 
@@ -217,7 +225,8 @@ object LogisticRegression {
 	final val HYPERPLANE = - Math.log(1.0/(MARGIN + INITIAL_WEIGHT) -1)
    
 	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
-	implicit def tupleToPair[RealVector, RealMatrix](pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
+	implicit def tupleToPair[RealVector, RealMatrix](
+			pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
 		= new Pair[RealVector,RealMatrix](pair._1, pair._2)
 
 		/**
@@ -226,15 +235,19 @@ object LogisticRegression {
 		 * @param labels Labeled class data used during training of the classifier
 		 * @param optimizer Optimization method used to minimmize the loss function during training
 		 */
-	def apply[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
+	def apply[T <% Double](
+			xt: XTSeries[Array[T]], 
+			labels: Array[Int], 
+			optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
 		new LogisticRegression[T](xt, labels, optimizer)
   	    	
 	private def check[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
-		require(xt != null && xt.size > 0, "Cannot compute the logistic regression of undefined time series")
-		require(xt.size == labels.size, s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
+		require(xt != null && xt.size > 0, 
+				"Cannot compute the logistic regression of undefined time series")
+		require(xt.size == labels.size, 
+				s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
 		require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
    }
 }
-
 
 // --------------------------------------  EOF -------------------------------------------------------

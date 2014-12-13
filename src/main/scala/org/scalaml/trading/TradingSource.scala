@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -16,8 +17,8 @@ import org.apache.log4j.Logger
 
 
 	/**
-	 *  Enumerator that describes the fields used in the extraction of price related data from the Yahoo
-	 *  finances historical data. The data is loaded from a CSV file.
+	 *  Enumerator that describes the fields used in the extraction of price related data from 
+	 *  the Yahoo finances historical data. The data is loaded from a CSV file.
 	 *  
 	 *  @author Patrick Nicolas
 	 *  @since Feb 17, 2014
@@ -38,15 +39,19 @@ object YahooFinancials extends Enumeration {
 		/** 
 		 *  Divide to fields as the ratio of their converted values.
 		 */
-	def divide(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble/s(v2.id).toDouble
+	def divide(v1: Value, v2: Value): Fields => Double = 
+			(s: Fields) => s(v1.id).toDouble/s(v2.id).toDouble
 	
 	def ratio(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
 		 try {  s(v1.id).toDouble/s(v2.id).toDouble - 1.0 } 
 		 catch { case e: NumberFormatException => -1.0} 
 		 
-	def plus(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble + s(v2.id).toDouble
-	def minus(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble - s(v2.id).toDouble
-	def times(v1: Value, v2: Value): Fields => Double = (s: Fields) => s(v1.id).toDouble * s(v2.id).toDouble
+	def plus(v1: Value, v2: Value): Fields => Double = 
+			(s: Fields) => s(v1.id).toDouble + s(v2.id).toDouble
+	def minus(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
+			s(v1.id).toDouble - s(v2.id).toDouble
+	def times(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
+			s(v1.id).toDouble * s(v2.id).toDouble
 
 		/**
 		 * Extract value of the ADJ_CLOSE field
@@ -71,7 +76,8 @@ object YahooFinancials extends Enumeration {
 		/**
 		 * Computes the ratio of volatility over volume
 		 */
-	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	val volatilityVol = ((s: Fields) => 
+			((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
 	
 		/**
 		 * Computes the difference between ADJ_CLOSE and OPEN
@@ -86,12 +92,13 @@ object YahooFinancials extends Enumeration {
 		/**
 		 * Computes the ratio of relative volatility over volume as (1 - LOW/HIGH)/VOLUME
 		 */
-	val volatilityByVol = ((s: Fields) => ((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
+	val volatilityByVol = ((s: Fields) => 
+		((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
 }
 
 		/**
-		 *  Enumerator that describes the fields used in the extraction of price related data from the Google
-		 *  finances historical data. The data is loaded from a CSV file.
+		 *  Enumerator that describes the fields used in the extraction of price related data 
+		 *  from the Google finances historical data. The data is loaded from a CSV file.
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @since Feb 19, 2014
@@ -121,7 +128,8 @@ object GoogleFinancials extends Enumeration {
 		/**
 		 * Extract stock volatility relative to session volume as (HIGH - LOW)/VOLUME
 		 */
-	val volatilityVol = ((s: Fields) => ((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	val volatilityVol = ((s: Fields) => 
+		((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
 }
 
 
@@ -134,8 +142,9 @@ object GoogleFinancials extends Enumeration {
 		 */
 object Fundamentals extends Enumeration {
 	type Fundamentals = Value
-	val TICKER, START_PRICE, END_PRICE, RELATIVE_PRICE_CHANGE, DEBT_TO_EQUITY, DIVIDEND_COVERAGE, OPERATING_MARGIN, 
-		SHORT_INTEREST, CASH_PER_SHARE, CASH_PER_SHARE_TO_PRICE, EPS_TREND, DIVIDEND_YIELD, DIVIDEND_TREND = Value
+	val TICKER, START_PRICE, END_PRICE, RELATIVE_PRICE_CHANGE, DEBT_TO_EQUITY, 
+		DIVIDEND_COVERAGE, OPERATING_MARGIN, SHORT_INTEREST, CASH_PER_SHARE, 
+		CASH_PER_SHARE_TO_PRICE, EPS_TREND, DIVIDEND_YIELD, DIVIDEND_TREND = Value
 
 	import org.scalaml.workflow.data.DataSource.Fields
 	val ticker = ((s: Fields) => s(TICKER.id))

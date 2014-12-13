@@ -33,14 +33,16 @@ import scala.collection.mutable.TreeSet
 		 * @note Scale for Machine Learning Appendix/Finances 101
 		 */
 case class TradingStrategy(val name: String, signals: List[Signal]) {
-   require(signals != null && signals.size > 0, s"TradingStrategy Signals for this trading strategy is either undefined or empty")
+	require(signals != null && signals.size > 0, 
+			s"TradingStrategy Signals for this trading strategy is either undefined or empty")
 }
 
 
 		/**
-		 * <p>Factory for trading strategies. The factory collects all the trading signals needed to implement
-		 * the trading strategy. The strategies are generated as the list of all combination of nSignals trading
-		 * signals, once and only once when requested. The Factory is mainly used for initializing the population for the genetic algorithm or the
+		 * <p>Factory for trading strategies. The factory collects all the trading signals needed 
+		 * to implement the trading strategy. The strategies are generated as the list of all 
+		 * combination of nSignals trading signals, once and only once when requested. The Factory 
+		 * is mainly used for initializing the population for the genetic algorithm or the
 		 * extended learning classifiers.</p>
 		 * @constructor Instantiate a factory for all the combination of nSignals trading signals.
 		 * @throws IllegalArgumentException if the number of signals is less than 1
@@ -60,8 +62,8 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 	private[this] val signals  = new ListBuffer[Signal]
    
 		/**
-		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
-		 * target vablue, operator, the observations its acts upon and optionally the weights
+		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by 
+		 * its identifier, id, target vablue, operator, the observations its acts upon and optionally the weights
 		 * @param id Identifier for the signal created and collected
 		 * @param target target value (or threshold) for the signal created and collected
 		 * @param op Operator of type SOperator of the signal added to the pool
@@ -74,7 +76,7 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 	}
 	
 		/**
-		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by its identifier, id,
+		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by  its identifier, id,
 		 * target value, operator, the observations its acts upon and optionally the weights.</p>
 		 * @param id Identifier for the signal created and collected
 		 * @param target target value (or threshold) for the signal created and collected
@@ -110,8 +112,10 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 	}
 	
 	private def checkArguments(xt: DblVector, weights: DblVector): Unit = {
-		require(xt != null && xt.size > 0, "StrategyFactory.checkArgument Data input to the signal added to this strategy is undefined")
-		require(weights != null && weights.size > 0, "StrategyFactory.checkArgument Weights of the signal be added to this strategy is undefined")
+		require(xt != null && xt.size > 0, 
+				"StrategyFactory.checkArgument Data input to the signal added to this strategy is undefined")
+		require(weights != null && weights.size > 0, 
+				"StrategyFactory.checkArgument Weights of the signal be added to this strategy is undefined")
 	}
 }
 

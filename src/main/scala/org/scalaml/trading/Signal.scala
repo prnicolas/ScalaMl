@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -22,19 +23,22 @@ import org.scalaml.util.DisplayUtils
 		/**
 		 * <p>Define a trading signal as used in technical analysis of financial markets. A partial
 		 * list of trading signals, include volume, Flow index, momentum or oscillators. This class
-		 * inherit the <b>Gene</b> class so trading signals can be threaded into trading strategy implemented
-		 * as chromosomes of a genetic algorithm.<br>
-		 * A trading signal is emitted once a value (or data point) in a time series reaches a threshold (upward or downward movement).<br>
+		 * inherit the <b>Gene</b> class so trading signals can be threaded into trading strategy 
+		 * implemented as chromosomes of a genetic algorithm.<br>
+		 * A trading signal is emitted once a value (or data point) in a time series reaches a 
+		 * threshold (upward or downward movement).<br>
 		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
 		 * The class assume that a digitization function that discrete a continuous value is defined
 		 * implicitly.</p>
-		 * @constructor Create a trading signal used for analyzing changes in variables derived from the price and trading volume of a security. 
+		 * @constructor Create a trading signal used for analyzing changes in variables derived from 
+		 * the price and trading volume of a security. 
 		 * @param id Label or identifier for the trading signal
 		 * @param target Target value (or threshold) used to trigger the signal.
 		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
 		 * @param xt  Times series of single variable the signal acts upon.
 		 * @param weights Weights applied to each value of the time series (optional).
-		 * @param discr Discretization function that convert analog or continuous signal to a discrete time series.
+		 * @param discr Discretization function that convert analog or continuous signal to a 
+		 * discrete time series.
 		 * 
 		 * @throws IllegalArgumentException if the class parameters are not properily defined.
 		 * @throws ImplicitNotFoundException if the discretization function has not been defined.
@@ -45,8 +49,12 @@ import org.scalaml.util.DisplayUtils
 		 * @since March 4, 2014 Appendix Finances 101 / Technical analysis
 		 */
 @implicitNotFound("Signal does not have a discretization function implicitly defined")
-final class Signal(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)(implicit discr: Discretization) 
-					extends Gene(id, target, op) {
+final class Signal(
+		id: String, 
+		target: Double, 
+		op: Operator, 
+		xt: DblVector, 
+		weights: DblVector)(implicit discr: Discretization)	extends Gene(id, target, op) {
 	import Signal._
 	check(id, op, xt, weights)
    

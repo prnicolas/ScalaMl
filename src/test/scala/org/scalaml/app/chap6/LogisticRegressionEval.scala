@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -27,7 +28,8 @@ import org.scalaml.app.Eval
 		 * technical analysis of an Exchange Traded Fund.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Logistic regression
+		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Logistic 
+		 * regression
 		 */
 object LogisticRegressionEval extends Eval {
 	import scala.util.{Random, Try, Success, Failure}
@@ -69,13 +71,14 @@ object LogisticRegressionEval extends Eval {
 			val data =  volatility.zip(volume).map(z => Array[Double](z._1, z._2))
 
 			val features: DblMatrix = data.toArray.dropRight(1)
-			val lsOptimizer = LogisticRegressionOptimizer(maxIters, maxEvals, eps, new LevenbergMarquardtOptimizer)
-			val regression = LogisticRegression[Double](XTSeries[DblVector](features), deltaPrice, lsOptimizer)
+			val lsOptimizer = LogisticRegressionOptimizer(maxIters, maxEvals, eps, 
+					new LevenbergMarquardtOptimizer)
+			val regression = LogisticRegression[Double](XTSeries[DblVector](features), deltaPrice, 
+					lsOptimizer)
 
 			
 			DisplayUtils.show(s"$name ${toString(regression)}",  logger)		
 			val predicted = features.map(ft => (regression |> ft))
-	//		DisplayUtils.show(s"$name Results of logistic regression prediction versus actual", logger)
 			
 			val comparison = predicted.zip(deltaPrice).map(pd => if(pd._1 == pd._2) 1 else 0)
 			val accuracy = comparison.sum.toDouble/deltaPrice.size

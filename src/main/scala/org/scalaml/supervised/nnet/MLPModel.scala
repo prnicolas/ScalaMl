@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -27,11 +28,7 @@ import MLPLayer._
 		 * <li>MLPConnection: Container for all the synapses between two layers</li>
 		 * </ul>
 		 * The parameters of the class and the arguments of its methods are not validated as the class 
-		 * has package scope (protected)<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">The components of a MLP model are:<br>
-		 * <b>MLPLayer</b> Layer or array of neuron or elements<br>
-		 * <b>MLPSynapse</b> Synapse or connection between neurons of two consecutive layers<br>
-		 * <b>MLPConnection</b> Container for all the synapses between two layers.</span></pre></p>
+		 * has package scope (protected)</p>
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out-of-range
 		 * @param config Configuration parameters for the MLP.
 		 * @param nInputs Input value for the Network, that is the initial value of the input layer.
@@ -41,10 +38,14 @@ import MLPLayer._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network Multilayer perceptron Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
+		 * / Model definition
 		 */
-final protected class MLPModel(config: MLPConfig, nInputs: Int, nOutputs: Int)
- 					(implicit val mlpObjective: MLP.MLPObjective) extends Model {
+final protected class MLPModel(
+		config: MLPConfig, 
+		nInputs: Int, 
+		nOutputs: Int)
+		(implicit val mlpObjective: MLP.MLPObjective) extends Model {
 	
 	import MLPModel._
 
@@ -141,8 +142,10 @@ object MLPModel {
 	
 	private def check(config: MLPConfig, nInputs: Int, nOutputs: Int): Unit = {
 		require(config != null, "MLPModel Cannot create a model with undefined configuration")
-		require(nInputs > 0 && nInputs < MAX_MLP_NUM_INPUTS, s"MLPModel number of input nodes $nInputs is out of range")
-		require(nOutputs > 0 && nOutputs < MAX_MLP_NUM_OUTPUTS, s"MLPModel number of output nodes $nOutputs is out of range")
+		require(nInputs > 0 && nInputs < MAX_MLP_NUM_INPUTS, 
+				s"MLPModel number of input nodes $nInputs is out of range")
+		require(nOutputs > 0 && nOutputs < MAX_MLP_NUM_OUTPUTS, 
+				s"MLPModel number of output nodes $nOutputs is out of range")
 	}
 }
 

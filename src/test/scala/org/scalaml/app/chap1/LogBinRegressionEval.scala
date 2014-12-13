@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -55,7 +56,7 @@ object LogBinRegressionEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Loading history Cisco stock for training logistic regression", logger)
+		DisplayUtils.show(s"$header Loading history Cisco stock for logistic regression", logger)
 		
 		load(path_training) match {
 			case Some(volatilityVolume) => {
@@ -70,15 +71,17 @@ object LogBinRegressionEval extends Eval {
 				load(path_test) match {
 					case Some(test) =>{
 						logit.classify(test(0)) match {
-							case Some(topCategory) => DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
+							case Some(topCategory) => 
+								DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
 							case None => DisplayUtils.error(s"$name Failed to classify", logger)
 						}
 						logit.classify(test(1)) match {
-							case Some(topCategory) => DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
+							case Some(topCategory) => 
+								DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
 							case None => DisplayUtils.error(s"$name Failed to classify", logger)
 						}
 					}	
-					case None => DisplayUtils.error(s"$name Could not load training set for $path_test", logger)
+					case None => DisplayUtils.error(s"$name Could not load training set from $path_test", logger)
 				}
 			}
 			case None => DisplayUtils.error(s"$name  Could not load test set for $path_training", logger)
@@ -113,9 +116,11 @@ object LogBinRegressionEval extends Eval {
 		 * Method to display a time series
 		 */
 	private def display(volatilityVolume: XYTSeries): Unit = {
-		require(volatilityVolume != null && volatilityVolume.size > 0, "LogBinRegressionEval.displayCannot display an undefined time series")
+		require(volatilityVolume != null && volatilityVolume.size > 0, 
+				"LogBinRegressionEval.display Cannot display an undefined time series")
        
-		val plotter = new ScatterPlot(("CSCO 2012-13 stock price session volatiity", "Normalized session volatility", "Normalized session Volume"), 
+		val plotter = new ScatterPlot(("CSCO 2012-13 stock price session volatiity", 
+				"Normalized session volatility", "Normalized session Volume"), 
 				new BlackPlotTheme)
 		plotter.display(volatilityVolume, 250, 340)
 	}

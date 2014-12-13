@@ -28,7 +28,8 @@ import scala.util.{Try, Success, Failure}
 		 * matrix and the eigenvalues (normalized values ordered by decreasing order). The features
 		 * (or variables) associated with a low eigenvalue are eliminated, reducing the dimension 
 		 * of the model and the complexity of any future supervised learning algorithm.</p>
-		 * @constructor Instantiate a principal component analysis algorithm as a data transformation of type PipeOperator
+		 * @constructor Instantiate a principal component analysis algorithm as a data transformation 
+		 * of type PipeOperator
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 26, 2014
@@ -45,7 +46,8 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 		 * the manipulation of matrices are caught in the method.</p>
 		 * @param xt time series of dimension > 1 
 		 * @throws MatchError if the input time series is undefined or have no elements
-   		 * @return PartialFunction of time series of elements of type T as input to the Principal Component Analysis and tuple Covariance matrix and vector of eigen values as output
+		 * @return PartialFunction of time series of elements of type T as input to the Principal 
+   	 * Component Analysis and tuple Covariance matrix and vector of eigen values as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], (DblMatrix, DblVector)] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0) => {
@@ -77,7 +79,10 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 			} 
 			match {
 				case Success(eigenResults) => eigenResults
-				case Failure(e) => DisplayUtils.error("PCA.|> zScoring ", logger, e); (Array.empty, Array.empty)
+				case Failure(e) => {
+					DisplayUtils.error("PCA.|> zScoring ", logger, e)
+					(Array.empty, Array.empty)
+				}
 			}
 		}
 	}

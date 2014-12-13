@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -34,20 +35,27 @@ trait SVMConfigItem {
 
 
 		/**
-		 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of a SVM has
-		 * three elements: SVM formulation, Kernel function and the execution parameters.</p>
-		 * @constructor Create a configuration for this SVM with a given formulation, kernel function and execution parameters.
+		 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of 
+		 * a SVM has three elements: SVM formulation, Kernel function and the execution parameters.</p>
+		 * @constructor Create a configuration for this SVM with a given formulation, kernel function 
+		 * and execution parameters.
 		 * @see LIBSVM
-		 * @throws IllegalArgumentException if the formulation, kernel or execution parameter are undefined.
-		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
-		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
+		 * @throws IllegalArgumentException if the formulation, kernel or execution parameter are 
+		 * undefined.
+		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
+		 * of the SVM algorithm)
+		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
+		 * of the Kernel function used for non-linear problems
 		 * @param exec Execution parameters for the training of the SVM model.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
-final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, exec: SVMExecution) extends Config {
+final protected class SVMConfig(
+		formulation: SVMFormulation, 
+		kernel: SVMKernel, 
+		exec: SVMExecution) extends Config {
 	import SVMConfig._
 	
 	check(formulation, kernel, exec)
@@ -102,7 +110,8 @@ final protected class SVMConfig(formulation: SVMFormulation, kernel: SVMKernel, 
 
 
 		/**
-		 * <p>Companion object for SVM configuration manager used for defining the constructors of SVMConfig class.</p>
+		 * <p>Companion object for SVM configuration manager used for defining the constructors of 
+		 * SVMConfig class.</p>
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
@@ -112,25 +121,34 @@ object SVMConfig {
 	
 		/**
 		 * Default constructor for the configuration of the support vector machine
-		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
-		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
+		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
+		 * of the SVM algorithm)
+		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
+		 * of the Kernel function used for non-linear problems
 		 * @param exec Execution parameters for the training of the SVM model.
 		 */
 	def apply(svmType: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): SVMConfig = 
 		new SVMConfig(svmType, kernel, svmParams)
 
 		/**
-		 * Constructor for the configuration of the support vector machine with a predefined execution parameters
-		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation of the SVM algorithm)
-		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) of the Kernel function used for non-linear problems
+		 * Constructor for the configuration of the support vector machine with a predefined execution 
+		 * parameters
+		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
+		 * of the SVM algorithm)
+		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
+		 * of the Kernel function used for non-linear problems
 		 */
 	def apply(svmType: SVMFormulation, kernel: SVMKernel): SVMConfig = 
 		new SVMConfig(svmType, kernel, SVMExecution.apply)
-   
-    private def check(formulation: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): Unit =  {
-		require(formulation != null, "Formulation in the configuration of SVM is undefined")
-		require(kernel != null, "Kernel function in the configuration of SVM is undefined")
-		require(svmParams != null, "The training execution parameters in the configuration of SVM is undefined")	
+   	
+	private def check(
+			formulation: SVMFormulation, 
+			kernel: SVMKernel, 
+			svmParams: SVMExecution): Unit =  {
+		require(formulation != null, "SVMConfig.check Formulation in the configuration is undefined")
+		require(kernel != null, "SVMConfig.check Kernel function in the configuration is undefined")
+		require(svmParams != null, 
+				"SVMConfig.check Training execution parameters in the configuration of SVM is undefined")	
 	}
 }
 

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -27,11 +28,12 @@ import MLP._
 		 * @throws IllegalArgumentException if the class parameters are incorrect
 		 * @param id Identifier or rank of the MLP layer in the network.
 		 * @param len Number of elements or neuron in the MLP layer.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since May 6, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
+		 * / Model definition
 		 */
-
 final protected class MLPLayer(val id: Int, val len: Int) {
 	import MLPLayer._
 	check(id, len)
@@ -55,7 +57,8 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 * @throws IllegalArgumentException if the input vector is undefined
 		 */
 	def set(_x: DblVector): Unit = {
-		require(_x != null && _x.size > 0, s"MLPLayer.set Cannot initialize this MLP layer $id with undefined data")
+		require(_x != null && _x.size > 0, 
+				s"MLPLayer.set Cannot initialize this MLP layer $id with undefined data")
 		_x.copyToArray(output, 1)
 	}
 
@@ -63,11 +66,14 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 * <p>Compute the sum of squared error of the neurons/elements of this MLP layer.</p>
 		 * @param labels target output value
 		 * @return sum of squared of errors/2
-		 * @throws IllegalArgumentException if the size of the output vector is not equals to the size of the input vector + 1
+		 * @throws IllegalArgumentException if the size of the output vector is not equals to the 
+		 * size of the input vector + 1
 		 */
 	final def sse(labels: DblVector): Double = {
-		require(labels != null, "MLPLayer.sse Cannot compute the sum of squared errors with undefined labeled values")
-		require(output.size == labels.size+1, s"MLPLayer.sse The size of the output ${output.size} should be equal to target ${labels.size+1}")
+		require(labels != null, 
+				"MLPLayer.sse Cannot compute the sum of squared errors with undefined labels")
+		require(output.size == labels.size+1, 
+				s"MLPLayer.sse The size of the output ${output.size} != to size of target ${labels.size+1}")
   	  
 		var _sse = 0.0
 		output.drop(1).zipWithIndex.foreach(on => {
@@ -103,7 +109,8 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 * Companion object for the MLP layer used to define a default constructor
 		 * and validate its input parameters
 		 * @author Patrick Nicolas
-		 * @since May 5, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
+		 * / Model definition
 		 */
 object MLPLayer {
 		/**

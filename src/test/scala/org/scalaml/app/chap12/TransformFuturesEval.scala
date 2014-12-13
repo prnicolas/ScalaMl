@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -29,7 +30,7 @@ import org.scalaml.util.{FormatUtils, DisplayUtils}
 
 		/**
 		 * <p>Specialized Akka futures for the distributed discrete Fourier transform.</p>
-		 * @constructor Create a set of futures for the distributed discrete Fourier transform. [xt] time series to be processed. [partitioner] Partitioning methodology for distributing time series across a cluster of worker actors.
+		 * @constructor Create a set of futures for the distributed discrete Fourier transform.
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
 		 * 
 		 * @author Patrick Nicolas
@@ -46,10 +47,12 @@ final class DFTTransformFutures(xt: DblSeries, partitioner: Partitioner)(implici
 		 * @return Sequence of frequencies 
 		 */
 	override protected def aggregate(data: Array[DblSeries]): Seq[Double] = {
-		require(data != null && data.size > 0, "DFTTransformFutures.aggregate Output of one of the workers undefined")
+		require(data != null && data.size > 0, 
+				"DFTTransformFutures.aggregate Output of one of the workers undefined")
 		
 		val results = data.map(_.toArray).transpose.map(_.sum).take(SPECTRUM_WIDTH)
-		DisplayUtils.show(s"Index  Frequencies\n${FormatUtils.format(results, "", FormatUtils.ShortFormat)}", logger)
+		val freq_str = FormatUtils.format(results, "", FormatUtils.ShortFormat)
+		DisplayUtils.show(s"Index  Frequencies\n$freq_str", logger)
 		results.toSeq
 	}
 }
@@ -99,7 +102,9 @@ object TransformFuturesEval extends Eval {
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
   
-		val master = TestContext.actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), "DFTTransform")
+		val master = TestContext.actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), 
+				"DFTTransform")
+				
 		Try {
 			val future = master ? Start(0)
 			Await.result(future, timeout.duration)

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -131,10 +132,11 @@ object ActorsManagerEval extends Eval {
 				// The argument specifies if the group of worker actors is supervised
 				// by a routing actor or not..
 			val controller = if(args(0) == "router")
-				TestContext.actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, aggrFrequencies)), 
-						"MasterWithRouter")
+				TestContext.actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, 
+						aggrFrequencies)),	"MasterWithRouter")
 			else
-				TestContext.actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), "Master")
+				TestContext.actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), 
+						"Master")
 		
 				// Launch the execution
 			controller ! Start(1)

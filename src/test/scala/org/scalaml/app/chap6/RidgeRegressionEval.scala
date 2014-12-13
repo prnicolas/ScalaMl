@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -23,7 +24,7 @@ import org.scalaml.app.Eval
 		 * technical analysis of an Exchange Traded Fund.</p>
 		 * 
 		 * @author Patrick Nicolas
-		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Riedge regression
+		 * @note: Scala for Machine Learning  Chapter 6 Regression and regularization / Ridge regression
 		 */
 object RidgeRegressionEval extends Eval {
 	import scala.util.{Try, Success, Failure}
@@ -107,11 +108,16 @@ object RidgeRegressionEval extends Eval {
 				-1
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Could not load data for Ridge regression", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run Could not load data for Ridge regression", 
+			    logger, e)
 		}
  	}
    
- 	private def rss(lambda: Double, deltaPrice: DblVector, volatility: DblVector, volume: DblVector): Double = {
+ 	private def rss(
+ 			lambda: Double, 
+ 			deltaPrice: DblVector, 
+ 			volatility: DblVector, 
+ 			volume: DblVector): Double = {
 		val data =  volatility.zip(volume).map(z => Array[Double](z._1, z._2))
 		
 		val features = XTSeries[DblVector](data.dropRight(1))
@@ -119,7 +125,11 @@ object RidgeRegressionEval extends Eval {
 		regression.rss.get
 	}
    
-	private def predict(lambda: Double, deltaPrice: DblVector, volatility: DblVector, volume: DblVector): DblVector = {
+	private def predict(
+			lambda: Double, 
+			deltaPrice: DblVector, 
+			volatility: DblVector, 
+			volume: DblVector): DblVector = {
 		val data =  volatility.zip(volume).map(z => Array[Double](z._1, z._2))
 		
 		val features = XTSeries[DblVector](data.dropRight(1))
@@ -127,13 +137,19 @@ object RidgeRegressionEval extends Eval {
 		features.map( regression |> _)
  	}
 	
-	private def display(z: DblVector, y1: DblVector, y2: DblVector, lambda1: Double, lambda2: Double): Unit = {
+	private def display(
+			z: DblVector, 
+			y1: DblVector, 
+			y2: DblVector, 
+			lambda1: Double, 
+			lambda2: Double): Unit = {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 	  
 		val plot = new LinePlot(("Ridge Regression", s" L2 lambda impact", "y"), new LightPlotTheme)
 		val data = (z, "Delta price") :: 
 					(y1, s"L2 lambda $lambda1") :: 
 					(y2, s"L2 lambda $lambda2") :: List[(DblVector, String)]()
+					
 		plot.display(data, 340, 280)
 	}
 }

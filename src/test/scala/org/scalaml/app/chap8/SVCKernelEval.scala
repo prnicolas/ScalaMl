@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -61,7 +62,8 @@ object SVCKernelEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Comparison of kernel functions for a Binary Support Vector Classifier", logger)
+		DisplayUtils.show(s"$header Comparison of kernel functions for Support Vector Classifier", 
+				logger)
 		Try {
 			compareKernel(0.6, 0.3)
 			compareKernel(0.7, 0.3)
@@ -105,7 +107,12 @@ object SVCKernelEval extends Eval {
 	}
 	
 	
-	private def evalKernel(features: DblMatrix, test: DblMatrix, labels: DblVector, kF: SVMKernel): Double = {
+	private def evalKernel(
+			features: DblMatrix, 
+			test: DblMatrix, 
+			labels: DblVector, 
+			kF: SVMKernel): Double = {
+	  
 		val config = SVMConfig(new CSVCFormulation(C), kF)
 		val xt = XTSeries[DblVector](features)
 		val svc = SVM[Double](config,  xt, labels)

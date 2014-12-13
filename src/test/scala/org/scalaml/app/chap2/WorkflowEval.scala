@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -58,7 +59,7 @@ object TransformExample {
 		 * <p>Class to illustrate the dependency injection based framework 
 		 * for building dynamic workflow. This first data transformation samples a function 
 		 * f over the interval [0, 1].</p>
-		 * @constructor Instantiate a Sampler data transformation. [samples] Number of sampled value to be generated within the interval [0, 1]
+		 * @constructor Instantiate a Sampler data transformation. 
 		 * @param Number of samples to be generated within the interval [0, 1]
 		 * @throws IllegalArgumentException if samples is out of range
 		 * @author Patrick Nicolas 

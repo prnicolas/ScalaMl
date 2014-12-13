@@ -82,7 +82,8 @@ object SVCEval extends Eval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Could not validate the training set", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run Could not validate the training set", 
+					logger, e)
 		}
 	}
 }

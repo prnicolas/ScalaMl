@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -57,7 +58,8 @@ object FileUtils {
 				if( printWriter != null) {
 					Try(printWriter.close) match {
 						case Success(res) => res
-						case Failure(e) =>  DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
+						case Failure(e) => 
+							DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
 					}
 				}
 			}

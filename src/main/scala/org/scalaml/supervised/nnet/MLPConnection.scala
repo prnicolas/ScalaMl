@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -20,12 +21,13 @@ import org.scalaml.supervised.nnet.MLP.MLPObjective
 import org.scalaml.util.FormatUtils
 
 		/**
-		 * <p>Class that defines the connection between two consecutive (or sequential layers) in a Multi-layer
-		 * Perceptron. The connections is composed of all the synapses between any neuron
-		 * or variable of each layer. The Synapse is defined as a nested type (Double, Double) 
+		 * <p>Class that defines the connection between two consecutive (or sequential layers) 
+		 * in a Multi-layer Perceptron. The connections is composed of all the synapses between 
+		 * any neuron or variable of each layer.The Synapse is defined as a nested tuple(Double, Double) 
 		 * tuple (weights, deltaWeights)</p>
 		 * @constructor Create a MLP connection between two consecutive neural layer. 
-		 * @throws IllegalArgumenException if either the configuration or if the source layer or destination layer is undefined.
+		 * @throws IllegalArgumenException if either the configuration or if the source layer or 
+		 * destination layer is undefined.
 		 * @param config  Configuration for the Multi-layer Perceptron.
 		 * @param src  Source (or input or upstream) neural layer to this connection
 		 * @param dst  Destination (or output or downstream) neural layer for this connection.
@@ -34,7 +36,11 @@ import org.scalaml.util.FormatUtils
 		 * @since May 5, 2014
 		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron / Model definition
 		 */
-final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLayer)(implicit mlpObjective: MLP.MLPObjective)  {
+final protected class MLPConnection(
+		config: MLPConfig, 
+		src: MLPLayer, 
+		dst: MLPLayer)
+		(implicit mlpObjective: MLP.MLPObjective)  {
 	import MLPConnection._
 
 	check(config, src, dst)
@@ -52,7 +58,8 @@ final protected class MLPConnection(config: MLPConfig, src: MLPLayer, dst: MLPLa
 		 * <p>Implement the forward propagation of input value. The output
 		 * value depends on the conversion selected for the output. If the output or destination
 		 * layer is a hidden layer, then the activation function is applied to the dot product of
-		 * weights and values. If the destination is the output layer, the output value is just the dot product weights and values.</p>
+		 * weights and values. If the destination is the output layer, the output value is just 
+		 * the dot product weights and values.</p>
 		 */
 	def connectionForwardPropagation: Unit = {
 		val _output = synapses.drop(1).map(x => {

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -26,7 +27,8 @@ import org.scalaml.app.Eval
 		 * Trend analysis and filter: MultiLinearRegressionEval.filter<br>
 		 * Features selection: MultiLinearRegressionEval.featuresSelection.</p>
 		 * @author Patrick Nicolas
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression 
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least 
+		 * squares regression 
 		 */
 object MultiLinearRegressionEval extends Eval {
 	import scala.collection.mutable.ListBuffer	
@@ -95,7 +97,8 @@ object MultiLinearRegressionEval extends Eval {
 			val tss = Math.sqrt(errors.sum)/featuresList.size
 
 			Range(0, featuresList.size).foreach(n => {
-				val featureLabel = featuresList(n)._1.foldLeft(new StringBuilder)((b, symbol) => b.append(s"$symbol ")).toString
+				val featureLabel = featuresList(n)._1.foldLeft(new StringBuilder)((b, symbol) => 
+						b.append(s"$symbol ")).toString
 				DisplayUtils.show(s"MSE for ${featureLabel} ${errors(n)}", logger )
 			})
 
@@ -112,10 +115,12 @@ object MultiLinearRegressionEval extends Eval {
 		val buf = new StringBuilder
 		
 		regression.weights.get.zipWithIndex.foreach(w => {
-			if( buf.length < 2) 
-				buf.append(s"${featureLabels(w._2)}=${FormatUtils.format(w._1, "", FormatUtils.ShortFormat)}")
-			else 
-				buf.append(s" + ${FormatUtils.format(w._1,"",FormatUtils.ShortFormat)}.${featureLabels(w._2)}")
+			val weights_str = FormatUtils.format(w._1, "", FormatUtils.ShortFormat)
+			if( buf.length < 2)  
+				buf.append(s"${featureLabels(w._2)} = $weights_str")
+			else  {
+				buf.append(s" + ${weights_str}.${featureLabels(w._2)}")
+			}
 		})
 		buf.append(s"\n$name RSS: ${regression.rss.get}").toString
 	}
@@ -174,7 +179,8 @@ object MultiLinearRegressionEval extends Eval {
 					DisplayUtils.show(trend, logger)
 					display(deltaPrice, trend)
 				}
-				case None => DisplayUtils.error(s"$name Multivariate regression could not be trained", logger)
+				case None => DisplayUtils.error(s"$name Multivariate regression could not be trained", 
+						logger)
 			}
 			DisplayUtils.show(s"$name.filter Completed", logger)
 		}

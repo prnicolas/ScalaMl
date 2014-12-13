@@ -11,8 +11,7 @@
  */
 package org.scalaml.stats
 
-
-import org.scalaml.util.Counter
+import org.scalaml.util.MapUtils.Counter
 import org.scalaml.core.XTSeries
 
 		/**

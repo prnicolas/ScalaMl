@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -42,7 +43,8 @@ import SVMFormulation._
 		 * @note Scala for Machine Learning Chapter 8 Kernel Models and Support Vector Machines
 		 */
 final class CSVCFormulation(c: Double) extends SVMFormulation {
-	require(c >= C_LIMITS._1 && c <= C_LIMITS._2,"CSVCFormulation C penalty factor " + c + " is out of range")
+	require(c >= C_LIMITS._1 && c <= C_LIMITS._2, 
+			s"CSVCFormulation C penalty factor $c is out of range")
   
 		/**
 		 * <p>Initialize the LIBSVM parameters configuration</p>
@@ -70,7 +72,8 @@ final class CSVCFormulation(c: Double) extends SVMFormulation {
 		 * @note Scala for Machine Learning Chapter 8 Kernel Models and Support Vector Machines
 		 */
 final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
-	require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"NuSVCFormulation: Nu penalty factor $nu is out of range")  
+	require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, 
+			s"NuSVCFormulation: Nu penalty factor $nu is out of range")  
   
 		/**
 		 * <p>Initialize the LIBSVM parameters configuration</p>
@@ -90,7 +93,8 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 
 
 		/**
-		 * <p>Class to initialize the type of SVM to a one class support vector classifier for outliers.</p>
+		 * <p>Class to initialize the type of SVM to a one class support vector classifier for outliers.
+		 * </p>
 		 * @constructor Create a 1-SVC/Nu formulation
 		 * @throws IllegalArgumentException if nu is out of range [0,1]
 		 * @param nu normalized penalty factor
@@ -118,7 +122,8 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 
 
 		/**
-		 * <p>Class to initialize the type of SVM to the epsilon formulation of the support vector regressions.</p>
+		 * <p>Class to initialize the type of SVM to the epsilon formulation of the support vector 
+		 * regressions.</p>
 		 * @constructor Create a epsilon- SVR formulation
 		 * @throws IllegalArgumentException if nu is out of range [0,1]
 		 * @param c  C-penalty or inverse regularization factor.
@@ -128,8 +133,10 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines
 		 */
 final class SVRFormulation(c: Double, epsilon: Double) extends SVMFormulation { 
-	require(c >= C_LIMITS._1 && c <= C_LIMITS._2, s"SVRFormulation C penalty factor $c is out of range")
-	require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, s"SVRFormulation Epsilon factor $epsilon is out of range") 
+	require(c >= C_LIMITS._1 && c <= C_LIMITS._2, 
+			s"SVRFormulation C penalty factor $c is out of range")
+	require(epsilon >= EPSILON_LIMITS._1 && epsilon <= EPSILON_LIMITS._2, 
+			s"SVRFormulation Epsilon factor $epsilon is out of range") 
    
 		/**
 		 * <p>Initialize the LIBSVM parameters configuration</p>

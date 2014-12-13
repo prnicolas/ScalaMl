@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -69,8 +70,10 @@ object FormatUtils {
 		else {
 			assert(xy.size == labels.size, 
 					s"FormatUtils.toString data size ${xy.size} != number of labels ${labels.size}")
+					
 			buf.append(xy.zip(labels).foldLeft(new StringBuilder)((buf, xy) => 
-				buf.append(s"${fmt.toString(xy._2)}${fmt.toString(xy._1._1)}${fmt.toString(xy._1._2)}\n")).toString)
+				buf.append(s"${fmt.toString(xy._2)}${fmt.toString(xy._1._1)}${fmt.toString(xy._1._2)}\n"))
+					.toString)
 		}
 	  buf.toString
 	}

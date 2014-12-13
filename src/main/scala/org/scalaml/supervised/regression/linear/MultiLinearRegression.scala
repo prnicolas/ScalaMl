@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -24,14 +25,15 @@ import ScalaMl._, CommonMath._
 
 
 		/**
-		 * <p>Class that defines a Multivariate linear regression. The computation of the regression coefficients uses the 
-		 * Apache commons Math library. The regression model (regression parameters or weights) are
-		 * initialized only if the training was successful.<br>
+		 * <p>Class that defines a Multivariate linear regression. The computation of the regression 
+		 * coefficients uses the Apache commons Math library. The regression model (regression 
+		 * parameters or weights) are initialized only if the training was successful.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
 		 * Ordinary least squares regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}
 		 * with regression model f(x|w) = w(0) + w(1).x(1) + ... + w(n).x(n)</span></pre></p>
 		 * @constructor Creates multi-variate linear regression
-		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined or have different sizes
+		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined 
+		 * or have different sizes
 		 * @param xt Input multi-dimensional time series for which regression is to be computed.
 		 * @param y Labeled data for the Multivariate linear regression
 		 * @see org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
@@ -39,7 +41,8 @@ import ScalaMl._, CommonMath._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / Ordinary least 
+		 * squares regression
 		 */
 final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector) 
 					extends OLSMultipleLinearRegression with PipeOperator[Array[T], Double] {
@@ -106,10 +109,11 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		/**
 		 * <p>Data transformation that predicts the value of a vector input.</p>
 		 * @throws MatchError if the model is undefined or has an incorrect size
-		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of type Double as output
+		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of 
+		 * type Double as output
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
-		case x: Feature if(x != null && x.size > 0 && model != None && x.size == model.get.size-1) =>  {
+		case x: Feature if(x != null && x.size > 0 && model != None && x.size == model.get.size-1) => {
 				// Retrieve the regression weights (or coefs)
 			val w = model.get.weights
 					// Compute the dot product with w0 + w1.x1 + .. wn.xn
@@ -126,7 +130,8 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/Ordinary least squares regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / Ordinary least 
+		 * squares regression
 		 */
 object MultiLinearRegression {
 		/**
@@ -134,12 +139,16 @@ object MultiLinearRegression {
 		 * @param xt Input multi-dimensional time series for which regression is to be computed.
 		 * @param y Labeled data for the Multivariate linear regression
 		 */
-	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = new MultiLinearRegression[T](xt, y)
+	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = 
+			new MultiLinearRegression[T](xt, y)
 		
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {
-		require(xt != null && xt.size > 0, "MultiLinearRegression.check Cannot create perform a regression with undefined time series")
-		require(y != null && y.size > 0, "MultiLinearRegression.check  Cannot train aregression model with undefined labels")
-		require (xt.size == y.size, s"MultiLinearRegression.check  Size of Input data ${xt.size} and labels ${y.size} for Multivariate linear regression are difference")
+		require(xt != null && xt.size > 0, 
+				"MultiLinearRegression.check Cannot create a regression with undefined time series")
+		require(y != null && y.size > 0, 
+				"MultiLinearRegression.check  Cannot train aregression model with undefined labels")
+		require (xt.size == y.size, 
+			s"MultiLinearRegression.check Size of input${xt.size} != size of labels ${y.size}")
 	}
 }
 

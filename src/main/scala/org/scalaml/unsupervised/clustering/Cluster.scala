@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -25,7 +26,8 @@ import XTSeries._
 		 * it contains. The membership of data points to this cluster is done through their index.
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
 		 * contains two data points with the same index.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
 		 * @constructor Instantiate a cluster with an initial centroid. 
 		 * @throws IllegalArgumenException if the center is undefined (null)
@@ -35,7 +37,8 @@ import XTSeries._
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering
 		 */
 class Cluster[T <% Double](val center: DblVector) {
-	require(center != null && center.size > 0, "Cluster Cannot create a cluster with undefined centers")
+	require(center != null && center.size > 0, 
+			"Cluster Cannot create a cluster with undefined centers")
    
 	private val members = new ListBuffer[Int]
    
@@ -76,15 +79,16 @@ class Cluster[T <% Double](val center: DblVector) {
 		/**
 		 * <p>Compute the standard deviation of the members of this cluster from its center.</p>
 		 * @param xt time series used in the computation of the center
-		 * @param distance metric used to measure the distance between the center and any of the member of the cluster.
+		 * @param distance metric used to measure the distance between the center and any of the 
+		 * member of the cluster.
 		 * @throws IllegalArgumentException if the time series argument is undefined
 		 * @return standard deviation of all the members from the center of the cluster.
 		 */
-	final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double =  {
+	final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double = {
 		require(xt != null && xt.size > 0, 
-			"Cluster.stdDev Cannot compute the standard deviation within this cluster for undefined times series")
+			"Cluster.stdDev Cannot compute the standard deviation wih  undefined times series")
 		require(distance != null, 
-			"Cluster.stdDev Cannot compute the standard deviation within a cluster with undefined distance")
+			"Cluster.stdDev Cannot compute the standard deviation with undefined distance")
 		require(members.size > 0, "Cluster.stdDev this cluster has no member")
 		
 			// Extract the vector of the distance between each data

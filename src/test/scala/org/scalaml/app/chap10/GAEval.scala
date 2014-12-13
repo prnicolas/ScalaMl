@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -21,13 +22,14 @@ import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
 		/**
-		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract the best trading
-		 * strategy for predicting the price movement of a stock.</p>
+		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract 
+		 * the best trading strategy for predicting the price movement of a stock.</p>
 		 * 
 		 * @see org.scalaml.gaGene 
 		 * @see org.scalaml.trading.TradingStrategy
 		 * @author Patrick Nicolas
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/GA for trading strategies/Test case
+		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / GA for trading strategies 
+		 * / Test case
 		 */
 object GAEval extends Eval {
 	import scala.collection.mutable.ArrayBuffer
@@ -56,7 +58,8 @@ object GAEval extends Eval {
 	private val NFITS = 2					// Number of fittest chromosomes to consider as solution candidates
    
 	private val softLimit = (n: Int) => CUTOFF_SLOPE*n + CUTOFF_INTERCEPT	   
-	private val NUM_SIGNALS_PER_STRATEGY = 3 // Number of trading signals per trading strategy (= number of genes in a chromosome)
+	private val NUM_SIGNALS_PER_STRATEGY = 3 // Number of trading signals per trading strategy 
+																					// (= number of genes in a chromosome)
    	    
 		// Default data conversion
 	implicit val digitize = new Discretization(R)

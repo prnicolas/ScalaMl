@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -32,7 +33,8 @@ import org.apache.log4j.Logger
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
 		 */
 final class DocumentsSource(val pathName: String) {
-	require(pathName != null && pathName.length > 1, "Cannot create a data source with undefined path")
+	require(pathName != null && pathName.length > 1, 
+			"Cannot create a data source with undefined path")
 	   
 	private val logger = Logger.getLogger("TextSource")
 	
@@ -61,8 +63,8 @@ final class DocumentsSource(val pathName: String) {
 			val content = fieldIter.foldLeft(new StringBuilder)((b, str) => b.append(str.trim))
 
 			src.close
-			if(date == None || title == None)
-				throw new IllegalStateException(s"DocumentsSource.|> title or date for $fName is malformatted")
+			assert(date != None || title != None,
+					s"DocumentsSource.|> title,date for $fName is malformatted")
 			(date.get, title.get, content.toString) 
 		}) 
 	}

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -25,24 +26,30 @@ import org.scalaml.util.DisplayUtils
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids
 		 * are initialized at mid point of K segments of data points after the data points
 		 * are ordered by their variance.<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 *  Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
-		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum number of iterations and a distance metric. 
+		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum 
+		 * number of iterations and a distance metric. 
 		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 
 		 * iterations is out of range or if the distance metric is undefined.
 		 * @throws implicitNotFoundException if the ordering instance is not implicitly defined.
 		 * @param K Number of clusters
 		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
 		 * @param distance Metric used in computing distance between data points.
-		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of 
+		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014
 		 * @note Scala for Machine Learning: Chapter 4 Unsupervised learning / Clustering / K-means
 		 */
 @implicitNotFound("Ordering not implicitly defined for K-means")
-final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]) 
-				extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
+final class KMeans[T <% Double](
+		K: Int, 
+		maxIters: Int, 
+		distance: (DblVector, Array[T]) => Double)
+		(implicit order: Ordering[T], m: Manifest[T]) extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
 
 	import XTSeries._, KMeans._
 	check(K, maxIters, distance)
@@ -54,7 +61,8 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		 * KMeans++ algorithm with buckets initialization.</p>
 		 * @throws MatchError if the input time series is undefined or have no elements
 		 * @param xt time series of elements of type T
-		 * @return PartialFunction of time series of elements of type T as input to the K-means algorithm and a list of cluster as output
+		 * @return PartialFunction of time series of elements of type T as input to the K-means 
+		 * algorithm and a list of cluster as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 1 && xt(0).size > 0) => {
@@ -132,7 +140,10 @@ final class KMeans[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Arr
 		 * The method computes the index of the cluster which is the closest
 		 * to each observation, then re-assign them to the nearest cluste.
 		 */
-	private def assignToClusters(xt: XTSeries[Array[T]], clusters: List[Cluster[T]], membership: Array[Int]): Int =  {
+	private def assignToClusters(
+			xt: XTSeries[Array[T]], 
+			clusters: List[Cluster[T]], 
+			membership: Array[Int]): Int =  {
 		
 			// Filter to compute the index of the cluster which is 
 			// the closest to the data point x
@@ -187,19 +198,24 @@ object KMeans {
 		 * @param K Number of clusters
 		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
 		 * @param distance Metric used in computing distance between data points.
-		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of 
+		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
 		 */
-	def apply[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
-		new KMeans[T](K, maxIters, distance)
+	def apply[T <% Double](
+			K: Int, 
+			maxIters: Int, 
+			distance: (DblVector, Array[T]) => Double)
+			(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = new KMeans[T](K, maxIters, distance)
 
 		/**
 		 * Constructor for KMeans using the default Euclidean distance metric
 		 * @param K Number of clusters
 		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
-		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
+		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of 
+		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
 		 */
 	def apply[T <% Double](K: Int, maxIters: Int)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
-		new KMeans[T](K, maxIters, euclidean)
+			new KMeans[T](K, maxIters, euclidean)
 
 
 		/**
@@ -216,21 +232,34 @@ object KMeans {
 		 * center of their respective cluster
 		 * @param c List of clusters
 		 * @param xt Input time series
-		 * @param distance Distance metric used in evaluating distances between data points and centroids.
+		 * @param distance Distance metric used in evaluating distances between data points and 
+		 * centroids.
 		 * @throws IllegalArgumentException if one of the parameters is undefined
 		 * @return list of standard deviation values for all the clusters.
 		 */
-	def stdDev[T](c: List[Cluster[T]], xt: XTSeries[Array[T]], distance: (DblVector, Array[T]) => Double): List[Double] =  {
-		require(c != null && c.size > 0, "KMeans.stdDev Cannot compute the variance of undefined clusters")
-		require(xt != null && xt.size > 0, "KMeans.stdDev  Cannot compute the variance of clusters for undefined input datat")
+	def stdDev[T](
+			c: List[Cluster[T]], 
+			xt: XTSeries[Array[T]], 
+			distance: (DblVector, Array[T]) => Double): List[Double] = {
+	  
+		require(c != null && c.size > 0, 
+				"KMeans.stdDev Cannot compute the variance of undefined clusters")
+		require(xt != null && xt.size > 0, 
+				"KMeans.stdDev  Cannot compute the variance of clusters for undefined input datat")
   	 
 		c.map( _.stdDev(xt, distance))
 	}
    
 	
-	private def check[T <% Double](K: Int, maxIters: Int, distance: (DblVector, Array[T]) => Double): Unit = {
-		require(K > 0 && K < MAX_K, s"KMeans.check Number of clusters for Kmeans $K is out of range")
-		require( maxIters > 1 && maxIters < MAX_ITERATIONS, s"KMeans.check Maximum number of iterations for Kmeans $maxIters is out of range")
+	private def check[T <% Double](
+			K: Int, 
+			maxIters: Int, 
+			distance: (DblVector, Array[T]) => Double): Unit = {
+	  
+		require(K > 0 && K < MAX_K, 
+				s"KMeans.check Number of clusters for Kmeans $K is out of range")
+		require( maxIters > 1 && maxIters < MAX_ITERATIONS, 
+				s"KMeans.check Maximum number of iterations for Kmeans $maxIters is out of range")
 		require( distance != null, "KMeans.check Distance for K-means is undefined")
 	}
 }

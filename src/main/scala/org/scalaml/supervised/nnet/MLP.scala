@@ -20,7 +20,6 @@ import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
 
 
-
 		/**
 		 * <p>Implementation of the Multi-layer Perceptron as a Feed-foward
 		 * Neural Network. The class uses the standard pattern of machine

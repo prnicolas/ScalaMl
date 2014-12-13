@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -18,7 +19,8 @@ import org.scalaml.supervised.svm.SVMConfigItem
 		 * <p>Generic trait for Kernel functions used for Support Vector Machine.</p>
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
+		 * Kernel functions
 		 */
 sealed trait SVMKernel extends SVMConfigItem {
 		/**
@@ -41,7 +43,8 @@ import SVMKernel._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
+		 * Kernel functions
 		 */
 object LinearKernel extends SVMKernel {
 		/**
@@ -65,10 +68,12 @@ object LinearKernel extends SVMKernel {
 		 * @param gamma  Gamma or scaling parameter for the RBF kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
+		 * Kernel functions
 		 */
 final class RbfKernel(gamma: Double) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"RbfKernel Gamma for the RBF kernel $gamma is out of range")
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
+			s"RbfKernel Gamma for the RBF kernel $gamma is out of range")
     
 		/**
 		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -92,10 +97,12 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 		 * @param gamma  Gamma or scaling parameter for the Sigmoid kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines / Kernel functions
+		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines / 
+		 * Kernel functions
 		 */
 final class SigmoidKernel(gamma: Double) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"SigmoidKernel Gamma for the Sigmoid kernel $gamma is out of range")
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
+			s"SigmoidKernel Gamma for the Sigmoid kernel $gamma is out of range")
 		
 		/**
 		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -115,18 +122,22 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 
 		/**
 		 * <p>Definition of the polynomial Kernel function.</p>
-		 * @constructor Create a polynomial kernel functionj with a given gamma, intercept coef and degree
+		 * @constructor Create a polynomial kernel functionj with a given gamma, intercept coef and 
+		 * degree
 		 * @throws IllegalArgumentException if gamma is negative or null or if degree < 1
 		 * @param gamma  Gamma or scaling parameter for the Polynomial kernel.
 		 * @param coef0 Intercept or coefficient of order 0 for the polynomial kernel
 		 * @param degree  Degree or power of the polynomial kernel.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / Kernel functions
+		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
+		 * Kernel functions
 		 */
 final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends SVMKernel {
-	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, s"PolynomialKernel Gamma for the polynomial kernel $gamma is out of range")
-	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, s"PolynomialKernel The degree of the polynomial kernel $degree is out of range")
+	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
+			s"PolynomialKernel Gamma for the polynomial kernel $gamma is out of range")
+	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, 
+			s"PolynomialKernel The degree of the polynomial kernel $degree is out of range")
 	
 		/**
 		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
@@ -142,7 +153,7 @@ final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends 
 		param.degree = degree
 	}
     
-	override def toString: String = s"Polynomial function with gamma = $gamma, coef = $coef0, degree = $degree"
+	override def toString: String = s"Polynomial function, gamma: $gamma, coef: $coef0, degree: $degree"
 }
 
 

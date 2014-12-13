@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -27,14 +28,19 @@ import org.scalaml.core.Types.ScalaMl._
 		 *  @param nCols Number of columns in this matrix
 		 *  @param data Content of this matrix, flatten as an array which size should be nRows*nCols.
 		 *  @throws IllegalArgumentException if the parameters are out of bounds
-		 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior the instantiation of a matrix
+		 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior 
+		 *  the instantiation of a matrix
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @since Feb 23, 2014
 		 *  @note Scala for Machine Learning
 		 */
 @implicitNotFound("Matrix  Conversion from type T to Double is undefined")
-final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nCols: Int, val data: Array[T])(implicit f: T => Double) {
+final class Matrix[@specialized(Double, Int) T: ClassTag](
+		val nRows: Int, 
+		val nCols: Int, 
+		val data: Array[T])
+		(implicit f: T => Double) {
 	import Matrix._
 	check(nRows, nCols, data)
 	
@@ -43,7 +49,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		 * @param i Row index for the element to return
 		 * @param j Column index for the element to return
 		 * @return element(i)(j) if the row and column indices are not out of bounds
-		 * @throws IllegalArgumentException if either the row index or the col index are out of bopunds
+		 * @throws IllegalArgumentException if either the row index or the col index are out of bounds
 		 */
 	final def apply(i: Int, j: Int): T = {
 		require(i < nRows, s"Matrix.apply Row index $i is out of bounds")
@@ -52,10 +58,12 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 	}
 
 		/**
-		 * <p>Compute the difference between two matrices using a distance method. The distance method sums
-		 * of the distances between all the elements of each matrix (i.e. Least square error).</p>
+		 * <p>Compute the difference between two matrices using a distance method. The distance 
+		 * method sums of the distances between all the elements of each matrix (i.e. Least square 
+		 * error).</p>
 		 * @param that The matrix to compare to
-		 * @param compare method that compute the difference between corresponding elemets in two matrices
+		 * @param compare method that compute the difference between corresponding elemets in 
+		 * two matrices
 		 * @return Sum of the difference
 		 */
 	final def diff(that: Matrix[T], distance: (T, T) => Double)(implicit f: T => Double): Double = {
@@ -152,7 +160,8 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 		var count = 0
 		data.foldLeft(new StringBuilder)((b, x) => { 
 			count += 1; 
-			b.append(FormatUtils.format(x, "", FormatUtils.ShortFormat)).append( if( count % nCols == 0) "\n" else ",")
+			b.append(FormatUtils.format(x, "", FormatUtils.ShortFormat))
+					.append( if( count % nCols == 0) "\n" else ",")
 		}).toString
 	}
 }
@@ -165,7 +174,10 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](val nRows: Int, val nC
 object Matrix {
 	def apply[T: ClassTag](nRows: Int)(implicit f: T => Double): Matrix[T] = apply(nRows, nRows)
 	
-	def apply[T: ClassTag](nRows: Int, nCols: Int, data: Array[T])(implicit f: T => Double): Matrix[T] = 
+	def apply[T: ClassTag](
+			nRows: Int, 
+			nCols: Int, 
+			data: Array[T])(implicit f: T => Double): Matrix[T] = 
 		new Matrix(nRows, nCols, data)
 	
 	def apply[T: ClassTag](nRows: Int, nCols: Int)(implicit f: T => Double): Matrix[T] = 
@@ -178,12 +190,12 @@ object Matrix {
 	final val MAX_NUM_COLS = 8192
 	
 	private def check[T](nRows: Int, nCols: Int, data: Array[T]): Unit = {
-		require(nRows > 0 && nRows < MAX_NUM_ROWS, s"Matrix.check Number of rows $nRows is out of range")
-		require(nCols > 0 && nCols < MAX_NUM_COLS, s"Matrix.check Number of rows $nCols is out of range")
+		require(nRows > 0 && nRows < MAX_NUM_ROWS, 
+				s"Matrix.check Number of rows $nRows is out of range")
+		require(nCols > 0 && nCols < MAX_NUM_COLS, 
+				s"Matrix.check Number of rows $nCols is out of range")
 		require(data != null, "Matrix.check Data in undefined")
 	}
 }
-
-
 
 // ------------------------------------  EOF ---------------------------------------------

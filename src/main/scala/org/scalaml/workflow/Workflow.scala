@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -20,10 +21,11 @@ import org.apache.log4j.Logger
 		 * to build a dynamic computation workflow.</p>
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
+		 * Dependency injection
 		 */
 trait PreprocModule[-T, +U] {
-   val preProc: PipeOperator[T, U]
+		val preProc: PipeOperator[T, U]
 }
 
 		/**
@@ -31,10 +33,11 @@ trait PreprocModule[-T, +U] {
 		 * to build a dynamic computation workflow.</p>
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
+		 * 	Dependency injection
 		 */
 trait ProcModule[-T, +U] {
-   val proc: PipeOperator[T, U]
+		val proc: PipeOperator[T, U]
 }
 
 		/**
@@ -42,10 +45,11 @@ trait ProcModule[-T, +U] {
 		 * to build a dynamic computation workflow.</p>
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
+		 * Dependency injection
 		 */
 trait PostprocModule[-T, +U] {
-   val postProc: PipeOperator[T, U]
+		val postProc: PipeOperator[T, U]
 }
 
 
@@ -56,13 +60,14 @@ trait PostprocModule[-T, +U] {
 		 * are initialize at run-time.</p>
 		 * @author Patrick Nicolas
 		 * @since December 11, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / Dependency injection
+		 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
+		 * Dependency injection
 		 */
 class Workflow[T, U, V, W] {
-  self: PreprocModule[T, U] with ProcModule[U, V] with PostprocModule[V, W] =>
+	self: PreprocModule[T, U] with ProcModule[U, V] with PostprocModule[V, W] =>
 	 
-  	private val logger = Logger.getLogger("Workflow")
-  	def |> (t: T): W = postProc |> (proc |> (preProc |> t))
+		private val logger = Logger.getLogger("Workflow")
+		def |> (t: T): W = postProc |> (proc |> (preProc |> t))
 }
 
 

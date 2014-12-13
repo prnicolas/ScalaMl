@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -59,7 +60,8 @@ object MapUtils {
 			/** divide the elements of this counter by the corresponding
 			 *  elements in another counter
 			 *  @param cnt Counter which elements are used to divided corresponding elements of this counter
-			 *  @return HashMap of key of type T and value as the quotient of the elements of this counter by the corresponding elemetns in cnt
+			 *  @return HashMap of key of type T and value as the quotient of the elements of this 
+			 *  counter by the corresponding elemetns in cnt
 			 */
 		def / (cnt: Counter[T]): mutable.HashMap[T, Double] = 
 			//map( x => (x._1, {assert( cnt.contains(x._1) ); x._2.toDouble/cnt.get(x._1).get} ) ) 
@@ -124,7 +126,8 @@ object MapUtils {
 			 * a double value. This operation is additive as both the counter and 
 			 * the value are updated.
 			 * @param key key of the new element
-			 * @param x value of the new element, to be added to the existing values that share the same key.
+			 * @param x value of the new element, to be added to the existing values that share the 
+			 * same key.
 			 */
 		def +=(key: T, x: Double): Option[(Int, Double)] = {
 			val newValue = if(contains(key)) (get(key).get._1+1, get(key).get._2 + x) else (1, x)

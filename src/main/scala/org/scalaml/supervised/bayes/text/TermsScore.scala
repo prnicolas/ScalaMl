@@ -12,7 +12,7 @@
 package org.scalaml.supervised.bayes.text
 
 import org.scalaml.workflow.data.DocumentsSource
-import org.scalaml.util.Counter
+import org.scalaml.util.MapUtils.Counter
 import scala.annotation.implicitNotFound
 import scala.collection._
 import scala.util.{Try, Success, Failure}
@@ -36,9 +36,10 @@ import TermsScore._, DocumentsSource._
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes and text mining
 		 */
 @implicitNotFound("Ordering not explicitly defined for NaiveBayesTextScoring class")
-final class TermsScore[T <% Long](toDate: String =>T, 
-							toWords: String => Array[String], 
-							lexicon: immutable.Map[String, String])(implicit order: Ordering[T]) {
+final class TermsScore[T <% Long](	
+		toDate: String =>T, 
+		toWords: String => Array[String], 
+		lexicon: immutable.Map[String, String])(implicit order: Ordering[T]) {
 	import TermsScore._, NewsArticles._
 
 	check(toDate, toWords, lexicon)

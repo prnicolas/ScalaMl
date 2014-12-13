@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -59,11 +60,15 @@ object BinaryMLPEval extends Eval {
 		implicit val mlpObjective = new MLP.MLPBinClassifier
 
 		val HALF_TEST_SIZE = (TEST_SIZE>>1)
-		def function1(x: Double): DblVector = Array[Double](0.1 + 0.2*Random.nextDouble, 0.1  +  0.2*Random.nextDouble)
-		def function2(x: Double): DblVector = Array[Double](0.8  + 0.2*Random.nextDouble, 0.8  +  0.2*Random.nextDouble)
+		def function1(x: Double): DblVector = 
+				Array[Double](0.1 + 0.2*Random.nextDouble, 0.1  +  0.2*Random.nextDouble)
+		def function2(x: Double): DblVector = 
+				Array[Double](0.8  + 0.2*Random.nextDouble, 0.8  +  0.2*Random.nextDouble)
   	 
-		val x: DblMatrix = Array.tabulate(TEST_SIZE)(n => if( n < HALF_TEST_SIZE) function1(n) else function2(n))
-		val y: DblMatrix = Array.tabulate(TEST_SIZE)(n => if( n < HALF_TEST_SIZE) Array[Double](0.0) else Array[Double](1.0) )
+		val x: DblMatrix = Array.tabulate(TEST_SIZE)(n => 
+				if( n < HALF_TEST_SIZE) function1(n) else function2(n))
+		val y: DblMatrix = Array.tabulate(TEST_SIZE)(n => 
+				if( n < HALF_TEST_SIZE) Array[Double](0.0) else Array[Double](1.0) )
       
 		val config = MLPConfig(ALPHA, ETA, SIZE_HIDDEN_LAYER, NUM_EPOCHS, EPS)
 		val mlpClassifier = MLP[Double](config, x, y)
@@ -79,7 +84,8 @@ object BinaryMLPEval extends Eval {
 		val y0 = 0.8
 		Try(mlpClassifier |> Array[Double](x0, y0))
 		match {
-			case Success(output) => DisplayUtils.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
+			case Success(output) => 
+					DisplayUtils.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
 			case Failure(e) => DisplayUtils.error(s"$name run", logger, e)
 		}     
 	}

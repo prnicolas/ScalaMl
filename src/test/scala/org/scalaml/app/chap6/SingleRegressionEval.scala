@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -20,8 +21,9 @@ import org.scalaml.app.Eval
 		/**
 		 * <p><b>Purpose:</b> Singleton to evaluate the single variate linear regression.</p>
 		 * @author Patrick Nicolas
-	     * @note: Scala for Machine Learning Chapter 6: Regression and regularization/One-variate linear regression
-		 */
+	   * @note: Scala for Machine Learning Chapter 6: Regression and regularization / One-variate 
+	   * linear regression
+		 */ 
 object SingleLinearRegressionEval extends Eval {
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
@@ -60,7 +62,8 @@ object SingleLinearRegressionEval extends Eval {
 				val slope_str = FormatUtils.format(slope.get, "y= ", FormatUtils.ShortFormat)
 				val intercept_str = FormatUtils.format(intercept.get, "y= ", FormatUtils.ShortFormat)
 				DisplayUtils.show(s"$name Linear regression: $slope_str.x + $intercept_str", logger)
-				DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", logger)
+				DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", 
+						logger)
 			}
 			else
 				DisplayUtils.error(s"$name run failed compute slope", logger)	  

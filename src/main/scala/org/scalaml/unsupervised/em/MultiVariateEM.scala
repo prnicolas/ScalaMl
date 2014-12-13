@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -29,7 +30,8 @@ import org.apache.log4j.Logger
 		 * K number of clusters. The class uses the Multivariate Normal distribution, Mixture
 		 * of Gaussian Distribution and the Expectation Maximization algorithm from the Apache
 		 * Commons Math library.</p>
-		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data point of type Array{T]. 
+		 * @constructor Instantiate a Multivariate Expectation Maximization for time series of data 
+		 * point of type Array{T]. 
 		 * @see Apache Commons Match org.apache.commons.math3.distribution._
 		 * @throws IllegalArgumentException if K is out of range
 		 * @param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
@@ -37,7 +39,8 @@ import org.apache.log4j.Logger
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization
 		 */
-final protected class MultivariateEM[T <% Double](K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
+final protected class MultivariateEM[T <% Double](
+		K: Int) extends PipeOperator[XTSeries[Array[T]], EMOutput] { 
 	require( K > 0 && K < MAX_K, s"MultivariateEM: Number K of clusters for EM $K is out of range")
 	
 	private val logger = Logger.getLogger("MultivariateEM")
@@ -52,7 +55,8 @@ final protected class MultivariateEM[T <% Double](K: Int) extends PipeOperator[X
 		 * <p>Implement the Expectation-Maximization algorithm as a data transformation.</p>
 		 * @param xt time series of vectors (array) of parameterized type
 		 * @throws MatchError if the input time series is undefined or have no elements
-		 * @return PartialFunction of time series of elements of type T as input to Expectation-Maximization algorithm and tuple of type EMOutput as output.
+		 * @return PartialFunction of time series of elements of type T as input to 
+		 * Expectation-Maximization algorithm and tuple of type EMOutput as output.
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
 		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
@@ -116,8 +120,10 @@ object MultivariateEM {
 		 * @throws IllegalArgumenException if the input is not defined or K is out of range.
 		 */
 	protected def estimate(data: DblMatrix, K: Int): MixtureMultivariateNormalDistribution = {
-		require(data != null && data.size > 0, "MultivariateEM.estimate Cannot eximate the Gaussian mixture distribution for undefined input")
-		require( K > 0 && K < MAX_K, s"MultivariateEM.estimate Number K of clusters for EM $K is out of range")
+		require(data != null && data.size > 0, 
+				"MultivariateEM.estimate Cannot estimate the Gaussian mixture for undefined input")
+		require( K > 0 && K < MAX_K, 
+				s"MultivariateEM.estimate Number K of clusters for EM $K is out of range")
 			
 		MultivariateNormalMixtureExpectationMaximization.estimate(data, K)
 	}

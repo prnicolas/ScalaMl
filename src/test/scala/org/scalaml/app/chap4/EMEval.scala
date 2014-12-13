@@ -61,7 +61,7 @@ object EMEval extends UnsupervisedLearningEval {
 	     
 			val obs: DblMatrix = symbolFiles.map(sym => {
 				val xs = DataSource(sym, path, true) |> extractor
-				val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion (implicit)
+				val values: XTSeries[Double] = (XTSeries.|>(xs)).head  // force a data type conversion
 	
 				val filtered = smAve |> values
 				filtered.zipWithIndex

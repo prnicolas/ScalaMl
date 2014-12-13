@@ -85,7 +85,7 @@ object MovingAveragesEval extends FilteringEval {
 			}
 			match {
 				case Success(n) => n
-				case Failure(e) => DisplayUtils.error(s"$name Computation of moving averages failed", logger, e)
+				case Failure(e) => DisplayUtils.error(s"$name One of the Moving averages failed", logger, e)
 			}
 		}
 		else 
@@ -95,7 +95,8 @@ object MovingAveragesEval extends FilteringEval {
 	private def display(results: List[DblSeries], labels: List[String]): Int = {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
 		
-		val plot = new LinePlot(("Moving Averages", "Trading sessions", "Stock price"), new LightPlotTheme)
+		val plot = new LinePlot(("Moving Averages", "Trading sessions", "Stock price"), 
+				new LightPlotTheme)
 		val dataPoints: Array[(DblVector, String)] = results.map(_.toArray).toArray.zip(labels)
 		plot.display(dataPoints.toList, 340, 270)
 		1

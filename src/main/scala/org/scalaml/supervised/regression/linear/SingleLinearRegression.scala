@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -24,8 +25,10 @@ import ScalaMl._
 		/**
 		 * <p>Class that defines the linear regression for a single variable. The model (w,r),
 		 * (slope, intercept) is created during instantiation of the class to reduce the life-cycle
-		 * of instances. The conversion of a Double back to a type T has to be defined prior instantiating this class.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * of instances. The conversion of a Double back to a type T has to be defined prior 
+		 * instantiating this class.
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}<br>
 		 * with f(x|w) = w(0) + w(1).x</span></pre></p>
 		 * @constructor Create a single linear regression model of type bounded to a Double as a view. 
@@ -35,14 +38,16 @@ import ScalaMl._
 		 * @param g Implicit conversion from a <b>Double</b> to the type <b>T</b>
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / One variate linear regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / One variate 
+		 * linear regression
 		 */
 @implicitNotFound("Implicit conversion of type to Double for SingleLinearRegression is missing")
 final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
 				extends PipeOperator[Double, T] {
 	
 	import scala.util.{Try, Success, Failure}
-	require(xt != null && xt.size > 0, "SingleLinearRegression. Cannot create a simple linear regression with undefined time series")
+	require(xt != null && xt.size > 0, 
+			"SingleLinearRegression. Cannot create a linear regression with undefined time series")
 	
 	type XY = (Double, Double)
 	private val logger = Logger.getLogger("SingleLinearRegression")
@@ -96,7 +101,8 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		 * using a single variable linear regression model. The model is initialized
 		 * during instantiation of a class.</p>
 		 * @throws MatchError if the regression model is undefined
-		 * @return PartialFunction of a Double value as input and the value computed using the model as output
+		 * @return PartialFunction of a Double value as input and the value computed using the model 
+		 * as output
 		 */	
 	override def |> : PartialFunction[Double, T] = {
 			// Compute the linear function y = slope.x + intercept
@@ -112,7 +118,8 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and regularization/One variate linear regression
+		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / One variate 
+		 * linear regression
 		 */
 object SingleLinearRegression { 
 		/**

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -78,13 +79,17 @@ object SVREval extends Eval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", 
+					logger, e)
 		}
 	}
    
 	
 	import SingleLinearRegression._
-	private def collect(svr: SVM[Double], lin: SingleLinearRegression[Double], price: DblVector): List[XYTSeries] = {
+	private def collect(
+			svr: SVM[Double], 
+			lin: SingleLinearRegression[Double], 
+			price: DblVector): List[XYTSeries] = {
 		import scala.collection.mutable.ArrayBuffer
 
 		val collector = Array.fill(3)(new ArrayBuffer[XY])

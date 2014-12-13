@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -94,9 +95,10 @@ object MLPConfigEval extends Eval {
 				val config = MLPConfig(_alpha, _eta, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
      
 				val mlp = MLP[Double](config, features, labels)
-				if( mlp.model == None )
-					throw new IllegalStateException(s"$name run failed for eta = $eta and alpha = $alpha")  
-				DisplayUtils.show(s"$name run for eta = $eta and alpha = $alpha ${mlp.model.get.toString}", logger)
+				assert( mlp.model != None, 
+						s"$name run failed for eta = $eta and alpha = $alpha")  
+				DisplayUtils.show(s"$name run for eta = $eta and alpha = $alpha ${mlp.model.get.toString}", 
+						logger)
 			})
 			1
 		} match {

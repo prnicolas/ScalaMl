@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -23,18 +24,21 @@ import org.scalaml.util.DisplayUtils
 		 * The training (extraction of the weights) is computed as part of the instantiation of the class so 
 		 * the model is either complete or undefined so classification is never done on incomplete (or
 		 * poorly trained) model (computation error, maximum number of iterations exceeded).<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2)))</span></pre></p>
 		 * @constructor Create a logistic regression for binary classification 
 		 * @param labels Data used to train a model
 		 * @param maxIters Maximum number of iterations used during training
 		 * @param eta Slope used in the computation of the gradient
 		 * @param eps Convergence criteria used to exit the training loop.
-		 * @throws IllegalArgumentException if labels are undefined, or the values of maxIters, eta or eps are out of range
+		 * @throws IllegalArgumentException if labels are undefined, or the values of maxIters, eta 
+		 * or eps are out of range
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 11, 2014
-		 * @note Scala for Machine Learning Chapter 1 Getting started / Let's kick the tires / Writing a simple workflow
+		 * @note Scala for Machine Learning Chapter 1 Getting started / Let's kick the tires / Writing 
+		 * a simple workflow
 		 */
 final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double) {
 	import LogBinRegression._
@@ -46,7 +50,8 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		/**
 		 * <p>classification of a two dimension data (xy) using a binary logistic regression.</p>
 		 * @param xy (x,y) data point
-		 * @return Option (class, likelihood) for the logistic regression is the training was completed, None otherwise
+		 * @return Option (class, likelihood) for the logistic regression is the training was completed
+		 * , None otherwise
 		 */
 	def classify(xy: XY): Option[(Boolean, Double)] = weights match {
 		case Some(w) => { 
@@ -106,10 +111,14 @@ object LogBinRegression {
 	private val EPS_LIMITS = (1e-10, 0.25)
 	
 	private def check(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double): Unit =  {
-		require(maxIters > 10 && maxIters < MAX_NUM_ITERS, s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")
-		require(eta > ETA_LIMITS._1 && eta < ETA_LIMITS._2, s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
-		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
-		require(labels != null && labels.size > 1, "LogBinRegression.check  Cannot train with undefined set of observations")
+		require(maxIters > 10 && maxIters < MAX_NUM_ITERS, 
+				s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")
+		require(eta > ETA_LIMITS._1 && eta < ETA_LIMITS._2, 
+				s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
+		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, 
+				s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
+		require(labels != null && labels.size > 1, 
+				"LogBinRegression.check  Cannot train with undefined set of observations")
 	}
 }
 

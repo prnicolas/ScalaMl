@@ -19,9 +19,9 @@ import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
-		 * <p><b>Purpose:</b> Singleton to evaluate the Principal Components Algorithm to extract principal
-		 * components from a set of observations consisting of the following corporate
-		 * financial fundamental metrics:<br>
+		 * <p><b>Purpose:</b> Singleton to evaluate the Principal Components Algorithm to 
+		 * extract principal components from a set of observations consisting of the following 
+		 * corporate financial fundamental metrics:<br>
 		 * PE: Price Earning ratio<br>
 		 * PS: Price sales ratio<br>
 		 * PB: Price book ratio<br>
@@ -95,8 +95,10 @@ object PCAEval extends UnsupervisedLearningEval {
 		val pca = new PCA[Double]
 		  
 		Try(pca |> XTSeries[DblVector](data.map( _._2.take(3)) ) ) match {
-			case Success(covariance) => DisplayUtils.show(s"$name Results\n${this.toString(covariance)}", logger)
-			case Failure(e) => DisplayUtils.error(s"$name.run Principal Component Analysis failed", logger, e)
+			case Success(covariance) => 
+					DisplayUtils.show(s"$name Results\n${this.toString(covariance)}", logger)
+			case Failure(e) => 
+					DisplayUtils.error(s"$name.run Principal Component Analysis failed", logger, e)
 		}
 	}
    

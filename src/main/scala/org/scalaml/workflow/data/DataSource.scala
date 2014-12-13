@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -29,7 +30,8 @@ import DataSource._, ScalaMl._
 		 *   <li>A list of csv delimited files associated to a list of symbol as 'symbol" => "symbol.csv"</li>
 		 * </ul></p>
 		 * @constructor Create a data source. 
-		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value is out of range
+		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value 
+		 * is out of range
 		 * @param pathName Relative path for the data files.
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
@@ -92,7 +94,8 @@ final class DataSource(pathName: String,
 		/**
 		 * <p>Load, extracts, convert and normalize a list of fields using an extractors.</p>
 		 *  @throws MatchError if the list of extractor Fields => Double is undefined or is empty
-		 *  @return PartialFunction of list of extractor of type List[Fields => Double] as input and a corresponding list of floating point value as output
+		 *  @return PartialFunction of list of extractor of type List[Fields => Double] as input and 
+		 *  a corresponding list of floating point value as output
 		 */
 	override def |> : PartialFunction[List[Fields => Double], List[DblVector]] = {
 		case extr: List[Fields => Double] if(extr != null && extr.size > 0) => {
@@ -219,8 +222,13 @@ object DataSource {
 		 * @param headerLines Number of header lines in the file.
 		 * @param srcFilter Source filter applied to the data source stream.
 		 */
-	def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int, filter: Option[Array[String] => Boolean]): DataSource = 
-			new DataSource(pathName, normalize, reverseOrder, headerLines, filter)
+	def apply(
+			pathName: String, 
+			normalize: Boolean, 
+			reverseOrder:Boolean, 
+			headerLines: Int, 
+			filter: Option[Array[String] => Boolean]): DataSource = 
+					new DataSource(pathName, normalize, reverseOrder, headerLines, filter)
 
 		/**
 		 * Constructor for the DataSource without field filtering
@@ -229,8 +237,12 @@ object DataSource {
 		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
 		 * @param headerLines Number of header lines in the file.
 		 */
-	def apply(pathName: String, normalize: Boolean, reverseOrder:Boolean, headerLines: Int): DataSource = 
-	  		new DataSource(pathName, normalize, reverseOrder, headerLines, None)
+	def apply(
+			pathName: String, 
+			normalize: Boolean, 
+			reverseOrder:Boolean, 
+			headerLines: Int): DataSource = 
+				new DataSource(pathName, normalize, reverseOrder, headerLines, None)
 	
 		/**
 		 * Constructor for the DataSource without field filtering, headerlines. The extraction
@@ -244,7 +256,8 @@ object DataSource {
 		/**
 		 * Constructor for the DataSource without field filtering, headerlines. The extraction
 		 * of the content does not alter the order of the datarows in the file.
-		 * @param symName Name of the symbol associated to a file in a directory for which the content is to be extracted
+		 * @param symName Name of the symbol associated to a file in a directory for which the 
+		 * content is to be extracted
 		 * @param pathName Relative path for the data files.
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 */
@@ -252,8 +265,10 @@ object DataSource {
 		new DataSource(s"$pathName$symName", normalize, true, 1, None)
 
 	private def check(pathName: String, headerLines: Int): Unit =  {
-		require(pathName != null && pathName.length > 1, "DataSource.check Cannot create a data source with undefined path")
-		require(headerLines >=0, s"DataSource.check  Cannot create a data source with negative number of lines: $headerLines")
+		require(pathName != null && pathName.length > 1, 
+				"DataSource.check Undefined path for data source")
+		require(headerLines >=0, 
+		   	s"DataSource.check Incorrect number of header lines $headerLines for data source")
 	}
 }
 

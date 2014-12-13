@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -31,7 +32,8 @@ object DisplayUtils {
 		 */
 	final def align(label: String, length: Int): String = {
 		require(label != null, "DisplayUtils.align Label is undefined")
-		require(length < 128, s"DisplayUtils.align Size of label placement ${label.length} is incorrect")
+		require(length < 128, 
+				s"DisplayUtils.align Size of label placement ${label.length} is incorrect")
 		
 		if( length < label.length)
 			label
@@ -44,7 +46,8 @@ object DisplayUtils {
 		 * or log4j log or both
 		 * @param t value to be displayed
 		 * @param logger Reference to the log4j log appender
-		 * @param alignement Align the label within its placement if alignment is greater than the label, no alignment otherwise
+		 * @param alignement Align the label within its placement if alignment is greater than 
+		 * the label, no alignment otherwise
 		 */
 	final def show[T](t: T, logger: Logger, alignment: Int = -1): Int = { 
 		val text = if(alignment != -1) align(t.toString, alignment) else t.toString

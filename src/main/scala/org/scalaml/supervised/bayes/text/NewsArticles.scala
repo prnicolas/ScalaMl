@@ -18,7 +18,8 @@ import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
 
 import org.scalaml.workflow.data.DocumentsSource
-import org.scalaml.util.{Counter, DisplayUtils}
+import org.scalaml.util.DisplayUtils
+import org.scalaml.util.MapUtils.Counter
 import DocumentsSource._, TermsScore._
 
 		/**

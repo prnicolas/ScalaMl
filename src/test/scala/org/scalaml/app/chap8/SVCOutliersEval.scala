@@ -21,7 +21,8 @@ import org.scalaml.app.Eval
 
 
 		/**
-		 * <p><b>Purpose:</b>Singleton to evaluate the on-class SVM for anomalies or outliers detection.</p>
+		 * <p><b>Purpose:</b>Singleton to evaluate the on-class SVM for anomalies or outliers 
+		 * detection.</p>
 		 * @author Patrick Nicolas
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
@@ -66,7 +67,8 @@ object SVCOutliersEval extends Eval {
 		Try {
 			val xs = DataSource(path, true, false, 1) |> extractor
  	
-			val config = SVMConfig(new OneSVCFormulation(NU), new RbfKernel(GAMMA), SVMExecution(EPS, NFOLDS))
+			val config = SVMConfig(new OneSVCFormulation(NU), new RbfKernel(GAMMA), 
+					SVMExecution(EPS, NFOLDS))
 			val features = XTSeries.transpose(xs.dropRight(1))
 			val svc = SVM[Double](config, features, xs.last.map( filter(_)) )
      
@@ -78,7 +80,8 @@ object SVCOutliersEval extends Eval {
 			}
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", logger, e) 
+			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", 
+					logger, e) 
 		}
 	}
 }

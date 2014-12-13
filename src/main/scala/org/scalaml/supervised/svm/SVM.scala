@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -25,8 +26,8 @@ import scala.collection.mutable.ArrayBuffer
 
 		/**
 		 * <p>Support Vector Algorithm for time series of vector of element with parameterized types
-		 * The model is created or trained during the instantiation of the class. Therefore a model either
-		 * is properly trained or does not exists.<br>
+		 * The model is created or trained during the instantiation of the class. Therefore a 
+		 * model either is properly trained or does not exists.<br>
 		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVM algorithm for a labeled time series given a configuration.
 		 * @see LIBSVM 	
@@ -87,7 +88,8 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 
 		/**
 		 * Method to compute the Means Square Error for the training of the SVM
-		 * @return Mean square error as square root of the sum of the square errors, if model was successfully built, None otherwise
+		 * @return Mean square error as square root of the sum of the square errors, if model was 
+		 * successfully built, None otherwise
 		 */
 	final def mse: Option[Double] = model match {
 		case Some(m) => {
@@ -119,11 +121,13 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 
 		/**
 		 * <p>Data transformation that implements the prediction value using SVM</p>
-		 * 	@throws MatchError if the model is undefined or has an incorrect size or the input feature is undefined
+		 * 	@throws MatchError if the model is undefined or has an incorrect size or the input feature 
+		 *  is undefined
 		 *  @return PartialFunction of feature of type Array[T] as input and the predicted value as output
 		 */
 	override def |> : PartialFunction[Feature, Double] =  {
-		case x: Feature if(x != null && x.size == dimension(xt) && model != None && model.get.accuracy >= 0.0) =>
+		case x: Feature if(x != null && x.size == dimension(xt) && model != None && 
+				model.get.accuracy >= 0.0) =>
 			svm.svm_predict(model.get.svmmodel, toNodes(x))
 	}
 
@@ -186,8 +190,10 @@ object SVM {
 	private def check[T <% Double](state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
 		require(state != null, "SVM.check Configuration of the SVM is undefined")
 		require(xt != null && xt.size > 0, "SVM.check  Features for the SVM are undefined")
-		require(labels != null && labels.size > 0, "SVM.check  Labeled observations for the SVM are undefined")
-		require(xt.size == labels.size, s"SVM.check  Number of features ${xt.size} and number of labels ${labels.size} differs for SVM")
+		require(labels != null && labels.size > 0, 
+				"SVM.check  Labeled observations for the SVM are undefined")
+		require(xt.size == labels.size, 
+				s"SVM.check  Number of features ${xt.size} != number of labels ${labels.size}")
 	}
 }
 

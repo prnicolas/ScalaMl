@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -61,7 +62,9 @@ object TextBayesEval extends Eval {
 	private def toDate(date: String): Long = {
 		val idx1 = date.indexOf(".")
 		val idx2 = date.lastIndexOf(".")
-		if( idx1 != -1 && idx2 != -1) (date.substring(0, idx1) + date.substring(idx1+1, idx2)).toLong else -1
+		if( idx1 != -1 && idx2 != -1) 
+			(date.substring(0, idx1) + date.substring(idx1+1, idx2)).toLong 
+		else -1
 	}
 
 		
@@ -94,7 +97,8 @@ object TextBayesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int  = {
-		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} $name: Evaluation Multinomial Naive Bayes for text analysis", logger)
+		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} $name: Multinomial Naive Bayes for text analysis", 
+				logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)
@@ -126,7 +130,8 @@ object TextBayesEval extends Eval {
 
 					// DisplayUtils the pairs (mean, standard deviation) for each term.
 					val labels: Array[String] = columns.map( _.toString).toArray
-					DisplayUtils.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", logger)
+					DisplayUtils.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", 
+							logger)
 				}
 				case None => DisplayUtils.error(s"$name keywords extraction failed", logger)
 			}

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" ISBN: 978-1-783355-874-2 Packt Publishing.
+ * concepts and algorithms presented in "Scala for Machine Learning" 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
@@ -29,7 +30,8 @@ import ScalaMl._
 		 * with a L2 penalty form). The training is executed during the instantiation
 		 * of the class. The minimization of the loss function including the L2 regularization
 		 * method uses a simple QR decomposition, although Cholesky factorization could be also used.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;,Arial,Helvetica,sans-serif;">
+		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
+		 * ,Arial,Helvetica,sans-serif;">
 		 * Ridge regression estimate w' = argmin Sum [squares {y(i)  - f(x(i)|w)} + lambda.w.w]<br>
 		 * with regression model f(x|w) = w(0) + w(1).x(1) + ... + w(n).x(n)
 		 * Residuals are defined as r(i) = Y(i) - X(i)*A
@@ -110,9 +112,11 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 	final def isModel = model != None
 	
 		/**
-		 * <p>Data transformation that predicts the value of a vector input using the Ridge regression.</p>
+		 * <p>Data transformation that predicts the value of a vector input using the Ridge regression.
+		 * </p>
 		 * @throws MatchError if the model is undefined or has an incorrect size
-		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of type Double as output
+		 * @return PartialFunction of feature of type Array[T] as input and the predicted value of 
+		 * type Double as output
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
 		case x: Feature if(x != null && model != None && x.size == model.get.size-1) => {
@@ -125,7 +129,8 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 	}
 
 		/**
-		 * <p>Override the newXSampleData method of the Common Math class AbstractMultipleLinearRegression.
+		 * <p>Override the newXSampleData method of the Common Math class 
+		 * <b>AbstractMultipleLinearRegression</b>.
 		 * The purpose is to add a lambda components to the loss function</p>
 		 * @param x Vector of features to be converted
 		 */
@@ -148,7 +153,8 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 	override protected def calculateBeta: RealVector = qr.getSolver().solve(getY())
 
 		/**
-		 * <p>Override the calculateBetaVariance method of the Common Math class AbstractMultipleLinearRegression
+		 * <p>Override the calculateBetaVariance method of the Common Math class 
+		 * <b>AbstractMultipleLinearRegression</b>.
 		 * using the QR decomposition</p>
 		 * @return the matrix of variance of model
 		 */
@@ -198,9 +204,12 @@ object RidgeRegression {
 		new RidgeRegression(xt, y, lambda)
 	
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {
-		require(xt != null && xt.size > 0, "Cannot create Ridge regression model with undefined features")
-		require(y != null && y.size > 0, "Cannot create Ridge regression model with undefined observed data")
-		require(xt.size == y.size, s"Size of the features set ${xt.size} differs for the size of observed data ${y.size}")
+		require(xt != null && xt.size > 0, 
+				"Cannot create Ridge regression model with undefined features")
+		require(y != null && y.size > 0, 
+				"Cannot create Ridge regression model with undefined observed data")
+		require(xt.size == y.size, 
+				s"Size of the features set ${xt.size} differs for the size of observed data ${y.size}")
 	}
 }
 
