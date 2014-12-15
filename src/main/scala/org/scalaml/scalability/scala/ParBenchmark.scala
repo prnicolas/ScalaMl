@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.scala
 
@@ -60,8 +60,6 @@ abstract class ParBenchmark[U](times: Int) {
 		 * @return Duration of the execution in milliseconds
 		 */
 	protected def timing(g: Int => Unit ): Long = {
-		require(g != null, "ParBenchmark.timing argument undefined")
-		
 			// Measure duration of 'times' execution of g
 		var startTime = System.currentTimeMillis
 		Range(0, times).foreach(g)
@@ -97,8 +95,6 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
 	override def map(f: U => U)(nTasks: Int): Double = {
-		require(f != null, 
-				"ParArrayBenchmark.map: Cannot execute a map on the data set with undefined operator" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, 
 				s"ParArrayBenchmark.map number of concurrent tasks $nTasks is out of range")
 		
@@ -117,7 +113,6 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
 	override def filter(f: U => Boolean)(nTasks: Int): Double = {
-		require(f != null, "ParArrayBenchmark.filter: operator on data set is undefined" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, 
 				s"ParArrayBenchmark.filter number of concurrent tasks $nTasks is out of range")
 		
@@ -136,7 +131,6 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
 		 */
 	def reduce(f: (U,U) => U)(nTasks: Int): Double = {
-		require(f != null, "ParArrayBenchmark.reduce: operator on data set is undefined")
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, 
 				s"ParArrayBenchmark.filter number of concurrent tasks $nTasks is out of range")
 
@@ -163,11 +157,11 @@ object ParArrayBenchmark {
 		 */
 	val MAX_NUM_TASKS = 64
 	
-	protected def check[U](u: Array[U], v: ParArray[U]): Unit = {
-		require(u != null && u.size > 0, 
-				"ParArrayBenchmark: Array in performance testing of parallel collections undefined")
-		require(v != null && v.size > 0, 
-				"ParArrayBenchmark: Parallel Array in performance testing of parallel collections undefined")
+	protected def check[U](u: scala.Array[U], v: ParArray[U]): Unit = {
+		require( !u.isEmpty, 
+				"ParArrayBenchmark.check: scala collections undefined")
+		require( !v.isEmpty, 
+				"ParArrayBenchmark.check: Parallel collections is undefined")
 		require(u.size == v.size, 
 				s"ParArrayBenchmark: Size of the array ${u.size} is != size of the parallel array ${v.size}")
 	}
@@ -186,10 +180,13 @@ object ParArrayBenchmark {
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 		 */
-final class ParMapBenchmark[U](u: immutable.Map[Int, U], v: ParMap[Int, U], times: Int) extends ParBenchmark[U](times) {
+final class ParMapBenchmark[U](
+			u: immutable.Map[Int, U], 
+			v: ParMap[Int, U], 
+			times: Int) extends ParBenchmark[U](times) {
 	import ParMapBenchmark._
 	
-	check(u,v)
+	check(u,v, times)
     private val logger = Logger.getLogger("ParMapBenchmark")
     	
     	/**
@@ -199,13 +196,14 @@ final class ParMapBenchmark[U](u: immutable.Map[Int, U], v: ParMap[Int, U], time
 		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
 		 */
 	override def map(f: U => U)(nTasks: Int): Double = {
-		require(f != null, "ParMapBenchmark: Cannot execute a map on the data set with undefined operator" )
-		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParMapBenchmark.map number of concurrent tasks $nTasks is out of range")
+		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, 
+				s"ParMapBenchmark.map number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.map(e => (e._1, f(e._2)))).toDouble
 		val ratio = timing( _ => v.map(e => (e._1, f(e._2))) )/duration
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.MediumFormat)}",logger)
+		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.MediumFormat)}",
+				logger)
 		ratio
 	}
 	
@@ -216,7 +214,6 @@ final class ParMapBenchmark[U](u: immutable.Map[Int, U], v: ParMap[Int, U], time
 		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
 		 */
 	override def filter( f: U => Boolean)(nTasks: Int): Double = {
-		require(f != null, "ParMapBenchmark: Cannot execute a map on the data set with undefined operator" )
 		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParMapBenchmark.filter number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
@@ -241,12 +238,16 @@ object ParMapBenchmark {
 		/**
 		 * Maximum number of concurrent tasks used in process a parallel map
 		 */
-	val MAX_NUM_TASKS = 64
+	private val MAX_NUM_TASKS = 64
+	private val MAX_NUM_TIMES = 250
 	
-	protected def check[U](u: immutable.Map[Int, U], v: ParMap[Int, U]): Unit = {
-		require(u != null && u.size > 0, "ParMapBenchmark: Cannot evaluate performance of Scala parallel map with undefined data")
-		require(v != null && v.size > 0, "ParMapBenchmark: Parallel map in performance testing ")
-		require(u.size == v.size, "ParMapBenchmark: Size of the map ${u.size} is different from the size of the parallel map ${v.size}")
+	protected def check[U](u: immutable.Map[Int, U], v: ParMap[Int, U], times: Int): Unit = {
+		require(!u.isEmpty, "ParMapBenchmark.check immutable map is undefined ")
+		require(!v.isEmpty, "ParMapBenchmark.check Parallel mutable map is undefined")
+		require(u.size == v.size, 
+				"ParMapBenchmark.check: Size immutable map ${u.size} != size parallel map ${v.size}")
+		require(times > 0 && times < MAX_NUM_TIMES, 
+				s"ParMapBenchmark.check: number of repetition $times is out of range")
 	}
 }
 

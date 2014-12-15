@@ -7,13 +7,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.util.{Matrix, DisplayUtils}
+import org.scalaml.util.DisplayUtils
 import org.scalaml.supervised.hmm.{HMM, HMMForm, HMMLambda, HMMConfig}
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.Matrix
 import org.scalaml.app.Eval
 
 		/**

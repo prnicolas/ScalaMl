@@ -7,14 +7,16 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow.data
 
 import scala.util.{Try, Success, Failure}
-import DocumentsSource._
-import org.scalaml.util.DisplayUtils
 import org.apache.log4j.Logger
+
+import org.scalaml.core.Types
+import org.scalaml.util.DisplayUtils
+import DocumentsSource._
 
 
 		/**
@@ -33,8 +35,8 @@ import org.apache.log4j.Logger
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
 		 */
 final class DocumentsSource(val pathName: String) {
-	require(pathName != null && pathName.length > 1, 
-			"Cannot create a data source with undefined path")
+	require( pathName != Types.nullString, 
+			"DocumentsSource Cannot create a data source with undefined path")
 	   
 	private val logger = Logger.getLogger("TextSource")
 	
@@ -71,7 +73,7 @@ final class DocumentsSource(val pathName: String) {
    
 
 	private def nextField(iter: Iterator[String]): Option[String] = 
-		iter.find( s=> (s != null && s.length > 1))
+		iter.find( s=> (s != Types.nullString))
 }
 
 

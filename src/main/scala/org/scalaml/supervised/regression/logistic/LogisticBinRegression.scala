@@ -117,7 +117,7 @@ object LogBinRegression {
 				s"LogBinRegression.check  Gradient slope $eta + is out of bounds")
 		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, 
 				s"LogBinRegression.check  Convergence criteria $eps is out of bounds")
-		require(labels != null && labels.size > 1, 
+		require( !labels.isEmpty, 
 				"LogBinRegression.check  Cannot train with undefined set of observations")
 	}
 }

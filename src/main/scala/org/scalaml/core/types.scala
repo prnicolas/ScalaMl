@@ -7,11 +7,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.core
 
-	import scala.language.implicitConversions
+import scala.language.implicitConversions
+import scala.util.Try
 	
 		/**
 		 * <p>Package that encapsulates the types and conversion used in the Scala for Machine learning
@@ -45,12 +46,10 @@ object Types {
 		 * @param v first operand of the operation
 		 * @param w second operand
 		 * @param op operator/function on elements of the vectors
-		 * @throws IllegalArgumentException if the operands and operator are undefined or the 
-		 * vectors have different length
+		 * @throws IllegalArgumentException if the vector are either empty or have different size
 		 */
-		def Op[T <% Double](v: DVector[T], w: DblVector, op: (T, Double) => Double): DblVector = {
-			require( v != null && w != null, "Cannot apply operator on undefined vectors")
-			require( op != null, "Cannot apply undefined operator to vectors")
+		def Op[T <% Double](v: DVector[T], w: Array[Double], op: (T, Double) => Double): DblVector = {
+			require(!v.isEmpty && !w.isEmpty, "Cannot apply operator on undefined vectors")
 			require(v.size == w.size, s"Cannot combine vector of different size ${v.size} and ${w.size}")
 	     
 			v.zipWithIndex.map( x => op(x._1, w(x._2)))
@@ -60,13 +59,12 @@ object Types {
 		/**
 		 * <p>Implementation of the dot product between a parameterized vector and
 		 * a vector of double.</p>
-		 * @param v first operand of the operation
-		 * @param w second operand
-		 * @throws IllegalArgumentException if the arguments are undefined or the vectors have different 
-		 * length
+		 * @param v first operand (vector) of the operation
+		 * @param w second operand (vector)
+		 * @throws IllegalArgumentException if the vectors are either undefined or have different size
 		 */
 		def dot[T <% Double](v: DVector[T], w: DblVector): Double = {
-			require( v != null && w != null, "Cannot apply dot product on undefined vectors")
+			require(!v.isEmpty && !w.isEmpty, "Cannot apply dot product on undefined vectors")
 			require(v.size == w.size, 
 					s"dot product requires vector of identical size ${v.size} and ${w.size}")
 	     
@@ -79,13 +77,12 @@ object Types {
 		implicit def int2Double(n: Int): Double = n.toDouble
 		implicit def long2Double(n: Long): Double = n.toDouble
 		implicit def vectorT2DblVector[T <% Double](vt: DVector[T]): DblVector = vt.map( _.toDouble)
-		implicit def dblVector2String(v: DblVector): String = v.foldLeft(new StringBuilder)((s, x) => 
-				s.append(s"$x ")).toString
 	  
-		implicit def /(v: DblVector, n: Int): DblVector = v.map( _/n)
-		implicit def /(m: DblMatrix, n: Int, z: Double) {
+		implicit def /(v: DblVector, n: Int): Try[DblVector] = Try(v.map( _/n))
+		implicit def /(m: DblMatrix, n: Int, z: Double): Unit  = {
 			require(n < m.size, s"/ matrix column $n out of bounds")
 			require(Math.abs(z) > 1e-32, s"/ divide column matrix by $z too small")
+			
 			Range(0, m(n).size).foreach( m(n)(_) /= z)
 		}
 
@@ -108,7 +105,7 @@ object Types {
 		 * true, not shown otherwise
 		 */
 		def toText(v: DblVector, index: Boolean): String = {
-			require(v != null && v.size > 0, 
+			require( !v.isEmpty, 
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if( index)
@@ -124,7 +121,7 @@ object Types {
 		 * index is true, not shown otherwise
 		 */
 		def toText(m: DblMatrix, index: Boolean): String = {
-			require(m != null && m.size > 0, 
+			require( !m.isEmpty, 
 					"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if(index)
@@ -151,6 +148,9 @@ object Types {
 		implicit def double2RealVector(data: DblVector): RealVector = new ArrayRealVector(data)
 		implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
 	}
+	
+	
+	val nullString = new String("")
 }
 
 // ------------------------------------------  EOF -----------------------------------------------------------

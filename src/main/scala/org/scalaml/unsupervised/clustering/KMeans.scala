@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.unsupervised.clustering
 
@@ -38,7 +38,7 @@ import org.scalaml.util.DisplayUtils
 		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
 		 * @param distance Metric used in computing distance between data points.
 		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of 
-		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice vers
+		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014
@@ -52,7 +52,7 @@ final class KMeans[T <% Double](
 		(implicit order: Ordering[T], m: Manifest[T]) extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
 
 	import XTSeries._, KMeans._
-	check(K, maxIters, distance)
+	check(K, maxIters)
 	
 	private val logger = Logger.getLogger("KMeans")
     	
@@ -65,7 +65,7 @@ final class KMeans[T <% Double](
 		 * algorithm and a list of cluster as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = {
-		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 1 && xt(0).size > 0) => {
+		case xt: XTSeries[Array[T]] if( !xt.isEmpty && dimension(xt) > 0) => {
 			val clusters = initialize(xt)  // 1 
 				
 			// In the rare case we could not initialize the clusters.
@@ -214,8 +214,11 @@ object KMeans {
 		 * @param m Implicit declaration of manifest of type <b>T</b> to overcome Java erasure of 
 		 * type <b>Array[T]</b> when converting Array of <b>T</b> to Array of double and vice versa
 		 */
-	def apply[T <% Double](K: Int, maxIters: Int)(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
-			new KMeans[T](K, maxIters, euclidean)
+	def apply[T <% Double](
+			K: Int, 
+			maxIters: Int)
+			(implicit order: Ordering[T], m: Manifest[T]): KMeans[T] = 
+		new KMeans[T](K, maxIters, euclidean)
 
 
 		/**
@@ -241,26 +244,20 @@ object KMeans {
 			c: List[Cluster[T]], 
 			xt: XTSeries[Array[T]], 
 			distance: (DblVector, Array[T]) => Double): List[Double] = {
-	  
-		require(c != null && c.size > 0, 
+		require( !c.isEmpty, 
 				"KMeans.stdDev Cannot compute the variance of undefined clusters")
-		require(xt != null && xt.size > 0, 
+		require( !xt.isEmpty, 
 				"KMeans.stdDev  Cannot compute the variance of clusters for undefined input datat")
   	 
 		c.map( _.stdDev(xt, distance))
 	}
    
 	
-	private def check[T <% Double](
-			K: Int, 
-			maxIters: Int, 
-			distance: (DblVector, Array[T]) => Double): Unit = {
-	  
+	private def check(K: Int,  maxIters: Int): Unit = {
 		require(K > 0 && K < MAX_K, 
 				s"KMeans.check Number of clusters for Kmeans $K is out of range")
 		require( maxIters > 1 && maxIters < MAX_ITERATIONS, 
 				s"KMeans.check Maximum number of iterations for Kmeans $maxIters is out of range")
-		require( distance != null, "KMeans.check Distance for K-means is undefined")
 	}
 }
 

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow.module
 
@@ -36,7 +36,7 @@ trait ClusteringModule[T] {
 			(implicit order: Ordering[T], m: Manifest[T]) extends Clustering[T] 
 					with PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
   	
-		override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = { case _ => null }
+		override def |> : PartialFunction[XTSeries[Array[T]], List[Cluster[T]]] = { case _ => List.empty }
   	  
 		override def execute(xt: XTSeries[Array[T]]): Unit =  this |> xt
   }
@@ -44,7 +44,7 @@ trait ClusteringModule[T] {
   final class MultivariateEM[T <% Double](K: Int) extends Clustering[T] 
   		with PipeOperator[XTSeries[Array[T]], EMOutput] {
     
-  	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = { case _ => null }
+  	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = { case _ => List.empty  }
   	override def execute(xt: XTSeries[Array[T]]): Unit = this |> xt 
   }
 }

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -28,14 +28,12 @@ import Chromosome._
 		 *  <b>score</b>   Scoring function of a chromosome.
 		 *  </span></pre></p>
 		 *  @constructor Create a reproduction cycle for the genetic algorithm. 
-		 *  @throws IllegalArgumentException if the chromosome scoring function is undefined
 		 *  @param score Scoring function of a chromosome (unfitness of the candidate solution)
 		 *  @author Patrick Nicolas
 		 *  @since August 28, 2013
 		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   
-	require(score != null, "Reproduction Chromosome scoring function of GA is undefined")
 	
 		/**
 		 * <p>Execute the 3 phases of the genetic replication: Selection, Cross-over and Mutation.</p>
@@ -44,7 +42,9 @@ final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 		 * @param cycle Current reproduction cycle number
 		 * @return true if the selection, crossover and mutation phases succeed, None otherwise.
 		 */
-	def mate(population: Population[T], config: GAConfig, cycle: Int): Boolean = population.size match {
+	def mate(population: Population[T], 
+			config: GAConfig, 
+			cycle: Int): Boolean = population.size match {
 		case 0 | 1 | 2 => false
 		case _ => {
 			population.select(score, config.softLimit(cycle))		//1. Selection
@@ -69,8 +69,7 @@ object Reproduction {
 		 * Default constructor for a reproduction cycle
 		 * @param score Scoring function of a chromosome (unfitness of the candidate solution)
 		 */
-	def apply[T <: Gene](score: Chromosome[T] => Unit): Reproduction[T] = 
-		new Reproduction[T](score)
+	def apply[T <: Gene](score: Chromosome[T] => Unit): Reproduction[T] = new Reproduction[T](score)
 }
 
 // ------------------------------  EOF --------------------------------------------------

@@ -7,13 +7,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap1
 
 import org.scalaml.plots._
 import org.scalaml.stats.Stats
 import org.scalaml.trading.{Signal, YahooFinancials}
+import org.scalaml.core.Types
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.supervised.regression.logistic.LogBinRegression
 import org.scalaml.util.DisplayUtils
@@ -92,7 +93,7 @@ object LogBinRegressionEval extends Eval {
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
 	private def load(fileName: String): Option[XYTSeries] = {
-	require(fileName != null, "LogBinRegressionEval.load Cannot load data from undefined fileName")
+	require(fileName != Types.nullString, "LogBinRegressionEval.load Cannot load data from undefined fileName")
 		Try {
 			val src =  Source.fromFile(fileName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray
@@ -116,7 +117,7 @@ object LogBinRegressionEval extends Eval {
 		 * Method to display a time series
 		 */
 	private def display(volatilityVolume: XYTSeries): Unit = {
-		require(volatilityVolume != null && volatilityVolume.size > 0, 
+		require( !volatilityVolume.isEmpty, 
 				"LogBinRegressionEval.display Cannot display an undefined time series")
        
 		val plotter = new ScatterPlot(("CSCO 2012-13 stock price session volatiity", 

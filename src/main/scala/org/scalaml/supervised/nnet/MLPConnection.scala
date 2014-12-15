@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.nnet
 
@@ -26,8 +26,6 @@ import org.scalaml.util.FormatUtils
 		 * any neuron or variable of each layer.The Synapse is defined as a nested tuple(Double, Double) 
 		 * tuple (weights, deltaWeights)</p>
 		 * @constructor Create a MLP connection between two consecutive neural layer. 
-		 * @throws IllegalArgumenException if either the configuration or if the source layer or 
-		 * destination layer is undefined.
 		 * @param config  Configuration for the Multi-layer Perceptron.
 		 * @param src  Source (or input or upstream) neural layer to this connection
 		 * @param dst  Destination (or output or downstream) neural layer for this connection.
@@ -43,7 +41,6 @@ final protected class MLPConnection(
 		(implicit mlpObjective: MLP.MLPObjective)  {
 	import MLPConnection._
 
-	check(config, src, dst)
 		/**
 		 * <p>Type of Synapse defined as a tuple of [weight, gradient(weights)]
 		 */
@@ -148,11 +145,5 @@ final protected class MLPConnection(
 		 */
 object MLPConnection {
 	private val BETA = 0.1
-	
-	private def check(config: MLPConfig, src: MLPLayer, dst: MLPLayer) {
-		require(config != null, "Configuration for the MLP connection is undefined")
-		require(src != null, "The source layer for this connection is undefined")
-		require(dst != null, "The destination layer for this connection is undefined")
-	}
 }
 // -------------------------------------  EOF ------------------------------------------------

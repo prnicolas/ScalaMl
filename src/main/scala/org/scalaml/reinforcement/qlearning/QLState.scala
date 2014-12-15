@@ -64,9 +64,9 @@ object QLState {
 	def apply[T](id: Int, actions: List[QLAction[T]], property: T): QLState[T] = 
 			new QLState(id, actions, property)
   
-	protected def check[T](id: Int, actions: List[QLAction[T]]): Unit = {
+	private def check[T](id: Int, actions: List[QLAction[T]]): Unit = {
 		require( id >= 0, s"QLState.check id $id is out of range")
-		require(actions != null, "QLState.check Cannot create a QLState with undefined list of actions")
+		require( !actions.isEmpty, "QLState.check Cannot create a QLState with undefined list of actions")
 	}
 }
 

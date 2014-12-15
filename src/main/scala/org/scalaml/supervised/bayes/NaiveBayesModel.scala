@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.bayes
 
@@ -21,14 +21,12 @@ import NaiveBayesModel._
 		 * <b>Abstract class for all the Naive Bayes model. The purpose of the model is to 
 		 * classify a new set of observations.</p>
 		 * @constructor Create a generic Naive Bayes Model using a specific density.
-		 * @throws IllegalArgumentException if density function is undefined
 		 * @param density Function used in computing the conditional probability <b>p(C|x)</b>
 		 * @author Patrick Nicolas
 		 * @since March 8, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 		 */
 abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model {
-	require(density != null, "Cannot compute conditional prob with NB for undefined prob density")
 	
 		/**
 		 * Name of the file that persists the model for the Naive Bayes model
@@ -61,7 +59,6 @@ object NaiveBayesModel {
 		 * <p>Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and 
 		 * negative outcome and for a specific density function.</p>
 		 * @constructor Instantiation of a Binomial Naive Bayes model. 
-		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @see org.scalaml.supervised.bayes.NaiveBayesModel
 		 * @param positives  Priors for the class of positive outcomes.
 		 * @param negatives  Priors for the class of negatives outcomes.
@@ -75,12 +72,7 @@ protected class BinNaiveBayesModel[T <% Double](
 		positives: Likelihood[T], 
 		negatives: Likelihood[T], 
 		density: Density) extends NaiveBayesModel[T](density) {
-	
-	require(positives != null, 
-			"BinNaiveBayesModel Undefined positive labels")
-	require(negatives != null, 
-			"BinNaiveBayesModel Undefine negative labels")
-    
+
 		/**
 		 * <p>Classify a new observation (features vector) using the Binomial Naive Bayes model.</p>
 		 * @param x new observation
@@ -88,7 +80,7 @@ protected class BinNaiveBayesModel[T <% Double](
 		 * @throws IllegalArgumentException if any of the observation is undefined.
 		 */
 	override def classify(x: Array[T]): Int = {
-		require(x != null && x.size > 0, 
+		require( !x.isEmpty, 
 				"BinNaiveBayesModel.classify Undefined observations")
 		
 		// Simply select one of the two classes with the highers log posterior probability
@@ -96,6 +88,7 @@ protected class BinNaiveBayesModel[T <% Double](
 	}
 	
 	override def toString(labels: Array[String]): String = {
+		require( !labels.isEmpty, "BinNaiveBayesModel.toString Undefined labels")
 		s"\nPositive class\n${positives.toString(labels)}\nNegative class\n${negatives.toString(labels)}"
 	}
 	
@@ -143,7 +136,7 @@ protected class MultiNaiveBayesModel[T <% Double](
 		likelihoodSet: List[Likelihood[T]], 
 		density: Density) extends NaiveBayesModel[T](density) {
   
-	require(likelihoodSet != null && likelihoodSet.size > 0, 
+	require(!likelihoodSet.isEmpty, 
 			"MultiNaiveBayesModel Cannot classify using Multi-NB with undefined classes")
   
 		/**
@@ -153,14 +146,18 @@ protected class MultiNaiveBayesModel[T <% Double](
 		 * @throws IllegalArgumentException if any of the observation is undefined.
 		 */
 	override def classify(x: Array[T]): Int = {
-		require(x != null && x.size > 0, "MultiNaiveBayesModel.classify Vector input is undefined")
+		require( !x.isEmpty, "MultiNaiveBayesModel.classify Vector input is undefined")
+		
 			// The classification is performed by ordering the class according to the
-			// log of their posterior probability and selecting the top one (highest posterior probability)
+			// log of their posterior probability and selecting the top one (highest 
+			// posterior probability)
 		likelihoodSet.sortWith((p1, p2) => 
 			p1.score(x, density) > p2.score(x, density)).head.label
 	}
 	
 	override def toString(labels: Array[String]): String = {
+		require( !labels.isEmpty, "MultiNaiveBayesModel.toString Vector input is undefined")
+	  		
 		val buf = new StringBuilder
 		likelihoodSet.zipWithIndex.foreach(l => {
 			buf.append(s"\nclass ${l._2}: ${l._1.toString(labels)}")

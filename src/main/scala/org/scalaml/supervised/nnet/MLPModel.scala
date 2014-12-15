@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.nnet
 
@@ -49,7 +49,7 @@ final protected class MLPModel(
 	
 	import MLPModel._
 
-	check(config, nInputs, nOutputs)
+	check(nInputs, nOutputs)
 	
 		/**
 		 * Name of the file that persists the model parameters of the Multi-layer perceptron
@@ -140,8 +140,7 @@ object MLPModel {
 	private val MAX_MLP_NUM_INPUTS = 4096
 	private val MAX_MLP_NUM_OUTPUTS = 2048
 	
-	private def check(config: MLPConfig, nInputs: Int, nOutputs: Int): Unit = {
-		require(config != null, "MLPModel Cannot create a model with undefined configuration")
+	private def check(nInputs: Int, nOutputs: Int): Unit = {
 		require(nInputs > 0 && nInputs < MAX_MLP_NUM_INPUTS, 
 				s"MLPModel number of input nodes $nInputs is out of range")
 		require(nOutputs > 0 && nOutputs < MAX_MLP_NUM_OUTPUTS, 

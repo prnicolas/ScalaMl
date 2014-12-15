@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.svm
 
@@ -40,8 +40,6 @@ trait SVMConfigItem {
 		 * @constructor Create a configuration for this SVM with a given formulation, kernel function 
 		 * and execution parameters.
 		 * @see LIBSVM
-		 * @throws IllegalArgumentException if the formulation, kernel or execution parameter are 
-		 * undefined.
 		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
 		 * of the SVM algorithm)
 		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
@@ -58,8 +56,6 @@ final protected class SVMConfig(
 		exec: SVMExecution) extends Config {
 	import SVMConfig._
 	
-	check(formulation, kernel, exec)
-	
 		/**
 		 * Name of the file that persists the configuration of the support vector machine algorithm
 		 */
@@ -74,14 +70,9 @@ final protected class SVMConfig(
 	exec.update(param)
     	
 	override def toString: String = {
-		val buf = new StringBuilder
-		buf.append(s"\nSVM Formulation: ${formulation.toString}\n${kernel.toString}")
-    	             
-		if( param.weight != null) {
-			buf.append("\nweights: ")
-			for( w <- param.weight)
-				buf.append(s"$w,")
-		}
+	  val buf = new StringBuilder
+		buf.append(s"\nSVM Formulation: ${formulation.toString}\n${kernel.toString}\nweights: ")
+		param.weight.foreach(w => buf.append(s"$w,"))
 		buf.toString
 	}
 
@@ -140,16 +131,6 @@ object SVMConfig {
 		 */
 	def apply(svmType: SVMFormulation, kernel: SVMKernel): SVMConfig = 
 		new SVMConfig(svmType, kernel, SVMExecution.apply)
-   	
-	private def check(
-			formulation: SVMFormulation, 
-			kernel: SVMKernel, 
-			svmParams: SVMExecution): Unit =  {
-		require(formulation != null, "SVMConfig.check Formulation in the configuration is undefined")
-		require(kernel != null, "SVMConfig.check Kernel function in the configuration is undefined")
-		require(svmParams != null, 
-				"SVMConfig.check Training execution parameters in the configuration of SVM is undefined")	
-	}
 }
 
 

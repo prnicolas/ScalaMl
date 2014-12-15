@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -16,9 +16,8 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 import org.scalaml.core.design.Model
-import org.scalaml.core.Types.ScalaMl.{DblVector}
-import org.scalaml.util.{DisplayUtils, Matrix}
-
+import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.util.DisplayUtils
 
 
 		/**
@@ -37,7 +36,6 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 	import QLSpace._
 	check(states, goalIds)
 	
-	
 	private[this] val statesMap: immutable.Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
 	private[this] val goalStates = new immutable.HashSet[Int]() ++ goalIds
 
@@ -48,10 +46,7 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 * @return Maximum Q-value
 		 * @throws IllegalArgumentException if either the state  or the policy is undefined
 		 */
-	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {
-		require(state != null, "QLSpace.maxQ State is undefined")
-		require(policy != null, "QLSpace.maxQ State is undefined")
-		
+	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {		
 		val best = states.filter( _ != state)
 						.maxBy(st => policy.EQ(state.id, st.id))
 		policy.EQ(state.id, best.id)
@@ -68,11 +63,10 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 * <p>Retrieve the list of the target states for action triggered by this state</p>
 		 * @param st state for which the target states are retrieved
 		 * @return  List of target states (target to the action triggered from this state)
-		 * @throws IllegalArgumenException if either the state or its actions is undefined
+		 * @throws IllegalArgumenException if either the state's actions is undefined
 		 */
 	final def nextStates(st: QLState[T]): List[QLState[T]] = {
-		require(st != null, "QLSpace.nextStates state is undefined")
-		require(st.actions != null, "QLSpace.nextStates actions associated to this state undefined")
+		require(!st.actions.isEmpty, "QLSpace.nextStates actions associated to this state undefined")
 		st.actions.map(ac => statesMap.get(ac.to).get )
 	}
 
@@ -80,12 +74,8 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 * <p>Test if this state is a goal state</p>
 		 * @param state state that is test against goal
 		 * @return true if this state is a goal state, false otherwise
-		 * @throws IllegalArgumentException if the state is undefined
 		 */
-	final def isGoal(state: QLState[T]): Boolean = {
-		require(state != null, "QLSpace.isGoal state is undefined")
-		goalStates.contains(state.id)
-	}
+	final def isGoal(state: QLState[T]): Boolean = goalStates.contains(state.id)
 
 	override def toString: String = 
 		new StringBuilder("States\n")
@@ -120,7 +110,7 @@ object QLSpace {
 			neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
 		
 		require(numStates >=0, s"QLSpace.apply The number of states $numStates should be positive")
-		require(features != null && features.size > 0, "QLSpace.apply features are undefined")
+		require( !features.isEmpty, "QLSpace.apply features are undefined")
 		
 		val states = features.zipWithIndex
 						.map(x => {
@@ -149,9 +139,9 @@ object QLSpace {
 		 
 
 	private def check[T](states: Array[QLState[T]], goalIds: Array[Int]): Unit = {
-		require(states != null && states.size > 1, 
+		require( !states.isEmpty, 
 				"QLSpace.check States list for QLSpace is undefined")
-		require(goalIds != null && goalIds.size > 0, 
+		require( !goalIds.isEmpty, 
 				"QLSpace.check  List of goal states for QLSpace is undefined")
 	}
 }

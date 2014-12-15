@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.filtering
 
@@ -23,8 +23,6 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
 import DFT._, ScalaMl._
-
-
 
 
 		/**
@@ -112,8 +110,6 @@ object DTransform {
 	def sinc2(f: Double, fC: Double): Double = if(f*f < fC) 1.0 else 0.0
 }
 
-
-
 		/**
 		 * <p>Discrete Fourier Transform for time series of element of type T bounded to a Double.
 		 * This class inherit the generic DTransform to access the padding functions.</p>
@@ -134,7 +130,7 @@ protected class DFT[T <% Double] extends DTransform[T] {
 		 * and type vector of Double for output as a time series of frequencies..
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
-		case xt: XTSeries[T] if(xt != null && xt.size > 2) => XTSeries[Double](fwrd(xt)._2)
+		case xt: XTSeries[T] if( !xt.isEmpty ) => XTSeries[Double](fwrd(xt)._2)
 	}
    
 
@@ -182,14 +178,13 @@ object DFT {
 		 * @param g   Filtering function y = g(x, fC)used in the convolution
 		 * @param fC  Frequency cutoff for this low pass filter.
 		 * @constructor Create a low-pass filter using the discrete Fourier transform
-		 * @throws IllegalArgumentException if the filtering function g is undefined.
+		 * @throws IllegalArgumentException if the cut-off value is out of bounds
 		 * @author Patrick Nicolas
 		 * @since February 9, 2014
 		 * @note Scala for Machine Learning  Chapter 2 Data pre-processing / Fourier analysis / 
 		 * DFT-based filtering
 		 */
 final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends DFT[T] {
-	require(g != null, "DFTFir Cannot apply a band pass filter with undefined filter function")
 	require(fC > 0.0 && fC < 1.0, s"DFTFir Relative cutoff value $fC is incorrect")
    
 	private val logger = Logger.getLogger("DFTFir")
@@ -204,13 +199,14 @@ final class DFTFir[T <% Double](g: (Double, Double)=>Double, fC: Double) extends
 		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 */
 	override def |> : PartialFunction[XTSeries[T], XTSeries[Double]] = {
-		case xt: XTSeries[T] if( xt != null && xt.size > 2) => {
+		case xt: XTSeries[T] if( !xt.isEmpty ) => {
 				// Forward computation of the discrete Fourier series
 			val spectrum = fwrd(xt)
 				// Computes the frequencies cut-off in data points
 			val cutOff = fC*spectrum._2.size
 				// Applies the cutoff to the original frequencies spectrum
 			val filtered = spectrum._2.zipWithIndex.map(x => x._1*g(x._2, cutOff))
+			
 				// Reconstruct the signal.
 			XTSeries[Double](spectrum._1.transform(filtered, TransformType.INVERSE) )
 		}

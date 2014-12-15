@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.stats
 
@@ -28,9 +28,13 @@ import Stats._
 		 *  @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 class Stats[T <% Double](values: DVector[T]) {
-	require( values != null && values.size > 0, "Cannot initialize stats with undefined data")
+	require( !values.isEmpty, "Stats: Cannot initialize stats with undefined values")
 
-	private class _Stats(var minValue: Double, var maxValue: Double, var sum: Double, var sumSqr: Double)
+	private class _Stats(
+			var minValue: Double, 
+			var maxValue: Double, 
+			var sum: Double, 
+			var sumSqr: Double)
 	
 		// Create the statistics used in the computation of the mean and variance
 	private[this] val _stats = {
@@ -97,7 +101,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		 */
 	final def laplaceMean(dim: Int): Double = {
 		require(dim > 0, s"Stats.laplaceMean Dimension for Lidstone factor $dim is out of range")
-		(_stats.sum+ 1.0)/(values.size + dim)
+		(_stats.sum + 1.0)/(values.size + dim)
 	}
 
 		/**
@@ -153,7 +157,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 object Stats {
-	final val ZERO_EPS = 1e-32
+	final val ZERO_EPS = 1e-36
 	final val INV_SQRT_2PI = 1.0/Math.sqrt(2.0*Math.PI)
 
 		/**
@@ -173,7 +177,7 @@ object Stats {
 	final def gauss(mean: Double, stdDev: Double, values: DblVector) : DblVector = {
 		require(Math.abs(stdDev) >= ZERO_EPS, 
 				s"Stats.gauss Standard deviation $stdDev is close to zero")
-		require(values != null && values.size > 0, "Stats.gauss Values are undefined")
+		require( !values.isEmpty, "Stats.gauss Values are undefined")
       
 		values.map( x => {
 			val y = x - mean

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.stats
 
@@ -65,7 +65,7 @@ final protected class ClassValidation(
 		actualExpected: Array[(Int, Int)], 
 		tpClass: Int) extends Validation {
   
-	require(actualExpected != null && actualExpected.size > 0, 
+	require( !actualExpected.isEmpty, 
 			"ClassValidation Cannot validate undefined results")
 	require(tpClass >= 0, s"ClassValidation index for true positive class $tpClass is negative") 
    
@@ -86,12 +86,11 @@ final protected class ClassValidation(
 		/**
 		 * Precision of a classifier using TP and FP counters.
 		 * @return Precision for the model if either TP or FP counters is not null
-		 * @throws IllegalStateException if TP and FP counters are null
+		 * @throws IllegalStateException if TP + FP counters are null
 		 */
 	lazy val precision = {
 		val denom = counters(TP) + counters(FP)
-		if(denom == 0)
-			throw new IllegalStateException("ClassValidation.precision TP and FP counters are null")
+		assert(denom > 0, "ClassValidation.precision TP and FP counters are null")
 		counters(TP).toDouble/denom
 	}
 	
@@ -102,8 +101,7 @@ final protected class ClassValidation(
 		 */
 	lazy val recall = {
 		val denom = counters(TP) + counters(FN)
-		if(denom == 0)
-			throw new IllegalStateException("ClassValidation.recall TP and FN counters are null")
+		assert(denom > 0, "ClassValidation.recall TP and FP counters are null")
 		counters(TP).toDouble/denom
 	}
   	 

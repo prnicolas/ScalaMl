@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -32,7 +32,7 @@ import Chromosome._
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
-	require(code != null && code.size > 1, 
+	require(!code.isEmpty, 
 			"Chromosome Cannot create a chromosome from undefined genetic code")
 	var unfitness: Double = 1000*(1.0 + Random.nextDouble)
    
@@ -51,7 +51,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @return the pair of offspring chromosomes
 		 */
 	def +- (that: Chromosome[T], gIdx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
-		require(that != null, 
+		require(!that.isNull, 
 				"Chromosome.+-  Cannot cross-over chromosome with an undefined parent")
 		require(this.size == that.size, 
 				s"Chromosome.+- Chromosomes ${size} and that ${that.size} have different size")
@@ -115,7 +115,9 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 */
 	@inline
 	final def size: Int = code.size
-    
+	
+	final def isNull: Boolean = code.isEmpty
+	
 		/**
 		 * <p>Stringize the genetic code of this chromosome</p>
 		 * @return Genetic code {0, 1} for this chromosome
@@ -164,13 +166,12 @@ object Chromosome {
 		 * Symbolic constructor for the Chromosome
 		 * @param predicates List of predicates of type T for this chromosome
 		 * @param encode Function that convert a predicate to a Gene
-		 * @throws IllegalArgumentException if either the predicates are undefined or the encoding 
-		 * function is undefined
+		 * @throws IllegalArgumentException if either the predicates are undefined (empty)
+		 * @return Chromosome built from predicates and an encoding function
 		 */
 	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = {
-		require(predicates != null && predicates.size > 0, 
+		require( !predicates.isEmpty, 
 				"Chromosome.apply List of predicates is undefined")
-		require(encode != null, "Chromosome.apply Encoding function is undefined")
 
 		new Chromosome[T](if(predicates.size == 1) 
 			List[T](encode(predicates(0)).asInstanceOf[T])
@@ -183,6 +184,11 @@ object Chromosome {
 		 * array of chromosomes.
 		 */
 	type Pool[T <: Gene] = ArrayBuffer[Chromosome[T]]
+	
+			/**
+			 * Define a Null Chromosome
+			 */
+	def nullChromosome[T <: Gene]: Chromosome[T] = new Chromosome[T](List.empty[T])
 }
 
 // ------------------------  EOF --------------------------------------

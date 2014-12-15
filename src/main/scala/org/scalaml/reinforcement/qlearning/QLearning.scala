@@ -7,15 +7,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.qlearning
 
 import scala.collection._
-
 import org.apache.log4j.Logger
 
-import org.scalaml.util.{Matrix, DisplayUtils}
+import org.scalaml.util.DisplayUtils
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{Config, PipeOperator, Model}
 
@@ -54,8 +53,6 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extend
 		 * Arial,Helvetica,sans-serif;">
 		 * Q-Learning value action: Q'(t) = Q(t) + alpha.[r(t+1) + gamma.max{Q(t+1)} - Q(t)</span></pre></p>
 		 * @constructor Create a Q-learning algorithm. [config] Configuration for Q-Learning algorithm. 
-		 * @throws IllegalArgumentException if the configuration, the search space or the initial 
-		 * policies are undefined
 		 * @param config Configuration for the Q-learning algorithm
 		 * @param qlSpace Initial search space of states
 		 * @param qlPolicy Initial policy for the search
@@ -72,7 +69,6 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 	import QLearning._
 	
 	private val logger = Logger.getLogger("QLearning")
-	check(config, qlSpace, qlPolicy)
    
 		/**
 		 * Model parameters for Q-learning of type QLModel that is defined as
@@ -110,8 +106,8 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * type QLState[T]
 		 */
 	override def |> : PartialFunction[QLState[T], QLState[T]] = {
-		case state: QLState[T] if(state != null && state.isGoal && model != None) => 
-			nextState(state, 0)._1
+		case state: QLState[T] if( model != None) => 
+			if( state.isGoal) state else nextState(state, 0)._1
 	}
 
 	override def toString: String = qlPolicy.toString + qlSpace.toString
@@ -213,13 +209,10 @@ object QLearning {
 			input: Array[QLInput], 
 			features: Set[T]): QLearning[T] = {
 	  
-	  require(input != null && input.size > 0, "QLearning Cannot initialize with undefine input")
-		require(numStates > 2, s"QLearning Cannot initialize with $numStates states")
-		require(goals != null && goals.size > 0, "QLearning Cannot initialize with undefined goals")
-		require(input != null && input.size > 0, 
-				"QLearning Cannot initialize with undefined input rewards")
-		require(features != null && features.size > 0, 
-				"QLearning Cannot initialize with undefined features")
+	  require( !input.isEmpty, "QLearning Cannot initialize with undefine input rewards")
+		require( numStates > 2, s"QLearning Cannot initialize with $numStates states")
+		require( !goals.isEmpty, "QLearning Cannot initialize with undefined goals")
+		require( !features.isEmpty, "QLearning Cannot initialize with undefined features")
 		
 		new QLearning[T](
 				config, 
@@ -243,15 +236,6 @@ object QLearning {
 			numStates: Int, 
 			goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
 		apply[T](config, numStates, Array[Int](goal), input, features)
-  
-	protected def check[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]): Unit = {
-		require(config != null, 
-				"QLearning.check Cannot create a Q-Learning model with undefined configuration")
-		require(qlSpace != null, 
-				"QLearning.check Cannot create a Q-Learning model with undefined state space")
-		require(qlPolicy != null, 
-				"QLearning.check Cannot create a Q-Learning model with undefined policy")
-	}
 }
 
 

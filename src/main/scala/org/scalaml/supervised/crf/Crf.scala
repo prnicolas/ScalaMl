@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -41,7 +41,7 @@ import org.scalaml.util.DisplayUtils
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 final protected class CrfModel(val weights: DblVector) extends Model {
-	require(weights != null && weights.size > 0, 
+	require(!weights.isEmpty, 
 			"CrfModel Cannot create a model with undefined weights")
   
 		/**
@@ -71,10 +71,13 @@ final protected class CrfModel(val weights: DblVector) extends Model {
 		 * @since April 3, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
-final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, taggedObs: String) 
-				extends PipeOperator[String, Double] {
+final class Crf(
+		nLabels: Int, 
+		config: CrfConfig, 
+		delims: CrfSeqDelimiter, 
+		taggedObs: String) extends PipeOperator[String, Double] {
 	import Crf._
-	check(nLabels, config, delims, taggedObs)
+	check(nLabels)
   
 	private val logger = Logger.getLogger("Crf")
   
@@ -82,7 +85,7 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 			extends FeatureGenImpl(new CompleteModel(nLabels),nLabels, true)
 		
 	private[this] val features = new TaggingGenerator(nLabels)
-	private[this] lazy val crf = new CRF(nLabels, features, config.params)
+	private[this] val crf = new CRF(nLabels, features, config.params)
   
 	private val model: Option[CrfModel] = {
 		val seqIter = CrfSeqIter(nLabels, taggedObs, delims)
@@ -103,7 +106,7 @@ final class Crf(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagged
 		 * of type Double as output
 		 */
 	override def |> : PartialFunction[String, Double] = {
-		case obs: String if(obs != null && obs.length > 1 && model != None) => {
+		case obs: String if( !obs.isEmpty && model != None) => {
 			val dataSeq =  new CrfTrainingSet(nLabels, obs, delims.obsDelim)
 			crf.apply(dataSeq)
 		}
@@ -144,17 +147,10 @@ object Crf {
 		new Crf(nLabels, state, delims, taggedObs)
   
   
-	private def check(
-			nLabels: Int, 
-			state: CrfConfig, 
-			delims: CrfSeqDelimiter, 
-			taggedObs: String): Unit = {
+	private def check(nLabels: Int): Unit = {
 	  
 		require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, 
 				s"Number of labels for generating tags for CRF $nLabels is out of range")
-		require(state != null, "Configuration of the linear Chain CRF is undefined")
-		require(delims != null, "delimiters used in the CRF training files are undefined")
-		require(taggedObs != null, "Tagged observations used in the CRF training files are undefined")
 	}
 }
 

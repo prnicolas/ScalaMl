@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.hmm
 
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{PipeOperator, Model}
 import org.scalaml.core.XTSeries
-import org.scalaml.util.Matrix
+import org.scalaml.core.Matrix
 import scala.util.{Try, Success, Failure}
 import scala.annotation.implicitNotFound
 import org.apache.log4j.Logger
@@ -61,11 +61,8 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 		 * Companion object for the HMM model parameters
 		 */
 object HMMModel {
-	private def check(lambda: HMMLambda, obs: Array[Int]): Unit = {
-		require(lambda != null, "HMMModel.check Cannot create a model with undefined lambda model")
-		require(obs != null && obs.size > 0, 
-				"HMMModel.check Cannot create a model with undefined observations")
-	}
+	private def check(lambda: HMMLambda, obs: Array[Int]): Unit = 
+		require(!obs.isEmpty, "HMMModel.check Cannot create a model with undefined observations")
 }
 
 
@@ -127,7 +124,7 @@ final protected class HMM[@specialized T <% Array[Int]](
 		maxIters: Int)
 		(implicit f: DblVector => T)	extends PipeOperator[DblVector, HMMPredictor] {
 	
-	check(lambda, maxIters)
+	check(maxIters)
 	
 	private val logger = Logger.getLogger("HMM")
 	private val state = HMMState(lambda, maxIters)
@@ -141,15 +138,17 @@ final protected class HMM[@specialized T <% Array[Int]](
 		 * (likelihood, sequence of observation indices)
 		 */
 	override def |> : PartialFunction[DblVector, HMMPredictor] = {
-		case obs: DblVector if(obs != null && obs.size > 1) => {
+		case obs: DblVector if( !obs.isEmpty) => {
 			Try { 
 				form match {
 					case EVALUATION => evaluate(obs)
 					case DECODING => decode(obs)
 				} 
 			} match {
-				case Success(prediction) =>prediction
-				case Failure(e) => DisplayUtils.error("HMM.|> ", logger, e); null
+				case Success(prediction) => prediction
+				case Failure(e) => 
+					DisplayUtils.error("HMM.|> ", logger, e)
+					nullHMMPredictor
 			}
 		}
 	}
@@ -191,6 +190,7 @@ object HMM {
 		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
 		 */
 	type HMMPredictor = (Double, Array[Int])
+	val nullHMMPredictor = (-1.0, Array.empty[Int])
 	
 		/**
 		 * Default constructor for the Hidden Markov Model classifier (HMM)
@@ -250,8 +250,7 @@ object HMM {
 	}
 	
 	val MAX_NUM_ITERS = 1024
-	private def check(lambda: HMMLambda, maxIters: Int): Unit = {
-		require(lambda != null, "HMM.check Cannot execute a HMM with undefined lambda model")
+	private def check(maxIters: Int): Unit = {
 		require(maxIters > 1 && maxIters < MAX_NUM_ITERS, 
 		    s"HMM.check  Maximum number of iterations to train a HMM $maxIters is out of bounds")
 	}

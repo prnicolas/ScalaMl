@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap8
 
@@ -103,7 +103,7 @@ object SVREval extends Eval {
    
 	private def display(label: String, xs: List[XYTSeries], lbls: List[String]): Unit = {
 		import org.scalaml.plots.{ScatterPlot, LightPlotTheme}
-		require(xs != null && xs.size > 0, s"$name Cannot display an undefined time series")
+		require( !xs.isEmpty, s"$name Cannot display an undefined time series")
        
 		val plotter = new ScatterPlot(("SVR SPY prices", label, "SPY"), new LightPlotTheme)
 		plotter.display(xs, lbls, 250, 340)

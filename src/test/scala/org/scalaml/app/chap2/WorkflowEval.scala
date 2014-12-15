@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap2
 
@@ -69,8 +69,7 @@ final class Sampler(val samples: Int) extends PipeOperator[Double => Double, Dbl
 	require(samples > 0 && samples < 1E+5, s"Sampler: the number of samples $samples is out of range")
 	  	  
 	override def |> : PartialFunction[(Double => Double), DblVector] = { 
-		case f: (Double => Double) if(f != null) => 
-			Array.tabulate(samples)(n => f(n.toDouble/samples)) 
+		case f: (Double => Double) => Array.tabulate(samples)(n => f(n.toDouble/samples)) 
 	}
 }
 
@@ -83,8 +82,7 @@ final class Sampler(val samples: Int) extends PipeOperator[Double => Double, Dbl
 		 */
 final class Normalizer extends PipeOperator[DblVector, DblVector] {
 	override def |> : PartialFunction[DblVector, DblVector] = { 
-		case x: DblVector if(x != null && x.size > 1) => 
-			Stats[Double](x).normalize
+		case x: DblVector if( !x.isEmpty) => Stats[Double](x).normalize
 	}
 }
 
@@ -97,8 +95,7 @@ final class Normalizer extends PipeOperator[DblVector, DblVector] {
 		 */
 final class Reducer extends PipeOperator[DblVector, Int] { 
 	override def |> : PartialFunction[DblVector, Int] = { 
-		case x: DblVector if(x != null && x.size > 1) => 
-			Range(0, x.size).find(x(_) == 1.0).get
+		case x: DblVector if( !x.isEmpty) => Range(0, x.size).find(x(_) == 1.0).get
 	}
 }
 

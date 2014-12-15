@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap4
 
@@ -15,7 +15,7 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.{ScalaMl, CommonMath}
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.{DataSource, DataSink}
-import org.scalaml.unsupervised.clustering.KMeans
+import org.scalaml.unsupervised.clustering.{Cluster, KMeans}
 import org.scalaml.unsupervised.Distance.euclidean
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
@@ -57,20 +57,18 @@ object KMeansEval extends UnsupervisedLearningEval {
 			// nested function to generate K clusters from a set of observations observations
 			// obs. The condition on the argument are caught by the K-means constructor.
 		def run(K: Int, obs: DblMatrix): Unit = {
-			require(obs != null, s"$name.run observations are undefined")
+			require( !obs.isEmpty, s"$name.run Observations are undefined")
+			
 			val kmeans = KMeans[Double](K, 150)
-		 
 			val clusters = kmeans |> new XTSeries[DblVector]("x", obs)
-			val descriptor = clusters.foldLeft(new StringBuilder)((b, c) => 
-				b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => 
-				  		b2.append(s"${symbolFiles(mbr)}, ")).toString).append("\n")
-			)
-			DisplayUtils.show(s"$name ${descriptor.toString}\nmeans:\n", logger)		    	                
-			clusters.foreach(c => DisplayUtils.show(s"$name ${c.toString}", logger))
+			
+			val clustersDesc = KMeansEval.toString(clusters)
+			DisplayUtils.show(s"$name Cluster composition\n${clustersDesc}", logger)		    	                
+			clusters.foreach(c => DisplayUtils.show(s"\n${c.toString}", logger))
 
 			DisplayUtils.show(s"\n$name Cluster standard deviation:\n", logger)
 			clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean))
-					.foreach( DisplayUtils.show( _ , logger) )
+							.foreach( DisplayUtils.show( _ , logger) )
 		}
 
 		val normalize = true
@@ -87,14 +85,27 @@ object KMeansEval extends UnsupervisedLearningEval {
 												.map( _.drop(START_INDEX)
 												.take(NUM_SAMPLES))
 					args.map(_.toInt).foreach(run(_, values))
-					DisplayUtils.show(s"$name completed ", logger)
+					DisplayUtils.show(s"$name run completed ", logger)
 				}
 			}
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error("$name failed to load data", logger, e)
+			case Failure(e) => DisplayUtils.error(s"$name failed to load data", logger, e)
 		}
+	}
+	
+	private def toString(clusters: List[Cluster[Double]]): String = {
+		var count = 1
+		
+		clusters.foldLeft(new StringBuilder)((b, c) => {
+			b.append(s"Cluster$count:  ")
+			count += 1
+			b.append(c.getMembers.foldLeft(new StringBuilder)((b2, mbr) => {
+					val symbol = symbolFiles(mbr).substring(0, symbolFiles(mbr).indexOf(".")-1)
+							b2.append(s"$symbol\t")
+			}).toString).append("\n")
+		}).toString
 	}
 }
 

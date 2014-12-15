@@ -7,9 +7,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.plots
+
+import java.util.List
+import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+import java.awt.geom.Ellipse2D
 
 import org.jfree.data.xy.XYDataset
 import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
@@ -21,7 +25,6 @@ import org.jfree.chart.axis.{ValueAxis, NumberAxis}
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
-
 import org.jfree.util.ShapeUtilities
 
 import org.scalaml.core.Types.ScalaMl
@@ -34,7 +37,6 @@ object ChartType extends Enumeration {
 
 		/**
 		 * <p>Generic plotting class that uses the JFreeChart library.<br>
-		 * @throws IllegalArgumentException if the class parameters, config and theme are undefined
 		 * @param config  Configuration for the plot of type <b>PlotInfo</b>
 		 * @param theme Configuration for the display of plots of type <b>PlotTheme</b>
 		 * @author Patrick Nicolas
@@ -42,13 +44,8 @@ object ChartType extends Enumeration {
 		 * @note Scala for Machine Learning
 		 */
 abstract class Plot(config: PlotInfo, theme: PlotTheme) {
-	import java.util.List
-	import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
-	import java.awt.geom.Ellipse2D
 	import ScalaMl._
-	
-	require(config != null, "Plot Cannot create a plot with undefined configuration")
-	require(theme != null, "Plot Cannot create a plot with undefined theme")
+
 
 		/**
 		 * DisplayUtils array of tuple (x,y) in a 2D plot for a given width and height
@@ -114,8 +111,8 @@ object Plot {
 		 * the values are undefined
 		 */
 	def validateDisplayUtils[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
-		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
-		validateDim(width, height, comment)
+		require( !y.isEmpty, s"$comment Cannot display an undefined series")
+		validateDisplaySize(width, height, comment)
 	}
 
 		/**
@@ -128,9 +125,9 @@ object Plot {
 		 * the values are undefined
 		 */
 	import scala.collection.immutable.List
-	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String): Unit = {
-		require(y != null && y.size > 0, s"$comment Cannot display an undefined series")
-		validateDim(width, height, comment)
+	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String =""): Unit = {
+		require( !y.isEmpty, s"$comment Cannot display an undefined series")
+		validateDisplaySize(width, height, comment)
 	}
 	
 		/**
@@ -140,7 +137,7 @@ object Plot {
 		 * @param comment Comments to be added to the chart or plot
 		 * @throws IllegalArgumentException if the display height or width is out or range
 		 */
-	def validateDim(width: Int, height: Int, comment: String): Unit = {
+	def validateDisplaySize(width: Int, height: Int, comment: String = ""): Unit = {
 		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, 
 				s"$comment Width $width is out of range")
 		require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, 

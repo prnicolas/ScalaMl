@@ -39,7 +39,7 @@ case class RegressionModel(val weights: DblVector, val rss: Double) extends Mode
 		 * Return the number of weights or regression parameters in this model
 		 * @return Size of the regression weight vector is weights are defined, 0 otherwise
 		 */
-	final val size: Int = if(weights != null) weights.size else 0
+	final val size: Int = if( !weights.isEmpty) weights.size else 0
 }
 
 // ------------------------  EOF ----------------------------------------------------

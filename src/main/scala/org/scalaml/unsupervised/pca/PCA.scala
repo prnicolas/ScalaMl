@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.unsupervised.pca
 
@@ -50,7 +50,7 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
    	 * Component Analysis and tuple Covariance matrix and vector of eigen values as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], (DblMatrix, DblVector)] = {
-		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0) => {
+		case xt: XTSeries[Array[T]] if( !xt.isEmpty ) => {
 			Try {
 				// Compute the zScore of the time series (1)
 				zScoring(xt) match {

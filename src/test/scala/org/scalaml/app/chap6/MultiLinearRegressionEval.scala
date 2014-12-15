@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap6
 
@@ -53,15 +53,14 @@ object MultiLinearRegressionEval extends Eval {
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	def run(args: Array[String] = null): Int = 
-		if( args != null && args.size > 0 && args(0).equals("trending")) 
+	def run(args: Array[String]): Int = 
+		if( !args.isEmpty && args(0).equals("trending")) 
 			trendExtraction 
-			
 		else
 			featuresSelection	  		 
    
 	private def featuresSelection: Int = {
-		DisplayUtils.show(s"\n$name Ordinary least squares regression FEATURE SELECTION", logger)
+		DisplayUtils.show(s"\n$header Ordinary least squares regression FEATURE SELECTION", logger)
   	  
 		val path = "resources/data/chap6/"
 		val output = "output/chap6/CNY_output.csv"
@@ -74,7 +73,7 @@ object MultiLinearRegressionEval extends Eval {
 							.map( _ |> YahooFinancials.adjClose )
 							.map(x => movAvg |> XTSeries[Double](x.slice(20, 800)))
 	  	    
-			DataSink[Double](output) |> input.foldLeft(List[XTSeries[Double]]())((sk, v) => v :: sk)
+	//		DataSink[Double](output) |> input.foldLeft(List[XTSeries[Double]]())((sk, v) => v :: sk)
 	  	  
 			// Retrieve the input variables by removing the first 
 			// time series (labeled dataset) and transpose the array

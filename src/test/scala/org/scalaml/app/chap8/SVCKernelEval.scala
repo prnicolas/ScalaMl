@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap8
 
@@ -128,7 +128,7 @@ object SVCKernelEval extends Eval {
 	 }
 
 	private def display(label: String, xy1: XYTSeries, xy2: XYTSeries): Unit = {
-		require(xy1 != null && xy1.size > 0, s"$name Cannot display an undefined time series")
+		require( !xy1.isEmpty, s"$name Cannot display an undefined time series")
        
 		val plotter = new ScatterPlot((s"SVC Kernel evaluation set", label, "Y"), new BlackPlotTheme)
 		plotter.display(xy1, xy2, 250, 340)

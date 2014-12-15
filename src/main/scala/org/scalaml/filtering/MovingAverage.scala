@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.filtering
 
@@ -48,8 +48,10 @@ abstract class MovingAverage[T <% Double] extends PipeOperator[XTSeries[T], DblS
 		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
 @implicitNotFound("SimpleMovingAverage Numeric bound has to be implicitly defined")
-final protected class SimpleMovingAverage[@specialized(Double) T <% Double](period: Int)
-		(implicit num: Numeric[T]) 	extends MovingAverage[T] {
+final protected class SimpleMovingAverage[@specialized(Double) T <% Double](
+		period: Int)
+		(implicit num: Numeric[T]) extends MovingAverage[T] {
+  
 	require( period > 0 && period < 1e+4, 
 			s"SimpleMovingAverage Cannot compute moving average with an incorrect $period")
    
@@ -61,7 +63,7 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 * Double as output.
 		 */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
-		case xt: XTSeries[T] if(xt != null && xt.size > 0) => {
+		case xt: XTSeries[T] if( !xt.isEmpty) => {
 			
 				// Create a sliding window as a array of pairs of 
 				// values (x(t), x(t-p))
@@ -87,7 +89,8 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](peri
 		 * type vector of Double for output.
 		 */
 	def get : PartialFunction[DblVector, DblVector] = {
-		case data: DblVector if(data != null && data.size > 0) => {
+		case data: DblVector if( !data.isEmpty ) => {
+		  
 				// Create a sliding window as a array of pairs of 
 				// values (x(t), x(t-p))
 			val slider = data.take(data.size - period).zip(data.drop(period) )
@@ -139,9 +142,9 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](
 		alpha: Double) extends MovingAverage[T]  {
 	
   require( period > 0, 
-			s"ExpMovingAverage Cannot initialize exponential moving average with period = $period")
+			s"ExpMovingAverage Cannot initialize with incorrect value for period = $period")
 	require( alpha > 0 && alpha <= 1.0, 
-			s"ExpMovingAverage Cannot initialize exponential with alpha = $alpha")
+			s"ExpMovingAverage Cannot initialize with incorrect value for alpha $alpha")
    
 		/**
 		 * Constructor for the normalized exponential moving average for which alpha = 2.0/(period + 1)
@@ -157,9 +160,10 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](
 		  * as output
 		  */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
-		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
+		case xt: XTSeries[T] if( !xt.isEmpty ) => {
 			val alpha_1 = 1-alpha
 			var y: Double = xt(0)
+			
 				// Applies the exponential smoothing formula for each data pojnt
 			xt.map(x => {
 				val z = x*alpha + y*alpha_1
@@ -211,7 +215,7 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](
 		weights: DblVector
 		) extends MovingAverage[T]  {
   
-	require( weights != null && Math.abs(weights.sum -1.0) < 1e-2, 
+	require( !weights.isEmpty && Math.abs(weights.sum -1.0) < 1e-2, 
 			"WeightedMovingAverage Weights are not defined or normalized")
      
 		/**
@@ -222,7 +226,7 @@ final class WeightedMovingAverage[@specialized(Double) T <% Double](
 		 * type vector of Double for output.
 		 */
 	override def |> : PartialFunction[XTSeries[T], DblSeries] = {
-		case xt: XTSeries[T] if(xt != null && xt.size > 1) => {
+		case xt: XTSeries[T] if( !xt.isEmpty) => {
 			
 				// Compute the smoothed time series by apply zipping a
 				// time window (array slice) and normalized weights distribution

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.regression.linear
 
@@ -46,7 +46,7 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 				extends PipeOperator[Double, T] {
 	
 	import scala.util.{Try, Success, Failure}
-	require(xt != null && xt.size > 0, 
+	require( !xt.isEmpty, 
 			"SingleLinearRegression. Cannot create a linear regression with undefined time series")
 	
 	type XY = (Double, Double)

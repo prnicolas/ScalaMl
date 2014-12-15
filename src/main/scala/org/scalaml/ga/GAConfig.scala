@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -88,13 +88,16 @@ object GAConfig {
 		/**
 		 * <p>Constructor for the GAConfig class with a default soft limit defined as<br>
 		 *  f(n) = 1.001 -0.01.n.</p>
-		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to compute the index of bit string representation of the chromosome for cross-over
-		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or individual to be mutate in each chromosome.
-		 * @param maxCycles Maximum number of iterations allowed by the genetic solver (reproduction cycles).
+		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to 
+		 * compute the index of bit string representation of the chromosome for cross-over
+		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or 
+		 * individual to be mutate in each chromosome.
+		 * @param maxCycles Maximum number of iterations allowed by the genetic solver 
+		 * (reproduction cycles).
 		 */
 	private val DEFAULT_SOFTLIMIT = (n : Int) => -0.01*n + 1.001
 	def apply(xover: Double, mu: Double, maxCycles: Int): GAConfig = 
-		new GAConfig(xover, mu, maxCycles, DEFAULT_SOFTLIMIT)
+			new GAConfig(xover, mu, maxCycles, DEFAULT_SOFTLIMIT)
    
 	private val DEFAULT_MAX_CYCLES = 2048
 	private def check(xover: Double, mu: Double, maxCycles: Int, softLimit: Int =>Double): Unit = {
@@ -104,8 +107,6 @@ object GAConfig {
 				s"GAConfig Mutation factor $mu is out of bounds [0, 1]")
 		require(xover > 0.0 && xover < 1.0, 
 				s"GAConfig Crossover factor $xover is out of bounds [0, 1]")
-		require(softLimit != null, 
-				"GAConfig Cannot create a configuration for a GA with undefined softlimit function")
 	}
 }
 

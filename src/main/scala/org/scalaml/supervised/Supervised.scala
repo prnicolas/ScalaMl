@@ -7,12 +7,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised
 
 import org.scalaml.core.XTSeries
-
+import org.scalaml.core.Types.ScalaMl.DblVector
 
 	/**
 	 * <p>Trait that defined the interface to supervised learning algorithm.
@@ -31,7 +31,7 @@ trait Supervised[T] {
 		 * @return F1 measure
 		 */
    def validate(xt: XTSeries[(Array[T], Int)], tpClass: Int): Option[Double]
-   def crossValidation: Array[Double] = null
+   def crossValidation: Option[DblVector] = None
 }
 
 

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.util
 
@@ -60,11 +60,11 @@ object FormatUtils {
 			fmt: FormatType, 
 			labels: Array[String] = Array.empty): String = {
 		
-	  require(xy != null && xy.size > 0, "FormatUtils.toString XYTSeries is undefined")
+	  require( !xy.isEmpty, "FormatUtils.toString XYTSeries is undefined")
 
 		val buf = new StringBuilder(s"$xLabel\t$yLabel\n")
 		
-	  if(labels.size == 0)
+	  if( labels.isEmpty )
 			buf.append(xy.foldLeft(new StringBuilder)((buf, xy) => 
 				buf.append(s"${fmt.toString(xy._1)}${fmt.toString(xy._2)}\n")).toString)
 		else {
@@ -90,7 +90,7 @@ object FormatUtils {
 	}
 		
 		
-	def format(x:DblVector): String = 
+	def format(x: DblVector): String = 
 		x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => 
 			buf.append(s"${x._2}  ${ShortFormat.toString(x._1)} ")).toString
 
@@ -114,6 +114,41 @@ object FormatUtils {
 					buf.append(s"${fmt.toString(m(i)(j))}")).toString)
 		})
 		buf.toString
+	}
+	
+			/**
+		 * Textual representation of a vector with and without the element index
+		 * @param v vector to represent
+		 * @param index flag to display the index of the element along its value. Shown if index is 
+		 * true, not shown otherwise
+		 */
+	def toText(v: DblVector, index: Boolean): String = {
+		require( !v.isEmpty, 
+						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
+			
+		if( index)
+			v.zipWithIndex.foldLeft(new StringBuilder)((buf,x) => 
+					buf.append(s"${x._2}:${x._1}, ")).toString
+		else
+			v.foldLeft(new StringBuilder)((buf, x) => 
+			buf.append(s"$x,")).toString.dropRight(1)
+	}
+
+		/**
+		 * Textual representation of a matrix with and without the element index
+		 * @param m matrix to represent
+		 * @param index flag to display the index of the elements along their value. Shown if 
+		 * index is true, not shown otherwise
+		 */
+	def toText(m: DblMatrix, index: Boolean): String = {
+		require( !m.isEmpty, 
+					"ScalaMl.toText Cannot create a textual representation of a undefined vector")
+			
+		if(index)
+			m.zipWithIndex.foldLeft(new StringBuilder)((buf, v) => 
+					buf.append(s"${v._2}:${toText(v._1, true)}\n")).toString
+		else 
+			m.foldLeft(new StringBuilder)((buf, v) => buf.append(s"${toText(v, false)}\n")).toString
 	}
 }
 

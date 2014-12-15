@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.regression.linear
 
@@ -113,7 +113,7 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 * type Double as output
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
-		case x: Feature if(x != null && x.size > 0 && model != None && x.size == model.get.size-1) => {
+		case x: Feature if( !x.isEmpty && model != None && x.size == model.get.size-1) => {
 				// Retrieve the regression weights (or coefs)
 			val w = model.get.weights
 					// Compute the dot product with w0 + w1.x1 + .. wn.xn
@@ -143,9 +143,9 @@ object MultiLinearRegression {
 			new MultiLinearRegression[T](xt, y)
 		
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {
-		require(xt != null && xt.size > 0, 
+		require( !xt.isEmpty,
 				"MultiLinearRegression.check Cannot create a regression with undefined time series")
-		require(y != null && y.size > 0, 
+		require( !y.isEmpty, 
 				"MultiLinearRegression.check  Cannot train aregression model with undefined labels")
 		require (xt.size == y.size, 
 			s"MultiLinearRegression.check Size of input${xt.size} != size of labels ${y.size}")

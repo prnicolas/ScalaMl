@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.xcs
 
@@ -35,13 +35,14 @@ object XcsCover {
 		 * to generates is the size of the chromosome representing a trading strategy.</p>
 		 * @param sensor (or rule predicate) used to generate a set of new rules
 		 * @param list of actions (or XCS rules) used in the coverage prpcoess
-		 * @throws IllegalArgumenException if the signal is undefined
+		 * @throws IllegalArgumenException if the list of actions is undefined
 		 * @return list of new XCS rules. 
 		 */
-	def cover(sensor: XcsSensor, actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
-		require(sensor != null, 
-				"XcsCover.cover Cannot generates new rules from undefined sensor or stimuli")
-		require(actions != null, 
+	def cover(	
+			sensor: XcsSensor, 
+			actions: List[XcsAction])(implicit discr: Discretization): List[XcsRule] = {
+	  
+		require( !actions.isEmpty, 
 				"XcsCover.cover Cannot generates new rules from undefined list of actions")
 		require(actions.size >0 && actions.size < MAX_NUM_ACTIONS, 
 				s"XcsCover.cover The number of actions per state ${actions.size} if out of range")

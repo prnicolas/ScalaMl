@@ -6,13 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.hmm
 
 
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import org.scalaml.util.{FormatUtils, Matrix}
+import org.scalaml.core.Matrix
+import org.scalaml.util.FormatUtils
 import scala.reflect.ClassTag
 import scala.util.Random
 import HMMConfig._
@@ -67,7 +68,7 @@ final protected class HMMLambda(
 		 * @throws IllegalArgumentException if obsSeqNum is undefined
 		 */
 	def initAlpha(obsSeqNum: Array[Int]): Matrix[Double] = {
-		require( obsSeqNum != null && obsSeqNum.size > 0, 
+		require( !obsSeqNum.isEmpty, 
 				"HMMLambda.initAlpha Cannot initialize HMM alpha with undefined obs sequence index")
   	
 		Range(0, getN).foldLeft(Matrix[Double](getT, getN))((m, j) => {

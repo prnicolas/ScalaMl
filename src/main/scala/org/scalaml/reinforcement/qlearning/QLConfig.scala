@@ -7,14 +7,15 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.qlearning
 
 import scala.util.Random
 import scala.collection.mutable.ArrayBuffer
 
-import org.scalaml.util.{DisplayUtils, Matrix}
+import org.scalaml.util.DisplayUtils
+import org.scalaml.core.Matrix
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{Config, PipeOperator}
 import QLearning._
@@ -121,8 +122,6 @@ object QLConfig {
 				s"QLConfig.check  Number of episodes $numEpisodes is out of range")
 		require(minCoverage >= 0.0 && minCoverage < MAX_MIN_COVERAGE, 
 				s"QLConfig.check  Minimum coverage $minCoverage is out of range")
-		require(neighbors != null, 
-				"QLConfig.check  Function to select neighboring states is undefined")
 	}
 }
 

@@ -52,17 +52,12 @@ object XcsAction {
 		 * <i>IF signal THEN action</i>.<br> The constructor increase a global rules count used to automatically
 		 * assigned a label to each signal/predicate.</p>
 		 * @constructor Create a XCS rule as a pair of signal and action. 
-		 * @throws IllegalArgumenException if the predicate or the action of the rule is undefined
-		 * 
 		 * @author Patrick Nicolas
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Extended learning 
 		 * classifier systems
 		 */
-class XcsRule(val signal: Signal, val action: XcsAction) {
-	require(signal != null, "XcsRule Cannot create an XCS rule with undefined signal/predicate")
-	require(action != null, "XcsRule Cannot create an XCS rule with undefined action")
-}
+case class XcsRule(val signal: Signal, val action: XcsAction)
 
 
 

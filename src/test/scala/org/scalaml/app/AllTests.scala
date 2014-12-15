@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app
 
@@ -44,7 +44,7 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters.
 		 */
 	def test: Unit = {
-			// Core or util
+			// Core
 		run(MatrixEval)
 			// Chapter 1
 		run(LogBinRegressionEval)
@@ -59,7 +59,6 @@ protected object AllTests extends ScalaMlTest {
 		
 		run(DFTEval)
 		run(DFTEval, Array[String]("BAC"))
-
 		run(DKalmanEval, Array[String]("BAC"))
 	
 			// Chapter 4
@@ -69,7 +68,7 @@ protected object AllTests extends ScalaMlTest {
 		run(EMEval, Array[String]("3", "25"))
 		run(EMEval, Array[String]("4", "15"))
 		run(PCAEval)
-		
+
 			// Chapter 5
 		val TRAIN_VALIDATION_RATIO = "0.8"
 		run(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))
@@ -83,15 +82,16 @@ protected object AllTests extends ScalaMlTest {
 		run(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
 		run(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
 		run(TextBayesEval)
+	
+		run(FunctionClassificationEval)
 		
 			// Chapter 6
-		run(FunctionClassificationEval)
 		run(SingleLinearRegressionEval)
 		run(RidgeRegressionEval)
 		run(MultiLinearRegressionEval, Array[String]("trend"))
 		run(MultiLinearRegressionEval, Array[String]("filter"))
 		run(LogisticRegressionEval)
-		
+
 			// Chapter 7
 		run(HMMEval, Array[String]("evaluation"))
 		run(HMMEval, Array[String]("training"))
@@ -106,7 +106,7 @@ protected object AllTests extends ScalaMlTest {
 		run(SVREval)	
 		
 			// Chapter 9
-	  	run(MLPConfigEval, Array[String]("eta"))
+	  run(MLPConfigEval, Array[String]("eta"))
 		run(MLPConfigEval, Array[String]("alpha"))
 		run(MLPValidation)
 		run(BinaryMLPEval)

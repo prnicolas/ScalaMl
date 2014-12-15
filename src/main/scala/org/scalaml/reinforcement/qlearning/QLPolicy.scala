@@ -7,11 +7,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.qlearning
 
-import org.scalaml.util.Matrix
+import org.scalaml.core.Matrix
 
 
 
@@ -185,9 +185,9 @@ object QLPolicy {
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
 		require(numStates >0 && numStates < MAX_NUM_STATES, 
 				s"QLPolicy.check Number of states $numStates is out of range")
-		require(input != null, 
+		require( !input.isEmpty, 
 				"QLPolicy.check the input to the Q-leaning policy is undefined")
-		require(input.size > 0 && input.size < MAX_NUM_STATES, 
+		require(input.size < MAX_NUM_STATES, 
 				s"QLPolicy.check, the size of the input ${input.size} is out of range" )
 	}
 }

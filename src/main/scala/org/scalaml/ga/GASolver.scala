@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -45,13 +45,10 @@ import Chromosome._
 final protected class GASolver[T <: Gene](
 		config: GAConfig, 
 		score: Chromosome[T] => Unit) extends PipeOperator[Population[T], Population[T]] {
-
-	require(config != null, "GASolver configuration  is undefined")
-	require(score != null, 
-			"GASolver Cannot execute reproduction cycles with undefined scoring function")
-   
+	import GAConfig._
+	
 	private var state: GAState = GA_NOT_RUNNING
-	private val logger = Logger.getLogger("GASolvee")
+	private val logger = Logger.getLogger("GASolver")
 	
 		/**
 		 * <p>Method to resolve any optimization problem using a function to generate
@@ -70,8 +67,9 @@ final protected class GASolver[T <: Gene](
 		 * containing the fittest chromosomes as output.
 		 */
 	override def |> : PartialFunction[Population[T], Population[T]] = {	
-		case population: Population[T] if(population.size > 1) => {
-			val reproduction = Reproduction[T](score)
+		case population: Population[T] if(state != GA_RUNNING &&population.size > 1) => {
+			
+		  val reproduction = Reproduction[T](score)
 			state = GA_RUNNING
 	          
 			Range(0, config.maxCycles).find(n => {  		 
@@ -99,7 +97,7 @@ final protected class GASolver[T <: Gene](
 
    
 	private[this] def converge(population: Population[T], cycle: Int): GAState = {
-		if(population == null) 
+		if( population.isNull ) 
 			GA_FAILED(s"GASolver.converge Reproduction failed at $cycle")
 		else if(cycle >= config.maxCycles)
 			GA_NO_CONVERGENCE(s"GASolver.converge Failed to converge at $cycle ")
@@ -123,14 +121,14 @@ object GASolver {
 		 * @param score Scoring method for the chromosomes of this population
 		 */
 	def apply[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit): GASolver[T] = 
-		new GASolver[T](config, score)
+			new GASolver[T](config, score)
 
 		/**
 		 * Constructor for the Genetic Algorithm (class GASolver) with undefined scoring function
 		 * @param config  Configuration parameters for the GA algorithm
 		 */
 	def apply[T <: Gene](config: GAConfig): GASolver[T] = 
-		new GASolver[T](config, null)
+			new GASolver[T](config, (c: Chromosome[T]) => Unit)
 }
 
 // ---------------------------  EOF -----------------------------------------------

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -20,9 +20,9 @@ import org.apache.commons.math3.util.Pair
 import org.apache.commons.math3.optim.ConvergenceChecker
 import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
 
-import org.scalaml.core.XTSeries
+import org.scalaml.core.{Matrix, XTSeries}
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.util.{Matrix, DisplayUtils}
+import org.scalaml.util.DisplayUtils
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import XTSeries._, ScalaMl._
@@ -101,15 +101,13 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 		 */
 	override def |> : PartialFunction[Feature, Int] = {
-		case x: Feature  if(x != null && x.size > 0 && model != None && 
-				(model.get.size -1 == x.size)) => {	
+		case x: Feature  if( !x.isEmpty && model != None &&  (model.get.size -1 == x.size)) => {	
 				// Get the weights ws1 to 2n
 			val w = model.get.weights.drop(1)
 			
 				// Compute the predictive value as z = w0 + w1.x1 + ... wn.xn
 			val z = x.zip(w).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
 			if( z > HYPERPLANE)
-		//	if( logit(z) > 0.5 + MARGIN) 
 				1 
 			else 
 				0
@@ -241,8 +239,12 @@ object LogisticRegression {
 			optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
 		new LogisticRegression[T](xt, labels, optimizer)
   	    	
-	private def check[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int], optimizer: LogisticRegressionOptimizer): Unit = {
-		require(xt != null && xt.size > 0, 
+	private def check[T <% Double](
+			xt: XTSeries[Array[T]], 
+			labels: Array[Int], 
+			optimizer: LogisticRegressionOptimizer): Unit = {
+	  
+		require( !xt.isEmpty,
 				"Cannot compute the logistic regression of undefined time series")
 		require(xt.size == labels.size, 
 				s"Size of input data ${xt.size} is different from size of labels ${labels.size}")

@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap3
 
@@ -28,7 +28,7 @@ object MovingAveragesEval extends FilteringEval {
 	import scala.util.{Try, Success, Failure}
 	import org.apache.log4j.Logger
 	import YahooFinancials._
-
+	
 		/**
 		 * Name of the evaluation 
 		 */
@@ -39,6 +39,7 @@ object MovingAveragesEval extends FilteringEval {
     val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
+	private val NUMBER_DISPLAYED_VALUES = 128
 
 		/**
 		 * <p>Execution of the scalatest for <b>SimpleMovingAveragte</b>, <b>WeightedMovingAverage</b>
@@ -71,9 +72,10 @@ object MovingAveragesEval extends FilteringEval {
 										List[DblSeries]()
 	
 				dataSink |> results
-				DisplayUtils.show(s"$name Results of different moving average", logger)
+				DisplayUtils.show(s"$name Results for the first $NUMBER_DISPLAYED_VALUES values", logger)
 				results.foreach(ts => {
-						DisplayUtils.show(FormatUtils.format(ts.toArray, "X", FormatUtils.ShortFormat), logger)
+					val displayedValues = ts.toArray.take(NUMBER_DISPLAYED_VALUES)
+					DisplayUtils.show(FormatUtils.format(displayedValues, "X", FormatUtils.ShortFormat), logger)
 				})
 				
 				display(List[DblSeries](results(0), results(1)), 

@@ -1,8 +1,8 @@
 organization := "Patrick Nicolas"
 
-name := "scalaml"
+name := "Scalaml"
 
-version := "0.96"
+version := "0.97.3"
 
 scalaVersion := "2.10.4"
 

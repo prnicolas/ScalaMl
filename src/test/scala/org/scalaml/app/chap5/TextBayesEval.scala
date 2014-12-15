@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap5
 
@@ -97,8 +97,8 @@ object TextBayesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int  = {
-		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} $name: Multinomial Naive Bayes for text analysis", 
-				logger)
+		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} " + 
+				"$name: Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)

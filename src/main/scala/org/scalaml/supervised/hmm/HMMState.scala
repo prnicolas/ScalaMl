@@ -7,12 +7,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.hmm
 
 
-import org.scalaml.util.Matrix
+import org.scalaml.core.Matrix
 import scala.reflect.ClassTag
 import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger

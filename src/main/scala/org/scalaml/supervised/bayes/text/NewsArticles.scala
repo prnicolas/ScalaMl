@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.bayes.text
 
@@ -46,8 +46,7 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 		 *  @throws IllegalArgumentException if the data or the weighted terms map is undefined.
 		 */	
 	def += (date: T, weightedTerms: Map[String, Double]): Unit = {
-		require( date != null, "NewsArticles.+= Incorrect date format")
-		require(weightedTerms != null && weightedTerms.size > 0, 
+		require( !weightedTerms.isEmpty, 
 				"NewsArticles.+= Cannot update daily keywords with undefined document weighted words")
 	   
 		def merge(m1: Map[String, Double], m2: Map[String, Double]): Map[String, Double] = {
@@ -95,7 +94,7 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 		 *  @return Textual representation of the NewsArticles ranked by their date
 		 */
 	def toString(labels: Iterable[String]): String = {
-		require(labels != null && labels.size > 0, 
+		require( !labels.isEmpty, 
 				"NewsArticles.toString: labels for the news articles are undefined")
 
 		val mapped = labels.foldLeft(new mutable.HashSet[String])((set, lbl) => {set.add(lbl); set})

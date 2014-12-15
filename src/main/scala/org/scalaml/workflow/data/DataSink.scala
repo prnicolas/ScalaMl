@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow.data
 
@@ -15,6 +15,7 @@ import scala.util.{Try, Success, Failure}
 
 import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
+import org.scalaml.core.Types
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.util.{DisplayUtils, FileUtils}
@@ -36,7 +37,7 @@ final protected class DataSink[T <% String](
 	import XTSeries._, DataSource._
 	import scala.io.Source
    
-	require(sinkName != null && sinkName.length > 1, "DataSink Name of the storage is undefined")
+	require(sinkName != Types.nullString, "DataSink Name of the storage is undefined")
    
 	private val logger = Logger.getLogger("DataSink")
     
@@ -56,7 +57,7 @@ final protected class DataSink[T <% String](
 		 * @throws IllegalArgumentException If the vector is either undefined or empty.
 		 */
 	def write(v: DblVector) : Boolean = {
-		require(v != null && v.size > 0, "DataSink.write Cannot persist an undefined vector")
+		require( !v.isEmpty, "DataSink.write Cannot persist an undefined vector")
 		
 		val content = v.foldLeft(new StringBuilder)((b, x) => b.append(x).append(CSV_DELIM))
 		content.setCharAt(content.size-1, ' ')
@@ -70,7 +71,7 @@ final protected class DataSink[T <% String](
    		 * of time series saved as output
 		 */
 	override def |> : PartialFunction[List[XTSeries[T]], Int] = {
-		case xs: List[XTSeries[T]] if(xs != null && xs.length > 0) => {
+		case xs: List[XTSeries[T]] if( !xs.isEmpty ) => {
 			import java.io.PrintWriter
 			
 			var printWriter: PrintWriter = null
@@ -121,7 +122,7 @@ object DataSink {
 		 * <p>Create a DataSink with an implicit conversion of the type parameter to a string.</p>
 		 * @param sinkPath name of the storage.
 		 */
-	@implicitNotFound("Conversion of paramerized type to String for DataSink undefined")
+	@implicitNotFound("DataSink.apply Conversion of paramerized type undefined")
 	def apply[T](sinkPath: String)(implicit f: T => String= (t:T) => t.toString): DataSink[T] 
 		= new DataSink[T](sinkPath)
 }

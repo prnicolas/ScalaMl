@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap3
 
@@ -61,7 +61,7 @@ object DKalmanEval extends FilteringEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	override def run(args: Array[String]): Int = {
-		require(args != null && args.size > 0, s"$name Command line DKalmanEval ticker symbol")
+		require(!args.isEmpty, s"$name Command line DKalmanEval ticker symbol")
      
 		DisplayUtils.show(s"$header Evaluation Kalman filter with no control matrix", logger)
      

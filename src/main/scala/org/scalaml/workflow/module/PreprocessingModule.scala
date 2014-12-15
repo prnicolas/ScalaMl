@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow.module
 
@@ -15,10 +15,13 @@ import scala.Array.fallbackCanBuildFrom
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
+import org.apache.log4j.Logger
+import org.scalaml.util.DisplayUtils
 
 
 
 trait PreprocessingModule[T] {
+	private val logger = Logger.getLogger("PreprocessingModule")
 	type DblSeries = XTSeries[Double]
 	implicit val convert = (t: T) => Double
   
@@ -35,13 +38,14 @@ trait PreprocessingModule[T] {
 
 	class SimpleMovingAverage[T <% Double](period: Int)(implicit num: Numeric[T]) 
 			extends MovingAverage[T] {
-			override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ => null }
+			override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ => XTSeries.empty }
 	}
   
 	class DFTFir[T <% Double](g: Double=>Double) extends Preprocessing[T] 
 			with PipeOperator[XTSeries[T], DblSeries]  {
-		override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ => null }
-		override def execute(xt: XTSeries[T]): Unit = (this |> xt).foreach(println)
+		override def |> : PartialFunction[XTSeries[T], DblSeries] = { case _ =>  XTSeries.empty }
+		override def execute(xt: XTSeries[T]): Unit = (this |> xt).foreach( x => 
+			DisplayUtils.show(s"SimpleMovingAverage.execute ${x.toString}", logger))
   }
 }
 

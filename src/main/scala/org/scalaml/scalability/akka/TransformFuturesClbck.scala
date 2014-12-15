@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.akka
 
@@ -46,6 +46,7 @@ abstract class TransformFuturesClbck(
 		xt: DblSeries, 
 		fct: PipeOperator[DblSeries, DblSeries], 
 		partitioner: Partitioner) extends Controller(xt, fct, partitioner) {
+  
 	private val logger = Logger.getLogger("TransformFuturesClbck")
 	
 		/**
@@ -77,8 +78,8 @@ abstract class TransformFuturesClbck(
 		 * @throws IllegalArgumentException if futures are undefined
 		 */
 	private def compute(futures: Array[Future[DblSeries]]): Seq[Double] = {
-		require(futures != null && futures.size > 0, 
-				"Cannot delegate computation to undefined futures")
+		require( !futures.isEmpty, 
+				"TransformFuturesClbck.compute Cannot delegate computation to undefined futures")
   	  
 		val aggregation = new ArrayBuffer[DblSeries]
 		futures.foreach(f => { 

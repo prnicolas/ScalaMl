@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.akka
 
@@ -23,7 +23,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 		 * <p>Generic controller actor that defines the three key elements of a distributed 
 		 * data transformation</p>
 		 *  @constructor Create a controller for data transformations: 
-		 *  @throws IllegalArgumentException if one of the class parameters are undefined
+		 *  @throws IllegalArgumentException if the time series is undefined or empty
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 
@@ -39,12 +39,8 @@ abstract class Controller(
 		protected val partitioner: Partitioner
 		) extends Actor {
 	
-	require(xt != null && xt.size > 0, 
+	require( !xt.isEmpty, 
 			"Master.check Cannot create the master actor, undefined time series")
-	require(fct != null, 
-			"Master.check Cannot create the  master actor, undefined data transformation")
-	require(partitioner != null, 
-			"Master.check Cannot create the master actor, undefined data partitioner")
 }
 
 
@@ -71,7 +67,7 @@ final class Partitioner(val numPartitions: Int) {
 		 * @throws IllegalArgumentException if the time series argument is undefined.
 		 */
 	def split(xt: DblSeries): Array[Int] = {
-		require(xt != null && xt.size > 0, "Partitioner.split Cannot partition undefined time series")
+		require( !xt.isEmpty, "Partitioner.split Cannot partition undefined time series")
 		
 		val sz = (xt.size.toDouble/numPartitions).floor.toInt
 		val indices = Array.tabulate(numPartitions)(i=>(i+1)*sz)

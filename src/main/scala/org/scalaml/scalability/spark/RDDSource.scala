@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.spark
 
@@ -19,6 +19,7 @@ import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Types
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
 import org.scalaml.util.DisplayUtils
@@ -48,7 +49,8 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 		 * @param headerLines  Number of lines dedicated to header information (usually 0 if pure 
 		 * data file, 1 for column header name)
 		 * @param config  Configuration for the Spark RDDs
-		 * @throws IllegalArgumentException if the pathName or the file suffix is undefined.
+		 * @throws IllegalArgumentException if the pathName, the file suffix is undefined or the 
+		 * number of header lines is negative
 		 * @see org.scalaml.workflow.data.DataSource
 		 * @see org.apache.spark.rdd._
 		 * 
@@ -66,7 +68,7 @@ final class RDDSource(
 		(implicit sc: SparkContext)	extends PipeOperator[Array[String] =>DblVector, RDD[DblVector]] {
 
 	import RDDSource._
-	check(pathName, headerLines, config)
+	check(pathName, headerLines)
 	
 	private val src = DataSource(pathName, normalize, reverseOrder, headerLines)
 	private val logger = Logger.getLogger("RDDSource")
@@ -79,16 +81,18 @@ final class RDDSource(
 		 * @throws IllegalArgumentException if the extraction function is undefined
 		 */   
 	override def |> : PartialFunction[(Array[String] => DblVector), RDD[DblVector]] = {
-		case extractor: (Array[String] => DblVector) if(extractor != null) => {
+		case extractor: (Array[String] => DblVector) if( src.filesList != None) => {
+			
 			val ts = src load extractor
-			if( ts != XTSeries.empty ) {
-				val rdd = sc.parallelize(ts.toArray)
-				rdd.persist(config.persist)
-				if( config.cache)
-					rdd.cache
-				rdd
-			}
-			else { DisplayUtils.error("RDDSource.|> ", logger); sc.emptyRDD } 
+			assert( ts != XTSeries.empty, 
+					s"RDDSource.|> Could not extract time series from $pathName" )
+			
+		  val rdd = sc.parallelize(ts.toArray)
+			rdd.persist(config.persist)
+				
+			if( config.cache)
+				rdd.cache
+			rdd
 		}
 	}
 }
@@ -138,11 +142,12 @@ object RDDSource {
 		 * @throws ImplicitNotFoundException if the Spark context has not been defined.
 		 */
 	@implicitNotFound("Spark context is implicitly undefined")
-	def convert(xt: XTSeries[DblVector], rddConfig: RDDConfig)(implicit sc: SparkContext): RDD[Vector] = {
-		require(xt != null && xt.size > 0, 
+	def convert(
+			xt: XTSeries[DblVector], 
+			rddConfig: RDDConfig) (implicit sc: SparkContext): RDD[Vector] = {
+	  
+		require( !xt.isEmpty, 
 				"RDDSource.convert Cannot generate a RDD from undefined time series")
-		require(rddConfig != null, 
-				"RDDSource.convert  Cannot generate a RDD from a time series without an RDD configuration")
 
 		val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map(new DenseVector(_)))
 		rdd.persist(rddConfig.persist)
@@ -152,13 +157,11 @@ object RDDSource {
 	}
    
    
-	private def check(pathName: String, headerLines: Int, config: RDDConfig) {
-		require(pathName != null && pathName.length > 2, 
-				"Cannot create a RDD source with undefined path name")
+	private def check(pathName: String, headerLines: Int): Unit = {
+		require(pathName == Types.nullString, 
+				"RDDSource.check Cannot create a RDD source with undefined path name")
 		require(headerLines >= 0, 
 				s"Cannot generate a RDD from an input file with $headerLines header lines")
-		require(config != null, 
-				"Cannot create a RDD source for undefined stateuration")
 	}
 }
 

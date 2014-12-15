@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.akka
 
@@ -81,7 +81,7 @@ abstract class TransformFutures(
 		 * @throws IllegalArgumentException if futures are undefined
 		 */
 	private def compute(futures: Array[Future[DblSeries]]): Seq[Double] = {
-		require(futures != null && futures.size > 0, "TransformFutures.compute Undefined futures")
+		require(!futures.isEmpty, "TransformFutures.compute Undefined futures")
   	  
 		val results = futures.map(Await.result(_, timeout.duration))
 		aggregate(results)

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.regression.linear
 
@@ -119,7 +119,7 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 * type Double as output
 		 */
 	override def |> : PartialFunction[Feature, Double] = {
-		case x: Feature if(x != null && model != None && x.size == model.get.size-1) => {
+		case x: Feature if( !x.isEmpty && model != None && x.size == model.get.size-1) => {
 				// Get the weights without intercept from the model
 			val weights = model.get.weights.drop(1)
 			
@@ -204,9 +204,9 @@ object RidgeRegression {
 		new RidgeRegression(xt, y, lambda)
 	
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {
-		require(xt != null && xt.size > 0, 
+		require( !xt.isEmpty, 
 				"Cannot create Ridge regression model with undefined features")
-		require(y != null && y.size > 0, 
+		require( !y.isEmpty, 
 				"Cannot create Ridge regression model with undefined observed data")
 		require(xt.size == y.size, 
 				s"Size of the features set ${xt.size} differs for the size of observed data ${y.size}")

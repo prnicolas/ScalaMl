@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  * 
  */
 package org.scalaml.supervised.hmm
@@ -114,8 +114,7 @@ object BaumWelchEM {
 	private val MAX_NUM_ITERS = 1024
 	
 	private def check(config: HMMConfig, obs: Array[Int], numIters: Int, eps: Double): Unit = {
-		require(config != null, "BaumWelchEM.check Configuration is undefined")
-		require(obs != null && obs.size > 0, "BaumWelchEM.check Observations are undefined")
+		require( !obs.isEmpty, "BaumWelchEM.check Observations are undefined")
 		require(numIters > 1 && numIters < MAX_NUM_ITERS, 
 				s"BaumWelchEM.check Maximum number of iterations $numIters is out of range")
 		require(eps > EPS_LIMITS._1 && eps < EPS_LIMITS._2, 

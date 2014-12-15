@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.bayes
 
@@ -35,7 +35,7 @@ import org.scalaml.core.Types.ScalaMl.XYTSeries
 		 * @since March 11, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 		 */
-protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, prior: Double) {
+protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, val prior: Double) {
 	import Stats._, Likelihood._
   
 	check(muSigma, prior)
@@ -45,12 +45,11 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 * observation obs and a probability density distribution.</p>
 		 * @param obs parameterized observation 
 		 * @param density probability density function (default Gauss)
-		 * @throws IllegalArgumentException if the density is undefined or the observations are undefined
+		 * @throws IllegalArgumentException if the observations are undefined
 		 * @return log of the conditional probability p(C|x)
 		 */
 	final def score(obs: Array[T], density: Density): Double = {
-		require(obs != null && obs.size > 0, "Likelihood.score Undefined observations")
-		require(density != null, "Likelihood.score Undefined probability density")
+		require( !obs.isEmpty, "Likelihood.score Undefined observations")
 		
 			// Compute the Log of sum of the likelihood and the class prior probability
 			// The log likelihood is computed by adding the log of the density for each dimension.
@@ -69,11 +68,11 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 */
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
+		
 		FormatUtils.format(muSigma, "Means", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
 		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)
 	}
 	
-
 	override def toString: String = toString(Array.empty)
 }
 
@@ -100,7 +99,7 @@ object Likelihood {
 		new Likelihood[T](label, muSigma, prior)
     
 	private def check(muSigma: XYTSeries, prior: Double): Unit =  {
-		require(muSigma != null && muSigma.size > 0, 
+		require( !muSigma.isEmpty, 
 				"Likelihood.check Historical mean and standard deviation is undefined")
 		require(prior > 0.0  && prior <= 1.0, 
 				s"Likelihood.check Prior for the NB prior $prior is out of range")

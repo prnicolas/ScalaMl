@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.plots
 
@@ -91,12 +91,12 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * are out of bounds.
 		 */
 	def display(xy1: XYTSeries, xy2: XYTSeries, width: Int, height : Int): Unit  = {
-		require( xy1 != null && xy1.size >0 , 
+		require( !xy1.isEmpty, 
 				"ScatterPlot.DisplayUtils Cannot display with first series undefined")
-		require( xy2 != null && xy2.size >0, 
+		require( !xy1.isEmpty, 
 				"ScatterPlot.DisplayUtils Cannot display with second series undefined ")
 
-		validateDim(width, height, "ScatterPlot.DisplayUtils")
+		validateDisplaySize(width, height, "ScatterPlot.DisplayUtils")
 
 		val seriesCollection1 = new XYSeriesCollection
 		val seriesCollection2 = new XYSeriesCollection
@@ -169,7 +169,9 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 	}
    
 	
-	private def draw(seriesCollection: XYSeriesCollection, w: Int, h : Int) {
+	private def draw(seriesCollection: XYSeriesCollection, w: Int, h : Int) {	
+		validateDisplaySize(w, h, "ScatterPlot.draw")
+		
 		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection, 
 			PlotOrientation.VERTICAL, true, false, false)
 		val plot = chart.getPlot.asInstanceOf[XYPlot]

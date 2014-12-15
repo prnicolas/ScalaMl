@@ -7,13 +7,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow.data
 
 import org.apache.log4j.Logger
 
-import org.scalaml.core.XTSeries
+import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.stats.Stats
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
@@ -42,12 +42,13 @@ import DataSource._, ScalaMl._
 		 * @since December 11, 2013
 		 * @note Scala for Machine Learning
 		 */
-final class DataSource(pathName: String, 
-						normalize: Boolean, 
-						reverseOrder: Boolean, 
-						headerLines: Int = 1, 
-						srcFilter: Option[Fields => Boolean]= None) 
-					extends PipeOperator[List[Fields =>Double], List[DblVector]] {
+final class DataSource(
+		pathName: String, 
+		normalize: Boolean, 
+		reverseOrder: Boolean, 
+		headerLines: Int = 1, 
+		srcFilter: Option[Fields => Boolean]= None) 
+				extends PipeOperator[List[Fields =>Double], List[DblVector]] {
 	   
 	import scala.io.Source
 	import scala.util.{Try, Failure, Success}
@@ -61,14 +62,20 @@ final class DataSource(pathName: String,
 		 * it is a directory. The list contains the name of the path is 
 		 * it is a file
 		 */
-	val fileList = {
+	lazy val filesList: Option[Array[String]] = {
 		import java.io.File
    
-		val file = new File(pathName)
-		if( file.isDirectory)
-			file.listFiles.map( _.getName)
-		else
-			Array[String](pathName)
+		Try {
+			val file = new File(pathName)
+			if( file.isDirectory)
+				file.listFiles.map( _.getName)
+			else
+				Array[String](pathName)
+		}
+		match {
+		  case Success( fileNames ) => Some(fileNames )
+		  case Failure(e) => DisplayUtils.none("DataSource.fileList", logger)
+		}
 	}
    
 		/**
@@ -84,7 +91,8 @@ final class DataSource(pathName: String,
 			val fields = src.getLines.map( _.split(CSV_DELIM).map(c(_))).toList
 			src.close
 			fields
-		} match {
+		} 
+		match {
 			case Success(fields) => Some(fields)
 			case Failure(e) => DisplayUtils.none("DataSource.loadConvert ", logger, e)
 		}
@@ -98,10 +106,11 @@ final class DataSource(pathName: String,
 		 *  a corresponding list of floating point value as output
 		 */
 	override def |> : PartialFunction[List[Fields => Double], List[DblVector]] = {
-		case extr: List[Fields => Double] if(extr != null && extr.size > 0) => {
+		case extr: List[Fields => Double] if( !extr.isEmpty ) => {
 			load match {
 				case Some(data) => {
-					if( normalize) {
+					
+				  if( normalize) {
 						import org.scalaml.stats.Stats
 						extr map {t => Stats[Double](data._2.map(t(_))).normalize }
 					}
@@ -122,8 +131,6 @@ final class DataSource(pathName: String,
 		 * @throws IllegalArgumentException if the extractor is not defined.
 		 */
 	def |> (extr: Fields => Double): XTSeries[Double] = {
-		require(extr != null, "DataSource.|> Cannot extracts fields with undefined extractors")
-  	 
 		load match {
 			case Some(data) => {
 				if( normalize) {
@@ -133,7 +140,10 @@ final class DataSource(pathName: String,
 				else 
 					XTSeries[Double](data._2.map( extr(_)))
 			}
-			case None => DisplayUtils.error("DataSource.|> ", logger); XTSeries.empty
+			case None => {
+				DisplayUtils.error("DataSource.|> ", logger)
+				XTSeries.empty
+			}
 		}
 	}
    
@@ -150,9 +160,7 @@ final class DataSource(pathName: String,
   	 
    
   
-	def load(extr: Fields => DblVector): XTSeries[DblVector] = {
-		require(extr != null, "Cannot extracts fields with undefined extractors")
-  	 
+	def load(extr: Fields => DblVector): XTSeries[DblVector] = {  	 
 		load match {
 			case Some(data) => {
 				if( normalize) 
@@ -160,7 +168,10 @@ final class DataSource(pathName: String,
 				else 
 					XTSeries[DblVector](data._2.map( extr(_)))
 			}
-			case None => DisplayUtils.error("DataSource.load ", logger); XTSeries.empty
+			case None => {
+				DisplayUtils.error("DataSource.load ", logger)
+				XTSeries.empty
+			}
 		}
 	}
 	
@@ -207,11 +218,11 @@ object DataSource {
 		 * @param directoryName, name of the directory containing the CSV files
 		 */
 	def listSymbolFiles(directoryName: String): Array[String] = {
-		require(directoryName != null, "DataSource.listSymbolFiles Directory name is undefined")
+		require(directoryName != Types.nullString, "DataSource.listSymbolFiles Directory name is undefined")
 
 		val directory = new java.io.File(directoryName)
 		val filesList =  directory.listFiles
-		if( filesList != null)  directory.listFiles.map( _.getName) else Array.empty
+		if( !filesList.isEmpty )  directory.listFiles.map( _.getName) else Array.empty
 	}
 
 		/**
@@ -265,7 +276,7 @@ object DataSource {
 		new DataSource(s"$pathName$symName", normalize, true, 1, None)
 
 	private def check(pathName: String, headerLines: Int): Unit =  {
-		require(pathName != null && pathName.length > 1, 
+		require(pathName != Types.nullString, 
 				"DataSource.check Undefined path for data source")
 		require(headerLines >=0, 
 		   	s"DataSource.check Incorrect number of header lines $headerLines for data source")

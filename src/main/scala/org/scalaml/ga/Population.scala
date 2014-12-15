@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -65,7 +65,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @return The combined population if the new population is not empty, this population otherwise
 		 */
 	def + (that: Population[T]): Population[T] = {
-		require(that != null, "Population.+: Cannot add an undefined list of chromosomes")
+		require( !that.isNull, "Population.+: Cannot add an undefined list of chromosomes")
 		if(that.size > 0) 
 			Population[T](limit, chromosomes ++: that.chromosomes) 
 		else this
@@ -78,7 +78,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @throws IllegalArgumentException if the newCode is either undefined or has an incorrect size.
 		 */
 	protected def += (newCode: List[T]): Unit = {
-		require(newCode != null, "Population.+=: Cannot add an undefined chromosome")
+		require( !newCode.isEmpty, "Population.+=: Cannot add an undefined chromosome")
 		require(newCode.size == chromosomes(0).size, 
 				s"Population.+=: Number of genes ${newCode.size} != chromosome size ${chromosomes(0).size}")
 		chromosomes += new Chromosome[T](newCode)
@@ -91,12 +91,9 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * order.</p>
 		 * @param score Scoring function applied to all the chromosomes of this population
 		 * @param cutOff Normalized threshold value for the selection of the fittest chromosomes
-		 * @throws IllegalArgumenException if the cutoff is out of bounds or the scoring 
-		 * function is undefined
+		 * @throws IllegalArgumenException if the cutoff is out of bounds
 		 */
 	def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
-		require(score != null, 
-				"Population.select Cannot select chromosomes with undefined fitness function")
 		require(cutOff > 0.0 && cutOff < 1.01, 
 				s"Population.select Cannot select with a cutoff $cutOff out of range")
 		
@@ -175,7 +172,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @throws IllegalArgumenException if mu is out of range [0, 1]
 		 */
 	final def diff(that: Population[T], depth: Int): Option[Pool[T]] = {
-		require(that != null, "Population.diff Other population is undefined")
+		require( !that.isNull , "Population.diff Other population is undefined")
 		require(depth > 0, s"Population.diff depth $depth should be >1")
 		
 		val fittestPoolSize = {
@@ -218,6 +215,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 */
 	final def size: Int = chromosomes.size
 	
+	final def isNull: Boolean = chromosomes.isEmpty
 
 		/**
 		 * Textual description of the genetic code of this population
@@ -275,13 +273,18 @@ object Population{
 	private val MAX_NUM_CHROMOSOMES = 10000
 	
 	private def check[T <: Gene](limit: Int, chromosomes: Pool[T]): Unit  = {
-		require(chromosomes != null, 
+		require( !chromosomes.isEmpty, 
 				"Population.check: Undefined initial set of chromosomes")
 		require(chromosomes.size > 0 && chromosomes.size < limit, 
 				s"Population.check: The pool of chromosomes ${chromosomes.size} is out of range")
 		require(limit > 1 && limit < MAX_NUM_CHROMOSOMES, 
 				s"Maximum number of allowed chromosomes $limit is out of range")
 	}
+	
+		/**
+		 * Define a Null population for error checking purpose
+		 */
+	def nullPopulation[T <:Gene]: Population[T] = new Population[T](-1, ArrayBuffer.empty)
 }
 
 // -----------------------  EOF -------------------------------------------

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.xcs
 
@@ -20,8 +20,6 @@ import org.scalaml.core.design.Config
 		/**
 		 * <p>Class that defined the configuration parameters for the XCS algorithm.</p>
 		 * @constructor Create a configuration for the XCS algorithm 			
-		 * @throws IllegalArgumentException if the maximum population is out of range or one of the
-		 * configuration class is undefined.
 		 * @param gaConfig  Configuration of the Genetic Algorithm used in extracting the 
 		 * fittest rules or classifier
 		 * @param qlConfig  Configuration parameters for the Q-learning algorithm.
@@ -31,12 +29,7 @@ import org.scalaml.core.design.Config
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / 
 		 * Extended learning classifier systems
 		 */
-final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) extends Config {
-	require(gaConfig != null, 
-			"XcsConfig.check Cannot initialize XCS algorithm with undefined GA configuration")
-	require(qlConfig != null, 
-			"XcsConfig.check Cannot initialize XCS algorithm with undefined Q-Learning configuration")
-	
+final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) extends Config {	
 		/**
 		 * Name of the file that persists the configuration of the XCS algorithm
 		 */

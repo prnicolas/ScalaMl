@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.akka
 
@@ -42,7 +42,7 @@ import XTSeries._
 		 */
 final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Actor {
 	import Worker._
-	check(id, fct)
+	check(id)
 	
 	private val logger = Logger.getLogger("WorkerActor")
 	override def postStop: Unit = DisplayUtils.show(s"WorkerActor${id}.postStop", logger)
@@ -93,11 +93,7 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 object Worker {
 	private val NUM_DATAPOINTS_DISPLAY = 12
 	
-	private def check(id: Int, fct: PipeOperator[DblSeries, DblSeries]): Unit = {
-		require(id >= 0, s"Worker.check Id $id is out of range")
-		require(fct != null, 
-		    "Worker.check Cannot create a master actor with undefined data transformation function")
-	}
+	private def check(id: Int): Unit = require(id >= 0, s"Worker.check Id $id is out of range")
 }
 
 // ---------------------------------  EOF -------------------------

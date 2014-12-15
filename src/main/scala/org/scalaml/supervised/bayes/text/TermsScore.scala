@@ -7,10 +7,11 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.bayes.text
 
+import org.scalaml.core.Types
 import org.scalaml.workflow.data.DocumentsSource
 import org.scalaml.util.MapUtils.Counter
 import scala.annotation.implicitNotFound
@@ -42,7 +43,7 @@ final class TermsScore[T <% Long](
 		lexicon: immutable.Map[String, String])(implicit order: Ordering[T]) {
 	import TermsScore._, NewsArticles._
 
-	check(toDate, toWords, lexicon)
+	check(lexicon)
 	private val logger = Logger.getLogger("NaiveBayesTextScoring")
    
 		/**
@@ -69,7 +70,7 @@ final class TermsScore[T <% Long](
 	}
 
 	private[this] def count(term: String): Counter[String] = {
-		require(term != null && term.length > 0, 
+		require(term != Types.nullString, 
 				"TermsScore.count: Cannot count the number of words in undefined text")
 
 		toWords(term).foldLeft(new Counter[String])((cnt, w) => 
@@ -78,9 +79,8 @@ final class TermsScore[T <% Long](
    
 
 	private[this] def rank(corpus: Corpus): CorpusType[T] = {
-		require( corpus!= null && corpus.size > 0, 
+		require( !corpus.isEmpty, 
 				"TermsScore.rank: Cannot order an undefined corpus of document")
-   	  
 		corpus.map(doc => (toDate(doc._1.trim), doc._2, doc._3)).sortWith( _._1 < _._1)
 	}
 }
@@ -113,18 +113,8 @@ object TermsScore {
 		new TermsScore[T](tStamp, words, lexicon)
  
 		
-	private def check[T <% Long](
-			toDate: 	String =>T, 
-			toWords: 	String => Array[String], 
-			lexicon: 	immutable.Map[String, String]): Unit = {
-		
-		require(toDate != null, 
-				"TermsScore.check Cannot score a text without an extractor for the release date")
-		require(toWords != null, 
-				"TermsScore.check Cannot score a text without a word extractor")
-		require(lexicon != null && lexicon.size > 0, 
-				"TermsScore.check Cannot score a text without a lexicon")
-	}
+	private def check(lexicon: immutable.Map[String, String]): Unit = 
+		require( !lexicon.isEmpty, "TermsScore.check Cannot score a text without a lexicon")
 }
 
 // ----------------------------  EOF ------------------------------------------

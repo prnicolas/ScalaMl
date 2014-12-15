@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap5
 
@@ -82,7 +82,7 @@ object FunctionClassificationEval extends Eval {
 		def trainingDatasets(numSamples: Int): Input =  {
 			val dataRange = Range(0, DATA_SIZE)
 			val data = new Array[(Array[Double], Int)](numSamples)
-      	 
+
 			Range(0, numSamples).foreach( n => {
 				val index = Random.nextInt(functionsGroup.size)
 				val res = createDatasets(functionsGroup(index), dataRange)
@@ -125,7 +125,7 @@ object FunctionClassificationEval extends Eval {
 		 */
 		val g = (x: Double) => Math.cos(ALPHA*x)
 		val h = (x: Double) => if( x >= 0.49 && x <= 0.51) 1.0 else 0.0
-      
+
 		/**
 		 * Scoring function. The linear comparison is used instead of the Gaussian 
 		 * distribution because the standard deviation is very small and potentially
@@ -135,12 +135,11 @@ object FunctionClassificationEval extends Eval {
       	
 		Try {
 			val nb = NaiveBayes(1.0, XTSeries(trainingDatasets(3)), scoring)
-			DisplayUtils.show(s"$header Trained model for function classification${nb.toString}", logger)
-	      
+			DisplayUtils.show(s"$header Trained model for function classification ${nb.toString}", logger)
 			val gr = nb |> XTSeries(testDataset(g))
 			DisplayUtils.show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' class: ${gr(0)}", 
 					logger)
-	      	      
+
 			val hr = nb |> XTSeries(testDataset(h))
 			DisplayUtils.show(s"$name Naive Bayes classify for 'if(x ~ 0.5) 1.0 else 0' class: ${hr(0)}", 
 					logger)
@@ -152,6 +151,5 @@ object FunctionClassificationEval extends Eval {
 		}
 	}
 }
-
 
 // -----------------------------  EOF ------------------------------------

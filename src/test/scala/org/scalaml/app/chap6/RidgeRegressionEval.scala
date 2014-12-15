@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap6
 
@@ -62,10 +62,12 @@ object RidgeRegressionEval extends Eval {
 		
 			val deltaPrice = XTSeries[Double](price.drop(1).zip(price.dropRight(1))
 															.map( z => z._1 - z._2))
-		
+		  /*
 			DataSink[Double](dataInput) |> deltaPrice :: 
 										volatility :: 
 										volume :: List[XTSeries[Double]]()
+										* 
+										*/
 			val data =  volatility.zip(volume)
 									.map(z => Array[Double](z._1, z._2))
 		
@@ -153,6 +155,5 @@ object RidgeRegressionEval extends Eval {
 		plot.display(data, 340, 280)
 	}
 }
-
 
 // ----------------------------  EOF ----------------------------------

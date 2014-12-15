@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.nnet
 
@@ -57,7 +57,7 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 * @throws IllegalArgumentException if the input vector is undefined
 		 */
 	def set(_x: DblVector): Unit = {
-		require(_x != null && _x.size > 0, 
+		require( !_x.isEmpty, 
 				s"MLPLayer.set Cannot initialize this MLP layer $id with undefined data")
 		_x.copyToArray(output, 1)
 	}
@@ -70,7 +70,7 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 * size of the input vector + 1
 		 */
 	final def sse(labels: DblVector): Double = {
-		require(labels != null, 
+		require( !labels.isEmpty, 
 				"MLPLayer.sse Cannot compute the sum of squared errors with undefined labels")
 		require(output.size == labels.size+1, 
 				s"MLPLayer.sse The size of the output ${output.size} != to size of target ${labels.size+1}")

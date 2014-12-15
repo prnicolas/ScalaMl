@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.bayes
 
@@ -55,13 +55,14 @@ final class NaiveBayes[T <% Double](
 		density: Density)	extends PipeOperator[XTSeries[Array[T]], Array[Int]] with Supervised[T] {
 
 	import NaiveBayes._
-	check(smoothing, xt, density)
+	check(smoothing, xt)
 	
 	private val logger = Logger.getLogger("NaiveBayes")
+	
 	private[this] val model: Option[BinNaiveBayesModel[T]] = 
 			Try(BinNaiveBayesModel[T](train(1), train(0), density))
 		match {
-			case Success(nb) => Option(nb)
+			case Success(nb) => Some(nb)
 			case Failure(e) => DisplayUtils.none("NaiveBayes.model", logger, e)
 		}
 		
@@ -74,7 +75,7 @@ final class NaiveBayes[T <% Double](
 		 * and array of class indices as output
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], Array[Int]] = {
-		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && model != None) => 
+		case xt: XTSeries[Array[T]] if( !xt.isEmpty && model != None) => 
 			xt.toArray.map( model.get.classify( _))
 	}
 	
@@ -85,30 +86,30 @@ final class NaiveBayes[T <% Double](
 		 * @return F1 measure if the model has been properly trained (!= None), None otherwise
 		 */
 	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Option[Double] = 
-		if(model == None) 
-			None
+		if(model == None) None
 		else 
 			Some(ClassValidation(xt.map(x =>(model.get.classify(x._1), x._2)) , index).f1)
 	
 
 	def toString(labels: Array[String]): String = 
 		if(model != None) 
-			model.get.toString(labels)  
+			if( labels.isEmpty ) model.get.toString else model.get.toString(labels)
 		else 
 			"No Naive Bayes model"
 			
 	override def toString: String = toString(Array.empty)
-       
+   
 		/**
 		 * Train the Naive Bayes model on one of the two classes (positive = 1) or negative (=0)
 		 */
-    @implicitNotFound("NaiveBayes; Conversion from array[T] to DblVector is undefined")
+	@implicitNotFound("NaiveBayes; Conversion from array[T] to DblVector is undefined")
 	private def train(label: Int)(implicit f: Array[T] => DblVector): Likelihood[T] = {
 		val xi = xt.toArray
 		val values = xi.filter( _._2 == label).map(x => f(x._1))
-
+		assert( !values.isEmpty, "NaiveBayes.train Filtered value is undefined")
+		
 		val dim = xi(0)._1.size
-		val vSeries = XTSeries[DblVector](values.toArray)
+		val vSeries = XTSeries[DblVector](values)
 
 		Likelihood(label, 
 				statistics(vSeries).map(stat => (stat.lidstoneMean(smoothing, dim), stat.stdDev) ), 
@@ -143,17 +144,11 @@ object NaiveBayes {
 	def apply[T](xt: XTSeries[(Array[T], Int)])(implicit f: T => Double): NaiveBayes[T] = 
 		new NaiveBayes[T](1.0, xt, gauss)
 	
-	private def check[T <% Double](
-			smoothing: Double, 
-			xt: XTSeries[(Array[T], Int)], 
-			density: Density): Unit = {
-		
-	  require(smoothing > 0.0 && smoothing <= 1.0, 
+	private def check[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)]): Unit = {
+		require(smoothing > 0.0 && smoothing <= 1.0, 
 	  		s"NaiveBayes: Laplace or Lidstone smoothing factor $smoothing is out of range")
-		require(xt != null && xt.size > 0, 
+		require( !xt.isEmpty, 
 				"NaiveBayes: Time series input for training Naive Bayes is undefined")
-		require(density != null, 
-				"NaiveBayes: Density function for Naive Bayes is undefined")
 	}
 }
 

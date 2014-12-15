@@ -6,14 +6,14 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.regression.logistic
 
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.Matrix
+import org.scalaml.core.Matrix
 import scala.util.Random
 import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer
 import org.apache.commons.math3.optim.{SimpleVectorValueChecker, PointVectorValuePair}
@@ -37,14 +37,14 @@ class CurveFitting[T <% Double](val x: DblVector, val y: Array[Double], val maxI
 	def train: Unit = {
 		class MyFunction extends MultivariateJacobianFunction {
 		   override def value(w: RealVector): Pair[RealVector, RealMatrix] = {
-		  	  require( w != null, "Cannot compute value of undefined data")
+		  	  require( w.length> 0, "Cannot compute value of undefined data")
 
 		  	  val nW = w.toArray
 		  	  val f = new ArrayRealVector(x.map(t =>  nW(0) + nW(1)*t + nW(2)*t*t))
 		      var jac = Array.ofDim[Double](x.length, weights.size)
 		      x.zipWithIndex.foreach( t => { jac(t._2)(2) = t._1*t._1; jac(t._2)(1) = t._1; jac(t._2)(0) = 1.0} )
 
-			  new Pair[RealVector, RealMatrix] (f, new Array2DRowRealMatrix(jac))
+		      new Pair[RealVector, RealMatrix] (f, new Array2DRowRealMatrix(jac))
 			}
 		}
 	    

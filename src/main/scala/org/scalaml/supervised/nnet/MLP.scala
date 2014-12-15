@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.nnet
 
@@ -55,7 +55,7 @@ final protected class MLP[T <% Double](
 		(implicit mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
 	import MLP._
 	
-	check(config, xt, labels)
+	check(xt, labels)
 	private val logger = Logger.getLogger("MLP")
 	
 	
@@ -103,10 +103,14 @@ final protected class MLP[T <% Double](
 		 * the predicted vector values as output
 		 */
 	override def |> : PartialFunction[Array[T], DblVector] = {
-		case x: Array[T] if(x != null && model != None && x.size == dimension(xt)) => {
-			Try(model.get.getOutput(x)) match {
+		case x: Array[T] if( !x.isEmpty && model != None && x.size == dimension(xt)) => {
+			
+		  Try(model.get.getOutput(x)) match {
 				case Success(y) => y
-				case Failure(e) => DisplayUtils.error("MLP.|> ", logger, e); Array.empty
+				case Failure(e) => {
+					DisplayUtils.error("MLP.|> ", logger, e)
+					Array.empty[Double]
+				}
 			}
 		}
 	}
@@ -270,12 +274,10 @@ object MLP {
 		new MLP[T](config, XTSeries[Array[T]](obs), labels.map(Array[Double](_)))
             
             
-	private def check[T](config: MLPConfig, xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
-		require(config != null, 
-				"Cannot train a multilayer perceptron without stateuration parameters")
-		require(xt != null && xt.size > 0, 
+	private def check[T](xt: XTSeries[Array[T]], labels: DblMatrix): Unit = {
+		require( !xt.isEmpty, 
 				"Features for the MLP are undefined")
-		require(labels != null && labels.size > 0, 
+		require( !labels.isEmpty, 
 				"Labeled observations for the MLP are undefined")
 		require(xt.size == labels.size, 
 		 		s"Number of features for MLP ${xt.size} is different from number of labels ${labels.size}")

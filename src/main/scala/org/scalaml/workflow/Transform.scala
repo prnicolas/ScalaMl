@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.workflow
 
@@ -23,16 +23,13 @@ import scala.reflect.ClassTag
 	 * applying the transform function. A transform function can be a filtering,
 	 * smoothing function, a moving average, a classifier.....</p>
 	 * @param op pipe operator implementing the function that transform data
-	 * @throws IllegalArgumentException if the transform function is undefined
 	 * @see org.scalaml.core._FCT
 	 * @author Patrick Nicolas
 	 * @since December 19, 2013
 	 * @note Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
 	 * Monadic data transformation
 	 */
-class Transform[-T: ClassTag, +U](op: PipeOperator[T, U]) extends _FCT[Function[T, U]](op.|>)  {
-	require(op != null, "Cannot create a monadic transform with undefined transform function")
-	
+class Transform[-T: ClassTag, +U](op: PipeOperator[T, U]) extends _FCT[Function[T, U]](op.|>)  {	
 	def |> : PartialFunction[T, U] = { case t: T => _fct(t)}
 }
 

@@ -45,20 +45,15 @@ final protected class LogisticRegressionOptimizer(
 	import ScalaMl._
 	import LogisticRegressionOptimizer._
 	
-	check(maxIters, maxEvals, eps, lsOptimizer)
+	check(maxIters, maxEvals, eps)
 
   		/**
   		 * <p>Performs the minimization of the loss function by optimizing the least squares problems</p>
   		 * @param lsProblem least squares problem as defined in the Apache Commons Math library
   		 * @return Optimum value for the weights of the logistic regression
-  		 * @throws IllegalArgumentException if the least squares problem is undefined
   		 * @see org.apache.commons.math3.fitting.leastsquares
   		 */
-	def optimize(lsProblem: LeastSquaresProblem): Optimum = {
-		require(lsProblem != null, 
-				"LogisticRegressionOptimizer.optimizer: Least squares problem is undefined")
-  	  lsOptimizer.optimize(lsProblem)
-  }
+	def optimize(lsProblem: LeastSquaresProblem): Optimum = lsOptimizer.optimize(lsProblem)
 }
 
 
@@ -115,8 +110,7 @@ object LogisticRegressionOptimizer {
 	private def check(
 			maxIters: Int, 
 			maxEvals: Int, 
-			eps: Double, 
-			lsOptimizer: LeastSquaresOptimizer): Unit = {
+			eps: Double): Unit = {
 	  
 		require(maxIters >=  NUM_ITERS_LIMITS._1 && maxIters <= NUM_ITERS_LIMITS._2,  
 				s"Maximum number of iterations $maxIters is out of range")
@@ -126,7 +120,6 @@ object LogisticRegressionOptimizer {
 				s"Maximum number of iterations $maxIters exceeds maximum number of evaluations $maxEvals")
 		require( eps >= EPS_LIMITS._1 && eps <= EPS_LIMITS._2, 
 				s"eps for the optimization of the logistic regression $eps is out of range")
-		require(lsOptimizer != null, "Least squares optimizer for the logistic regression is undefined")
 	}
 }
 

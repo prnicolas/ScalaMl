@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.ga
 
@@ -14,7 +14,7 @@ import java.util.BitSet
 import scala.annotation.implicitNotFound
 
 import org.scalaml.core.Types.ScalaMl.DblVector
-
+import org.scalaml.core.Types
 
 		/**
 		 * <p>Generic operator for symbolic representation of a gene defined
@@ -101,8 +101,7 @@ class Gene(
 		val target: Double, 
 		val op: Operator)(implicit discr: Discretization) {
   
-	require(op != null, "Cannot create a gene/predicate with undefined operator")
-	require(id != null && id.length > 0, "Cannot create a signal with undefined id")
+	require(id != Types.nullString, "Cannot create a signal with undefined id")
    
 		/**
 		 * Bits encoding of the tuple (value, operator) into bits {0, 1} executed 
@@ -141,11 +140,8 @@ class Gene(
 		 * @param gIdx Genetic Index for this gene
 		 * @param that other gene used in the cross-over
 		 * @return A single Gene as cross-over of two parents.
-		 * @throws IllegalArgumenException if the argument are undefined or the index is out of range
 		 */
-	def +- (that: Gene, gIdx: GeneticIndices): Gene = {
-		require(that != null, "Cannot cross over this gene with undefined gene")
-       
+	def +- (that: Gene, gIdx: GeneticIndices): Gene = {       
 		val clonedBits = cloneBits(bits)
 		Range(gIdx.geneOpIdx, bits.size).foreach(n => 
 			if( that.bits.get(n) ) 

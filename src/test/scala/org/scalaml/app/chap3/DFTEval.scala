@@ -51,10 +51,7 @@ object DFTEval extends FilteringEval {
 		 */
 	def run(args: Array[String]): Int = {
 		Try {
-			if( args == null || args.size == 0) 
-				runSimulation
-			else 
-				runFinancial(args(0))
+			if( args.isEmpty) runSimulation else runFinancial(args(0))
 		} 
 		match {
 			case Success(n) => n

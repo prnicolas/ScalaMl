@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap6
 
@@ -60,7 +60,7 @@ object SingleLinearRegressionEval extends Eval {
 			
 			if( slope != None ) {
 				val slope_str = FormatUtils.format(slope.get, "y= ", FormatUtils.ShortFormat)
-				val intercept_str = FormatUtils.format(intercept.get, "y= ", FormatUtils.ShortFormat)
+				val intercept_str = FormatUtils.format(intercept.get, " ", FormatUtils.ShortFormat)
 				DisplayUtils.show(s"$name Linear regression: $slope_str.x + $intercept_str", logger)
 				DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", 
 						logger)

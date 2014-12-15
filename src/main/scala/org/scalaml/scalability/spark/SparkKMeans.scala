@@ -6,22 +6,24 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.scalability.spark
 
 
+import scala.annotation.implicitNotFound
+import scala.util.{Try, Success, Failure}
+import org.apache.log4j.Logger
+
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.core.XTSeries
+import org.scalaml.core.design.PipeOperator
 import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
 import org.apache.spark.mllib.linalg.DenseVector
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 
-import scala.annotation.implicitNotFound
-
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.FormatUtils
-import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
 
 
 
@@ -39,7 +41,7 @@ import org.scalaml.core.design.PipeOperator
 		 * @since April 2, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib
 		 */
-@implicitNotFound("Spark context is implicitely undefined")
+@implicitNotFound("SparkKMeans Spark context is not implicitely defined")
 final class SparkKMeans(
 		kMeansConfig: SparkKMeansConfig, 
 		rddConfig: RDDConfig, 
@@ -49,7 +51,13 @@ final class SparkKMeans(
 	import SparkKMeans._
 	check(kMeansConfig, rddConfig, xt)
 	
-	private val model: KMeansModel = kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig))
+	private val logger = Logger.getLogger("SparkKMeans")
+	
+	private[this] val model: Option[KMeansModel] = 
+		Try(kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig))) match {
+			case Success(kmeansModel) => Some(kmeansModel)
+			case Failure(e) => DisplayUtils.none("SparkKMeans.model cannot be initiated", logger, e)
+		}
   
 		/**
 		 * <p>Method that classify a new data point in any of the cluster.</p>
@@ -58,16 +66,19 @@ final class SparkKMeans(
 		 * @return the id of the cluster if succeeds, None otherwise.
 		 */
 	override def |> : PartialFunction[DblVector, Int] = {
-		case x: DblVector if(x != null && x.size > 0 && model != null) =>
-			model.predict(new DenseVector(x))
+		case x: DblVector if(!x.isEmpty && model != None) => model.get.predict(new DenseVector(x))
 	}
 	
 		
 	override def toString: String = {
 		val buf = new StringBuilder
-		buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
-		model.clusterCenters.zipWithIndex.foreach(ctr => 
-				buf.append(s"#${ctr._2}: ${FormatUtils.format(ctr._1.toArray)}\n"))
+		if(model == None)
+			buf.append("Model undefined")
+		else {
+			buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
+			model.get.clusterCenters.zipWithIndex.foreach(ctr => 
+					buf.append(s"#${ctr._2}: ${FormatUtils.format(ctr._1.toArray)}\n"))
+		}
 		buf.toString
 	}
 }
@@ -100,9 +111,7 @@ object SparkKMeans {
 			rddConfig: RDDConfig, 
 			xt: XTSeries[DblVector]): Unit = {
 	  
-		require(kMeansConfig != null, "Cannot a K-means model without a stateuration")
-		require(rddConfig != null, "Cannot execute a K-means on non-stateured RDD")
-		require(xt != null && xt.size > 0, "Cannot execute a K-means on undefined input time series")
+		require( !xt.isEmpty, "SparkKMeans.check input time series for Spark K-means is undefined")
 	}
 }
 

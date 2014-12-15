@@ -7,11 +7,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.util
 
 import org.apache.log4j.Logger
+import org.scalaml.core.Types
 
 	/**
 	 * <p>Singleton wrapper for information or debugging information.</p>
@@ -31,7 +32,7 @@ object DisplayUtils {
 		 * @param length Length of the box the label has to be aligned
 		 */
 	final def align(label: String, length: Int): String = {
-		require(label != null, "DisplayUtils.align Label is undefined")
+		require(label != Types.nullString, "DisplayUtils.align Label is undefined")
 		require(length < 128, 
 				s"DisplayUtils.align Size of label placement ${label.length} is incorrect")
 		
@@ -69,7 +70,7 @@ object DisplayUtils {
 	}
  
 
-	final def error[T](t: T, logger: Logger): Int = error(t, logger, null)
+	final def error[T](t: T, logger: Logger): Int = error(t, logger)
 
 	final def error[T](t: T, logger: Logger, e: Throwable): Int = {
 		processError(t, logger, e)
@@ -77,7 +78,7 @@ object DisplayUtils {
 	}
   
 
-	final def none[T](t: T, logger: Logger): None.type = none(t, logger, null)
+	final def none[T](t: T, logger: Logger): None.type = none(t, logger)
 
 
 	final def none[T](t: T, logger: Logger, e: Throwable): None.type = {
@@ -86,17 +87,17 @@ object DisplayUtils {
 	}
 	
 	private def processError[T](t: T, logger: Logger, e: Throwable): Unit = {
-		val msg = if(e != null) 
-			s"Error: ${t.toString} with ${e.toString}" 
-		else 
-			s"Error: ${t.toString}"
+		val msg = s"Error: ${t.toString} with ${e.toString}" 
 		
-		if(loggerFlag) 
-			logger.error(msg)
-		else 
-			Console.println(msg)
-		
-		if( e != null) e.printStackTrace
+		if(loggerFlag) logger.error(msg) else Console.println(msg)
+		e.printStackTrace
+	}
+	
+		private def processError[T](t: T, logger: Logger): Unit = {		
+			if(loggerFlag) 
+				logger.error(s"Error: ${t.toString}") 
+			else 
+				Console.println(s"Error: ${t.toString}")
 	}
 }
 

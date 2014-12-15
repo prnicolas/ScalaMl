@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.unsupervised.em
 
@@ -59,7 +59,7 @@ final protected class MultivariateEM[T <% Double](
 		 * Expectation-Maximization algorithm and tuple of type EMOutput as output.
 		 */
 	override def |> : PartialFunction[XTSeries[Array[T]], EMOutput] = {
-		case xt: XTSeries[Array[T]] if(xt != null && xt.size > 0 && dimension(xt) > 0) => {
+		case xt: XTSeries[Array[T]] if( !xt.isEmpty && dimension(xt) > 0) => {
 			
 				// Convert the time series of observations to a matrix (2)
 			val data: DblMatrix = xt.toDblMatrix  // force a type conversion
@@ -120,7 +120,7 @@ object MultivariateEM {
 		 * @throws IllegalArgumenException if the input is not defined or K is out of range.
 		 */
 	protected def estimate(data: DblMatrix, K: Int): MixtureMultivariateNormalDistribution = {
-		require(data != null && data.size > 0, 
+		require( !data.isEmpty, 
 				"MultivariateEM.estimate Cannot estimate the Gaussian mixture for undefined input")
 		require( K > 0 && K < MAX_K, 
 				s"MultivariateEM.estimate Number K of clusters for EM $K is out of range")

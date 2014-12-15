@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.trading
 
@@ -56,7 +56,7 @@ final class Signal(
 		xt: DblVector, 
 		weights: DblVector)(implicit discr: Discretization)	extends Gene(id, target, op) {
 	import Signal._
-	check(id, op, xt, weights)
+	check(xt, weights)
    
 		/**
 		 * Computation of the score of this trading signal by comparing a value with the threshold, value
@@ -137,13 +137,12 @@ object Signal {
 	final def numOperators = operatorFuncMap.size
    
 	private val MAX_TIME_SERIES_SIZE = 10000000
-	private def check(id: String, op: Operator, xt: DblVector, weights: DblVector): Unit = {
-		require(op != null, "Signal.check Cannot create a signal with undefined operator")
-		require(xt != null, "Signal.check Cannot create a signal with undefined time series input")
-		require(xt.size >= 0 && xt.size < MAX_TIME_SERIES_SIZE, 
+	private def check(xt: DblVector, weights: DblVector): Unit = {
+		require( !xt.isEmpty, "Signal.check Cannot create a signal with undefined time series input")
+		require( xt.size < MAX_TIME_SERIES_SIZE, 
 				s"Signalcheck Size of the time series input, ${xt.size} if out of range")
-		require(weights != null, "Signal.check Cannot create a signal with undefined weights")
-		require(weights.size >= 0 && weights.size < MAX_TIME_SERIES_SIZE, 
+		require( !weights.isEmpty, "Signal.check Cannot create a signal with undefined weights")
+		require(weights.size < MAX_TIME_SERIES_SIZE, 
 				s"Signalcheck Number of weights ${weights.size} if out of range")
 		require(xt.size == weights.size, 
 				s"Signal The number of weights ${xt.size} is != size of data ${xt.size}")

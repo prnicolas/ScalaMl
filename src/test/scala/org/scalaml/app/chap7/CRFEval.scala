@@ -7,12 +7,13 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap7
 
+import org.scalaml.core.Matrix
 import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
-import org.scalaml.util.{DisplayUtils, Matrix, FormatUtils}
+import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
 
@@ -53,12 +54,12 @@ object CrfEval extends Eval {
 		 */
 	def run(args: Array[String]): Int = {
 		DisplayUtils.show(s"$header Conditional Random Fields", logger)
-    
-		val state = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
+
+		val config = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
 		val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
 	    
 		Try {
-			val crf = Crf(NLABELS, state, delimiters, PATH)
+			val crf = Crf(NLABELS, config, delimiters, PATH)
 			crf.weights match {
 				case Some(w) => {
 					DisplayUtils.show(s"$name weights (lambdas) for conditional random fields", logger)
@@ -73,6 +74,5 @@ object CrfEval extends Eval {
 		}
   }
 }
-
 
 // --------------------------------  EOF -------------------------------

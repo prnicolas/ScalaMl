@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.svm
 
@@ -15,7 +15,7 @@ import org.scalaml.core.XTSeries
 import libsvm.{svm_problem, svm_node, svm, svm_model}
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.util.Matrix
+import org.scalaml.core.Matrix
 import scala.util.{Try, Success, Failure}
 import XTSeries._
 import org.apache.log4j.Logger
@@ -126,7 +126,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		 *  @return PartialFunction of feature of type Array[T] as input and the predicted value as output
 		 */
 	override def |> : PartialFunction[Feature, Double] =  {
-		case x: Feature if(x != null && x.size == dimension(xt) && model != None && 
+		case x: Feature if(!x.isEmpty && x.size == dimension(xt) && model != None && 
 				model.get.accuracy >= 0.0) =>
 			svm.svm_predict(model.get.svmmodel, toNodes(x))
 	}
@@ -134,7 +134,6 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 
 	private def accuracy(problem: svm_problem): Double = config.isCrossValidation match { 
 		case true => {
-		  
 			val target = new Array[Double](labels.size)
 			svm.svm_cross_validation(problem, config.param, config.nFolds, target)
 			target.zip(labels).filter(z => Math.abs(z._1-z._2) < config.eps).size.toDouble/labels.size
@@ -188,9 +187,8 @@ object SVM {
 		new SVM[T](config, XTSeries[Array[T]](ft), labels)
 		
 	private def check[T <% Double](state: SVMConfig, xt: XTSeries[Array[T]], labels: DblVector) {
-		require(state != null, "SVM.check Configuration of the SVM is undefined")
-		require(xt != null && xt.size > 0, "SVM.check  Features for the SVM are undefined")
-		require(labels != null && labels.size > 0, 
+		require( !xt.isEmpty, "SVM.check  Features for the SVM are undefined")
+		require( !labels.isEmpty, 
 				"SVM.check  Labeled observations for the SVM are undefined")
 		require(xt.size == labels.size, 
 				s"SVM.check  Number of features ${xt.size} != number of labels ${labels.size}")

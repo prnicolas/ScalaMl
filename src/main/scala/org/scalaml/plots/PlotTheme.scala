@@ -21,6 +21,7 @@ import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
 		 */
 trait PlotTheme {
 	import BasicStroke._
+	
 	protected[this] val strokeList = Array[Stroke](
 		new BasicStroke(1.0f),
 		new BasicStroke(1.0f, CAP_BUTT, JOIN_BEVEL, 8.0f, Array[Float](1.0f, 1.0f), 0.0f),
@@ -71,12 +72,14 @@ final class BlackPlotTheme extends PlotTheme {
 		 * Define the background color of the plot at black
 		 * @param width Width of the chart
 		 * @param height Height of the chart
+		 * @throws IllegalArgumentException if the width or height is out of range
 		 * @return Background color 
 		 */
-	override def paint(width: Int, height: Int): Paint = Color.black
+	override def paint(width: Int, height: Int): Paint = {
+		Plot.validateDisplaySize(width, height)
+		Color.black
+	}
 }
-
-
 
 		/**
 		 * <p>Class that define the visual display of a plotting graph using jFreeChart library
@@ -102,10 +105,13 @@ final class LightPlotTheme extends PlotTheme {
 		 * Define the background color of the plot as a gradient of light gray
 		 * @param width Width of the chart
 		 * @param height Height of the chart
+		 * @throws IllegalArgumentException if the width or height is out of range
 		 * @return Background color 
 		 */
-	override def paint(width: Int, height: Int): Paint = 
+	override def paint(width: Int, height: Int): Paint = {
+			Plot.validateDisplaySize(width, height)
 			new GradientPaint(0, 0, Color.white, width, height, Color.lightGray, false)
+	}
 }
 
 // ----------------------------------  EOF --------------------------------------------------------------

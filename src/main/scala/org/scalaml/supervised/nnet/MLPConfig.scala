@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.supervised.nnet
 
@@ -54,19 +54,19 @@ final class MLPConfig(
 		 */
 	protected val persists = "config/mlp"
 
-	check(alpha, eta, numEpochs, activation)
+	check(alpha, eta, numEpochs)
 
 		/**
 		 * <p>Return the id of the output layer.</p>
 		 * @return 1 if there is no hidden layers, the id of the last hidden layer + 1, otherwise
 		 */
-	final def outLayerId: Int = if(hidLayers == null) 1 else hidLayers.size+1
+	final def outLayerId: Int = if(hidLayers.isEmpty) 1 else hidLayers.size+1
 
 		/**
 		 * <p>Return the number of hidden layers in this Neural network.</p>
 		 * @return 0 if there is no hidden layer, the size of the hidLayer array or sequence otherwise
 		 */
-	final def nHiddens: Int = if(hidLayers == null) 0 else hidLayers.size
+	final def nHiddens: Int = if(hidLayers.isEmpty) 0 else hidLayers.size
 }
 
 
@@ -178,13 +178,12 @@ object MLPConfig {
 				(x: Double) => {1.0/(1.0 + Math.exp(-x))})
    
    
-	private def check(alpha: Double, eta: Double, numEpochs: Int, activation: Double=>Double): Unit ={
+	private def check(alpha: Double, eta: Double, numEpochs: Int): Unit ={
 		require(alpha >= ALPHA_LIMITS._1 && alpha <= ALPHA_LIMITS._2, 
 				s"Momentum factor, alpha $alpha is out of bounds")
 		require(eta >= ETA_LIMITS._1 && eta <= ETA_LIMITS._2, 
 				s"Learning rate eta for the Neural Network $eta is out of range")
 		require(numEpochs > 1, s"Number of epoch $numEpochs for the Neural Network should be > 1")
-		require(activation != null, "Activation for MLP is undefined")
 	}
 }
 

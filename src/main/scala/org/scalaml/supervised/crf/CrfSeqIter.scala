@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -19,6 +19,7 @@ import java.util.Properties
 import iitb.Model.FeatureImpl
 import iitb.Segment.{DataCruncher, LabelMap}
 
+import org.scalaml.core.Types
 
 		/**
 		 * <p>Class that specifies the regular expressions used to delineates labels, observations
@@ -35,11 +36,11 @@ import iitb.Segment.{DataCruncher, LabelMap}
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
-	require(obsDelim != null && obsDelim.length > 0, 
+	require(obsDelim != Types.nullString, 
 			"Delimiter for observations in CRF training sequence is undefined")
-	require(labelsDelim != null && labelsDelim.length > 0, 
+	require(labelsDelim != Types.nullString, 
 			"Delimiter for labels in CRF training sequence is undefined")
-	require(trainingDelim != null && trainingDelim.length > 0, 
+	require(trainingDelim != Types.nullString, 
 			"Delimiter for training sequences in CRF training sequence is undefined")
 }
 
@@ -121,10 +122,9 @@ object CrfSeqIter {
    
 	private def check(nLabels: Int, input: String, delim: CrfSeqDelimiter): Unit = {
 		require(nLabels > 0 && nLabels < MAX_NUM_LABELS, 
-				s"Number of labels for the CRF model $nLabels is out of range")
-		require(input != null, 
-				"input for the CRF training files is undefined")
-		require(delim != null, "Delimiter for the CRF training files is undefined")
+				s"CrfSeqIter.check Number of labels for the CRF model $nLabels is out of range")
+		require(input != Types.nullString, 
+				"CrfSeqIter.check  input for the CRF training files is undefined")
 	}
 }
 

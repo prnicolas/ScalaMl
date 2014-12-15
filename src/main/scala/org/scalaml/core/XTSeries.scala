@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied..
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.core
 
@@ -40,10 +40,11 @@ import org.scalaml.util.DisplayUtils
 		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Time series
 		 */
 class XTSeries[T](val label: String, arr: Array[T]) { 
-	require(arr != null && arr.size > 0, "XTSeries Cannot create a times series qirh undefined values")
+	import XTSeries._
+	require( !arr.isEmpty, "XTSeries Cannot create a times series with undefined values")
   
-	def toArray: Array[T] = arr
-	def toList: List[T] = arr.toList
+	final def toArray: Array[T] = arr
+	final def toList: List[T] = arr.toList
   
 	final def head: T = arr.head
 	final def last: T = arr.last
@@ -52,14 +53,14 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * Test if a time series is identical to this time series. The label is not included
 		 * in the comparison.
 		 * @param that other series  this series is compared to
-		 * @throws IllegalArgumenException if the argument is null
+		 * @throws IllegalArgumenException if the other time series is undefined
 		 * @return true if the series are identical, false if the other time series, 'that' is null 
 		 * or is different from this time series
 		 */
 	def == (that: XTSeries[T]): Boolean = {
-		require(that != null, "Cannot compare this time series with undefined time series")
-  	
-		if(that != null) size == that.size && arr.equals(that.toArray) else false
+		require( !that.isEmpty, 
+				"XTSeries.== Cannot compare this time series with undefined time series")
+		size == that.size && arr.equals(that.toArray)
 	}
   
         
@@ -67,29 +68,19 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * <p>Convert a this time series into a vector of Double floating point values.</p>
 		 * @param f  implicit conversion of type T to Double
 		 * @return Vector of double values (DblVector)
-		 * @throws IllegalArgumentException if the implicit conversion T to DblMatrix is 
-		 * explicitly provided as a null function
 		 * @throws implicitNotFound if the implicit conversion is undefined
 		 */
 	@implicitNotFound("Conversion from type T to DblVector undefined")
-	def toDblVector(implicit f: T => Double): DblVector = {
-		require( f != null, "XTSeries.toDblVector Cannot convert the time series to dblVector")
-		arr.map( f( _ ) )
-	}
+	def toDblVector(implicit f: T => Double): DblVector = arr.map( f( _ ) )
   
 		/**
 		 * <p>Convert a this time series into a matrix of Double floating point values.</p>
 		 * @param fv  implicit conversion of type T to DblVector
 		 * @return Matrix of double values (DblMatrix)
-		 * @throws IllegalArgumentException if the implicit conversion T to DblVector is explicitly 
-		 * provided as a null function.
 		 * @throws implicitNotFound if the implicit conversion is undefined
 		 */
 	@implicitNotFound("Conversion from type T to DblMatrix undefined")
-	def toDblMatrix(implicit fv: T => DblVector): DblMatrix = {
-		require( fv != null, "XTSeries.toDblMatrix Cannot convert the time series to matrix DblMatrix")
-		arr.map( fv( _ ) )
-	}
+	def toDblMatrix(implicit fv: T => DblVector): DblMatrix = arr.map( fv( _ ) )
   
 	def + (n: Int, t: T)(implicit f: (T,T) => T): T = f(arr(n), t)
   
@@ -153,8 +144,10 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 		 * @note Scala for Machine Learning
 		 */
 @implicitNotFound("Conversion from type T to Double undefined")
-final class VTSeries[T](label: String, arr: Array[DVector[T]])(implicit f: T => Double) 
-		extends XTSeries[Array[T]](label, arr) {
+final class VTSeries[T](
+		label: String, 
+		arr: Array[DVector[T]])
+		(implicit f: T => Double) extends XTSeries[Array[T]](label, arr) {
    
 		/**
 		 * <p>Normalize this multi-dimensional tiem series
@@ -162,13 +155,13 @@ final class VTSeries[T](label: String, arr: Array[DVector[T]])(implicit f: T => 
 		 */
 	def normalize(implicit ordering: Ordering[T]): DblMatrix = {
 		val minMax  = toArray.map(x => (x.min, x.max))
+		
 		toArray.zip(minMax).map(z => { 
 			val range = z._2._2 - z._2._1
-			z._1.map( y => (y -z._2._1)/range)
+			z._1.map(y => (y -z._2._1)/range)
 		}) 
 	}
 }
-
 
 
 		/**
@@ -184,16 +177,13 @@ object XTSeries {
 	final val EPS = 1-20
 	def apply[T](label: String, arr: Array[T]): XTSeries[T] = new XTSeries[T](label, arr)
 	def apply[T](arr: Array[T]): XTSeries[T] = new XTSeries[T]("", arr)
-	def apply[T : ClassTag](xs: List[T]): XTSeries[T] = new XTSeries[T]("", xs.toArray)
-      
+	def apply[T: ClassTag](xs: List[T]): XTSeries[T] = new XTSeries[T]("", xs.toArray)
+
 	implicit def xTSeries[T: ClassTag](label: String, v: Vector[T]) = 
-		new XTSeries[T](label, v.toArray)
+			new XTSeries[T](label, v.toArray)
 		
 	implicit def xTSeries[T: ClassTag](xs: List[T]): XTSeries[T] = 
-		new XTSeries[T]("", xs.toArray)
-		
-	implicit def xTSeries[T: ClassTag](xs: Array[String])(implicit fc: String=> T) = 
-		new XTSeries[T]("", xs.toArray.map{fc(_)})
+			new XTSeries[T]("", xs.toArray)
 		
 	implicit def xTseries[T](xt: XTSeries[T]) = new XTSeries[T]("", xt.toArray)
    
@@ -218,8 +208,7 @@ object XTSeries {
 		 */
 	@implicitNotFound("Ordering for normalization is undefined")
 	def normalize[T <% Double](xt: XTSeries[T])(implicit ordering: Ordering[T]): Option[DblSeries] = {
-		require(xt != null && xt.size > 0, 
-				"XTSeries.normalize Cannot normalize an undefined time series")
+		require( !xt.isEmpty, "XTSeries.normalize Cannot normalize an undefined time series")
 				
 		val mn = xt.min
 		val range = xt.max - mn
@@ -235,12 +224,11 @@ object XTSeries {
 		 */
 	@implicitNotFound("Ordering for normalization is undefined")
 	def normalize[T <% Double](x: Array[T])(implicit ordering: Ordering[T]): Option[DblVector] = {
-		require(x != null && x.size > 0, 
-				"XTSeries.normalize  Cannot normalize an undefined time vector")
+		require( !x.isEmpty, "XTSeries.normalize  Cannot normalize an undefined time vector")
   	   
 		val mn = x.min
 		val range = x.max - mn
-		if(range < EPS) None  else Some(x.map(x => (x -mn)/range))
+		if(range < EPS) None else Some(x.map(x => (x -mn)/range))
 	}
    
    
@@ -251,12 +239,14 @@ object XTSeries {
 		 * @throws IllegalArgumentException if the time series is undefined
 		 * @return normalized time series as double elements if max > min, None otherwise
 		 */
-	@implicitNotFound("Ordering for normalizatoin is undefined")
-	def normalize[T <% Double](xt: XTSeries[Array[T]])(implicit order: Ordering[T], m: Manifest[T]): 
-			Option[DblVecSeries] = {
-		require(xt != null && xt.size > 0, 
+	@implicitNotFound("Ordering for normalization is undefined")
+	def normalize[T <% Double](
+			xt: XTSeries[Array[T]])
+			(implicit order: Ordering[T], m: Manifest[T]): Option[DblVecSeries] = {
+		
+	  require(xt != XTSeries.empty, 
 				"XTSeries.normalize Cannot normalize an undefined time series of elements")
-		require(xt(0).size > 0, 
+		require( XTSeries.dimension(xt) > 0, 
 				"XTSeries.normalize Incorrect function to normalize a single dimension time series")
   	   	   
 		var k = 0;
@@ -266,7 +256,7 @@ object XTSeries {
 		val min = Array.fill(dimension)( Double.MaxValue)
 		val max = Array.fill(dimension)(- Double.MaxValue)
      
-     	// computes min and max
+			// computes min and max
 		while( k < xt.size) {
 			var j = 0
 			while( j < dimension) {
@@ -292,12 +282,12 @@ object XTSeries {
 				k += 1
 			}
 			new XTSeries[DblVector](xt.label, arr)
-		} match {
+		} 
+		match {
 			case Success(xt) => Some(xt)
 			case Failure(e) => DisplayUtils.none("XTSeries.normalize", logger, e)
 		}
 	}
-   
 
 		/**
 		 * <p>transform time series of parameterized array into a array of double vector
@@ -307,12 +297,12 @@ object XTSeries {
 		 * @return Time series of double array if the function succeeds, None otherwise
 		 */
 	def zScoring[T <% Double](xt: XTSeries[Array[T]]): Option[XTSeries[DblVector]] = {
-		require(xt != null && xt.size > 0, "XTSeries.zScoring Cannot zScore an undefined time series")
+		require( !xt.isEmpty, "XTSeries.zScoring Cannot zScore an undefined time series")
   	 
 		val stats = statistics(xt)
 		var k = 0;
 		val dimension = xt(0).size
-  	       
+
 		val arr = new Array[DblVector](xt.size)
 		Try {
 			while( k < xt.size) {
@@ -339,10 +329,12 @@ object XTSeries {
 	def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.toArray)
 
 	def statistics[T <% Double](xt: XTSeries[Array[T]]): Array[Stats[T]] = {
-		require(xt != null && xt.size > 0, "XTSeries.statistics input time series undefined")
+		require( !xt.isEmpty, "XTSeries.statistics input time series undefined")
       
 		import Stats._
-		xt.toArray.transpose.map( new Stats[T]( _ ))
+		val transposed = xt.toArray.transpose
+		val results = transposed.map(Stats[T]( _ ))
+		results
 	}
 }
 

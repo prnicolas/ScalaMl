@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.unsupervised.clustering
 
@@ -18,6 +18,7 @@ import scala.collection.mutable.ListBuffer
 import org.scalaml.unsupervised.Distance.euclidean
 import ScalaMl._
 import XTSeries._
+import org.scalaml.util.FormatUtils
 
 
 		/**
@@ -37,8 +38,7 @@ import XTSeries._
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering
 		 */
 class Cluster[T <% Double](val center: DblVector) {
-	require(center != null && center.size > 0, 
-			"Cluster Cannot create a cluster with undefined centers")
+	require( !center.isEmpty, "Cluster Cannot create a cluster with undefined centers")
    
 	private val members = new ListBuffer[Int]
    
@@ -63,11 +63,12 @@ class Cluster[T <% Double](val center: DblVector) {
 		 * @return a new cluster with the recomputed center.
 		 */
 	final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
-		require(xt != null && xt.size > 0, "Cluster.moveCenter Cannot relocate time series datapoint" )
+		require( !xt.isEmpty, "Cluster.moveCenter Cannot relocate time series datapoint" )
   	 
 			// Compute the sum of the value of each dimension 
 			// of the time series ...
-		val sums = members.map(xt(_).map(_.toDouble))
+		val sums = members.map(xt(_)
+							.map(_.toDouble))
 							.toList
 							.transpose
 							.map( _.sum)
@@ -85,11 +86,9 @@ class Cluster[T <% Double](val center: DblVector) {
 		 * @return standard deviation of all the members from the center of the cluster.
 		 */
 	final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double = {
-		require(xt != null && xt.size > 0, 
+		require( !xt.isEmpty, 
 			"Cluster.stdDev Cannot compute the standard deviation wih  undefined times series")
-		require(distance != null, 
-			"Cluster.stdDev Cannot compute the standard deviation with undefined distance")
-		require(members.size > 0, "Cluster.stdDev this cluster has no member")
+		assert(members.size > 0, "Cluster.stdDev this cluster has no member")
 		
 			// Extract the vector of the distance between each data
 			// point and the current center of the cluster.
@@ -109,9 +108,12 @@ class Cluster[T <% Double](val center: DblVector) {
 	final def getMembers: List[Int] = members.toList
    
 	override def toString: String = {
-		val membersFormatUtils = members.foldLeft(new StringBuffer)((b, n) => b.append(s"$n,")).toString
-		val centerFormatUtils = center.foldLeft(new StringBuffer)((b, x) => b.append(s"$x,")).toString
-		s"${centerFormatUtils}\n${membersFormatUtils}"
+		val membersFormatUtils = members.foldLeft(new StringBuffer)((b, n) => b.append(s"\t   $n")).toString
+		val centerFormatUtils = center.foldLeft(new StringBuffer)((b, x) => {
+			val x_str = FormatUtils.format(x, "", FormatUtils.ShortFormat)
+		  b.append(s"$x_str ")
+		}).toString
+		s"Cluster composition\nCentroids: ${centerFormatUtils}\nMembership: ${membersFormatUtils}"
 	}
 }
 

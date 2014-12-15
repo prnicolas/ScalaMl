@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.stats
 
@@ -26,8 +26,7 @@ import org.scalaml.util.DisplayUtils
 		 * variable function y = f(x).
 		 * @param emul  Emulator for the bias-variance decomposition
 		 * @param nValues Size of the dataset to use in the computation of Bias and Variance.
-		 * @throws IllegalArgumentException if the emulator is undefiend or the number of values is 
-		 * out of range 
+		 * @throws IllegalArgumentException if the number of values, nValues is out of range 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / 
@@ -36,7 +35,7 @@ import org.scalaml.util.DisplayUtils
 class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 	import BiasVarianceEmulator._
 
-	check(emul, nValues)
+	check(nValues)
 	private val logger = Logger.getLogger("BiasVarianceEmulator")
 
 		/**
@@ -49,7 +48,7 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 		 * @throws RuntimeException if a computation error occurs
 		 */
 	def fit(fEst: List[Double => Double]): Option[XYTSeries] = {
-		require(fEst != null && fEst.size > 0, 
+		require( !fEst.isEmpty, 
 				"BiasVarianceEmulator.fit Cannot test the fitness of an undefined function")
 
 		val rf = Range(0, fEst.size)
@@ -69,7 +68,7 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 		} 
 		match {
 			case Success(xySeries) => Some(xySeries)
-			case Failure(e) => DisplayUtils.error("BiasVariance.fit ", logger, e); None
+			case Failure(e) => DisplayUtils.none("BiasVariance.fit ", logger, e)
 		}
 	}
 }
@@ -94,8 +93,7 @@ object BiasVarianceEmulator {
 	def apply[T <% Double](emul: Double => Double, nValues: Int): BiasVarianceEmulator[T] 
 		= new BiasVarianceEmulator[T](emul, nValues)
 	          
-	private def check(emul: Double => Double, nValues: Int): Unit = {
-		require( emul != null,  "BiasVarianceEmulator.check Emulation function foris undefined")
+	private def check(nValues: Int): Unit = {
 		require( nValues > NUMVALUES_LIMITS._1 && nValues < NUMVALUES_LIMITS._2, 
 				s"BiasVarianceEmulator.check Size of training sets $nValues is out of range")
 	}

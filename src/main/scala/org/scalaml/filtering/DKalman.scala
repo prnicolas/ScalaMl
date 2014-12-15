@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.filtering
 
@@ -32,15 +32,12 @@ import org.scalaml.util.DisplayUtils
 		 * @param qr Tuples that define the mean values of the process and measurement noise.
 		 * @param white Scalar function that specify the white noise distribution
 		 * @constructor Create an instance of QRNoise with a tuple {mean q noise, mean R noise}. 
-		 * @throws IllegalArgumentException if the white noise generator is undefined
 		 * @see org.apache.commons.math3.linear
 		 * @author Patrick Nicolas
 		 * @since February 12, 2014
 		 * @note Scala for Machine Learning chapter 3 Data pre-processing / Kalman filter
 		 */
 case class QRNoise(qr: XY, white: Double=> Double) {
-	require( white != null, 
-			"Cannot define the noise for the Kalman filter with undefined white noise function")
   
 		/**
 		 * <p>Compute the white noise for process Q</p>
@@ -91,7 +88,8 @@ final protected class DKalman(
 		A: DblMatrix,  
 		B: DblMatrix,  
 		H: DblMatrix, 
-		P: DblMatrix)(implicit qrNoise: QRNoise) extends PipeOperator[XTSeries[XY], XTSeries[XY]] {
+		P: DblMatrix)
+		(implicit qrNoise: QRNoise) extends PipeOperator[XTSeries[XY], XTSeries[XY]] {
 	
 	import DKalman._
    
@@ -120,7 +118,7 @@ final protected class DKalman(
 		 * Fourier filter and time series of frequencies of type Double as output
 		 */
 	override def |> : PartialFunction[XTSeries[XY], XTSeries[XY]] = {
-		case xt: XTSeries[XY] if(xt != null && xt.length > 0) => xt.map( y => {
+		case xt: XTSeries[XY] if( !xt.isEmpty) => xt.map( y => {
 			initialize(Array[Double](y._1, y._2))
 			val nState = newState
 			(nState(0), nState(1))
@@ -208,7 +206,7 @@ object DKalman {
 
   
 	private def check(A: DblMatrix,  B: DblMatrix, H: DblMatrix, P: DblMatrix): Unit = {
-		require(A != null && H != null && P != null, 
+		require( !A.isEmpty && !H.isEmpty && !P.isEmpty, 
 				"DKalman.check Cannot create a Kalman filter with undefined parameters")
 		require( A.size ==B.size && A(0).size == B(0).size, 
 				s"DKalman.check Incorrect dimension A(${A.size}x${A(0).size}) or B(${B.size}x${B(0).size})")

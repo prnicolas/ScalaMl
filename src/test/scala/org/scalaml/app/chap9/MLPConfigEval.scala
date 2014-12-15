@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.app.chap9
 
@@ -71,7 +71,7 @@ object MLPConfigEval extends Eval {
 		val features: XTSeries[DblVector] = XTSeries.normalize(x).get
 		val labels = XTSeries.normalize(y).get.toArray
       
-		if(args != null && args.size > 0) {
+		if( !args.isEmpty ) {
 			args(0) match {
 				case "alpha" => eval(-1.0, ETA, features, labels)
 				case "eta" =>  eval(ALPHA, -1, features, labels)

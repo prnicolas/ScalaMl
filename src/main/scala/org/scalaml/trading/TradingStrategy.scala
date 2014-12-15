@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.trading
 
@@ -32,9 +32,8 @@ import scala.collection.mutable.TreeSet
 		 * @since May 7, 2014
 		 * @note Scale for Machine Learning Appendix/Finances 101
 		 */
-case class TradingStrategy(val name: String, signals: List[Signal]) {
-	require(signals != null && signals.size > 0, 
-			s"TradingStrategy Signals for this trading strategy is either undefined or empty")
+case class TradingStrategy(val name: String ="", signals: List[Signal]) {
+	require( !signals.isEmpty, s"TradingStrategy The list of signals is undefined")
 }
 
 
@@ -112,10 +111,10 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 	}
 	
 	private def checkArguments(xt: DblVector, weights: DblVector): Unit = {
-		require(xt != null && xt.size > 0, 
-				"StrategyFactory.checkArgument Data input to the signal added to this strategy is undefined")
-		require(weights != null && weights.size > 0, 
-				"StrategyFactory.checkArgument Weights of the signal be added to this strategy is undefined")
+		require( !xt.isEmpty, 
+				"StrategyFactory.checkArgument Input to this trading strategy is undefined")
+		require( !weights.isEmpty, 
+				"StrategyFactory.checkArgument Input to this trading strategy is undefined")
 	}
 }
 

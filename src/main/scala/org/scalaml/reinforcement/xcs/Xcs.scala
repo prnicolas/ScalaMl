@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
 package org.scalaml.reinforcement.xcs
 
@@ -56,7 +56,7 @@ final class Xcs(
 		input: Array[QLInput])	extends PipeOperator[XcsSensor, List[XcsAction]] {
   
 	import Xcs._
-	check(config, population, score, input)
+	check(population, input)
 
 	val gaSolver = GASolver[Signal](config.gaConfig, score)   
 	val featuresSet: Set[Chromosome[Signal]]  = population.chromosomes.toSet
@@ -77,16 +77,11 @@ final class Xcs(
 		 */
 object Xcs {
 	protected def check(
-			config: XcsConfig, 
 			population: Population[Signal], 
-			score: Chromosome[Signal]=> Unit, 
 			input: Array[QLInput]): Unit = {
 	  
-		require(config != null, "Xcs.check: Cannot create XCS with undefined configuration")
-		require(score != null, 
-				"Xcs.check: Cannot create XCS with undefined chromosome scoring function")
-		require(input != null, "Xcs.check: Cannot create XCS with undefined state input")
-		require(population != null, "Xcs.check: Cannot create XCS with undefined population")
+		require( !input.isEmpty, "Xcs.check: Cannot create XCS with undefined state input")
+		require( !population.isNull, "Xcs.check: Cannot create XCS with undefined population")
 		require(population.size > 2, 
 				s"Xcs.check: Cannot create XCS with a population of size ${population.size}")
 	}
