@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.supervised.svm
 
@@ -49,7 +49,7 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	type SVMNodes = Array[Array[svm_node]]
 
 	private val logger = Logger.getLogger("SVM")
-	private val normEPS = config.eps*1e-9
+	private val normEPS = config.eps*1e-7
     
 	private[this] val model: Option[SVMModel] = {
 		val problem = new svm_problem

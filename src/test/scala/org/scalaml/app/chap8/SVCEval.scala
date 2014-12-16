@@ -43,7 +43,7 @@ object SVCEval extends Eval {
 	private val path = "resources/data/chap8/dividends2.csv"	
 	private val C = 1.0
 	private val GAMMA = 0.5
-	private val EPS = 1e-3
+	private val EPS = 1e-2
 	private val NFOLDS = 2
 	
 	private val logger = Logger.getLogger(name)
@@ -67,7 +67,7 @@ object SVCEval extends Eval {
 	   
 		Try {
 			val xs = DataSource(path, true, false, 1) |> extractor
-			val config = SVMConfig(	new CSVCFormulation(C), 
+			val config = SVMConfig(new CSVCFormulation(C), 
 									new RbfKernel(GAMMA), 
 									SVMExecution(EPS, NFOLDS))
 	  	  
@@ -87,6 +87,5 @@ object SVCEval extends Eval {
 		}
 	}
 }
-
 
 // --------------------------  EOF -----------------------------------------------

@@ -39,7 +39,7 @@ object PCAEval extends UnsupervisedLearningEval {
 		/**
 		 * Name of the evaluation 
 		 */
-	val name: String = "KMeansEval"
+	val name: String = "PCAEval"
 		/**
 		 * Maximum duration allowed for the execution of the evaluation
 		 */

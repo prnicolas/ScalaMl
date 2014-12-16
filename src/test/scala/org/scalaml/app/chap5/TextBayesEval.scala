@@ -130,7 +130,7 @@ object TextBayesEval extends Eval {
 
 					// DisplayUtils the pairs (mean, standard deviation) for each term.
 					val labels: Array[String] = columns.map( _.toString).toArray
-					DisplayUtils.show(s"$name Naive Bayes text extraction model\n${nb.toString(labels)}", 
+					DisplayUtils.show(s"$name Naive Bayes text extraction model${nb.toString(labels)}", 
 							logger)
 				}
 				case None => DisplayUtils.error(s"$name keywords extraction failed", logger)

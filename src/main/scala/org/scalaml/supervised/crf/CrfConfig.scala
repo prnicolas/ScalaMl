@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -39,7 +39,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * @since April 3, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
-protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double) extends Config {
+protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps: Double) extends Config {
 	import CrfConfig._
 	check(w0, maxIters, lambda, eps)
 
@@ -48,13 +48,11 @@ protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps:Double)
 		 */
 	protected val persists: String = "config/crf"
 		
-	
-
 		/**
 		 * textual description of the CRF configuration
 		 */
-	val params = s"initValue: ${String.valueOf(w0)}, maxIters: ${String.valueOf(maxIters)}," + 
-			s"lambda: ${String.valueOf(lambda)}, scale: true, eps: $eps"
+	val params = s"initValue ${String.valueOf(w0)} maxIters ${String.valueOf(maxIters)} " + 
+			s"lambda ${String.valueOf(lambda)} scale true eps $eps"
 }
 
 

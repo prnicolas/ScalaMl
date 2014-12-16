@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -45,16 +45,16 @@ import XTSeries._, ScalaMl._
 		 * @since May 11, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / Logistic regression
 		 */
-final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]], 
-											labels: Array[Int], 
-											optimizer: LogisticRegressionOptimizer) 
-					extends PipeOperator[Array[T], Int] {
+final class LogisticRegression[T <% Double](
+		xt: XTSeries[Array[T]], 
+		labels: Array[Int], 
+		optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
 	
 	import scala.util.{Try, Success, Failure}
 	import LogisticRegression._
   
 	type Feature = Array[T]
-	check(xt, labels, optimizer)
+	check(xt, labels)
     
 	private val logger = Logger.getLogger("LogisticRegression")
 	
@@ -62,7 +62,7 @@ final class LogisticRegression[T <% Double](xt: XTSeries[Array[T]],
 		Try(train)
 		match {
 			case Success(m) => Some(m)
-			case Failure(e) => DisplayUtils.error("LogisticRegression", logger, e); None
+			case Failure(e) => DisplayUtils.none("LogisticRegression", logger, e)
 		}
 	}
 	
@@ -239,16 +239,12 @@ object LogisticRegression {
 			optimizer: LogisticRegressionOptimizer): LogisticRegression[T] =
 		new LogisticRegression[T](xt, labels, optimizer)
   	    	
-	private def check[T <% Double](
-			xt: XTSeries[Array[T]], 
-			labels: Array[Int], 
-			optimizer: LogisticRegressionOptimizer): Unit = {
+	private def check[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int]): Unit = {
 	  
 		require( !xt.isEmpty,
 				"Cannot compute the logistic regression of undefined time series")
 		require(xt.size == labels.size, 
 				s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
-		require(optimizer != null, "Cannot execute a logistic regression with undefined optimizer")
    }
 }
 

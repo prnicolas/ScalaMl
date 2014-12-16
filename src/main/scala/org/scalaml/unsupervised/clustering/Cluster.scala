@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.unsupervised.clustering
 
@@ -113,7 +113,7 @@ class Cluster[T <% Double](val center: DblVector) {
 			val x_str = FormatUtils.format(x, "", FormatUtils.ShortFormat)
 		  b.append(s"$x_str ")
 		}).toString
-		s"Cluster composition\nCentroids: ${centerFormatUtils}\nMembership: ${membersFormatUtils}"
+		s"Cluster definition\nCentroids: ${centerFormatUtils}\nMembership: ${membersFormatUtils}"
 	}
 }
 

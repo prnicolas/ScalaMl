@@ -55,12 +55,11 @@ object SVCMarginEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {   
-		DisplayUtils.show(s"$header Evaluation of impact of C penalty on margin of a binary support vector classifier", logger)
+		DisplayUtils.show(s"$header Evaluation of impact of C penalty on margin", logger)
 		val values = generate
 		Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
 		status
 	}
-    
 
 	private def generate: (DblMatrix, DblVector) = {
 		val z  = Array.tabulate(N)(i =>{

@@ -56,6 +56,7 @@ object SVREval extends Eval {
 		 */
 	def run(args: Array[String]): Int = {
 		DisplayUtils.show(s"$header Support Vector Regression", logger)
+		
 		Try {
 			val price = DataSource(path, false, true, 1) |> close
 			DisplayUtils.show(FormatUtils.format(price.toArray, "", FormatUtils.ShortFormat), logger)

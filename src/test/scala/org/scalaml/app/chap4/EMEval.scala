@@ -48,7 +48,7 @@ object EMEval extends UnsupervisedLearningEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require( !args.isEmpty, s"$name Cannot evaluate EM with undefined arguments")
-		DisplayUtils.show(s"$header Evaluation of Expectation-Maximization clustering", logger)
+		DisplayUtils.show(s"$header Expectation-Maximization with ${args(0)} clusters", logger)
      
 		val K = args(0).toInt
 		val samplingRate = args(1).toInt
@@ -72,7 +72,7 @@ object EMEval extends UnsupervisedLearningEval {
 			})
 	     
 				// If all the observations are valid
-			if( obs.find( _ == Array.empty) == None) {  	 
+			if( obs.find( _.isEmpty) == None) {  	 
 				val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
 				components.foreach( x => {
 					DisplayUtils.show(s"\n$name value: ${x._1}\n$name Means: ", logger)

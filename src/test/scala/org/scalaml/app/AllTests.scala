@@ -35,7 +35,7 @@ import org.scalaml.util.DisplayUtils
 		 * or the time out is exceeded.</p>
 		 */
 protected object AllTests extends ScalaMlTest {
-	val chapter: String = "test-run"
+	val chapter: String = "All tests"
 
 	private val logger = Logger.getLogger("AllTests")
 	
@@ -45,7 +45,10 @@ protected object AllTests extends ScalaMlTest {
 		 */
 	def test: Unit = {
 			// Core
+		run(StatsEval)
+		run(XTSeriesEval)
 		run(MatrixEval)
+		
 			// Chapter 1
 		run(LogBinRegressionEval)
 		run(PlotterEval)
@@ -60,7 +63,8 @@ protected object AllTests extends ScalaMlTest {
 		run(DFTEval)
 		run(DFTEval, Array[String]("BAC"))
 		run(DKalmanEval, Array[String]("BAC"))
-	
+
+
 			// Chapter 4
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
 		run(KMeansEval, input)
@@ -90,6 +94,7 @@ protected object AllTests extends ScalaMlTest {
 		run(RidgeRegressionEval)
 		run(MultiLinearRegressionEval, Array[String]("trend"))
 		run(MultiLinearRegressionEval, Array[String]("filter"))
+
 		run(LogisticRegressionEval)
 
 			// Chapter 7
@@ -98,7 +103,6 @@ protected object AllTests extends ScalaMlTest {
 		run(CrfEval)
 		
 			// Chapter 8
-	
 		run(SVCKernelEval)
 		run(SVCMarginEval)
 		run(SVCEval)
@@ -128,6 +132,9 @@ protected object AllTests extends ScalaMlTest {
 	}
 	
 	
+			/**
+			 * Wrapper or helper method to execute the 
+			 */
 	private def run(eval: Eval, args: Array[String] = Array.empty): Unit = {
 		import akka.actor.{ActorSystem, Actor, Props, ActorRef}
 		import scala.util.{Try, Success, Failure}

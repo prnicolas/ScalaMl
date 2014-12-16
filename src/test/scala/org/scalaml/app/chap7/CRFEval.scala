@@ -16,6 +16,8 @@ import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
 import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.plots.LightPlotTheme
+import org.scalaml.plots.LinePlot
 
 
 		/**
@@ -53,7 +55,7 @@ object CrfEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Conditional Random Fields", logger)
+		DisplayUtils.show(s"$header Conditional Random Fields for sentiment analysis", logger)
 
 		val config = CrfConfig(W0 , MAX_ITERS, LAMBDA, EPS)
 		val delimiters = new CrfSeqDelimiter(",\t/ -():.;'?#`&_", "//", "\n")
@@ -62,7 +64,8 @@ object CrfEval extends Eval {
 			val crf = Crf(NLABELS, config, delimiters, PATH)
 			crf.weights match {
 				case Some(w) => {
-					DisplayUtils.show(s"$name weights (lambdas) for conditional random fields", logger)
+					display(w)
+					DisplayUtils.show(s"$name weights for conditional random fields\nFeature weight", logger)
 					DisplayUtils.show(s"${FormatUtils.format(w, "", FormatUtils.ShortFormat)}", logger)
 				}
 				case None => throw new IllegalStateException(s"$name Could not train the CRF model")
@@ -73,6 +76,12 @@ object CrfEval extends Eval {
 			case Failure(e) => DisplayUtils.error(s"$name CRF modeling failed", logger, e)
 		}
   }
+	
+	private def display(w: DblVector): Unit = {
+		val plot = new LinePlot(("Conditional random fields", "Lambda distribution", "weights"), 
+				new LightPlotTheme)					
+		plot.display(w, 340, 280)
+	}
 }
 
 // --------------------------------  EOF -------------------------------

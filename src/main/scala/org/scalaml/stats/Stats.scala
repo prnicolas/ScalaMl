@@ -43,8 +43,8 @@ class Stats[T <% Double](values: DVector[T]) {
 		values.foreach(x => {
 			if(x < _stats.minValue) _stats.minValue = x
 			if(x > _stats.maxValue) _stats.maxValue = x
-			_stats.sum + x
-			_stats.sumSqr + x*x
+			_stats.sum += x
+			_stats.sumSqr += x*x
 		})
 		_stats
 	}
@@ -111,9 +111,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		 */
 	def normalize: DblVector = {
 		val range = max - min
-	   
-		if( range < ZERO_EPS) 
-			throw new ArithmeticException(s"Stats.normalize: cannot normalize $min and $max")
+		assert( range > ZERO_EPS, s"Stats.normalize: cannot normalize $min and $max") 
 		values.map(x => (x - min)/range)
 	}
     
@@ -142,11 +140,9 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @throws  ArithmeticException in case of a divide by zero
 		 */
 	def zScore: DblVector = {
-		val factor = (max - min)*stdDev
-		if( factor < ZERO_EPS) 
-			throw new ArithmeticException ("Cannot compute the standard score divide by zero")
-		values.map(x => (x - min)/factor )
-    }
+		assert(stdDev > ZERO_EPS, "Stats.normalize Cannot compute zScore -  divide by zero")
+		values.map(x => (x - mean)/stdDev )
+	}
 }
 
 		/**
@@ -157,7 +153,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 object Stats {
-	final val ZERO_EPS = 1e-36
+	final val ZERO_EPS = 1e-12
 	final val INV_SQRT_2PI = 1.0/Math.sqrt(2.0*Math.PI)
 
 		/**
@@ -181,7 +177,8 @@ object Stats {
       
 		values.map( x => {
 			val y = x - mean
-			INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y/stdDev)
+			val variance = stdDev*stdDev
+			INV_SQRT_2PI*Math.exp(-0.5*y*y /variance)/stdDev
 		})
 	}
   
@@ -193,11 +190,12 @@ object Stats {
 		 * @return Gaussian probability
 		 * @throws IllegalArgumentExeption if stdDev is close t zero
 		 */
-	final def gauss(mean: Double, stdDev: Double, x:Double): Double = {
+	final def gauss(mean: Double, stdDev: Double, x: Double): Double = {
 		require(Math.abs(stdDev) >= ZERO_EPS, 
 				s"Stats.gauss, Gauss standard deviation $stdDev is close to zero")
 		val y = x - mean
-		INV_SQRT_2PI/stdDev * Math.exp(-0.5*y*y /stdDev)
+		val variance = stdDev*stdDev
+		INV_SQRT_2PI*Math.exp(-0.5*y*y /variance)/stdDev
 	}
    
 		/**
@@ -218,7 +216,7 @@ object Stats {
 		 * @throws IllegalArgumentExeption if stdDev is close to zero or the number of parameters 
 		 * is less than 3
 		 */
-	final def normal(x: Double*): Double = gauss(0.0, 1.0, x(0))
+	final def normal(x: Double): Double = gauss(0.0, 1.0, x)
 
 		/**
 		 * Compute the Bernoulli density given a mean and number of trials
@@ -239,5 +237,6 @@ object Stats {
 		bernoulli(x(0), x(1).toInt)
 	}
 }
+
 
 // -------------------------  EOF -----------------------------------------

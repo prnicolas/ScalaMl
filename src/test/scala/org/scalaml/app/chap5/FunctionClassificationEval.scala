@@ -64,6 +64,7 @@ object FunctionClassificationEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
+		DisplayUtils.show(s"$header Function classification using Naive Bayes", logger)	
 			/**
 			 * Labeled mathematical functions.
 			 */

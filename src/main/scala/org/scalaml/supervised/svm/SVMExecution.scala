@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.supervised.svm
 
@@ -89,15 +89,13 @@ object SVMExecution {
 		 * during training.
 		 * @param eps Convergence Criteria to exit the training cycle
 		 */
-	def apply(eps: Double): SVMExecution = 
-		new SVMExecution(DEFAULT_CACHE_SIZE, eps, -1)
+	def apply(eps: Double): SVMExecution = new SVMExecution(DEFAULT_CACHE_SIZE, eps, -1)
 
 		/**
 		 * Constructor for the SVMExecution class with a default cache size, default eps and no 
 		 * validation fold
 		 */
-	def apply: SVMExecution = 
-		new SVMExecution(DEFAULT_CACHE_SIZE, DEFAULT_EPS, -1)
+	def apply: SVMExecution = new SVMExecution(DEFAULT_CACHE_SIZE, DEFAULT_EPS, -1)
 
 	
 	private def check(cacheSize: Int, eps: Double, nFolds: Int): Unit = {

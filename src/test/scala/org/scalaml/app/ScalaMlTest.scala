@@ -111,12 +111,15 @@ object TestContext {
 	lazy val actorSystem = ActorSystem("System") 
 
 	private val ELAPSE_TIME = 4000
+	private val CONFIGURATION = "Recommended SBT/JVM configuration:\n-Xmx4096 (or higher)\n" +
+			" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
+			s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}"
 	
 		/**
 		 * Method to validate the version of Scala and Java JDK used.
 		 */
 	def init: Unit = {
-		DisplayUtils.show(s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}", logger)
+		DisplayUtils.show(CONFIGURATION, logger)
 		if( !Properties.isWin && !Properties.isMac)
 			DisplayUtils.show("The library has not be tested for this Operating System", logger)
 			

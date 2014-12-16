@@ -131,7 +131,6 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 }
 
 
-
 		/**
 		 * <p>Class that defines a time series for multi-dimensional variables. The class is created
 		 * for the purpose to encapsulate the normalization of the multi-dimensional time series.</p>
@@ -231,20 +230,17 @@ object XTSeries {
 		if(range < EPS) None else Some(x.map(x => (x -mn)/range))
 	}
    
-   
-   
 		/**
 		 * Implements the normalization of a parameterized multi-dimension time series within [0, 1]
 		 * @param xt multi-dimension parameterized time series
 		 * @throws IllegalArgumentException if the time series is undefined
 		 * @return normalized time series as double elements if max > min, None otherwise
 		 */
-	@implicitNotFound("Ordering for normalization is undefined")
+	@implicitNotFound("XTSeries.normalize Ordering for normalization is undefined")
 	def normalize[T <% Double](
 			xt: XTSeries[Array[T]])
 			(implicit order: Ordering[T], m: Manifest[T]): Option[DblVecSeries] = {
-		
-	  require(xt != XTSeries.empty, 
+	  require( !xt.isEmpty, 
 				"XTSeries.normalize Cannot normalize an undefined time series of elements")
 		require( XTSeries.dimension(xt) > 0, 
 				"XTSeries.normalize Incorrect function to normalize a single dimension time series")
@@ -254,7 +250,7 @@ object XTSeries {
 		val dimension = xt(0).size
 
 		val min = Array.fill(dimension)( Double.MaxValue)
-		val max = Array.fill(dimension)(- Double.MaxValue)
+		val max = Array.fill(dimension)(-Double.MaxValue)
      
 			// computes min and max
 		while( k < xt.size) {
@@ -315,7 +311,8 @@ object XTSeries {
 				k += 1
 			}
 			new XTSeries[DblVector](xt.label, arr)
-		} match {
+		} 
+		match {
 			case Success(xt) => Some(xt)
 			case Failure(e) => DisplayUtils.none("XTSeries.zScoring", logger, e)
 		}
@@ -325,7 +322,6 @@ object XTSeries {
    
 	def transpose[T: ClassTag](from: List[Array[T]]):  Array[Array[T]] = from.toArray.transpose
    
-	
 	def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.toArray)
 
 	def statistics[T <% Double](xt: XTSeries[Array[T]]): Array[Stats[T]] = {
@@ -337,7 +333,5 @@ object XTSeries {
 		results
 	}
 }
-
-
 
 // ---------------------------------  EOF --------------------------------------------------------

@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -37,7 +37,7 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extend
 		 * Name of the file that persists the model for Q-learning
 		 */
 	protected val persists = "model/qlearning"
-	override def toString: String = s"Optimal policy: ${bestPolicy.toString}\with coverage: $coverage" 
+	override def toString: String = s"Optimal policy: ${bestPolicy.toString}\nwith coverage: $coverage" 
 }
 
 		/**
@@ -77,10 +77,11 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 	val model: Option[QLModel[T]] = {
 		val r = new Random(System.currentTimeMillis)
 		Try {
+			DisplayUtils.show("Episode #\tGoal state", logger)
 			val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
 				val completed = train(r)
-		
-				DisplayUtils.show(s"Episode # $n completed: $completed", logger)
+						
+				DisplayUtils.show(s"$n\n$completed", logger)
 				s + (if(completed) 1 else 0)
 			})
 			val coverage = completions.toDouble/config.numEpisodes

@@ -61,7 +61,7 @@ object QLearningEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = { 
-		DisplayUtils.show(s"$header Evaluation of the Q-learning algorithm", logger)
+		DisplayUtils.show(s"$header Reinforcement learning with Q-learning", logger)
        
 		val src = DataSource(stockPricePath, false, false, 1)
 		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, 
@@ -72,7 +72,7 @@ object QLearningEval extends Eval {
 			case Some(v) => {
 				val qLearning = createModel(ibmOption, v)
 				if( qLearning.model != None)
-					DisplayUtils.show(s"$name QLearning model ${qLearning.model.get.toString}", logger)
+					DisplayUtils.show(s"$name ${qLearning.model.get.toString}", logger)
 				else
 					DisplayUtils.error(s"$name Failed to create a Q-learning model", logger)
 			}
@@ -98,10 +98,10 @@ object QLearningEval extends Eval {
 		QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
 	}
     
-        	// List the neighbors that are allowed 
+		// List the neighbors that are allowed 
 	private val RADIUS = 4
 	val getNeighbors = (idx: Int, numStates: Int) => {
-        
+
 		def getProximity(idx: Int, radius: Int): List[Int] = {
 			val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
 			val idx_min = if(idx < radius) 0 else idx - radius

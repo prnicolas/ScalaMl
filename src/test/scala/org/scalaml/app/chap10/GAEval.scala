@@ -129,7 +129,7 @@ object GAEval extends Eval {
 		// Relative difference between close and open price
 		val relCloseOpen = src |> YahooFinancials.relCloseOpen
 
-		DisplayUtils.show(s"$name Delta price:\n", logger)
+		DisplayUtils.show(s"$name GS Stock price variation", logger)
 		DisplayUtils.show(s"${FormatUtils.format(deltaPrice, "", FormatUtils.ShortFormat)}", logger)
 		
 			// Generate the trading strategies as a unique combinations of 

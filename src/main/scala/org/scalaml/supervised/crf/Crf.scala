@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  * 
  * This code uses the iitb CRF library 
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
@@ -82,7 +82,7 @@ final class Crf(
 	private val logger = Logger.getLogger("Crf")
   
 	class TaggingGenerator(nLabels: Int) 	
-			extends FeatureGenImpl(new CompleteModel(nLabels),nLabels, true)
+			extends FeatureGenImpl(new CompleteModel(nLabels), nLabels, true)
 		
 	private[this] val features = new TaggingGenerator(nLabels)
 	private[this] val crf = new CRF(nLabels, features, config.params)
@@ -148,7 +148,6 @@ object Crf {
   
   
 	private def check(nLabels: Int): Unit = {
-	  
 		require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, 
 				s"Number of labels for generating tags for CRF $nLabels is out of range")
 	}

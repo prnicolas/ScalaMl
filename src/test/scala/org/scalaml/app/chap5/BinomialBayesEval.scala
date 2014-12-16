@@ -46,8 +46,6 @@ trait BayesEval extends Eval {
 	protected def symbolFiles = DataSource.listSymbolFiles(path)
 }
 
-
-
 		/**
 		 * <p><b>Purpose</b> Singleton to evaluate the Binomial Naive Bayes classifier.</p>
 		 * @author Patrick Nicolas
@@ -74,7 +72,7 @@ object BinomialBayesEval extends BayesEval {
 		 */
 	override def run(args: Array[String]): Int = {
 		require( !args.isEmpty && args.size > 2, s"$name.run incorrect arguments list")
-		DisplayUtils.show(s"$header Evaluation multinomial Naive Bayes", logger)	
+		DisplayUtils.show(s"$header Binomial Naive Bayes for ${args(0)} stock", logger)	
 		
 		val trainValidRatio = args(1).toDouble
 		val period = args(2).toInt
@@ -91,7 +89,7 @@ object BinomialBayesEval extends BayesEval {
 		} 
 		match {
 			case Success(res) => 
-					DisplayUtils.show(s"$name results for ${args(0)} $description F1 = ${res.get}", logger)
+					DisplayUtils.show(s"$name $description F1 measure = ${res.get}", logger)
 			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
 		}
 	}

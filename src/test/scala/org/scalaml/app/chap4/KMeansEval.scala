@@ -63,10 +63,10 @@ object KMeansEval extends UnsupervisedLearningEval {
 			val clusters = kmeans |> new XTSeries[DblVector]("x", obs)
 			
 			val clustersDesc = KMeansEval.toString(clusters)
-			DisplayUtils.show(s"$name Cluster composition\n${clustersDesc}", logger)		    	                
+			DisplayUtils.show(s"$name with $K clusters\nMembership\n${clustersDesc}", logger)		    	                
 			clusters.foreach(c => DisplayUtils.show(s"\n${c.toString}", logger))
 
-			DisplayUtils.show(s"\n$name Cluster standard deviation:\n", logger)
+			DisplayUtils.show(s"\n$name Cluster density:", logger)
 			clusters.map( _.stdDev(XTSeries[DblVector](obs), euclidean))
 							.foreach( DisplayUtils.show( _ , logger) )
 		}

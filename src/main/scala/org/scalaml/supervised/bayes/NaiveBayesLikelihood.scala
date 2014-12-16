@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.supervised.bayes
 
@@ -69,7 +69,7 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
 		
-		FormatUtils.format(muSigma, "Means", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
+		FormatUtils.format(muSigma, "Label\tMeans", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
 		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)
 	}
 	

@@ -7,9 +7,9 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.97.3
  */
-package org.scalaml.util
+package org.scalaml.core
 
 import scala.reflect.ClassTag
 import scala.util.Random
@@ -17,7 +17,7 @@ import scala.annotation.implicitNotFound
 
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl._
-
+import org.scalaml.util.FormatUtils
 
 
 		/**
@@ -194,8 +194,10 @@ object Matrix {
 				s"Matrix.check Number of rows $nRows is out of range")
 		require(nCols > 0 && nCols < MAX_NUM_COLS, 
 				s"Matrix.check Number of rows $nCols is out of range")
-		require(data != null, "Matrix.check Data in undefined")
+		require( !data.isEmpty, "Matrix.check Data in undefined")
 	}
+	
+	def empty[T: ClassTag](implicit f: T => Double): Matrix[T] = new Matrix[T](0, 0,  Array.empty[T])
 }
 
 // ------------------------------------  EOF ---------------------------------------------

@@ -75,14 +75,17 @@ object LogisticRegressionEval extends Eval {
 					new LevenbergMarquardtOptimizer)
 			val regression = LogisticRegression[Double](XTSeries[DblVector](features), deltaPrice, 
 					lsOptimizer)
-
-			
-			DisplayUtils.show(s"$name ${toString(regression)}",  logger)		
-			val predicted = features.map(ft => (regression |> ft))
-			
-			val comparison = predicted.zip(deltaPrice).map(pd => if(pd._1 == pd._2) 1 else 0)
-			val accuracy = comparison.sum.toDouble/deltaPrice.size
-			DisplayUtils.show(s"$name Accuracy: $accuracy", logger)
+					
+			if( regression.isModel ) {
+				DisplayUtils.show(s"$name model: ${toString(regression)}",  logger)	
+				val predicted = features.map(ft => (regression |> ft))
+				
+				val comparison = predicted.zip(deltaPrice).map(pd => if(pd._1 == pd._2) 1 else 0)
+				val accuracy = comparison.sum.toDouble/deltaPrice.size
+				DisplayUtils.show(s"$name Accuracy: $accuracy", logger)
+			}
+			else
+				DisplayUtils.error(s"${name}.run Could not create a model", logger)
 		} 
 		match {
 			case Success(n) =>n
@@ -92,12 +95,12 @@ object LogisticRegressionEval extends Eval {
   
 
 	private def toString(regression: LogisticRegression[Double]): String = {
-		val result = FormatUtils.format(regression.rss.get, "", FormatUtils.ShortFormat)
-		val buf = new StringBuilder(s"Regression model RSS = ${}\nWeights: ")
+		val rss_str = FormatUtils.format(regression.rss.get, "", FormatUtils.ShortFormat)
+		val buf = new StringBuilder(s"Regression model RSS = $rss_str\nWeights: ")
 		
 		regression.weights.get.foreach(w => {
-				val result = FormatUtils.format(w, "", FormatUtils.MediumFormat)
-				buf.append(s"$result")
+				val weights_str = FormatUtils.format(w, "", FormatUtils.MediumFormat)
+				buf.append(s"$weights_str ")
 		})
 		buf.toString
 	}

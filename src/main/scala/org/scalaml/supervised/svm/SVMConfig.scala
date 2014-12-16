@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.97.2
  */
 package org.scalaml.supervised.svm
 
@@ -64,17 +64,13 @@ final protected class SVMConfig(
 		/**
 		 * Configuration parameters set used in LIBSVM
 		 */
-	val  param = new svm_parameter
+	var param = new svm_parameter
 	formulation.update(param)
 	kernel.update(param)
 	exec.update(param)
     	
-	override def toString: String = {
-	  val buf = new StringBuilder
-		buf.append(s"\nSVM Formulation: ${formulation.toString}\n${kernel.toString}\nweights: ")
-		param.weight.foreach(w => buf.append(s"$w,"))
-		buf.toString
-	}
+	override def toString: String = 
+			s"\nSVM Formulation: ${formulation.toString}\n${kernel.toString}"
 
 		/**
 		 * Retrieve the convergence criteria of SVMExecution class
