@@ -1,9 +1,11 @@
-Scala for Machine Learning Version 0.96a Copyright Patrick Nicolas All rights reserved 2013-2015<br>
-=================================================================================================<br>
+Scala for Machine Learning Version 0.97.3 
+Copyright Patrick Nicolas All rights reserved 2013-2015<br>
+=================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"
 
 <h2>Overview</h2>
-The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br>
+The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br><br>
+Source code guidelines are defined in the companion document <b>SourceCodeGuide.html</b><br>
 
 The examples are related to investment portfolio management and trading strategies. For the readers interested either in mathematics or the techniques implemented in this library, I strongly recommend the following readings:
 <ul>
