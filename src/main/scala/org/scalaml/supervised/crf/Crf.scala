@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -87,16 +88,9 @@ final class Crf(
 	private[this] val features = new TaggingGenerator(nLabels)
 	private[this] val crf = new CRF(nLabels, features, config.params)
   
-	private val model: Option[CrfModel] = {
-		val seqIter = CrfSeqIter(nLabels, taggedObs, delims)
-		Try {
-			features.train(seqIter)
-			new CrfModel(crf.train(seqIter))
-		} 
-		match {
-			case Success(_model) => Some(_model)
-			case Failure(e) => DisplayUtils.none("Crf.model could not be created", logger, e)
-		}
+	private val model: Option[CrfModel] = train match {
+		case Success(model) => Some(model)
+		case Failure(e) => DisplayUtils.none("Crf.model could not be created", logger, e)
 	}
   
 		/**
@@ -120,6 +114,14 @@ final class Crf(
 	final def weights: Option[DblVector] = model match {
 		case Some(m) => Some(m.weights)
 		case None => DisplayUtils.none("Crf.weights Model undefined", logger)
+	}
+	
+	private def train: Try[CrfModel] = {
+		val seqIter = CrfSeqIter(nLabels, taggedObs, delims)
+		Try {
+			features.train(seqIter)
+			new CrfModel(crf.train(seqIter))
+		} 
 	}
 
 }

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,25 +66,10 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 * Model created during training/instantiation of the class. The model is
 		 * instantiated only if the regression weights can be computed. 
 		 */
-	private[this] val model: Option[RegressionModel] = {	
-		Try {
-				// Invoke Apache Commons Math generation of the X and Y values.
-			this.newXSampleData(xt.toDblMatrix)
-			newYSampleData(y)
-			
-				// Retrieve the residuals from AbstractMultipleLinearRegression class
-				// then compute sum of squared errors using a map and sum.
-			val _rss = calculateResiduals.toArray.map(x => x*x).sum
-			
-				// Extract the tuple (regression weights, residual sum of squared errors)
-			val wRss = (calculateBeta.toArray, _rss)
-			RegressionModel(wRss._1, wRss._2)
-		} 
-		match {
-			case Success(m) => Some(m)
-			case Failure(e) => DisplayUtils.none("RidgeRegression model undefined", logger, e)
-		}
-	}
+	private[this] val model: Option[RegressionModel] = train match {
+		case Success(m) => Some(m)
+		case Failure(e) => DisplayUtils.none("RidgeRegression model undefined", logger, e)
+	}	
 
 		/**
 		 * <p>Retrieve the weights of this Ridge regression model. The vector of the
@@ -168,6 +154,23 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 			// using the LU decomposition.
 		val Rinv = new LUDecomposition(R).getSolver.getInverse
 		Rinv.multiply(Rinv.transpose);
+	}
+	
+		
+	private def train: Try[RegressionModel] = {
+		Try {
+				// Invoke Apache Commons Math generation of the X and Y values.
+			this.newXSampleData(xt.toDblMatrix)
+			newYSampleData(y)
+			
+				// Retrieve the residuals from AbstractMultipleLinearRegression class
+				// then compute sum of squared errors using a map and sum.
+			val _rss = calculateResiduals.toArray.map(x => x*x).sum
+			
+				// Extract the tuple (regression weights, residual sum of squared errors)
+			val wRss = (calculateBeta.toArray, _rss)
+			RegressionModel(wRss._1, wRss._2)
+		} 
 	}
    
 		/**

@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +19,6 @@ import org.apache.commons.math3.linear.{RealVector, RealMatrix, MatrixUtils,Arra
 import org.apache.commons.math3.fitting.leastsquares.{LeastSquaresOptimizer, MultivariateJacobianFunction, LeastSquaresBuilder, LeastSquaresProblem}
 import org.apache.commons.math3.util.Pair
 import org.apache.commons.math3.optim.ConvergenceChecker
-import org.apache.commons.math3.exception.{ConvergenceException, DimensionMismatchException, TooManyEvaluationsException, TooManyIterationsException, MathRuntimeException}
 
 import org.scalaml.core.{Matrix, XTSeries}
 import org.scalaml.core.Types.ScalaMl
@@ -58,12 +58,9 @@ final class LogisticRegression[T <% Double](
     
 	private val logger = Logger.getLogger("LogisticRegression")
 	
-	private[this] val model: Option[RegressionModel] = {
-		Try(train)
-		match {
-			case Success(m) => Some(m)
-			case Failure(e) => DisplayUtils.none("LogisticRegression", logger, e)
-		}
+	private[this] val model: Option[RegressionModel] = Try(train) match {
+		case Success(model) => Some(model)
+		case Failure(e) => DisplayUtils.none("LogisticRegression", logger, e)
 	}
 	
 		/**
@@ -240,7 +237,6 @@ object LogisticRegression {
 		new LogisticRegression[T](xt, labels, optimizer)
   	    	
 	private def check[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int]): Unit = {
-	  
 		require( !xt.isEmpty,
 				"Cannot compute the logistic regression of undefined time series")
 		require(xt.size == labels.size, 

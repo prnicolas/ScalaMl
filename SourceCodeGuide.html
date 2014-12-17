@@ -1,0 +1,287 @@
+<html>
+<head>
+<title>Scala for Machine Learning - Coding practices</title>
+</head>
+<body>
+<h1><center>Scala for Machine Learning - Implementation guide</center></h1>
+<h2>Overview</h2><hr>
+The source code is provided by the author for the sole purpose of illustrating the concepts and algorithms presented in "Scala for Machine Learning". It should not be used to build commercial applications.<br>
+Some of the syntactic style and design patterns used throughout the book are described in the <b>Preface</b>, <b>Chapter 1/Source code/Presentation</b> and <b>Appendix/Source code</b>.<br>
+The "Scala for Machine Learning" source follows most of the guidelines defined in the <a href="http://twitter.github.io/effectivescala">Effective Scala - M. Eriksen-Twitter</a>
+<h2>Source code style and format</h2><hr>
+<b>Editor</b><br>
+. Tab indentation: with 2 blank space/characters<br>
+. Margin: 100 characters.<br>
+. Line wrap: 2 indentations<br><br>
+<b>Scaladoc</b><br>
+. The source comments complies with the Scaladoc tag annotation guideline<br><br>
+<b>Organization of imports</b><br>
+. Imports are defined in top of the source file and grouped in the following order [Scala standard library, 3rd party libraries, Scala for Machine Learning imports]<br>
+<pre>
+  import <b>scala</b>. ...  	// Scala standard library
+
+  import <b>org</b>....     	// Third party libraries
+
+  import <b>org.scalaml</b>...	// Scala for Machine Learning imports
+</pre>
+<b>Collections</b><br>
+. Some collection such as Set or Map are defined as mutable and immutable classes in Scala standard library. These classes are differentiated in the code by their package.
+<pre>
+  import scala.collection._
+  ..
+  val myMap = new <b>mutable</b>.HashMap[T, U]
+  def process(values: <b>immutable</b>.Set[Double]) ...</pre><br>
+<b>Pipelining</b><br>
+.  Long pipelines of data transformations are formatted as one line per transformation:
+<pre>  val lsp = builder.model(lrJacobian)
+                   .<b>weight</b>(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
+                   .<b>target</b>(labels)
+	           .<b>checkerPair</b>(exitCheck)
+                   .<b>maxEvaluations</b>(optimizer.maxEvals)
+                   .<b>start</b>(weights0)
+                   .<b>maxIterations</b>(optimizer.maxIters)
+                   .<b>build</b></pre>
+. Instead of <pre>  val lsp = builder.model(lrJacobian).<b>weight</b>(MatrixUtils.<b>createRealDiagonalMatrix</b>(Array.fill(xt.size)(1.0))).<b>target</b>(labels).<b>checkerPair</b>(exitCheck).<b>maxEvaluations</b>(optimizer.maxEvals).<b>start</b>(weights0).<b>maxIterations</b>(optimizer.maxIters).<b>build</b></pre>
+
+
+<b>Constructors</b><br>
+. Most of the class are declared as protected with package as scope. The constructors are defined in the class companion object using the <b>apply</b> method
+<pre>
+  final protected <b>class HMM</b>[@specialized T <% Array[Int]](
+    lambda: HMMLambda, 
+    form: HMMForm, 
+    maxIters: Int)
+    (implicit f: DblVector => T)extends PipeOperator[DblVector, HMMPredictor]
+
+  <b>object HMM</b> {
+    def <b>apply</b>[T <% Array[Int]](
+      lambda: HMMLambda, 
+      form: HMMForm, 
+      maxIters: Int)
+      (implicit f: DblVector => T): <b>HMM</b>[T] = new <b>HMM</b>[T](lambda, form, maxIters)
+</pre>
+<b>Lengthy parameters declaration</b><br>
+. The length of the declaration of some constructors and methods exceeds 100 characters. In this case, class or method is written with one argument per line.
+<pre>  object LogisticRegression {
+    def apply[T <% Double](
+      <b>xt</b>: XTSeries[Array[T]], 
+      <b>labels</b>: Array[Int], 
+      <b>optimizer</b>: LogisticRegressionOptimizer): LogisticRegression[T] =
+        new LogisticRegression[T](xt, labels, optimizer)
+   ...
+  }</pre>
+<b>Null and Empty collection</b><br> 
+. Null objects are avoided as much as possible.Null collections are defined as empty:<pre>  def test: List[T] = {
+    ...
+    <b>List.empty[T]</b>
+  }
+  if( !<b>test.isEmpty</b> )
+    ...
+  def test: XTSeries[Array[T]] = {
+    ...
+    <b>XTSeries.empty[Array[T]]</b>
+  }
+  if( !<b>test.isEmpty</b> )
+    ...</pre>
+<b>Class parameter validation</b><br>
+. The parameters of a class are validated in the companion object
+<pre>
+  final protected <b>class LogisticRegression</b>[T <% Double](
+    xt: XTSeries[Array[T]], 
+    labels: Array[Int], 
+    optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
+    <b>import LogisticRegression._</b>
+    <b>check</b>(xt, labels)
+    ..
+  }
+
+  <b>object LogisticRegression</b> {
+    private def <b>check</b>[T <% Double](xt: XTSeries[Array[T]], labels: Array[Int]): Unit = {
+      <b>require</b>( !xt.isEmpty,"Cannot compute the logistic regression of undefined time series")
+      <b>require</b>(xt.size == labels.size, 
+        s"Size of input data ${xt.size} is different from size of labels ${labels.size}")
+    }
+    ...
+  }
+</pre>
+<b>Exceptions</b><br>
+. Scala 2.1+ exception handling is used instead of Java typed exception<pre>
+  Try</b>(process(args)) match {
+      case <b>Success</b>(results) => …
+      case <b>Failure</b>(e) => …</pre>
+. Instead of<pre>
+  <b>try</b> { … }
+  <b>catch</b> { case e: ArrayIndexOutOfBoundsException  => … }</pre>
+<b>Overloaded operators</b><br>
+. Contrary to C++, Scala does not actually overload operators.This does not prevent us from defining those parameters as polymorphic methods for some of Scala for Machine Learning classes. We follow the semantic defined in the Scala standard library as much as possible.
+<pre>
+   <b>+=</b>  // Add an element to a collection or container
+   <b>++=</b> // Append a collection to another collection
+   <b>+</b>   // Sum two elements
+   <b>++</b>  // Sum two collections
+   <b>|></b>  // Define a transformation between two collections or time series
+   <b>>></b>  // Save a model or configuration into a file
+   <b><<</b>  // Load a model of configuration from a file
+</pre>
+<b>Context vs. View Bounded type</b><br>
+. Classifiers and pre-processing algorithms manipulate data derived from Double or collection of Double.<br> 
+. Therefore class with parameterized type view bounded to Double or Array[Double] are usually preferred. 
+<pre>
+class MultiLinearRegression[<b>T <% Double</b>](xt: XTSeries[Array[T]], y: DblVector) 
+</pre>
+<b>Enumeration and case classes</b><br>
+. As a general rule, enumeration is used in the case the type has only <b>id</b> as attributed. Structures that require specific attributes are implemented as case classes.
+<pre>
+  object YahooFinancials extends <b>Enumeration</b> {
+    type YahooFinancials = <b>Value</b>
+    val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
+    ..
+  }
+
+  <b>sealed</b> abstract class Message(val id: Int)
+  <b>case</b> class Start(i: Int =0) extends Message(i)
+  <b>case</b> class Completed(i: Int, xt: XTSeries[Double]) extends Message(i)
+  <b>case</b> class Activate(i: Int, xt: XTSeries[Double]) extends Message(i)
+</pre>
+<b>Collection traversal</b><br>
+Scala Higher order method such as <b>foreach</b>, <b>find</b> or <b>forall</b> are used to traverse a collection instead of a for or while loop.<br>
+For loops a reserved for the implementation of the comprehensive (closure) for monad (flatMap.map)<br><br>
+<h2>Design</h2>
+The machine learning algorithms described in Scala for Machine Learning use the following design pattern.<br><br>
+<b>Models</b><br>A model for a particular classifier implements the <b>Model</b> trait. The model is created through training during the instantiation of the classifier. For instance the model for the Multi-layer perceptron inherits the Model trait.<pre>  final protected class <b>MLPModel</b> (
+    config: MLPConfig, 
+    nInputs: Int, 
+    nOutputs: Int)
+    (implicit val mlpObjective: MLP.MLPObjective) extends <b>Model</b></pre>
+The classifier creates the model through training when the classifier class is instantiated
+<pre>
+  final protected class <b>MLP</b>[T <% Double](
+     config: MLPConfig, 
+     xt: XTSeries[Array[T]], 
+     labels: DblMatrix)
+     (implicit mlpObjective: MLP.MLPObjective) extends PipeOperator[Array[T], DblVector] {
+	
+   private[this] val <b>model</b>: Option[<b>MLPModel</b>] = {
+     <b>train</b> match {
+       case Success(_model) => Some(_model)
+       case Failure(e) => DisplayUtils.none("MLP.model ", logger, e)
+     }
+
+   private def <b>train</b>: Try[<b>MLPModel</b>] = { .. }
+</pre>
+<b>Configuration</b><br>
+All the configuration parameters are encapsulated into a single configuration class inheriting the Config trait.
+<pre>  trait <b>Config</b> {
+    protected val persists: String
+    def <b><<</b>(content: String): Option[String] = FileUtils.read(persists, getClass.getName)
+    def <b>>></b>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
+  }</pre>
+The configuration for the Multi-layer perceptron is defined as 
+<pre>  final class <b>MLPConfig</b> (
+    val alpha: Double, 
+    val eta: Double, 
+    val hidLayers: Array[Int], 
+    val numEpochs: Int, 
+    val eps: Double, 
+    val activation: Double => Double) extends <b>Config</b></pre>
+
+<b>Prediction and classification</b><br>
+The method to predict or classify new event or observation is implemented as a data transformation extending the <b>PipeOperator</b> trait. The data transformation |> is actually a partial function.
+<pre>
+  trait <b>PipeOperator</b>[-T, +U] {  def <b>|></b> : PartialFunction[T, U] }
+</pre>
+The implementation of the data transformation for the classification of feature in the support vector machine is defined as:<pre>  type Feature = Array[T]
+  override def <b>|></b> : PartialFunction[Feature, Double] =  {
+    case x: Feature if(!x.isEmpty && x.size == dimension(xt) && model != None && model.get.accuracy >= 0.0) =>
+      svm.svm_predict(model.get.svmmodel, toNodes(x))
+  }</pre>
+<center>
+<img src="images/Architecture.png" alt="Architecture classifier"/>
+</center><br>
+
+<h2>Coding style in book and PDF document</h2><hr>
+Code snippet presented in the book is subject to a set of constraints such as maximum number of pages or layout that makes the reproduction of source code very challenging. Therefore a lot of elements are removed from the original source the code that is presented in the book.<br>
+The following <b><i>Scala idioms, keywords or constructs are ommitted</i></b>:<br><br>
+<b>Scaladoc documentation</b><br>
+Class and method description using Scaladoc tags: /** .. */<br><br>
+<b>Code comments</b><br>
+Comments within are generally omitted.
+<pre>
+  // The MathRuntime exception has to be caught here!
+  /* ... */
+</pre>
+<b>Validation of class parameters and method arguments</b>
+Validation perform by the check method of the companion object.
+<pre>
+final class BaumWelchEM(val lambda: HMMLambda ...) {
+  check( ..)  // omitted.</pre>
+
+<b>Class qualifiers</b><br>
+Non essential class scope classifiers such as<b>final</b>, <b>private</b>, <b>protected</b> ... in the case they are not critical to the understanding of a piece of code or an algorithm</b><br><br>
+<b>Method qualifiers</b><br>
+Access control qualifier for method (final, private, protected...)<br><br>
+<b>Java style exceptions</b><br>
+<pre>  <b>try</b> { … }
+  <b>catch</b> { case e: ArrayIndexOutOfBoundsException  => … }
+  if (y < EPS)
+     <b>throw</b> new IllegalStateException( … )</pre>
+<b>Scala style exceptions</b><br>
+<pre><b>  Try</b>(process(args)) match {
+     case <b>Success</b>(results) => …
+     case <b>Failure</b>(e) => …
+  }</pre>
+<b>Non-essential annotation</b><br>
+Annotation such as @inline, @transient... are ommitted<br><br>
+<b>Logging and debugging code</b><br>
+Debugging and logging statements are ommitted except in the very few cases such statements enhance understanding of the piece of code<br>
+<pre>  logger.debug( …)
+  Console.println( … )</pre>
+<b>Auxiliary and non-essential methods</b><br>
+Method related to I/O, display or result or configuration that are not essential to the understanding of a piece of code.
+
+
+<h2>Testing framework</h2><hr>
+The source code includes several test or evaluation function that covers each chapter of the book.<br>Tests can be run either indidually or all at once.<br>
+Tests are encapsulated in a method <b>ScalaMlTest.evaluate</b> that validate arguments, handled exceptions ... and call ScalaTest assert.<br>
+<pre>
+  trait <b>ScalaMlTest</b> extends FunSuite {
+    def <b>evaluate</b>(eval: <b>Eval</b>, args: Array[String] = Array.empty): Boolean = {
+      Try (eval.<b>run</b>(args) ) 
+      match {
+        case Success(n) => {
+          <b>assert</b>(n >= 0, s"$chapter ${eval.name} Failed"); true
+        }
+        case Failure(e) => {
+          <b>assert</b>(false, s"$chapter ${eval.name} Failed"); false
+        }
+      }
+    }
+  }
+</pre>
+For example, the Scalatests in Chapter 4 are trigger using the sbt command <b>>test-only org.scalaml.app.Chap4</b>
+<pre>
+  final class Chap4 extends ScalaMlTest { 
+    test(s"$chapter Expectation-Maximization clustering") {
+      evaluate(EMEval, Array[String]("2", "40"))
+      evaluate(EMEval, Array[String]("3", "25"))
+      evaluate(EMEval, Array[String]("4", "15"))
+    }
+    ...
+  }</pre>
+The method eval.run executes each test can be run in a time out mode. The time out is specified in the test class as follows:
+<pre>
+object SVCKernelEval extends Eval {
+  val maxExecutionTime: Int = 15000 // time out set at 15 sec
+  ...
+  def run(args: Array[String]): Int = {
+    ... // Body of the test to return a positive value for success 
+        // and a negative value for error
+    ret   // invoke Scalatest assert(ret >= 0, " ....")
+  }
+}
+</pre>
+<hr>
+<i>Scala for Machine Learning v. 0.97</i>
+</body>
+</html>
+		

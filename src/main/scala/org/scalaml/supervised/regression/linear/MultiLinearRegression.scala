@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,24 +60,9 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 * The model is created using by OLSMultipleLinearRegression class of Apache
 		 * commons math. The model is set to None if the regression weights cannot be computed.
 		 */
-	private[this] val model: Option[RegressionModel] = {
-		Try {
-			// Force a conversion to DblMatrix 
-			val xtv: DblMatrix = xt 
-			
-				// Create a sample for the label y
-			newSampleData(y, xtv)
-			
-				// Invoke methods of the OLSMultipleLinearRegression class from commons math.
-			val wRss = (estimateRegressionParameters, calculateResidualSumOfSquares)
-			
-				// Create a regression model with the weights and the resisual sum of squared errorrs
-			RegressionModel(wRss._1, wRss._2)
-		} 
-		match {
-			case Success(m) => Some(m)
-			case Failure(e) => DisplayUtils.none("MultiLinearRegression model undefined", logger, e)
-		}
+	private[this] val model: Option[RegressionModel] = train match {
+		case Success(m) => Some(m)
+		case Failure(e) => DisplayUtils.none("MultiLinearRegression model undefined", logger, e)
 	}
 	
 		/**
@@ -119,6 +105,22 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 					// Compute the dot product with w0 + w1.x1 + .. wn.xn
 			x.zip(w.drop(1)).foldLeft(w(0))((s, z) => s + z._1*z._2)
 		}
+	}
+	
+	private def train: Try[RegressionModel] = {
+		Try {
+			// Force a conversion to DblMatrix 
+			val xtv: DblMatrix = xt 
+			
+				// Create a sample for the label y
+			newSampleData(y, xtv)
+			
+				// Invoke methods of the OLSMultipleLinearRegression class from commons math.
+			val wRss = (estimateRegressionParameters, calculateResidualSumOfSquares)
+			
+				// Create a regression model with the weights and the resisual sum of squared errorrs
+			RegressionModel(wRss._1, wRss._2)
+		} 
 	}
 }
 

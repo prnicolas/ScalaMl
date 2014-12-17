@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -67,24 +68,9 @@ final protected class MLP[T <% Double](
 		 * a stable network of synapse weights. The client code is responsible for 
 		 * evaluating the value of the state variable converge and perform a validation run
 		 */
-	val model: Option[MLPModel] = {
-		Try {
-			val _model = new MLPModel(config, xt(0).size, labels(0).size)(mlpObjective)
-				// Scaling or normalization factor for the sum of the squared error
-			val errScale = 1.0/(labels(0).size*xt.size)
-
-				// Apply the exit condition for this online training strategy
-			converged = Range(0, config.numEpochs).find( _ => {
-				xt.toArray.zip(labels).foldLeft(0.0)( (s, xtlbl) => 
-					s + _model.trainEpoch(xtlbl._1, xtlbl._2)
-				)*errScale < config.eps		  	 
-			}) != None
-			_model
-		}
-		match {
-			case Success(_model) => Some(_model)
-			case Failure(e) => DisplayUtils.none("MLP.model ", logger, e)
-		}
+	val model: Option[MLPModel] = train match {
+		case Success(_model) => Some(_model)
+		case Failure(e) => DisplayUtils.none("MLP.model ", logger, e)
 	}
    
 		
@@ -145,6 +131,22 @@ final protected class MLP[T <% Double](
 		}
 		else 
 			DisplayUtils.none("MLP.accuracy ", logger)
+	}
+	
+	private def train: Try[MLPModel] = {
+	  Try {
+			val _model = new MLPModel(config, xt(0).size, labels(0).size)(mlpObjective)
+				// Scaling or normalization factor for the sum of the squared error
+			val errScale = 1.0/(labels(0).size*xt.size)
+
+				// Apply the exit condition for this online training strategy
+			converged = Range(0, config.numEpochs).find( _ => {
+				xt.toArray.zip(labels).foldLeft(0.0)( (s, xtlbl) => 
+					s + _model.trainEpoch(xtlbl._1, xtlbl._2)
+				)*errScale < config.eps		  	 
+			}) != None
+			_model
+	  }
 	}
 }
 

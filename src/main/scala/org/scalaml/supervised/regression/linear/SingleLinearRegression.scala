@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,22 +55,9 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 	
 			// Create the model during instantiation. The model is 
 			// actually create (!= None) if the regression coefficients can be computed.
-	private[this] val model: Option[XY] = {
-		Try {
-				// Convert the time series into a observations matrix
-			val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
-				
-				// Invoke Apache commons math library for the simple regression
-			val regr = new SimpleRegression(true)
-			regr.addData(data)
-			
-				// returns the slope and intercept from Apache commons math library
-			(regr.getSlope, regr.getIntercept)
-		} 
-		match {
-			case Success(w) => Some(w)
-			case Failure(e) => DisplayUtils.none("SingleLinearRegression Model is undefined", logger,e)
-		}
+	private[this] val model: Option[XY] = train match {
+		case Success(w) => Some(w)
+		case Failure(e) => DisplayUtils.none("SingleLinearRegression Model is undefined", logger,e)
 	}
 	
 		/**
@@ -107,6 +95,21 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 	override def |> : PartialFunction[Double, T] = {
 			// Compute the linear function y = slope.x + intercept
 		case x: Double if(model != None) => model.get._1*x + model.get._2
+	}
+	
+		
+	private def train: Try[XY] = {
+		Try {
+				// Convert the time series into a observations matrix
+			val data: DblMatrix = xt.toArray.map( x => Array[Double](x._1, x._2))
+				
+				// Invoke Apache commons math library for the simple regression
+			val regr = new SimpleRegression(true)
+			regr.addData(data)
+			
+				// returns the slope and intercept from Apache commons math library
+			(regr.getSlope, regr.getIntercept)
+		} 
 	}
 }
 

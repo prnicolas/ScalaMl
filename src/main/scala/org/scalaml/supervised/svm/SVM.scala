@@ -2,7 +2,8 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning" 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
+ * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,35 +52,11 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	private val logger = Logger.getLogger("SVM")
 	private val normEPS = config.eps*1e-7
     
-	private[this] val model: Option[SVMModel] = {
-		val problem = new svm_problem
-		problem.l = xt.size;
-		problem.y = labels  
-		problem.x = new SVMNodes(xt.size)
-      
-		val dim = dimension(xt)
-		Try {
-			xt.zipWithIndex.foreach( xt_i => {  
-	  		 
-				val svm_col = new Array[svm_node](dim)
-				xt_i._1.zipWithIndex.foreach(xi =>  {
-					val node = new svm_node
-					node.index= xi._2
-					node.value = xi._1
-					svm_col(xi._2) = node 
-				})
-	  	  	 
-				problem.x(xt_i._2) = svm_col
-			})
-			new SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
-		} 
-		match {
-			case Success(m) => Some(m)
+	private[this] val model: Option[SVMModel] = train match {
+			case Success(model) => Some(model)
 			case Failure(e) => DisplayUtils.none("SVM.model", logger, e)
-		}
 	}
-  
-  
+	  
 		/**
 		 * Access the accuracy of the SVM algorithm. 
 		 * @return accuracy value in the range [0, 1] if the model was successfully trained, None otherwise
@@ -102,7 +79,6 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		case None =>  DisplayUtils.none("SVM.mse model is undefined", logger)
 	}
   
-
 		/**
 		 * Compute the margin 2/||w|| for the SVM model (distance between the support vectors)
 		 * @return margin if model was successfully trained, None otherwise of if the model norm is zero
@@ -140,7 +116,31 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		}
 		case false => 0.0
 	}
-  
+	
+	
+  private def train: Try[SVMModel] = {
+		val problem = new svm_problem
+		problem.l = xt.size;
+		problem.y = labels  
+		problem.x = new SVMNodes(xt.size)
+      
+		val dim = dimension(xt)
+		Try {
+			xt.zipWithIndex.foreach( xt_i => {  
+		  		 
+				val svm_col = new Array[svm_node](dim)
+				xt_i._1.zipWithIndex.foreach(xi =>  {
+					val node = new svm_node
+					node.index= xi._2
+					node.value = xi._1
+					svm_col(xi._2) = node 
+				})
+		  	  	 
+				problem.x(xt_i._2) = svm_col
+			})
+			new SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
+		}
+	}
   
 	private def toNodes(x: Feature): Array[svm_node] = 
 		x.zipWithIndex.foldLeft(new ArrayBuffer[svm_node])((xs, f) =>  {
