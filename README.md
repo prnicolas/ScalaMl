@@ -1,4 +1,4 @@
-Scala for Machine Learning Version 0.97.3 
+<b>Scala for Machine Learning</b> Version <b>0.97.3</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"
@@ -28,9 +28,6 @@ Directory structure of the source code library for <i>Scala for Machine Learning
 <br>
 Directory structure of the source code of the examples for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_examples.png" alt="Examples"><br>
-<br>
-Library components for <i>Scala for Machine Learning</i>:<br>
-<img src="images/8742OS_lib.png" alt="Libraries"><br>
 <br>
 
 
