@@ -53,7 +53,7 @@ To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
 To run one test suite (i.e. Chap 3)<br>
 <i><b>$(ROOT)/sbt<br>
-> test-only *Chap3</b></i>
+> test-only *Chap3</b></i><br>
 To run all tests:<i><b>$(ROOT)/sbt test:run</b></b></i><br>
 <br>
 
