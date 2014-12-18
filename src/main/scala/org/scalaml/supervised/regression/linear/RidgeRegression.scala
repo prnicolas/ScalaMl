@@ -76,20 +76,14 @@ final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, l
 		 * weights is returned if the model has been successfully created (trained).
 		 * @return weight vector option if the model was successfully trained, None otherwise
 		 */
-	final def weights: Option[DblVector] = model match {
-		case Some(m) => Some(m.weights)
-		case None =>  DisplayUtils.none("RidgeRegression.weights model undefined", logger)
-	}
-    
+	final def weights: Option[DblVector] = model.map(_.weights)
+
 		/**
 		 * <p>Retrieve the residuals sum of squares RSS of this Ridge regression model. The RSS
 		 * value is returned if the model has been successfully created (trained).
 		 * @return rss option if the model was successfully trained, None otherwise
 		 */
-	final def rss: Option[Double] = model match {
-		case Some(m) => Some(m.rss)
-		case None => DisplayUtils.none("RidgeRegression.rss model undefined", logger)
-	}
+	final def rss: Option[Double] = model.map( _.rss)
 
 		/**
 		 * <p>Test if the model has been trained and is defined.</p>

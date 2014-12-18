@@ -43,9 +43,10 @@ final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 		 * @param cycle Current reproduction cycle number
 		 * @return true if the selection, crossover and mutation phases succeed, None otherwise.
 		 */
+	import scala.annotation.switch
 	def mate(population: Population[T], 
 			config: GAConfig, 
-			cycle: Int): Boolean = population.size match {
+			cycle: Int): Boolean = (population.size: @switch) match {
 		case 0 | 1 | 2 => false
 		case _ => {
 			population.select(score, config.softLimit(cycle))		//1. Selection

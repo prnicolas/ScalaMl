@@ -111,27 +111,24 @@ final protected class MLP[T <% Double](
 		 * validate the data point
 		 * @return accuracy value [0, 1] if model exits, None otherwise
 		 */
-	final def accuracy(threshold: Double): Option[Double] = {
-		if( model != None ) {
-				// counts the number of data points for which the 
-			val nCorrects = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
+	final def accuracy(threshold: Double): Option[Double] = model.map(m =>  { 
+		  				// counts the number of data points for which the 
+		val nCorrects = xt.toArray.zip(labels).foldLeft(0)((s, xtl) =>  {
 				
-				val output = model.get.getOutput(xtl._1)
-				val _sse = xtl._2.zip(output.drop(1)).foldLeft(0.0)((err,tp) => { 
-					val diff= tp._1 - tp._2
-					err + diff*diff
-				})*0.5
+			val output = model.get.getOutput(xtl._1)
+			val _sse = xtl._2.zip(output.drop(1)).foldLeft(0.0)((err,tp) => { 
+				val diff= tp._1 - tp._2
+				err + diff*diff
+			})*0.5
   			 
-				val error = Math.sqrt(_sse)/(output.size -1)
-				if( error < threshold)
-					s + 1
-				else s
-			})
-			Some(nCorrects.toDouble/xt.size)  // normalization
-		}
-		else 
-			DisplayUtils.none("MLP.accuracy ", logger)
-	}
+			val error = Math.sqrt(_sse)/(output.size -1)
+			if( error < threshold)
+				s + 1
+			else s
+		})
+		nCorrects.toDouble/xt.size
+	})
+
 	
 	private def train: Try[MLPModel] = {
 	  Try {

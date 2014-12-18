@@ -50,15 +50,15 @@ final class SparkKMeans(
 		(implicit sc: SparkContext)	extends PipeOperator[DblVector, Int] {
 
 	import SparkKMeans._
-	check(kMeansConfig, rddConfig, xt)
+	check(xt)
 	
 	private val logger = Logger.getLogger("SparkKMeans")
 	
-	private[this] val model: Option[KMeansModel] = 
-		Try(kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig))) match {
-			case Success(kmeansModel) => Some(kmeansModel)
-			case Failure(e) => DisplayUtils.none("SparkKMeans.model cannot be initiated", logger, e)
-		}
+	private[this] val model: Option[KMeansModel] = train match {
+		case Success(kmeansModel) => Some(kmeansModel)
+		case Failure(e) => DisplayUtils.none("SparkKMeans.model cannot be initiated", logger, e)
+	}
+
   
 		/**
 		 * <p>Method that classify a new data point in any of the cluster.</p>
@@ -72,16 +72,17 @@ final class SparkKMeans(
 	
 		
 	override def toString: String = {
-		val buf = new StringBuilder
-		if(model == None)
-			buf.append("Model undefined")
-		else {
-			buf.append(s"K-Means cluster centers from training\nIndex\t\tCentroids\n")
-			model.get.clusterCenters.zipWithIndex.foreach(ctr => 
-					buf.append(s"#${ctr._2}: ${FormatUtils.format(ctr._1.toArray)}\n"))
-		}
-		buf.toString
+		val header = "K-Means cluster centers from training\nIndex\t\tCentroids\n"
+		model.map( _.clusterCenters
+								.zipWithIndex
+								.foldLeft(new StringBuilder(header))((b, ctr) => 
+									b.append(s"#${ctr._2}: ${FormatUtils.format(ctr._1.toArray)}\n")).toString)
+				 .getOrElse("Model undefined")
 	}
+	
+	private def train: Try[KMeansModel] = 
+		Try(kMeansConfig.kmeans.run(RDDSource.convert(xt, rddConfig)))
+
 }
 
 
@@ -107,11 +108,7 @@ object SparkKMeans {
 			(implicit sc: SparkContext): SparkKMeans = 
 				new SparkKMeans(config, rddConfig, xt)
 	
-	private def check(
-			kMeansConfig: SparkKMeansConfig, 
-			rddConfig: RDDConfig, 
-			xt: XTSeries[DblVector]): Unit = {
-	  
+	private def check(xt: XTSeries[DblVector]): Unit = {
 		require( !xt.isEmpty, "SparkKMeans.check input time series for Spark K-means is undefined")
 	}
 }

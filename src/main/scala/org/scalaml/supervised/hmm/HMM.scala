@@ -244,10 +244,14 @@ object HMM {
 			(implicit f: DblVector => T): Option[HMM[T]] = {
 	  
 		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
+		baumWelchEM.maxLikelihood.map(_ => new HMM[T](baumWelchEM.lambda, form, maxIters))
+		/*
 		if( baumWelchEM.maxLikelihood != None)
 			Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
 		else 
 			None
+			* 
+			*/
 	}
 	
 	val MAX_NUM_ITERS = 1024

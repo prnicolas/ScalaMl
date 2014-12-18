@@ -68,31 +68,23 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		 * @return Mean square error as square root of the sum of the square errors, if model was 
 		 * successfully built, None otherwise
 		 */
-	final def mse: Option[Double] = model match {
-		case Some(m) => {
-			val z = xt.toArray.zipWithIndex.foldLeft(0.0)((s, xti) => {
+	final def mse: Option[Double] = model.map(m => { 
+		val z = xt.toArray.zipWithIndex.foldLeft(0.0)((s, xti) => {
 				val diff = svm.svm_predict(m.svmmodel, toNodes(xti._1)) - labels(xti._2)
 						s + diff*diff
 			})
-			Some(Math.sqrt(z)/xt.size)
-		}
-		case None =>  DisplayUtils.none("SVM.mse model is undefined", logger)
-	}
+			Math.sqrt(z)/xt.size
+	})
+
   
 		/**
 		 * Compute the margin 2/||w|| for the SVM model (distance between the support vectors)
 		 * @return margin if model was successfully trained, None otherwise of if the model norm is zero
 		 */
-	def margin: Option[Double] = model match {
-		case Some(m) => {	
-			val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
-			if(wNorm < normEPS)
-				DisplayUtils.none(s"SVM.margin sum of squared errors $wNorm is too small", logger)
-			else
-				Some(2.0/Math.sqrt(wNorm))
-		}
-		case None => DisplayUtils.none("SVM.margin model is undefined", logger)
-	}
+	def margin: Option[Double] = model.map( m => { 
+		val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
+		if(wNorm < normEPS) Double.NaN else 2.0/Math.sqrt(wNorm)
+	})
   
 
 		/**

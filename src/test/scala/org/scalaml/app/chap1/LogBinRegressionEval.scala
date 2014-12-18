@@ -59,36 +59,33 @@ object LogBinRegressionEval extends Eval {
 	def run(args: Array[String]): Int = {
 		DisplayUtils.show(s"$header Loading history Cisco stock for logistic regression", logger)
 		
-		load(path_training) match {
-			case Some(volatilityVolume) => {
-				DisplayUtils.show(s"$name DisplayUtils of stock volatility vs. volume", logger)
-				display(volatilityVolume)
-	    	
-				val labels = volatilityVolume.zip(volatilityVolume.map(x => 
-					if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
-				val logit = new LogBinRegression(labels, NITERS, ETA, EPS)
-	    	  
-				DisplayUtils.show(s"$name Loading history Cisco stock for testing", logger)
-				load(path_test) match {
-					case Some(test) =>{
-						logit.classify(test(0)) match {
-							case Some(topCategory) => 
-								DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
-							case None => DisplayUtils.error(s"$name Failed to classify", logger)
-						}
-						logit.classify(test(1)) match {
-							case Some(topCategory) => 
-								DisplayUtils.show(s"$name test result ${topCategory.toString}", logger)
-							case None => DisplayUtils.error(s"$name Failed to classify", logger)
-						}
-					}	
-					case None => DisplayUtils.error(s"$name Could not load training set from $path_test", logger)
-				}
-			}
-			case None => DisplayUtils.error(s"$name  Could not load test set for $path_training", logger)
-		}
-    }
+			// Uses the for-comprehension loop to process sequence of
+			// nested options...
+		(for {
+			volatilityVolume <- load(path_training)	// extract volatility relative to volume
+			logit <- newLogit(volatilityVolume)			// Generate the logistic regression
+			test <- load(path_test)									// Load the test data
+			topCategory <- logit.classify(test(0)) 	// classify first data point
+			topCategory2 <- logit.classify(test(1)) // classify second data point
+		} 
+		yield {
+			val result = s"$name test result ${topCategory.toString}\n" +
+			s"$name test result ${topCategory2.toString}"
+			DisplayUtils.show(s"$result", logger)
+		}).getOrElse(-1)
+	}
 	
+	
+	private def newLogit(volatilityVolume: XYTSeries): Option[LogBinRegression] = {
+		DisplayUtils.show(s"$name DisplayUtils of stock volatility vs. volume", logger)
+		display(volatilityVolume)
+	    	
+		val labels = volatilityVolume.zip(volatilityVolume.map(x => 
+			if(x._1 > 0.2 && x._2 > 0.45) 1.0 else 0.0 ))
+		val logit = new LogBinRegression(labels, NITERS, ETA, EPS)  
+		DisplayUtils.show(s"$name Loading history Cisco stock for testing", logger)
+		Some(logit)
+	}
 			/**
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
@@ -127,5 +124,7 @@ object LogBinRegressionEval extends Eval {
 	}
 }
 
-
+object MyTest extends App {
+	LogBinRegressionEval.run(Array.empty)
+}
 // --------------------  EOF --------------------------------------

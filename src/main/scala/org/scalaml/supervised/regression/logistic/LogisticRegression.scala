@@ -67,20 +67,13 @@ final class LogisticRegression[T <% Double](
 		 * <p>Access the weights of the logistic regression model.</p>
 		 * @return Vector of weights if the model has been successfully trained, None otherwise.
 		 */
-	final def weights: Option[DblVector] = model match {
-		case Some(m) => Some(m.weights)
-		case None => DisplayUtils.none("LogisticRegression.weights model is undefined", logger)
-	}
-	
+	final def weights: Option[DblVector] = model.map(_.weights)
 	
 		/**
 		 * <p>Access the residual sum of squares of the logistic regression model.</p>
 		 * @return rss if the model has been successfully trained, None otherwise.
 		 */
-	final def rss: Option[Double] = model match {
-		case Some(m) => Some(m.rss)
-		case None => DisplayUtils.none("LogisticRegression.tdd model is undefined", logger)
-	}
+	final def rss: Option[Double] = model.map(_.rss)
 	
 		/**
 		 * <p>Test if the model has been trained and is defined.</p>
@@ -104,10 +97,7 @@ final class LogisticRegression[T <% Double](
 			
 				// Compute the predictive value as z = w0 + w1.x1 + ... wn.xn
 			val z = x.zip(w).foldLeft(w(0))((s,xw) => s + xw._1*xw._2)
-			if( z > HYPERPLANE)
-				1 
-			else 
-				0
+			if( z > HYPERPLANE) 1 else 0
 		}
 	}
 	

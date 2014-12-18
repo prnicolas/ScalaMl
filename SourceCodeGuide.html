@@ -60,6 +60,7 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
       maxIters: Int)
       (implicit f: DblVector => T): <b>HMM</b>[T] = new <b>HMM</b>[T](lambda, form, maxIters)
 </pre>
+
 <b>Lengthy parameters declaration</b><br>
 . The length of the declaration of some constructors and methods exceeds 100 characters. In this case, class or method is written with one argument per line.
 <pre>  object LogisticRegression {
@@ -70,6 +71,7 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
         new LogisticRegression[T](xt, labels, optimizer)
    ...
   }</pre>
+
 <b>Null and Empty collection</b><br> 
 . Null objects are avoided as much as possible.Null collections are defined as empty:<pre>  def test: List[T] = {
     ...
@@ -83,6 +85,7 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
   }
   if( !<b>test.isEmpty</b> )
     ...</pre>
+
 <b>Class parameter validation</b><br>
 . The parameters of a class are validated in the companion object
 <pre>
@@ -104,6 +107,7 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
     ...
   }
 </pre>
+
 <b>Exceptions</b><br>
 . Scala 2.1+ exception handling is used instead of Java typed exception<pre>
   Try</b>(process(args)) match {
@@ -112,6 +116,7 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
 . Instead of<pre>
   <b>try</b> { … }
   <b>catch</b> { case e: ArrayIndexOutOfBoundsException  => … }</pre>
+
 <b>Overloaded operators</b><br>
 . Contrary to C++, Scala does not actually overload operators.This does not prevent us from defining those parameters as polymorphic methods for some of Scala for Machine Learning classes. We follow the semantic defined in the Scala standard library as much as possible.
 <pre>
@@ -123,12 +128,14 @@ The "Scala for Machine Learning" source follows most of the guidelines defined i
    <b>>></b>  // Save a model or configuration into a file
    <b><<</b>  // Load a model of configuration from a file
 </pre>
+
 <b>Context vs. View Bounded type</b><br>
 . Classifiers and pre-processing algorithms manipulate data derived from Double or collection of Double.<br> 
 . Therefore class with parameterized type view bounded to Double or Array[Double] are usually preferred. 
 <pre>
 class MultiLinearRegression[<b>T <% Double</b>](xt: XTSeries[Array[T]], y: DblVector) 
 </pre>
+
 <b>Enumeration and case classes</b><br>
 . As a general rule, enumeration is used in the case the type has only <b>id</b> as attributed. Structures that require specific attributes are implemented as case classes.
 <pre>
@@ -137,7 +144,6 @@ class MultiLinearRegression[<b>T <% Double</b>](xt: XTSeries[Array[T]], y: DblVe
     val DATE, OPEN, HIGH, LOW, CLOSE, VOLUME, ADJ_CLOSE = Value
     ..
   }
-
   <b>sealed</b> abstract class Message(val id: Int)
   <b>case</b> class Start(i: Int =0) extends Message(i)
   <b>case</b> class Completed(i: Int, xt: XTSeries[Double]) extends Message(i)
@@ -146,7 +152,57 @@ class MultiLinearRegression[<b>T <% Double</b>](xt: XTSeries[Array[T]], y: DblVe
 <b>Collection traversal</b><br>
 Scala Higher order method such as <b>foreach</b>, <b>find</b> or <b>forall</b> are used to traverse a collection instead of a for or while loop.<br>
 For loops a reserved for the implementation of the comprehensive (closure) for monad (flatMap.map)<br><br>
-<h2>Design</h2>
+
+<b>Class definition layout</b><br>
+. The template is as follow:<br>
+.  1 class declaration (constructor)<br>
+.  2 import companion object<br>
+.  3 Parameters validation, check<br>
+.  4 public values<br>
+.  5 protected values<br>
+.  6 private values<br>
+.  7 public methods<br>
+.  8 toString method<br>
+.  9 protected methods<br>
+.  10 private methods
+<pre>
+  final class SparkKMeans(   <b>// 1</b>
+      kMeansConfig: SparkKMeansConfig, 
+      rddConfig: RDDConfig, 
+      xt: XTSeries[DblVector])
+     (implicit sc: SparkContext) extends PipeOperator[DblVector, Int] {
+	
+   import SparkKMeans._  <b>// 2</b>
+   check(xt)   <b>// 3</b>
+	
+   private val logger = Logger.getLogger("SparkKMeans") <b>// 6</b>
+   private[this] val model: Option[KMeansModel] = train ..  <b>// 6</b>
+
+   override def |> : PartialFunction[DblVector, Int] = .. <b>// 7</b>
+   override def toString: String = .. <b>// 8</b>
+
+   private def train: Try[KMeansModel] =  <b>// 10</b>
+</pre>
+
+<b>Option handling</b><br>
+Option are passed along or transformed instead of being unfolded.
+<pre>  final def rss: Option[Double] = model.map(_.rss)</pre>
+instead of<pre>  final def rss: Option[Double] = model match {
+    case Some(m) => Some(m.rss)
+    case None => DisplayUtils.none( ..)
+  }</pre>
+
+<b>Nested options</b><br>
+Sequence of nested option are processed through a for-Comphrensive loop
+<pre>  val results = (
+    for {
+      v: DblVector <- optionSrc.extract        // outer option
+      model <- createModel(ibmOption, v).model // nested option
+    } yield model                              // Option result
+  ).map(m => s"$name ${m.toString}").getOrElse("") // processing of results
+</pre>
+
+<h2>Design</h2><hr>
 The machine learning algorithms described in Scala for Machine Learning use the following design pattern.<br><br>
 <b>Models</b><br>A model for a particular classifier implements the <b>Model</b> trait. The model is created through training during the instantiation of the classifier. For instance the model for the Multi-layer perceptron inherits the Model trait.<pre>  final protected class <b>MLPModel</b> (
     config: MLPConfig, 

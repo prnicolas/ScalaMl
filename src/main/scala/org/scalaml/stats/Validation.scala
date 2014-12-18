@@ -78,7 +78,7 @@ final protected class ClassValidation(
 		 * Accuracy of a classifier using TP and TN counters.
 		 * @return Accuracy for the model
 		 */
-	lazy val accuracy = {
+	lazy val accuracy: Double = {
 		val num = counters(TP) + counters(TN)
 		num.toDouble/counters.foldLeft(0)( (s,kv)  => s + kv._2)
 	}

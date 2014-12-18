@@ -74,36 +74,35 @@ final protected class GASolver[T <: Gene](
 			state = GA_RUNNING
 	          
 			Range(0, config.maxCycles).find(n => {  		 
-				reproduction.mate(population, config, n) match {
-					case true => converge(population, n) != GA_RUNNING
-					case false => {
-						if(population.size == 0) 
-							state = GA_FAILED(s"GASolver.PartialFunction reproduction failed after $n cycles") 
-						else 
-							state = GA_SUCCEED(s"GASolver.PartialFunction Completed in $n cycles")
-						true
-					}
+				if( reproduction.mate(population, config, n) )
+					converge(population, n) != GA_RUNNING
+				else {
+					if(population.size == 0) 
+						state = GA_FAILED(s"GASolver.PartialFunction reproduction failed after $n cycles") 
+					else 
+						state = GA_SUCCEED(s"GASolver.PartialFunction Completed in $n cycles")
+					true
 				}
-		   
-			}) match {
-				case Some(n) => population
-				case None => {
-					state = GA_NO_CONVERGENCE(s"GASolver.PartialFunction Failed to converge")
-					population
-				}
-			}
+			}).getOrElse(notConverge)
+				// The population is returned no matter what..
+			population
 		}
 	}
    
 
    
-	private[this] def converge(population: Population[T], cycle: Int): GAState = {
+	private def converge(population: Population[T], cycle: Int): GAState = {
 		if( population.isNull ) 
 			GA_FAILED(s"GASolver.converge Reproduction failed at $cycle")
 		else if(cycle >= config.maxCycles)
 			GA_NO_CONVERGENCE(s"GASolver.converge Failed to converge at $cycle ")
 		else
 			GA_RUNNING
+	}
+	
+	private def notConverge: Int = {
+	  state = GA_NO_CONVERGENCE(s"GASolver.PartialFunction Failed to converge")
+	  -11
 	}
 }
 

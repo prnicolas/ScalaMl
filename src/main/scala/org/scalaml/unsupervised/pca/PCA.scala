@@ -54,33 +54,30 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 	override def |> : PartialFunction[XTSeries[Array[T]], (DblMatrix, DblVector)] = {
 		case xt: XTSeries[Array[T]] if( !xt.isEmpty ) => {
 			Try {
-				// Compute the zScore of the time series (1)
-				zScoring(xt) match {
-					case Some(observation) => {	
-					  
-						// Forces a conversion
-						val obs: DblMatrix = observation  
+				// Compute the zScore of the time series (1)	
+				zScoring(xt).map(observation => { 
+					
+					// Forces a conversion
+					val obs: DblMatrix = observation
 						// Compute the covariance matrix related to the observations in the time series (3)
-						val covariance = new Covariance(obs).getCovarianceMatrix
+					val covariance = new Covariance(obs).getCovarianceMatrix
 						
 						// Create a Eigenvalue and Eigenvectors decomposition (4)
-						val transform = new EigenDecomposition(covariance)
+					val transform = new EigenDecomposition(covariance)
 						
 						// Retrieve the principal components (or direction)
-						val eigenVectors = transform.getV
+					val eigenVectors = transform.getV
 						
 						// Retrieve the eigen values
-						val eigenValues = new ArrayRealVector(transform.getRealEigenvalues)
+					val eigenValues = new ArrayRealVector(transform.getRealEigenvalues)
 					
-						val cov = obs.multiply(eigenVectors).getData
+					val cov = obs.multiply(eigenVectors).getData
 						// Return the tuple (Covariance matrix, Eigenvalues)
-						(cov, eigenValues.toArray)
-					}
-					case None => throw new IllegalStateException("zScoring failed")
-				}
+					(cov, eigenValues.toArray)
+				})
 			} 
 			match {
-				case Success(eigenResults) => eigenResults
+				case Success(eigenResults) => eigenResults.getOrElse((Array.empty, Array.empty))
 				case Failure(e) => {
 					DisplayUtils.error("PCA.|> zScoring ", logger, e)
 					(Array.empty, Array.empty)
@@ -89,6 +86,5 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 		}
 	}
 }
-
 
 //--------------------------------  EOF -------------------------------------------------------------------------

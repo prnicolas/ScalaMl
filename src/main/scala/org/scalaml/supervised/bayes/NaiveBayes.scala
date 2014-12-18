@@ -86,17 +86,17 @@ final class NaiveBayes[T <% Double](
 		 * @param index of the class, the time series or observation should belong to
 		 * @return F1 measure if the model has been properly trained (!= None), None otherwise
 		 */
-	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Option[Double] = 
-		if(model == None) None
-		else 
-			Some(ClassValidation(xt.map(x =>(model.get.classify(x._1), x._2)) , index).f1)
-	
+	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Option[Double] = model match {
+		case Some(m) => Some(ClassValidation(xt.map(x =>(m.classify(x._1), x._2)) , index).f1)
+		case None => DisplayUtils.none("NaiveBayes Model undefined", logger)
+	}
+
+
 
 	def toString(labels: Array[String]): String = 
-		if(model != None) 
-			if( labels.isEmpty ) model.get.toString else model.get.toString(labels)
-		else 
-			"No Naive Bayes model"
+		model.map(m => if( labels.isEmpty ) m.toString else m.toString(labels))
+				.getOrElse("No Naive Bayes model")
+
 			
 	override def toString: String = toString(Array.empty)
    

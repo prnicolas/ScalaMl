@@ -109,12 +109,13 @@ class Cluster[T <% Double](val center: DblVector) {
 	final def getMembers: List[Int] = members.toList
    
 	override def toString: String = {
-		val membersFormatUtils = members.foldLeft(new StringBuffer)((b, n) => b.append(s"\t   $n")).toString
-		val centerFormatUtils = center.foldLeft(new StringBuffer)((b, x) => {
+		val membersList = members.foldLeft(new StringBuffer)((b, n) => b.append(s"\t   $n")).toString
+		val centerString = center.foldLeft(new StringBuffer)((b, x) => {
 			val x_str = FormatUtils.format(x, "", FormatUtils.ShortFormat)
 		  b.append(s"$x_str ")
-		}).toString
-		s"Cluster definition\nCentroids: ${centerFormatUtils}\nMembership: ${membersFormatUtils}"
+		})
+		.toString
+		s"Cluster definition\nCentroids: ${centerString}\nMembership: ${membersList}"
 	}
 }
 

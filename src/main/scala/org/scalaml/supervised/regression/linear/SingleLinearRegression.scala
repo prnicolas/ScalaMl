@@ -64,19 +64,13 @@ final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implic
 		 * <p>Retrieve the slope for this single variable linear regression.</p>
 		 * @return slope of the linear regression if model has been properly trained, None otherwise
 		 */
-	final def slope: Option[Double] = model match {
-		case Some(m) => Some(m._1)
-		case None => DisplayUtils.none("SingleLinearRegression.slope model is undefined", logger)
-	}
+	final def slope: Option[Double] = model.map(_._1)
 	
 		/**
 		 * <p>Retrieve the intercept for this single variable linear regression.</p>
 		 * @return intercept of the linear regression if model has been properly trained, None otherwise
 		 */
-	final def intercept: Option[Double] = model match {
-		case Some(m) => Some(m._2)
-		case None => DisplayUtils.none("SingleLinearRegression.intecept model is undefined", logger)
-	}
+	final def intercept: Option[Double] = model.map(_._2)
 
 		/**
 		 * <p>Test if the model has been trained and is defined.</p>

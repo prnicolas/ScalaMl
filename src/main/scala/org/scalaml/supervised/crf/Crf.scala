@@ -111,10 +111,13 @@ final class Crf(
 		 * <p>Return the weights or lambda values for this CRF.</p>
 		 * @return Weights of the CRF model if the model has been properly trained, None otherwise.
 		 */
-	final def weights: Option[DblVector] = model match {
+	final def weights: Option[DblVector] = model.map( _.weights)
+	/*
 		case Some(m) => Some(m.weights)
 		case None => DisplayUtils.none("Crf.weights Model undefined", logger)
 	}
+	* 
+	*/
 	
 	private def train: Try[CrfModel] = {
 		val seqIter = CrfSeqIter(nLabels, taggedObs, delims)

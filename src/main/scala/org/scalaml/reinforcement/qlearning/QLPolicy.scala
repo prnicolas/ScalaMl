@@ -51,6 +51,7 @@ final protected class QLData {
 		 * @param type of the attribute {REWARD, PROBABILITY, VALUE}
 		 * @return value of this attribute
 		 */
+	import scala.annotation.switch
 	final def value(varType: QLDataVar): Double = varType match {
 		case REWARD => reward
 		case PROB => probability

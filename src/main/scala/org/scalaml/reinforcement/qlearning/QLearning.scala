@@ -75,28 +75,12 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * Model parameters for Q-learning of type QLModel that is defined as
 		 * a list of policies and training coverage 
 		 */
-	val model: Option[QLModel[T]] = {
-		val r = new Random(System.currentTimeMillis)
-		Try {
-			DisplayUtils.show("Episode #\tGoal state", logger)
-			val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
-				val completed = train(r)
-						
-				DisplayUtils.show(s"$n\n$completed", logger)
-				s + (if(completed) 1 else 0)
-			})
-			val coverage = completions.toDouble/config.numEpisodes
-
-			if( coverage >= config.minCoverage )
-				Some(new QLModel[T](qlPolicy, coverage))
-			else 
-				None
-		}
-		match {
-			case Success(qModel) => qModel
-			case Failure(e) => DisplayUtils.none("QLearning.model could not be created", logger, e)
-		}
+	val model: Option[QLModel[T]] = train match {
+		case Success(qModel) => qModel
+		case Failure(e) => DisplayUtils.none("QLearning.model could not be created", logger, e)
 	}
+	  
+
 
 		/**
 		 * <p>Prediction of next state using Q-Learning model. The model is automatically 
@@ -120,11 +104,33 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		val states = qlSpace.nextStates(st._1)
 		if( states.isEmpty || st._2 >= config.episodeLength) 
 			st
-		else
-			nextState( (states.maxBy(s => model.get.bestPolicy.R(st._1.id, s.id)), st._2+1))
+		else {
+		  val qState = states.maxBy(s => model.map(_.bestPolicy.R(st._1.id, s.id)).getOrElse(-1.0))
+			nextState( (qState, st._2+1))
+			
+		// nextState( (states.maxBy(s => model.get.bestPolicy.R(st._1.id, s.id)), st._2+1))
+		}
 	}
 
 	
+	private def train: Try[Option[QLModel[T]]] = {
+		val r = new Random(System.currentTimeMillis)
+		Try {
+			DisplayUtils.show("Episode #\tGoal state", logger)
+			val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
+				val completed = train(r)
+						
+				DisplayUtils.show(s"$n\n$completed", logger)
+				s + (if(completed) 1 else 0)
+			})
+			val coverage = completions.toDouble/config.numEpisodes
+
+			if( coverage >= config.minCoverage )
+				Some(new QLModel[T](qlPolicy, coverage))
+			else 
+				None
+		}
+	}
 	private[this] def train(r: Random): Boolean = {
 
 		@scala.annotation.tailrec
@@ -156,7 +162,7 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		else
 			qlSpace.isGoal(finalState._1)
 	}
-  }
+}
 
 
 		/**

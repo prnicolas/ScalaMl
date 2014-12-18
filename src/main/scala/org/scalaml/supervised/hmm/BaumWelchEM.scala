@@ -65,7 +65,8 @@ final protected class BaumWelchEM(
 				likelihood = _likelihood
 		  	  
 				diff < eps
-			}) match {
+			}) 
+			match {
 				case Some(index) => likelihood
 				case None => throw new IllegalStateException("BaumWelchEM.maxLikelihood failed")
 			}

@@ -95,11 +95,14 @@ final class KMeans[T <% Double](
 
 					// Re-assign the observations to the clusters
 					assignToClusters(xt, newClusters, membership) > 0
-				}) 
+				}).map(_ => newClusters).getOrElse(List.empty)
+				/*
 				match {    // Failed if the maximum number of iterations is reached.
 					case Some(index) => newClusters
 					case None => List.empty
 				} 
+				* 
+				*/
 			}
 		}
 	}

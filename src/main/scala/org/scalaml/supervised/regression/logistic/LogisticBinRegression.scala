@@ -54,15 +54,11 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 * @return Option (class, likelihood) for the logistic regression is the training was completed
 		 * , None otherwise
 		 */
-	def classify(xy: XY): Option[(Boolean, Double)] = weights match {
-		case Some(w) => { 
-				// compute the logit of w0 + w1.x1 + w2.x2 
+	def classify(xy: XY): Option[(Boolean, Double)] = weights.map(w => {
+						// compute the logit of w0 + w1.x1 + w2.x2 
 			val likelihood =  sigmoid(w(0) + xy._1*w(1) + xy._2*w(2))
-			Some(likelihood > HYPERPLANE, likelihood)
-		}
-		case None => DisplayUtils.none("LogBinRegression.classify failed", logger)
-	}
-	
+			(likelihood > HYPERPLANE, likelihood)
+	})
 	
 		/**
 		 * Implements the training algorithm for the logistic regression. The model (weights)
@@ -71,7 +67,7 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 */
 	private[this] def train: Option[DblVector] = {
 		import scala.util.Random    
-		val w = Array.tabulate(DIM)( x=> Random.nextDouble-1.0) 
+		val w = Array.tabulate(DIM)( _ => Random.nextDouble-1.0) 
     
 			// Iterates through the computation of the predicted value z
 			// and the derivative dw
@@ -88,10 +84,15 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 	    	
 			nextW.copyToArray(w)
 			diff < eps	// Exit condition
-		}) match {
+		}).map(_ => w)
+		
+		/*
+		match {
 			case Some(iters) => Some(w)
 			case None => DisplayUtils.none("LogBinRegression.train failed to converge", logger)
 		}
+		* 
+		*/
 	}
 	
 	@inline

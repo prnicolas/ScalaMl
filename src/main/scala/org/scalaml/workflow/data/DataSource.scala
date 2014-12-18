@@ -108,21 +108,16 @@ final class DataSource(
 		 */
 	override def |> : PartialFunction[List[Fields => Double], List[DblVector]] = {
 		case extr: List[Fields => Double] if( !extr.isEmpty ) => {
-			load match {
-				case Some(data) => {
-					
-				  if( normalize) {
+			load.map( data => {
+				if( normalize) {
 						import org.scalaml.stats.Stats
 						extr map {t => Stats[Double](data._2.map(t(_))).normalize }
-					}
-					else
-						extr map {t => data._2.map(t(_) ) }
 				}
-				case None => DisplayUtils.error("DataSource.|> ", logger); List.empty
-			}
-		}	
+				else
+					extr map {t => data._2.map(t(_) ) }
+			}).getOrElse(List.empty)
+		}
 	}
-
 
 		/**
 		 * <p>Generate a Time series of single variables by applying a extractor that
@@ -131,49 +126,39 @@ final class DataSource(
 		 * @return A Single variable time series
 		 * @throws IllegalArgumentException if the extractor is not defined.
 		 */
-	def |> (extr: Fields => Double): XTSeries[Double] = {
-		load match {
-			case Some(data) => {
-				if( normalize) {
-					import org.scalaml.stats.Stats
-					XTSeries[Double](Stats[Double](  data._2.map( extr( _)) ).normalize)
-				}
-				else 
-					XTSeries[Double](data._2.map( extr(_)))
-			}
-			case None => {
-				DisplayUtils.error("DataSource.|> ", logger)
-				XTSeries.empty[Double]
-			}
+	def |> (extr: Fields => Double): XTSeries[Double] = load.map( data =>  { 
+		if( normalize) {
+			import org.scalaml.stats.Stats
+			XTSeries[Double](Stats[Double](  data._2.map( extr( _)) ).normalize)
 		}
-	}
+		else 
+			XTSeries[Double](data._2.map( extr(_)))
+	}).getOrElse(XTSeries.empty[Double])
    
 	
 		/**
 		 * <p>Extract a vector from a file of relative path, pathName.</p>
 		 * @return A vector of double floating point values if successful, None otherwise
 		 */
-	def extract : Option[DblVector] = 
-		Try (Source.fromFile(pathName).getLines.drop(headerLines).map( _.toDouble ).toArray ) match {
+	def extract: Option[DblVector] = 
+		Try (Source.fromFile(pathName)
+							.getLines
+							.drop(headerLines)
+							.map( _.toDouble ).toArray) 
+		match {
 			case Success(x) => Some(x)
 			case Failure(e) => DisplayUtils.none("DataSource.load ", logger, e)
 		}
   	 
    
   
-	def load(extr: Fields => DblVector): XTSeries[DblVector] = {  	 
-		load match {
-			case Some(data) => {
-				if( normalize) 
+	def load(extr: Fields => DblVector): XTSeries[DblVector] = {
+		load.map( data => { 
+		  if( normalize) 
 					XTSeries.normalize(XTSeries[DblVector](data._2.map( extr(_)))).get
 				else 
 					XTSeries[DblVector](data._2.map( extr(_)))
-			}
-			case None => {
-				DisplayUtils.error("DataSource.load ", logger)
-				XTSeries.empty[DblVector]
-			}
-		}
+		}).getOrElse(XTSeries.empty[DblVector])
 	}
 	
 	
@@ -254,7 +239,7 @@ object DataSource {
 			normalize: Boolean, 
 			reverseOrder:Boolean, 
 			headerLines: Int): DataSource = 
-				new DataSource(pathName, normalize, reverseOrder, headerLines, None)
+		new DataSource(pathName, normalize, reverseOrder, headerLines, None)
 	
 		/**
 		 * Constructor for the DataSource without field filtering, headerlines. The extraction

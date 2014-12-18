@@ -70,21 +70,14 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 		 * if model has been successfully trained, None otherwise.</p>
 		 * @return weights if model is successfully created, None otherwise
 		 */
-	final def weights: Option[DblVector] = model match {
-		case Some(m) => Some(m.weights)
-		case None => DisplayUtils.none("MultiLinearRegression.weights: Model undefined", logger)
-	}
+	final def weights: Option[DblVector] = model.map(_.weights)
 	
 		/**
 		 * <p>Retrieve the residual sum of squares for this multi-variable linear regression
 		 * if model has been successfully trained, None otherwise.</p>
 		 * @return residual sum of squares if model is successfully created, None otherwise
 		 */
-	final def rss: Option[Double] = model match {
-		case Some(m) => Some(m.rss)
-		case None => DisplayUtils.none("MultiLinearRegression.rss: Model undefined", logger)
-	}
-
+	final def rss: Option[Double] = model.map(_.rss)
 
 		/**
 		 * <p>Test if the model has been trained and is defined.</p>

@@ -173,7 +173,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @throws IllegalArgumenException if mu is out of range [0, 1]
 		 */
 	final def diff(that: Population[T], depth: Int): Option[Pool[T]] = {
-		require( !that.isNull , "Population.diff Other population is undefined")
+		require( that.size > 1 , "Population.diff Other population has no chromosome")
 		require(depth > 0, s"Population.diff depth $depth should be >1")
 		
 		val fittestPoolSize = {
@@ -181,19 +181,12 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 				if(size < that.size) size else that.size
 			depth
 		}
-		
-		fittest(fittestPoolSize) match {
-			case Some(top) => that.fittest(fittestPoolSize) match {
-				case Some(thatTop) => {
-					if( top.zip(thatTop).exists( x => x._1 != x._2 ) )
-						None
-					else
-						Some(top)
-				}
-				case None => None
-			}
-			case None => None
-		}
+			// Deals with nested options
+		for {
+			first <- fittest(fittestPoolSize)
+			second <- that.fittest(fittestPoolSize)
+			if( !first.zip(second).exists( x => x._1 != x._2 ) )
+		} yield first
 	}
 
 	
@@ -205,7 +198,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 */
 	final def fittest(depth: Int) : Option[Pool[T]] = {
 		require(depth > 0, 
-				s"Population.fittest Cannot list a negative or null number of chromosomes: $depth")
+				s"Population.fittest Incorrect number of chromosomes: $depth should be >0")
 		if( size > 1) Some(chromosomes.take(if(depth > size)  size else depth)) else None
 	}
 	
