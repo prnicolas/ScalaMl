@@ -1,9 +1,11 @@
-Scala for Machine Learning Version 0.96a Copyright Patrick Nicolas All rights reserved 2013-2015<br>
-=================================================================================================<br>
+<b>Scala for Machine Learning</b> Version <b>0.97.3</b><br>
+Copyright Patrick Nicolas All rights reserved 2013-2015<br>
+=================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"
 
 <h2>Overview</h2>
-The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br>
+The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br><br>
+Source code guidelines are defined in the companion document <b>SourceCodeGuide.html</b><br>
 
 The examples are related to investment portfolio management and trading strategies. For the readers interested either in mathematics or the techniques implemented in this library, I strongly recommend the following readings:
 <ul>
@@ -26,9 +28,6 @@ Directory structure of the source code library for <i>Scala for Machine Learning
 <br>
 Directory structure of the source code of the examples for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_examples.png" alt="Examples"><br>
-<br>
-Library components for <i>Scala for Machine Learning</i>:<br>
-<img src="images/8742OS_lib.png" alt="Libraries"><br>
 <br>
 
 
@@ -54,7 +53,7 @@ To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
 To run one test suite (i.e. Chap 3)<br>
 <i><b>$(ROOT)/sbt<br>
-> test-only *Chap3</b></i>
+> test-only *Chap3</b></i><br>
 To run all tests:<i><b>$(ROOT)/sbt test:run</b></b></i><br>
 <br>
 
