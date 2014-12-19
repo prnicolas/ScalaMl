@@ -12,21 +12,20 @@
  */
 package org.scalaml.supervised.bayes
 
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.stats.Validation
+// Scala classes
 import scala.collection.mutable.ArraySeq
 import scala.annotation.implicitNotFound
-import org.scalaml.stats.Stats._
+import scala.util.{Try, Success, Failure}
+
+import org.apache.log4j.Logger
+
+import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.stats.{Validation, ClassValidation, Stats}
 import org.scalaml.core.design.PipeOperator
 import org.scalaml.supervised.Supervised
-import org.scalaml.stats.ClassValidation
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
 import org.scalaml.util.DisplayUtils
-
-import NaiveBayesModel._
-import XTSeries._
+import NaiveBayesModel._, XTSeries._, Stats._
 
     
 		/**
@@ -60,6 +59,8 @@ final class NaiveBayes[T <% Double](
 	
 	private val logger = Logger.getLogger("NaiveBayes")
 	
+		// The model is instantiated during training for both
+		// classes if the training is successful. It is None otherwise
 	private[this] val model: Option[BinNaiveBayesModel[T]] = 
 			Try(BinNaiveBayesModel[T](train(1), train(0), density))
 		match {
@@ -92,12 +93,20 @@ final class NaiveBayes[T <% Double](
 	}
 
 
-
+		/**
+		 * Textual representation of the Naive Bayes classifier with labels for features.
+		 * It returns "No Naive Bayes model" if no model exists
+		 * @return Stringized features with their label if model exists.
+		 */
 	def toString(labels: Array[String]): String = 
 		model.map(m => if( labels.isEmpty ) m.toString else m.toString(labels))
 				.getOrElse("No Naive Bayes model")
 
-			
+		/**
+		 * Default extual representation of the Naive Bayes classifier with labels for features.
+		 * It returns "No Naive Bayes model" if no model exists
+		 * @return Stringized features with their label if model exists.
+		 */
 	override def toString: String = toString(Array.empty)
    
 		/**
@@ -105,13 +114,21 @@ final class NaiveBayes[T <% Double](
 		 */
 	@implicitNotFound("NaiveBayes; Conversion from array[T] to DblVector is undefined")
 	private def train(label: Int)(implicit f: Array[T] => DblVector): Likelihood[T] = {
-		val xi = xt.toArray
+		val xi = xt.toArray 
+				// Extract then filter each observation to be associated to a specific label.
+				// The implicit conversion from Array of type T to Array of type Double is invoked
 		val values = xi.filter( _._2 == label).map(x => f(x._1))
 		assert( !values.isEmpty, "NaiveBayes.train Filtered value is undefined")
 		
+			// Gets the dimension of a feature
 		val dim = xi(0)._1.size
 		val vSeries = XTSeries[DblVector](values)
-
+	
+			// Create a likelihood instance for this class 'label'. The
+			// tuple (mean, standard deviation) (2nd argument) is computed
+			// by invoking XTSeries.statistics then the Lidstone mean adjustment.
+			// The last argument, class likelihood p(C) is computed as the ratio of the
+			// number of observations associated to this class/label over total number of obs.
 		Likelihood(label, 
 				statistics(vSeries).map(stat => (stat.lidstoneMean(smoothing, dim), stat.stdDev) ), 
 				values.size.toDouble/xi.size) 
@@ -129,7 +146,7 @@ object NaiveBayes {
 		/**
 		 * Default constructor for the NaiveBayes class
 		 * @param smoothing Laplace or Lidstone smoothing factor
-		 * @param xt  Input labeled time series used for training
+		 * @param xt Input labeled time series used for training
 		 * @param density Density function used to compute the discriminant
 		 */
 	def apply[T <% Double](

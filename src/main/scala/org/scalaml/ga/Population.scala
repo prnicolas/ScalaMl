@@ -85,7 +85,6 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		chromosomes += new Chromosome[T](newCode)
 	}
   
-    	
 		/**
 		 * <p>Selection operator for the chromosomes pool The selection relies on the
 		 * normalized cumulative unfitness for each of the chromosome ranked by decreasing
@@ -97,14 +96,20 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
 		require(cutOff > 0.0 && cutOff < 1.01, 
 				s"Population.select Cannot select with a cutoff $cutOff out of range")
-		
+				
+			// Compute the commulative score for the entire population
 		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {
 			score(xy)
 			s + xy.unfitness 
 		})
+			// Normalize each chromosome unfitness value
 		chromosomes foreach( _ /= cumul)
+		
+			// Sorts the chromosome by the increasing value of their unfitness
 		val newChromosomes = chromosomes.sortWith(_.unfitness < _.unfitness)
 
+			// Apply a cutoff value to the current size of the population
+			// if the cutoff has been defined.
 		val cutOffSize: Int = (cutOff*newChromosomes.size).floor.toInt
 		val newPopSize = if(limit < cutOffSize) limit else cutOffSize
 		chromosomes.clear
@@ -136,10 +141,17 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	def +- (xOver: Double): Unit = {
 		require(xOver > 0.0 && xOver < 1.0, 
 				s"Population.+- Cross-over factor $xOver on the population is out of range")
-    	  	
+  
+				// It makes sense to cross over all the chromosomes in this
+				// population if there are more than one chromosome
 		if( size > 1) {
+				// Breakdown the sorted list of chromosomes into two segments
 			val mid = size>>1
-			val bottom = chromosomes.slice(mid,  size)              
+			val bottom = chromosomes.slice(mid,  size)
+			
+				// Pair a chromosome for one segment with a chromosome
+				// from the other segment.Then add those offsprings to the
+				// current population
 			val gIdx = geneticIndices(xOver)
 			val offSprings = chromosomes.take(mid)
 										.zip(bottom)
@@ -175,13 +187,17 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	final def diff(that: Population[T], depth: Int): Option[Pool[T]] = {
 		require( that.size > 1 , "Population.diff Other population has no chromosome")
 		require(depth > 0, s"Population.diff depth $depth should be >1")
-		
+
+			// Define the number of chromosomes participating
+			// to the comparison of two populations 'this' and 'that'
 		val fittestPoolSize = {
 			if(depth >= size || depth >= that.size) 
 				if(size < that.size) size else that.size
 			depth
 		}
-			// Deals with nested options
+			// Deals with nested options. Get the 'depth' most fit
+			// chromosomes for this population and 'depth' most fit
+			// chromosomes for that population, then compare..
 		for {
 			first <- fittest(fittestPoolSize)
 			second <- that.fittest(fittestPoolSize)
@@ -226,7 +242,11 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		chromosomes.foldLeft(new StringBuilder(comments))((buf, x) => 
 				buf.append(s"${x.symbolic("->")}\n")).toString
 
-	
+			/*
+			 * Compute the genetic index for cross-over and mutation
+			 * according to a probability value
+			 * @param prob probability value [0, 1]
+			 */
 	private[this] def geneticIndices(prob: Double): GeneticIndices = {
 		var idx = (prob*chromosomeSize).floor.toInt
 		val chIdx = if(idx == 0) 1 else if(idx == chromosomeSize) chromosomeSize-1 else idx

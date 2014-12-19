@@ -50,10 +50,15 @@ abstract class Master(
 		aggr: (List[DblVector]) => immutable.Seq[Double]) extends Controller(xt, fct, partitioner) {
 
 	private val logger = Logger.getLogger("Master")
+			// Define the maximum number of results to be displayed
 	protected val MAX_NUM_DATAPOINTS = 128
-	protected val aggregator = new mutable.ListBuffer[DblVector]
 	
-	private val workers = List.tabulate(partitioner.numPartitions)(n => 
+			// Aggregator for results from each worker actors
+	protected[this] val aggregator = new mutable.ListBuffer[DblVector]
+	
+			// The master is responsible for creating the array of worker actors
+			// It uses the Akka actor system.
+	private[this] val workers = List.tabulate(partitioner.numPartitions)(n => 
 		context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
    
 	override def preStart: Unit = DisplayUtils.show("Master.preStart", logger)
@@ -83,16 +88,28 @@ abstract class Master(
 				// Terminate itself after stopping the workers.
 				context.stop(self)
 			}
+				// Append the result from the latest worker actor
+				// to the existing list of results
 			aggregator.append(msg.xt.toArray)
 		}
 		case _ => DisplayUtils.error("Message not recognized and ignored", logger)
 	}
-	
+		
+		/*
+		 * Aggregation or reducing method that flatten a list of aggregation into
+		 * an immutable sequence of floating points
+		 */
 	protected def aggregate: immutable.Seq[Double] = aggr(aggregator.toList)
 
+		/*
+		 * Split the original time series using the partitioner helper class
+		 * then send each time series partition (or segment) to each worker
+		 * using the Activate message.
+		 */
 	private def split: Unit = {
 		DisplayUtils.show("Master.receive => Start", logger)
 		val indices = partitioner.split(xt)
+			// Broadcast the Activate message
 		workers.zip(indices).foreach(w => 
 			w._1 ! Activate(0, xt.slice(w._2 - indices(0), w._2)) )  
 	}

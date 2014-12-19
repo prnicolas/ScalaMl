@@ -12,6 +12,8 @@
  */
 package org.scalaml.supervised.regression.logistic
 
+import scala.util.{Try, Success, Failure}
+	// 3rd party libraries
 import org.apache.log4j.Logger
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum
 import org.apache.commons.math3.optim.{SimpleVectorValueChecker, PointVectorValuePair, ConvergenceChecker}
@@ -19,7 +21,7 @@ import org.apache.commons.math3.linear.{RealVector, RealMatrix, MatrixUtils,Arra
 import org.apache.commons.math3.fitting.leastsquares.{LeastSquaresOptimizer, MultivariateJacobianFunction, LeastSquaresBuilder, LeastSquaresProblem}
 import org.apache.commons.math3.util.Pair
 import org.apache.commons.math3.optim.ConvergenceChecker
-
+	// ScalaMl classes
 import org.scalaml.core.{Matrix, XTSeries}
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.DisplayUtils
@@ -37,7 +39,8 @@ import XTSeries._, ScalaMl._
 		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2) + .. + w(n).x(n))) </span></pre></p>
 		 * @constructor Create a logistic regression classifier model.
 		 * @throws IllegalArgumentException if the class parameters are undefined. 
-		 * @see org.apache.commons.math3.fitting.leastsquares.
+		 * @see org.apache.commons.math3.fitting.leastsquares._
+		 * @see org.apache.commons.math3.optim._
 		 * @param xt Input time series observations.
 		 * @param labels Labeled class data used during training of the classifier
 		 * @param optimizer Optimization method used to minimmize the loss function during training
@@ -50,14 +53,15 @@ final class LogisticRegression[T <% Double](
 		labels: Array[Int], 
 		optimizer: LogisticRegressionOptimizer) extends PipeOperator[Array[T], Int] {
 	
-	import scala.util.{Try, Success, Failure}
 	import LogisticRegression._
-  
+  	
 	type Feature = Array[T]
 	check(xt, labels)
     
 	private val logger = Logger.getLogger("LogisticRegression")
 	
+		// The model is created during the instantiation of the LogicticRegression classifier
+		// through training. It is set as None if the model could not be trained.
 	private[this] val model: Option[RegressionModel] = Try(train) match {
 		case Success(model) => Some(model)
 		case Failure(e) => DisplayUtils.none("LogisticRegression", logger, e)
@@ -130,7 +134,9 @@ final class LogisticRegression[T <% Double](
 				val gradient = xt.toArray.map( g => {  
 					val exponent = g.zip(_w.drop(1))
 									.foldLeft(_w(0))((s,z) => s + z._1*z._2)
-					val f = logit(exponent)
+						// Applies the logistic function to the dot product of weight and features
+					val f = logit(exponent)	
+						// return the pair of (logistic value, derivative)
 					(f, f*(1.0-f))
 				})
 	
@@ -149,7 +155,10 @@ final class LogisticRegression[T <% Double](
 			}
 		}
 
-        	
+			/**
+			 * Create an instance of the convergence criteria (or exit strategy)
+			 * using the Apache Commons Math ConvergenceChecker
+			 */
 		val exitCheck = new ConvergenceChecker[PointVectorValuePair] {
 				/**
 				 * Apply a converge criteria using the difference in values
@@ -160,14 +169,20 @@ final class LogisticRegression[T <% Double](
 					iteration: Int, 
 					prev: PointVectorValuePair, 
 					current: PointVectorValuePair): Boolean =  {
+					// Compute the square root of the sum of squared error
 				val delta = prev.getValue.zip(current.getValue).foldLeft(0.0)( (s, z) => { 
 					val diff = z._1 - z._2
 							s + diff*diff 
 				})
+					// This is a very simple and commonly used convergence criteria
 				Math.sqrt(delta) < optimizer.eps && iteration >= optimizer.maxIters
 			}
 		}
 
+			/**
+			 * The Apache Commons Math lib. require to set up the optimization using
+			 * A builder. The Builder in turn, generates a Least Square problem 'lsp'
+			 */
 		val builder = new LeastSquaresBuilder
 		val lsp = builder.model(lrJacobian)
 							.weight(MatrixUtils.createRealDiagonalMatrix(Array.fill(xt.size)(1.0))) 
@@ -177,7 +192,8 @@ final class LogisticRegression[T <% Double](
 							.start(weights0)
 							.maxIterations(optimizer.maxIters)
 							.build
-
+							
+				// The least square problem is the input to the selected optimizer
 		val optimum = optimizer.optimize(lsp)
 		RegressionModel(optimum.getPoint.toArray, optimum.getRMS)
 	}
@@ -208,8 +224,17 @@ object LogisticRegression {
 		 * Adjusted class discriminant value for the linear exponent fo the logit
 		 */
 	final val HYPERPLANE = - Math.log(1.0/(MARGIN + INITIAL_WEIGHT) -1)
-   
+ 
+		/**
+		 * Convenient implicit conversion between Apache Commons Math pair
+		 * and parameterized tuples
+		 */
 	implicit def pairToTuple[U, V](pair: Pair[U, V]): (U,V) = (pair._1, pair._2)
+	
+		/**
+		 * Convenient implicit conversion between Apache Commons a tuple of
+		 * (RealVector, RealMatrix) and a Apache commons math Pair.
+		 */
 	implicit def tupleToPair[RealVector, RealMatrix](
 			pair: (RealVector,RealMatrix)): Pair[RealVector,RealMatrix] 
 		= new Pair[RealVector,RealMatrix](pair._1, pair._2)

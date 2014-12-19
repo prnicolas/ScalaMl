@@ -38,10 +38,6 @@ object LogisticRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "LogisticRegressionEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 50
 	
 	private val logger = Logger.getLogger(name)
 	   

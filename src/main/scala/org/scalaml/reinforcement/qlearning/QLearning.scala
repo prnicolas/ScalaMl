@@ -11,10 +11,14 @@
  * Version 0.97.2
  */
 package org.scalaml.reinforcement.qlearning
-
+	
+	// Scala standard library
 import scala.collection._
+import scala.collection.mutable.ArrayBuffer
+import scala.util.{Random, Try, Success, Failure}
+	// 3rd party library
 import org.apache.log4j.Logger
-
+	// ScalaMl classes
 import org.scalaml.util.DisplayUtils
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.{Config, PipeOperator, Model}
@@ -38,7 +42,8 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extend
 		 * Name of the file that persists the model for Q-learning
 		 */
 	protected val persists = "model/qlearning"
-	override def toString: String = s"Optimal policy: ${bestPolicy.toString}\nwith coverage: $coverage" 
+	override def toString: String = 
+		s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }
 
 		/**
@@ -64,9 +69,6 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extend
 		 */
 final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPolicy[T]) 
 		extends PipeOperator[QLState[T], QLState[T]]  {
-
-	import scala.collection.mutable.ArrayBuffer
-	import scala.util.{Random, Try, Success, Failure}
 	import QLearning._
 	
 	private val logger = Logger.getLogger("QLearning")
@@ -75,13 +77,11 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * Model parameters for Q-learning of type QLModel that is defined as
 		 * a list of policies and training coverage 
 		 */
-	val model: Option[QLModel[T]] = train match {
+	private[this] val model: Option[QLModel[T]] = train match {
 		case Success(qModel) => qModel
-		case Failure(e) => DisplayUtils.none("QLearning.model could not be created", logger, e)
+		case Failure(e) => DisplayUtils.none("QLearning.model could not be created", logger)
 	}
 	  
-
-
 		/**
 		 * <p>Prediction of next state using Q-Learning model. The model is automatically 
 		 * created (or trained) during instantiation of the class. It overrides the
@@ -92,69 +92,99 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * type QLState[T]
 		 */
 	override def |> : PartialFunction[QLState[T], QLState[T]] = {
-		case state: QLState[T] if( model != None) => 
+		case state: QLState[T] if(model != None) => 
 			if( state.isGoal) state else nextState(state, 0)._1
 	}
 
+		/**
+		 * Retrieve the model for Q-learning as an option
+		 */
+	@inline 
+	final def getModel: Option[QLModel[T]] = model
+	  
 	override def toString: String = qlPolicy.toString + qlSpace.toString
 
-
+		/*
+		 * Recursive computation of the next most rewarding state
+		 */
 	@scala.annotation.tailrec
 	private def nextState(st: (QLState[T], Int)): (QLState[T], Int) =  {
+			// Among all the states
 		val states = qlSpace.nextStates(st._1)
 		if( states.isEmpty || st._2 >= config.episodeLength) 
 			st
+			// Select the state with the most reward given the current policy _bestPolicy'
 		else {
-		  val qState = states.maxBy(s => model.map(_.bestPolicy.R(st._1.id, s.id)).getOrElse(-1.0))
+			val qState = states.maxBy(s => model.map(_.bestPolicy.R(st._1.id, s.id)).getOrElse(-1.0))
 			nextState( (qState, st._2+1))
-			
-		// nextState( (states.maxBy(s => model.get.bestPolicy.R(st._1.id, s.id)), st._2+1))
 		}
 	}
 
-	
+		/*
+		 * Online raining method for the Q-learning algorithm
+		 */
 	private def train: Try[Option[QLModel[T]]] = {
 		val r = new Random(System.currentTimeMillis)
 		Try {
-			DisplayUtils.show("Episode #\tGoal state", logger)
+			DisplayUtils.show("Episodes\n#\tGoal state", logger)
+			
+				// Apply the train method for each episode with
+				// randomly generated initial states.
 			val completions = Range(0, config.numEpisodes).foldLeft(0)((s, n) => {
 				val completed = train(r)
 						
-				DisplayUtils.show(s"$n\n$completed", logger)
+				DisplayUtils.show(s"$n\t$completed", logger)
 				s + (if(completed) 1 else 0)
 			})
+			
+				// Compute the coverage as the number of episodes
+				// for each the goal state was reached..
 			val coverage = completions.toDouble/config.numEpisodes
-
-			if( coverage >= config.minCoverage )
+				// The model is effectively created if the minimum coverage is reached
+			if(coverage > config.minCoverage) 
 				Some(new QLModel[T](qlPolicy, coverage))
-			else 
-				None
+			else None
 		}
 	}
-	private[this] def train(r: Random): Boolean = {
+	
+	
+		/**
+		 * The state space is traversed recursively..
+		 */
+	private def train(r: Random): Boolean = {
 
+			// Recursive local function
 		@scala.annotation.tailrec
 		def search(st: (QLState[T], Int)): (QLState[T], Int) = {
+				
+				// Get all the states adjacent to st
 			val states = qlSpace.nextStates(st._1)
-			
 			if( states.isEmpty || st._2 >= config.episodeLength ) 
-				(st._1, -1)		
+				(st._1, -1)
+				
 			else {
+				// select the most rewarding of the list of adjacent states
 				val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id) )
 					
+				// If the next most rewarding state is a goal state, we are done..
 				if( qlSpace.isGoal(state) )
 					(state, st._2)
+				
+				// Otherwise recompute the policy value for the state transition
+				// using the reward matrix QLPolicy.R
 				else {
 					val r = qlPolicy.R(st._1.id, state.id)   
 					val q = qlPolicy.Q(st._1.id, state.id)
 
+					// Apply the Q-learning updating formula
 					val nq = q + config.alpha*(r + config.gamma*qlSpace.maxQ(state, qlPolicy) - q)
 					qlPolicy.setQ(st._1.id, state.id,  nq)
 					search((state, st._2+1))
 				}
 			}
 		}	
-        
+		
+			// Select a random state to initialize the search.
 		r.setSeed(System.currentTimeMillis*Random.nextInt)
 		val finalState = search((qlSpace.init(r), 0))
 		if( finalState._2 == -1) 
@@ -178,7 +208,6 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 class QLInput(val from: Int, val to: Int, val reward: Double = 1.0, val prob: Double = 1.0)
-
 
 
 		/**

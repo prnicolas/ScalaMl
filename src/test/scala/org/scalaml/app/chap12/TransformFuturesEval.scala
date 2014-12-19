@@ -16,14 +16,13 @@ import akka.pattern.ask
 import akka.actor.{ActorSystem, Props}
 import akka.util.Timeout
 
-import org.scalaml.app.{Eval, TestContext}
+import org.scalaml.app.Eval
 import org.scalaml.core.XTSeries
 import org.scalaml.core.XTSeries.DblSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.scalability.akka.Partitioner
 import org.scalaml.scalability.akka.message._
 import org.scalaml.scalability.akka.TransformFutures
-import org.scalaml.app.TestContext
 import org.scalaml.filtering.DFT
 import org.scalaml.util.{FormatUtils, DisplayUtils}
 
@@ -75,10 +74,7 @@ object TransformFuturesEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "TransformFuturesEval"
-	/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 10000
+
 	private val logger = Logger.getLogger(name)
 		
 	private val NUM_WORKERS = 8
@@ -98,11 +94,12 @@ object TransformFuturesEval extends Eval {
 		 */
 	def run(args: Array[String]): Int = {
 		DisplayUtils.show(s"$header Data transformation futures using Akka actors", logger)
-		
+		val actorSystem = ActorSystem("System") 
+				
 		val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
 		val partitioner = new Partitioner(NUM_WORKERS)
   
-		val master = TestContext.actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), 
+		val master = actorSystem.actorOf(Props(new DFTTransformFutures(xt, partitioner)), 
 				"DFTTransform")
 				
 		Try {
@@ -116,7 +113,8 @@ object TransformFuturesEval extends Eval {
 				case ex: Throwable => DisplayUtils.error("TransformFuturesEval.run completed", logger, e)
 			}
 		}
-		TestContext.shutdown
+		actorSystem.shutdown
+		DisplayUtils.show(s"$name Completed", logger)
 	}
 }
 

@@ -27,10 +27,6 @@ object StatsEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "StatsEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 500
 	
 	private val VALUES = Array[Double](1.0, 2.4, 1.9, 7.3, 3.9, 8.0, 0.5)
 	private val MEAN   = 3.571428571

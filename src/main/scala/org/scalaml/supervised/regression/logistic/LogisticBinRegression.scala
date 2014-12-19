@@ -25,6 +25,8 @@ import org.scalaml.util.DisplayUtils
 		 * The training (extraction of the weights) is computed as part of the instantiation of the class so 
 		 * the model is either complete or undefined so classification is never done on incomplete (or
 		 * poorly trained) model (computation error, maximum number of iterations exceeded).<br>
+		 * For simplicity, this first and simple logistic regression assumes a feature of two dimension
+		 * (x, y) and consequently a vector of DIM = 3 weights.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
 		 * The likelihood (conditional probability is computed as 1/(1 + exp(-(w(0) + w(1).x(1) + w(2).x(2)))</span></pre></p>
@@ -66,12 +68,17 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 		 * number of iterations is reached.
 		 */
 	private[this] def train: Option[DblVector] = {
-		import scala.util.Random    
+		import scala.util.Random 
+		
+			// Random initializaion of the weights
 		val w = Array.tabulate(DIM)( _ => Random.nextDouble-1.0) 
     
 			// Iterates through the computation of the predicted value z
 			// and the derivative dw
 		(0 until maxIters).find( _ => {
+	
+				// Compute the sigmoid for the dot product then
+				// update the gradient
 			val deltaW = labels.foldLeft(Array.fill(DIM)(0.0)) ((dw, y) => {  
 				val z = sigmoid(w(0) + w(1)*y._1._1 +  w(2)*y._1._2)
 				dw.map(dx => dx + (y._2 - z)*(y._1._1 + y._1._2))
@@ -84,18 +91,9 @@ final class LogBinRegression(labels: DVector[(XY, Double)], maxIters: Int, eta: 
 	    	
 			nextW.copyToArray(w)
 			diff < eps	// Exit condition
-		}).map(_ => w)
-		
-		/*
-		match {
-			case Some(iters) => Some(w)
-			case None => DisplayUtils.none("LogBinRegression.train failed to converge", logger)
-		}
-		* 
-		*/
+		}).map(_ => w)  // map to the vector of weights
 	}
 	
-	@inline
 	private[this] def sigmoid(x: Double): Double = 1.0/(1.0 + Math.exp(-x))
 
 }
@@ -112,6 +110,7 @@ object LogBinRegression {
 	private val ETA_LIMITS = (1e-7, 1e-1)
 	private val EPS_LIMITS = (1e-10, 0.25)
 	
+		
 	private def check(labels: DVector[(XY, Double)], maxIters: Int, eta: Double, eps: Double): Unit =  {
 		require(maxIters > 10 && maxIters < MAX_NUM_ITERS, 
 				s"LogBinRegression.check Maximum number of iteration $maxIters is out of bounds")

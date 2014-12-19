@@ -11,17 +11,21 @@
  */
 package org.scalaml.app
 
+import scala.annotation.switch
 import org.scalatest.FunSuite
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Try, Success, Failure, Properties}
 import scala.concurrent.duration.Duration
-import akka.util.Timeout
-import akka.actor.ActorSystem
-import akka.actor.Actor
-import akka.actor.Props
-import akka.actor.ActorRef
-
 import org.scalaml.util.DisplayUtils
+import org.scalatest.concurrent.ScalaFutures
+import scala.concurrent._
+import org.scalatest.FunSuite
+import scala.concurrent.ExecutionContext.Implicits.global
+import org.scalatest.time._
+
+
+
+
 
 	/**
 		 * <p>Generic template for the scalatest invocation.</p>
@@ -29,30 +33,27 @@ import org.scalaml.util.DisplayUtils
 		 * @since July, 13, 2014
 		 * @note Scala for Machine Learning
 		 */
-trait ScalaMlTest extends FunSuite {
-	import org.apache.log4j.Logger
-	private val logger = Logger.getLogger("TestContext")
-
+trait ScalaMlTest extends FunSuite with ScalaFutures {
 	val chapter: String
+	
+	private val MAX_EXECUTION_TIME: Int = 40
+	implicit val patience = PatienceConfig(timeout = Span(MAX_EXECUTION_TIME, Seconds), 
+			interval = Span(250, Millis))
+			
 		/**
 		 * <p>Trigger the execution of a Scala test for a specific method and set of arguments.</p>
 		 * @param args argument for the Scala test
 		 * @param method Name of the method to be tested.
 		 */
 	def evaluate(eval: Eval, args: Array[String] = Array.empty): Boolean = {
-		Try (eval.run(args) ) match {
-			case Success(n) => {
-				if(n >= 0) 
-					DisplayUtils.show(s"$chapter ${eval.name} succeed with status = $n", logger)
-				assert(n >= 0, s"$chapter ${eval.name} Failed")
-				true
-			}
-			case Failure(e) => {
-				DisplayUtils.show(s"$chapter ${eval.name} ${e.getMessage}", logger)
-				assert(false, s"$chapter ${eval.name} Failed")
-				true
-			}
-		}
+  	val f: Future[Int] = future { eval.run(args) }
+  		
+  	whenReady(f) {
+  		result => {
+  			assert(result >=0, "OK")
+  			result >= 0
+  		}
+  	}
 	}
 }
 
@@ -68,33 +69,27 @@ trait Eval {
 		 */
 	val name: String
 		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int
-		/**
 		 * <p>Execution of scalatest case.</p>
 		 */
 	def run(args: Array[String]): Int
 	
 	protected def header: String = {
-		Eval.count += 1
-		s"\n\n *****  test#${Eval.count} $name"
+		AllTests.count += 1
+		s"\n\n *****  test#${AllTests.count} $name"
 	}
 }
 
-
+/*
 object Eval {
 	var count: Int = _
 	def testCount: String = {
 		count += 1
 		String.valueOf(count)
 	}
-	
-	def toString(name: String): String = {
-		count += 1
-		s"\n\n *****  test#${count} $name"
-	}
 }
+* 
+*/
+
 
 
 		/**
@@ -103,13 +98,13 @@ object Eval {
 		 * context is initialized only once before execution of all the tests.
 		 * and shutdown after the execution of all the tests.
 		 */
-object TestContext { 
+/*
+object TestContext  { 
 	import org.apache.log4j.Logger
 	private val logger = Logger.getLogger("TestContext")
 	
-	var allRuns = false
-	lazy val actorSystem = ActorSystem("System") 
 
+		
 	private val ELAPSE_TIME = 4000
 	private val CONFIGURATION = "Recommended SBT/JVM configuration:\n-Xmx4096 (or higher)\n" +
 			" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
@@ -128,18 +123,18 @@ object TestContext {
 			DisplayUtils.show("Incompatible version of Java, should be 1.7 or later", logger)
 			
 		val scalaVersion = Properties.versionNumberString
+		
 		DisplayUtils.show(s"Scala version: $scalaVersion", logger)
-		scalaVersion.charAt(2) match {
+		(scalaVersion.charAt(2): @switch) match {
 			case '9' => DisplayUtils.show("Scala version should be 2.10.2 or higher", logger)
 			case '1' => {
-				scalaVersion.charAt(3) match {
+				(scalaVersion.charAt(3): @switch) match {
 					case '0' => DisplayUtils.show("Compatible Akka version should be 2.2.4 or lower", logger)
 					case '1' => DisplayUtils.show("Compatible Akka version should be 2.3.4 or higher", logger)
 				}
 			}
 			case _ => DisplayUtils.show("Could not initialize", logger)
 		}
-		allRuns = true
 		Eval.count = 0
 	}
 	
@@ -149,7 +144,7 @@ object TestContext {
 		 */
 	def shutdownAll: Unit = {
 		Thread.sleep((ELAPSE_TIME<<1))
-		actorSystem.shutdown
+	//	actorSystem.shutdown
 		DisplayUtils.show(s"test:run completed after ${Eval.count +1} tests", logger)
 	}
 	
@@ -159,11 +154,13 @@ object TestContext {
 		 */
 	def shutdown: Int = {
 		Thread.sleep(ELAPSE_TIME)
-		if( !allRuns )
-			actorSystem.shutdown
+//		if( !allRuns )
+//			actorSystem.shutdown
 		0
 	}
 }
+* 
+*/
 
 
 // --------------------------  EOF -------------------------------

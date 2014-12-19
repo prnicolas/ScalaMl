@@ -48,7 +48,8 @@ final protected class GASolver[T <: Gene](
 		score: Chromosome[T] => Unit) extends PipeOperator[Population[T], Population[T]] {
 	import GAConfig._
 	
-	private var state: GAState = GA_NOT_RUNNING
+		// Initial state of the genetic algorithm solver
+	private[this] var state: GAState = GA_NOT_RUNNING
 	private val logger = Logger.getLogger("GASolver")
 	
 		/**
@@ -62,17 +63,23 @@ final protected class GASolver[T <: Gene](
    
 		/**
 		 * <p>Uses the genetic algorithm reproduction cycle to select the fittest
-		 * chromosomes (or solutions candidate) after a predefined number of reproduction cycles.</p>
-		 * @throws MatchError if the population is emptry
+		 * chromosomes (or solutions candidate) after a predefined number of reproduction cycles.<br>
+		 * Convergence criteria used to end the reproduction cycle is somewhat dependent of the
+		 * problem or domain. This implementation makes sense for the exercise in the book
+		 * chapter 10. It needs to be modified to a specific application.</p>
+		 * @throws MatchError if the population is empty
 		 * @return PartialFunction with a parameterized population as input and the population 
 		 * containing the fittest chromosomes as output.
 		 */
 	override def |> : PartialFunction[Population[T], Population[T]] = {	
 		case population: Population[T] if(state != GA_RUNNING &&population.size > 1) => {
-			
+		
+				// Create a reproduction cycle manager with a scoring function
 		  val reproduction = Reproduction[T](score)
 			state = GA_RUNNING
-	          
+
+				// Trigger a reproduction cycle 'mate' then test if 
+				// any of the convergence criteria applies.
 			Range(0, config.maxCycles).find(n => {  		 
 				if( reproduction.mate(population, config, n) )
 					converge(population, n) != GA_RUNNING
@@ -90,7 +97,10 @@ final protected class GASolver[T <: Gene](
 	}
    
 
-   
+		/*
+		 * Domain dependent convergence criteria. This version tests the size
+		 * of the population and the number of reproduction cycles already executed
+		 */
 	private def converge(population: Population[T], cycle: Int): GAState = {
 		if( population.isNull ) 
 			GA_FAILED(s"GASolver.converge Reproduction failed at $cycle")

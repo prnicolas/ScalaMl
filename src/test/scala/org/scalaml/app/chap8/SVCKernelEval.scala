@@ -37,10 +37,6 @@ object SVCKernelEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SVCKernelEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	private val EPS = 0.001
 	private val C = 1.0

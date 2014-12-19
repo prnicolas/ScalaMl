@@ -35,10 +35,6 @@ object RidgeRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "RidgeRegressionEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 7000
 	
 	private val path = "resources/data/chap6/CU.csv"
 	private val dataInput = "output/chap6/CU_input.csv"
@@ -74,29 +70,26 @@ object RidgeRegressionEval extends Eval {
 			val features = XTSeries[DblVector](data.dropRight(1))
 			val regression = new RidgeRegression[Double](features, deltaPrice, 0.5)
 
-			regression.weights match {
-				case Some(w) => {
-					w.zipWithIndex.foreach( wi => {
-						val weights_str = FormatUtils.format(wi._2, ": ", FormatUtils.ShortFormat)
-						DisplayUtils.show(s"$name ${wi._1}$weights_str", logger)
-					})
-				}
-				case None => DisplayUtils.error(s"$name Ridge regression could not be trained", logger)
-			}
-		    
-			regression.rss match {
-				case Some(rss) => {
-					val result = FormatUtils.format(rss, "rss =", FormatUtils.MediumFormat)
-					DisplayUtils.show(s"$name $result", logger)
-				}
-				case None => DisplayUtils.error(s"$name Ridge regression could not be trained", logger)
-			}
-		
-			
+				// Retrieve the weights or coefficient of the Ridge regression
+			regression.weights.map(w =>  {
+				w.zipWithIndex.foreach( wi => {
+					val weights_str = FormatUtils.format(wi._2, ": ", FormatUtils.ShortFormat)
+					DisplayUtils.show(s"$name ${wi._1}$weights_str", logger)
+				})
+			}).getOrElse(DisplayUtils.error(s"$name Ridge regression could not be trained", logger))
+
+				// Retrieve the residual sum of squared error of the Ridge regression
+			regression.rss.map( rss => {
+				val result = FormatUtils.format(rss, "rss =", FormatUtils.MediumFormat)
+				DisplayUtils.show(s"$name $result", logger)
+			}).getOrElse(DisplayUtils.error(s"$name Ridge regression could not be trained", logger))
+
+				// Create two predictor 
 			val y1 = predict(0.2, deltaPrice, volatility, volume)
 			val y2 = predict(5.0, deltaPrice, volatility, volume)
 			display(deltaPrice, y1, y2, 0.2, 5.0)
 			
+			assert( regression.isModel, "Ridge regression mode is incomplete")
 			if( regression.isModel ) {
 				(2 until 10 by 2).foreach( n => { 
 					val lambda = n*0.1
@@ -104,13 +97,11 @@ object RidgeRegressionEval extends Eval {
 					DisplayUtils.show(s"Lambda  $lambda", logger )
 					DisplayUtils.show(FormatUtils.format(y, "", FormatUtils.ShortFormat), logger)
 				})
-				1
 			}
-			else
-				-1
+			DisplayUtils.show(s"$name.run Regression succeeded", logger)
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Could not load data for Ridge regression", 
+			case Failure(e) => DisplayUtils.error(s"$name.run Ridge regression failed", 
 			    logger, e)
 		}
  	}
@@ -149,8 +140,8 @@ object RidgeRegressionEval extends Eval {
 	  
 		val plot = new LinePlot(("Ridge Regression", s" L2 lambda impact", "y"), new LightPlotTheme)
 		val data = (z, "Delta price") :: 
-					(y1, s"L2 lambda $lambda1") :: 
-					(y2, s"L2 lambda $lambda2") :: List[(DblVector, String)]()
+						(y1, s"L2 lambda $lambda1") :: 
+						(y2, s"L2 lambda $lambda2") :: List[(DblVector, String)]()
 					
 		plot.display(data, 340, 280)
 	}

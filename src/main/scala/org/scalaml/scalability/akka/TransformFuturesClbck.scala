@@ -12,21 +12,19 @@
  */
 package org.scalaml.scalability.akka
 
-
+	// Scala std.lib
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+	// 3rd Party lib
+import org.apache.log4j.Logger
+	// ScalaMl classes
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.scalability.akka.message._
-import akka.actor._
-import akka.util.Timeout
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import XTSeries._
+import org.scalaml.scalability.akka.message._
 import org.scalaml.util.DisplayUtils
-import org.scalaml.filtering.DFT
-import scala.collection.mutable.ListBuffer
-import org.apache.log4j.Logger
+import XTSeries._
 
 
 
@@ -60,12 +58,18 @@ abstract class TransformFuturesClbck(
 		case _ => DisplayUtils.error("TransformFuturesClbck.recieve Message not recognized", logger)
 	}
   
-
+		/*
+		 * Create a future transform by creating an array of 
+		 * futures to execute the data transform (or pipe operator)
+		 * for each partition.
+		 */
 	private def transform: Array[Future[DblSeries]] = {   
 		val partIdx = partitioner.split(xt)
 		val partitions = partIdx.map(n => XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
+			
+			// Once the futures are created, they are assigned to
+			// execute the data transform fct to their related partition.
 		val futures = new Array[Future[DblSeries]](partIdx.size)
-
 		partitions.zipWithIndex.foreach(pi => {
 			futures(pi._2) = Future[DblSeries] { fct |> pi._1 }
 		}) 
@@ -83,22 +87,27 @@ abstract class TransformFuturesClbck(
 				"TransformFuturesClbck.compute Cannot delegate computation to undefined futures")
   	  
 		val aggregation = new ArrayBuffer[DblSeries]
-		futures.foreach(f => { 
-			f onSuccess {
+			// Listen for notification from any of the futures
+		
+		futures.foreach(f => {
+				// If the notification is a success, then aggregate the results
+			f onSuccess {  
 				case data: DblSeries => aggregation.append(data)
 			}
-			f onFailure {
+				// If the notification is a failure, process the exception
+				// and append an empty time series to the existing results.
+			f onFailure {	
 				case e: Exception => {
 					DisplayUtils.error("TransformFuturesClbck.aggregate failed", logger, e)
 					aggregation.append(XTSeries.empty[Double])
 				}
 			}
 		}) 
-
-		if( aggregation.find( _.isEmpty) == None)
-			aggregate(aggregation.toArray)
-		else
-			Seq.empty
+			// Returns the aggregated results only if all the partition were
+			// successfully processed.
+		aggregation.find( _.isEmpty)
+							.map( _ => aggregate(aggregation.toArray))
+							.getOrElse(Seq.empty)
 	}
 	
 		/**

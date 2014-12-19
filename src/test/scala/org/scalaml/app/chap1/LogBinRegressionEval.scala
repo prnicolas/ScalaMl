@@ -37,10 +37,6 @@ object LogBinRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "LogBinRegressionEval"
-	  	/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 		
 	private val NITERS = 300
 	private val EPS = 0.02
@@ -124,7 +120,4 @@ object LogBinRegressionEval extends Eval {
 	}
 }
 
-object MyTest extends App {
-	LogBinRegressionEval.run(Array.empty)
-}
 // --------------------  EOF --------------------------------------

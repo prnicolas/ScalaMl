@@ -47,7 +47,9 @@ final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 	def mate(population: Population[T], 
 			config: GAConfig, 
 			cycle: Int): Boolean = (population.size: @switch) match {
-		case 0 | 1 | 2 => false
+			// If the population has less than 3 chromosomes, exit
+		case 0 | 1 | 2 => false  
+			// Otherwise execute another reproduction cycle, starting with selection
 		case _ => {
 			population.select(score, config.softLimit(cycle))		//1. Selection
 			population +- (1.0 - Random.nextDouble*config.xover)	//2. Cross-over

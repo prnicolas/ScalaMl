@@ -31,10 +31,7 @@ object MLPValidation extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MLPValidation"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
+
 	private val logger = Logger.getLogger(name)
    
 	private val ALPHA = 0.8
@@ -58,10 +55,10 @@ object MLPValidation extends Eval {
 		val state = MLPConfig(ALPHA, ETA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
   	  
 		implicit val mlpObjective = new MLP.MLPBinClassifier
-		if( MLP[Double](state, x, y).model == None ) 
-			DisplayUtils.error(s"$name Failed to train the model for alpha = $ALPHA, eta = $ETA", logger)
-		else
+		MLP[Double](state, x, y).model.map( _ =>
 			DisplayUtils.show(s"$name Creation of MLP model succeeds", logger)
+		).getOrElse(DisplayUtils.error(s"$name Incomplete model for alpha:$ALPHA, eta:$ETA", logger))
+
 	}
 }
 

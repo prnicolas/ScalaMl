@@ -33,10 +33,6 @@ object BinaryMLPEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BinaryMLPEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	private val ALPHA = 0.85
 	private val ETA = 0.01
@@ -80,6 +76,7 @@ object BinaryMLPEval extends Eval {
 
 		val result = FormatUtils.format(correct.toDouble/x.size, "", FormatUtils.MediumFormat)
 		DisplayUtils.show(s"$name Accuracy: $result", logger)
+		
 		val x0 = 0.9
 		val y0 = 0.8
 		Try(mlpClassifier |> Array[Double](x0, y0))

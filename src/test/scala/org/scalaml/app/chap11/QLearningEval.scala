@@ -11,6 +11,7 @@
  */
 package org.scalaml.app.chap11
 
+import scala.util.{Try, Success, Failure}
 import org.scalaml.reinforcement.qlearning.{QLearning, QLInput, QLConfig}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
@@ -18,6 +19,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
+import org.scalaml.reinforcement.qlearning.QLModel
 
 		 /**
 		 * <p><b>Purpose</b>: Singleton to Q-Learning algorithm to extract
@@ -35,10 +37,6 @@ object QLearningEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "QLearningEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 7000
 	  
 	private val logger = Logger.getLogger(name)
 	      
@@ -52,7 +50,7 @@ object QLearningEval extends Eval {
 	private val DISCOUNT = 0.6
 	private val EPISODE_LEN = 35
 	private val NUM_EPISODES = 60
-	private val MIN_ACCURACY = 0.55
+	private val MIN_COVERAGE = 0.35
     
 		/** 
 		 * <p>Execution of the scalatest for <b>QLearning</b> class.
@@ -66,22 +64,21 @@ object QLearningEval extends Eval {
 		val src = DataSource(stockPricePath, false, false, 1)
 		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, 
 				FUNCTION_APPROX_STEP)
-  	   
-		val optionSrc = DataSource(optionPricePath, false, false, 1)
-		optionSrc.extract match {
-			case Some(v) => {
-				val qLearning = createModel(ibmOption, v)
-				if( qLearning.model != None)
-					DisplayUtils.show(s"$name ${qLearning.model.get.toString}", logger)
-				else
-					DisplayUtils.error(s"$name Failed to create a Q-learning model", logger)
-			}
-			case None => DisplayUtils.error(s"$name Failed extracting option prices", logger)
-		}
+
+			// Extract the option for the Q-learning model
+		val model = for {
+			v <- DataSource(optionPricePath, false, false, 1).extract
+			_model <- createModel(ibmOption, v)
+		} yield _model
+		model.map(m => DisplayUtils.show(s"$name ${m.toString}", logger))
+								.getOrElse(DisplayUtils.error(s"$name Failed to create a model", logger))
 	}
     
 	
-	private def createModel(ibmOption: OptionModel, oPrice: DblVector): QLearning[Array[Int]] = {
+	private def createModel(
+			ibmOption: OptionModel, 
+			oPrice: DblVector): Option[QLModel[Array[Int]]] = {
+	  
 		val fMap = ibmOption.approximate(oPrice)
       
 		val input = new ArrayBuffer[QLInput]
@@ -93,9 +90,14 @@ object QLearningEval extends Eval {
    	      
 		val goal = input.maxBy( _.reward).to  
 		DisplayUtils.show(s"$name Goal state: ${goal.toString}", logger)
-      
-		val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, getNeighbors)
-		QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
+		Try {
+			val config = QLConfig(ALPHA, DISCOUNT, EPISODE_LEN, NUM_EPISODES, MIN_COVERAGE, getNeighbors)
+			QLearning[Array[Int]](config, fMap.size, goal, input.toArray, fMap.keySet)
+		}
+		match {
+		  case Success(qLearning) => qLearning.getModel
+		  case Failure(e) => DisplayUtils.none("QLearningEval.createModel failed", logger, e)
+		}
 	}
     
 		// List the neighbors that are allowed 
@@ -110,6 +112,11 @@ object QLearningEval extends Eval {
 		}
 		getProximity(idx, RADIUS).toList
 	}
+}
+
+
+object MyApp extends App {
+  QLearningEval.run(Array.empty)
 }
 
 // ------------------------------------  EOF ----------------------------------

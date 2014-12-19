@@ -32,7 +32,10 @@ final class Chap5 extends ScalaMlTest {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chap5"
-
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 10
 	
 	test(s"$chapter Binomial Naive Bayes") {
 		val TRAIN_VALIDATION_RATIO = "0.8"

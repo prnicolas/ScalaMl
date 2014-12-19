@@ -34,10 +34,6 @@ object KMeansEval extends UnsupervisedLearningEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "KMeansEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 	
 	private val START_INDEX = 70
 	private val NUM_SAMPLES = 42
@@ -76,8 +72,19 @@ object KMeansEval extends UnsupervisedLearningEval {
 			require(symbolFiles.size > 0, s"$name.run The input symbol files are undefined")
 
 			val prices: Array[List[DblVector]] = symbolFiles.map(s => 
-				DataSource(s, path, normalize) |> extractor)
+					DataSource(s, path, normalize) |> extractor
+			)
 
+			prices.find ( _.isEmpty ).map(_ => { 
+				DisplayUtils.error(s"$name Could not load data", logger)
+			}).getOrElse({ 
+			  	val values: DblMatrix = prices.map(x => x(0))
+												.map( _.drop(START_INDEX)
+												.take(NUM_SAMPLES))
+					args.map(_.toInt).foreach(run(_, values))
+					DisplayUtils.show(s"$name run completed ", logger)
+			})
+			/*
 			prices.find ( _.isEmpty ) match {
 				case Some(nullObsList) => DisplayUtils.error(s"$name Could not load data", logger)
 				case None => {
@@ -88,6 +95,8 @@ object KMeansEval extends UnsupervisedLearningEval {
 					DisplayUtils.show(s"$name run completed ", logger)
 				}
 			}
+			* 
+			*/
 		} 
 		match {
 			case Success(n) => n

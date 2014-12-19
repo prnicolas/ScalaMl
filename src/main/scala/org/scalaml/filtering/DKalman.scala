@@ -12,13 +12,14 @@
  */
 package org.scalaml.filtering
 
+	// Scala standard libraary
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure, Random}
-
+	// 3rd party libraries
 import org.apache.commons.math3.linear._
 import org.apache.commons.math3.filter._
 import org.apache.log4j.Logger
-
+	// ScalaMl classes
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.design.PipeOperator
@@ -120,8 +121,8 @@ final protected class DKalman(
 		 */
 	override def |> : PartialFunction[XTSeries[XY], XTSeries[XY]] = {
 		case xt: XTSeries[XY] if( !xt.isEmpty) => xt.map( y => {
-			initialize(Array[Double](y._1, y._2))
-			val nState = newState
+			initialize(Array[Double](y._1, y._2))  // Initialize the filter
+			val nState = newState				// Extract the new state a two values vector
 			(nState(0), nState(1))
 		})
 	}

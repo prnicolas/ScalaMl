@@ -33,8 +33,11 @@ final class Chap8 extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
-	val chapter = "Chapter 8"
-	
+	val chapter = "Chap 8"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 35
 	test(s"$chapter Support Vector machines margin") {
 		evaluate(SVCMarginEval)
 	}

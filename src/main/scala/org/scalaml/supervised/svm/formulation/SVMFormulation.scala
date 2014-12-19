@@ -13,6 +13,7 @@
 package org.scalaml.supervised.svm.formulation
 
 import libsvm._
+	// ScalaMl classes
 import org.scalaml.supervised.svm.SVMConfigItem
 
 		/**
@@ -25,6 +26,9 @@ sealed trait SVMFormulation extends SVMConfigItem {
 	def update(param: svm_parameter): Unit 
 }
 
+		/**
+		 * Companion object for the SVM Formulation trait
+		 */
 object SVMFormulation {
 	val NU_LIMITS = (0.0, 1.0)
 	val C_LIMITS = (0.0, 100.0)
@@ -58,7 +62,9 @@ final class CSVCFormulation(c: Double) extends SVMFormulation {
 		param.svm_type = svm_parameter.C_SVC
 		param.C = c
 	}
-  
+	/**
+		 * Textual description of the C-(1/lambda) formulation for the Support Vector Regression.
+		 */
 	override def toString: String = s"C-SVC with C = ${String.valueOf(c)}"
 }
 
@@ -88,7 +94,9 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 		param.nu = nu
 		param.p =rho
 	}
-  
+			/**
+		 * Textual description of the NU-formulation for the Support Vector Regression.
+		 */
 	override def toString: String = s"Nu-SVC with nu= $nu, rho= $rho"
 }
 
@@ -117,7 +125,9 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 		param.svm_type = svm_parameter.ONE_CLASS
 		param.nu = nu
 	}
-  
+		/**
+		 * Textual description of the formulation for the one class SVM classifier
+		 */
 	override def toString: String = s"One-class SVC with nu= $nu"
 }
 
@@ -151,7 +161,10 @@ final class SVRFormulation(c: Double, epsilon: Double) extends SVMFormulation {
 		param.C = c
 		param.p = epsilon
 	}
-  
+	
+		/**
+		 * Textual description of the formulation for the Support Vector Regression.
+		 */
 	override def toString: String = s"Epsilon-SVR with C = $c, epsilon= $epsilon"
 }
 

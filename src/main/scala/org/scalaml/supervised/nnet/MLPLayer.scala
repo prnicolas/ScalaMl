@@ -64,7 +64,8 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 	}
 
 		/**
-		 * <p>Compute the sum of squared error of the neurons/elements of this MLP layer.</p>
+		 * <p>Compute the sum of squared error of the neurons/elements of this MLP layer.
+		 * The SSE value is divided by 2 in the normalized C-formulation.</p>
 		 * @param labels target output value
 		 * @return sum of squared of errors/2
 		 * @throws IllegalArgumentException if the size of the output vector is not equals to the 
@@ -75,16 +76,18 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 				"MLPLayer.sse Cannot compute the sum of squared errors with undefined labels")
 		require(output.size == labels.size+1, 
 				s"MLPLayer.sse The size of the output ${output.size} != to size of target ${labels.size+1}")
-  	  
+  	
+			// Create a indexed vector of the output minus the first
+			// element (bias element +1). Then compute the sum of squared
+			// errors
 		var _sse = 0.0
 		output.drop(1).zipWithIndex.foreach(on => {
 			val err = labels(on._2) - on._1
 			delta.update(on._2+1, on._1* (1.0- on._1)*err)
 			_sse += err*err
 		})
-		_sse*0.5
+		_sse*0.5	// Note that the normalized version of sse is divided by 2
 	}
-   
    
 		/**
 		 * <p>Test if this neural network layer is the output layer (last layer in the network).</p>
@@ -93,8 +96,10 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		 */
 	@inline
 	final def isOutput(lastId: Int): Boolean = id == lastId
-	  	  
-	
+
+			/**
+		 * Textual and formatted description of a layer in the Multi-layer perceptron
+		 */
 	override def toString: String = {
 		val buf = new StringBuilder
 		
@@ -103,8 +108,6 @@ final protected class MLPLayer(val id: Int, val len: Int) {
 		buf.toString.substring(0, buf.length-1)
 	}
 }
-
-
 
 		/**
 		 * Companion object for the MLP layer used to define a default constructor

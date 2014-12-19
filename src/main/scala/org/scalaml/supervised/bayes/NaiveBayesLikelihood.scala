@@ -13,11 +13,9 @@
 package org.scalaml.supervised.bayes
 
 import org.scalaml.stats.Stats
-import NaiveBayesModel._
-
-// import java.text.DecimalFormat
 import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.core.Types.ScalaMl.XYTSeries
+import NaiveBayesModel._
 
 		/**
 		 * <p>Class that represents a likelihood for each feature for Naive Bayes classifier.<br>
@@ -27,7 +25,7 @@ import org.scalaml.core.Types.ScalaMl.XYTSeries
 		 * the prior additive.</p> 
 		 * @constructor Create a likelihood for a specific class. 
 		 * @throws IllegalArgumentException if the array of mean and standard deviation of the 
-		 * likelihood is undefined or if the class likelihood is out of range ]0,1]
+		 * likelihood is undefined or if the class likelihood (prior) is out of range ]0,1]
 		 * @param label  Name or label of the class or prior for which the likelihood is computed.
 		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for the model
 		 * @param prior  Probability of occurrence for the class specified by the label.
@@ -43,7 +41,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
   
 		/**
 		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an 
-		 * observation obs and a probability density distribution.</p>
+		 * observation obs and a probability density distribution.<br>
+		 * The default density probability function is Normal(0, 1)</p>
 		 * @param obs parameterized observation 
 		 * @param density probability density function (default Gauss)
 		 * @throws IllegalArgumentException if the observations are undefined
@@ -54,13 +53,16 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		
 			// Compute the Log of sum of the likelihood and the class prior probability
 			// The log likelihood is computed by adding the log of the density for each dimension.
+			// Sum {log p(xi|C) }
 		(obs, muSigma).zipped.foldLeft(0.0)((post, xms) => {
-			val mean = xms._2._1
-			val stdDev = xms._2._2
+			val mean = xms._2._1		// mean
+			val stdDev = xms._2._2	// standard deviation
 			val _obs = xms._1
 			val logLikelihood = density(mean, stdDev, _obs)
+				
+				// Avoid large value by setting a minimum value for the density probability
 			post + Math.log(if(logLikelihood <  MINLOGARG) MINLOGVALUE else logLikelihood)
-		}) + Math.log(prior)
+		}) + Math.log(prior) // Add the class likelihood p(C)
 	}
 	
 		/**
@@ -69,7 +71,7 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 */
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
-		
+			// Format the tuple muSigma= (mean, standard deviation) and the Prior 
 		FormatUtils.format(muSigma, "Label\tMeans", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
 		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)
 	}

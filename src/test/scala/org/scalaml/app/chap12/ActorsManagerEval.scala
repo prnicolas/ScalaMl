@@ -18,7 +18,7 @@ import scala.collection._
 import org.apache.log4j.Logger
 
 import akka.actor.{Props, ActorSystem}
-import org.scalaml.app.{Eval, TestContext}
+import org.scalaml.app.Eval
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.scalability.akka.{Partitioner, Master, MasterWithRouter, Controller}
@@ -63,9 +63,9 @@ protected class DFTMaster(
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Akka
 		 */
 protected class DFTMasterWithRouter(
-		xt: 				DblSeries, 
+		xt: DblSeries, 
 		partitioner: Partitioner, 
-		aggrFreq: 	List[DblVector] => immutable.Seq[Double]) 
+		aggrFreq: List[DblVector] => immutable.Seq[Double]) 
 				extends MasterWithRouter(xt, DFT[Double], partitioner, aggrFreq) 
 
 
@@ -81,20 +81,17 @@ object ActorsManagerEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "ActorsManagerEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 10000
 	
 	private val logger = Logger.getLogger(name)
 	
 	val NUM_WORKERS = 4
 	val NUM_DATA_POINTS = 1000000
+		
 		// Synthetic generation function for multi-frequencies signals
 	val h = (x:Double) =>	2.0*Math.cos(Math.PI*0.005*x) +	// simulated first harmonic
 							Math.cos(Math.PI*0.05*x) +   	// simulated second harmonic
 							0.5*Math.cos(Math.PI*0.2*x) + 	// simulated third harmonic 
-							0.2*Random.nextDouble			// noise
+							0.2*Random.nextDouble					// noise
 	
 		/** 
 		 * <p>Execution of the scalatest for Master-worker design with Akka framework.
@@ -104,6 +101,7 @@ object ActorsManagerEval extends Eval {
 		 */
 	def run(args: Array[String]): Int = {
 		DisplayUtils.show(s"$header Master-Worker model for Akka actors", logger)
+		val actorSystem = ActorSystem("System") 
 		
 		if(args.size > 0) {
 			val xt = XTSeries[Double](Array.tabulate(NUM_DATA_POINTS)(h(_)))
@@ -132,17 +130,18 @@ object ActorsManagerEval extends Eval {
 				// The argument specifies if the group of worker actors is supervised
 				// by a routing actor or not..
 			val controller = if(args(0) == "router")
-				TestContext.actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, 
+				actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, 
 						aggrFrequencies)),	"MasterWithRouter")
 			else
-				TestContext.actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), 
+				actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), 
 						"Master")
 		
 				// Launch the execution
 			controller ! Start(1)
 			
 				// Shutdown the Actor system if this test is run independently
-			TestContext.shutdown
+			actorSystem.shutdown
+			DisplayUtils.show(s"$name.run completed", logger)
 		}
 		else
 			DisplayUtils.error(s"$name Master-Worker model, arguments undefined", logger)

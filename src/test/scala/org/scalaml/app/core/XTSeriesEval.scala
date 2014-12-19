@@ -28,10 +28,7 @@ object XTSeriesEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "XTSeriesEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 500
+
 	private val logger = Logger.getLogger(name)
 	private val EPS = 1e-4
 	private val NUM_DATA_POINTS = 10

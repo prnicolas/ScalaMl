@@ -12,12 +12,12 @@
  */
 package org.scalaml.supervised.nnet
 
-import org.scalaml.core.Types.ScalaMl
-import scala.util.Random
-import org.scalaml.core.design.Model
 import scala.collection.mutable.ListBuffer
-import ScalaMl._
-import MLPLayer._
+import scala.util.Random
+
+import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.design.Model
+import ScalaMl._, MLPLayer._
 
 
 		/**
@@ -56,13 +56,25 @@ final protected class MLPModel(
 		 * Name of the file that persists the model parameters of the Multi-layer perceptron
 		 */
 	protected val persists = "model/mlp"
-	private val topology =	if( config.nHiddens == 0)
-								Array[Int](nInputs, nOutputs) 
-							else 
-								Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
+	  
+		/*
+		 * Create the topology of this Multi-layer preceptron using the configuration 
+		 * parameters and the number of hidden layers (and number of elements per hidden layer)
+		 */
+	private[this] val topology =	if( config.nHiddens == 0) Array[Int](nInputs, nOutputs) 
+			else Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
 	
-	private val layers: Array[MLPLayer] = topology.zipWithIndex.map(t => MLPLayer(t._2, t._1+1))
-	private val connections: Array[MLPConnection]  = Range(0, layers.size-1).map(n => 
+			/*
+			 * Create the array of layer using the topology 
+			 */
+	private[this] val layers: Array[MLPLayer] = topology.zipWithIndex
+			.map(t => MLPLayer(t._2, t._1+1))
+	
+			/*
+			 * Create a array of connection between layer. A connection is 
+			 * made of multiple synapses.
+			 */
+	private[this]  val connections: Array[MLPConnection]  = Range(0, layers.size-1).map(n => 
 			new MLPConnection(config, layers(n), layers(n+1))).toArray
 
 		/**
@@ -88,12 +100,23 @@ final protected class MLPModel(
 		 * @throws IllegalArgumentException if the feature is either undefined or has incorrect size.
 		 */
 	def trainEpoch(x: DblVector, y: DblVector): Double = {
+			// Initialize the input layer
 		inLayer.set(x)
+			// Apply the forward progapation of input to all the connections
+			// starting with the input layer
 		connections.foreach( _.connectionForwardPropagation)
 
+			// Compute the sum of squared errors
 		val _sse = sse(y)
+		
+			// Create a back iterator
 		val bckIterator = connections.reverseIterator
+			
+			// Apply the error back propagation to all the connections
+			// starting with the output lauer
 		bckIterator.foreach( _.connectionBackpropagation)
+		
+			// Finally update the connections (weigths and grad weights) of synapses
 		connections.foreach( _.connectionUpdate)
 		_sse
 	}
@@ -118,12 +141,20 @@ final protected class MLPModel(
 		 * @return output vector
 		 */
 	def getOutput(x: DblVector): DblVector = {
+		require( !x.isEmpty, "MLPModel.getOutput Input values undefined")
 		inLayer.set(x)
+		
+			// Apply the forward propagation with an input vector ...
 		connections.foreach( _.connectionForwardPropagation)
+		
+			// .. and return the output of the MLP.
 		outLayer.output
 	}
 	 
-   
+		/**
+		 * Textual description of the model for Multi-layer Perceptron. The representation
+		 * include the description of the connections and layers.
+		 */
 	override def toString: String = {
 		val buf = new StringBuilder
 		connections.foreach(buf.append(_))

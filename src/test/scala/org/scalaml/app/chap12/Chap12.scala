@@ -32,7 +32,11 @@ final class Chap12 extends ScalaMlTest  {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chapter 12"
-  	 
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 7
+	
 	test(s"$chapter Scala parallel collections") {
 		evaluate(ParBenchmarkEval)
 	}

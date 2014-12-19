@@ -19,12 +19,16 @@ import libsvm._
 		/**
 		 * <p>Protected class that encapsulates the execution parameters for SVM training. The
 		 * class are instantiated by the companion object.<br>
-		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
+		 * This implementation uses the LIBSVM library: <b>http://www.csie.ntu.edu.tw/~cjlin/libsvm/</b>
+		 * <br>
+		 * One of the constructor parameters refers to the cache used in LIBSVM to avoid re-computation
+		 * of derivatives during optimization. The default value,  DEFAULT_CACHE_SIZE defined 
+		 * in the constructor <b>SVMExecution.apply</b> works for small set of observations.</p>
 		 * @constructor Create SVM execution configuration with the following parameters
 		 * @throws IllegalArgumentException if the cache, convergence criteria or number of folds are 
 		 * incorrectly specified.
 		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation 
-		 * during training.
+		 * during training. The constructor SVMExecution.apply used a default value
 		 * @param eps Convergence Criteria to exit the training cycle
 		 * @param nFolds Number of folds used in K-fold validation of the SVM model. Value -1 
 		 * indicates no validation
@@ -37,11 +41,19 @@ protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) e
 	import SVMExecution._
 	
 	check(cacheSize, eps, nFolds)
+	
+		/**
+		 * Generic update method to set the LIBSVM parameters
+		 * @param param LIBSVM parameters to update
+		 */
 	override def update(param: svm_parameter): Unit = {
 		param.cache_size = cacheSize
 		param.eps = eps
 	}
-
+		/**
+		 * Textual representation of the SVM Execution configuration parameters
+		 * @return Description of the SVM execution configuration
+		 */
 	override def toString: String = s"\nCache size: $cacheSize eps: $eps"
 }
 
@@ -55,7 +67,8 @@ protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) e
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
 object SVMExecution {
-	private val DEFAULT_CACHE_SIZE = 1024
+	// Internal LIBSVM configuration parameters
+	private val DEFAULT_CACHE_SIZE = 1<<8
 	private val DEFAULT_EPS = 1e-5
 
 	private val MAX_CACHE_SIZE = 1<<16

@@ -52,8 +52,8 @@ final class MultiLinearRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVec
 	import MultiLinearRegression._
 
 	check(xt, y)
-	
-    type Feature = Array[T]
+		// Parameterized features tpe
+	type Feature = Array[T]
 	private val logger = Logger.getLogger("MultiLinearRegression")
 	
 		/**
@@ -136,7 +136,8 @@ object MultiLinearRegression {
 		 */
 	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector): MultiLinearRegression[T] = 
 			new MultiLinearRegression[T](xt, y)
-		
+			
+			// Class parameters validation function
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {
 		require( !xt.isEmpty,
 				"MultiLinearRegression.check Cannot create a regression with undefined time series")

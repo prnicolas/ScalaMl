@@ -68,9 +68,12 @@ final class Partitioner(val numPartitions: Int) {
 		 * @throws IllegalArgumentException if the time series argument is undefined.
 		 */
 	def split(xt: DblSeries): Array[Int] = {
-		require( !xt.isEmpty, "Partitioner.split Cannot partition undefined time series")
+		require( !xt.isEmpty, "Partitioner.split Cannot partition undefined time series")	
 		
+			// Compute the size of each partition
 		val sz = (xt.size.toDouble/numPartitions).floor.toInt
+		
+			// Compute the absolute index in the original time series for each partition
 		val indices = Array.tabulate(numPartitions)(i=>(i+1)*sz)
 		indices.update(numPartitions -1, xt.size)
 		indices

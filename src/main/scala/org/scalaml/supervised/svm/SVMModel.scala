@@ -42,10 +42,15 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 		 * Name of the file that persists the model parameters for the support vector machine
 		 */
 	protected val persists = "models/svm"
-  	 
+ 
+		/**
+		 * Textual representation of the SVM model. The method converts LIBSVM nodes values
+		 * and the SVM weights (or coefficients) into characters string
+		 * @return Description of the model for debugging purpose
+		 */
 	override def toString: String = {
 		val description = new StringBuilder("SVM model\n")
-  	  
+			// Stringize LIBSVM nodes
 		val nodes = svmmodel.SV
 		if( !nodes.isEmpty) {
 			description.append("SVM nodes:\n")
@@ -55,7 +60,7 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 			})
 			description.append(FormatUtils.format(_nodes, FormatUtils.ShortFormat))
 		}
-  	  
+  		// Stringize the LIBSVM coefficients
 		val coefs = svmmodel.sv_coef
 		if( !coefs.isEmpty ) {
 			description.append("\nSVM basis functions:\n")
@@ -64,8 +69,9 @@ final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) ex
 				description.append("\n")
 			})
 		}
+			// Aggregate the description
 		description.append(s"Accuracy: ${FormatUtils.format(accuracy,"",FormatUtils.ShortFormat)}\n")
-		description.toString
+						.toString
 	}
 }
 

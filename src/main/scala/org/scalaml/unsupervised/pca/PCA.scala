@@ -12,16 +12,18 @@
  */
 package org.scalaml.unsupervised.pca
 
-import org.scalaml.core.XTSeries
+import scala.util.{Try, Success, Failure}
+
+import org.apache.log4j.Logger
 import org.apache.commons.math3.linear._
 import org.apache.commons.math3.stat.correlation.Covariance
-import org.apache.commons.math3.exception.{MathIllegalArgumentException, MaxCountExceededException, MathArithmeticException, DimensionMismatchException}
+
+import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.{CommonMath, ScalaMl}
 import org.scalaml.core.design.PipeOperator
-import ScalaMl._
 import org.scalaml.util.DisplayUtils
-import org.apache.log4j.Logger
-import scala.util.{Try, Success, Failure}
+import ScalaMl._
+
 
 		/**
 		 * <p>Generic class that implements the Principal Component Analysis technique. The
@@ -76,6 +78,8 @@ final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix
 					(cov, eigenValues.toArray)
 				})
 			} 
+				// Return the tuple (Empty Covariance matrix, Empty Eigenvalue vector)
+				// if an exception is thrown.
 			match {
 				case Success(eigenResults) => eigenResults.getOrElse((Array.empty, Array.empty))
 				case Failure(e) => {

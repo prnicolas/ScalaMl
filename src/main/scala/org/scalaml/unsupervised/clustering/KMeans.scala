@@ -12,16 +12,16 @@
  */
 package org.scalaml.unsupervised.clustering
 
+import scala.annotation.implicitNotFound
+
+import org.apache.log4j.Logger
+
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
-import scala.Array.canBuildFrom
-import scala.annotation.implicitNotFound
 import org.scalaml.unsupervised.Distance
-import ScalaMl._
-import KMeans._
-import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
+import ScalaMl._
 
 		/**
 		 * <p>Class that implements the KMeans++ algorithm for which the centroids
@@ -50,7 +50,8 @@ final class KMeans[T <% Double](
 		K: Int, 
 		maxIters: Int, 
 		distance: (DblVector, Array[T]) => Double)
-		(implicit order: Ordering[T], m: Manifest[T]) extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
+		(implicit order: Ordering[T], m: Manifest[T]) 
+			extends PipeOperator[XTSeries[Array[T]], List[Cluster[T]]] { 
 
 	import XTSeries._, KMeans._
 	check(K, maxIters)
@@ -174,7 +175,7 @@ final class KMeans[T <% Double](
 		 */
 	private[this] def getNearestCluster(clusters: List[Cluster[T]], x: Array[T]): Int = {
 		clusters.zipWithIndex.foldLeft((Double.MaxValue, 0))((p, c) => { 
-			val measure = distance(c._1.center, x)
+			val measure = distance(c._1.center, x)  // distance between this obs and the center.
 			if( measure < p._1) 
 				(measure, c._2) 
 			else p
@@ -252,7 +253,7 @@ object KMeans {
 				"KMeans.stdDev Cannot compute the variance of undefined clusters")
 		require( !xt.isEmpty, 
 				"KMeans.stdDev  Cannot compute the variance of clusters for undefined input datat")
-  	 
+				// Compute the standard deviation of the distance within each cluster
 		c.map( _.stdDev(xt, distance))
 	}
    

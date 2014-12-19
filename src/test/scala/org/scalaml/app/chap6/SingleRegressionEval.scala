@@ -33,11 +33,7 @@ object SingleLinearRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SingleLinearRegressionEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 7000
-	
+
 	private val path = "resources/data/chap6/CU.csv"
 	private val logger = Logger.getLogger(name)
 
@@ -57,16 +53,13 @@ object SingleLinearRegressionEval extends Eval {
 		    
 			val slope = linRegr.slope
 			val intercept = linRegr.intercept
+			assert(slope != None, s"Simple regression model is undefined")
 			
-			if( slope != None ) {
-				val slope_str = FormatUtils.format(slope.get, "y= ", FormatUtils.ShortFormat)
-				val intercept_str = FormatUtils.format(intercept.get, " ", FormatUtils.ShortFormat)
-				DisplayUtils.show(s"$name Linear regression: $slope_str.x + $intercept_str", logger)
-				DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", 
-						logger)
-			}
-			else
-				DisplayUtils.error(s"$name run failed compute slope", logger)	  
+			val slope_str = FormatUtils.format(slope.get, "y= ", FormatUtils.ShortFormat)
+			val intercept_str = FormatUtils.format(intercept.get, " ", FormatUtils.ShortFormat)
+			DisplayUtils.show(s"$name Linear regression: $slope_str.x + $intercept_str", logger)
+			DisplayUtils.show(s"$name validation: ${lsError(xy.toArray, slope.get, intercept.get)}", 
+						logger)  
 		}
 		match {
 			case Success(n) => n

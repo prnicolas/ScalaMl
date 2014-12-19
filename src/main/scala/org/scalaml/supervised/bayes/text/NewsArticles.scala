@@ -30,6 +30,7 @@ import DocumentsSource._, TermsScore._
 		 * @constructor Create a map of news articles, classified and ordered by their release dates. 
 		 * @throws ImplicitNotFound exception is ordering is not defined prior instantiating this class
 		 * @param order Implicit ordering instance used in ranking the articles by date.
+		 * 
 		 * @author Patrick Nicolas
 		 * @since February 16, 2014
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models / Naive Bayes and text mining
@@ -49,7 +50,9 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 	def += (date: T, weightedTerms: Map[String, Double]): Unit = {
 		require( !weightedTerms.isEmpty, 
 				"NewsArticles.+= Cannot update daily keywords with undefined document weighted words")
-	   
+
+				// The local method 'merge' merges two maps of weighted keywords as
+				// the tuple (keyword, relative frequency)
 		def merge(m1: Map[String, Double], m2: Map[String, Double]): Map[String, Double] = {
 			(m1.keySet ++ m2.keySet).foldLeft(new mutable.HashMap[String, Double])( (m, x) => {
 				var wt = 0.0
@@ -60,11 +63,10 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 				m 
 			}).toMap
 		}
-	   
-		articles.put(date, if( articles.contains(date)) 
-								merge(articles(date), weightedTerms) 
-							else 
-								weightedTerms )
+			// Add the merged relative frequency maps associated to a specific dat
+			// to the current list of articles.
+		articles.put(date, if( articles.contains(date)) merge(articles(date), weightedTerms) 
+				else weightedTerms )
 	}
 	
 	
@@ -98,6 +100,8 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 		require( !labels.isEmpty, 
 				"NewsArticles.toString: labels for the news articles are undefined")
 
+				// Description of the maps to be added to the 
+				// overall textual descriptionj
 		val mapped = labels.foldLeft(new mutable.HashSet[String])((set, lbl) => {set.add(lbl); set})
 
 		val buf = new StringBuilder("id")

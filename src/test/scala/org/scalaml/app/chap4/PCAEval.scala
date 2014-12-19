@@ -40,10 +40,7 @@ object PCAEval extends UnsupervisedLearningEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "PCAEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
+
 	private val logger = Logger.getLogger(name)	
 	
 	// Symbol, PE/PS/PB/ROE/OM

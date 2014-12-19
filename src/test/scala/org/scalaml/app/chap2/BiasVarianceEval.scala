@@ -32,10 +32,6 @@ object BiasVarianceEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BiasVarianceEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 		
 	private val logger = Logger.getLogger(name)
 	
@@ -64,16 +60,13 @@ object BiasVarianceEval extends Eval {
 		
 		Try {
 			val modelFit = new BiasVarianceEmulator[Double](emul, 200)
-			modelFit.fit(fEst.map( _._1)) match {
-			  
-				case Some(varBias) => {
-					val result = FormatUtils.format(varBias, "Variance", "bias", FormatUtils.ShortFormat)
-					DisplayUtils.show(s"$name Result variance bias emulation\n${result}", logger)
-					true
-				}
-				case None => DisplayUtils.error(s"$name variance bias model failed", logger);false
-		  }
-		} match {
+			modelFit.fit(fEst.map( _._1))
+							.map(bias => { 
+				val result = FormatUtils.format(bias, "Variance", "bias", FormatUtils.ShortFormat)
+				DisplayUtils.show(s"$name Result variance bias\n${result}", logger)
+			}).getOrElse(DisplayUtils.error(s"$name variance bias model failed", logger))
+		} 
+		match {
 			case Success(succeed) => DisplayUtils.show(s"$name Completed successfully", logger); 0
 			case Failure(e) => DisplayUtils.error(s"$name Failed to find a good fit", logger, e); -1
 		}

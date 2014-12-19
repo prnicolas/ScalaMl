@@ -12,12 +12,15 @@
  */
 package org.scalaml.supervised.regression.linear
 
+	// Scala classes
+import scala.util.{Try, Success, Failure}
+	// Third party libraries classes
 import org.apache.log4j.Logger
 import org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
 import org.apache.commons.math3.linear.{RealMatrix, RealVector, QRDecomposition, LUDecomposition}
 import org.apache.commons.math3.stat.StatUtils
 import org.apache.commons.math3.stat.descriptive.moment.SecondMoment
-
+	// ScalaML classes
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
@@ -53,13 +56,15 @@ import ScalaMl._
 final class RidgeRegression[T <% Double](xt: XTSeries[Array[T]], y: DblVector, lambda: Double) 
 					extends AbstractMultipleLinearRegression with PipeOperator[Array[T], Double] {
 	
-	import scala.util.{Try, Success, Failure}
 	import RidgeRegression._
 	check(xt, y)
-
+		/**
+		 * Standard type for a featur
+		 */
 	type Feature = Array[T]
 	
 	private val logger = Logger.getLogger("RidgeRegression")
+		// The linear optimization method (QR, Cholesky...) is selected at run time.
 	private[this] var qr: QRDecomposition = _
 	
 		/**

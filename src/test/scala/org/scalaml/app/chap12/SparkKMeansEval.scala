@@ -36,10 +36,6 @@ object SparkKMeansEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SparkKMeansEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 	  	
 	private val logger = Logger.getLogger(name)
 

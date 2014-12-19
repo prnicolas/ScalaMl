@@ -33,10 +33,6 @@ object MLPEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MLPEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 45000
     
 	private val path = "resources/data/chap9/"
 	private val ALPHA = 0.8; 
@@ -81,7 +77,6 @@ object MLPEval extends Eval {
 		test(Array[Int](4), prices)
 		test(Array[Int](4, 4), prices)
 		test(Array[Int](7, 7), prices)
-		// test(Array[Int](8, 5, 6), prices)
 	}
   
 
@@ -99,11 +94,10 @@ object MLPEval extends Eval {
 
 	private def eval(obs: DblMatrix, 
 					config: MLPConfig, 
-					etfsSet: Array[String]): Int = accuracy(etfsSet, obs, config) match {
-	  
-		case Some(acc) => DisplayUtils.show(s"$name accuracy: $acc", logger)
-		case None => DisplayUtils.error(s"$name could not compute the accuracy", logger)
-	}
+					etfsSet: Array[String]): Int = 
+		
+		accuracy(etfsSet, obs, config).map(acc => DisplayUtils.show(s"$name accuracy: $acc", logger))
+			.getOrElse(DisplayUtils.error(s"$name could not compute the accuracy", logger))
  
 
 	private def accuracy(

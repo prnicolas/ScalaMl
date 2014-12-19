@@ -36,11 +36,7 @@ object ParBenchmarkEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	 val name: String = "ParBenchmarkeval"
-	   	/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	 val maxExecutionTime: Int = 30000
-	   	
+
 	 private val logger = Logger.getLogger(name)
 	 private val SZ = 100000
 	 private val NUM_TASKS = 8
@@ -63,7 +59,7 @@ object ParBenchmarkEval extends Eval {
 			 	// Arbitrary reduce function
 			 val reduceF = (x:Double, y:Double) => (x+y)*x
 			 
-			 DisplayUtils.show(s"Duration parallel collection relative to non-parallel collection for NUM_TASKS tasks\nIter\tRatio", logger)
+			 DisplayUtils.show(s"$name Compartive benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
 			 if(args(0) == "array")
 				 evaluateParArray(mapF, filterF, reduceF)
 			else
@@ -71,7 +67,7 @@ object ParBenchmarkEval extends Eval {
 			0
 		 }
 		 else 
-			 DisplayUtils.error(s"$name incorrect command line, argument should be 'array' or 'map'", logger)
+			 DisplayUtils.error(s"$name Incorrect cmd line argument. It should be 'array' or 'map'", logger)
 	}
 	 
 	private def evaluateParArray(mapF: Double => Double, filterF: Double => Boolean, reduceF: (Double, Double) => Double): Unit =  {

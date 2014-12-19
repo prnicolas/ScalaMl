@@ -26,6 +26,7 @@ import TermsScore._, DocumentsSource._
 		/**
 		 * <p>Class to extract and score terms extracted from a set of news articles.></p>
 		 * @constructor Instantiates a terms extractor and scoring class. 
+		 * @see org.scalaml.util.MapUtils.Counter
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @throws ImplicitNotFoundException if ordering is not defined prior the instantiation 
 		 * of this class
@@ -42,10 +43,11 @@ final class TermsScore[T <% Long](
 		toDate: String =>T, 
 		toWords: String => Array[String], 
 		lexicon: immutable.Map[String, String])(implicit order: Ordering[T]) {
-	import TermsScore._, NewsArticles._
+	
+  import TermsScore._, NewsArticles._
 
 	check(lexicon)
-	private val logger = Logger.getLogger("NaiveBayesTextScoring")
+	private val logger = Logger.getLogger("TermsScore")
    
 		/**
 		 * <p>Method to organize a corpus (set of documents) into a ordered sequence of map of
@@ -57,19 +59,28 @@ final class TermsScore[T <% Long](
 	def score(corpus: Corpus): Option[NewsArticles[T]] = {
 		Try {
 			val docs = rank(corpus)
-
-			val cnts = docs.map( doc => (doc._1, count(doc._3)) )
-			val totalCnts = cnts.map( _._2).foldLeft(new Counter[String])((s, cnt) => s ++ cnt) 
+				// Count the occurrences of news article for each specific date
+			val cnts = docs.map(doc => (doc._1, count(doc._3)) )
+			
+				// Total number of occurrences 
+			val totalCnts = cnts.map( _._2)
+												.foldLeft(new Counter[String])((s, cnt) => s ++ cnt) 
+												
+				// Initialize and populate the mutable map of news articles
 			val articles = NewsArticles[T]
 			cnts.foreach(cnt => articles += (cnt._1, (cnt._2/totalCnts).toMap))
-
 			articles
-		} match {
+		} 
+		match {
 			case Success(newsarticles) => Some(newsarticles)
 			case Failure(e) => DisplayUtils.none("TermsScore.score ", logger, e)
 		}
 	}
 
+  	/**
+  	 * Count the number of occurrences of a term. The function toWords
+  	 * extract the keywords matching the lexicon from a string or file entry.
+  	 */
 	private[this] def count(term: String): Counter[String] = {
 		require(term != Types.nullString, 
 				"TermsScore.count: Cannot count the number of words in undefined text")
@@ -77,8 +88,11 @@ final class TermsScore[T <% Long](
 		toWords(term).foldLeft(new Counter[String])((cnt, w) => 
 			if( lexicon.contains(w)) cnt + lexicon(w) else cnt )
 	}
-   
 
+  	/**
+  	 * Rank the document within this corpus per their date
+  	 * @param corpus Group of documents or news articles.
+  	 */
 	private[this] def rank(corpus: Corpus): CorpusType[T] = {
 		require( !corpus.isEmpty, 
 				"TermsScore.rank: Cannot order an undefined corpus of document")

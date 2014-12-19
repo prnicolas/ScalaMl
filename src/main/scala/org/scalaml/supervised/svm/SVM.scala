@@ -12,18 +12,18 @@
  */
 package org.scalaml.supervised.svm
 
-import org.scalaml.core.XTSeries
+	// Scala standard library
+import scala.collection.mutable.ArrayBuffer
+import scala.util.{Try, Success, Failure}
+	// 3rd party libraries
 import libsvm.{svm_problem, svm_node, svm, svm_model}
+import org.apache.log4j.Logger
+	// ScalaMl classes
+import org.scalaml.core.{XTSeries, Matrix}
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.design.PipeOperator
-import org.scalaml.core.Matrix
-import scala.util.{Try, Success, Failure}
-import XTSeries._
-import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
-import scala.collection.mutable.ArrayBuffer
-
-
+import XTSeries._
 
 		/**
 		 * <p>Support Vector Algorithm for time series of vector of element with parameterized types
@@ -45,13 +45,21 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	import SVM._
 	
 	check(config, xt, labels)
-  
+  	/**
+  	 * Define the feature type as a parameterized array
+  	 */
 	type Feature = Array[T]
+			/**
+			 * Type to wrap the LIBSVM svm_node
+			 */
 	type SVMNodes = Array[Array[svm_node]]
 
 	private val logger = Logger.getLogger("SVM")
-	private val normEPS = config.eps*1e-7
-    
+		// Used to prevent divide by zero
+	private[this] val normEPS = config.eps*1e-7
+  
+		// The model of type SVMModel is created during training only
+		// if the training succeed during the instantiation of the SVM classifier
 	private[this] val model: Option[SVMModel] = train match {
 			case Success(model) => Some(model)
 			case Failure(e) => DisplayUtils.none("SVM.model", logger, e)
@@ -69,19 +77,22 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		 * successfully built, None otherwise
 		 */
 	final def mse: Option[Double] = model.map(m => { 
+	  	// Simple reducer to compute the sum of the squared error
 		val z = xt.toArray.zipWithIndex.foldLeft(0.0)((s, xti) => {
 				val diff = svm.svm_predict(m.svmmodel, toNodes(xti._1)) - labels(xti._2)
 						s + diff*diff
 			})
+				// The least square error is adjusted by the number of observations.
 			Math.sqrt(z)/xt.size
 	})
 
   
 		/**
-		 * Compute the margin 2/||w|| for the SVM model (distance between the support vectors)
+		 * Compute the margin 2/||w|| for the SVM model (distance between the support vectors).
+		 * The method returns Option[Double.NaN] if the norm of the weights vector is null.
 		 * @return margin if model was successfully trained, None otherwise of if the model norm is zero
 		 */
-	def margin: Option[Double] = model.map( m => { 
+	final def margin: Option[Double] = model.map( m => { 
 		val wNorm = m.svmmodel.sv_coef(0).foldLeft(0.0)((s, r) => s + r*r)
 		if(wNorm < normEPS) Double.NaN else 2.0/Math.sqrt(wNorm)
 	})
@@ -94,22 +105,34 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		 *  @return PartialFunction of feature of type Array[T] as input and the predicted value as output
 		 */
 	override def |> : PartialFunction[Feature, Double] =  {
-		case x: Feature if(!x.isEmpty && x.size == dimension(xt) && model != None && 
-				model.get.accuracy >= 0.0) =>
+		case x: Feature if(!x.isEmpty && x.size == dimension(xt) && model != None) =>
 			svm.svm_predict(model.get.svmmodel, toNodes(x))
 	}
 
-
-	private def accuracy(problem: svm_problem): Double = config.isCrossValidation match { 
-		case true => {
+		/**
+		 * Compute the accuracy of the model. The computation relies on the cross-validation
+		 * method if LIBSVM svm class. It returns 0.0 if the cross validation is not selected.
+		 * The accuracy is computed on the sum of the difference between the actual value and
+		 * the expected values. A least square method could have been used, too.
+		 */
+	private def accuracy(problem: svm_problem): Double = { 
+		if(config.isCrossValidation) {
 			val target = new Array[Double](labels.size)
+					// Applies the LIBSVM cross-validation 
 			svm.svm_cross_validation(problem, config.param, config.nFolds, target)
-			target.zip(labels).filter(z => Math.abs(z._1-z._2) < config.eps).size.toDouble/labels.size
+			
+				// compute the sum of the difference of norm between the labels (actual)
+				// and the target values (expected or predicted)
+			target.zip(labels)
+						.filter(z => Math.abs(z._1-z._2) < config.eps)
+						.size.toDouble/labels.size
 		}
-		case false => 0.0
+		else 0.0
 	}
 	
-	
+		/**
+		 * Training method for SVM that generate a SVMModel
+		 */
   private def train: Try[SVMModel] = {
 		val problem = new svm_problem
 		problem.l = xt.size;
@@ -118,8 +141,10 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
       
 		val dim = dimension(xt)
 		Try {
+				// Creates a indexed time series, then
+		  	// initialize the vector of LIBSVM nodes
 			xt.zipWithIndex.foreach( xt_i => {  
-		  		 
+		  	
 				val svm_col = new Array[svm_node](dim)
 				xt_i._1.zipWithIndex.foreach(xi =>  {
 					val node = new svm_node
@@ -127,13 +152,18 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 					node.value = xi._1
 					svm_col(xi._2) = node 
 				})
-		  	  	 
+					// initialize the SVMMNodes 
 				problem.x(xt_i._2) = svm_col
 			})
+				// Wrap the result of the LIBSVM training and accuracy into our Model type.
 			new SVMModel(svm.svm_train(problem, config.param), accuracy(problem))
 		}
 	}
-  
+ 
+		/*
+		 * Convert a ScalaMl feature (vector of type T) into 
+		 * a vector /array of LIBSVM nodes
+		 */
 	private def toNodes(x: Feature): Array[svm_node] = 
 		x.zipWithIndex.foldLeft(new ArrayBuffer[svm_node])((xs, f) =>  {
 			val node = new svm_node

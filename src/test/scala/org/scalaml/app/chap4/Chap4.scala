@@ -55,7 +55,11 @@ final class Chap4 extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
-	val chapter: String = "Chapter 3"
+	val chapter: String = "Chap 4"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 12
     
 	test(s"$chapter K-means clustering") {
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")

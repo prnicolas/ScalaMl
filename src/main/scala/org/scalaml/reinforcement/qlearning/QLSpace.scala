@@ -12,10 +12,11 @@
  */
 package org.scalaml.reinforcement.qlearning
 
+	// Scala lib
 import scala.collection._
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
-
+	// ScalaMl classes
 import org.scalaml.core.design.Model
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.util.DisplayUtils
@@ -24,7 +25,8 @@ import org.scalaml.util.DisplayUtils
 		/**
 		 * <p>Class that defines the search space (States x Actions) for the Q-Learning algorithm.
 		 * The search space can be provided by the end user with a list of states and actions or
-		 * automatically created by providing the number of states.</p>
+		 * automatically created by providing the number of states.<br>
+		 * This implementation supports more than one goal per states space.</p>
 		 * @constructor Create a state (or search) space. 
 		 * @throws IllegalArgumentException if either states or the goal(s) is undefined
 		 * @param states States defined in the Q-learning search space.
@@ -36,8 +38,10 @@ import org.scalaml.util.DisplayUtils
 protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 	import QLSpace._
 	check(states, goalIds)
-	
+		// Create a map of states as an immutable Map of state id and state instance
 	private[this] val statesMap: immutable.Map[Int, QLState[T]] = states.map(st => (st.id, st)).toMap
+	
+		// Create a set (hash set) of id of the state goals. 
 	private[this] val goalStates = new immutable.HashSet[Int]() ++ goalIds
 
 		/**
@@ -47,7 +51,10 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 * @return Maximum Q-value
 		 * @throws IllegalArgumentException if either the state  or the policy is undefined
 		 */
-	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {		
+	final def maxQ(state: QLState[T], policy: QLPolicy[T]): Double = {	
+			// Select the states except this 'state' and select
+			// the state that provides with the highest estimate given
+			// the current 'policy'
 		val best = states.filter( _ != state)
 						.maxBy(st => policy.EQ(state.id, st.id))
 		policy.EQ(state.id, best.id)
@@ -77,7 +84,10 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 		 * @return true if this state is a goal state, false otherwise
 		 */
 	final def isGoal(state: QLState[T]): Boolean = goalStates.contains(state.id)
-
+	
+		/**
+		 * Textual representation of this search or states space.
+		 */
 	override def toString: String = 
 		new StringBuilder("States\n")
 			.append( states.foldLeft(new StringBuilder)(( buf, st) => {
@@ -113,10 +123,13 @@ object QLSpace {
 		require(numStates >=0, s"QLSpace.apply The number of states $numStates should be positive")
 		require( !features.isEmpty, "QLSpace.apply features are undefined")
 		
+			// Generate the states using the neighbors restrictive function
 		val states = features.zipWithIndex
-						.map(x => {
+						.map(x => {	
+						  	// Generated the list of actions permitted by the neigbhors restriction
 							val actions = neighbors(x._2,numStates).map(j =>new QLAction[T](x._2, j))
 																.filter(x._2 != _.to)
+								// Create a new state to be added to the state space or search space.
 							QLState[T](x._2, actions, x._1)
 						})
 

@@ -29,7 +29,11 @@ final class Chap11 extends ScalaMlTest {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chapter 11"
-  	 
+
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 12
 	test(s"$chapter QLearning reinforcement learning")  {
 		evaluate(QLearningEval)
  	}

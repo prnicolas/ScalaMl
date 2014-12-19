@@ -41,11 +41,7 @@ object GAEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "GAEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 12000
-	  	
+
 	private val logger = Logger.getLogger(name)
       
 	private val path = "resources/data/chap10/GS.csv"
@@ -95,7 +91,8 @@ object GAEval extends Eval {
 				.foreach(ch => DisplayUtils.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
 	        
 			DisplayUtils.show(s"$name run completed", logger)
-		} match {
+		} 
+		match {
 			case Success(n) => n
 			case Failure(e) => DisplayUtils.error(s"$name failed", logger, e)
 		}

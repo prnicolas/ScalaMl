@@ -12,9 +12,9 @@
  */
 package org.scalaml.filtering
 
-
+	// Scala standard library
 import scala.annotation.implicitNotFound
-
+	// ScalaMl classes
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.design.PipeOperator
@@ -141,7 +141,6 @@ object SimpleMovingAverage {
 final protected class ExpMovingAverage[@specialized(Double) T <% Double](
 		period: Int, 
 		alpha: Double) extends MovingAverage[T]  {
-	
   require( period > 0, 
 			s"ExpMovingAverage Cannot initialize with incorrect value for period = $period")
 	require( alpha > 0 && alpha <= 1.0, 

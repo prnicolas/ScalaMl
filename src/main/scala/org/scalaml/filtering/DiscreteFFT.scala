@@ -12,13 +12,13 @@
  */
 package org.scalaml.filtering
 
-
+	// Scala standard library
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
-
+	// 3rd party libaries
 import org.apache.commons.math3.transform._
 import org.apache.log4j.Logger
-
+	// ScalaMl classes
 import org.scalaml.util.DisplayUtils
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
@@ -53,7 +53,9 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 			do {
 				bitPos += 1
 			} while( (sz >> bitPos) > 0)
-
+				
+				// Add 1 slot for  padding to the next power of two
+			  // if the 
 			(if(even) (1<<bitPos) else (1<<bitPos)+1) - xtSz
 		}
 	}
@@ -75,10 +77,7 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 		
 			// Fill up the remaining array with 0.0 if the size of the 
 			// padding exceeds the size of the time series.
-		if( newSize > 0)
-			arr ++ Array.fill(newSize)(0.0) 
-		else 
-			arr
+		if( newSize > 0) arr ++ Array.fill(newSize)(0.0) else arr
 	}
 }
 
@@ -91,7 +90,6 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 		 * @note Scala for Machine Learning Chapter 2 Data pre-processing / Discrete Fourier transform
 		 */
 object DTransform { 
-
 		/**
 		 * Definition of the sinc convolution function used in discrete Fourier transform based 
 		 * low pass filters
@@ -156,7 +154,6 @@ protected class DFT[T <% Double] extends DTransform[T] {
 }
 
 
-	
 		/**
 		 * Companion object for the Discrete Fourier Cosine and Sine transform.
 		 * @author Patrick Nicolas
@@ -170,7 +167,6 @@ object DFT {
 		 */
 	def apply[T <% Double]: DFT[T] = new DFT[T]
 }
-
 
 		/**
 		 * <p>Pass-band Filter based of the Discrete Fourier transform. The overloaded Pipe Operator 

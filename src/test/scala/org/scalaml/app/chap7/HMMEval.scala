@@ -38,10 +38,6 @@ object HMMEval extends Eval  {
 		 * Name of the evaluation 
 		 */
 	val name: String = "HMMEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 12000
 	
 	private val STATES_PATH = "resources/data/chap7/statesprob.csv"
 	private val OBS_PATH = "resources/data/chap7/obsprob.csv"

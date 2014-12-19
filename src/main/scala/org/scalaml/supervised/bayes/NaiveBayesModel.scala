@@ -42,8 +42,6 @@ abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model 
 	def classify(x: Array[T]): Int
 	def toString(labels: Array[String]): String 
 }
-
-
 		/**
 		 * <p>Companion object to the abstract NaiveBayesModel class. This singletong 
 		 * is used to define the signature of the Density function.
@@ -93,7 +91,8 @@ protected class BinNaiveBayesModel[T <% Double](
 		s"\nPositive class\n${positives.toString(labels)}\nNegative class\n${negatives.toString(labels)}"
 	}
 	
-	override def toString: String = s"\nPositive\n${positives.toString}\nNegative\n${negatives.toString}"
+	override def toString: String = 
+			s"\nPositive\n${positives.toString}\nNegative\n${negatives.toString}"
 }
 
 
@@ -166,8 +165,6 @@ protected class MultiNaiveBayesModel[T <% Double](
 		buf.toString
 	}
 }
-
-
 
 		/**
 		 * Companion object for the Multinomial Naive Bayes Model. The singleton

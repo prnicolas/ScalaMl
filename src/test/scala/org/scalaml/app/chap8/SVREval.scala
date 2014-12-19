@@ -36,10 +36,6 @@ object SVREval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SVREval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	private val path = "resources/data/chap8/SPY.csv"
 	private val C = 12
@@ -64,9 +60,8 @@ object SVREval extends Eval {
 								.map( x => (x._2.toDouble, x._1.toDouble))
 	      
 			val linRg = SingleLinearRegression(priceIdx)
-	  	  	 
+			
 			val config = SVMConfig(new SVRFormulation(C, EPSILON), new RbfKernel(GAMMA))
-	
 			val labels = price.toArray
 			val features = XTSeries[DblVector](Array.tabulate(labels.size)(Array[Double](_))) 
 			val svr = SVM[Double](config, features, labels)
@@ -107,7 +102,7 @@ object SVREval extends Eval {
 		require( !xs.isEmpty, s"$name Cannot display an undefined time series")
        
 		val plotter = new ScatterPlot(("SVR SPY prices", label, "SPY"), new LightPlotTheme)
-		plotter.display(xs, lbls, 250, 340)
+		plotter.display(xs, lbls, 340, 250)
 	}
 }
 

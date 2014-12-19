@@ -14,7 +14,6 @@ package org.scalaml.app.chap6
 import org.scalaml.app.ScalaMlTest
 
 
-
 		/**
 		 * <p>Test driver for the techniques described in the Chapter 6 Regression and Regularization<br>
 		 * <ul>
@@ -33,7 +32,11 @@ final class Chap6 extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
-	val chapter: String = "Chapter 6"
+	val chapter: String = "Chap 6"
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 18
 	
 	test(s"$chapter Single variable linear regression") {
 		evaluate(SingleLinearRegressionEval)

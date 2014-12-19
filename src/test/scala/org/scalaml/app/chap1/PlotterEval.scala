@@ -33,11 +33,7 @@ object PlotterEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "PlotterEval"
-	  	/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
-		
+
 	private val CSV_DELIM = ","
 	private val PRICE_COLUMN_INDEX = 6
 	private val OPEN_COLUMN_INDEX = 1
@@ -63,7 +59,7 @@ object PlotterEval extends Eval {
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray	   
 			
 			val cols = fields.drop(1)
-			val volatility = Stats[Double]( cols.map(f => f(HIGH_INDEX).toDouble - f(LOW_INDEX).toDouble ))
+			val volatility = Stats[Double](cols.map(f => f(HIGH_INDEX).toDouble - f(LOW_INDEX).toDouble))
 					.normalize
 			val normVolume =  Stats[Double](cols.map( _(VOL_COLUMN_INDEX).toDouble) ).normalize
 			val volatility_volume: Array[(Double, Double)] = volatility.zip(normVolume)

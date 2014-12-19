@@ -47,7 +47,10 @@ final protected class MLPConnection(
 		 */
 	type MLPSynapse = (Double, Double)
 
-    
+		/*
+		 * Initialize the matrix (Array of Array) of Synapse by generating
+		 * a random value between 0 and BETA
+		 */
 	private val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
 			if(n > 0) Array.fill(src.len)((Random.nextDouble*BETA, 0.0)) 
 			else Array.fill(src.len)((1.0, 0.0)))
@@ -60,18 +63,17 @@ final protected class MLPConnection(
 		 * the dot product weights and values.</p>
 		 */
 	def connectionForwardPropagation: Unit = {
+				// Iterates over all the synapsed except the first or bian selement
 		val _output = synapses.drop(1).map(x => {
+				// Compute the dot product
 			val sum = x.zip(src.output).foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
-		    
-			if(!isOutLayer) 
-				config.activation(sum)
-			else 
-				sum
+				
+				// Applies the activation function if this is a hidden layer (not output)
+			if(!isOutLayer) config.activation(sum) else sum
 		})
-		val out = if(isOutLayer) 
-			mlpObjective(_output) 
-		else 
-			_output
+		
+			// Apply the objective function (SoftMax,...) to the output layer
+		val out = if(isOutLayer) mlpObjective(_output) else _output
 		out.copyToArray(dst.output, 1)     
 	}
 
@@ -97,19 +99,28 @@ final protected class MLPConnection(
 			 * back propagation of output error. This method is called during training.</p>
 			 */
 	def connectionUpdate: Unit =  
+			// Iterates through all element of the destination layer except the bias element
 		Range(1, dst.len).foreach(i => {  
 			val delta = dst.delta(i)
 			
+			// Compute all the synapses (weight, gradient weight) between
+			// the destination elements (index i) and the source elements (index j)
 			Range(0, src.len).foreach(j => { 
 				val _output = src.output(j)
 				val oldSynapse = synapses(i)(j)
+					// Compute the gradient with the delta
 				val grad = config.eta*delta*_output
+					// Apply the gradient adjustment formula
 				val deltaWeight = grad + config.alpha*oldSynapse._2
+					// Update the synapse
 				synapses(i)(j) = (oldSynapse._1 + deltaWeight, grad)
 			})
 		}) 
 
-	   
+		/**
+		 * Textual representation of this connection. The description list the 
+		 * values of each synapse as a pair (weight, delta weight)
+		 */
 	override def toString: String = {
 		val buf = new StringBuilder
 		buf.append(s"\nConnections weights from layer ${src.id} to layer ${dst.id}\n")
@@ -126,7 +137,10 @@ final protected class MLPConnection(
 		buf.toString
 	}
 	
-	
+		/**
+		 * Convenient method to update the values of a synapse while 
+		 * maintaining immutability
+		 */
 	private def update(i: Int, j: Int, x: Double, dx: Double): Unit = {
 		val old = synapses(i)(j)
 		synapses(i)(j) = (old._1 + x, dx)

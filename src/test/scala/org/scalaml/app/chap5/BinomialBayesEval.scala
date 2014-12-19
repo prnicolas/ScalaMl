@@ -58,10 +58,7 @@ object BinomialBayesEval extends BayesEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BinomialBayesEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 8000
+
 	private val logger = Logger.getLogger(name)
 	
 		/**

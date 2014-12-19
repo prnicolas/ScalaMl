@@ -36,10 +36,6 @@ object SVCMarginEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SVCMarginEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	private val GAMMA = 0.8; val N = 100	
 	private var status: Int = 0
@@ -75,16 +71,12 @@ object SVCMarginEval extends Eval {
 		val config = SVMConfig(new CSVCFormulation(c), new RbfKernel(GAMMA))
 		val svc = SVM[Double](config, XTSeries[DblVector](features), lbl)
 		
-		svc.margin match {
-			case Some(margin) => {
-				val margin_str = FormatUtils.format(margin, "", FormatUtils.ShortFormat)
-				DisplayUtils.show(s"\n$name Margin for SVC with C = ${c.floor} is ${}", logger)
-			}
-			case None => {
-				DisplayUtils.show(s"$name SVRFormulation  training failed", logger) 
-			}
-		}
+		svc.margin.map(_margin => { 
+			val margin_str = FormatUtils.format(_margin, "", FormatUtils.ShortFormat)
+			DisplayUtils.show(s"\n$name Margin for SVC with C = ${c.floor} is ${margin_str}", logger)
+		}).getOrElse(DisplayUtils.error(s"$name SVRFormulation  training failed", logger))
 	}
 }
+
 
 // --------------------------- EOF --------------------------------------------------

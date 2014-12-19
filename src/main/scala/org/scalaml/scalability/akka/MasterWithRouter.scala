@@ -57,17 +57,22 @@ abstract class MasterWithRouter(
 		aggr: (List[DblVector]) => Seq[Double]) extends Controller(xt, fct, partitioner) {	
 
 	private val logger = Logger.getLogger("MasterWithRouter")
-	private val SLEEP = 1500
 	protected val MAX_NUM_DATAPOINTS = 128
-		
-	protected val aggregator = new ListBuffer[DblVector]
+	
+		// Aggregator for results from each worker actors
+	protected[this] val aggregator = new ListBuffer[DblVector]
 	
 			// Akka version 2.3.4 and higher 
 			//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
 			//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
-	println(s"Scala version: ${Properties.versionNumberString}, ${Properties.versionMsg}" )
-	
-	private val router = context.actorOf(Props(new Worker(0, fct))
+			/*
+			 * Create a routing/supervising actor for an array of worker actors.
+			 * For Akka version 2.3.4 and higher, the RoundRobinPool should be used as follows
+			 * private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
+			 *     withRouter(RoundRobinPool(partitioner.numPartitions, 
+			 *              supervisorStrategy = this.supervisorStrategy))
+			 */
+	private[this] val router = context.actorOf(Props(new Worker(0, fct))
 		.withRouter(RoundRobinRouter(partitioner.numPartitions, 
 				supervisorStrategy = this.supervisorStrategy)))
 		
@@ -94,14 +99,24 @@ abstract class MasterWithRouter(
 			//	router ! Terminate
 				context.stop(self)
 			}
+				// Append the result from the latest worker actor
+				// to the existing list of results
 			aggregator.append(msg.xt.toArray)
 		}
 		case _ => DisplayUtils.error("MasterWithRouter.receive Message not recognized", logger)
 	} 
 	
-	
+		/*
+		 * Aggregation or reducing method that flatten a list of aggregation into
+		 * an immutable sequence of floating points
+		 */
 	protected def aggregate: Seq[Double] = aggr(aggregator.toList)
 
+			/*
+		 * Split the original time series using the partitioner helper class
+		 * then send each time series partition (or segment) to each worker
+		 * using the Activate message.
+		 */
 	private def split: Unit = {
 		DisplayUtils.show("MasterWithRouter.receive => Start", logger)
 		val indices = partitioner.split(xt)

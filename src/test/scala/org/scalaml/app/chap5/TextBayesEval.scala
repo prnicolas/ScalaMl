@@ -47,10 +47,6 @@ object TextBayesEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "TextBayesEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 	
 	private val pathCorpus = "resources/text/chap5/"
 	private val pathLexicon = "resources/text/lexicon.txt"
@@ -97,8 +93,7 @@ object TextBayesEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int  = {
-		DisplayUtils.show(s"\n\n *****  test#${Eval.testCount} " + 
-				"$name: Multinomial Naive Bayes for text analysis", logger)
+		DisplayUtils.show(s"$header $name: Multinomial Naive Bayes for text analysis", logger)
     	
 		val corpus: Corpus = DocumentsSource(pathCorpus) |>
 		val ts = new TermsScore[Long](toDate, toWords, LEXICON)

@@ -34,10 +34,6 @@ object EMEval extends UnsupervisedLearningEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "EMEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 5000
 	private val logger = Logger.getLogger(name)
 
 		/**
@@ -70,9 +66,10 @@ object EMEval extends UnsupervisedLearningEval {
 						.filter( _._2 % samplingRate == 0)
 						.map( _._1)
 			})
-	     
-				// If all the observations are valid
-			if( obs.find( _.isEmpty) == None) {  	 
+
+			obs.find(_.isEmpty).map(_ => 
+				DisplayUtils.error(s"$name.run Some observations are corrupted", logger)
+			).getOrElse( {
 				val components = MultivariateEM[Double](K) |> XTSeries[DblVector](obs)
 				components.foreach( x => {
 					DisplayUtils.show(s"\n$name value: ${x._1}\n$name Means: ", logger)
@@ -81,9 +78,7 @@ object EMEval extends UnsupervisedLearningEval {
 					DisplayUtils.show(x._3.toSeq, logger)
 				})
 				DisplayUtils.show(s"$name completed", logger)
-			}
-			else 
-				DisplayUtils.error(s"$name.run Some observations are corrupted", logger)
+			})
 		} 
 		match {
 			case Success(n) => n

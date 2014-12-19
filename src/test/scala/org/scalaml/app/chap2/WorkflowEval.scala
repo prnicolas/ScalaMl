@@ -113,10 +113,6 @@ object WorkflowEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "WorkflowEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-    val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
 	

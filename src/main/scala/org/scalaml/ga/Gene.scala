@@ -107,10 +107,13 @@ class Gene(
 		/**
 		 * Bits encoding of the tuple (value, operator) into bits {0, 1} executed 
   	 * as part of the instantiation of a gene class.
-     */
+  	 */
 	val bits = {
 		val bitset = new BitSet(GENE_SIZE)
-		rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i)  )
+			// Encode the operator
+		rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i))
+		
+			// Encode the value using the discretization function
 		rValue foreach(i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
 		bitset	
 	}
@@ -179,7 +182,9 @@ class Gene(
 		 */
 	def ^ (idx: Int): Gene = {
 		val clonedBits = cloneBits(bits)
+			// flip the bit
 		clonedBits.flip(idx)
+			// Decode or convert the bit set into a symbolic representation for the gene
 		val valOp = decode(clonedBits)
 		Gene(id, valOp._1, valOp._2)
 	}
@@ -242,11 +247,13 @@ object Gene {
 				enc.set(n)
 			enc
 		})
-    
-
+ 
+		/*
+		 * Convert a range of bits within a bit into an integer
+		 */
 	private def convert(r: Range, bits: BitSet): Int = 
 		r.foldLeft(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
-    
+ 
 	final val VALUE_SIZE = 32
 	final val OP_SIZE = 2
 	final val GENE_SIZE = VALUE_SIZE + OP_SIZE

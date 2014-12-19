@@ -26,10 +26,6 @@ object MatrixEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MatrixEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 2000
 	
 	private val logger = Logger.getLogger(name)
 	

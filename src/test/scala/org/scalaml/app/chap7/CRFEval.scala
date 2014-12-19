@@ -34,10 +34,6 @@ object CrfEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "CrfEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 12000
 	
 	private val LAMBDA = 0.5
 	private val NLABELS = 9
@@ -62,14 +58,13 @@ object CrfEval extends Eval {
 	    
 		Try {
 			val crf = Crf(NLABELS, config, delimiters, PATH)
-			crf.weights match {
-				case Some(w) => {
-					display(w)
-					DisplayUtils.show(s"$name weights for conditional random fields\nFeature weight", logger)
-					DisplayUtils.show(s"${FormatUtils.format(w, "", FormatUtils.ShortFormat)}", logger)
-				}
-				case None => throw new IllegalStateException(s"$name Could not train the CRF model")
-			}
+			crf.weights.map( w => {
+				display(w)
+				val results = s"$name weights for conditional random fields\nFeature weights" +
+						s"${FormatUtils.format(w, "", FormatUtils.ShortFormat)}"
+				DisplayUtils.show(s"$results", logger)
+			
+			}).getOrElse(DisplayUtils.error(s"$name CRF modeling failed", logger))
 		} 
 		match {
 			case Success(res) => 1

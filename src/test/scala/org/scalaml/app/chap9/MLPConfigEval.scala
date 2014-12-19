@@ -11,6 +11,8 @@
  */
 package org.scalaml.app.chap9
 
+import scala.annotation.switch
+
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
@@ -33,10 +35,6 @@ object MLPConfigEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MLPConfigEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-    val maxExecutionTime: Int = 25000
     
 	private val ALPHA = 0.9
 	private val ETA = 0.1

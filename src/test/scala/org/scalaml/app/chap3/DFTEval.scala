@@ -34,11 +34,7 @@ object DFTEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "DFTEval"  
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-    val maxExecutionTime: Int = 25000
-    
+	  
 	private val logger = Logger.getLogger(name)
 	private val h = (x:Double) => 2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
 															Math.cos(Math.PI*0.05*x) +   // simulated second harmonic

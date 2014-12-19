@@ -14,7 +14,6 @@ package org.scalaml.app.chap1
 import org.scalaml.app.ScalaMlTest
 
 
-
 		/**
 		 * <p>Test driver for the techniques described in the Chapter 1 Getting started<br>
 		 * <ul>

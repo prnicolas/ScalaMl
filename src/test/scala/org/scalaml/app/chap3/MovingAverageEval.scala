@@ -33,10 +33,6 @@ object MovingAveragesEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MovingAveragesEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-    val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
 	private val NUMBER_DISPLAYED_VALUES = 128
@@ -55,7 +51,7 @@ object MovingAveragesEval extends FilteringEval {
 			val p = args(1).toInt
 			val p_2 = p >>1
 			val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
-			val weights: DblVector = w map { _ / w.sum }
+			val weights: DblVector = w.map { _ / w.sum }
 			DisplayUtils.show(FormatUtils.format(weights, "Weights", FormatUtils.ShortFormat), logger)
 	     
 			val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)

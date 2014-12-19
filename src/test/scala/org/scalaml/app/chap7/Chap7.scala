@@ -31,7 +31,12 @@ final class Chap7 extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
-	val chapter: String = "Chapter 7"
+	val chapter: String = "Chap 7"
+	
+	  	/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 25
 	
 	test(s"$chapter Hidden Markov Model evaluation form") {
 		evaluate(HMMEval, Array[String]("evaluation"))

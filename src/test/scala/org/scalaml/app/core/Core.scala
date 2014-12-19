@@ -30,6 +30,11 @@ final class Core extends ScalaMlTest {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Core"
+	  
+		/**
+		 * Maximum duration allowed for the execution of the evaluation
+		 */
+	val maxExecutionTime: Int = 10
 	
 	test(s"$chapter Simple matrix manipulation") {
 		evaluate(MatrixEval)

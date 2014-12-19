@@ -35,10 +35,6 @@ object SVCOutliersEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SVCOutliersEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	val path = "resources/data/chap8/dividends2.csv"	
 
@@ -74,10 +70,9 @@ object SVCOutliersEval extends Eval {
      
 			DisplayUtils.show(s"$name support vector machine model\n ${svc.toString}", logger)   
 		        
-			svc.accuracy match {
-				case Some(acc) => DisplayUtils.show(s"$name completed", logger)
-				case None => DisplayUtils.error(s"$name Could not validate the training set", logger)
-			}
+			svc.accuracy
+					.map(acc => DisplayUtils.show(s"$name completed", logger))
+					.getOrElse(DisplayUtils.error(s"$name Could not validate the training set", logger))
 		} match {
 			case Success(n) => n
 			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", 

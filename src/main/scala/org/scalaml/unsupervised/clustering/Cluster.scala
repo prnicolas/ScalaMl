@@ -12,14 +12,14 @@
  */
 package org.scalaml.unsupervised.clustering
 
+import scala.collection.mutable.ListBuffer
+
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.stats.Stats
-import scala.collection.mutable.ListBuffer
 import org.scalaml.unsupervised.Distance.euclidean
-import ScalaMl._
-import XTSeries._
 import org.scalaml.util.FormatUtils
+import ScalaMl._, XTSeries._
 
 
 		/**
@@ -40,8 +40,9 @@ import org.scalaml.util.FormatUtils
 		 */
 class Cluster[T <% Double](val center: DblVector) {
 	require( !center.isEmpty, "Cluster Cannot create a cluster with undefined centers")
-   
-	private val members = new ListBuffer[Int]
+	
+		// List of observations 'members' belonging to this cluster
+	private[this] val members = new ListBuffer[Int]
    
 		/**
 		 * <p>Overloaded operator += to add a new data point by its index in the membership.
@@ -66,8 +67,9 @@ class Cluster[T <% Double](val center: DblVector) {
 	final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
 		require( !xt.isEmpty, "Cluster.moveCenter Cannot relocate time series datapoint" )
   	 
-			// Compute the sum of the value of each dimension 
-			// of the time series ...
+			// Compute the sum of the value of each dimension of the time series ... 
+			// The matrix observations x features has to be transposed in order to 
+			// compute the sum of observations for each featuer
 		val sums = members.map(xt(_)
 							.map(_.toDouble))
 							.toList
@@ -107,14 +109,20 @@ class Cluster[T <% Double](val center: DblVector) {
 		 * @return list of index of the members of this clusters
 		 */
 	final def getMembers: List[Int] = members.toList
-   
+
+			/**
+			 * <p>Textual representation of a cluster for debugging purpose.</p>
+			 * @return String representation of this clsuter
+			 */
 	override def toString: String = {
+			// First collect list of observations members to this cluster
 		val membersList = members.foldLeft(new StringBuffer)((b, n) => b.append(s"\t   $n")).toString
+		
+			// Then collect the value of centroids..
 		val centerString = center.foldLeft(new StringBuffer)((b, x) => {
 			val x_str = FormatUtils.format(x, "", FormatUtils.ShortFormat)
 		  b.append(s"$x_str ")
-		})
-		.toString
+		}).toString
 		s"Cluster definition\nCentroids: ${centerString}\nMembership: ${membersList}"
 	}
 }

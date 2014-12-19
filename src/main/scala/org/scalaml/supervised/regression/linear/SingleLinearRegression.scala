@@ -12,7 +12,9 @@
  */
 package org.scalaml.supervised.regression.linear
 
+// Scala classes
 import scala.annotation.implicitNotFound
+import scala.util.{Try, Success, Failure}
 
 import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
@@ -32,11 +34,13 @@ import ScalaMl._
 		 * ,Arial,Helvetica,sans-serif;">
 		 * regression:  w' = argmin Sum of squares {y(i)  - f(x(i)|w)}<br>
 		 * with f(x|w) = w(0) + w(1).x</span></pre></p>
-		 * @constructor Create a single linear regression model of type bounded to a Double as a view. 
+		 * @constructor Create a single linear regression model of type bounded to a Double as a view.
+		 * @see org.apache.commons.math3.stat.regression._
 		 * @throws IllegalArgumentException if the time series is undefined
 		 * @throws implicitNotFound if conversion from type to Double is not implicitly defined
 		 * @param xt Time series of (x,y) pairs of values
 		 * @param g Implicit conversion from a <b>Double</b> to the type <b>T</b>
+		 * 
 		 * @author Patrick Nicolas
 		 * @since April 27, 2014
 		 * @note Scala for Machine Learning Chapter 6 Regression and regularization / One variate 
@@ -46,7 +50,6 @@ import ScalaMl._
 final class SingleLinearRegression[T <% Double](val xt: XTSeries[(T, T)])(implicit g: Double => T)  
 				extends PipeOperator[Double, T] {
 	
-	import scala.util.{Try, Success, Failure}
 	require( !xt.isEmpty, 
 			"SingleLinearRegression. Cannot create a linear regression with undefined time series")
 	

@@ -35,10 +35,6 @@ object SVCEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SVCEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-	val maxExecutionTime: Int = 25000
 	
 	private val path = "resources/data/chap8/dividends2.csv"	
 	private val C = 1.0
@@ -75,10 +71,9 @@ object SVCEval extends Eval {
 			val svc = SVM[Double](config, features, xs.last)
 		     
 			DisplayUtils.show(s"${svc.toString}", logger)
-			svc.accuracy match {
-				case Some(acc) => DisplayUtils.show(s"$name.run completed", logger)
-				case None => DisplayUtils.error(s"$name.run accuracy could not be computed", logger)
-			}
+			svc.accuracy
+					.map( acc => DisplayUtils.show(s"$name.run completed", logger) )
+					.getOrElse(DisplayUtils.error(s"$name.run accuracy could not be computed", logger))
 		} 
 		match {
 			case Success(n) => n

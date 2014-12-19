@@ -42,15 +42,11 @@ object DKalmanEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "DKalmanEval"
-		/**
-		 * Maximum duration allowed for the execution of the evaluation
-		 */
-    val maxExecutionTime: Int = 25000
     
 	private val logger = Logger.getLogger(name)
      
 		// Noise has to be declared implicitly
-	implicit val qrNoise = QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   
+	implicit val qrNoise = new QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   
 		// Contract extractor
 	private val extractor = YahooFinancials.adjClose :: List[Array[String] =>Double]()
 	

@@ -12,20 +12,22 @@
  */
 package org.scalaml.scalability.akka
 
-
+	// Scala standard library
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.mutable.ArrayBuffer
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.scalability.akka.message._
+import scala.concurrent.duration.Duration
+	// 3rd party libraries
 import akka.actor._
 import akka.util.Timeout
+import org.apache.log4j.Logger
+	// ScalaMl classes
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.scalability.akka.message._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.design.PipeOperator
-import XTSeries._
 import org.scalaml.util.DisplayUtils
-import org.apache.log4j.Logger
-import scala.concurrent.duration.Duration
+import XTSeries._
 
 
 		/**
@@ -60,12 +62,20 @@ abstract class TransformFutures(
 		case _ => DisplayUtils.show("TransformFutures.receive Message not recognized", logger)
 	}
   
-	
-	private def transform: Array[Future[DblSeries]] = {   
+		/*
+		 * Create a future transform by creating an array of 
+		 * futures to execute the data transform (or pipe operator)
+		 * for each partition.
+		 */
+	private def transform: Array[Future[DblSeries]] = {
+			// Retrieve the relative index for each partition
 		val partIdx = partitioner.split(xt)
+			// Create the partitions
 		val partitions: Iterable[DblSeries] = partIdx.map(n => 
-							XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
+				XTSeries[Double](xt.slice(n - partIdx(0), n).toArray))
 
+			// Create an array of futures to apply the data
+			// transform 'fct' to each partition pi._1
 		val futures = new Array[Future[DblSeries]](partIdx.size)
 		partitions.zipWithIndex.foreach(pi => {
 			futures(pi._2) = Future[DblSeries] { 
@@ -83,7 +93,8 @@ abstract class TransformFutures(
 		 */
 	private def compute(futures: Array[Future[DblSeries]]): Seq[Double] = {
 		require(!futures.isEmpty, "TransformFutures.compute Undefined futures")
-  	  
+ 
+			// Block until either all the future complete or the execution time-out
 		val results = futures.map(Await.result(_, timeout.duration))
 		aggregate(results)
 	}

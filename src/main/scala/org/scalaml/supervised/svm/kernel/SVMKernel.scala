@@ -31,7 +31,10 @@ sealed trait SVMKernel extends SVMConfigItem {
 	def update(param: svm_parameter): Unit
 }
 
-
+		/**
+		 * Companion object for the SVMKernel, used to defined the bound values
+		 * for the Gamma and Degree coefficients for concrete kernel function
+		 */
 object SVMKernel {
 	final val GAMMA_LIMITS = (1e-17, 1e+5)
 	final val DEGREE_LIMITS = (1, 10000)
@@ -57,7 +60,9 @@ object LinearKernel extends SVMKernel {
 		require(param != null, "LinearKernel.update LIBSVM svm parameter is undefined")
 		param.kernel_type = svm_parameter.LINEAR
 	}
-
+		/**
+		 * Textual description of the Linear kernel
+		 */
 	override def toString: String = "Linear kernel"
 }
 
@@ -87,7 +92,9 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 		param.kernel_type = svm_parameter.RBF
 		param.gamma = gamma
 	}
-    
+		/**
+		 * Textual description of the Linear kernel
+		 */
 	override def toString: String = s"Radial-basis function with gamma = $gamma"
 }
 
@@ -116,7 +123,9 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 		param.kernel_type = svm_parameter.SIGMOID
 		param.gamma = gamma
 	}
-    
+		/**
+		 * Textual description of the Linear kernel
+		 */
 	override def toString: String = s"Sigmoidal function with gamma = $gamma"
 }
 
@@ -153,7 +162,9 @@ final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends 
 		param.coef0 = coef0
 		param.degree = degree
 	}
-    
+ 		/**
+		 * Textual description of the Linear kernel
+		 */
 	override def toString: String = s"Polynomial function, gamma: $gamma, coef: $coef0, degree: $degree"
 }
 
