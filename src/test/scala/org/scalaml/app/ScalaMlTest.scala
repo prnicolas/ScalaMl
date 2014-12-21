@@ -11,20 +11,18 @@
  */
 package org.scalaml.app
 
+	// Scala standard library
 import scala.annotation.switch
-import org.scalatest.FunSuite
+import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Try, Success, Failure, Properties}
 import scala.concurrent.duration.Duration
-import org.scalaml.util.DisplayUtils
-import org.scalatest.concurrent.ScalaFutures
-import scala.concurrent._
+	// ScalaTest classes
 import org.scalatest.FunSuite
-import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalatest.time._
-
-
-
+import org.scalatest.concurrent.ScalaFutures
+	// ScalaMl classes
+import org.scalaml.util.DisplayUtils
 
 
 	/**
@@ -35,7 +33,7 @@ import org.scalatest.time._
 		 */
 trait ScalaMlTest extends FunSuite with ScalaFutures {
 	val chapter: String
-	
+		// Define the maximum time allowed for a Scala test to execute
 	private val MAX_EXECUTION_TIME: Int = 40
 	implicit val patience = PatienceConfig(timeout = Span(MAX_EXECUTION_TIME, Seconds), 
 			interval = Span(250, Millis))
@@ -45,15 +43,10 @@ trait ScalaMlTest extends FunSuite with ScalaFutures {
 		 * @param args argument for the Scala test
 		 * @param method Name of the method to be tested.
 		 */
-	def evaluate(eval: Eval, args: Array[String] = Array.empty): Boolean = {
-  	val f: Future[Int] = future { eval.run(args) }
-  		
-  	whenReady(f) {
-  		result => {
-  			assert(result >=0, "OK")
-  			result >= 0
-  		}
-  	}
+	def evaluate(eval: Eval, args: Array[String] = Array.empty): Unit = {
+		val f: Future[Int] = Future { eval.run(args) }
+  		// Block until the Scala test either terminates or times out.
+		whenReady(f) { result => assert(result >=0, "OK") }
 	}
 }
 

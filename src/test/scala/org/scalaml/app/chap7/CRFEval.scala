@@ -16,9 +16,6 @@ import org.scalaml.supervised.crf.{CrfConfig,  CrfSeqDelimiter, Crf}
 import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.plots.LightPlotTheme
-import org.scalaml.plots.LinePlot
-
 
 		/**
 		 * <p><b>Purpose:</b>Singleton for the evaluation of Conditional Random Fields
@@ -73,9 +70,12 @@ object CrfEval extends Eval {
   }
 	
 	private def display(w: DblVector): Unit = {
-		val plot = new LinePlot(("Conditional random fields", "Lambda distribution", "weights"), 
-				new LightPlotTheme)					
-		plot.display(w, 340, 280)
+		import org.scalaml.plots.{LightPlotTheme, LinePlot}
+		
+		val labels = List[String]( 
+			name, "Conditional random fields", "Lambda distribution", "weights"
+		)					
+		LinePlot.display(w, labels, new LightPlotTheme)
 	}
 }
 

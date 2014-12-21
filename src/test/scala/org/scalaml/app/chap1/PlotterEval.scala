@@ -11,7 +11,7 @@
  */
 package org.scalaml.app.chap1
 
-import org.scalaml.core.Types
+import org.scalaml.core.Types.ScalaMl.{ DblVector, XYTSeries}
 import org.scalaml.stats.Stats
 import org.scalaml.plots._
 import org.scalaml.util.DisplayUtils
@@ -59,27 +59,28 @@ object PlotterEval extends Eval {
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray	   
 			
 			val cols = fields.drop(1)
-			val volatility = Stats[Double](cols.map(f => f(HIGH_INDEX).toDouble - f(LOW_INDEX).toDouble))
+			val volatility: DblVector = Stats[Double](cols.map(f => f(HIGH_INDEX).toDouble - f(LOW_INDEX).toDouble))
 					.normalize
 			val normVolume =  Stats[Double](cols.map( _(VOL_COLUMN_INDEX).toDouble) ).normalize
-			val volatility_volume: Array[(Double, Double)] = volatility.zip(normVolume)
+			val volatility_volume: XYTSeries = volatility.zip(normVolume)
 			
 			DisplayUtils.show(s"$name Line plot for CSCO stock normalized volume", logger)
-			val theme1 = new LightPlotTheme
-			val plotter1 = new LinePlot((s"$name: CSCO 2012-2013 Stock volume", "Volume", "r"), theme1)
-			plotter1.display(normVolume, 200, 200)
-			
+			val labels1 = List[String](
+				name, s"$name: CSCO 2012-2013 Stock volume", "Volume", "r"
+			)
+			LinePlot.display(normVolume, labels1, new LightPlotTheme)
+
 			DisplayUtils.show(s"$name Line plot for CSCO stock volatility", logger)
-			val theme2 = new BlackPlotTheme
-			val plotter2 = new LinePlot((s"$name: CSCO 2012-2013 Stock Volatility", 
-					"Volatility", "r"), theme2)
-			plotter2.display(volatility, 300, 100)
+			val labels2 = List[String](
+				name, s"$name: CSCO 2012-2013 Stock Volatility", "Volatility", "r"
+			)
+			ScatterPlot.display(volatility, labels2, new BlackPlotTheme)
 		    	
 			DisplayUtils.show(s"$name Scatter plot CSCO stock volatility vs. volume", logger)
-			val theme3 = new LightPlotTheme
-			val plotter3 = new ScatterPlot((s"$name: CSCO 2012-2013 Stock volatility vs. volume", 
-					"Volatility vs. Volume", "r"), theme3)
-			plotter3.display(volatility_volume, 200, 200)
+			val labels3 = List[String](
+				name, s"$name: CSCO 2012-2013 Stock volatility vs. volume", "Volatility vs. Volume", "r"
+			)
+			ScatterPlot.display(volatility_volume, labels3, new LightPlotTheme)
 		    
 			src.close
 		} 

@@ -24,8 +24,22 @@ import org.scalaml.core.Types
 object DisplayUtils {	
 	private val DEFAULT_SHOW_RETURN = 0
 	private val DEFAULT_ERROR_RETURN = -1
-	val loggerFlag = false
-  
+	private val DEST_CONSOLE = 0x01
+	private val DEST_LOGGER = 0x02
+	private val DEST_CHART = 0x04
+	
+	private val LOG_DESTINATION = Map[String, Int](
+		"console" -> 0x01, "logger" -> 0x02, "chart" -> 0x04, "none" -> 0x00
+	)
+	
+	var destination: Int = DEST_CONSOLE + DEST_CHART
+	def init(args: Array[String]): Unit  = 
+		destination = args.foldLeft(0)(((dest, arg) => 
+				dest + LOG_DESTINATION.getOrElse(arg, 0)))
+			
+	@inline
+	final def isChart: Boolean = (destination & 0x04) == 0x04
+
 		/**
 		 * Global function that align a label against a boundary. There is no alignment if the 
 		 * size of the placement is smaller than the actual label.
@@ -52,21 +66,13 @@ object DisplayUtils {
 		 * the label, no alignment otherwise
 		 */
 	final def show[T](t: T, logger: Logger, alignment: Int = -1): Int = { 
-		val text = if(alignment != -1) align(t.toString, alignment) else t.toString
-		if(loggerFlag) 
-			logger.info(text)
-		else 
-			Console.println(text)
+		print(if(alignment != -1) align(t.toString, alignment) else t.toString, logger)
 		DEFAULT_SHOW_RETURN
 	}
 	
 	
 	final def show[T](seq: Seq[T], logger: Logger): Int = {
-		val info = seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString
-		if( loggerFlag) 
-			logger.info(info)
-		else 
-			Console.println(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString)
+		print(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString, logger)
 		DEFAULT_SHOW_RETURN
 	}
  
@@ -87,19 +93,18 @@ object DisplayUtils {
 		None
 	}
 	
-	private def processError[T](t: T, logger: Logger, e: Throwable): Unit = {
-		val msg = s"Error: ${t.toString} with ${e.toString}" 
-		
-		if(loggerFlag) logger.error(msg) else Console.println(msg)
-		e.printStackTrace
+	private def print(msg: String, logger: Logger): Unit = {
+		if( (destination & 0x01) == 0x01)
+			Console.println(msg)
+		if( (destination & 0x02) == 0x02)
+			{logger.error(msg); println("log") }
 	}
-	
-		private def processError[T](t: T, logger: Logger): Unit = {		
-			if(loggerFlag) 
-				logger.error(s"Error: ${t.toString}") 
-			else 
-				Console.println(s"Error: ${t.toString}")
-	}
+
+	private def processError[T](t: T, logger: Logger, e: Throwable): Unit = 
+		print(s"Error: ${t.toString} with ${e.toString}", logger)
+
+	private def processError[T](t: T, logger: Logger): Unit = 
+	  print(s"Error: ${t.toString}", logger)
 }
 
 

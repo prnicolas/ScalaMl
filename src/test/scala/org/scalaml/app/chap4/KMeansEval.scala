@@ -84,19 +84,6 @@ object KMeansEval extends UnsupervisedLearningEval {
 					args.map(_.toInt).foreach(run(_, values))
 					DisplayUtils.show(s"$name run completed ", logger)
 			})
-			/*
-			prices.find ( _.isEmpty ) match {
-				case Some(nullObsList) => DisplayUtils.error(s"$name Could not load data", logger)
-				case None => {
-					val values: DblMatrix = prices.map(x => x(0))
-												.map( _.drop(START_INDEX)
-												.take(NUM_SAMPLES))
-					args.map(_.toInt).foreach(run(_, values))
-					DisplayUtils.show(s"$name run completed ", logger)
-				}
-			}
-			* 
-			*/
 		} 
 		match {
 			case Success(n) => n

@@ -24,44 +24,44 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 	 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 	 */
 object ParBenchmarkEval extends Eval {
-	 import scala.util.Random
-	 import scala.collection.mutable.HashMap
-	 import scala.collection.parallel.immutable.ParVector
-	 import scala.collection.parallel.mutable.{ParArray, ParHashMap}
-	 import scala.collection.parallel.ForkJoinTaskSupport
-	 import scala.concurrent.forkjoin.ForkJoinPool
-	 import org.apache.log4j.Logger
+	import scala.util.Random
+	import scala.collection.mutable.HashMap
+	import scala.collection.parallel.immutable.ParVector
+	import scala.collection.parallel.mutable.{ParArray, ParHashMap}
+	import scala.collection.parallel.ForkJoinTaskSupport
+	import scala.concurrent.forkjoin.ForkJoinPool
+	import org.apache.log4j.Logger
 	 
 	 	/**
 		 * Name of the evaluation 
 		 */
-	 val name: String = "ParBenchmarkeval"
+	val name: String = "ParBenchmarkeval"
 
-	 private val logger = Logger.getLogger(name)
-	 private val SZ = 100000
-	 private val NUM_TASKS = 8
-	 private val evalRange = Range(1, NUM_TASKS)
-	 private val TIMES = 20
+	private val logger = Logger.getLogger(name)
+	private val SZ = 100000
+	private val NUM_TASKS = 8
+	private val evalRange = Range(1, NUM_TASKS)
+	private val TIMES = 20
 
 	 	/** <p>Execution of the scalatest for Master-worker design with Akka framework.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
-		 */
-	 def run(args: Array[String]): Int = {
-		 DisplayUtils.show(s"$header Scala parallel collections", logger)
+		 */	
+	def run(args: Array[String]): Int = {
+		DisplayUtils.show(s"$header Scala parallel collections", logger)
 		 
-		 if( args.size > 0) {
-			 	// Arbitrary map function
-			 val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
+		if( args.size > 0) {
+			// Arbitrary map function
+			val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
 				// Arbitrary filter function
-			 val filterF = (x: Double) => (x > 0.8)
+			val filterF = (x: Double) => (x > 0.8)
 			 	// Arbitrary reduce function
-			 val reduceF = (x:Double, y:Double) => (x+y)*x
+			val reduceF = (x:Double, y:Double) => (x+y)*x
 			 
-			 DisplayUtils.show(s"$name Compartive benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
-			 if(args(0) == "array")
-				 evaluateParArray(mapF, filterF, reduceF)
+			DisplayUtils.show(s"$name Compartive benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
+			if(args(0) == "array")
+				evaluateParArray(mapF, filterF, reduceF)
 			else
 				evaluateParMap(mapF, filterF)
 			0
@@ -110,8 +110,13 @@ object ParBenchmarkEval extends Eval {
 	
 	private def display(x: DblVector, label: String): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
-		val plot = new LinePlot(("Scala parallel collections", s"Number of tasks for $label", "Rel. timing"), new LightPlotTheme)
-		plot.display(x, 340, 280)
+		val labels = List[String](
+			name,
+			"Scala parallel collections",
+			s"Number of tasks for $label",
+			"Relative timing"
+		)
+		LinePlot.display(x, labels, new LightPlotTheme)
 	}
 }
 

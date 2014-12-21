@@ -46,9 +46,7 @@ object DFTEval extends FilteringEval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		Try {
-			if( args.isEmpty) runSimulation else runFinancial(args(0))
-		} 
+		Try (if( args.isEmpty) runSimulation else runFinancial(args(0)) ) 
 		match {
 			case Success(n) => n
 			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
@@ -97,15 +95,15 @@ object DFTEval extends FilteringEval {
 	
 	private def display(x1: DblVector, x2: DblVector, fc: Double): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
-	  
-		val plot = new LinePlot(("Discrete Fourier filter", s"cutoff $fc", "y"), new LightPlotTheme)
+	
+		var labels = List[String]( name, "Discrete Fourier filter", s"cutoff $fc", "y")
 		val _x2 = x2.take(x1.size-24)
 		val data = (x1, "Stock price") :: (_x2, "DFT") :: List[(DblVector, String)]()
-						
-		plot.display(data, 340, 280)
-		val plot2 = new LinePlot(("DFT filtered noise", s"filtered noise $fc", "y"), new BlackPlotTheme)
+		LinePlot.display(data, labels, new LightPlotTheme)
+		
+		labels = List[String]( name, "DFT filtered noise", s"filtered noise $fc", "y")
 		val data2 = x1.zip(_x2).map(z => Math.abs(z._1 - z._2))
-		plot2.display(data2, 340, 280)
+		LinePlot.display(data2, labels, new LightPlotTheme)
 	}
 }
 

@@ -114,9 +114,11 @@ object DKalmanEval extends FilteringEval {
 	private def display(z: DblVector, x: DblVector, alpha: Double): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 		
-		val plot = new LinePlot(("Kalman filter", s"Kalman with alpha $alpha", "y"), new LightPlotTheme)
+		val labels = List[String]( 
+			name, "Kalman filter", s"Kalman with alpha $alpha", "y"
+		)
 		val data = (z, "price") :: (x, "Filtered") :: List[(DblVector, String)]()
-		plot.display(data, 340, 280)
+		LinePlot.display(data, labels, new LightPlotTheme)
 	}
 }
 

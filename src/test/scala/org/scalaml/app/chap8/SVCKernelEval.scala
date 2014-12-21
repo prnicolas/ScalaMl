@@ -16,7 +16,6 @@ import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
@@ -123,10 +122,11 @@ object SVCKernelEval extends Eval {
 	 }
 
 	private def display(label: String, xy1: XYTSeries, xy2: XYTSeries): Unit = {
-		require( !xy1.isEmpty, s"$name Cannot display an undefined time series")
-       
-		val plotter = new ScatterPlot((s"SVC Kernel evaluation set", label, "Y"), new BlackPlotTheme)
-		plotter.display(xy1, xy2, 250, 340)
+		import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
+		val labels = List[String](
+			name, s"SVC Kernel evaluation set", label, "Y"
+		)
+		ScatterPlot.display(xy1, xy2, labels, new BlackPlotTheme)
 	}
 }
 

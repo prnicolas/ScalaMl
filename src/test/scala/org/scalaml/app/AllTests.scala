@@ -54,14 +54,14 @@ protected object AllTests extends ScalaMlTest {
 		 * Method to execute all the tests in Scala for Machine Learning
 		 * Following the order of the chapters.
 		 */
-	def run: Unit = {
+  def run: Unit = {
 		header
 			// Core
 		evaluate(StatsEval)
 		
 		evaluate(XTSeriesEval)
 		evaluate(MatrixEval)
-
+/*
 			// Chapter 1
 		evaluate(LogBinRegressionEval)
 		evaluate(PlotterEval)
@@ -83,7 +83,6 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(EMEval, Array[String]("2", "40"))
 		evaluate(EMEval, Array[String]("3", "25"))
 		evaluate(EMEval, Array[String]("4", "15"))
-		
 		evaluate(PCAEval)
 
 			// Chapter 5
@@ -142,22 +141,27 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(ActorsManagerEval, Array[String]("router"))
 		evaluate(TransformFuturesEval)
 		evaluate(SparkKMeansEval)
+		* 
+		*/
 	}
 		
 		/**
-		 * Method to validate the version of Scala and Java JDK used.
+		 * Method to display the current settings of configuration and
+		 * validate the version of Scala and Java JDK used.
 		 */
 	private def header: Unit = {
+			// Display configuration and settings information  regarding OS
 		DisplayUtils.show(CONFIGURATION, logger)
 		if( !Properties.isWin && !Properties.isMac)
 			DisplayUtils.show("The library has not be tested for this Operating System", logger)
-			
+	
+			// Correct version of Java
 		DisplayUtils.show(s"Java version: ${Properties.javaVersion}", logger)
 		if(!Properties.isJavaAtLeast("1.7"))
 			DisplayUtils.show("Incompatible version of Java, should be 1.7 or later", logger)
-			
-		val scalaVersion = Properties.versionNumberString
 		
+			// Correct version of Scala and AKka
+		val scalaVersion = Properties.versionNumberString
 		DisplayUtils.show(s"Scala version: $scalaVersion", logger)
 		(scalaVersion.charAt(2): @switch) match {
 			case '9' => DisplayUtils.show("Scala version should be 2.10.2 or higher", logger)
@@ -181,7 +185,16 @@ protected object AllTests extends ScalaMlTest {
 		 * <p>Driver called by simple build tool (SBT) as test:run
 		 * @author Patrick Nicolas
 		 */
-object AllTestsApp extends App { AllTests.run }
+object AllTestsApp extends App { 
+ //  def main(args: Array[String]) {
+  if(args.size > 0) {
+      println(args(0))
+  }
+   else
+     println("No argument")
+  // AllTests.run 
+ //    }
+}
 
 
 // ------------------------------------  EOF ----------------------------------------------------

@@ -15,7 +15,6 @@ import org.scalaml.supervised.svm.formulation.CSVCFormulation
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
 import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 

@@ -47,7 +47,7 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * DisplayUtils array of tuple (x,y) in a Scatter plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */
@@ -70,7 +70,7 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * are out of bounds.
 		 */
 	override def display(y: DblVector, width: Int, height: Int): Unit = {
-		validateDisplayUtils[Double](y, width, height, "LinePlot.display")
+		validateDisplayUtils[Double](y, width, height, "ScatterPlot.display")
 		
 		val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {
 				s.add(xn._1, xn._2)
@@ -189,5 +189,50 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 	}
 }
 
+
+object ScatterPlot {
+	import org.scalaml.core.Types.ScalaMl.{DblVector, XYTSeries}
+	
+	private val DEFAULT_WIDTH = 320
+	private val DEFAULT_HEIGHT = 260
+	
+	def display(
+			y: DblVector,
+			labels: scala.collection.immutable.List[String],
+			theme: PlotTheme): Unit = {
+		import scala.collection.JavaConversions._
+		require( !y.isEmpty, 
+				s"$labels(0).display Cannot plot an undefined time series")
+		
+		val chartLabels = seqAsJavaList(labels)
+		val plotter = new ScatterPlot((chartLabels(1), chartLabels(2), chartLabels(3)), theme)
+		plotter.display(y, DEFAULT_WIDTH, DEFAULT_WIDTH)
+	}
+	
+	
+	def display(
+			xySeries: XYTSeries, 
+			labels: scala.collection.immutable.List[String], 
+			theme: PlotTheme): Unit = display(xySeries, Array.empty, labels, theme)
+	
+	def display(
+			xySeries1: XYTSeries, 
+			xySeries2: XYTSeries, 
+			labels: scala.collection.immutable.List[String], 
+			theme: PlotTheme): Unit = {
+	  
+		import scala.collection.JavaConversions._
+		require( !xySeries1.isEmpty, 
+				s"$labels(0).display Cannot plot an undefined time series")
+		
+		val chartLabels = seqAsJavaList(labels)
+		val plotter = new ScatterPlot((chartLabels(1), chartLabels(2), chartLabels(3)), theme)
+		
+		if( !xySeries2.isEmpty)
+			plotter.display(xySeries1, xySeries2, DEFAULT_WIDTH, DEFAULT_WIDTH)
+		else
+			plotter.display(xySeries1, DEFAULT_WIDTH, DEFAULT_WIDTH)
+	}
+}
 
 // ------------------------  EOF ----------------------------------------------

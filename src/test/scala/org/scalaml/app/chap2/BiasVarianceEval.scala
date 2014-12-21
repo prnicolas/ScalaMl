@@ -11,7 +11,6 @@
  */
 package org.scalaml.app.chap2
 
-import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 import org.scalaml.stats.{Stats, BiasVarianceEmulator}
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.{FormatUtils, DisplayUtils}
@@ -45,7 +44,7 @@ object BiasVarianceEval extends Eval {
 		DisplayUtils.show(s"$header Evaluation of Bias Variance decomposition", logger)
 		
 		val testData = (x: Double) => 0.199*x*(1.02 + Math.sin(x*(0.05 + 0.01*(Random.nextDouble-0.5)))) 
-																	- 30.0*(Random.nextDouble-0.5)
+				- 30.0*(Random.nextDouble-0.5)
 	    
 		val emul = (x: Double) => 0.2*x*(1.0 + Math.sin(x*0.05))
 		val fEst = List[(Double=>Double, String)] (
@@ -73,14 +72,14 @@ object BiasVarianceEval extends Eval {
 	}
 	
 	private def display(estF: List[(Double =>Double, String)], f: Double =>Double): Unit = {
+		import org.scalaml.plots.{LinePlot, BlackPlotTheme, LightPlotTheme}
 		import ScalaMl._
-		val plot = new LinePlot(("Bias-Variance Analysis", "x", "y"), new LightPlotTheme)
 		
-		val data = (Array.tabulate(200)( f(_)), "f") :: 
+		val data: List[(DblVector, String)] = (Array.tabulate(200)( f(_)), "f") :: 
 				estF.foldLeft(List[(DblVector, String)]())((xs, g) => 
 						(Array.tabulate(200)(y => g._1( y.toDouble)), g._2) :: xs)
-						
-		plot.display(data, 340, 280)
+		val labels = List[String]( name, "Bias-Variance Analysis", "x", "y")
+		LinePlot.display(data, labels, new LightPlotTheme)
 	}
 }
 

@@ -189,9 +189,11 @@ object MultiLinearRegressionEval extends Eval {
 	private def display(z: DblVector, x: DblVector): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 		
-		val plot = new LinePlot(("Multi line regression", s"Raw vs. filtered", "y"), new LightPlotTheme)
+		val labels = List[String]( 
+			name, "Multi line regression", s"Raw vs. filtered", "y"
+		)
 		val data = (z, "Delta price") :: (x, "Filtered") :: List[(DblVector, String)]()
-		plot.display(data, 340, 280)
+		LinePlot.display(data, labels, new LightPlotTheme)
 	}
 }
 

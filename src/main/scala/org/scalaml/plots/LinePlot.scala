@@ -132,4 +132,32 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 }
 
 
+object LinePlot {
+	private val DEFAULT_WIDTH = 320
+	private val DEFAULT_HEIGHT = 260
+	
+	def display(
+			y: DblVector, 
+			labels: scala.collection.immutable.List[String], 
+			theme: PlotTheme): Unit = 
+	  createPlot(y.isEmpty, labels, theme).display(y, DEFAULT_WIDTH, DEFAULT_WIDTH)
+	
+	def display(
+			xys: List[(DblVector, String)], 
+			labels: scala.collection.immutable.List[String], 
+			theme: PlotTheme): Unit = 
+		createPlot(xys.isEmpty, labels, theme).display(xys, DEFAULT_WIDTH, DEFAULT_WIDTH)
+	
+	private def createPlot(
+			isEmpty: Boolean, 
+			labels: scala.collection.immutable.List[String], 
+			theme: PlotTheme): LinePlot = {
+	  import scala.collection.JavaConversions._
+	  require( !isEmpty, 
+				s"$labels(0).display Cannot plot an undefined time series")
+		
+		val chartLabels = seqAsJavaList(labels)
+		new LinePlot((chartLabels(1), chartLabels(2), chartLabels(3)), theme)
+	}
+}
 // ------------------------  EOF ----------------------------------------------

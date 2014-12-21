@@ -297,47 +297,41 @@ Method related to I/O, display or result or configuration that are not essential
 
 
 <h2>Testing framework</h2><hr>
-The source code includes several test or evaluation function that covers each chapter of the book.<br>Tests can be run either indidually or all at once.<br>
+The source code includes several test or evaluation methods that cover each chapter of the book.<br>Tests can be run either indidually or all at once.<br>
 Tests are encapsulated in a method <b>ScalaMlTest.evaluate</b> that validate arguments, handled exceptions ... and call ScalaTest assert.<br>
+Scala tests implement the ScalaMlTest trait. The execution of these tests it wrapped into a future which blocks until the test completes or times out.
 <pre>
-  trait <b>ScalaMlTest</b> extends FunSuite {
+  trait <b>ScalaMlTest</b> extends FunSuite  with <b>ScalaFutures</b> {
+    implicit val patience = PatienceConfig(timeout = Span(MAX_EXECUTION_TIME, Seconds), 
+			interval = Span(250, Millis))
     def <b>evaluate</b>(eval: <b>Eval</b>, args: Array[String] = Array.empty): Boolean = {
-      Try (eval.<b>run</b>(args) ) 
-      match {
-        case Success(n) => {
-          <b>assert</b>(n >= 0, s"$chapter ${eval.name} Failed"); true
-        }
-        case Failure(e) => {
-          <b>assert</b>(false, s"$chapter ${eval.name} Failed"); false
-        }
-      }
+      val f: Future[Int] = Future { eval.<b>run></b>(args) }
+      whenReady(f) { result => assert(result >=0, "OK") }
     }
   }
 </pre>
-For example, the Scalatests in Chapter 4 are trigger using the sbt command <b>>test-only org.scalaml.app.Chap4</b>
+For example, the Scalatests in Chapter 6 are triggered using the sbt command <b>>test-only org.scalaml.app.Chap6</b>
 <pre>
-  final class Chap4 extends ScalaMlTest { 
-    test(s"$chapter Expectation-Maximization clustering") {
-      evaluate(EMEval, Array[String]("2", "40"))
-      evaluate(EMEval, Array[String]("3", "25"))
-      evaluate(EMEval, Array[String]("4", "15"))
+  final class Chap6 extends ScalaMlTest { 
+    test(s"$chapter Ridge regression") {
+      evaluate(RidgeRegressionEval)
+    }
+    <b>test</b>(s"$chapter Binomial logistic regression") {
+      evaluate(<b>LogisticRegressionEval</b>)
     }
     ...
   }</pre>
-The method eval.run executes each test can be run in a time out mode. The time out is specified in the test class as follows:
+The method eval.run executes each test.
 <pre>
-object SVCKernelEval extends Eval {
-  val maxExecutionTime: Int = 15000 // time out set at 15 sec
-  ...
-  def run(args: Array[String]): Int = {
-    ... // Body of the test to return a positive value for success 
-        // and a negative value for error
-    ret   // invoke Scalatest assert(ret >= 0, " ....")
+  object <b>LogisticRegressionEval</b> extends Eval {
+    val name: String = "LogisticRegressionEval"
+    private val logger = Logger.getLogger(name)
+    ...
+    def <b>run</b>(args: Array[String]): Int = { ... }
   }
-}
 </pre>
 <hr>
-<i>Scala for Machine Learning v. 0.97</i>
+<i>Scala for Machine Learning v. 0.98</i>
 </body>
 </html>
 		

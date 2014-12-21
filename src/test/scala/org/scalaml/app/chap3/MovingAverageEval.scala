@@ -91,12 +91,13 @@ object MovingAveragesEval extends FilteringEval {
 	}
 	
 	private def display(results: List[DblSeries], labels: List[String]): Int = {
-		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
+		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 		
-		val plot = new LinePlot(("Moving Averages", "Trading sessions", "Stock price"), 
-				new LightPlotTheme)
+		val labels = List[String]( 
+			name, "Moving Averages", "Trading sessions", "Stock price"
+		)
 		val dataPoints: Array[(DblVector, String)] = results.map(_.toArray).toArray.zip(labels)
-		plot.display(dataPoints.toList, 340, 270)
+		LinePlot.display(dataPoints.toList, labels, new LightPlotTheme)
 		1
 	}
 }

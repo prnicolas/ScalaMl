@@ -12,11 +12,12 @@
 package org.scalaml.app.chap11
 
 import scala.util.{Try, Success, Failure}
+
 import org.scalaml.reinforcement.qlearning.{QLearning, QLInput, QLConfig}
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.trading.YahooFinancials
+import org.scalaml.trading.{OptionModel, YahooFinancials}
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 import org.scalaml.reinforcement.qlearning.QLModel
@@ -112,11 +113,6 @@ object QLearningEval extends Eval {
 		}
 		getProximity(idx, RADIUS).toList
 	}
-}
-
-
-object MyApp extends App {
-  QLearningEval.run(Array.empty)
 }
 
 // ------------------------------------  EOF ----------------------------------

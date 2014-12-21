@@ -135,7 +135,6 @@ object HMMEval extends Eval  {
 			case Failure(e) => DisplayUtils.error(s"$name .run", logger, e)
 		}
 	}
-
 }
 
 

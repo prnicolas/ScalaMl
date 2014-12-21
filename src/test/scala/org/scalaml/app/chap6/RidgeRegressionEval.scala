@@ -138,12 +138,14 @@ object RidgeRegressionEval extends Eval {
 			lambda2: Double): Unit = {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 	  
-		val plot = new LinePlot(("Ridge Regression", s" L2 lambda impact", "y"), new LightPlotTheme)
+		val labels = List[String]( 
+			name, "Ridge Regression", s" L2 lambda impact", "y"
+		)
 		val data = (z, "Delta price") :: 
 						(y1, s"L2 lambda $lambda1") :: 
 						(y2, s"L2 lambda $lambda2") :: List[(DblVector, String)]()
 					
-		plot.display(data, 340, 280)
+		LinePlot.display(data, labels, new LightPlotTheme)
 	}
 }
 

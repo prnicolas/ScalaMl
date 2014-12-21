@@ -86,7 +86,9 @@ object LogBinRegressionEval extends Eval {
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
 	private def load(fileName: String): Option[XYTSeries] = {
-	require(fileName != Types.nullString, "LogBinRegressionEval.load Cannot load data from undefined fileName")
+	require(fileName != Types.nullString, 
+			"LogBinRegressionEval.load Cannot load data from undefined fileName")
+			
 		Try {
 			val src =  Source.fromFile(fileName)
 			val fields = src.getLines.map( _.split(CSV_DELIM)).toArray
@@ -94,7 +96,8 @@ object LogBinRegressionEval extends Eval {
 			val data = transform(cols)
 			src.close
 			data
-		} match  {
+		} 
+		match {
 			case Success(xySeries) => Some(xySeries)
 			case Failure(e) => DisplayUtils.error("LogBinRegressionEval.load", logger, e); None
 		}
@@ -107,17 +110,25 @@ object LogBinRegressionEval extends Eval {
 	}
     
 		/**
-		 * Method to display a time series
+		 * Method to display a time series on a line plot
 		 */
 	private def display(volatilityVolume: XYTSeries): Unit = {
-		require( !volatilityVolume.isEmpty, 
-				"LogBinRegressionEval.display Cannot display an undefined time series")
-       
-		val plotter = new ScatterPlot(("CSCO 2012-13 stock price session volatiity", 
-				"Normalized session volatility", "Normalized session Volume"), 
-				new BlackPlotTheme)
-		plotter.display(volatilityVolume, 250, 340)
+		if( DisplayUtils.isChart ) {
+			val labels = List[String](
+				"LogBinRegressionEval", 
+				"CSCO 2012-13 stock price session volatiity",
+				"Normalized session volatility",
+				"Normalized session Volume"
+			)
+			
+			ScatterPlot.display(volatilityVolume, labels, new BlackPlotTheme)
+		}
 	}
+}
+
+
+object MyApp extends App {
+  LogBinRegressionEval.run(Array.empty)
 }
 
 // --------------------  EOF --------------------------------------

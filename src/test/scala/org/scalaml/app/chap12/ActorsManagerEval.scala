@@ -16,8 +16,8 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable}
 import scala.collection._
 import org.apache.log4j.Logger
-
 import akka.actor.{Props, ActorSystem}
+
 import org.scalaml.app.Eval
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
@@ -112,11 +112,17 @@ object ActorsManagerEval extends Eval {
 				// User defined method that define the aggregation of the results 
 				// for the discrete Fourier transform for each worker actor
 			def aggrFrequencies(aggrBuffer: List[DblVector]): immutable.Seq[Double] = {
-				def display(x: DblVector): Unit =   {
+			  
+				def display(x: DblVector): Unit = {
 					import org.scalaml.plots.{LinePlot, LightPlotTheme}
-					val plot = new LinePlot(("Distributed DFT- Akka", 
-							s"Frequencies distribution with ${args(0)}", "freq."), new LightPlotTheme)
-					plot.display(x.take(displaySize), 340, 280)
+					val labels = List[String](
+						name,
+						"Distributed DFT- Akka",
+						s"Frequencies distribution with ${args(0)}",
+						"frequencies"
+					)
+					
+					LinePlot.display(x, labels, new LightPlotTheme)
 				}
 				
 				// Aggregate the results by transposing the observations
