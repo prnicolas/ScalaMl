@@ -76,7 +76,7 @@ $<b>sbt test:run</b> write test results into the standard output and the charts.
 
 <h2 id="appendix">Appendix</h2>
 The examples have been built and tested with the following libraries:<br>
-<b>Java libraries</b>
+<b>Java libraries</b><br>
 CRF-Trove_3.0.2.jar<br>
 LBFGS.jar<br>
 colt.jar<br>
