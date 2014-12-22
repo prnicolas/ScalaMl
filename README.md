@@ -1,11 +1,10 @@
-<b>Scala for Machine Learning</b> Version <b>0.97.3</b><br>
+<b>Scala for Machine Learning</b> Version <b>0.98</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"
 <a href="#overview">Overview</a><br>
 <a href="#requirements">Minimum requirements</a><br>
 <a href="#project">Project</a><br>
-<a href="#installationbuild">Installation and build</a><br>
 <a href="#installation">installation</a><br>
 <a href="#build">build</a><br>
 <a href="#run">Run examples</a><br>
@@ -59,7 +58,7 @@ To build the package including test and resource files<br><i><b> $(ROOT)/sbt cle
 To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
 To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
-<h2 id="run">>Run examples</h2>
+<h2 id="run">Run examples</h2>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
 <b>$sbt<br>
 &#62;test-only org.scalaml.app.chap4.Chap4</b><br>
