@@ -2,8 +2,16 @@
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"
+<a href="#overview">Overview</a><br>
+<a href="#requirements">Minimum requirements</a><br>
+<a href="#project">Project</a><br>
+<a href="#installationbuild">Installation and build</a><br>
+<a href="#installation">installation</a><br>
+<a href="#build">build</a><br>
+<a href="#run">Run examples</a><br>
+<a href="#appendix">Appendix</a><br>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 The source code provides software developers with a broad overview of the difference in machine learning algorithms. The reader is expected to have a good grasp of the Scala programming language along with some knowledge in basic statistics. Experience in data mining and machine learning is not a pre-requisite.<br><br>
 Source code guidelines are defined in the companion document <b>SourceCodeGuide.html</b><br>
 
@@ -15,14 +23,14 @@ The examples are related to investment portfolio management and trading strategi
 The real-world examples, related to financial and market analysis, used for the sole purpose of illustrating the machine learning techniques. They do not constitute a recommendation or endorsement of any specific investment management or trading techniques.<br>
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
-<h2>Minimum Requirements</h2>
+<h2 id="requirements">Minimum Requirements</h2>
 <b>Hardware</b>: 2 CPU core with 4 Gbytes RAM for small datasets to build and run examples.<br>
 4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
 <br>
 <b>Operating system</b>: None<br>
 <b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.1 and SBT 0.13+ (see installation section for deployment.<br>
 
-<h2>Project Components</h2>
+<h2 id="project">Project Components</h2>
 Directory structure of the source code library for <i>Scala for Machine Learning</i>:<br>
 <img src="images/8742OS_libsourcecode.png" alt="Source code"><br>
 <br>
@@ -31,8 +39,8 @@ Directory structure of the source code of the examples for <i>Scala for Machine 
 <br>
 
 
-<h2>Installation and Build</h2>
-<h3>Installation</h3>
+<h2 id="installationbuild">Installation and Build</h2>
+<h3 id="installation">Installation</h3>
 The installation and build workflow is described in the following diagram:<br>
 <img src="images/8742OS_installation.png" alt="Installation and build"><br>
 <b>Eclipse</b>
@@ -41,7 +49,7 @@ Specify link to the source in <i>Project/properties/Java Build Path/Source</i>. 
 Add the jars required to build and execute the code within Eclipse <i>Project/properties/Java Build Path/Add External Jars</i>as declared in the <i>project_name/.classpath</i><br>
 Update the JVM heap parameters in eclipse.ini file as <i>-Xms512m -Xmx8192m</i> or the maximum allowed on your specific machine.
 <br>
-<h3>Build</h3>
+<h3 id="build">Build</h3>
 The Simple Build Too (SBT) has to be used to build the library from the source code using the <i>build.sbt</i> file in the root directory<br>
 Executing the examples/test in Scala for Machine Learning require sufficient JVM Heap memory (~2G):<br>
 in <i>sbt/conf/sbtconfig.text</i> set Xmx to 2058m or higher, -XX:MaxPermSize to 512m or higher i.e. <b>-Xmx4096m -Xms512m -XX:MaxPermSize=512m</b><br><br>
@@ -51,7 +59,7 @@ To build the package including test and resource files<br><i><b> $(ROOT)/sbt cle
 To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
 To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
-<h3>Run examples</h3>
+<h2 id="run">>Run examples</h2>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
 <b>$sbt<br>
 &#62;test-only org.scalaml.app.chap4.Chap4</b><br>
@@ -65,7 +73,7 @@ $<b>sbt "test:run log chart"</b> write test results into a log and charts<br>
 $<b>sbt test:run</b> write test results into the standard output and the charts.<br>
 
 
-<h2>Appendix</h2>
+<h2 id="appendix">Appendix</h2>
 <h3>List of Jar files for Eclipse/Scala IDE setup</h3>
 CRF-Trove_3.0.2.jar<br>
 LBFGS.jar<br>
