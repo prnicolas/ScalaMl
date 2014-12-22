@@ -75,7 +75,8 @@ $<b>sbt test:run</b> write test results into the standard output and the charts.
 
 
 <h2 id="appendix">Appendix</h2>
-<h3>List of Jar files for Eclipse/Scala IDE setup</h3>
+List of Jar files for Eclipse/Scala IDE setup
+<u>Java libraries</u>
 CRF-Trove_3.0.2.jar<br>
 LBFGS.jar<br>
 colt.jar<br>
@@ -83,10 +84,17 @@ CRF.jar<br>
 commons-math3-3.3.jar<br>
 libsvm.jar<br>
 jfreechart-1.0.17/lib/jcommon-1.0.21.jar<br>
+jfreechart-1.0.17/lib/servlets.jar<br>
 junit-4.11.jar<br>
 jfreechart-1.0.17/lib/jfreechart-1.0.17.jar<br>
+<u>Scala 2.10.x related libraries</u><br>
 com.typesafe/config/1.2.1/bundles/config.jar<br>
-jfreechart-1.0.17/lib/servlets.jar<br>
-akka-actor_2.11-2.3.6.jar<br>
+akka-actor_2.10-2.2.3.jar<br>
 scalatest_2.11.jar<br>
-spark-assembly-1.1.0-hadoop2.4.0-no_scala.jar
+spark-assembly-1.0.2-hadoop2.4.0.jar<br>
+<u>Scala 2.11.x related libraries</u><br>
+com.typesafe/config/1.2.2/bundles/config.jar<br>
+scalatest_2.11.jar<br>
+akka-actor_2.11-2.3.6.jar<br>
+spark-assembly-1.1.0-hadoop2.4.0.jar
+
