@@ -59,9 +59,11 @@ To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
 To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
 <h2 id="run">Run examples</h2>
+<h3>examples in a chapter</h3>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
 <b>$sbt<br>
-&#62;test-only org.scalaml.app.chap4.Chap4</b><br>
+&#62;test-only org.scalaml.app.chap4.Chap4</b>
+<h3>All examples</h3>
 To run all examples with output configuration:<br>
 $<b>sbt "test:run options"</b> where options is a list of possible outputs<ul>
 <li><b>console</b> to output results onto standard output</li> 
