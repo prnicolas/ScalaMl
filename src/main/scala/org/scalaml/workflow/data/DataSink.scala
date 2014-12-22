@@ -37,10 +37,22 @@ final protected class DataSink[T <% String](
 		sinkName: String) extends PipeOperator[List[XTSeries[T]], Int] {
 	import XTSeries._, DataSource._
 	import scala.io.Source
-   
+	import java.io.File
 	require(sinkName != Types.nullString, "DataSink Name of the storage is undefined")
-   
+	
 	private val logger = Logger.getLogger("DataSink")
+	private val sinkFile = 
+		Try {
+			val path = sinkName.substring(0, sinkName.lastIndexOf(File.pathSeparator)-1)
+			val dir = new File(path)
+			if( !dir.exists )
+				dir.mkdir
+		} match {
+		  case Success(f) => f
+		  case Failure(e) => DisplayUtils.none("DataSink.sinkFile", logger, e)
+		}
+   
+	
     
 	
 		/**
@@ -49,7 +61,12 @@ final protected class DataSink[T <% String](
 		 * @return true if the content has been successfully stored, false otherwise
 		 * @throws IllegalArgumentException If the content is not defined.
 		 */
-	def write(content: String): Boolean = FileUtils.write(content, sinkName, "DataSink")
+	def write(content: String): Boolean = {
+		require(content.length > 0, "DataSink.write Content undefined")
+		assert(sinkFile != None, "DataSink.write Sink file undefined")
+		
+		FileUtils.write(content, sinkName, "DataSink")
+	}
 
 		/**
 		 * <p>Write the content of a vector into the storage with sinkName as identifier.</p>
@@ -59,6 +76,7 @@ final protected class DataSink[T <% String](
 		 */
 	def write(v: DblVector) : Boolean = {
 		require( !v.isEmpty, "DataSink.write Cannot persist an undefined vector")
+		assert( sinkFile != None, "DataSink.write undefined sink file")
 		
 		val content = v.foldLeft(new StringBuilder)((b, x) => b.append(x).append(CSV_DELIM))
 		content.setCharAt(content.size-1, ' ')
@@ -72,10 +90,10 @@ final protected class DataSink[T <% String](
    		 * of time series saved as output
 		 */
 	override def |> : PartialFunction[List[XTSeries[T]], Int] = {
-		case xs: List[XTSeries[T]] if( !xs.isEmpty ) => {
+		case xs: List[XTSeries[T]] if( !xs.isEmpty && sinkFile != None) => {
 			import java.io.PrintWriter
 			
-			var printWriter: PrintWriter = null
+			var printWriter: Option[PrintWriter] = None
 			Try {
 				val content = new StringBuilder
 				val numValues = xs(0).size-1
@@ -88,9 +106,9 @@ final protected class DataSink[T <% String](
 					content.append(s"${values(last)(k)}\n")
 					k += 1
 				}
-	   
-				val printWriter = new PrintWriter(sinkName)
-				printWriter.write(content.toString)
+				
+				printWriter = Some(new PrintWriter(sinkName))
+				printWriter.map( _.write(content.toString))
 				k
 			} 
 			match {
@@ -98,8 +116,8 @@ final protected class DataSink[T <% String](
 				case Failure(e) => {
 					DisplayUtils.error("DataSink.|> ", logger)
 	    		  
-					if( printWriter != null) {
-						Try {printWriter.close; 1 }
+					if( printWriter != None) {
+						Try {printWriter.map(_.close); 1 }
 						match {
 							case Success(res) => res
 							case Failure(e) => DisplayUtils.error("DataSink.|> ", logger)

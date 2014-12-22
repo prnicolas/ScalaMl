@@ -22,8 +22,8 @@ import org.scalaml.core.Types
 	 *  @note Scala for Machine Learning
 	 */
 object DisplayUtils {	
-	private val DEFAULT_SHOW_RETURN = 0
-	private val DEFAULT_ERROR_RETURN = -1
+	private val DEFAULT_SHOW_RETURN = 0			// Default return value after info display
+	private val DEFAULT_ERROR_RETURN = -1		// 
 	private val DEST_CONSOLE = 0x01
 	private val DEST_LOGGER = 0x02
 	private val DEST_CHART = 0x04
@@ -32,7 +32,13 @@ object DisplayUtils {
 		"console" -> 0x01, "logger" -> 0x02, "chart" -> 0x04, "none" -> 0x00
 	)
 	
-	var destination: Int = DEST_CONSOLE + DEST_CHART
+	private var destination: Int = DEST_CONSOLE + DEST_CHART
+	
+		/**
+		 * Initialize the display configuration using the argument passed in the command line 
+		 * <b>sbt "test:run options</b>/
+		 * @param args command line arguments.
+		 */
 	def init(args: Array[String]): Unit  = 
 		destination = args.foldLeft(0)(((dest, arg) => 
 				dest + LOG_DESTINATION.getOrElse(arg, 0)))
@@ -58,36 +64,68 @@ object DisplayUtils {
 	}
   
 		/**
-		 * DisplayUtils the value of parameterized type in either standard output,
+		 * Display the value of parameterized type in either standard output,
 		 * or log4j log or both
 		 * @param t value to be displayed
 		 * @param logger Reference to the log4j log appender
 		 * @param alignement Align the label within its placement if alignment is greater than 
 		 * the label, no alignment otherwise
+		 * @return 0
 		 */
 	final def show[T](t: T, logger: Logger, alignment: Int = -1): Int = { 
 		print(if(alignment != -1) align(t.toString, alignment) else t.toString, logger)
 		DEFAULT_SHOW_RETURN
 	}
 	
-	
+			/**
+		 * Display the sequence of parameterized type in either standard output,
+		 * or log4j log or both
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @return 0
+		 */
 	final def show[T](seq: Seq[T], logger: Logger): Int = {
 		print(seq.foldLeft(new StringBuilder)((buf, el) => buf.append(s"$el ")).toString, logger)
 		DEFAULT_SHOW_RETURN
 	}
  
-
+		/**
+		 * Display the error related to the value of a parameterized
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @return -1
+		 */
 	final def error[T](t: T, logger: Logger): Int = error(t, logger)
 
+		/**
+		 * Display the content of an exception related to the value of a parameterized.
+		 * The stack trace related to the exception is printed
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @param e Exception caught
+		 * @return -1
+		 */
 	final def error[T](t: T, logger: Logger, e: Throwable): Int = {
 		processError(t, logger, e)
 		DEFAULT_ERROR_RETURN
 	}
   
-
+		/**
+		 * Display the error related to the value of a parameterized.
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @return Mpme
+		 */
 	final def none[T](t: T, logger: Logger): None.type = none(t, logger)
 
-
+		/**
+		 * Display the content of an exception related to the value of a parameterized.
+		 * The stack trace related to the exception is printed
+		 * @param t value to be displayed
+		 * @param logger Reference to the log4j log appender
+		 * @param e Exception caught
+		 * @return None
+		 */
 	final def none[T](t: T, logger: Logger, e: Throwable): None.type = {
 		processError(t, logger, e)
 		None

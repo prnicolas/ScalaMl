@@ -13,6 +13,7 @@ package org.scalaml.app.chap6
 
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.XTSeries
+import org.scalaml.core.XTSeries.{DblSeries, DblVecSeries}
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix, XY}
 import org.scalaml.workflow.data.{DataSink, DataSource}
 import org.scalaml.supervised.regression.linear.MultiLinearRegression
@@ -53,7 +54,7 @@ object MultiLinearRegressionEval extends Eval {
 		if( !args.isEmpty && args(0).equals("trending")) 
 			trendExtraction 
 		else
-			featuresSelection	  		 
+			featuresSelection
    
 	private def featuresSelection: Int = {
 		DisplayUtils.show(s"\n$header Ordinary least squares regression FEATURE SELECTION", logger)
@@ -69,7 +70,8 @@ object MultiLinearRegressionEval extends Eval {
 							.map( _ |> YahooFinancials.adjClose )
 							.map(x => movAvg |> XTSeries[Double](x.slice(20, 800)))
 	  	    
-	//		DataSink[Double](output) |> input.foldLeft(List[XTSeries[Double]]())((sk, v) => v :: sk)
+			val sinkInput: List[DblSeries] = input.foldLeft(List[DblSeries]())((sk, v) => v :: sk)
+			DataSink[Double](output) |> sinkInput
 	  	  
 			// Retrieve the input variables by removing the first 
 			// time series (labeled dataset) and transpose the array
@@ -85,7 +87,7 @@ object MultiLinearRegressionEval extends Eval {
 			)
 	  	  		
 			featuresList.foreach(ft => 
-				DisplayUtils.show(s"${getRss(XTSeries[DblVector](ft._2), input(0), ft._1)}", logger ))  	  
+					DisplayUtils.show(s"${getRss(XTSeries[DblVector](ft._2), input(0), ft._1)}", logger))  	  
 
 				// Compute the mean square error for each solution.
 			val errors = featuresList.map(ft => rssSum(XTSeries[DblVector](ft._2), input(0))._1)
@@ -105,7 +107,7 @@ object MultiLinearRegressionEval extends Eval {
 		}
 	}
   	  
- 	private def getRss(xt: XTSeries[DblVector], y: DblVector, featureLabels: Array[String]): String = {
+ 	private def getRss(xt: DblVecSeries, y: DblVector, featureLabels: Array[String]): String = {
 		val regression = MultiLinearRegression[Double](xt, y)
 		val buf = new StringBuilder
 		
@@ -121,7 +123,7 @@ object MultiLinearRegressionEval extends Eval {
 	}
   
 
-	private def rssSum(xt: XTSeries[DblVector], y: DblVector): XY = {
+	private def rssSum(xt: DblVecSeries, y: DblVector): XY = {
 		val regression = MultiLinearRegression[Double](xt, y)
 		val rss = regression.rss.get
 		val arr: DblMatrix = xt.toArray
@@ -153,7 +155,7 @@ object MultiLinearRegressionEval extends Eval {
 			DataSink[Double](output) |>  XTSeries[Double](deltaPrice) ::
 										volatility :: 
 										volume :: 
-										List[XTSeries[Double]]()
+										List[DblSeries]()
 
 			val data =  volatility.zip(volume)
 									.map(z => Array[Double](z._1, z._2))
@@ -162,21 +164,21 @@ object MultiLinearRegressionEval extends Eval {
 			val features = XTSeries[DblVector](data.dropRight(1))
 			val regression = MultiLinearRegression[Double](features, deltaPrice)
 
-			regression.weights match {
-				case Some(w) => {
-					val buf = new StringBuilder(s"$name Multi-regression weights\n")
-					w.zipWithIndex.foreach( wi => buf.append(s"${wi._1}${wi._2} "))
-					DisplayUtils.show(buf.toString, logger)
+			regression.weights.map(w => {
+				val buf = new StringBuilder(s"$name Multi-regression weights\n")
 					
-					DisplayUtils.show(deltaPrice.toSeq, logger)
-					val trend = data.map( vv => w(0) + vv(0)*w(1) + vv(1)*w(1) )
-					DisplayUtils.show("trend", logger)
-					DisplayUtils.show(trend, logger)
-					display(deltaPrice, trend)
-				}
-				case None => DisplayUtils.error(s"$name Multivariate regression could not be trained", 
-						logger)
-			}
+				w.zipWithIndex.foreach( wi => buf.append(s"${wi._1}${wi._2} "))
+				DisplayUtils.show(buf.toString, logger)
+					
+				DisplayUtils.show(deltaPrice.toSeq, logger)
+				
+				val trend = data.map( vv => w(0) + vv(0)*w(1) + vv(1)*w(1) )
+				DisplayUtils.show("trend", logger)
+				DisplayUtils.show(trend, logger)
+				display(deltaPrice, trend)
+			}).getOrElse(DisplayUtils.error(s"$name Multivariate regression could not be trained", 
+					logger))
+
 			DisplayUtils.show(s"$name.filter Completed", logger)
 		}
   	 

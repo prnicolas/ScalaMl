@@ -14,7 +14,7 @@ package org.scalaml.app.chap4
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.{ScalaMl, CommonMath}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.workflow.data.{DataSource, DataSink}
+import org.scalaml.workflow.data.DataSource
 import org.scalaml.unsupervised.clustering.{Cluster, KMeans}
 import org.scalaml.unsupervised.Distance.euclidean
 import org.scalaml.util.DisplayUtils

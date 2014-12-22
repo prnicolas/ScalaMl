@@ -44,7 +44,7 @@ import org.scalaml.util.DisplayUtils
 protected object AllTests extends ScalaMlTest {
 	val chapter: String = "All tests"
 	  
-	private val CONFIGURATION = "Recommended SBT/JVM configuration:\n-Xmx4096 (or higher)\n" +
+	private val CONFIGURATION = "Recommended SBT/JVM configuration:\n -Xmx4096 (or higher)\n" +
 			" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
 			s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}"
 
@@ -55,7 +55,6 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters.
 		 */
   def run: Unit = {
-		header
 			// Core
 		evaluate(StatsEval)
 		
@@ -126,8 +125,11 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(MLPConfigEval, Array[String]("alpha"))
 		evaluate(MLPValidation)
 		evaluate(BinaryMLPEval)
-		evaluate(MLPEval)
-		
+		evaluate(MLPEval, Array[String]("4"))
+		evaluate(MLPEval, Array[String]("4", "4"))
+		evaluate(MLPEval, Array[String]("7", "7"))
+		evaluate(MLPEval, Array[String]("5", "5", "5"))
+				
 			// Chapter 10
 		evaluate(GAEval)
 		
@@ -149,30 +151,34 @@ protected object AllTests extends ScalaMlTest {
 		 * Method to display the current settings of configuration and
 		 * validate the version of Scala and Java JDK used.
 		 */
-	private def header: Unit = {
+	def header(args: Array[String]): Unit = {
+		val buf = new StringBuilder("\nCommand line configuration for output:")
+		args.foreach(arg => buf.append(s" $arg"))
+		buf.append("\n")
 			// Display configuration and settings information  regarding OS
-		DisplayUtils.show(CONFIGURATION, logger)
+		buf.append(CONFIGURATION)
 		if( !Properties.isWin && !Properties.isMac)
-			DisplayUtils.show("The library has not be tested for this Operating System", logger)
+			buf.append("The library has not be tested for this Operating System")
 	
 			// Correct version of Java
-		DisplayUtils.show(s"Java version: ${Properties.javaVersion}", logger)
+		buf.append(s"Java version: ${Properties.javaVersion}\n")
 		if(!Properties.isJavaAtLeast("1.7"))
-			DisplayUtils.show("Incompatible version of Java, should be 1.7 or later", logger)
-		
+			buf.append("Incompatible version of Java, should be 1.7 or later\n")
+			
 			// Correct version of Scala and AKka
 		val scalaVersion = Properties.versionNumberString
-		DisplayUtils.show(s"Scala version: $scalaVersion", logger)
+		buf.append(s"Scala version: $scalaVersion\n")
 		(scalaVersion.charAt(2): @switch) match {
-			case '9' => DisplayUtils.show("Scala version should be 2.10.2 or higher", logger)
+			case '9' => buf.append("Scala version should be 2.10.2 or higher")
 			case '1' => {
 				(scalaVersion.charAt(3): @switch) match {
-					case '0' => DisplayUtils.show("Compatible Akka version should be 2.2.4 or lower", logger)
-					case '1' => DisplayUtils.show("Compatible Akka version should be 2.3.4 or higher", logger)
+					case '0' => buf.append("Compatible Akka version should be 2.2.4 or lower")
+					case '1' => buf.append("Compatible Akka version should be 2.3.4 or higher")
 				}
 			}
-			case _ => DisplayUtils.show("Could not initialize", logger)
+			case _ => buf.append("Could not initialize")
 		}
+		DisplayUtils.show(buf.toString, logger)
 		count = 0
 	}
 	
@@ -185,15 +191,14 @@ protected object AllTests extends ScalaMlTest {
 		 * <p>Driver called by simple build tool (SBT) as test:run
 		 * @author Patrick Nicolas
 		 */
-object AllTestsApp extends App { 
- //  def main(args: Array[String]) {
-  if(args.size > 0) {
-      println(args(0))
-  }
-   else
-     println("No argument")
-  // AllTests.run 
- //    }
+object AllTestsApp extends App {
+	if(args.size > 0) {
+		DisplayUtils.init(args)
+		AllTests.header(args)
+	}	
+	else
+		AllTests.header(Array[String]("console", "chart"))
+	AllTests.run 
 }
 
 

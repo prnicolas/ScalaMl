@@ -13,7 +13,7 @@ package org.scalaml.app.chap4
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.workflow.data.{DataSource, DataSink}
+import org.scalaml.workflow.data.DataSource
 import org.scalaml.unsupervised.em.MultivariateEM
 import org.scalaml.filtering.SimpleMovingAverage
 import org.scalaml.util.DisplayUtils

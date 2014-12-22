@@ -34,6 +34,10 @@ object DFTEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "DFTEval"  
+	private val RESOURCE_PATH = "resources/data/chap3/"
+	private val OUTPUT1 = "output/chap3/simulated.csv"
+	private val OUTPUT2 = "output/chap3/smoothed.csv"
+	private val OUTPUT3 = "output/chap3/filt_"
 	  
 	private val logger = Logger.getLogger(name)
 	private val h = (x:Double) => 2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
@@ -58,29 +62,35 @@ object DFTEval extends FilteringEval {
 		DisplayUtils.show(s"$header Discrete Fourier series with synthetic data", logger)
 		val values = Array.tabulate(1025)(x => h(x/1025.0))
 			// Original data dump into a CSV file
-		DataSink[Double]("output/chap3/simulated.csv") write values
-     
+		DataSink[Double](OUTPUT1) write values
+  
+			// Extract the frequencies spectrum using the discrete Fourier transform
+			// and write into output file
 		val frequencies = DFT[Double] |> XTSeries[Double](values)
-		DataSink[Double]("output/chap3/smoothed.csv") write frequencies
+		DataSink[Double](OUTPUT2) write frequencies
 		
-		val results = FormatUtils.format(frequencies.toArray.take(128), "x/1025", 
+			// Format and display the first 128 results
+		val NUM_FREQUENCIES = 128
+		val results = FormatUtils.format(frequencies.toArray.take(NUM_FREQUENCIES), "x/1025", 
 				FormatUtils.ShortFormat)
-		DisplayUtils.show(s"$name Results simulation first 128 fequencies: ${results}", logger)
+		DisplayUtils.show(s"$name Results simulation first $NUM_FREQUENCIES fequencies: ${results}", logger)
 	}
    
 	private def runFinancial(symbol: String): Int  = {
 		DisplayUtils.show(s"$header Discrete Fourier series with financial data $symbol", logger)
-		val src = DataSource("resources/data/chap3/" + symbol + ".csv", false, true, 1)
+		val src = DataSource(RESOURCE_PATH + symbol + ".csv", false, true, 1)
 
 		val price = src |> YahooFinancials.adjClose
 		var filtered = filter(0.01, price)
 		filtered = filter(0.005, price)
 
-		val sink2 = DataSink[Double]("output/chap3/filt_" + symbol + ".csv")
+		val sink2 = DataSink[Double](OUTPUT3 + symbol + ".csv")
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
 
-		val result = FormatUtils.format(filtered.take(256), "DTF filtered", FormatUtils.ShortFormat)
-		DisplayUtils.show(s"$name Result first 256 frequencies: $result", logger)
+		val NUM_FREQUENCIES = 256
+		val result = FormatUtils.format(filtered.take(NUM_FREQUENCIES), "DTF filtered", 
+				FormatUtils.ShortFormat)
+		DisplayUtils.show(s"$name First $NUM_FREQUENCIES frequencies: $result", logger)
 	}
 	
 	private def filter(cutOff: Double, price: XTSeries[Double]): DblVector = {
@@ -93,6 +103,10 @@ object DFTEval extends FilteringEval {
 		filtered
 	}
 	
+		/*
+		 * Display two time series of frequencies with a predefined cutOff value fc
+		 * using the LinePlot class
+		 */
 	private def display(x1: DblVector, x2: DblVector, fc: Double): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme, BlackPlotTheme}
 	

@@ -46,21 +46,22 @@ object FileUtils {
 	def write(content: String, pathName: String, className: String): Boolean = {
 		import java.io.PrintWriter
 	
-		var printWriter: PrintWriter = null
+		var printWriter: Option[PrintWriter] = None
 		var status = false
 		Try {
-			printWriter = new PrintWriter(pathName)
-			printWriter.write(content)
+			printWriter = Some(new PrintWriter(pathName))
+			printWriter.map( _.write(content) )
 			status = true
 		} 
 		match {
 			case Failure(e) => {
 				DisplayUtils.error(s"$className.write failed for $pathName", logger, e)
-				if( printWriter != null) {
-					Try(printWriter.close) match {
+				
+				if( printWriter != None) {
+					Try(printWriter.map(_.close) ) match {
 						case Success(res) => res
 						case Failure(e) => 
-							DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
+								DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
 					}
 				}
 			}

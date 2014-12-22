@@ -66,17 +66,21 @@ object MLPEval extends Eval {
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	def run(args: Array[String]): Int =  {
-		DisplayUtils.show(s"$header MLP classifier without SoftMax conversion", logger)
-       
+	def run(args: Array[String]): Int = {
+		require(args.size > 0, "MLPEval.run Should have at least one argument")
+	  
+		val hiddenLayers = args.map( arg => arg.toInt)
+		val buf = new StringBuilder(s"$header MLP classifier without SoftMax conversion\n")
+		args.foreach(arg => buf.append(s"$arg "))
+		buf.append(" hidden layers")
+		DisplayUtils.show(buf.toString, logger)
+		
 		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
 							.map( _ |> GoogleFinancials.close )
 							.map( _.toArray)
   	 
 		DisplayUtils.show(s"$name size: ${prices(0).size}", logger)
-		test(Array[Int](4), prices)
-		test(Array[Int](4, 4), prices)
-		test(Array[Int](7, 7), prices)
+		test(hiddenLayers, prices)
 	}
   
 

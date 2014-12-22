@@ -126,9 +126,4 @@ object LogBinRegressionEval extends Eval {
 	}
 }
 
-
-object MyApp extends App {
-  LogBinRegressionEval.run(Array.empty)
-}
-
 // --------------------  EOF --------------------------------------
