@@ -1,9 +1,10 @@
 <b>Scala for Machine Learning</b> Version <b>0.98</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
-Source code, data files and utilities related to "Scala for Machine Learning"
+Source code, data files and utilities related to "Scala for Machine Learning"<br>
 <a href="#overview">Overview</a><br>
 <a href="#requirements">Minimum requirements</a><br>
+<a href="#documentation">Documentation</a><br>
 <a href="#project">Project</a><br>
 <a href="#installation">installation</a><br>
 <a href="#build">build</a><br>
@@ -22,6 +23,15 @@ The examples are related to investment portfolio management and trading strategi
 The real-world examples, related to financial and market analysis, used for the sole purpose of illustrating the machine learning techniques. They do not constitute a recommendation or endorsement of any specific investment management or trading techniques.<br>
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
+<h2 id="Documentation">Documentation</h2>
+The best approach to learn about any particular learning algorithm is to 
+<ul>
+<li>Read the appropriate chapter (i.e. <i>Chapter 5: Naive Bayes modelsM</i>)</li>
+<li>Review source code guidelines used in the book <i>SourceCodeGuide.html</i></li>
+<li>Review scaladoc in scala_2.10-0.98-javadoc.jar</li>
+<li>Look at the examples related to the chapter (i.e. <i>org/scalaml/app/chap5/Chap5</i>)</li>
+<li>Browse through the implementation code (i.e. <i>org/scalaml/supervised/bayes</i>)</li>
+</ul>
 <h2 id="requirements">Minimum Requirements</h2>
 <b>Hardware</b>: 2 CPU core with 4 Gbytes RAM for small datasets to build and run examples.<br>
 4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
