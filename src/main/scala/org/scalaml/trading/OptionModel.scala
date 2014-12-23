@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.98
  */
 package org.scalaml.trading
 
@@ -45,9 +45,29 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 	import YahooFinancials._, qlearning._
 	
 	check(strikePrice,minExpT,nSteps)
+		// Adjusted closing price for a security, extracted from Yahoo financials
 	val price = src |> adjClose
 
+		// extract the future price and the list of stock technical parameters
 	val futurePrice = price.drop(2)
+	
+		// Retrieve the list of stock technical parameters or properties
+	val propsList = (for {
+		rVolatility <- XTSeries.normalize((src |> relVolatility).toArray)
+		volByVol <- XTSeries.normalize((src |> volatilityByVol).toArray)
+		relPriceToStrike <- XTSeries.normalize(price.map(p => 1.0 - strikePrice/p))
+	} yield {
+		
+		// Assemble the OptionProperties and compute the normalize minimum
+		// minimum time to the expiration of the option.
+		rVolatility.zipWithIndex
+						.foldLeft(List[OptionProperty]())((xs, e) => {
+			val normDecay = (e._2+minExpT).toDouble/(price.size+minExpT)
+			new OptionProperty(normDecay, e._1, volByVol(e._2), relPriceToStrike(e._2)) :: xs
+		}).drop(2).reverse
+	}).getOrElse(List.empty)
+	
+	/*
 	val propsList: List[OptionProperty] = {
 		val rVolatility = XTSeries.normalize((src |> relVolatility).toArray).get
 		val volByVol = XTSeries.normalize((src |> volatilityByVol).toArray).get
@@ -59,15 +79,22 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 			new OptionProperty(normDecay, e._1, volByVol(e._2), relPriceToStrike(e._2)) :: xs
 		}).drop(2).reverse
 	}
-   	
-	def approximate(y: DblVector): Map[Array[Int], Double] = {
+	* 
+	*/
+		/**
+		 * Compute an approximation of the value of the options by 
+		 * discretization the actual value in multiple levels
+		 * @param y Array of option prices
+		 * @return A map of array of levels for the option price and accuracy
+		 */
+	def approximate(o: DblVector): Map[Array[Int], Double] = {
 		val mapper = new mutable.HashMap[Int, Array[Int]]
   	    
 		val acc = new NumericAccumulator[Int]
 		propsList.map( _.toArray)
 				.map( toArrayInt( _ ))
 				.map(ar => { val enc = encode(ar); mapper.put(enc, ar); enc})
-				.zip(y)
+				.zip(o)
 				.foldLeft(acc)((acc, t) => {acc += (t._1, t._2); acc })
   	  
 		acc.map(kv => (kv._1, kv._2._2/kv._2._1))
@@ -98,7 +125,8 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 		 * <p>Class that defines the property of a  traded option on a security.</p>
 		 * @constructor Create the property for an option.
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
-		 * @param timeToExp Time left to the option before expiration
+		 * @param timeToExp Time left to the option before expiration as percentage of the overall
+		 * duration of the option
 		 * @param relVolatility normalized relative volatility of the underlying security for a given
 		 * trading session.
 		 * @param volatilityByVol Volatility of the underlying security for a given trading session 
@@ -117,7 +145,7 @@ class OptionProperty(
 		relPriceToStrike: Double) {
 	val toArray = Array[Double](timeToExp, relVolatility, volatilityByVol, relPriceToStrike)
    
-	require(timeToExp > 2, s"OptionProperty time to option expiration $timeToExp if out of bounds")
+	require(timeToExp > 0.01, s"OptionProperty time to option expiration $timeToExp if out of bounds")
 }
 
 // ------------------------------------  EOF ----------------------------------

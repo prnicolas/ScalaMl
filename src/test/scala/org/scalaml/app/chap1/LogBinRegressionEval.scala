@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.98
  */
 package org.scalaml.app.chap1
 
@@ -44,7 +44,6 @@ object LogBinRegressionEval extends Eval {
 	private val path_training = "resources/data/chap1/CSCO.csv"
 	private val path_test = "resources/data/chap1/CSCO2.csv"
 	private val logger = Logger.getLogger(name)
-    		
 
 		/**
 		 * <p>Execution of the scalatest for <b>LogBinRegression</b> class. This method is invoked by the 
@@ -66,7 +65,7 @@ object LogBinRegressionEval extends Eval {
 		} 
 		yield {
 			val result = s"$name test result ${topCategory.toString}\n" +
-			s"$name test result ${topCategory2.toString}"
+					s"$name test result ${topCategory2.toString}"
 			DisplayUtils.show(s"$result", logger)
 		}).getOrElse(-1)
 	}
@@ -120,7 +119,6 @@ object LogBinRegressionEval extends Eval {
 				"Normalized session volatility",
 				"Normalized session Volume"
 			)
-			
 			ScatterPlot.display(volatilityVolume, labels, new BlackPlotTheme)
 		}
 	}

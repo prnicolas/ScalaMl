@@ -8,14 +8,12 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.reinforcement.qlearning
 
 import org.scalaml.core.Matrix
-
-
-
+import org.scalaml.core.Types.ScalaMl.{XY, XYTSeries}
 
 		/**
 		 * <p>Enumerator to define the type of a parameters used to update the policy during
@@ -148,11 +146,50 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		require(to >= 0 && from < qlData(0).size, s"QLPolicy.P source state $to is out of range")
 		qlData(from)(to).probability
 	}
-   
+	
+		/**
+		 * Compute the minimum and maximum value for Q
+		 * @return A pair (min Q-value, max Q-value)
+		 */
+	final def minMaxQ: XY = {
+		val _min = Range(0, qlData.size).minBy(from =>
+			Range(0, qlData(0).size).minBy(to => qlData(from)(to).value) )
+		val _max = Range(0, qlData.size).maxBy(from =>
+			Range(0, qlData(0).size).maxBy(to => qlData(from)(to).value) )
+		(_min, _max)
+	}
+ 
+		/**
+		 * Retrieve the pair (index source state, index destination state) which transition
+		 * is a positive value. The index of state is converted to a Double
+		 * @return Array of tuple (source state, destination state)
+		 */
+	final def EQ: XYTSeries = {
+		import scala.collection.mutable.ArrayBuffer
+		
+		val qValues = Range(0, qlData.size).flatMap(from => 
+				Range(0, qlData(0).size).map(to => (from, to, qlData(from)(to).value)))
+						.filter( _._3 > 0.0)
+						
+		qValues.take((qValues.size >>1))
+					.map(qV => (qV._1.toDouble, qV._2.toDouble))
+					.toArray
+	}
+	
+		/**
+		 * Textual description of the reward matrix for this policy.
+		 */
 	override def toString: String = s" Reward\n${toString(REWARD)}"
 
+		/**
+		 * Textual representation of either the Q-value, reward or probability matrix
+		 * @param varType type of variable (Q-value, reward, or probability)
+		 */
 	def toString(varType: QLDataVar): String = { 
 		val buf = new StringBuilder
+		
+			// Traverses all the state and collect the value {Reward,
+			// Q-value, probability} for this policy
 		Range(1, numStates).foreach(i => {
 			val line = qlData(i).zipWithIndex
 						.foldLeft(new StringBuilder)((b, qj) => b.append(f"${qj._1.value(varType)}%2.2f, ") )
@@ -181,7 +218,7 @@ object QLPolicy {
 	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = 
 			new QLPolicy[T](numStates, input)
 
-	private val MAX_NUM_STATES = 2048
+	private val MAX_NUM_STATES = 4096
 
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
 		require(numStates >0 && numStates < MAX_NUM_STATES, 

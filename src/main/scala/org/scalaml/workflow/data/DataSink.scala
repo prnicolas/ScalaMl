@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.workflow.data
 
@@ -43,7 +43,7 @@ final protected class DataSink[T <% String](
 	private val logger = Logger.getLogger("DataSink")
 	private val sinkFile = 
 		Try {
-			val path = sinkName.substring(0, sinkName.lastIndexOf(File.pathSeparator)-1)
+			val path = sinkName.substring(0, sinkName.lastIndexOf("/")-1)
 			val dir = new File(path)
 			if( !dir.exists )
 				dir.mkdir

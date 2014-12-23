@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.reinforcement.qlearning
 	
@@ -43,7 +43,7 @@ final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extend
 		 */
 	protected val persists = "model/qlearning"
 	override def toString: String = 
-		s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
+			s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }
 
 		/**
@@ -101,6 +101,9 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 		 */
 	@inline 
 	final def getModel: Option[QLModel[T]] = model
+	
+	@inline 
+	final def isModel: Boolean = model != None
 	  
 	override def toString: String = qlPolicy.toString + qlSpace.toString
 
@@ -271,7 +274,9 @@ object QLearning {
 	def apply[T](
 			config: QLConfig, 
 			numStates: Int, 
-			goal: Int, input: Array[QLInput], features: Set[T]): QLearning[T] = 
+			goal: Int, 
+			input: Array[QLInput], 
+			features: Set[T]): QLearning[T] = 
 		apply[T](config, numStates, Array[Int](goal), input, features)
 }
 

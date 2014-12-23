@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.98
  */
 package org.scalaml.util
 
@@ -40,11 +40,14 @@ object DisplayUtils {
 		 * @param args command line arguments.
 		 */
 	def init(args: Array[String]): Unit  = 
-		destination = args.foldLeft(0)(((dest, arg) => 
-				dest + LOG_DESTINATION.getOrElse(arg, 0)))
+		destination = args.foldLeft(0)((dest, arg) => 
+				dest + LOG_DESTINATION.getOrElse(arg, 0))
 			
-	@inline
-	final def isChart: Boolean = (destination & 0x04) == 0x04
+		/**
+		 * Test if plotting of computation results has been enabled
+		 * @return true if charts have to be displayed, false otherwise
+		 */
+	final def isChart: Boolean = ((destination & 0x04) == 0x04)
 
 		/**
 		 * Global function that align a label against a boundary. There is no alignment if the 
@@ -95,7 +98,10 @@ object DisplayUtils {
 		 * @param logger Reference to the log4j log appender
 		 * @return -1
 		 */
-	final def error[T](t: T, logger: Logger): Int = error(t, logger)
+	final def error[T](t: T, logger: Logger): Int = {
+		processError(t, logger)
+		DEFAULT_ERROR_RETURN
+	}
 
 		/**
 		 * Display the content of an exception related to the value of a parameterized.
@@ -144,6 +150,5 @@ object DisplayUtils {
 	private def processError[T](t: T, logger: Logger): Unit = 
 	  print(s"Error: ${t.toString}", logger)
 }
-
 
 // -----------------------------  EOF --------------------------------

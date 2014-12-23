@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.plots
 
@@ -29,6 +29,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer
 import org.jfree.util.ShapeUtilities
 
 import org.scalaml.core.Types.ScalaMl
+import org.scalaml.util.DisplayUtils
 import Plot._
 
 object ChartType extends Enumeration {
@@ -111,9 +112,12 @@ object Plot {
 		 * @throws IllegalArgumentException if the display height or width is out or range or 
 		 * the values are undefined
 		 */
-	def validateDisplayUtils[T](y: Array[T], width: Int, height: Int, comment: String): Unit = {
-		require( !y.isEmpty, s"$comment Cannot display an undefined series")
-		validateDisplaySize(width, height, comment)
+	def validateDisplayUtils[T](y: Array[T], width: Int, height: Int, comment: String): Boolean = {
+		if( DisplayUtils.isChart ) {
+			require( !y.isEmpty, s"$comment Cannot display an undefined series")
+			validateDisplaySize(width, height, comment)
+	  }
+		DisplayUtils.isChart
 	}
 
 		/**
@@ -126,9 +130,12 @@ object Plot {
 		 * the values are undefined
 		 */
 	import scala.collection.immutable.List
-	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String =""): Unit = {
-		require( !y.isEmpty, s"$comment Cannot display an undefined series")
-		validateDisplaySize(width, height, comment)
+	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String =""): Boolean = {
+		if( DisplayUtils.isChart ) {
+			require( !y.isEmpty, s"$comment Cannot display an undefined series")
+			validateDisplaySize(width, height, comment)
+		}
+		DisplayUtils.isChart
 	}
 	
 		/**
@@ -138,11 +145,14 @@ object Plot {
 		 * @param comment Comments to be added to the chart or plot
 		 * @throws IllegalArgumentException if the display height or width is out or range
 		 */
-	def validateDisplaySize(width: Int, height: Int, comment: String = ""): Unit = {
-		require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, 
-				s"$comment Width $width is out of range")
-		require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, 
-				s"$comment  height $height is out of range")
+	def validateDisplaySize(width: Int, height: Int, comment: String = ""): Boolean = {
+		if( DisplayUtils.isChart ) {
+			require( width > MIN_DISPLAY_SIZE && width < MAX_DISPLAY_SIZE, 
+					s"$comment Width $width is out of range")
+			require( height > MIN_DISPLAY_SIZE && height < MAX_DISPLAY_SIZE, 
+					s"$comment  height $height is out of range")
+		}
+		DisplayUtils.isChart
 	}
 }
 

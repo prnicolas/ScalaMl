@@ -6,7 +6,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.98
  */
 package org.scalaml.app.chap3
 
@@ -35,8 +35,11 @@ object MovingAveragesEval extends FilteringEval {
 	val name: String = "MovingAveragesEval"
     
 	private val logger = Logger.getLogger(name)
-	private val NUMBER_DISPLAYED_VALUES = 128
-
+	private val START_DISPLAY = 32
+	private val WINDOW_DISPLAY = 64
+	private val RESOURCE_PATH = "resources/data/chap3/"
+	private val OUTPUT_PATH = "output/chap3/mvaverage"
+	  
 		/**
 		 * <p>Execution of the scalatest for <b>SimpleMovingAveragte</b>, <b>WeightedMovingAverage</b>
 		 * and <b>ExpMovingAverage</b> classes
@@ -54,32 +57,30 @@ object MovingAveragesEval extends FilteringEval {
 			val weights: DblVector = w.map { _ / w.sum }
 			DisplayUtils.show(FormatUtils.format(weights, "Weights", FormatUtils.ShortFormat), logger)
 	     
-			val dataSource = DataSource("resources/data/chap3/" + symbol + ".csv", false)
+			val dataSource = DataSource(RESOURCE_PATH + symbol + ".csv", false)
 			Try {
 				val price = dataSource |> YahooFinancials.adjClose
 				val sMvAve = SimpleMovingAverage[Double](p)  
 				val wMvAve = WeightedMovingAverage[Double](weights)
 				val eMvAve = ExpMovingAverage[Double](p)
 		
-				val dataSink = DataSink[Double]("output/chap3/mvaverage" + p.toString + ".csv")
-				val results = price :: sMvAve.|>(price) :: 
+				val dataSink = DataSink[Double](OUTPUT_PATH + p.toString + ".csv")
+				val results = price :: 
+										sMvAve.|>(price) :: 
 										eMvAve.|>(price) :: 
 										wMvAve.|>(price) :: 
 										List[DblSeries]()
 	
 				dataSink |> results
-				DisplayUtils.show(s"$name Results for the first $NUMBER_DISPLAYED_VALUES values", logger)
+				DisplayUtils.show(s"$name Results for [$START_DISPLAY, $WINDOW_DISPLAY] values", logger)
 				results.foreach(ts => {
-					val displayedValues = ts.toArray.take(NUMBER_DISPLAYED_VALUES)
+					val displayedValues = ts.toArray.drop(START_DISPLAY).take(WINDOW_DISPLAY)
 					DisplayUtils.show(FormatUtils.format(displayedValues, "X", FormatUtils.ShortFormat), logger)
 				})
 				
-				display(List[DblSeries](results(0), results(1)), 
-						List[String]("Stock price", "Simple Moving Average"))
-				display(List[DblSeries](results(0), results(2)), 
-						List[String]("Stock price", "Exponential Moving Average"))
-				display(List[DblSeries](results(0), results(3)), 
-						List[String]("Stock price", "Weighted Moving Average"))
+				display(List[DblSeries](results(0), results(1)), "Simple Moving Average")
+				display(List[DblSeries](results(0), results(2)), "Exponential Moving Average")
+				display(List[DblSeries](results(0), results(3)), "Weighted Moving Average")
 			}
 			match {
 				case Success(n) => n
@@ -90,15 +91,15 @@ object MovingAveragesEval extends FilteringEval {
 			DisplayUtils.error(s"$name Incorrect arguments for command line", logger)
 	}
 	
-	private def display(results: List[DblSeries], labels: List[String]): Int = {
+	private def display(results: List[DblSeries], label: String): Int = {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme}
 		
 		val labels = List[String]( 
-			name, "Moving Averages", "Trading sessions", "Stock price"
+			name, label, "Trading sessions", "Stock price"
 		)
 		val dataPoints: Array[(DblVector, String)] = results.map(_.toArray).toArray.zip(labels)
 		LinePlot.display(dataPoints.toList, labels, new LightPlotTheme)
-		1
+		0
 	}
 }
 

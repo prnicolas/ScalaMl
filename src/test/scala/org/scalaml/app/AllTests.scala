@@ -7,17 +7,18 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.3
+ * Version 0.98
  */
 package org.scalaml.app
 
+	// Scala standard library
 import scala.annotation.switch
 import scala.util.Properties
-
+	// Third party frameworks
 import org.scalatest.concurrent._
 import org.scalatest.time.{Span, Seconds, Millis}
 import org.apache.log4j.Logger
-
+	// ScalaMl classes
 import org.scalaml.app.core._
 import org.scalaml.app.chap1._
 import org.scalaml.app.chap2._
@@ -52,15 +53,16 @@ protected object AllTests extends ScalaMlTest {
 	
 		/**
 		 * Method to execute all the tests in Scala for Machine Learning
-		 * Following the order of the chapters.
+		 * Following the order of the chapters. See individual class xxxEval 
+		 * for description and purpose of the test
 		 */
   def run: Unit = {
+	  /*
 			// Core
 		evaluate(StatsEval)
-		
 		evaluate(XTSeriesEval)
 		evaluate(MatrixEval)
-/*
+	
 			// Chapter 1
 		evaluate(LogBinRegressionEval)
 		evaluate(PlotterEval)
@@ -68,13 +70,11 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 2
 		evaluate(BiasVarianceEval)
 		evaluate(WorkflowEval)
-		
 			//Chapter 3
 		evaluate(MovingAveragesEval, Array[String]("BAC", "60")) 
 		evaluate(DFTEval)
 		evaluate(DFTEval, Array[String]("BAC"))
 		evaluate(DKalmanEval, Array[String]("BAC"))
-
 
 			// Chapter 4
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
@@ -132,10 +132,11 @@ protected object AllTests extends ScalaMlTest {
 				
 			// Chapter 10
 		evaluate(GAEval)
-		
+		*/
 			// Chapter 11
-		evaluate(QLearningEval)
-		
+		evaluate(QLearningEval, Array[String]("maxReward"))
+		evaluate(QLearningEval, Array[String]("random"))
+		/*
 			// Chapter 12
 		evaluate(ParBenchmarkEval, Array[String]("array"))
 		evaluate(ParBenchmarkEval, Array[String]("map"))
@@ -161,7 +162,7 @@ protected object AllTests extends ScalaMlTest {
 			buf.append("The library has not be tested for this Operating System")
 	
 			// Correct version of Java
-		buf.append(s"Java version: ${Properties.javaVersion}\n")
+		buf.append(s" Java version: ${Properties.javaVersion}\n")
 		if(!Properties.isJavaAtLeast("1.7"))
 			buf.append("Incompatible version of Java, should be 1.7 or later\n")
 			
@@ -181,7 +182,6 @@ protected object AllTests extends ScalaMlTest {
 		DisplayUtils.show(buf.toString, logger)
 		count = 0
 	}
-	
 	var count: Int = _	
 	def testCount: String = { count += 1;  String.valueOf(count) }
 }

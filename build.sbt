@@ -1,8 +1,8 @@
 organization := "Patrick Nicolas"
 
-name := "Scalaml"
+name := "ScalaMl"
 
-version := "0.97.3"
+version := "0.98"
 
 scalaVersion := "2.10.4"
 
@@ -26,4 +26,3 @@ scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings")
 
 // Options for Scala test with timing and short stack trace
 testOptions in Test += Tests.Argument("-oDS")
-

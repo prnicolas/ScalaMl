@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -59,6 +59,13 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 						.maxBy(st => policy.EQ(state.id, st.id))
 		policy.EQ(state.id, best.id)
 	}
+	
+			/**
+			 * Access the number of states in the seach space
+			 * @return number of states
+			 */
+	@inline
+	final def getNumStates: Int = states.size
     
 		/**
 		 * <p>Select a state randomly from the existing states</p>

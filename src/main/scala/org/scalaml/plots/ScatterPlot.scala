@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.97.2
+ * Version 0.98
  */
 package org.scalaml.plots
 
@@ -52,12 +52,12 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * are out of bounds.
 		 */
 	override def display(xy: XYTSeries, width: Int, height : Int): Unit  = {
-		validateDisplayUtils(xy, width, height, "ScatterPlot.display")
-
-		val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-		val seriesCollection = new XYSeriesCollection
-		seriesCollection.addSeries(series)
-		draw(seriesCollection, width, height)
+		if( validateDisplayUtils(xy, width, height, "ScatterPlot.display") ) {
+			val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+			val seriesCollection = new XYSeriesCollection
+			seriesCollection.addSeries(series)
+			draw(seriesCollection, width, height)
+		}
 	}
 	
 		/**
@@ -70,15 +70,15 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * are out of bounds.
 		 */
 	override def display(y: DblVector, width: Int, height: Int): Unit = {
-		validateDisplayUtils[Double](y, width, height, "ScatterPlot.display")
-		
-		val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {
-				s.add(xn._1, xn._2)
-				s
-		})
-		val seriesCollection = new XYSeriesCollection
-		seriesCollection.addSeries(series)
-		draw(seriesCollection, width, height)
+		if( validateDisplayUtils[Double](y, width, height, "ScatterPlot.display") ) {
+			val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {
+					s.add(xn._1, xn._2)
+					s
+			})
+			val seriesCollection = new XYSeriesCollection
+			seriesCollection.addSeries(series)
+			draw(seriesCollection, width, height)
+		}
 	}
    
 
@@ -97,76 +97,77 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		require( !xy1.isEmpty, 
 				"ScatterPlot.DisplayUtils Cannot display with second series undefined ")
 
-		validateDisplaySize(width, height, "ScatterPlot.DisplayUtils")
+		if( validateDisplaySize(width, height, "ScatterPlot.DisplayUtils") ) {
 
-		val seriesCollection1 = new XYSeriesCollection
-		val seriesCollection2 = new XYSeriesCollection
-		val series1 = xy1.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-		val series2 = xy2.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-		seriesCollection1.addSeries(series1)
-		seriesCollection2.addSeries(series2)
-	  
-		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection1, 
-					PlotOrientation.VERTICAL, true, false, false)
-      
-		val plot = chart.getPlot.asInstanceOf[XYPlot]
-		val renderer1 = new XYDotRenderer
-		plot.setRenderer(0, renderer1)
-		plot.setDomainAxis(0, new NumberAxis("x"))
-		renderer1.setSeriesPaint(0, theme.color(0))
-		renderer1.setDotHeight(4)
-		renderer1.setDotWidth(4)
-      
-		plot.setDataset(1, seriesCollection2)
-		val renderer2 = new XYShapeRenderer
-		plot.setRenderer(1, renderer2)
-		renderer2.setSeriesShape(0, ShapeUtilities.createDiamond(3.0F))
-		renderer2.setSeriesPaint(0, theme.color(1))
-   
-		plot.setBackgroundPaint(theme.paint(width, height))
-		createFrame(config._1, chart)
+			val seriesCollection1 = new XYSeriesCollection
+			val seriesCollection2 = new XYSeriesCollection
+			val series1 = xy1.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+			val series2 = xy2.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+			seriesCollection1.addSeries(series1)
+			seriesCollection2.addSeries(series2)
+		  
+			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection1, 
+						PlotOrientation.VERTICAL, true, false, false)
+	      
+			val plot = chart.getPlot.asInstanceOf[XYPlot]
+			val renderer1 = new XYDotRenderer
+			plot.setRenderer(0, renderer1)
+			plot.setDomainAxis(0, new NumberAxis("x"))
+			renderer1.setSeriesPaint(0, theme.color(0))
+			renderer1.setDotHeight(4)
+			renderer1.setDotWidth(4)
+	      
+			plot.setDataset(1, seriesCollection2)
+			val renderer2 = new XYShapeRenderer
+			plot.setRenderer(1, renderer2)
+			renderer2.setSeriesShape(0, ShapeUtilities.createDiamond(3.0F))
+			renderer2.setSeriesPaint(0, theme.color(1))
+	   
+			plot.setBackgroundPaint(theme.paint(width, height))
+			createFrame(config._1, chart)	
+		}
 	}
-   
 
 	import scala.collection.immutable.List
 	def display(xs: List[XYTSeries], lbls: List[String], w: Int, h : Int): Unit  = {
-		validateDisplayUtils[XYTSeries](xs, w, h, "ScatterPlot.display")
-
-		val seriesCollectionsList = xs.zipWithIndex
-				.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
-			val seriesCollection = new XYSeriesCollection
-			val series = xy._1.foldLeft(new XYSeries(lbls(xy._2)))((s, t) => {
-				s.add(t._1, t._2)
-				s
+		if( validateDisplayUtils[XYTSeries](xs, w, h, "ScatterPlot.display") ) {
+	
+			val seriesCollectionsList = xs.zipWithIndex
+					.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
+				val seriesCollection = new XYSeriesCollection
+				val series = xy._1.foldLeft(new XYSeries(lbls(xy._2)))((s, t) => {
+					s.add(t._1, t._2)
+					s
+				})
+				seriesCollection.addSeries(series)
+				seriesCollection :: xs
 			})
-			seriesCollection.addSeries(series)
-			seriesCollection :: xs
-		})
-	  
-		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, 
-					PlotOrientation.VERTICAL, true, false, false)
-		val plot = chart.getPlot.asInstanceOf[XYPlot]
-  	  
-		val renderer1 = new XYDotRenderer
-		plot.setRenderer(0, renderer1)
-		plot.setDomainAxis(0, new NumberAxis("Trading sessions"))
-		renderer1.setSeriesPaint(0, theme.color(0))
-		renderer1.setDotHeight(4)
-		renderer1.setDotWidth(4)
-   
-		val shapes = Array[Shape](ShapeUtilities.createDiamond(3.0F), 
-				ShapeUtilities.createRegularCross(2.0F, 2.0F))
-		
-		seriesCollectionsList.dropRight(1).zipWithIndex.foreach( sColi => { 
-			plot.setDataset(sColi._2+1, sColi._1)
-			val renderer = new XYShapeRenderer
-			plot.setRenderer(sColi._2+1, renderer)
-			renderer.setSeriesShape(0, shapes(sColi._2%shapes.size))
-			renderer.setSeriesPaint(0, theme.color(sColi._2+1))
-		})
-   
-		plot.setBackgroundPaint(theme.paint(w, h))
-		createFrame(config._1, chart)
+		  
+			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, 
+						PlotOrientation.VERTICAL, true, false, false)
+			val plot = chart.getPlot.asInstanceOf[XYPlot]
+	  	  
+			val renderer1 = new XYDotRenderer
+			plot.setRenderer(0, renderer1)
+			plot.setDomainAxis(0, new NumberAxis("Trading sessions"))
+			renderer1.setSeriesPaint(0, theme.color(0))
+			renderer1.setDotHeight(4)
+			renderer1.setDotWidth(4)
+	   
+			val shapes = Array[Shape](ShapeUtilities.createDiamond(3.0F), 
+					ShapeUtilities.createRegularCross(2.0F, 2.0F))
+			
+			seriesCollectionsList.dropRight(1).zipWithIndex.foreach( sColi => { 
+				plot.setDataset(sColi._2+1, sColi._1)
+				val renderer = new XYShapeRenderer
+				plot.setRenderer(sColi._2+1, renderer)
+				renderer.setSeriesShape(0, shapes(sColi._2%shapes.size))
+				renderer.setSeriesPaint(0, theme.color(sColi._2+1))
+			})
+	   
+			plot.setBackgroundPaint(theme.paint(w, h))
+			createFrame(config._1, chart)
+		}
 	}
    
 	

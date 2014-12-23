@@ -4,9 +4,9 @@
     <groupId>Patrick Nicolas</groupId>
     <artifactId>scalaml_2.10</artifactId>
     <packaging>jar</packaging>
-    <description>Scalaml</description>
-    <version>0.97.3</version>
-    <name>Scalaml</name>
+    <description>ScalaMl</description>
+    <version>0.98</version>
+    <name>ScalaMl</name>
     <organization>
         <name>Patrick Nicolas</name>
     </organization>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="Patrick Nicolas" module="scalaml_2.10" revision="0.97.3" status="release" publication="20141222005406">
+	<info organisation="Patrick Nicolas" module="scalaml_2.10" revision="0.98" status="release" publication="20141223020209">
 		<description>
-		Scalaml
+		ScalaMl
 		</description>
 	</info>
 	<configurations>
