@@ -57,7 +57,9 @@ protected object AllTests extends ScalaMlTest {
 		 * for description and purpose of the test
 		 */
   def run: Unit = {
-	  /*
+	evaluate(MatrixEval)
+	 			
+	 			/*
 			// Core
 		evaluate(StatsEval)
 		evaluate(XTSeriesEval)
@@ -132,11 +134,13 @@ protected object AllTests extends ScalaMlTest {
 				
 			// Chapter 10
 		evaluate(GAEval)
-		*/
+
 			// Chapter 11
-		evaluate(QLearningEval, Array[String]("maxReward"))
+		evaluate(QLearningEval, Array[String]("maxReward", "2", "4"))
+		evaluate(QLearningEval, Array[String]("maxReward", "8", "4"))
+		evaluate(QLearningEval, Array[String]("maxReward", "8", "5"))
 		evaluate(QLearningEval, Array[String]("random"))
-		/*
+		
 			// Chapter 12
 		evaluate(ParBenchmarkEval, Array[String]("array"))
 		evaluate(ParBenchmarkEval, Array[String]("map"))
@@ -192,7 +196,7 @@ protected object AllTests extends ScalaMlTest {
 		 * @author Patrick Nicolas
 		 */
 object AllTestsApp extends App {
-	if(args.size > 0) {
+	if( !args.isEmpty ) {
 		DisplayUtils.init(args)
 		AllTests.header(args)
 	}	

@@ -169,7 +169,7 @@ object DFT {
 }
 
 		/**
-		 * <p>Pass-band Filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
+		 * <p>Low-band filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
 		 * implements the convolution of the filter function and the input time series class.<br>
 		 * The class uses the Apache Commons Math library.</p>
 		 * @param g   Filtering function y = g(x, fC)used in the convolution

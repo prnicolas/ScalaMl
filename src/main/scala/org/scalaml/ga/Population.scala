@@ -231,16 +231,13 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * Textual description of the genetic code of this population
 		 * @return Genetic code for all the chromosomes of this population
 		 */
-	override def toString: String = 
-		chromosomes.foldLeft(new StringBuilder)((buf, x) => buf.append(s"${x.toString}\n")).toString
+	override def toString: String = chromosomes.map(_.toString).mkString("\n")
 
 		/**
 		 * Symbolic representation of this population
 		 * @return Symbolic representation all the chromosomes of this population
 		 */
-	final def symbolic(comments: String): Unit = 	
-		chromosomes.foldLeft(new StringBuilder(comments))((buf, x) => 
-				buf.append(s"${x.symbolic("->")}\n")).toString
+	final def symbolic(comments: String): Unit = 	chromosomes.map(_.symbolic("->")).mkString("\n")
 
 			/*
 			 * Compute the genetic index for cross-over and mutation

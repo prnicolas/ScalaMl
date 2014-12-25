@@ -137,10 +137,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @return sequence of symbolic representation of the genes of this chromosomes
 		 */
 	final def symbolic(comment: String = ""): String = 
-		new StringBuilder(comment)
-			.append(code.foldLeft(new StringBuilder)((buf,gene) => 
-					buf.append(s"${gene.symbolic} ")).toString)
-			.append(s" score: $unfitness").toString
+			s"$comment ${code.map( _.symbolic).mkString(" ")} score: $unfitness"
 
 			/*
 			 * Auxiliary method to splice this chromosome with another 

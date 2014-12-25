@@ -34,7 +34,6 @@ object MovingAveragesEval extends FilteringEval {
 		 */
 	val name: String = "MovingAveragesEval"
     
-	private val logger = Logger.getLogger(name)
 	private val START_DISPLAY = 32
 	private val WINDOW_DISPLAY = 64
 	private val RESOURCE_PATH = "resources/data/chap3/"
@@ -84,7 +83,7 @@ object MovingAveragesEval extends FilteringEval {
 			}
 			match {
 				case Success(n) => n
-				case Failure(e) => DisplayUtils.error(s"$name One of the Moving averages failed", logger, e)
+				case Failure(e) => failureHandler(e)
 			}
 		}
 		else 

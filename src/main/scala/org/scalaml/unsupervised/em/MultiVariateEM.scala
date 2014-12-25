@@ -35,7 +35,7 @@ import org.apache.log4j.Logger
 		 * point of type Array{T]. 
 		 * @see Apache Commons Match org.apache.commons.math3.distribution._
 		 * @throws IllegalArgumentException if K is out of range
-		 * @param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre></p>
+		 * @param K Number of clusters used in the Expectation-Maximization algorithm.
 		 * @author Patrick Nicolas
 		 * @since February 25, 2014
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Expectation-Maximization

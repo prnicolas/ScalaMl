@@ -41,8 +41,6 @@ object PlotterEval extends Eval {
 	private val HIGH_INDEX = 2
 	private val LOW_INDEX = 3
 	private val pathName = "resources/data/chap1/CSCO.csv"
-				
-	private val logger = Logger.getLogger(name)
     
  
 		/**
@@ -85,7 +83,7 @@ object PlotterEval extends Eval {
 		} 
 		match {
 			case Success(n) => DisplayUtils.show(s"$name Test completed", logger)
-			case Failure(e) => DisplayUtils.error(s"$name Test failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

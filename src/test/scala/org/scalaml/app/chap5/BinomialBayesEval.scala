@@ -58,8 +58,6 @@ object BinomialBayesEval extends BayesEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BinomialBayesEval"
-
-	private val logger = Logger.getLogger(name)
 	
 		/**
 		 * <p>Execution of the scalatest for <b>NaiveBayes</b> class
@@ -87,7 +85,7 @@ object BinomialBayesEval extends BayesEval {
 		match {
 			case Success(res) => 
 					DisplayUtils.show(s"$name $description F1 measure = ${res.get}", logger)
-			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	

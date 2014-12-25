@@ -50,8 +50,6 @@ object TextBayesEval extends Eval {
 	
 	private val pathCorpus = "resources/text/chap5/"
 	private val pathLexicon = "resources/text/lexicon.txt"
-    	
-	private val logger = Logger.getLogger(name)
 	
 		// Convert a date into a Long value so the news articles can 
 		// be ordered and the weighted terms frequencies be aggregated for each date.
@@ -133,7 +131,7 @@ object TextBayesEval extends Eval {
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Naive Bayes analysis", logger, e)
+			case Failure(e) => failureHandler(e)
 		}	
 	}
 

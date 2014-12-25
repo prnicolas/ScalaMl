@@ -31,8 +31,6 @@ object BiasVarianceEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BiasVarianceEval"
-		
-	private val logger = Logger.getLogger(name)
 	
 		/**
 		 * <p>Execution of the scalatest for <p>Bias Variance </p> decomposition. 
@@ -67,7 +65,7 @@ object BiasVarianceEval extends Eval {
 		} 
 		match {
 			case Success(succeed) => DisplayUtils.show(s"$name Completed successfully", logger); 0
-			case Failure(e) => DisplayUtils.error(s"$name Failed to find a good fit", logger, e); -1
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	

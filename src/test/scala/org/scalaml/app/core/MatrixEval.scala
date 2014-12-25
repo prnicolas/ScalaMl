@@ -27,8 +27,6 @@ object MatrixEval extends Eval {
 		 */
 	val name: String = "MatrixEval"
 	
-	private val logger = Logger.getLogger(name)
-	
 			/**
 		 * <p>Execution of the scalatest for <b>Matrix</b></p>
 		 * @param args array of arguments used in the test
@@ -49,7 +47,7 @@ object MatrixEval extends Eval {
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

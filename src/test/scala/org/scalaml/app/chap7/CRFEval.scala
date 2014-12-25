@@ -38,8 +38,6 @@ object CrfEval extends Eval {
 	private val W0 = 0.7
 	private val EPS = 1e-3
 	private val PATH = "resources/data/chap7/rating"
-  
-	private val logger = Logger.getLogger(name)
 
 		/**
 		 * <p>Execution of the scalatest for <b>Crf</b> class.
@@ -65,7 +63,7 @@ object CrfEval extends Eval {
 		} 
 		match {
 			case Success(res) => 1
-			case Failure(e) => DisplayUtils.error(s"$name CRF modeling failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
   }
 	

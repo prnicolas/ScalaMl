@@ -65,7 +65,7 @@ class QLConfig(
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
 		 */
 object QLConfig {
-
+	private val NO_MIN_COVERAGE = 0.0
 		/**
 		 * Default constructor for configuration of Q-learning
 		 * @param alpha Learning rate for the Q-Learning algorithm.
@@ -103,11 +103,11 @@ object QLConfig {
 			neighbors: (Int, Int) =>List[Int]): QLConfig = 
 		new QLConfig(alpha, gamma, episodeLength, numEpisodes, NO_MIN_COVERAGE,  neighbors)
 
+		
 	private val MAX_EPISODES = 1000
 	private val MAX_MIN_COVERAGE = 0.9
-	private val NO_MIN_COVERAGE = 0.0
 
-	protected def check(
+	private def check(
 			alpha: Double, 
 			gamma: Double, 
 			episodeLength: Int, 
@@ -128,6 +128,3 @@ object QLConfig {
 
 
 // ----------------------------  EOF --------------------------------------------------------------
-
-
-    

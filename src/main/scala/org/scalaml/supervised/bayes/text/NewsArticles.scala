@@ -103,13 +103,7 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 				// Description of the maps to be added to the 
 				// overall textual descriptionj
 		val mapped = labels.foldLeft(new mutable.HashSet[String])((set, lbl) => {set.add(lbl); set})
-
-		val buf = new StringBuilder("id")
-		buf.append(mapped.foldLeft(new StringBuilder)((buf, lbl) => 
-			buf.append(s",$lbl")).toString).append("\n")
-		buf.append(toOrderedArray.foldLeft(new StringBuilder)((buf, dk) => 
-			buf.append(toString(mapped, dk)).append("\n")).toString)
-		buf.toString
+		s"id${mapped.mkString(",")}\n${toOrderedArray.mkString("\n")}"
 	}
 }
 

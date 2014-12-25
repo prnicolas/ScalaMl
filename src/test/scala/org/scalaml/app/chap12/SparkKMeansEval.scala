@@ -36,8 +36,6 @@ object SparkKMeansEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "SparkKMeansEval"
-	  	
-	private val logger = Logger.getLogger(name)
 
 	private val K = 8
 	private val NRUNS = 16
@@ -86,7 +84,7 @@ object SparkKMeansEval extends Eval {
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name run failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
   

@@ -37,7 +37,6 @@ object KMeansEval extends UnsupervisedLearningEval {
 	
 	private val START_INDEX = 70
 	private val NUM_SAMPLES = 42
-	private val logger = Logger.getLogger(name)
 
 		/**
 		 * <p>Execution of the scalatest for <b>KMeans</b> class
@@ -87,7 +86,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name failed to load data", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	

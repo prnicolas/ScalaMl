@@ -40,8 +40,6 @@ object PCAEval extends UnsupervisedLearningEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "PCAEval"
-
-	private val logger = Logger.getLogger(name)	
 	
 	// Symbol, PE/PS/PB/ROE/OM
 	private val data = Array[(String, Array[Double])] (
@@ -94,18 +92,15 @@ object PCAEval extends UnsupervisedLearningEval {
 		Try(pca |> XTSeries[DblVector](data.map( _._2.take(3)) ) ) match {
 			case Success(covariance) => 
 					DisplayUtils.show(s"$name Results\n${this.toString(covariance)}", logger)
-			case Failure(e) => 
-					DisplayUtils.error(s"$name.run Principal Component Analysis failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
    
 	private def toString(covariance: (DblMatrix, DblVector)): String = {
 		val buf = new StringBuilder(s"\n$name PCA Eigenvalues:\n")
-		covariance._2.foreach(c => buf.append(s"$c ,"))
-		buf.append(s"\n\n$name PCA Covariance matrix\n")
-		covariance._1.foreach(r => 
-			buf.append(r.foldLeft(new StringBuilder)((b, c) => 
-				b.append(s"$c,")).toString).append("\n"))
+		
+		buf.append(s"${covariance._2.mkString(" ,")}\n\n$name PCA Covariance matrix\n")
+		covariance._1.foreach(r => buf.append(s"${r.mkString(" ")}\n") )
 				
 		buf.toString
 	}

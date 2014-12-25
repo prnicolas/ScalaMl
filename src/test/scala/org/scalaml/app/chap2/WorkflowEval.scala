@@ -109,12 +109,11 @@ final class Reducer extends PipeOperator[DblVector, Int] {
 	 * @note Scala for Machine Learning
 	 */
 object WorkflowEval extends Eval {
+	import scala.util.{Try, Success, Failure}
   		/**
 		 * Name of the evaluation 
 		 */
 	val name: String = "WorkflowEval"
-    
-	private val logger = Logger.getLogger(name)
 	
 		/**
 		 * <p>Execution of the scalatest for dependency injection. 
@@ -135,8 +134,11 @@ object WorkflowEval extends Eval {
 			val proc: PipeOperator[DblVector, DblVector] = new Normalizer
 			val postProc: PipeOperator[DblVector, Int] = new Reducer
 		}
-		val result = workflow |> g 
-		DisplayUtils.show(s"$name with index $result", logger)
+		Try (workflow |> g ) match {
+			case Success(result) => DisplayUtils.show(s"$name with index $result", logger)
+			case Failure(e) => failureHandler(e)
+		}
+		
 	}
 }
 

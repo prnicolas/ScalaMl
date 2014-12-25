@@ -63,8 +63,8 @@ final class DocumentsSource(val pathName: String) {
 	  	  	  
 			val date = nextField(fieldIter)
 			val title = nextField(fieldIter)
-			val content = fieldIter.foldLeft(new StringBuilder)((b, str) => b.append(str.trim))
-
+			val content = fieldIter.map( _.trim).mkString 
+			
 			src.close
 			assert(date != None || title != None,
 					s"DocumentsSource.|> title,date for $fName is malformatted")

@@ -24,12 +24,12 @@ import org.scalaml.util.FormatUtils
 		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Time Series
 		 */
 object XTSeriesEval extends Eval {
+	import scala.util.{Try, Success, Failure}
   	/**
 		 * Name of the evaluation 
 		 */
 	val name: String = "XTSeriesEval"
 
-	private val logger = Logger.getLogger(name)
 	private val EPS = 1e-4
 	private val NUM_DATA_POINTS = 10
 	
@@ -72,26 +72,32 @@ object XTSeriesEval extends Eval {
 		DisplayUtils.show(s"$header Generic time series", logger)
 		
 		val xt = new XTSeries[DblVector]("Test series", TIMESERIES)
-		val txt = XTSeries.transpose(xt)
 		
-		val stats = XTSeries.statistics(xt).map(x => (x.mean, x.stdDev, x.max))
-		stats.foreach(stat => 
-				DisplayUtils.show(s"mean: ${stat._1}, stdDev: ${stat._2}, max: ${stat._3}", logger) )
+		Try {
+			val txt = XTSeries.transpose(xt)
 			
-		val normalized = XTSeries.normalize(xt)
-		
-		compare(MEANS(0), stats(0)._1, "mean x(0):") +
-		compare(STDDEV(0), stats(0)._2, "stddev x(0):") +
-		compare(MEANS(1), stats(1)._1, "mean x(1):") +
-		compare(STDDEV(1), stats(1)._2, "stddev x(1):") +
-		{ 
-			var sum: Int = 0
-			for( i <- 0 until TIMESERIES.size ) 
-				yield {
-					sum += compare(NORMALIZED(i)(0), normalized.get(i)(0), "normalize: ")
-					sum += compare(NORMALIZED(i)(1), normalized.get(i)(1), "normalize: ")
-				}
-			sum
+			val stats = XTSeries.statistics(xt).map(x => (x.mean, x.stdDev, x.max))
+			stats.foreach(stat => 
+					DisplayUtils.show(s"mean: ${stat._1}, stdDev: ${stat._2}, max: ${stat._3}", logger) )
+				
+			val normalized = XTSeries.normalize(xt)
+			
+			compare(MEANS(0), stats(0)._1, "mean x(0):") +
+			compare(STDDEV(0), stats(0)._2, "stddev x(0):") +
+			compare(MEANS(1), stats(1)._1, "mean x(1):") +
+			compare(STDDEV(1), stats(1)._2, "stddev x(1):") +
+			{ 
+				var sum: Int = 0
+				for( i <- 0 until TIMESERIES.size ) 
+					yield {
+						sum += compare(NORMALIZED(i)(0), normalized.get(i)(0), "normalize: ")
+						sum += compare(NORMALIZED(i)(1), normalized.get(i)(1), "normalize: ")
+					}
+				sum
+			}
+		} match {
+			case Success(sum) => DisplayUtils.show(s"$name.run results: $sum", logger)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	
@@ -107,6 +113,5 @@ object XTSeriesEval extends Eval {
 		if( lsError < EPS)  0 else -1
 	}
 }
-
 
 // -----------------------------------  EOF -----------------------------

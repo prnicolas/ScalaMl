@@ -34,7 +34,6 @@ object EMEval extends UnsupervisedLearningEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "EMEval"
-	private val logger = Logger.getLogger(name)
 
 		/**
 		 * <p>Execution of the scalatest for <b>MultivariateEM</b> class
@@ -82,7 +81,7 @@ object EMEval extends UnsupervisedLearningEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run EM failed", logger, e)
+			case Failure(e) =>  failureHandler(e)
 		}
 	}
 }

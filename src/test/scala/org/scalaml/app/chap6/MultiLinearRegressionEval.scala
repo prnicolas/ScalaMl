@@ -41,8 +41,6 @@ object MultiLinearRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "MultiLinearRegressionEval"
-	
-	private val logger = Logger.getLogger(name)
  
 		/**
 		 * <p>Execution of the scalatest for <b>MultiLinearRegression</b> class.
@@ -93,17 +91,13 @@ object MultiLinearRegressionEval extends Eval {
 			val errors = featuresList.map(ft => rssSum(XTSeries[DblVector](ft._2), input(0))._1)
 			val tss = Math.sqrt(errors.sum)/featuresList.size
 
-			Range(0, featuresList.size).foreach(n => {
-				val featureLabel = featuresList(n)._1.foldLeft(new StringBuilder)((b, symbol) => 
-						b.append(s"$symbol ")).toString
-				DisplayUtils.show(s"MSE for ${featureLabel} ${errors(n)}", logger )
-			})
-
+			Range(0, featuresList.size).foreach(n => 
+					DisplayUtils.show(s"MSE for ${featuresList(n)._1.mkString(" ")} ${errors(n)}", logger))
 			DisplayUtils.show(s"\n$name Residual error $tss", logger)
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name Inference test", logger, e)
+			case Failure(e) =>failureHandler(e)
 		}
 	}
   	  

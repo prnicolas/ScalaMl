@@ -44,8 +44,6 @@ object MLPConfigEval extends Eval {
 	private val NOISE_RATIO = 0.7
 	private val EPS = 1e-4
 
-	private val logger = Logger.getLogger(name)
-
 		/** 
 		 * <p>Execution of the scalatest for <b>MLP</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -54,30 +52,36 @@ object MLPConfigEval extends Eval {
 		 */
 	def run(args: Array[String]): Int =  {
 		DisplayUtils.show(s"$header MLP configuration parameters for ${args(0)}", logger)
-	     
-		val noise = () => NOISE_RATIO*Random.nextDouble
-		val f1 = (x: Double) => x*(1.0 + noise())
-		val f2 = (x: Double) => x*x*(1.0 + noise())
 
-		def vec1(x: Double): DblVector = Array[Double](f1(x), noise(), f2(x), noise())
-		def vec2(x: Double): DblVector = Array[Double](noise(), noise())
- 	 
-		val x = XTSeries[DblVector](Array.tabulate(TEST_SIZE)(vec1(_)))
-		val y = XTSeries[DblVector](Array.tabulate(TEST_SIZE)(vec2(_) ))
-     
-      		// Normalization._
-		val features: XTSeries[DblVector] = XTSeries.normalize(x).get
-		val labels = XTSeries.normalize(y).get.toArray
-      
-		if( !args.isEmpty ) {
-			args(0) match {
-				case "alpha" => eval(-1.0, ETA, features, labels)
-				case "eta" =>  eval(ALPHA, -1, features, labels)
-				case _ => eval(-1.0, -1.0, features, labels)
+		Try {
+			val noise = () => NOISE_RATIO*Random.nextDouble
+			val f1 = (x: Double) => x*(1.0 + noise())
+			val f2 = (x: Double) => x*x*(1.0 + noise())
+	
+			def vec1(x: Double): DblVector = Array[Double](f1(x), noise(), f2(x), noise())
+			def vec2(x: Double): DblVector = Array[Double](noise(), noise())
+	 	 
+			val x = XTSeries[DblVector](Array.tabulate(TEST_SIZE)(vec1(_)))
+			val y = XTSeries[DblVector](Array.tabulate(TEST_SIZE)(vec2(_) ))
+	     
+	      		// Normalization._
+			val features: XTSeries[DblVector] = XTSeries.normalize(x).get
+			val labels = XTSeries.normalize(y).get.toArray
+	      
+			if( !args.isEmpty ) {
+				args(0) match {
+					case "alpha" => eval(-1.0, ETA, features, labels)
+					case "eta" =>  eval(ALPHA, -1, features, labels)
+					case _ => eval(-1.0, -1.0, features, labels)
+				}
 			}
+			else 
+				eval(-1.0, -1.0, features, labels)	
 		}
-		else 
-			eval(-1.0, -1.0, features, labels)	
+		match {
+		  case Success(n) => n
+		  case Failure(e) => failureHandler(e)
+		}
 	}
    
 	private def eval(alpha: Double, eta: Double, features: XTSeries[DblVector], labels: DblMatrix): Int = 

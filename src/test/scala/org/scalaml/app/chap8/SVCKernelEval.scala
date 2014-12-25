@@ -44,8 +44,6 @@ object SVCKernelEval extends Eval {
 	private val COEF0 = 0.5
 	private val DEGREE = 2
 	type Features = XTSeries[DblVector]
-    
-	private val logger = Logger.getLogger(name)
 
 
 		/** <p>Execution of the scalatest for <b>SVC</b> class.
@@ -65,7 +63,7 @@ object SVCKernelEval extends Eval {
 			compareKernel(1.3, 0.3)
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name kernel comparison failed", logger, e)
+			case Failure(e) =>failureHandler(e)
 		}
 	}
     

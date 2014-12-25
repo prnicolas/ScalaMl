@@ -42,8 +42,6 @@ object DKalmanEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "DKalmanEval"
-    
-	private val logger = Logger.getLogger(name)
      
 		// Noise has to be declared implicitly
 	implicit val qrNoise = new QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   
@@ -107,7 +105,7 @@ object DKalmanEval extends FilteringEval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name Failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	

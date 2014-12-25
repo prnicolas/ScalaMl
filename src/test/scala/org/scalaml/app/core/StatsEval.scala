@@ -40,7 +40,6 @@ object StatsEval extends Eval {
 		-0.858461, -0.391076, -0.557999, 1.244768, 0.109692, 1.47846, -1.025384
 	)
 	private val EPS = 1e-4
-	private val logger = Logger.getLogger(name)
 	
 			/**
 		 * <p>Execution of the scalatest for <b>Stats</b></p>
@@ -51,28 +50,34 @@ object StatsEval extends Eval {
 		DisplayUtils.show(s"$header Basic statistics", logger)
 	
 			// Create a stats object and compute the normalized and zScored value
-		val stats = Stats[Double](VALUES)
-		val normalized = stats.normalize
-		val zScored = stats.zScore
-		
-			// Start a sequence of comparison
-		compare(MEAN, stats.mean, "Mean:") + 
-		compare(STDDEV, stats.stdDev, "Standard Deviation:") +
-		{ 
-			var sum: Int = 0
-			for( i <- 0 until VALUES.size ) 
-				yield {sum += compare(NORMALIZED(i), normalized(i), "normalize:")}
-			sum
-		} +
-		compare(NORMALIZED, normalized, "Least square error") +
-		compare(NORMAL_005, Stats.normal(0.05), "Gauss(0.05)") +
-		compare(NORMAL_005, Stats.normal(0.05), "Gauss(0.95)") +
-		{ 
-			var sum: Int = 0
-			for( i <- 0 until VALUES.size ) 
-				yield {sum += compare(ZSCORED(i), zScored(i), "zScore:")}
-			sum
-		} 
+		Try {
+			val stats = Stats[Double](VALUES)
+			val normalized = stats.normalize
+			val zScored = stats.zScore
+			
+				// Start a sequence of comparison
+			compare(MEAN, stats.mean, "Mean:") + 
+			compare(STDDEV, stats.stdDev, "Standard Deviation:") +
+			{ 
+				var sum: Int = 0
+				for( i <- 0 until VALUES.size ) 
+					yield {sum += compare(NORMALIZED(i), normalized(i), "normalize:")}
+				sum
+			} +
+			compare(NORMALIZED, normalized, "Least square error") +
+			compare(NORMAL_005, Stats.normal(0.05), "Gauss(0.05)") +
+			compare(NORMAL_005, Stats.normal(0.05), "Gauss(0.95)") +
+			{ 
+				var sum: Int = 0
+				for( i <- 0 until VALUES.size ) 
+					yield {sum += compare(ZSCORED(i), zScored(i), "zScore:")}
+				sum
+			} 
+		}
+		match {
+		  case Success(n) => n
+		  case Failure(e) => failureHandler(e)
+		}
 	}
 	
 	

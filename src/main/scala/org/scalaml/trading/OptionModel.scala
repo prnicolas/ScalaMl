@@ -41,7 +41,12 @@ import org.scalaml.util.MapUtils.NumericAccumulator
 		 * @since May 11, 2014 
 		 * @note Scala for Machine Learning / Appendix / Finance 101 /Option Trading
 		 */
-class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT: Int, nSteps: Int) {
+final class OptionModel(
+		symbol: String, 
+		strikePrice: Double, 
+		src: DataSource, 
+		minExpT: Int, 
+		nSteps: Int) {
 	import YahooFinancials._, qlearning._
 	
 	check(strikePrice,minExpT,nSteps)
@@ -66,21 +71,7 @@ class OptionModel(symbol: String, strikePrice: Double, src: DataSource, minExpT:
 			new OptionProperty(normDecay, e._1, volByVol(e._2), relPriceToStrike(e._2)) :: xs
 		}).drop(2).reverse
 	}).getOrElse(List.empty)
-	
-	/*
-	val propsList: List[OptionProperty] = {
-		val rVolatility = XTSeries.normalize((src |> relVolatility).toArray).get
-		val volByVol = XTSeries.normalize((src |> volatilityByVol).toArray).get
-		val relPriceToStrike = XTSeries.normalize(price.map(p => 1.0 - strikePrice/p)).get
 
-		rVolatility.zipWithIndex
-					.foldLeft(List[OptionProperty]())((xs, e) => {
-			val normDecay = (e._2+minExpT).toDouble/(price.size+minExpT)
-			new OptionProperty(normDecay, e._1, volByVol(e._2), relPriceToStrike(e._2)) :: xs
-		}).drop(2).reverse
-	}
-	* 
-	*/
 		/**
 		 * Compute an approximation of the value of the options by 
 		 * discretization the actual value in multiple levels

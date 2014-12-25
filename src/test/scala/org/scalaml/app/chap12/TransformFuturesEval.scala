@@ -74,8 +74,6 @@ object TransformFuturesEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "TransformFuturesEval"
-
-	private val logger = Logger.getLogger(name)
 		
 	private val NUM_WORKERS = 8
 	private val NUM_DATA_POINTS = 1000000

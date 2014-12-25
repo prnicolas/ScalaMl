@@ -28,6 +28,7 @@ import org.scalaml.app.Eval
 object MLPEval extends Eval {
 	import GoogleFinancials._
 	import org.apache.log4j.Logger
+	import scala.util.{Try, Success, Failure}
 	
 		/**
 		 * Name of the evaluation 
@@ -44,7 +45,6 @@ object MLPEval extends Eval {
 	private val symbols = Array[String](
 		"FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB"
 	)
-	private val logger = Logger.getLogger(name)
 
 		/** <p>Execution of the scalatest for <b>MLP</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -74,20 +74,23 @@ object MLPEval extends Eval {
 		args.foreach(arg => buf.append(s"$arg "))
 		buf.append(" hidden layers")
 		DisplayUtils.show(buf.toString, logger)
-		
-		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
-							.map( _ |> GoogleFinancials.close )
-							.map( _.toArray)
-  	 
-		DisplayUtils.show(s"$name size: ${prices(0).size}", logger)
-		test(hiddenLayers, prices)
+		Try {
+			val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
+								.map( _ |> GoogleFinancials.close )
+								.map( _.toArray)
+	  	 
+			DisplayUtils.show(s"$name size: ${prices(0).size}", logger)
+			test(hiddenLayers, prices)
+		}
+		match {
+		  case Success(n) => n
+		  case Failure(e) => failureHandler(e)
+		}
 	}
   
 
 	private def test(hidLayers: Array[Int], prices: DblMatrix): Int = {
-		val networkArchitecture = hidLayers.foldLeft(new StringBuilder)((b,n)=>b.append(s"$n "))
-				.toString
-		DisplayUtils.show(s"$name \n${hidLayers.size} layers: ( ${networkArchitecture})", logger)
+		DisplayUtils.show(s"$name \n${hidLayers.size} layers:(${hidLayers.mkString(" ")})", logger)
   
 		val startTime = System.currentTimeMillis
 		val config = MLPConfig(ALPHA, ETA, hidLayers, NUM_EPOCHS, EPS)
@@ -130,8 +133,7 @@ object MLPEval extends Eval {
 	}
 
 	private def toString(symbols: Array[String]): String = 
-		new StringBuilder(symbols.drop(1).foldLeft(new StringBuilder)((b,s) => b.append(s"$s ")).toString)
-				.append(s"=> ${symbols(0)}").toString
+			s"${symbols.drop(1).mkString(" ")} s => ${symbols(0)}"
 }
 
 // -------------------------------------  EOF ----------------------------------------------------------

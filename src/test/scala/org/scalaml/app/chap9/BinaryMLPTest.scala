@@ -26,14 +26,12 @@ import org.scalaml.app.Eval
 		 */
 object BinaryMLPTest extends Eval {
 	import org.apache.log4j.Logger
-	import scala.util.Random
+	import scala.util.{Random, Try, Success, Failure}
 	
 		/**
 		 * Name of the evaluation 
 		 */
 	val name: String = "BinaryMLPTest"
-	
-	private val logger = Logger.getLogger(name)
 
 	private val ALPHA = 0.4
 	private val ETA = 0.2
@@ -59,17 +57,24 @@ object BinaryMLPTest extends Eval {
 		val config = MLPConfig(ALPHA, ETA, SIZE_HIDDEN_LAYER, NUM_EPOCHS, EPS, ACTIVATION)
 	       
 		implicit val mlpObjective = new MLP.MLPBinClassifier
-		val mlpClassifier = MLP[Double](config, x, y)
-	      
-		val correct = x.zip(y).foldLeft(0)((s, xy) => {
-			val output = mlpClassifier |> xy._1
-			if(Math.abs(output(1) - xy._2) < 0.1) 
-				s + 1 
-			else 
-				s
-		})
-	
-		DisplayUtils.show(s"$name Accuracy is ${correct.toDouble/x.size}, it should be 1.0", logger)
+		
+		Try {
+			val mlpClassifier = MLP[Double](config, x, y)
+		      
+			x.zip(y).foldLeft(0)((s, xy) => {
+				val output = mlpClassifier |> xy._1
+				if(Math.abs(output(1) - xy._2) < 0.1) 
+					s + 1 
+				else 
+					s
+			})
+		} match {
+		  case Success(n) => { 
+		    val acc = n.toDouble/x.size
+		  	DisplayUtils.show(s"$name Accuracy is $acc, it should be 1.0", logger)
+		  }
+		  case Failure(e) => failureHandler(e)
+		}	   
 	}
 }
 

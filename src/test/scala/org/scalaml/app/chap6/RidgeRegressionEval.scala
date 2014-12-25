@@ -38,8 +38,6 @@ object RidgeRegressionEval extends Eval {
 	
 	private val path = "resources/data/chap6/CU.csv"
 	private val dataInput = "output/chap6/CU_input.csv"
-    
-	private val logger = Logger.getLogger(name)	 
 	
 		 /**
 		 * <p>Execution of the scalatest for <b>RidgeRegression</b> class.
@@ -101,8 +99,7 @@ object RidgeRegressionEval extends Eval {
 			DisplayUtils.show(s"$name.run Regression succeeded", logger)
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Ridge regression failed", 
-			    logger, e)
+			case Failure(e) => failureHandler(e)
 		}
  	}
    

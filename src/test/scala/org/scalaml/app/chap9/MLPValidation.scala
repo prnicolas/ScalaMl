@@ -24,15 +24,13 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning Chapter 9: Artificial Neural Network / Evaluation
 		 */
 object MLPValidation extends Eval {
-	import scala.util.Random
+	import scala.util.{Random, Try, Success, Failure}
 	import org.apache.log4j.Logger
 	import MLP._
 		/**
 		 * Name of the evaluation 
 		 */
 	val name: String = "MLPValidation"
-
-	private val logger = Logger.getLogger(name)
    
 	private val ALPHA = 0.8
 	private val ETA = 0.01
@@ -51,14 +49,19 @@ object MLPValidation extends Eval {
         
 		val x = Array.fill(TEST_SIZE)(Array[Double](0.2 + 0.4*Random.nextDouble, 0.2*Random.nextDouble))  
 		val y = Array.tabulate(TEST_SIZE)(n => Array[Double](n/TEST_SIZE+ 0.1))  	 
-  	 
-		val state = MLPConfig(ALPHA, ETA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
-  	  
-		implicit val mlpObjective = new MLP.MLPBinClassifier
-		MLP[Double](state, x, y).model.map( _ =>
-			DisplayUtils.show(s"$name Creation of MLP model succeeds", logger)
-		).getOrElse(DisplayUtils.error(s"$name Incomplete model for alpha:$ALPHA, eta:$ETA", logger))
-
+		
+		Try {
+			val state = MLPConfig(ALPHA, ETA, Array[Int](SIZE_HIDDEN_LAYER), NUM_EPOCHS, EPS)
+	  	  
+			implicit val mlpObjective = new MLP.MLPBinClassifier
+			MLP[Double](state, x, y).model.map( _ =>
+				DisplayUtils.show(s"$name Creation of MLP model succeeds", logger)
+			).getOrElse(DisplayUtils.error(s"$name Incomplete model for alpha:$ALPHA, eta:$ETA", logger))
+		}
+		match {
+		  case Success(n) => n
+		  case Failure(e) => failureHandler(e)
+		}
 	}
 }
 

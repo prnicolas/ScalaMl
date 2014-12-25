@@ -122,7 +122,8 @@ object QLSpace {
 		 * @return A new search space, QLSpace
 		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
 		 */
-	def apply[T](numStates: Int, 
+	def apply[T](
+			numStates: Int, 
 			goals: Array[Int], 
 			features: Set[T], 
 			neighbors: (Int, Int) => List[Int]): QLSpace[T] = {
@@ -133,16 +134,16 @@ object QLSpace {
 			// Generate the states using the neighbors restrictive function
 		val states = features.zipWithIndex
 						.map(x => {	
-						  	// Generated the list of actions permitted by the neigbhors restriction
-							val actions = neighbors(x._2,numStates).map(j =>new QLAction[T](x._2, j))
+								// Generated the list of actions permitted by the neigbhors restriction
+								val actions = neighbors(x._2, numStates).map(j =>new QLAction[T](x._2, j))
 																.filter(x._2 != _.to)
 								// Create a new state to be added to the state space or search space.
-							QLState[T](x._2, actions, x._1)
+								QLState[T](x._2, actions, x._1)
 						})
-
 		new QLSpace[T](states.toArray, goals)
 	}
 	
+
 		/**
 		 * <p>Create a search space automatically using a scale factor.</p>
 		 * @param numStates Number of symbols or states used by the Q-Learning algorithm
@@ -150,15 +151,16 @@ object QLSpace {
 		 * @param features Features set 
 		 * @param neighbors Function constrain to select neighboring states
 		 * @return A new search space, QLSpace
-		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
+		 * @throws IllegalArgumentException if one of the parameters is either undefined or out of range.
 		 */
-	def apply[T](numStates: Int, 
+	def apply[T](
+			numStates: Int, 
 			goal: Int, 
 			features: immutable.Set[T], 
 			neighbors: (Int, Int) => List[Int]): QLSpace[T] = 
 		 apply(numStates, Array[Int](goal), features, neighbors)
 		 
-
+	
 	private def check[T](states: Array[QLState[T]], goalIds: Array[Int]): Unit = {
 		require( !states.isEmpty, 
 				"QLSpace.check States list for QLSpace is undefined")

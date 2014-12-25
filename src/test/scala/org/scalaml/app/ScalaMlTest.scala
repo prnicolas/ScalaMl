@@ -17,11 +17,9 @@ import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Try, Success, Failure, Properties}
 import scala.concurrent.duration.Duration
-	// ScalaTest classes
 import org.scalatest.FunSuite
 import org.scalatest.time._
 import org.scalatest.concurrent.ScalaFutures
-	// ScalaMl classes
 import org.scalaml.util.DisplayUtils
 
 
@@ -57,10 +55,12 @@ trait ScalaMlTest extends FunSuite with ScalaFutures {
 		 * @note Scala for Machine Learning
 		 */
 trait Eval {
+	import org.apache.log4j.Logger
 		/**
 		 * Name of the evaluation or test 
 		 */
 	val name: String
+	protected lazy val logger = Logger.getLogger(this.name)
 		/**
 		 * <p>Execution of scalatest case.</p>
 		 */
@@ -69,6 +69,13 @@ trait Eval {
 	protected def header: String = {
 		AllTests.count += 1
 		s"\n\n *****  test#${AllTests.count} $name"
+	}
+	
+	protected def failureHandler(e: Throwable): Int = e match {
+		case e: MatchError => 
+			DisplayUtils.error(s"$name.run ${e.getMessage} caused by ${e.getCause.toString}", logger)
+		case _ => 
+			DisplayUtils.error(s"$name.run ${e.toString}", logger)
 	}
 }
 

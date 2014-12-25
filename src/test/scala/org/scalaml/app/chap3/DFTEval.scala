@@ -39,7 +39,6 @@ object DFTEval extends FilteringEval {
 	private val OUTPUT2 = "output/chap3/smoothed.csv"
 	private val OUTPUT3 = "output/chap3/filt_"
 	  
-	private val logger = Logger.getLogger(name)
 	private val h = (x:Double) => 2.0*Math.cos(Math.PI*0.005*x) +  // simulated first harmonic
 															Math.cos(Math.PI*0.05*x) +   // simulated second harmonic
 															0.5*Math.cos(Math.PI*0.2*x)      // simulated third harmonic
@@ -53,7 +52,7 @@ object DFTEval extends FilteringEval {
 		Try (if( args.isEmpty) runSimulation else runFinancial(args(0)) ) 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
    

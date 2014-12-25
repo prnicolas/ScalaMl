@@ -41,8 +41,6 @@ object SVCEval extends Eval {
 	private val GAMMA = 0.5
 	private val EPS = 1e-2
 	private val NFOLDS = 2
-	
-	private val logger = Logger.getLogger(name)
 
 		/** <p>Execution of the scalatest for <b>SVC</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -77,8 +75,7 @@ object SVCEval extends Eval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run Could not validate the training set", 
-					logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

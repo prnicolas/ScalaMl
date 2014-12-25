@@ -41,8 +41,6 @@ object GAEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "GAEval"
-
-	private val logger = Logger.getLogger(name)
       
 	private val path = "resources/data/chap10/GS.csv"
 	private val XOVER = 0.8					// Probability or ratio for cross-over
@@ -55,7 +53,7 @@ object GAEval extends Eval {
    
 	private val softLimit = (n: Int) => CUTOFF_SLOPE*n + CUTOFF_INTERCEPT	   
 	private val NUM_SIGNALS_PER_STRATEGY = 3 // Number of trading signals per trading strategy 
-																					// (= number of genes in a chromosome)
+																						// (= number of genes in a chromosome)
    	    
 		// Default data conversion
 	implicit val digitize = new Discretization(R)
@@ -94,7 +92,7 @@ object GAEval extends Eval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name failed", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
    

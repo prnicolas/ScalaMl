@@ -40,15 +40,19 @@ final protected class DataSink[T <% String](
 	import java.io.File
 	require(sinkName != Types.nullString, "DataSink Name of the storage is undefined")
 	
-	private val logger = Logger.getLogger("DataSink")
-	private val sinkFile = 
+	private val logger = Logger.getLogger("DataSink")	
+	
+		// Create an handle to a file the results needs to be dump.
+		// The directory containing results is created if it does not exist
+	private val sinkPath: Option[File] = 
 		Try {
 			val path = sinkName.substring(0, sinkName.lastIndexOf("/")-1)
 			val dir = new File(path)
 			if( !dir.exists )
 				dir.mkdir
+			dir
 		} match {
-		  case Success(f) => f
+		  case Success(f) => Some(f)
 		  case Failure(e) => DisplayUtils.none("DataSink.sinkFile", logger, e)
 		}
    
@@ -63,7 +67,7 @@ final protected class DataSink[T <% String](
 		 */
 	def write(content: String): Boolean = {
 		require(content.length > 0, "DataSink.write Content undefined")
-		assert(sinkFile != None, "DataSink.write Sink file undefined")
+		assert(sinkPath != None, "DataSink.write Sink path undefined")
 		
 		FileUtils.write(content, sinkName, "DataSink")
 	}
@@ -76,21 +80,21 @@ final protected class DataSink[T <% String](
 		 */
 	def write(v: DblVector) : Boolean = {
 		require( !v.isEmpty, "DataSink.write Cannot persist an undefined vector")
-		assert( sinkFile != None, "DataSink.write undefined sink file")
+		assert( sinkPath != None, "DataSink.write undefined sink path")
 		
-		val content = v.foldLeft(new StringBuilder)((b, x) => b.append(x).append(CSV_DELIM))
-		content.setCharAt(content.size-1, ' ')
-		this.write(content.toString.trim)
+		val content = v.mkString(CSV_DELIM)
+		this.write(content.substring(0, content.length-1))
 	}
 	
 		/**
-		 * <p>Persists a set of time series into a predefined storage.</p>
+		 * <p>Persists a set of time series into a predefined storage, sinkFile. The 
+		 * results are written one line per time series </p>
 		 * @throws MatchError if the list of time series is either undefined or empty
-   		 * @return PartialFunction of a list of parameterized time series as input and the number 
-   		 * of time series saved as output
+		 * @return PartialFunction of a list of parameterized time series as input and the number 
+		 * of time series saved as output
 		 */
 	override def |> : PartialFunction[List[XTSeries[T]], Int] = {
-		case xs: List[XTSeries[T]] if( !xs.isEmpty && sinkFile != None) => {
+		case xs: List[XTSeries[T]] if( !xs.isEmpty && sinkPath != None) => {
 			import java.io.PrintWriter
 			
 			var printWriter: Option[PrintWriter] = None
@@ -98,7 +102,7 @@ final protected class DataSink[T <% String](
 				val content = new StringBuilder
 				val numValues = xs(0).size-1
 				val last = xs.size-1
-
+					// Write into file with one time series per line
 				var k = 0
 				while( k < numValues) {
 					val values = xs.toArray

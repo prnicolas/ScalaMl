@@ -82,8 +82,6 @@ object ActorsManagerEval extends Eval {
 		 */
 	val name: String = "ActorsManagerEval"
 	
-	private val logger = Logger.getLogger(name)
-	
 	val NUM_WORKERS = 4
 	val NUM_DATA_POINTS = 1000000
 		

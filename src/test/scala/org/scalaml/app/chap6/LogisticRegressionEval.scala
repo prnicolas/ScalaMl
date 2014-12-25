@@ -38,8 +38,6 @@ object LogisticRegressionEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "LogisticRegressionEval"
-	
-	private val logger = Logger.getLogger(name)
 	   
 	private val path = "resources/data/chap6/CU.csv"   
 	private val maxIters = 250
@@ -85,21 +83,21 @@ object LogisticRegressionEval extends Eval {
 		} 
 		match {
 			case Success(n) =>n
-			case Failure(e) => DisplayUtils.error(s"${name}.run", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
   
 
-	private def toString(regression: LogisticRegression[Double]): String = {
-		val rss_str = FormatUtils.format(regression.rss.get, "", FormatUtils.ShortFormat)
-		val buf = new StringBuilder(s"Regression model RSS = $rss_str\nWeights: ")
-		
-		regression.weights.get.foreach(w => {
-				val weights_str = FormatUtils.format(w, "", FormatUtils.MediumFormat)
-				buf.append(s"$weights_str ")
-		})
-		buf.toString
-	}
+	private def toString(regression: LogisticRegression[Double]): String = 
+		if( regression.isModel ) {
+			s"Regression model RSS: ${FormatUtils.format(regression.rss.get,"",FormatUtils.ShortFormat)}" +
+			"\nWeights: " +
+			regression.weights.get
+										.map(FormatUtils.format(_, "", FormatUtils.MediumFormat))
+										.mkString(" ")
+		}
+		else 
+			"No regression model"
 }
 
 

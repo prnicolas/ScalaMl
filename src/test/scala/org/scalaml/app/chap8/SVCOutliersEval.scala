@@ -43,8 +43,6 @@ object SVCOutliersEval extends Eval {
 	private val EPS = 1e-3
 	private val NFOLDS = 2
 	
-	private val logger = Logger.getLogger(name)
-	
 		/** <p>Execution of the scalatest for the one-class <b>SVC</b> for outliers.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
@@ -75,8 +73,7 @@ object SVCOutliersEval extends Eval {
 					.getOrElse(DisplayUtils.error(s"$name Could not validate the training set", logger))
 		} match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", 
-					logger, e) 
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

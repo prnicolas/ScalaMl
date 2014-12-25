@@ -44,8 +44,6 @@ object QLearningEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "QLearningEval"
-	  
-	private val logger = Logger.getLogger(name)
 
 		// Files containing the historical prices for the stock and option
 	private val STOCK_PRICES = "resources/data/chap11/IBM.csv"
@@ -59,7 +57,8 @@ object QLearningEval extends Eval {
 	private val DISCOUNT = 0.6						// Discount rate used in the Q-Value update equation
 	private val MAX_EPISODE_LEN = 35			// Maximum number of iteration for an episode
 	private val NUM_EPISODES = 80					// Number of episodes used for training.
-    
+	
+	private val NUM_NEIGHBHBOR_STATES = 3	// Number of states accessible from any other state
 		/** 
 		 * <p>Execution of the scalatest for <b>QLearning</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -68,28 +67,47 @@ object QLearningEval extends Eval {
 		 */
 	def run(args: Array[String]): Int = { 
 		val goalStr = if(args.size > 0) args(0) else "random"
-		DisplayUtils.show(s"$header Q-learning with $goalStr goal", logger)
+		val numNeighborStates: Int = if(args.size > 1) args(1).toInt else NUM_NEIGHBHBOR_STATES
+		val functionApproxStep: Int = if(args.size > 2) args(2).toInt else FUNCTION_APPROX_STEP
+						  		
+			// List the neighbors of this state at index idx within
+			//a radius RADIUS, allowed as the next states
+		val getNeighborsStates = (idx: Int, numStates: Int) => {
+				// Compute the list of all the states within a radius
+				// of this states.
+			def getProximity(idx: Int, radius: Int): List[Int] = {
+				val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
+				val idx_min = if(idx < radius) 0 else idx - radius
+				Range(idx_min, idx_max+1).filter( _ != idx)
+										.foldLeft(List[Int]())((xs, n) => n :: xs)
+			}
+			getProximity(idx, numNeighborStates).toList
+		}
+		val params = s" with $numNeighborStates neighbors and $functionApproxStep approx steps"
+		val desc = s"$header Q-learning with $goalStr goal "
+		DisplayUtils.show(s"$desc$params", logger)
 		
 			// Retrieve the historical stock price, IBM, used as underlying security to the option
 		val src = DataSource(STOCK_PRICES, false, false, 1)
 		
 			// Create an option 
-		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, 
-				FUNCTION_APPROX_STEP)
+		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, functionApproxStep)
 
 			// Extract the historical price of the option and create a model
 			// The for-comprehensive loop is used to process the sequence of 
 			// options as returned values
 		val model = for {
 			v <- DataSource(OPTION_PRICES, false, false, 1).extract
-			_model <- createModel(ibmOption, v, goalStr)
+			_model <- createModel(ibmOption, v, goalStr, getNeighborsStates)
 		} yield _model
 		
 			// Display the distribution of values in the model and
 			// display the estimates Q-value for the best policy on a Scatter plot
 		model.map(m => {
 			DisplayUtils.show(s"$name ${m.toString}", logger)
-			display(m.bestPolicy.EQ)
+			if( goalStr != "random")
+				display(m.bestPolicy.EQ, params)
+			1
 		})
 		.getOrElse(DisplayUtils.show(s"$name Failed to create a model: Poor coverage", logger))
 	}
@@ -102,8 +120,9 @@ object QLearningEval extends Eval {
 	private def createModel(
 			ibmOption: OptionModel, 
 			oPrice: DblVector,
-			goalStr: String): Option[QLModel[Array[Int]]] = {
-	
+			goalStr: String,
+			getNeighborsStates: (Int,Int) => List[Int]): Option[QLModel[Array[Int]]] = {
+		
 		import scala.util.Random
 			// Discretize the value of the option oPrice
 		val fMap = ibmOption.approximate(oPrice)
@@ -131,42 +150,26 @@ object QLearningEval extends Eval {
 		
 			// Create a Q-learning algorithm
 		Try {
-			val config = QLConfig(ALPHA, DISCOUNT, MAX_EPISODE_LEN, NUM_EPISODES, getNeighbors)
+			val config = QLConfig(ALPHA, DISCOUNT, MAX_EPISODE_LEN, NUM_EPISODES, getNeighborsStates)
 			QLearning[Array[Int]](config, numStates, goal, input.toArray, fMap.keySet)
 		}
 		match {
 			// Extract the model if the training completes.
-		  case Success(qLearning) => qLearning.getModel
-		  case Failure(e) => DisplayUtils.none("QLearningEval.createModel failed", logger, e)
+			case Success(qLearning) => qLearning.getModel
+			case Failure(e) => {failureHandler(e); None }
 		}
 	}
     
-		// List the neighbors of this state at index idx within
-		//a radius RADIUS, allowed as the next states
-	private val RADIUS = 2
-	val getNeighbors = (idx: Int, numStates: Int) => {
-			// Compute the list of all the states within a radius
-			// of this states.
-		def getProximity(idx: Int, radius: Int): List[Int] = {
-			val idx_max = if(idx + radius >= numStates) numStates-1 else idx+ radius
-			val idx_min = if(idx < radius) 0 else idx - radius
-			Range(idx_min, idx_max+1).filter( _ != idx)
-									.foldLeft(List[Int]())((xs, n) => n :: xs)
-		}
-		getProximity(idx, RADIUS).toList
-	}
-	
 			/*
 			 * Display the estimated Q-value = value * probability
 			 * in a Scatter plot.
 			 */
-	private def display(eq: XYTSeries): Int = {
+	private def display(eq: XYTSeries, params: String): Unit = {
 		import org.scalaml.plots.{ScatterPlot, BlackPlotTheme}
 		val labels = List[String](
-			name, "Q-learning best policy", "Highest Q-values", "Y"
+			name, s"Q-learning best policy Q-values $params", "States", "States"
 		)
 		ScatterPlot.display(eq, labels, new BlackPlotTheme)
-		1
 	}
 }
 

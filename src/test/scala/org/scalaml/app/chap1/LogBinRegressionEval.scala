@@ -43,7 +43,6 @@ object LogBinRegressionEval extends Eval {
 	private val ETA = 0.000002
 	private val path_training = "resources/data/chap1/CSCO.csv"
 	private val path_test = "resources/data/chap1/CSCO2.csv"
-	private val logger = Logger.getLogger(name)
 
 		/**
 		 * <p>Execution of the scalatest for <b>LogBinRegression</b> class. This method is invoked by the 
@@ -98,7 +97,7 @@ object LogBinRegressionEval extends Eval {
 		} 
 		match {
 			case Success(xySeries) => Some(xySeries)
-			case Failure(e) => DisplayUtils.error("LogBinRegressionEval.load", logger, e); None
+			case Failure(e) => DisplayUtils.none(s"$name.load", logger, e)
 		}
 	}
     

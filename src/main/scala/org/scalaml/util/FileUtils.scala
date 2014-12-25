@@ -54,6 +54,7 @@ object FileUtils {
 			status = true
 		} 
 		match {
+				// Catch and display exception description and return false
 			case Failure(e) => {
 				DisplayUtils.error(s"$className.write failed for $pathName", logger, e)
 				

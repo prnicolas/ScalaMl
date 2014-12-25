@@ -39,10 +39,11 @@ protected class QLState[T](val id: Int, val actions: List[QLAction[T]] = List.em
 	@inline
 	final def isGoal: Boolean = !actions.isEmpty
   
-	override def toString: String = 
-		new StringBuilder(s"state: $id ")
-			.append( actions.foldLeft(new StringBuilder)((b,a) => b.append(s"$a ")).toString )
-			.toString
+		/**
+		 * Textual representation of a state in Q-learning. The state is defined
+		 * by its Id and the list of the action it may potentially trigger
+		 */
+	override def toString: String = s"state: $id ${actions.mkString(" ")}"
 }
 
 
@@ -71,7 +72,4 @@ object QLState {
 	}
 }
 
-
-
 // ----------------------------  EOF --------------------------------------------------------------
-

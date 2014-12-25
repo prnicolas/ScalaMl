@@ -41,7 +41,6 @@ object BinaryMLPEval extends Eval {
 	private val TEST_SIZE: Int  = 10
 	private val EPS = 1e-3
 
-	private val logger = Logger.getLogger(name)
 
 		/** <p>Execution of the scalatest for <b>MLP</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -82,8 +81,8 @@ object BinaryMLPEval extends Eval {
 		Try(mlpClassifier |> Array[Double](x0, y0))
 		match {
 			case Success(output) => 
-					DisplayUtils.show(s"$name run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
-			case Failure(e) => DisplayUtils.error(s"$name run", logger, e)
+					DisplayUtils.show(s"$name.run for ($x0, $y0) is ${output(0)}. It should be 1", logger)
+			case Failure(e) => failureHandler(e)
 		}     
 	}
 }

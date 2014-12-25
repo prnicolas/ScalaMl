@@ -117,8 +117,7 @@ class XTSeries[T](val label: String, arr: Array[T]) {
 	final def min(implicit cmp: Ordering[T]): T = arr.min
   
  
-	override def toString: String =  arr.foldLeft(new StringBuilder)((b, x) => 
-			b.append(s"$x\n") ).toString
+	override def toString: String =  arr.mkString("\n")
   
 	final val size: Int = arr.size
 
@@ -166,7 +165,10 @@ final class VTSeries[T](
 
 		/**
 		 * <p>Companion object for time series, that define constructors and most 
-		 * common implicit conversions.
+		 * common implicit conversions.</p>
+		 * @author Patrick Nicolas
+		 * @since January, 22, 2014
+		 * @note Scala for Machine Learning Chapter 3 Data pre-processing / Time series
 		 */
 object XTSeries {  
 	private val logger = Logger.getLogger("XTSeries")	
@@ -175,28 +177,78 @@ object XTSeries {
 	type DblVecSeries = XTSeries[DblVector]
 	
 	final val EPS = 1-20
+	
+		/**
+		 * Constructor for XTSeries with a predefined label and array of elements (or data points)
+		 * @param label Name for the time series (optional)
+		 * @param arr Array of values of the parameterized T
+		 */
 	def apply[T](label: String, arr: Array[T]): XTSeries[T] = new XTSeries[T](label, arr)
+	
+		/**
+		 * Constructor for XTSeries with a predefined array of elements (or data points)
+		 * @param arr Array of values of the parameterized T
+		 */
 	def apply[T](arr: Array[T]): XTSeries[T] = new XTSeries[T]("", arr)
+	
+		/**
+		 * Constructor for XTSeries with a predefined list of elements (or data points)
+		 * @param label Name for the time series (optional)
+		 * @param arr Array of values of the parameterized T
+		 */
 	def apply[T: ClassTag](xs: List[T]): XTSeries[T] = new XTSeries[T]("", xs.toArray)
 
+		/**
+		 * Implicit conversion of a vector and label to a XTSeries
+		 * @param label label for the time series
+		 * @param v vector to convert 
+		 */
 	implicit def xTSeries[T: ClassTag](label: String, v: Vector[T]) = 
 			new XTSeries[T](label, v.toArray)
-		
+
+		/**
+		 * Implicit conversion of a list to XTSeries
+		 * @param xs List to convert
+		 */
 	implicit def xTSeries[T: ClassTag](xs: List[T]): XTSeries[T] = 
 			new XTSeries[T]("", xs.toArray)
-		
+			
+		/**
+		 * Implicit conversion (deep copy) of this time series
+		 * @param xt Time series to duplicate
+		 */
 	implicit def xTseries[T](xt: XTSeries[T]) = new XTSeries[T]("", xt.toArray)
    
+		/**
+		 * Implicit conversion of a time series to a vector
+		 * @param xt time series to convert
+		 */
 	implicit def series2DblVector[T](xt: XTSeries[T])(implicit f: T => Double): DblVector = 
 			xt.toDblVector(f)
-			
+	
+		/**
+		 * Implicit conversion of a time series to Matrix of type Double
+		 *  @param xt time series to convert
+		 */
 	implicit def series2DblMatrix[T](xt: XTSeries[T])(implicit fv: T => DblVector): DblMatrix = 
 			xt.toDblMatrix(fv)
    
+			/**
+			 * Retrieve the dimension of the time series that is the number of variable in
+			 * each feature or observations or data points
+			 * @param xt time series of arrays
+			 */
 	def dimension[T](xt: XTSeries[Array[T]]): Int = xt.toArray(0).size
    
+			/**
+			 * Define an empty time series of type XTSeries
+			 */
 	def empty[T: ClassTag]: XTSeries[T] = new XTSeries[T]("", Array.empty[T])
    
+			/**
+			 * Convert a list of observations (vector) to a list of time series of these observatgions
+			 * @param xt List of observations to convert
+			 */
 	def |>[T] (xs: List[Array[T]]): List[XTSeries[T]] = xs map{ XTSeries[T](_) }
 
 		/**
@@ -318,13 +370,31 @@ object XTSeries {
 			case Failure(e) => DisplayUtils.none("XTSeries.zScoring", logger, e)
 		}
 	}
-   
+ 
+		/**
+		 * Transpose an array of array of data
+		 * @param from Array of Array to convert
+		 */
 	def transpose[T](from: Array[Array[T]]): Array[Array[T]] = from.transpose
-   
+ 
+		/**
+		 * Transpose a list of array into an array of array
+		 * @param from List of observations to transpose
+		 */
 	def transpose[T: ClassTag](from: List[Array[T]]):  Array[Array[T]] = from.toArray.transpose
-   
+ 
+		/**
+		 * Compute the basic aggregate statistics for a time series
+		 * @param xt time series for which the statistics are computed
+		 * @return Statistics instance
+		 */
 	def statistics[T <% Double](xt: XTSeries[T]): Stats[T] = Stats[T](xt.toArray)
 
+			/**
+		 * Compute the basic statistics for each dimension of a time series
+		 * @param xt time series for which the statistics are computed
+		 * @return Array of statistics for each dimension
+		 */
 	def statistics[T <% Double](xt: XTSeries[Array[T]]): Array[Stats[T]] = {
 		require( !xt.isEmpty, "XTSeries.statistics input time series undefined")
       

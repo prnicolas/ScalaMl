@@ -43,8 +43,7 @@ object FunctionClassificationEval extends Eval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "NaiveBayesEval"
-	
-	private val logger = Logger.getLogger(name)
+
 	type Input = Array[(Array[Double], Int)]
 			
 	private val DATA_SIZE = 1025
@@ -143,8 +142,7 @@ object FunctionClassificationEval extends Eval {
 		}
 		match {
 			case Success(res) => res
-			case Failure(e) => DisplayUtils.error(s"name.run Naive Bayes Function classification failed", 
-					logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

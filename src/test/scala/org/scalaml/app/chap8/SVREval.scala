@@ -42,8 +42,6 @@ object SVREval extends Eval {
 	private val GAMMA = 0.3
 	private val EPS = 1e-3
 	private val EPSILON = 2.5
-   
-	private val logger = Logger.getLogger(name)
 
 		/** <p>Execution of the scalatest for evaluating the support vector regression.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -75,8 +73,7 @@ object SVREval extends Eval {
 		} 
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name.run failed to load source or train SVM", 
-					logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
    

@@ -72,14 +72,15 @@ final protected class QLData {
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
-	import QLDataVar._,  QLPolicy._
-	check(numStates, input)
+	import QLDataVar._
+	QLPolicy.check(numStates, input)
 	
 		/**
 		 * Initialization of the policy using the input probabilities and rewards
 		 */
 	val qlData = {
 		val data = Array.tabulate(numStates)(v => Array.fill(numStates)(new QLData))
+			// Initialized the reward and probability matrices
 		input.foreach(in => {  
 			data(in.from)(in.to).reward = in.reward
 			data(in.from)(in.to).probability = in.prob
@@ -94,8 +95,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	def setQ(from: Int, to: Int, value: Double): Unit = {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.setQ source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.setQ source state $to is out of range")
+		check(from, to, "setQ")
 		qlData(from)(to).value = value
 	}
    
@@ -106,8 +106,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	final def Q(from: Int, to: Int): Double = {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.Q source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.Q source state $to is out of range")
+		check(from, to, "Q")
 		qlData(from)(to).value
 	}
 	
@@ -118,8 +117,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	final def EQ(from: Int, to: Int): Double = {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.EQ source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.EQ source state $to is out of range")
+		check(from, to, "EQ")
 		qlData(from)(to).estimate
 	}
  
@@ -130,8 +128,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	final def R(from: Int, to: Int): Double = {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.R source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.R source state $to is out of range")
+		check(from, to, "R")
 		qlData(from)(to).reward
 	}
    
@@ -142,8 +139,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	final def P(from: Int, to: Int): Double = {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.P source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.P source state $to is out of range")
+	  check(from, to, "P")
 		qlData(from)(to).probability
 	}
 	
@@ -167,12 +163,9 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 	final def EQ: XYTSeries = {
 		import scala.collection.mutable.ArrayBuffer
 		
-		val qValues = Range(0, qlData.size).flatMap(from => 
+		Range(0, qlData.size).flatMap(from => 
 				Range(0, qlData(0).size).map(to => (from, to, qlData(from)(to).value)))
-						.filter( _._3 > 0.0)
-						
-		qValues.take((qValues.size >>1))
-					.map(qV => (qV._1.toDouble, qV._2.toDouble))
+					.map(qV => if(qV._3 > 0.0) (qV._1.toDouble, qV._2.toDouble) else (0.0, 0.0))
 					.toArray
 	}
 	
@@ -197,7 +190,12 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 			buf.append(line.toString)
 		})
 		buf.toString
-	} 
+	}
+	
+	private def check(from: Int, to: Int, meth: String): Unit =  {
+		require(from >= 0 && from < qlData.size, s"QLPolicy.$meth source state $from is out of range")
+		require(to >= 0 && from < qlData(0).size, s"QLPolicy.$meth source state $to is out of range")
+	}
 }
 
 
@@ -207,7 +205,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 25, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 * @note Scala for Machine Learning Chap 11 Reinforcement learning / Q-learning
 		 */
 object QLPolicy {
 		/**
@@ -218,7 +216,7 @@ object QLPolicy {
 	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = 
 			new QLPolicy[T](numStates, input)
 
-	private val MAX_NUM_STATES = 4096
+	private val MAX_NUM_STATES = 8192
 
 	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
 		require(numStates >0 && numStates < MAX_NUM_STATES, 

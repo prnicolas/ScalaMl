@@ -167,7 +167,7 @@ final class QLearning[T](config: QLConfig, qlSpace: QLSpace[T], qlPolicy: QLPoli
 				
 			else {
 				// select the most rewarding of the list of adjacent states
-				val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id) )
+				val state = states.maxBy(s => qlPolicy.R(st._1.id, s.id))
 					
 				// If the next most rewarding state is a goal state, we are done..
 				if( qlSpace.isGoal(state) )

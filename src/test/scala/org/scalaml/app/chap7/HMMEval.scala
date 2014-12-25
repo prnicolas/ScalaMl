@@ -46,8 +46,6 @@ object HMMEval extends Eval  {
 	private val NUM_STATES = 5
 	private val EPS = 1e-3
 	private val MAX_ITERS = 250
-   
-	private val logger = Logger.getLogger(name)
 
 	implicit def discretize(x: DblVector): Array[Int] = x.map(_.toInt) 
    		
@@ -129,10 +127,10 @@ object HMMEval extends Eval  {
 		
 		Try( hmm |> observedSeq ) match {
 			case Success(predictor) => {
-				val indices = predictor._2.foldLeft(new StringBuilder)((b, p) => b.append(s"$p, "))
+				val indices = predictor._2.mkString(" ")
 				DisplayUtils.show(s"$name Likelihood: ${predictor._1.toString}\nindices: $indices", logger)
 			}
-			case Failure(e) => DisplayUtils.error(s"$name .run", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 }

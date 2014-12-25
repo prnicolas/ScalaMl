@@ -27,7 +27,7 @@ import org.scalaml.app.Eval
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
 object SVCMarginEval extends Eval {
-	import scala.util.Random
+	import scala.util.{Random, Try, Success, Failure}
 	import org.apache.log4j.Logger
 	import XTSeries._, ScalaMl._
 	
@@ -36,9 +36,9 @@ object SVCMarginEval extends Eval {
 		 */
 	val name: String = "SVCMarginEval"
 	
-	private val GAMMA = 0.8; val N = 100	
+	private val GAMMA = 0.8
+	val N = 100	
 	private var status: Int = 0
-	private val logger = Logger.getLogger(name)
     
 
 		/** <p>Execution of the scalatest for evaluating margin in <b>SVC</b> class.
@@ -52,8 +52,13 @@ object SVCMarginEval extends Eval {
 	def run(args: Array[String]): Int = {   
 		DisplayUtils.show(s"$header Evaluation of impact of C penalty on margin", logger)
 		val values = generate
-		Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
-		status
+		Try {
+			Range(0, 50).foreach(i => evalMargin(values._1, values._2, i*0.1))
+			status
+		} match {
+			case Success(status) => status
+			case Failure(e) => failureHandler(e)
+		}
 	}
 
 	private def generate: (DblMatrix, DblVector) = {

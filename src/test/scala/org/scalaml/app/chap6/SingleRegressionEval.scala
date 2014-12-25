@@ -35,7 +35,6 @@ object SingleLinearRegressionEval extends Eval {
 	val name: String = "SingleLinearRegressionEval"
 
 	private val path = "resources/data/chap6/CU.csv"
-	private val logger = Logger.getLogger(name)
 
 		/**
 		 * <p>Execution of the scalatest for <b>SingleLinearRegression</b> class.
@@ -63,7 +62,7 @@ object SingleLinearRegressionEval extends Eval {
 		}
 		match {
 			case Success(n) => n
-			case Failure(e) => DisplayUtils.error(s"$name failed to be build a model", logger, e)
+			case Failure(e) => failureHandler(e)
 		}
 	}
 	

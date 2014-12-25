@@ -156,34 +156,58 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 	def fillRandom(mean: Double = 0.0)(implicit f: Double =>T): Unit = 
 		Range(0, data.size).foreach(i => data.update(i,  mean + Random.nextDouble))
    
-		
-	override def toString: String = {
-		var count = 0
-		data.foldLeft(new StringBuilder)((b, x) => { 
-			count += 1; 
-			b.append(FormatUtils.format(x, "", FormatUtils.ShortFormat))
-					.append( if( count % nCols == 0) "\n" else ",")
-		}).toString
-	}
+
+		/**
+		 * Formatted textual representation of the matrix with rows and column indices.
+		 * The matrix is presented as a table of rows
+		 */
+	override def toString: String = 
+		data.zipWithIndex.map(x => { 
+			val x_str = FormatUtils.format(x._1, "", FormatUtils.ShortFormat)
+			if(x._2 % nCols == 0) s"$x_str\n" else s"$x_str,"
+		}).mkString
 }
 
 
 		/**
 		 * Companion object to the class Matrix. This singleton defines
 		 * the Matrix constructor and validate its parameters
+		 * @author Patrick Nicolas
+		 * @since Feb 23, 2014
+		 *  @note Scala for Machine Learning
 		 */
 object Matrix {
+		/**
+		 * Constructor for a square matrix
+		 * @param nRows number of rows and columns in this matrix
+		 */
 	def apply[T: ClassTag](nRows: Int)(implicit f: T => Double): Matrix[T] = apply(nRows, nRows)
 	
+	
+		/**
+		 * Constructor for Matrix given an array of data and its dimension (rows, columns)
+		 * @param nRows Number of rows in the matrix
+		 * @param nCols Number of columns in the matrix
+		 * @param data Content (elements) of the matrix with data.size = nRows.nCols
+		 */
 	def apply[T: ClassTag](
 			nRows: Int, 
 			nCols: Int, 
 			data: Array[T])(implicit f: T => Double): Matrix[T] = 
 		new Matrix(nRows, nCols, data)
-	
+
+		/**
+		 * Constructor for Matrix with null elements with a given number of rows and columns
+		 * @param nRows Number of rows
+		 * @param nCols number of cols
+		 */
 	def apply[T: ClassTag](nRows: Int, nCols: Int)(implicit f: T => Double): Matrix[T] = 
 		new Matrix(nRows, nCols, new Array[T](nCols*nRows))
 	
+		/**
+		 * Constructor for Matrix given an array of array of elements
+		 * @param xy Array of Array of elements
+		 */
 	def apply[T: ClassTag](xy: Array[Array[T]])(implicit f: T => Double): Matrix[T] = 
 		new Matrix(xy.size, xy(0).size, xy.flatten)
    
@@ -198,6 +222,9 @@ object Matrix {
 		require( !data.isEmpty, "Matrix.check Data in undefined")
 	}
 	
+		/**
+		 * Create an empty Matrix
+		 */
 	def empty[T: ClassTag](implicit f: T => Double): Matrix[T] = new Matrix[T](0, 0,  Array.empty[T])
 }
 

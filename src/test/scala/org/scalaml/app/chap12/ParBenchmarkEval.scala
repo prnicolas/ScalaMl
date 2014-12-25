@@ -24,7 +24,7 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 	 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
 	 */
 object ParBenchmarkEval extends Eval {
-	import scala.util.Random
+	import scala.util.{Random, Try, Success, Failure}
 	import scala.collection.mutable.HashMap
 	import scala.collection.parallel.immutable.ParVector
 	import scala.collection.parallel.mutable.{ParArray, ParHashMap}
@@ -37,7 +37,6 @@ object ParBenchmarkEval extends Eval {
 		 */
 	val name: String = "ParBenchmarkeval"
 
-	private val logger = Logger.getLogger(name)
 	private val SZ = 100000
 	private val NUM_TASKS = 8
 	private val evalRange = Range(1, NUM_TASKS)
@@ -60,11 +59,17 @@ object ParBenchmarkEval extends Eval {
 			val reduceF = (x:Double, y:Double) => (x+y)*x
 			 
 			DisplayUtils.show(s"$name Compartive benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
-			if(args(0) == "array")
-				evaluateParArray(mapF, filterF, reduceF)
-			else
-				evaluateParMap(mapF, filterF)
-			0
+			Try {
+				if(args(0) == "array")
+					evaluateParArray(mapF, filterF, reduceF)
+				else
+					evaluateParMap(mapF, filterF)
+				0
+			} match {
+			  case Success(n) => n
+			  case Failure(e) => failureHandler(e)
+			}
+				
 		 }
 		 else 
 			 DisplayUtils.error(s"$name Incorrect cmd line argument. It should be 'array' or 'map'", logger)
