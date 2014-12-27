@@ -15,7 +15,7 @@ package org.scalaml.supervised.nnet
 import scala.util.Random
 
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import org.scalaml.util.FormatUtils
 import scala.collection.mutable.ListBuffer
 import MLP._

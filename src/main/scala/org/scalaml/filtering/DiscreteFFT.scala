@@ -21,10 +21,9 @@ import org.apache.log4j.Logger
 	// ScalaMl classes
 import org.scalaml.util.DisplayUtils
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
 import DFT._, ScalaMl._
-
 
 		/**
 		 * <p>Generic Data transformation trait for the Fast Discrete Fourier. The main

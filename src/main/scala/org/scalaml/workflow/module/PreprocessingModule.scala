@@ -12,7 +12,7 @@
  */
 package org.scalaml.workflow.module
 
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.apache.log4j.Logger

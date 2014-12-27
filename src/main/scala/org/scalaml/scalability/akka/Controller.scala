@@ -16,7 +16,7 @@ import scala.collection.mutable.ListBuffer
 
 import akka.actor.Actor
 
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.XTSeries.DblSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
 

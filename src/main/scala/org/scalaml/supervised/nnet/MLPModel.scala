@@ -16,7 +16,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import ScalaMl._, MLPLayer._
 
 
@@ -35,7 +35,7 @@ import ScalaMl._, MLPLayer._
 		 * @param nInputs Input value for the Network, that is the initial value of the input layer.
 		 * @param nOutputs   Size of the output vector.
 		 * @constructor MLP model created during training. 
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014

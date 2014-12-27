@@ -18,7 +18,7 @@ import scala.collection.mutable.ArrayBuffer
 import org.scalaml.util.DisplayUtils
 import org.scalaml.core.Matrix
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.{Config, PipeOperator}
+import org.scalaml.core.Design.{Config, PipeOperator}
 import QLearning._
 
 

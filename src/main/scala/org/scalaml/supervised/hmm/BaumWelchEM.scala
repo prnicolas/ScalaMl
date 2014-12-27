@@ -31,6 +31,7 @@ import org.scalaml.util.DisplayUtils
 		 *  @param numIters	Number of iterations allowed in the Baum-Welch EM optimization
 		 *  @param eps Convergence criteria for the exit of the Baum-Welch EM.
 		 *  @see org.scalaml.supervised.hmm.HMMModel
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 15, 2014
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model / 

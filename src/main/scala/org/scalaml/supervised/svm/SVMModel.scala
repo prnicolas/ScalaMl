@@ -14,7 +14,7 @@ package org.scalaml.supervised.svm
 
 import libsvm.svm_model
 
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.ScalaMl.DblMatrix
 import org.scalaml.util.FormatUtils
@@ -26,7 +26,7 @@ import org.scalaml.util.FormatUtils
 		 * This implementation uses the LIBSVM library: http://www.csie.ntu.edu.tw/~cjlin/libsvm/</p>
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
 		 * @see LIBSVM
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
 		 * @param svmmodel Model parameters as defined in <b>LIBSVM</b>
 		 * @param accuracy	Accuracy of the model from the training process

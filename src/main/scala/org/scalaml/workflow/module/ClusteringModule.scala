@@ -14,7 +14,7 @@ package org.scalaml.workflow.module
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.unsupervised.clustering.Cluster
 import org.scalaml.unsupervised.clustering.KMeans
 import org.apache.log4j.Logger
@@ -117,23 +117,6 @@ trait ClusteringModule[T] {
 			}
 		}
 	}
-}
-
-
-object MyApp extends App {
-  import scala.util._
-  Try {
-  	val dot: String = null
-  	dot.charAt(5)
-  	dot
-  } match {
-    case Success(x) => println(x)
-    case Failure(e) => e match {
-      case e: MatchError => println("this is a matching error")
-      case ex: RuntimeException =>  println("this is a math error")
-      case _ => println("Other exception")
-    }
-  }
 }
 
 // ---------------------------------------  EOF ------------------------------------------------------

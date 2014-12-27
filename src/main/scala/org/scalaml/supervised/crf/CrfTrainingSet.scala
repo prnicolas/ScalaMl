@@ -22,7 +22,7 @@ import iitb.Segment.{DataCruncher, LabelMap}
 
 
 		/**
-		 * <p>Class that defines a Recommendation as a data sequence.</p>
+		 * <p>Class that defines a Recommendation as a data sequence for a training set.</p>
 		 * @constructor Create a training set for a CRF. 		
 		 * @throws IllegalArgumentException if the arguments nLabels, entry and delim are either 
 		 * undefined or out of range

@@ -20,7 +20,8 @@ import HMMConfig._
 
 		/**
 		 * <p>Implementation of the Alpha pass (forward algorithm). The Alpha parameter 
-		 * is computed during instantiation.</p> 
+		 * is computed during instantiation. It is the probability of being in state S(i) given 
+		 * a sequence of observation {0, 1,   t}</p> 
 		 * @constructor Create a Alpha pass for the evaluation canonical form of the hidden 
 		 * Markov model (HMM). 
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
@@ -37,7 +38,10 @@ import HMMConfig._
 		 */
 final protected class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
 	/**
-	 * Alpha variable computed through the recursive forward algorithm
+	 * Alpha variable computed through the recursive forward algorithm. The value is 
+	 * computed the initial value alpha (M1 formula). normalize the alpha values (M2)
+	 * and finally invoke the summation of the normalized value (M3).
+	 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation  / Alpha pass
 	 */
 	val alpha: Double = { 
 		alphaBeta = lambda.initAlpha(obs)
@@ -48,21 +52,28 @@ final protected class Alpha(lambda: HMMLambda, obs: Array[Int]) extends Pass(lam
   
 		/**
 		 * <p>Compute the sum  log of the conditional probability p(X|Y) for each feature. Exception
-		 * thrown during the computation are caught in the client code.</p>
+		 * thrown during the computation are caught in the client code.[M4 formula]</p>
 		 * @return sum of the logarithm of the conditional probability p(xi|Y)
+		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Alpha pass
 		 */
-	def logProb: Double = foldLeft(lambda.getT, 
-		(s, t) => s + Math.log(ct(t)), Math.log(alpha))
-			
+	def logProb: Double = foldLeft(lambda.getT, (s, t) => s + Math.log(ct(t)), Math.log(alpha))
+
+			/*
+			 * Compute the alpha(t) = SUM{ alpha(t-1)).a.b (M3), then normalized to generate c(t)
+			 * value and finally compute an estimate for the alpha(t)
+			 */
 	private def sumUp: Double = {	 
 		foreach(1, lambda.getT, t => {
-			updateAlpha(t)
-			normalize(t)
+			updateAlpha(t)		// Implements first equation of M3
+			normalize(t)			// Normalized wit the sum of alpha(i), t 0 -> N-1
 		})
 		foldLeft(lambda.getN, (s, k) => s + alphaBeta(lambda.d_1, k))
 	}
 
-   
+		/*
+		 * Update the value of alpha at observation t by summation of alpha(i).a(i).b(i) 
+		 * for the previous observation t -1 across all the N states
+		 */
 	private def updateAlpha(t: Int): Unit = 
 		foreach(lambda.getN, i => {
 			val newValue = lambda.alpha(alphaBeta(t-1, i), i, obs(t))

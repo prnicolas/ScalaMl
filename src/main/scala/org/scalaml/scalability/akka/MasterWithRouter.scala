@@ -21,7 +21,7 @@ import akka.util.Timeout
 import akka.routing._
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.scalability.akka.message.{Start, Completed, Activate, Terminate}
 import org.scalaml.filtering.DFT
@@ -61,6 +61,7 @@ abstract class MasterWithRouter(
 	
 		// Aggregator for results from each worker actors
 	protected[this] val aggregator = new ListBuffer[DblVector]
+
 	
 			// Akka version 2.3.4 and higher 
 			//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
@@ -72,9 +73,18 @@ abstract class MasterWithRouter(
 			 *     withRouter(RoundRobinPool(partitioner.numPartitions, 
 			 *              supervisorStrategy = this.supervisorStrategy))
 			 */
-	private[this] val router = context.actorOf(Props(new Worker(0, fct))
-		.withRouter(RoundRobinRouter(partitioner.numPartitions, 
-				supervisorStrategy = this.supervisorStrategy)))
+	private[this] val router = { 
+			// If Akka version 2.2.6 and earlier
+		val routerConfig = RoundRobinRouter(partitioner.numPartitions, 
+				supervisorStrategy = this.supervisorStrategy)
+				
+			// if Akka version is 2.3.4 or higher
+		/*
+		val routerConfig = RoundRobinPool(partitioner.numPartitions, supervisorStrategy = 
+				this.supervisorStrategy)
+		*/
+		context.actorOf(Props(new Worker(0, fct)).withRouter(routerConfig) )
+	}
 		
 		
 		/**
@@ -96,8 +106,7 @@ abstract class MasterWithRouter(
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
 				DisplayUtils.show(s"Aggregated\n${FormatUtils.format(aggr)}", logger)
 				
-			//	router ! Terminate
-				context.stop(self)
+				context.stop(self)  // Alternative: router ! Terminate
 			}
 				// Append the result from the latest worker actor
 				// to the existing list of results
@@ -122,6 +131,36 @@ abstract class MasterWithRouter(
 		val indices = partitioner.split(xt)
 		indices.foreach(n => router ! Activate(0, xt.slice(n - indices(0), n)) )
 	}
+	
+	final private def isNewVersion: Boolean = akka.actor.ActorSystem.Version(2).toInt > 2
 }
+
+/*
+object MasterWithRouter {
+	import scala.reflect.macros._
+	import scala.language.experimental.macros
+	
+	// implicit val scala.language.experimental.macros
+	def routerConfig(partitioner: Partitioner, master: MasterWithRouter): RouterConfig = 
+		macro routerConfigImpl
+	
+	def routerConfigImpl(ctx: Context)(
+			partitioner: ctx.Expr[Partitioner], 
+			master: ctx.Expr[MasterWithRouter]): ctx.Expr[RouterConfig] = {
+		import ctx.universe._
+		
+		reify {
+			if(ctx.eval(master).isNewVersion) 
+				RoundRobinPool(ctx.eval(partitioner).numPartitions, supervisorStrategy = 
+						ctx.eval(master).supervisorStrategy)
+			else 
+				RoundRobinRouter(ctx.eval(partitioner).numPartitions, supervisorStrategy = 
+						ctx.eval(master).supervisorStrategy)
+		}
+	}
+}
+* 
+*/
+
 
 // --------------------------------  EOF -------------------------------------

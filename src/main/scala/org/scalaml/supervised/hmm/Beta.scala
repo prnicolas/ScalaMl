@@ -22,12 +22,16 @@ import HMMConfig._
 		/**
 		 * <p>Implementation of the Beta or backward pass of the 
 		 * HMM algorithm to compute the probability of a sequence of observations. The beta
-		 * matrix is computed as part of the instantiation of the class.</p>
+		 * matrix is computed as part of the instantiation of the class. It measures the probability 
+		 * of being in state S(i) given the observations {t+1, t+2, ... T-1}</p>
 		 * @constructor Create a Beta (or backward) pass for the 1st canonical form of HMM
 		 * @throws IllegalArgumentException if lambda model or the observations are undefined
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
+		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Beta pass
+		 * @see org.scalaml.supervised.hmm.Pass
+		 * 
 		 * @author Patrick Nicolas
 		 * @since March 14, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model / 
@@ -36,25 +40,44 @@ import HMMConfig._
 protected class Beta(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, obs) {
 	private val logger = Logger.getLogger("Beta")
 
+			/**
+			 * Initializes the Beta values (alphaBeta is used as alpha for the Alpha pass and 
+			 * beta for the Beta pass). The initialization implements the formula M7 which
+			 * computes the beta value at observation t as the summation of the Beta values at
+			 * observation t+1 multiplied by the transition probability aij and the emission 
+			 * bj for the observation at t+1
+			 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Beta pass
+			 */
 	val complete = {
 		Try {
 			alphaBeta = Matrix[Double](lambda.getT, lambda.getN)	
 			alphaBeta += (lambda.d_1, 1.0)
-			normalize(lambda.d_1)
+			normalize(lambda.d_1)		// Normalize by computing ct value
 			sumUp
-			true
-		} match {
+		} 
+		match {
 			case Success(t) => t
-			case Failure(e) => DisplayUtils.error("Failed beta computation ", logger, e); false
+			case Failure(e) => DisplayUtils.error("Beta.complete failed", logger, e); false
 		}
 	}
 	
-	private def sumUp: Unit = 
+		/*
+		 * Update the beta values from the observations T-1 to the first observations
+		 * (index: 0). THe value is then normalized, c(t)
+		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Alpha pass
+		 */
+	private def sumUp: Boolean = {
 		(lambda.getT-2 to 0 by -1).foreach( t =>{
 			updateBeta(t)
 			normalize(t) 
 		})
-	  	
+		true
+	}
+	
+		/*
+		 * Implements the update of beta(t) from beta(t+1) for all the states using 
+		 * the transition probabilities A and the emission matrix B
+		 */
 	private def updateBeta(t: Int): Unit =
 		foreach(lambda.getN, i =>
 			alphaBeta += (t, i, lambda.beta(alphaBeta(t+1, i), i, obs(t+1))))

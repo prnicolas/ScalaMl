@@ -18,7 +18,7 @@ import org.apache.commons.math3.exception.{MathIllegalArgumentException, MathRun
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.Types.CommonMath
 import org.scalaml.supervised.regression.RegressionModel
 import org.scalaml.util.DisplayUtils
@@ -38,7 +38,7 @@ import ScalaMl._, CommonMath._
 		 * @param xt Input multi-dimensional time series for which regression is to be computed.
 		 * @param y Labeled data for the Multivariate linear regression
 		 * @see org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
-		 * @see org.scalaml.core.design.PipeOperator
+		 * @see org.scalaml.core.Design.PipeOperator
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 19, 2014

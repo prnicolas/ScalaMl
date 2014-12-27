@@ -19,17 +19,18 @@ import HMMConfig._
 
 		/**
 		 * <p>Class that implements the Viterbi algorithm to extract the best sequence
-		 * of hidden states in a HMM given a lambda model and a sequence of integer
-		 * observations. The maximum value of delta is computed recursively during 
-		 * instantiation.</p>
+		 * of hidden states in a HMM given a lambda model and a sequence of observations. The 
+		 * maximum value of delta is computed recursively during instantiation.</p>
 		 *  @constructor Create an instance of the Viterbi algorithm for a predefined Lambda model 
 		 *  and set of observations.
 		 *  @throws IllegalArgumentException if lambda, params and observations are undefined of 
 		 *  eps is out of range
 		 *  @see org.scalaml.hmm.HMMModel
+		 *  @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Viterbi
 		 *  @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 *  probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 *  @param obs Array of observations as integer (categorical data)
+		 *  
 		 *  @author Patrick Nicolas
 		 *  @since March 17, 2014
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models/Hidden Markov Model/Decoding
@@ -48,6 +49,12 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 		 */
 	val state = HMMState(lambda)
 
+		/*
+		 * Compute the delta value given the initial probabilities pi and the emission
+		 * probabilities B. The value psi is initialized as null [M13]
+		 * @param ti tuple (observations index, state index)
+		 * @return initial value for delta
+		 */
 	private def initial(ti: (Int, Int)): Double = {
 		if(ti._1 == 0) {
 			state.psi += (0, 0, 0)
@@ -56,20 +63,35 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 		else 
 			-1.0
 	}
-   
+
+		/*
+		 * Recursive computation of psi and delta [M12] and [M14] along the 
+		 * observations O(t) t 0 -> T.
+		 */
 	private def recurse(t: Int, j: Int): Double = {
 	  
 			// Initialization of the delta value, return -1.0 in case of error
 		var maxDelta = initial((t, j))
+			
+			// If this is not the initial state ..
 		if( maxDelta == -1.0) {
+			
+			// .. and not the last observation ..
 			if( t != obs.size) {
+				// Compute the maximum value of delta at observation t
+				// give the delta value at observation t-1, the transition probabilities A
+			  // and the emission probabilites B  [M14]
 				maxDelta = maxBy(lambda.getN, s => 
 					recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obs(t)) )
-					
+				
+				// Compute the arg max {delta
 				val idx = maxBy(lambda.getT, i =>recurse(t-1 ,i)*lambda.A(i,j))
 				state.psi += (t, j, idx)
 				state.delta += (t, j, maxDelta)
 			}
+			
+			// in case of the last observation, compute psi that maximize
+			// the product delta @ t-1 and A
 			else {
 				maxDelta = 0.0  		   
 				val index = maxBy(lambda.getN, i => { 
@@ -78,6 +100,8 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 							maxDelta = delta
 						delta
 				})
+				
+				// Update the Q* value with the index that maximize the delta.A
 				state.QStar.update(t, index)
 			}
 		}

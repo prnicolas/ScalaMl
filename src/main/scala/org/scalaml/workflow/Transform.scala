@@ -14,7 +14,7 @@ package org.scalaml.workflow
 
 import org.scalaml.core._FCT
 import org.scalaml.stats.Validation
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import scala.reflect.ClassTag
 
 

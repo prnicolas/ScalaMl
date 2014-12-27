@@ -12,7 +12,7 @@
  */
 package org.scalaml.ga
 
-import org.scalaml.core.design.Config
+import org.scalaml.core.Design.Config
 
 
 		/**

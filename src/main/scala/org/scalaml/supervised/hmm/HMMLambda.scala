@@ -66,6 +66,7 @@ final protected class HMMLambda(
 		 * <p>Initialize the Alpha value in the forward algorithm. Exceptions are caught
 		 * by the client code.</p>
 		 * @param obsSeqNum array of sequence number for the observations
+		 * @return The matrix of alpha values.
 		 * @throws IllegalArgumentException if obsSeqNum is undefined
 		 */
 	def initAlpha(obsSeqNum: Array[Int]): Matrix[Double] = {
@@ -134,7 +135,8 @@ final protected class HMMLambda(
 				A += (i, k, state.DiGamma.fold(d_1, i, k)/denominator)
 			)
    
-			// Recompute/update the observation emission matrix.
+			// Recompute/update the observation emission matrix B using
+			// the gamma coefficient
 			denominator = state.Gamma.fold(getT, i)
 			foreach(getM, k => 
 				B += (i, k, state.Gamma.fold(getT, i, k, obs)/denominator)
@@ -145,30 +147,42 @@ final protected class HMMLambda(
 	
 		/**
 		 * <p>Normalize the state transition matrix A, emission matrix B and the
-		 * initial probabilities pi</p>
+		 * initial probabilities pi. The normalization used the linear interpolation
+		 * f(x) = (x - x_min)/x_max- x_min)</p>
 		 */
 	def normalize: Unit = {
+			// Normalize the probabilities in the transition matrix A: 
+			// a -> (a - a_min)/(a_max-a_min)
 		var min = A.data.min
 		var delta = A.data.max - min
 		Range(0, A.size).foreach(i => A.data.update(i, (A.data(i)-min)/delta) )
 
+			// Normalize the probabilities in the emission matrix B: 
+			// b -> (b - b_min)/(b_max - b_min)
 		min = B.data.min
 		delta = B.data.max - min
 		Range(0, B.size).foreach(i => B.data.update(i, (B.data(i)-min)/delta) )
-     
+
+			// Normalize the initial states probabilities PI as
+			// (pi - pi_min)/(pi_max - pi_min)
 		min = pi.min
 		delta = pi.max - min
 		Range(0, pi.size).foreach(i => pi.update(i, (pi(i)-min)/delta))
 	}
   
-  
+		/**
+		 * Textual representation of the Lambda (A, B, pi) model.
+		 */
 	override def toString: String = {
 		val piStr = pi.foldLeft(new StringBuilder)((b, x) => 
 				b.append(s"${FormatUtils.format(x,"", FormatUtils.ShortFormat)}") )
 				
 		s"State transition probs A\n${A.toString}\nEmission probs B\n${B.toString}\nInitial probs pi\n${piStr}"
 	}
-  
+ 
+		/*
+		 * Compute alpha for the observation t = 0. (Formula M1)
+		 */
 	private def alpha0(j : Int, obsIndex: Int): Double = pi(j)*B(j, obsIndex)
 }
 

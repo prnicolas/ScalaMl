@@ -1,0 +1,54 @@
+Scala for Machine Learning scaladocs
+
+The source code in this library is provided by the author for the sole purpose of illustrating the concepts and algorithms presented in "Scala for Machine Learning"
+<br>
+See the source code guide <b>SourceCodeGuide.html</b> for Scala programming style, best practice and design patterns.<br>
+The implementation of algorithms in each chapter is defined in a dedicated package. The test examples are defined in src/test/scala directory.<br>
+Chapter 1: Getting started<br>
+<b>org.scalaml.plots</b> Simple line and scatter plot using jFreeChart library<br>
+<br>
+Chapter 2: Hello World<br>
+<b>org.scalaml.core</b> Core components including monadic representation, time series, type definition and conversion<br>
+<b>org.scalaml.stats</b> Basic statistics, normalization and validation of machine learning models<br>
+<br>
+Chapter 3: Data pre-preprocessing<br>
+<b>org.scalaml.filtering</b> Most common filtering techniques such as moving averages, discrete Fourier transform and Kalman filter<br>
+
+Chapter 4: Unsupervised learning<br>
+<b>org.scalaml.unsupervised.clustering</b> K-means flat clustering<br>
+<b>org.scalaml.unsupervised.em</b> Expectation-maximization clustering algorithm<br>
+
+Chapter 5: Naive Bayes models<br>
+<b>org.scalaml.supervised.bayes</b> Binomial and multinomial Naive Bayes classifier<br>
+<b>org.scalaml.supervised.bayes.text</b> Naive Bayes model for text mining<br>
+<br>
+Chapter 6: Regression and regularization<br>
+<b>org.scalaml.supervised.regression.linear</b> Covers linear, ordinary least squares and ridge (L2 regularization) regression<br>
+<b>org.scalaml.supervised.regression.logistic</b> Implementation of Logistic regression classification<br>
+<br>
+Chapter 7: Sequential data models<br>
+<b>org.scalaml.supervised.hmm</b> Markovian processes and hidden Markov models<br>
+<b>org.scalaml.supervised.crf</b> Conditional Random Fields as applied to text classification<br>
+<br>
+Chapter 8: Kernel models and support vector machine<br>
+<b>org.scalaml.supervised.svm</b> Introduces support vector machine for binary and multinomial classification, one class outlier detection and support vector regression<br>
+<br>
+Chapter 9: Artificial neural networks<br>
+<b>org.scalaml.supervised.nnet</b> Multi-layer perceptron training and prediction<br>
+<br>
+Chapter 10: Genetic algorithms<br>
+<b>org.scalaml.ga</b> Components of a genetic algorithm for optimization and learning<br>
+<br>
+Chapter 11: Reinforcement learning<br>
+<b>org.scalaml.reinforcement.qlearning</b> Basics of Q-learning and policy generation<br>
+<b>org.scalaml.reinforcement.xcs</b> Introduction to the extended learning classifiers systems<br>
+<br>
+Chapter 12: Scalable frameworks<br>
+<b>org.scalaml.scalability.scala</b> Performance evaluation of Scala parallel collections (Array and maps)<br>
+<b>org.scalaml.scalability.akka</b> Evaluation of Akka actors, routing capabilities and futures<br>
+<b>org.scalaml.scalability.spark</b> Evaluation of Apache Spark in-memory framework using K-means clustering<br>
+<br>
+Appendix<br>
+<b>org.scalaml.trading</b> Implementation of technical analysis models for trading securities<br?
+<b>org.scalaml.util</b> Utilities classes for configuration and management of maps, files, display and formats<br>
+<b>org.scalaml.workflow.data</b> Implementation of I/O functions as data source and sink transformation<br>

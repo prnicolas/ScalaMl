@@ -16,7 +16,7 @@ import scala.util.Random
 
 import org.apache.log4j.Logger
 
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.ga.state._

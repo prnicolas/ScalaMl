@@ -26,7 +26,7 @@ import org.scalaml.util.DisplayUtils
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
-package object design {
+object Design {
 	import org.scalaml.util.FileUtils
 
 		/**

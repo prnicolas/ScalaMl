@@ -14,7 +14,7 @@ package org.scalaml.supervised.regression
 
 
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 
 
 		/**
@@ -23,7 +23,7 @@ import org.scalaml.core.design.Model
 		 * of the model (class instantiation)<br>
 		 * @param rss Residual sum of the squares computed during training</p>
 		 * @constructor Create a (linear or logistic) regression model. 
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 09, 2014

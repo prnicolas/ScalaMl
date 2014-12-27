@@ -16,7 +16,7 @@ import org.apache.commons.math3.linear.RealMatrix
 import org.scalaml.core.Types.ScalaMl._
 import scala.util.Random
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.Config
+import org.scalaml.core.Design.Config
 
 
 

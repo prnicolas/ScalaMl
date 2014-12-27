@@ -12,7 +12,7 @@
  */
 package org.scalaml.reinforcement.xcs
 
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.ga._
 import org.scalaml.trading.Signal
 import org.scalaml.reinforcement.qlearning._

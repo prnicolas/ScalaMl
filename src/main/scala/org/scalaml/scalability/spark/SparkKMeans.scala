@@ -18,7 +18,7 @@ import org.apache.log4j.Logger
 
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
 import org.apache.spark.mllib.linalg.DenseVector
 import org.apache.spark.SparkContext

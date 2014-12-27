@@ -21,7 +21,7 @@ import org.scalaml.core.XTSeries
 import org.apache.commons.math3.stat.regression.SimpleRegression
 
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.util.DisplayUtils
 import ScalaMl._
 

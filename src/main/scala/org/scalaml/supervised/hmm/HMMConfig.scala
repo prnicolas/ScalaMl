@@ -14,7 +14,7 @@ package org.scalaml.supervised.hmm
 
 
 import org.scalaml.supervised.Supervised
-import org.scalaml.core.design.Config
+import org.scalaml.core.Design.Config
 
 
 		/**
@@ -27,7 +27,7 @@ import org.scalaml.core.design.Config
 		 * @param _N   Number of hidden states in the HMM
 		 * @param _M   Number of symbols (or model dimension) for the HMM
 		 * @throws IllegalArgumenException if any of the argument is out of range [1, 1000]
-		 * @see org.scalaml.core.design.Config
+		 * @see org.scalaml.core.Design.Config
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 27, 2014

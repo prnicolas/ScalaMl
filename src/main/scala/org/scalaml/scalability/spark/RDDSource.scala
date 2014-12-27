@@ -19,7 +19,7 @@ import scala.annotation.implicitNotFound
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.Types
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.XTSeries

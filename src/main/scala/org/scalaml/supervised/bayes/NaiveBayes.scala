@@ -22,7 +22,7 @@ import org.apache.log4j.Logger
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.stats.{Validation, ClassValidation, Stats}
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.supervised.Supervised
 import org.scalaml.util.DisplayUtils
 import NaiveBayesModel._, XTSeries._, Stats._
@@ -47,7 +47,7 @@ import NaiveBayesModel._, XTSeries._, Stats._
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @author Patrick Nicolas
 		 * @since February 13, 2014
-		 * @note Scala for Machine learning Chapter 5 Naive Bayes Models
+		 * @note Scala for Machine learning Chapter 5 Naive Bayes Models / Naive Bayes classifiers
 		 */
 final class NaiveBayes[T <% Double](
 		smoothing: Double, 

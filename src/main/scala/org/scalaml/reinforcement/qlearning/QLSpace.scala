@@ -17,7 +17,7 @@ import scala.collection._
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 	// ScalaMl classes
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.util.DisplayUtils
 

@@ -21,7 +21,7 @@ import org.apache.log4j.Logger
 	// ScalaMl classes
 import org.scalaml.core.{XTSeries, Matrix}
 import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.util.DisplayUtils
 import XTSeries._
 

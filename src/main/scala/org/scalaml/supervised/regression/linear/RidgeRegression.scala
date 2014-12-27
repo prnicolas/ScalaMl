@@ -23,7 +23,7 @@ import org.apache.commons.math3.stat.descriptive.moment.SecondMoment
 	// ScalaML classes
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import org.scalaml.util.DisplayUtils
 import ScalaMl._
@@ -47,7 +47,7 @@ import ScalaMl._
 		 * @param lambda L2 penalty factor.
 		 * @see org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
 		 * @see org.apache.commons.math3.linear._
-		 * @see org.scalaml.core.design.PipeOperator
+		 * @see org.scalaml.core.Design.PipeOperator
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 14, 2014

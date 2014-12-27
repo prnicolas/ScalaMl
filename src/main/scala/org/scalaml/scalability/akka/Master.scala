@@ -19,7 +19,7 @@ import akka.actor.{Props, PoisonPill}
 
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.stats.Stats
 import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.scalability.akka.message._

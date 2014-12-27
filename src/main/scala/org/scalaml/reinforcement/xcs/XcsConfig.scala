@@ -15,7 +15,7 @@ package org.scalaml.reinforcement.xcs
 
 import org.scalaml.ga.GAConfig
 import org.scalaml.reinforcement.qlearning.QLConfig
-import org.scalaml.core.design.Config
+import org.scalaml.core.Design.Config
 
 
 		/**

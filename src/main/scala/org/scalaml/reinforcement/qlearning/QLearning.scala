@@ -21,7 +21,7 @@ import org.apache.log4j.Logger
 	// ScalaMl classes
 import org.scalaml.util.DisplayUtils
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.{Config, PipeOperator, Model}
+import org.scalaml.core.Design.{Config, PipeOperator, Model}
 
 
 		/**
@@ -30,7 +30,7 @@ import org.scalaml.core.design.{Config, PipeOperator, Model}
 		 * @constructor Model created during training of Q-learning. 
 		 * @param bestPolicy Best policy computed or estimated during training.
 		 * @param coverage  Ratio of training trial or epochs that reach a predefined goal state.
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since January 22, 2014

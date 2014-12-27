@@ -17,7 +17,7 @@ import scala.collection.mutable.ListBuffer
 
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.supervised.nnet.MLPConfig._
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import org.scalaml.supervised.nnet.MLP.MLPObjective
 import org.scalaml.util.FormatUtils
 

@@ -23,9 +23,10 @@ package org.scalaml.reinforcement.qlearning
 		 * @throws IllegalArgumentException if the source or destination states ir undefined.
 		 * @param from Source state in the transition (source of the action)
 		 * @param to List of destination states in the transition (target of the action)
+		 * 
 		 * @author Patrick Nicolas
 		 * @since January, 22, 2014
-		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning/Q-learning
+		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Q-learning
 		 */
 final protected class QLAction[T](val from: Int, val to: Int) {
 	require(from >= 0, s"QLAction index $from of source state is undefined")

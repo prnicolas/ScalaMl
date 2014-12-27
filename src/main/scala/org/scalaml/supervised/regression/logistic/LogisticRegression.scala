@@ -25,7 +25,7 @@ import org.apache.commons.math3.optim.ConvergenceChecker
 import org.scalaml.core.{Matrix, XTSeries}
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.DisplayUtils
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.supervised.regression.RegressionModel
 import XTSeries._, ScalaMl._
 

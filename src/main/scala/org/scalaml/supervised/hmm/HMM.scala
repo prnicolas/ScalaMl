@@ -12,7 +12,7 @@
 package org.scalaml.supervised.hmm
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.design.{PipeOperator, Model}
+import org.scalaml.core.Design.{PipeOperator, Model}
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Matrix
 import scala.util.{Try, Success, Failure}
@@ -40,7 +40,7 @@ import HMMForm._
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 29, 2014
@@ -111,9 +111,10 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
 		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to 
 		 * Array[Int] (Discretization)
-		 * 
 		 * @throws ImplicitNotFoundException if the implicit conversion from DblVector to T is 
 		 * not defined prior the instantiation of the class
+		 * @see org.scalaml.supervised.hmm.HMMLambda
+		 * @see org.scalaml.supervised.hmm.HMMState
 		 * @author Patrick Nicolas
 		 * @since March 23, 2014
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model

@@ -20,7 +20,7 @@ import org.apache.commons.math3.stat.correlation.Covariance
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.{CommonMath, ScalaMl}
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.util.DisplayUtils
 import ScalaMl._
 
@@ -29,7 +29,7 @@ import ScalaMl._
 		 * <p>Generic class that implements the Principal Component Analysis technique. The
 		 * extraction of the principal components (Eigenvectors). The class is parameterized
 		 * as a view bound to Double. The purpose of the class is to compute the covariance
-		 * matrix and the eigenvalues (normalized values ordered by decreasing order). The features
+		 * matrix and the eigenvalues (normalized values ordered by decreasing order).<br> The features
 		 * (or variables) associated with a low eigenvalue are eliminated, reducing the dimension 
 		 * of the model and the complexity of any future supervised learning algorithm.</p>
 		 * @constructor Instantiate a principal component analysis algorithm as a data transformation 
@@ -37,7 +37,7 @@ import ScalaMl._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 26, 2014
-		 * @note Scala for Machine Learning
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Principal Components Analysis
 		 */
 final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix, DblVector)] {
 	import CommonMath._, XTSeries._

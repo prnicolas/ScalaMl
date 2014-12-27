@@ -13,7 +13,7 @@
 package org.scalaml.supervised.bayes
 
 import org.scalaml.stats.Stats
-import org.scalaml.core.design.Model
+import org.scalaml.core.Design.Model
 import NaiveBayesModel._
 
 

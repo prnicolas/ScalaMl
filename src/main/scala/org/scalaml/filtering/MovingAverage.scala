@@ -17,7 +17,7 @@ import scala.annotation.implicitNotFound
 	// ScalaMl classes
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import ScalaMl._, XTSeries._
 
 		/**

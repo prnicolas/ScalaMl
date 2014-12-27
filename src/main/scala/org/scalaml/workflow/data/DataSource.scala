@@ -16,7 +16,7 @@ import org.apache.log4j.Logger
 
 import org.scalaml.core.{XTSeries, Types}
 import org.scalaml.stats.Stats
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.util.DisplayUtils
 

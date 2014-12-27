@@ -19,7 +19,7 @@ import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter, FeatureGenerator}
 import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.design.{PipeOperator, Config}
+import org.scalaml.core.Design.{PipeOperator, Config}
 import java.io.IOException
 import org.scalaml.core.Types.ScalaMl._
 
@@ -34,7 +34,7 @@ import org.scalaml.core.Types.ScalaMl._
 		 * likelihood log p(Y|X).
 		 * @param eps  Convergence criteria used on the log likelihood  delta( log p(Y|X)to exit 
 		 * from the training iteration.
-		 * @see org.scalaml.core.design.Config
+		 * @see org.scalaml.core.Design.Config
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 3, 2014

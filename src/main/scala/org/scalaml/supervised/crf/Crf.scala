@@ -10,7 +10,7 @@
  * 
  * Version 0.98
  * 
- * This code uses the iitb CRF library 
+ * This code uses the iitb CRF library http://sourceforge.net/projects/crf/
  * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
  */
 package org.scalaml.supervised.crf
@@ -19,7 +19,7 @@ import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter, FeatureGenerator}
 import iitb.Model.{FeatureGenImpl, CompleteModel}
 import org.scalaml.core.XTSeries
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.design.{PipeOperator, Model}
+import org.scalaml.core.Design.{PipeOperator, Model}
 import org.scalaml.supervised.Supervised
 import java.io.IOException
 import org.scalaml.core.Types.ScalaMl._
@@ -35,7 +35,7 @@ import org.scalaml.util.DisplayUtils
 		 * @constructor Instantiate a model for CRF after training is completed.
 		 * @throws IllegalArgumentException if weights is not properly defined
 		 * @param weights	Weights (or lambda parameters) for this CRF model.
-		 * @see org.scalaml.core.design.Model
+		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 1, 2014
@@ -62,6 +62,7 @@ final protected class CrfModel(val weights: DblVector) extends Model {
 		 * @throws IllegalArgumentException if nLabels, state, delims and taggedObs are either 
 		 * undefined or out of range.
 		 * @see org.scalaml.workflow.PipeOperator
+		 * @see iitb CRF library 
 		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
 		 * @param config Minimum set of configuration parameters required to train a CRF model
 		 * @param delims Delimiters used in extracting labels and data from the training files

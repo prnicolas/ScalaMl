@@ -24,5 +24,7 @@ resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 // Options for the Scala compiler should be customize
 scalacOptions ++= Seq("-unchecked", "-optimize", "-Yinline-warnings")
 
+scalacOptions in (Compile, doc) ++= Seq("-doc-root-content", baseDirectory.value+"/root-doc.txt")
+
 // Options for Scala test with timing and short stack trace
 testOptions in Test += Tests.Argument("-oDS")

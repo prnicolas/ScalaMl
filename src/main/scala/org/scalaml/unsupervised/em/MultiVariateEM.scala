@@ -14,7 +14,7 @@ package org.scalaml.unsupervised.em
 
 
 import org.scalaml.core.XTSeries
-import org.scalaml.core.design.PipeOperator
+import org.scalaml.core.Design.PipeOperator
 import org.apache.commons.math3.distribution.fitting.MultivariateNormalMixtureExpectationMaximization
 import org.apache.commons.math3.distribution.{MixtureMultivariateNormalDistribution, MultivariateNormalDistribution}
 import scala.collection.JavaConversions._

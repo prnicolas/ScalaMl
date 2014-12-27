@@ -13,7 +13,7 @@
 package org.scalaml.supervised.svm
 
 import libsvm._
-import org.scalaml.core.design.Config
+import org.scalaml.core.Design.Config
 import org.scalaml.supervised.svm.kernel.SVMKernel
 import org.scalaml.supervised.svm.formulation.SVMFormulation
 
