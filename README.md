@@ -9,7 +9,7 @@ Source code, data files and utilities related to "Scala for Machine Learning"<br
 <a href="#installation">installation</a><br>
 <a href="#build">build</a><br>
 <a href="#run">Run examples</a><br>
-<a href="#persistency">Persistent model and configuration</a><br>
+<a href="#persistency">Persistent models and configurations</a><br>
 <a href="#appendix">Appendix</a><br>
 
 <h2 id="overview">Overview</h2>
@@ -84,7 +84,7 @@ $<b>sbt "test:run options"</b> where options is a list of possible outputs<ul>
 $<b>sbt "test:run log chart"</b> write test results into a log and charts<br>
 $<b>sbt test:run</b> write test results into the standard output and the charts.<br>
 
-<h2 id="persistency">Persistent models and configuration</h2>
+<h2 id="persistency">Persistent models and configurations</h2>
 The package object <b>org.scalaml.core.Design</b> provide the trait (or skeleton implementation) of the persistent model <b>Design.Model</b> and configuration <b>Design.Config</b>.<br>
 The persistency mechanisms is implemented for a couple of supervised learning models only for illustration purpose. The reader should be able to implement the persistency for configuration and models for all relevant learning algorithms using the template operator << and >> <br>
 
