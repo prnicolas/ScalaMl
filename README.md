@@ -86,7 +86,7 @@ $<b>sbt test:run</b> write test results into the standard output and the charts.
 
 <h2 id="persistency">Persistent models and configuration</h2>
 The package object <b>org.scalaml.core.Design</b> provide the trait (or skeleton implementation) of the persistent model <b>Design.Model</b> and configuration <b>Design.Config</b>.<br>
-The persistency mechanisms is implemented for a couple of supervised learning models only for illustration purpose.<br>
+The persistency mechanisms is implemented for a couple of supervised learning models only for illustration purpose. The reader should be able to implement the persistency for configuration and models for all relevant learning algorithms using the template operator << and >> <br>
 
 <h2 id="appendix">Appendix</h2>
 The examples have been built and tested with the following libraries:<br>
