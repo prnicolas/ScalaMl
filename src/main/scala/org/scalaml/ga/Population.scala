@@ -97,7 +97,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		require(cutOff > 0.0 && cutOff < 1.01, 
 				s"Population.select Cannot select with a cutoff $cutOff out of range")
 				
-			// Compute the commulative score for the entire population
+			// Compute the cumulative score for the entire population
 		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {
 			score(xy)
 			s + xy.unfitness 
@@ -167,7 +167,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * chromosomes that are mutated using the mutate operator ^ on chromosome.</p>
 		 * @param mu mutation factor
 		 * @return Population with original chromosomes and mutated counter-part
-		 * @throws IllegalArgumenException if mu is out of range [0, 1]
+		 * @throws IllegalArgumenException if the mutation ratio or coef. mu is out of range [0, 1]
 		 */
 	def ^ (mu: Double): Unit = {
 		require(mu > 0.0 && mu < 1.0, 

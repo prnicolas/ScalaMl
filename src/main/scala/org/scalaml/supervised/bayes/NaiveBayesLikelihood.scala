@@ -41,7 +41,7 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
   
 		/**
 		 * <p>Compute the log p(C|x of log of the conditional probability of the class given an 
-		 * observation obs and a probability density distribution.<br>
+		 * observation, obs and a probability density distribution.<br>
 		 * The default density probability function is Normal(0, 1)</p>
 		 * @param obs parameterized observation 
 		 * @param density probability density function (default Gauss)

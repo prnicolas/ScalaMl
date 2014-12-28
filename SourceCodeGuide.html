@@ -193,7 +193,7 @@ instead of<pre>  final def rss: Option[Double] = model match {
   }</pre>
 
 <b>Nested options</b><br>
-Sequence of nested option are processed through a for-Comphrensive loop
+Sequence of nested options are processed through a for-Comphrensive loop as follows
 <pre>  val results = (
     for {
       v: DblVector <- optionSrc.extract        // outer option
@@ -201,6 +201,8 @@ Sequence of nested option are processed through a for-Comphrensive loop
     } yield model                              // Option result
   ).map(m => s"$name ${m.toString}").getOrElse("") // processing of results
 </pre>
+<b>Scaladoc</b><br>
+The package objects are documented following Odersky-Spoon style guide: http://www.scala-lang.org/docu/files/packageobjects/packageobjects.html
 
 <h2>Design</h2><hr>
 The machine learning algorithms described in Scala for Machine Learning use the following design pattern.<br><br>

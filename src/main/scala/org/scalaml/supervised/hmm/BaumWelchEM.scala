@@ -53,12 +53,15 @@ final protected class BaumWelchEM(
 	val state = HMMState(lambda, numIters)
   
 		/**
-		 * Maximum likelihood (maximum log of the conditional probability) extracted from the training 
+		 * Maximum likelihood (maximum log of the conditional probability) extracted from the training
+		 * @see Chapter 7 Sequential data models / Hidden Markov models / Training (CF-2)
 		 */
 	val maxLikelihood: Option[Double] = {
 		Try {
 			var likelihood = frwrdBckwrdLattice
-		  
+		
+				// Apply the alpha / beta algorithm for each state
+				// until the likelihood value Alpha.alpha converges toward a maximum
 			Range(0, state.maxIters) find( _ => {
 				lambda.estimate(state, obs)
 				val _likelihood = frwrdBckwrdLattice
@@ -73,6 +76,7 @@ final protected class BaumWelchEM(
 			}
 		} 
 		match {
+				// If the maximum likelihood is computed, normalize the resulting Lambda model
 			case Success(likelihood) => {
 				state.lambda.normalize
 				Some(likelihood)
@@ -81,10 +85,20 @@ final protected class BaumWelchEM(
 		}
 	}
    
-
-	private[this] def frwrdBckwrdLattice: Double  = {
+		/*
+		 * Apply the alpha-beta passes to compute the probability Gamma of being in a 
+		 * given state for each observation [Formula M8], the probability DiGamma to being 
+		 * in a given state and transition to another given state for each observation [Formula M8]
+		 * then update the state transition probabilities matrix A [Formula 10], the emission 
+		 * probabilities matrix B [Formula M11] and the initial probabilities PI [Formula M9]
+		 */
+	private def frwrdBckwrdLattice: Double  = {
+			// Compute the forward pass given the sequence of observations obs
 		val _alpha = Alpha(lambda, obs)
+		
+			// Compute the probabilities of a state given the 
 		state.update(_alpha.getAlphaBeta, Beta(lambda, obs).getAlphaBeta, lambda.A, lambda.B, obs)
+			// Finally returns the likelihood
 		_alpha.alpha
 	}
 }

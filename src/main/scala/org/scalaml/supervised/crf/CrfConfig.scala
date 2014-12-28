@@ -26,7 +26,7 @@ import org.scalaml.core.Types.ScalaMl._
 
 		/**
 		 * <p>Class that defines the basic configuration of the CRF algorithm. The class generates 
-		 * a textual description of the configuration of CRF used by iitb library</p>
+		 * a textual description of the configuration of CRF used by IITB-CRF library</p>
 		 * @constructor Create a configuration for the CRF.		
 		 * @param w0 Initial values for the CRF weights/factors (lambdas).
 		 * @param maxIters Maximum number of iterations to be used for the training of CRF.

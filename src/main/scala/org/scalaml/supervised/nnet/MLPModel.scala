@@ -51,17 +51,12 @@ final protected class MLPModel(
 	import MLPModel._
 
 	check(nInputs, nOutputs)
-	
-		/**
-		 * Name of the file that persists the model parameters of the Multi-layer perceptron
-		 */
-	protected val persists = "model/mlp"
 	  
 		/*
 		 * Create the topology of this Multi-layer preceptron using the configuration 
 		 * parameters and the number of hidden layers (and number of elements per hidden layer)
 		 */
-	private[this] val topology =	if( config.nHiddens == 0) Array[Int](nInputs, nOutputs) 
+	private[this] val topology =	if(config.nHiddens == 0) Array[Int](nInputs, nOutputs) 
 			else Array[Int](nInputs) ++ config.hidLayers ++ Array[Int](nOutputs)
 	
 			/*
@@ -74,7 +69,7 @@ final protected class MLPModel(
 			 * Create a array of connection between layer. A connection is 
 			 * made of multiple synapses.
 			 */
-	private[this]  val connections: Array[MLPConnection]  = Range(0, layers.size-1).map(n => 
+	private[this] val connections = Range(0, layers.size-1).map(n => 
 			new MLPConnection(config, layers(n), layers(n+1))).toArray
 
 		/**
@@ -150,6 +145,23 @@ final protected class MLPModel(
 			// .. and return the output of the MLP.
 		outLayer.output
 	}
+	
+		/**
+		 * Write the content of this model (weights) into a file
+		 * @return true if the model/weights were saved into file, false otherwise.
+		 */
+	override def >> : Boolean = {
+		val content = new StringBuilder(s"$nInputs,")
+		if( config.nHiddens != 0)
+			content.append(config.hidLayers.mkString(","))
+			
+		content.append(s"$nOutputs\n")
+		connections.foreach(c => {
+			content.append(s"${c.getLayerIds._1},${c.getLayerIds._2}:")
+			content.append(c.getSynapses.map(s => s"${s.mkString(",")}\n")) 
+		})
+		write(content.toString)
+	}
 	 
 		/**
 		 * Textual description of the model for Multi-layer Perceptron. The representation
@@ -167,6 +179,11 @@ final protected class MLPModel(
 		/**
 		 * Companion object for a Multi-layer perceptron model. This singleton is used
 		 * to validate the class parameters and define its constructors
+		 * 
+		 * @author Patrick Nicolas
+		 * @since May 8, 2014
+		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
+		 * / Model definition
 		 */
 object MLPModel {
 	private val MAX_MLP_NUM_INPUTS = 4096

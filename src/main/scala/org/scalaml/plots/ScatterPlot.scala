@@ -65,7 +65,7 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */
@@ -87,7 +87,7 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * @param xy1 First Array of pair (x,y) to be displayed
 		 * @param xy2 Second Array of pair (x,y) to be displayed
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if either dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */

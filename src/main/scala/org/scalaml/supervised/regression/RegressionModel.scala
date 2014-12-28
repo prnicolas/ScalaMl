@@ -19,6 +19,7 @@ import org.scalaml.core.Design.Model
 
 		/**
 		 * <p>Generic class that defines a model for linear, logistic and regularized regression.<br>
+		 * This class persists the model parameters into file.</p>
 		 * @param weights Weights or parameters of the regression computed during the training 
 		 * of the model (class instantiation)<br>
 		 * @param rss Residual sum of the squares computed during training</p>
@@ -30,11 +31,22 @@ import org.scalaml.core.Design.Model
 		 * @note Scala for Machine learning Chapter 6 Regression and regularization.
 		 */
 case class RegressionModel(val weights: DblVector, val rss: Double) extends Model {
+		/**
+		 * Constructor that load the model from file "model/RegressionModel"
+		 * @param className name of the class of the model, which is also the name of the file
+		 * @return instance of the CrfModel with appropriate weights if the model has been 
+		 * saved into file
+		 * @note The client code that instantiate the model is responsible for catching the 
+		 * exception if the file does not exist.
+		 */
+	def this(className: String) = 
+			this({Model.read(className).map( _.split(",").map(_.toDouble)).getOrElse(Array.empty)},0.0)
 	
 		/**
-		 * Name of the file that persists the model parameters of a regression model (weights)
+		 * Write the content of this model (weights) into a file
+		 * @return true if the model/weights were saved into file, false otherwise.
 		 */
-	protected val persists = "model/regression"
+	override def >> : Boolean = write(weights.mkString(","))
 
 		/**
 		 * Return the number of weights or regression parameters in this model

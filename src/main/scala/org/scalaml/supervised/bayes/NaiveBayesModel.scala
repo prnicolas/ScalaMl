@@ -28,13 +28,9 @@ import NaiveBayesModel._
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes Models
 		 */
 abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model {
-	
+
 		/**
-		 * Name of the file that persists the model for the Naive Bayes model
-		 */
-	protected val persists: String = "model/nb"
-		/**
-		 * <p>Classify a new observation (or vector) using the Multinomial Naive Bayes model.</p>
+		 * <p>Classify a new observation (or vector) using the Multi-nomial Naive Bayes model.</p>
 		 * @param x new observation
 		 * @return the class ID the new observations has been classified.
 		 * @throws IllegalArgumentException if any of the observation is undefined.
@@ -43,7 +39,7 @@ abstract class NaiveBayesModel[T <% Double](val density: Density) extends Model 
 	def toString(labels: Array[String]): String 
 }
 		/**
-		 * <p>Companion object to the abstract NaiveBayesModel class. This singletong 
+		 * <p>Companion object to the abstract NaiveBayesModel class. This singleton 
 		 * is used to define the signature of the Density function.
 		 */
 object NaiveBayesModel {
@@ -82,9 +78,12 @@ protected class BinNaiveBayesModel[T <% Double](
 		require( !x.isEmpty, 
 				"BinNaiveBayesModel.classify Undefined observations")
 		
-		// Simply select one of the two classes with the highers log posterior probability
+		// Simply select one of the two classes with the highest log posterior probability
 		if (positives.score(x, density) > negatives.score(x, density)) 1 else 0
 	}
+
+			
+			
 	
 	override def toString(labels: Array[String]): String = {
 		require( !labels.isEmpty, "BinNaiveBayesModel.toString Undefined labels")
@@ -118,13 +117,11 @@ object BinNaiveBayesModel {
 					new BinNaiveBayesModel(positives, negatives, density)
 }
 
-
-
 		/**
-		 * <p>Defines a Multi-class (or multinomial) Naive Bayes model for n classes.
+		 * <p>Defines a Multi-class (or multi-nomial) Naive Bayes model for n classes.
 		 * The number of classes is defined as likelihoodSet.size. The binomial Naive Bayes model, 
 		 * BinNaiveBayesModel, should be used for the two class problem.</p>
-		 * @constructor Instantiates a Multinomial Naive Bayes model (number classes > 2)
+		 * @constructor Instantiates a multi-nomial Naive Bayes model (number classes > 2)
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
 		 * @param density Probability density function used in computing the conditional probability p(C|x)
@@ -140,7 +137,7 @@ protected class MultiNaiveBayesModel[T <% Double](
 			"MultiNaiveBayesModel Cannot classify using Multi-NB with undefined classes")
   
 		/**
-		 * <p>Classify a new observation (or vector) using the Multinomial Naive Bayes model.</p>
+		 * <p>Classify a new observation (or vector) using the Mult-inomial Naive Bayes model.</p>
 		 * @param x new observation
 		 * @return the class ID the new observations has been classified.
 		 * @throws IllegalArgumentException if any of the observation is undefined.
@@ -151,9 +148,10 @@ protected class MultiNaiveBayesModel[T <% Double](
 			// The classification is performed by ordering the class according to the
 			// log of their posterior probability and selecting the top one (highest 
 			// posterior probability)
-		likelihoodSet.sortWith((p1, p2) => 
-			p1.score(x, density) > p2.score(x, density)).head.label
+		likelihoodSet.sortWith((p1, p2) => p1.score(x, density) > p2.score(x, density)).head.label
 	}
+
+	
 	
 	override def toString(labels: Array[String]): String = {
 		require( !labels.isEmpty, "MultiNaiveBayesModel.toString Vector input is undefined")
@@ -167,7 +165,7 @@ protected class MultiNaiveBayesModel[T <% Double](
 }
 
 		/**
-		 * Companion object for the Multinomial Naive Bayes Model. The singleton
+		 * Companion object for the multi-nomial Naive Bayes Model. The singleton
 		 * is used to define the constructor of MultiNaiveBayesModel
 		 * 
 		 * @author Patrick Nicolas
@@ -176,7 +174,7 @@ protected class MultiNaiveBayesModel[T <% Double](
 		 */
 object MultiNaiveBayesModel {
 		/**
-		 * Default constructor for the multinomial Naive Bayes model as instance of MultiNaiveBayesModel
+		 * Default constructor for the multi-nomial Naive Bayes model as instance of MultiNaiveBayesModel
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
 		 * @param density Probability density function used in computing the conditional probability p(C|x)
 		 */

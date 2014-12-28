@@ -14,7 +14,7 @@ package org.scalaml.supervised
 
 		/**
 		 * This package object contains the classes implementing the conditional random fields
-		 * for modeling sequential data using the Indian Institute of Technology, Bombay (iitb):<br>
+		 * for modeling sequential data using the Indian Institute of Technology, Bombay (IITB):<br>
 		 * - Iterator to generate sequential data for the condition random field <b>CrfSeqIter</b><br>
 		 * - Configuration of the conditional random fields with L2 regularization <b>CrfConfig</b><br>
 		 * - Definition of data sequence used in training of Conditional Random fields 

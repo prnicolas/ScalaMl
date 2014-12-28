@@ -67,19 +67,19 @@ class Stats[T <% Double](values: DVector[T]) {
 	lazy val stdDev = if(variance < ZERO_EPS) ZERO_EPS else Math.sqrt(variance)
 		
 		/**
-		 * Computation of minimun values of a vector. This values is
+		 * Computation of minimum values of a vector. This values is
 		 * computed during instantiation
 		 */
 	lazy val min = _stats.minValue
 	
 		/**
-		 * Computation of minimun values of a vector. This values is
+		 * Computation of minimum values of a vector. This values is
 		 * computed during instantiation
 		 */
 	lazy val max = _stats.maxValue
 	
 		/**
-		 * Compute the Lidsstone smoothing factor for a set of values
+		 * Compute the Lidstone smoothing factor for a set of values
 		 * @param smoothing smoothing values ]0, 1] for Lidstone smoothing function
 		 * @param dim Dimension of the model
 		 * @return smoothed mean
@@ -108,7 +108,7 @@ class Stats[T <% Double](values: DVector[T]) {
 		/**
 		 * Fast normalization of values within a range of [0, 1]
 		 * @return vector with normalized values
-		 * @throws throw a Arithmetic exception if the min and max have identical values
+		 * @throws throw a Arithmetic exception if the minimum and maximum have identical values
 		 */
 	def normalize: DblVector = {
 		val range = max - min
@@ -165,9 +165,10 @@ object Stats {
 
 		/**
 		 * <p>Compute the Gauss density function for a vector given a mean and standard deviation</p>
-		 * @param mean mean values of the Gauss pdf
-		 * @param stdDev standard deviation of the Gauss pdf'
-		 * @param values  array of variables for which the Gauss pdf has to be computed
+		 * @param mean mean values of the Gauss probability density function
+		 * @param stdDev standard deviation of the Gauss probability density function
+		 * @param values  array of variables for which the Gauss probability density function 
+		 * has to be computed
 		 * @return Gaussian probability 
 		 * @throws IllegalArgumentExeption if stdDev is close t zero or the values are not defined.
 		 */
@@ -185,9 +186,9 @@ object Stats {
   
 		/**
 		 * <p>Compute the Gauss density function for a value given a mean and standard deviation</p>
-		 * @param mean mean values of the Gauss pdf
-		 * @param stdDev standard deviation of the Gauss pdf'
-		 * @param value  value for which the Gauss pdf has to be computed
+		 * @param mean mean values of the Gauss probability density function
+		 * @param stdDev standard deviation of the Gauss probability density function
+		 * @param value  value for which the Gauss probability density function has to be computed
 		 * @return Gaussian probability
 		 * @throws IllegalArgumentExeption if stdDev is close t zero
 		 */
@@ -200,7 +201,7 @@ object Stats {
 	}
    
 		/**
-		 * <p>Compute the Gauss density with a variable list of parameters</p>
+		 * <p>Compute the Gauss density value with a variable list of parameters</p>
 		 * @param x list of parameters
 		 * @return Gaussian probability
 		 * @throws IllegalArgumentExeption if stdDev is close to zero

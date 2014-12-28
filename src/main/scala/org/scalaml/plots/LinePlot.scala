@@ -52,7 +52,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * DisplayUtils array of tuple (x,y) in a Line plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
 		 */
@@ -69,7 +69,7 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
 		 */

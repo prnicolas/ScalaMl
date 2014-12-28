@@ -98,7 +98,7 @@ final protected class SimpleMovingAverage[@specialized(Double) T <% Double](
 				// Compute the average value over the time window
 			val a0 = data.take(period).sum/period
 
-				// Apply the slding window 'slider' across the time series
+				// Apply the sliding window 'slider' across the time series
 				// then flatten the matrix into a vector of DOuble
 			var a = a0
 			Array[Array[Double]]( 
@@ -131,8 +131,8 @@ object SimpleMovingAverage {
 		 * ,Arial,Helvetica,sans-serif;">
 		 *  x'(t) = (1- alpha).x'(t-1) + alpha.x(t)  with x' is the estimate of x</span></pre></p>
 		 * @constructor Create an exponential moving average
-		 * @param period Period or size fo the time window in the moving average
-		 * @param alpha Decay factor or coefficient pf the exponential moving average.
+		 * @param period Period or size of the time window in the moving average
+		 * @param alpha Decay factor or coefficient of the exponential moving average.
 		 * @throws IllegalArgumentException if period is non positive or alpha is out of range [0,1]
 		 * @author Patrick Nicolas
 		 * @since February 7, 2014
@@ -164,7 +164,7 @@ final protected class ExpMovingAverage[@specialized(Double) T <% Double](
 			val alpha_1 = 1-alpha
 			var y: Double = xt(0)
 			
-				// Applies the exponential smoothing formula for each data pojnt
+				// Applies the exponential smoothing formula for each data point
 			xt.map(x => {
 				val z = x*alpha + y*alpha_1
 				y = z

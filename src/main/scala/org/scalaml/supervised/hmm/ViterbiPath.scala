@@ -28,7 +28,7 @@ import HMMConfig._
 		 *  @see org.scalaml.hmm.HMMModel
 		 *  @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Viterbi
 		 *  @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 *  probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 *  probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
 		 *  @param obs Array of observations as integer (categorical data)
 		 *  
 		 *  @author Patrick Nicolas
@@ -80,7 +80,7 @@ final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HM
 			if( t != obs.size) {
 				// Compute the maximum value of delta at observation t
 				// give the delta value at observation t-1, the transition probabilities A
-			  // and the emission probabilites B  [M14]
+			  // and the emission probabilities matrix B  [M14]
 				maxDelta = maxBy(lambda.getN, s => 
 					recurse(t-1, s)* lambda.A(s, j)* lambda.B(j, obs(t)) )
 				
@@ -120,7 +120,7 @@ object ViterbiPath {
 		/**
 		 * Default constructor for the Viterbi algorithm
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMLambda, _labels: Array[Int]): ViterbiPath = 

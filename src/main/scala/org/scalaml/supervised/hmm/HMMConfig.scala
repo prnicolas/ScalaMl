@@ -18,7 +18,7 @@ import org.scalaml.core.Design.Config
 
 
 		/**
-		 * <p>Utility class that defined the dimemsion of the matrix
+		 * <p>Utility class that defined the dimension of the matrix
 		 * used in the Hidden Markov Model. The terminology used in the code follows
 		 * the naming convention used in the mathematical expressions presented in
 		 * most of papers and technical books on HMM.</p>
@@ -79,7 +79,7 @@ object HMMConfig {
 		/**
 		 * Implements a fold operator on the first j elements of a collection, initialized to 0
 		 * @param j ending index for the iterator
-		 * @param f reducer function/aggregator executed of each element
+		 * @param f reducer function/aggregation executed of each element
 		 */
 	def foldLeft(j: Int, f: (Double, Int) => Double) = Range(0, j).foldLeft(0.0)(f)
 	

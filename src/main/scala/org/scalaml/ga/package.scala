@@ -16,7 +16,7 @@ package org.scalaml
 		 * This package object defines the classes that support genetic algorithms as
 		 * classifiers and optimizer introduced in Chapter 10: Genetic Algorithms<br>
 		 * - Genetic chromosome defined as a list of Gene with a symbolic representation of list of
-		 * predicates (variable op value) or rule IF( value op value) THEN ..<b>Chromosome</b><br>
+		 * predicates (variable operator value) or rule IF( value operator value) THEN ..<b>Chromosome</b><br>
 		 * - Genetic Gene defined in binary format with a symbolic representation of predicates
 		 *  <b>Gene</b><br>
 		 * - Chromosome pool or population managed by genetic operator such as selection, mutation

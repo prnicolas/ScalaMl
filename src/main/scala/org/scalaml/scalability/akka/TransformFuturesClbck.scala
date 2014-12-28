@@ -29,7 +29,7 @@ import XTSeries._
 
 
 		/**
-		 * <p>Generic distributed transformation of time series using futures and callbacks.</p>
+		 * <p>Generic distributed transformation of time series using futures and callback methods.</p>
 		 *  @constructor Create a distributed transformation for time series. 
 		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 *  @param xt Time series to be processed
@@ -118,7 +118,5 @@ abstract class TransformFuturesClbck(
 		 */
 	protected def aggregate(results: Array[DblSeries]): Seq[Double] 
 }
-
-
 
 // ------------------------  EOF -----------------------------------------------------------------------------

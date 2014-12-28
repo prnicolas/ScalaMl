@@ -35,7 +35,7 @@ object XcsCover {
 		 * <p>Generates new rules from an existing population. The number of rules
 		 * to generates is the size of the chromosome representing a trading strategy.</p>
 		 * @param sensor (or rule predicate) used to generate a set of new rules
-		 * @param list of actions (or XCS rules) used in the coverage prpcoess
+		 * @param list of actions (or XCS rules) used in the coverage process
 		 * @throws IllegalArgumenException if the list of actions is undefined
 		 * @return list of new XCS rules. 
 		 */

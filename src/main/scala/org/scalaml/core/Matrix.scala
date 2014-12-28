@@ -33,7 +33,7 @@ import org.scalaml.util.FormatUtils
 		 *  the instantiation of a matrix
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @since Feb 23, 2014
+		 *  @since February 23, 2014
 		 *  @note Scala for Machine Learning
 		 */
 @implicitNotFound("Matrix  Conversion from type T to Double is undefined")
@@ -92,7 +92,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * Extract the content of a column for this matrix at a given row index
 		 * @param iCol index of the column to extract from the matrix
 		 * @return column at index (?, iCol) if index is in bounds
-		 * @throws IllegalArgumentException if the col index iCol exceeds the number of columns, nCols
+		 * @throws IllegalArgumentException if the column index iCol exceeds the number of columns, nCols
 		 */
 	final def col(iCol: Int): Array[T] = { 
 		require(iCol >= 0 & iCol < nCols, s"Matrix.cols The column index $iCol is out of bounds ")
@@ -133,7 +133,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 
 		/**
 		 * <p>Compute the transpose of this matrix.</p>
-		 * @return new matrix tranposed from this matrix
+		 * @return new matrix transposed from this matrix
 		 */
 	def transpose: Matrix[T] = {
 		val m = Matrix[T](nCols, nRows)
@@ -173,7 +173,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * Companion object to the class Matrix. This singleton defines
 		 * the Matrix constructor and validate its parameters
 		 * @author Patrick Nicolas
-		 * @since Feb 23, 2014
+		 * @since February 23, 2014
 		 *  @note Scala for Machine Learning
 		 */
 object Matrix {
@@ -199,7 +199,7 @@ object Matrix {
 		/**
 		 * Constructor for Matrix with null elements with a given number of rows and columns
 		 * @param nRows Number of rows
-		 * @param nCols number of cols
+		 * @param nCols number of columns
 		 */
 	def apply[T: ClassTag](nRows: Int, nCols: Int)(implicit f: T => Double): Matrix[T] = 
 		new Matrix(nRows, nCols, new Array[T](nCols*nRows))

@@ -24,7 +24,7 @@ import Gene._, Chromosome._
 		 * represents candidate solution to a problem or candidate model to a dataset.<br>
 		 * This particular implementation score the chromosome unfitness. The fitness value of
 		 * a chromosome is randomly selected as a high value.</p>
-		 * @constructor Create a chromosome with the parameterized sbutype of Gene
+		 * @constructor Create a chromosome with the parameterized sub-type of Gene
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
 		 * @param code List of Genes or sub types composing this chromosomes.
 		 * @author Patrick Nicolas
@@ -73,7 +73,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * <p>Mutation operator that flip a gene selected through a mutation index.
 		 * The mutated gene is added to the population (gene pool).</p>
 		 * @param gIdx Genetic index
-		 * @throws IllegalArgumentException if mu is out of range
+		 * @throws IllegalArgumentException if mutation coefficient, mu is out of range
 		 * @return A new mutated chromosome
 		 */
 	def ^ (gIdx: GeneticIndices): Chromosome[T] = {

@@ -134,7 +134,7 @@ object RDDSource {
    
 		/**
 		 * <p>Converts a time series of vectors of double to a Spark RDD using a predefined
-		 * set of RDD configuration parameters (Caching, Persistency).</p>
+		 * set of RDD configuration parameters (Caching, Persistence).</p>
 		 * @param xt time series to be converted into a RDD
 		 * @param rddConfig configuration parameters used in the conversion
 		 * @throws IllegalArgumentException if the time series or the RDD configuration 

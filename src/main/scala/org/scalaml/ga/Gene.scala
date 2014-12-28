@@ -19,7 +19,7 @@ import org.scalaml.core.Types
 
 		/**
 		 * <p>Generic operator for symbolic representation of a gene defined
-		 * as a tuple {variable, op, target_value}. An operator can be logical (OR, AND, NOT)
+		 * as a tuple {variable, operator, target_value}. An operator can be logical (OR, AND, NOT)
 		 * or numeric (>, <, ==). Symbolic operators should not be confused with
 		 * genetic operators such as mutation or cross-over.</p>
 		 * 
@@ -29,7 +29,7 @@ import org.scalaml.core.Types
 		 */
 trait Operator {
 		/**
-		 * Identifier for the operator of type Int
+		 * Identifier for the operator of type Integer
 		 * @return operator unique identifier
 		 */
 	def id: Int
@@ -55,14 +55,14 @@ object NO_OPERATOR extends Operator {
 import Gene._
 
 		/**
-		 * <p>Class for the conversion between time series with disctete values (digital of type Int)
+		 * <p>Class for the conversion between time series with discrete values (digital of type Int)
 		 *  and time series with continuous values (analog of type Double). Continuous values 
 		 *  are digitized over an interval through a linear segmentation.<br>
 		 *  A continuous time series with minimum value, m and maximum value M is discretized over 
 		 *  an interval [a, b] as x -> (x - m)*(b - a)/(M- n) + a.</p>
 		 * @constructor Discretization class that convert a Double to Int and an Int to a Double.
 		 * @param toInt Function which discretizes a continuous signal or pseudo-continuous data set
-		 * @param toDouble onvert a discretized time series back to its original values
+		 * @param toDouble convert a discretized time series back to its original (continuous) values
 		 * 
 		 * @author Patrick Nicolas
 		 * @since August 28, 2013

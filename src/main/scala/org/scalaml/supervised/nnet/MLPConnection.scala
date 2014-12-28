@@ -51,7 +51,7 @@ final protected class MLPConnection(
 		 * Initialize the matrix (Array of Array) of Synapse by generating
 		 * a random value between 0 and BETA
 		 */
-	private val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
+	private[this] val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
 			if(n > 0) Array.fill(src.len)((Random.nextDouble*BETA, 0.0)) 
 			else Array.fill(src.len)((1.0, 0.0)))
 		   
@@ -77,6 +77,15 @@ final protected class MLPConnection(
 		out.copyToArray(dst.output, 1)     
 	}
 
+		/**
+		 * Access the identifier for the source and destination layers
+		 * @return tuple (source layer id, destination layer id)
+		 */
+	@inline
+	final def getLayerIds: (Int, Int) = (src.id, dst.id)
+	
+	@inline
+	final def getSynapses: Array[Array[MLPSynapse]] = synapses
 
 		/**
 		 * <p>Implement the back propagation of output error (target - output). The method uses
@@ -89,7 +98,7 @@ final protected class MLPConnection(
 					s + synapses(j)(i)._1*dst.delta(j) )
 					
 				// The delta value is computed as the derivative of the 
-				// output value adjusted for the backpropaged error, err
+				// output value adjusted for the back-propagated error, err
 			src.delta(i) =  src.output(i)* (1.0- src.output(i))*err
 		})
 
@@ -127,7 +136,7 @@ final protected class MLPConnection(
 
 		Range(0, dst.len).foreach( i => {
 			Range(0, src.len).foreach(j => {
-				val wij: (Double, Double) = synapses(i)(j)
+				val wij: MLPSynapse = synapses(i)(j)
 				val weights_str = FormatUtils.format(wij._1, "", FormatUtils.MediumFormat)
 				val dWeights_str = FormatUtils.format(wij._2, "", FormatUtils.MediumFormat)
 				buf.append(s"$i,$j: ($weights_str, $dWeights_str)  ")

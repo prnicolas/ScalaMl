@@ -37,11 +37,6 @@ import org.scalaml.util.FormatUtils
 		 */
 final protected class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Model {
 	require(svmmodel != null, "SVMModel LIBSVM model smmodel is undefined")
-	
-		/**
-		 * Name of the file that persists the model parameters for the support vector machine
-		 */
-	protected val persists = "models/svm"
  
 		/**
 		 * Textual representation of the SVM model. The method converts LIBSVM nodes values

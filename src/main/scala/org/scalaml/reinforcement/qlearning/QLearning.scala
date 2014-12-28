@@ -37,11 +37,9 @@ import org.scalaml.core.Design.{Config, PipeOperator, Model}
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 final class QLModel[T](val bestPolicy: QLPolicy[T], val coverage: Double) extends Model {
-	
 		/**
-		 * Name of the file that persists the model for Q-learning
+		 * Textual representation of the model for the Q-learning algorithm
 		 */
-	protected val persists = "model/qlearning"
 	override def toString: String = 
 			s"Optimal policy: ${bestPolicy.toString} with coverage: $coverage" 
 }

@@ -59,7 +59,7 @@ abstract class MasterWithRouter(
 	private val logger = Logger.getLogger("MasterWithRouter")
 	protected val MAX_NUM_DATAPOINTS = 128
 	
-		// Aggregator for results from each worker actors
+		// Aggregation for results from each worker actors
 	protected[this] val aggregator = new ListBuffer[DblVector]
 
 	
@@ -134,33 +134,5 @@ abstract class MasterWithRouter(
 	
 	final private def isNewVersion: Boolean = akka.actor.ActorSystem.Version(2).toInt > 2
 }
-
-/*
-object MasterWithRouter {
-	import scala.reflect.macros._
-	import scala.language.experimental.macros
-	
-	// implicit val scala.language.experimental.macros
-	def routerConfig(partitioner: Partitioner, master: MasterWithRouter): RouterConfig = 
-		macro routerConfigImpl
-	
-	def routerConfigImpl(ctx: Context)(
-			partitioner: ctx.Expr[Partitioner], 
-			master: ctx.Expr[MasterWithRouter]): ctx.Expr[RouterConfig] = {
-		import ctx.universe._
-		
-		reify {
-			if(ctx.eval(master).isNewVersion) 
-				RoundRobinPool(ctx.eval(partitioner).numPartitions, supervisorStrategy = 
-						ctx.eval(master).supervisorStrategy)
-			else 
-				RoundRobinRouter(ctx.eval(partitioner).numPartitions, supervisorStrategy = 
-						ctx.eval(master).supervisorStrategy)
-		}
-	}
-}
-* 
-*/
-
 
 // --------------------------------  EOF -------------------------------------

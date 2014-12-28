@@ -21,7 +21,7 @@ import org.scalaml.util.DisplayUtils
 
 		/**
 		 * <p>Package that encapsulate the high level trait used in
-		 * supervised and un-supervised learning algorithms.</p>
+		 * supervised and unsupervised learning algorithms.</p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
@@ -30,31 +30,41 @@ object Design {
 	import org.scalaml.util.FileUtils
 
 		/**
-		 * <p>Define the configuration trait used in the classifiers and optimizers.</p>
+		 * <p>Define the configuration trait used in the classifiers and optimizers. The configuration
+		 * parameters are retrieved  using the method <<. The configuration parameters are saved
+		 * into file by overriding the method >> as follows:<br> 
+		 *  val nb = BinNaiveBayes
+		 * </p>
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Config {
-			
+					
 		/**
-		 * Name of the file that persists the model
+		 * Name of the file that persists this configuration
 		 */
 		protected val persists: String
 		
 		/**
 		 * Read the configuration of this object from a file <b>persists</b>
-		 * @param content Configuration to write into file
-		 * @return Configuration parameters if successful, None otherwise
+		 * @return Configuration parameters if the file exists and the configuration has
+		 * been saved successfully, None otherwise
 		 */
-		def <<(content: String): Option[String] = FileUtils.read(persists, getClass.getName)
+		def << : Option[String] = FileUtils.read(persists, getClass.getName)
 	
 		/**
 		 * Write the configuration parameters associated to this object into a file
 		 * @param content to write into a file
 		 * @return true if the write operation is successful, false otherwise
 		 */
-		def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
+		protected def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
+		
+		/**
+		 * <p>Write the configuration parameters associated to this object.</p>
+		 * @return true if the write operation is successful, false otherwise
+		 */
+		protected def >> : Boolean = false
 	}
 	
 		/**
@@ -64,25 +74,33 @@ object Design {
 		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Model {
-			
-		/**
-		 * Name of the file that persists the model
-		 */
-		protected val persists: String
-					
-		/**
-		 * Read the model of this object from a file <b>persists</b>
-		 * @param content Model description to write into file
-		 * @return Model parameters if successful, None otherwise
-		 */
-		def <<(content: String): Option[String] = FileUtils.read(persists, getClass.getName)
-
 		/**
 		 * Write the configuration parameters associated to this object into a file
 		 * @param content to write into a file
 		 * @return true if the write operation is successful, false otherwise
 		 */
-		def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
+		protected def write(content: String): Boolean  = 
+				FileUtils.write(content, Model.MODEL_RELATIVE_PATH, getClass.getSimpleName)
+		
+			/**
+			 * This operation or method has to be overwritten for a model to be saved into a file
+			 * @return It returns true if the model has been properly saved, false otherwise
+			 */
+		def >> : Boolean = false
+	}
+
+		/**
+		 * Companion singleton to the Model trait. It is used to define the simple read 
+		 * method to load the model parameters from file.
+		 */
+	object Model {
+		private val MODEL_RELATIVE_PATH = "model/"
+		/**
+		 * Read this model parameters from a file defined as <b>model/className</b>
+		 * @param className  file containing the model parameters
+		 * @return Model parameters as string if successful, None otherwise
+		 */
+		def read(className: String): Option[String] = FileUtils.read(MODEL_RELATIVE_PATH, className)
 	}
 	
 	

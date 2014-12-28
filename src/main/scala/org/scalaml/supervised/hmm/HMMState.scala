@@ -31,16 +31,16 @@ import HMMConfig._
 		 * which ends with a given state S(i) (Viterbi algorithm)</li>
 		 * <li><b>gamma(t, i)</b>: Probability of being in a given state S(i) at observation t
 		 * [Formula M9]</li>
-		 * <li><b>Di-gamma(t, i, j)</b>: The joint probability to be within a state S(i), transitioning
+		 * <li><b>Di-gamma(t, i, j)</b>: The joint probability to be within a state S(i), transition
 		 * to state S(j) at observation t + 1 [Formula M8]</li>
-		 * <li><b>Psi(t, i)</b>: Auxilliary variable that computes the index of the state that
+		 * <li><b>Psi(t, i)</b>: Auxiliary variable that computes the index of the state that
 		 * maximum the probability of a single path of a sequence of t observations.[Formula M14]</li>
 		 * </ul>
 		 * @constructor Create a new execution state for the HMM for a predefined Lambda model
 		 * @see "A Revealing Introduction to Hidden Markov Models" http://www.cs.sjsu.edu/~stamp/RUA/HMM.pdf
 		 * for notation.
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
 		 * @param maxIters   Maximum number of iterations used in training (Baum-Welch)
 		 * 
 		 * @author Patrick Nicolas
@@ -81,14 +81,14 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 		}
 
 			/**
-			 * Access the sequence of states with the highest probabilithy
+			 * Access the sequence of states with the highest probability
 			 */
 		def apply(): Array[Int] = qStar
 	}
 
 		/**
 		 * Singleton that encapsulates the computation and update of the joint probability
-		 * matrix DiGamma(t, i ,j) of to be within a state S(i),  transitioning to state S(j) at 
+		 * matrix DiGamma(t, i ,j) of to be within a state S(i),  transition to state S(j) at 
 		 * observation of index t [Formula M8].
 		 * Di-Gamma is an array of T-1 states matrices (for T observations)
 		 * @see Chapter 7 Sequential data models / Hidden Markov Model / Training / Baum-Welch
@@ -134,10 +134,8 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 					})
 
 					// Normalize the Di gamma values for this observation t
-					foreach(lambda.getN, i => {
-						foreach(lambda.getN, j => 
-							diGamma(t) += (i, j,  diGamma(t)(i,j)/sum) )
-					})
+					foreach(lambda.getN, i => 
+						foreach(lambda.getN, j => diGamma(t) += (i, j,  diGamma(t)(i,j)/sum) ) )
 				})
 				obs.size
 			} 
@@ -217,7 +215,7 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 	 
 		/**
 		 * Method to update the Gamma and Di_Gamma values (Baum-Welch estimator). The 
-		 * actual computation is delegated to the inner singletong Gamma and DiGamma.
+		 * actual computation is delegated to the inner singleton Gamma and DiGamma.
 		 * @param alpha Matrix of the probabilities of being in the state given a sequence of
 		 * observations [0, t]
 		 * @param beta Matrix of the probabilities of being in the state given a sequence of

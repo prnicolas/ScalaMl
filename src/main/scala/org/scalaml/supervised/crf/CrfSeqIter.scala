@@ -15,11 +15,11 @@
  */
 package org.scalaml.supervised.crf
 
+	// IITB library classes
 import iitb.CRF.{CRF, CrfParams, DataSequence, DataIter}
-import java.util.Properties
 import iitb.Model.FeatureImpl
 import iitb.Segment.{DataCruncher, LabelMap}
-
+	// ScalaMl classes
 import org.scalaml.core.Types
 
 		/**
@@ -27,10 +27,11 @@ import org.scalaml.core.Types
 		 * and sequences in the training files '*.tagged'.
 		 * example in training file</p>
 		 * @constructor Creates a delimiters set for the raw and tagged input (training) for the CRF.
-			 * @throws IllegalArgumentException if any of the delimiter is undefined
+			 @throws IllegalArgumentException if any of the delimiter is undefined
 		 * @param obsDelim Delimiters for observation as a sequence of N-grams or words
 		 * @param labelsDelim   Delimiter between observations string and tag/label
 		 * @param trainingDelim Delimiter between training sequences.
+		 * @see iitb.CRF.DataSequence, iitb.CRF.DataIter, iitb.Segment.DataCruncher, iitb.Model.FeatureImpl
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 5, 2014
@@ -69,7 +70,7 @@ class CrfSeqIter(val nLabels: Int, val input: String, val delim: CrfSeqDelimiter
 		/**
 		 * Training data set extracted from file and to be used by the CRF model
 		 */
-	lazy val trainData =  DataCruncher.readTagged(nLabels, input, input, delim.obsDelim, 
+	lazy val trainData = DataCruncher.readTagged(nLabels, input, input, delim.obsDelim, 
 			delim.labelsDelim, delim.trainingDelim, new LabelMap)
    
 		/**

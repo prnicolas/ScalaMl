@@ -25,7 +25,7 @@ import DocumentsSource._, TermsScore._
 
 		/**
 		 * <p>Class to organize news articles as map of relative frequency of specific keywords 
-		 * extracted from those articles. The tuple (keywords, rel. frequency) are ranked by their 
+		 * extracted from those articles. The tuple (keywords, relative frequency) are ranked by their 
 		 * date. Dates are implemented as <b>Long</b> for simplicity's sake.</p>
 		 * @constructor Create a map of news articles, classified and ordered by their release dates. 
 		 * @throws ImplicitNotFound exception is ordering is not defined prior instantiating this class
@@ -41,9 +41,9 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 	
 		/**
 		 *  <p>Add a new map of weighted keywords for this specific dates.</p>
-		 *  @param date Date as Long, associated to the map of tuples (Keywords, rel. frequency) 
+		 *  @param date Date as Long, associated to the map of tuples (Keywords, relative frequency) 
 		 *  to be added
-		 *  @param weightedTerms map of tuples (Keywords, rel. frequency) extracted from a news 
+		 *  @param weightedTerms map of tuples (Keywords, relative frequency) extracted from a news 
 		 *  article released on a specific date
 		 *  @throws IllegalArgumentException if the data or the weighted terms map is undefined.
 		 */	
@@ -63,7 +63,7 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 				m 
 			}).toMap
 		}
-			// Add the merged relative frequency maps associated to a specific dat
+			// Add the merged relative frequency maps associated to a specific data point
 			// to the current list of articles.
 		articles.put(date, if( articles.contains(date)) merge(articles(date), weightedTerms) 
 				else weightedTerms )
@@ -101,7 +101,7 @@ protected class NewsArticles[T <% Long](implicit order: Ordering[T]) {
 				"NewsArticles.toString: labels for the news articles are undefined")
 
 				// Description of the maps to be added to the 
-				// overall textual descriptionj
+				// overall textual description.
 		val mapped = labels.foldLeft(new mutable.HashSet[String])((set, lbl) => {set.add(lbl); set})
 		s"id${mapped.mkString(",")}\n${toOrderedArray.mkString("\n")}"
 	}
@@ -122,7 +122,7 @@ object NewsArticles {
 		 * Default constructor for the class NewsArticles
 		 * @param date Date as Long, associated to the map of tuples (Keywords, relative frequency) 
 		 * to be added
-		 * @param weightedTerms map of tuples (Keywords, rel. frequency) extracted from a news 
+		 * @param weightedTerms map of tuples (Keywords, relative frequency) extracted from a news 
 		 * article released on a specific date 
 		 */
 	def apply[T <% Long](implicit order: Ordering[T]): NewsArticles[T] = new NewsArticles[T]

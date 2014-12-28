@@ -38,23 +38,18 @@ import HMMForm._
 		 * <p>Generic model for dynamic programming algorithms used in HMM.</p>
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 29, 2014
-		 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model
+		 * @note Scala for Machine Learning Chapter 7 / Sequential data models/Hidden Markov Model
 		 */
 abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Model {
 	import HMMModel._
 	
-	check(lambda, obs)
-			
-		/**
-		 * Name of the file that persists the model parameters for the HMM
-		 */
-	protected val persists = "model/hmm"
+	check(obs)
 }
 
 
@@ -62,7 +57,7 @@ abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Mode
 		 * Companion object for the HMM model parameters
 		 */
 object HMMModel {
-	private def check(lambda: HMMLambda, obs: Array[Int]): Unit = 
+	private def check(obs: Array[Int]): Unit = 
 		require(!obs.isEmpty, "HMMModel.check Cannot create a model with undefined observations")
 }
 
@@ -71,7 +66,7 @@ object HMMModel {
 	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
 	 * the evaluation form of the HMM.</p>
 	 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-	 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+	 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
 	 * @param obs Array of observations as integer (categorical data)
 	 * 
 	 * @author Patrick Nicolas
@@ -82,9 +77,14 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 	protected var alphaBeta: Matrix[Double] = _
 	protected val ct = Array.fill(lambda.getT)(0.0)
 
+		/**
+		 * Compute and apply the normalization factor ct for the computation of Alpha
+		 * [Formula M3] and Beta probabilities [Formula M7] for the observation at index t
+		 * @param t Index of the observation.
+		 */
 	protected def normalize(t: Int): Unit = {
 		import HMMConfig._
-		require(t >= 0 && t < lambda.getT, s"HMMModel.normalize Incorrect argument t= $t")
+		require(t >= 0 && t < lambda.getT, s"HMMModel.normalize Incorrect observation index t= $t")
 		
 		ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
 		alphaBeta /= (t, ct(t))
@@ -98,9 +98,12 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
 		 * The three canonical forms are defined as
-		 * <b>Evaluation<b> Computation of the probability (or likelihood) of the observed sequence Ot given a Lambda (pi, A, B) model<br>
-		 * <b>Training</b> Generation of the Lambda (pi, A, B)-model given a set of observations and a sequence of states.<br>
-		 * <b>Decoding</b> Extraction the most likely sequence of states {qt} given a set of observations Ot and a Lambda (pi, A, B)-model.</span></pre></p>
+		 * <b>Evaluation<b> Computation of the probability (or likelihood) of the observed sequence 
+		 * Ot given a Lambda (pi, A, B) model<br>
+		 * <b>Training</b> Generation of the Lambda (pi, A, B)-model given a set of observations and 
+		 * a sequence of states.<br>
+		 * <b>Decoding</b> Extraction the most likely sequence of states {qt} given a set of 
+		 * observations Ot and a Lambda (pi, A, B)-model.</span></pre></p>
 		 * 
 		 * @constructor Create a HMM algorithm with either a predefined Lambda model for evaluation 
 		 * and prediction or a Lambda model to generate through training
@@ -134,7 +137,7 @@ final protected class HMM[@specialized T <% Array[Int]](
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
 		 * HMM if form == EVALUATION or decodes a HMM if form == DECODING for a given
-		 * set of observations obs and a lambda model.</p>
+		 * set of observations, obs and a lambda model.</p>
 		 * @throws MatchError if the observations sequence is not defined
 		 * @return PartialFunction of a sequence of observations as input and a tuple 
 		 * (likelihood, sequence of observation indices)
@@ -246,13 +249,6 @@ object HMM {
 	  
 		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
 		baumWelchEM.maxLikelihood.map(_ => new HMM[T](baumWelchEM.lambda, form, maxIters))
-		/*
-		if( baumWelchEM.maxLikelihood != None)
-			Some(new HMM[T](baumWelchEM.lambda, form, maxIters))
-		else 
-			None
-			* 
-			*/
 	}
 	
 	val MAX_NUM_ITERS = 1024

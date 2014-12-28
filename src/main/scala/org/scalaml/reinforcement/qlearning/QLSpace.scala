@@ -30,7 +30,7 @@ import org.scalaml.util.DisplayUtils
 		 * @constructor Create a state (or search) space. 
 		 * @throws IllegalArgumentException if either states or the goal(s) is undefined
 		 * @param states States defined in the Q-learning search space.
-		 * @param goalIds List of ids of states that are goals.
+		 * @param goalIds List of identifiers of states that are goals.
 		 * @author Patrick Nicolas
 		 * @since January 17, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
@@ -61,7 +61,7 @@ protected class QLSpace[T](states: Array[QLState[T]], goalIds: Array[Int])  {
 	}
 	
 			/**
-			 * Access the number of states in the seach space
+			 * Access the number of states in the search space
 			 * @return number of states
 			 */
 	@inline
@@ -134,7 +134,7 @@ object QLSpace {
 			// Generate the states using the neighbors restrictive function
 		val states = features.zipWithIndex
 						.map(x => {	
-								// Generated the list of actions permitted by the neigbhors restriction
+								// Generated the list of actions permitted by the neighbors restriction
 								val actions = neighbors(x._2, numStates).map(j =>new QLAction[T](x._2, j))
 																.filter(x._2 != _.to)
 								// Create a new state to be added to the state space or search space.

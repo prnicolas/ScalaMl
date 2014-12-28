@@ -53,7 +53,7 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 		 * DisplayUtils array of tuple (x,y) in a 2D plot for a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 */
 	def display(xy: XYTSeries, width: Int, height: Int): Unit
 	
@@ -64,7 +64,7 @@ abstract class Plot(config: PlotInfo, theme: PlotTheme) {
 		 * vector value on Y-Axis with a given width and height
 		 * @param xy Array of pair (x,y)
 		 * @param width Width for the display (pixels)
-		 * @param height Heigth of the chart (pixels)
+		 * @param height Height of the chart (pixels)
 		 */
 	def display(y: DblVector, width: Int, height: Int): Unit
 	

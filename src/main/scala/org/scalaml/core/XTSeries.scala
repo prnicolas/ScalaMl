@@ -149,7 +149,7 @@ final class VTSeries[T](
 		(implicit f: T => Double) extends XTSeries[Array[T]](label, arr) {
    
 		/**
-		 * <p>Normalize this multi-dimensional tiem series
+		 * <p>Normalize this multi-dimensional time series
 		 * @return Normalized values as an array or vectors (DblMatrix)
 		 */
 	def normalize(implicit ordering: Ordering[T]): DblMatrix = {
@@ -246,7 +246,7 @@ object XTSeries {
 	def empty[T: ClassTag]: XTSeries[T] = new XTSeries[T]("", Array.empty[T])
    
 			/**
-			 * Convert a list of observations (vector) to a list of time series of these observatgions
+			 * Convert a list of observations (vector) to a list of time series of these observations
 			 * @param xt List of observations to convert
 			 */
 	def |>[T] (xs: List[Array[T]]): List[XTSeries[T]] = xs map{ XTSeries[T](_) }

@@ -43,10 +43,10 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 		/**
 		 * <p>Compute the Bias and Variance for a list of model estimate extracted from 
 		 * training data.</p>
-		 * @param fEst list of function estimators 
-		 * @return An option of array of tuple (Variance, Bias) for each function estimator, 
+		 * @param fEst list of function estimates 
+		 * @return An option of array of tuple (Variance, Bias) for each function estimate, 
 		 * if successful, None otherwise.
-		 * @throws IllegalArgumentException if the list of function estimator are undefined
+		 * @throws IllegalArgumentException if the list of function estimates are undefined
 		 * @throws RuntimeException if a computation error occurs
 		 */
 	def fit(fEst: List[Double => Double]): Option[XYTSeries] = {
@@ -55,11 +55,11 @@ class BiasVarianceEmulator[T <% Double](emul: Double => Double, nValues: Int) {
 
 		val rf = Range(0, fEst.size)
 		Try {
-				// Compute the mean value for the function estimator
+				// Compute the mean value for the function estimate
 			val meanFEst = Array.tabulate(nValues)(x => 
 				rf.foldLeft(0.0)((s, n) => s + fEst(n)(x))/fEst.size)  
 			
-				// Collects the time series value for each function estimator
+				// Collects the time series value for each function estimate
 			val r = Range(0, nValues)
 			fEst.map(estF => {
 				r.foldLeft(0.0, 0.0)((s, x) => { 

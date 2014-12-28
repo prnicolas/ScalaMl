@@ -90,7 +90,7 @@ trait DTransform[T] extends PipeOperator[XTSeries[T], XTSeries[Double]] {
 		 */
 object DTransform { 
 		/**
-		 * Definition of the sinc convolution function used in discrete Fourier transform based 
+		 * Definition of the <b>sinc</b> convolution function used in discrete Fourier transform based 
 		 * low pass filters
 		 * @param f frequency 
 		 * @param fC frequency cutoff of this low pass filter
@@ -141,7 +141,7 @@ protected class DFT[T <% Double] extends DTransform[T] {
 		 */
 	protected def fwrd(xt: XTSeries[T]): (RealTransformer, DblVector) = {
 			// Select which Fourier series should be selected (even as Sine)
-			// If the first value is 0.0 (or close) conise otherwise
+			// If the first value is 0.0 (or close) cosine series otherwise
 		val rdt =  if( Math.abs(xt.head) < DFT_EPS)
 			new FastSineTransformer(DstNormalization.STANDARD_DST_I)
 		else 

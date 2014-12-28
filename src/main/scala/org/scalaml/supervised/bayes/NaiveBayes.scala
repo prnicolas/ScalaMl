@@ -62,11 +62,10 @@ final class NaiveBayes[T <% Double](
 		// The model is instantiated during training for both
 		// classes if the training is successful. It is None otherwise
 	private[this] val model: Option[BinNaiveBayesModel[T]] = 
-			Try(BinNaiveBayesModel[T](train(1), train(0), density))
-		match {
-			case Success(nb) => Some(nb)
-			case Failure(e) => DisplayUtils.none("NaiveBayes.model", logger, e)
-		}
+			Try(BinNaiveBayesModel[T](train(1), train(0), density)) match {
+		case Success(nb) => Some(nb)
+		case Failure(e) => DisplayUtils.none("NaiveBayes.model", logger, e)
+	}
 		
 		/**
 		 * <p>Run-time classification of a time series using the Naive Bayes model. The method invoke
@@ -103,7 +102,7 @@ final class NaiveBayes[T <% Double](
 				.getOrElse("No Naive Bayes model")
 
 		/**
-		 * Default extual representation of the Naive Bayes classifier with labels for features.
+		 * Default textual representation of the Naive Bayes classifier with labels for features.
 		 * It returns "No Naive Bayes model" if no model exists
 		 * @return Stringized features with their label if model exists.
 		 */
@@ -128,7 +127,7 @@ final class NaiveBayes[T <% Double](
 			// tuple (mean, standard deviation) (2nd argument) is computed
 			// by invoking XTSeries.statistics then the Lidstone mean adjustment.
 			// The last argument, class likelihood p(C) is computed as the ratio of the
-			// number of observations associated to this class/label over total number of obs.
+			// number of observations associated to this class/label over total number of observations.
 		Likelihood(label, 
 				statistics(vSeries).map(stat => (stat.lidstoneMean(smoothing, dim), stat.stdDev) ), 
 				values.size.toDouble/xi.size) 
@@ -159,8 +158,24 @@ object NaiveBayes {
 		 * a Gaussian density function.
 		 * @param xt  Input labeled time series used for training
 		 */
-	def apply[T](xt: XTSeries[(Array[T], Int)])(implicit f: T => Double): NaiveBayes[T] = 
-		new NaiveBayes[T](1.0, xt, gauss)
+	def apply[T <% Double](xt: XTSeries[(Array[T], Int)]): NaiveBayes[T] = 
+			new NaiveBayes[T](1.0, xt, gauss)
+		
+	/*
+	def |>[T <% Double](): PartialFunction[XTSeries[Array[T]], Array[Int]] = {
+		case xt: XTSeries[Array[T]] if(!xt.isEmpty && {
+			model = 
+		  model != None }) => 
+			xt.toArray.map( model.get.classify( _))
+	}
+	* 
+	*/
+	def |>[T <% Double](model: Option[BinNaiveBayesModel[T]]): PartialFunction[XTSeries[Array[T]], Array[Int]] = {
+		case xt: XTSeries[Array[T]] if( !xt.isEmpty && model != None) => 
+			xt.toArray.map( model.get.classify( _))
+	}
+	
+	
 	
 	private def check[T <% Double](smoothing: Double, xt: XTSeries[(Array[T], Int)]): Unit = {
 		require(smoothing > 0.0 && smoothing <= 1.0, 

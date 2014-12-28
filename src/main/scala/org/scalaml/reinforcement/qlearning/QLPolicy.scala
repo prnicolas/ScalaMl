@@ -209,7 +209,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 */
 object QLPolicy {
 		/**
-		 * Default constructor for a Qlearning policy
+		 * Default constructor for a Q-learning policy
 		 * @param numStates Number of states for this policy.
 		 * @param input Input (rewards and probability) to initialize the policy.
 		 */

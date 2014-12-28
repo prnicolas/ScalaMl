@@ -186,8 +186,6 @@ final protected class HMMLambda(
 	private def alpha0(j : Int, obsIndex: Int): Double = pi(j)*B(j, obsIndex)
 }
 
-
-
 		/**
 		 * <p>Companion for the HMMLambda class to define the constructors of the class HMMLambda.</p>
 		 * @author Patrick Nicolas

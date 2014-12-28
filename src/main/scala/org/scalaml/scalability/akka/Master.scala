@@ -53,7 +53,7 @@ abstract class Master(
 			// Define the maximum number of results to be displayed
 	protected val MAX_NUM_DATAPOINTS = 128
 	
-			// Aggregator for results from each worker actors
+			// Aggregation for results from each worker actors
 	protected[this] val aggregator = new mutable.ListBuffer[DblVector]
 	
 			// The master is responsible for creating the array of worker actors
@@ -65,7 +65,7 @@ abstract class Master(
 	override def postStop: Unit = DisplayUtils.show("Master postStop", logger)
    
 		/**		 
-		 * <p>Message processing handler for the rmaster for a distributed transformation of 
+		 * <p>Message processing handler of the master actor for a distributed transformation of 
 		 * time series.<br>
 		 * <b>Start</b> to partition the original time series and launch data transformation on 
 		 * worker actors.<br> 
