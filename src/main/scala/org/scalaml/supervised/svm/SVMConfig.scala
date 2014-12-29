@@ -56,11 +56,6 @@ final protected class SVMConfig(
 		kernel: SVMKernel, 
 		exec: SVMExecution) extends Config {
 	import SVMConfig._
-
-		/**
-		 * Name of the file that persists the configuration of the SVM
-		 */
-	protected val persists = "config/svm"
 	  
 		/**
 		 * Configuration parameters set used in LIBSVM

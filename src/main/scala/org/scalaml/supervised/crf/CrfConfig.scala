@@ -43,11 +43,6 @@ import org.scalaml.core.Types.ScalaMl._
 protected class CrfConfig(w0: Double, maxIters: Int, lambda: Double, eps: Double) extends Config {
 	import CrfConfig._
 	check(w0, maxIters, lambda, eps)
-
-		/**
-		 * Name of the file that persists the configuration of the CRF algorithm
-		 */
-	protected val persists: String = "config/crf"
 		
 		/**
 		 * textual description of the CRF configuration

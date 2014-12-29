@@ -49,11 +49,6 @@ class QLConfig(
 	import QLConfig._
     
 	check(alpha, gamma, episodeLength, numEpisodes, minCoverage, neighbors)
-	
-		/**
-		 * Name of the file that persists the configuration of the Q-learning algorithm
-		 */
-	protected val persists = "config/qlearning"
 }
 
 

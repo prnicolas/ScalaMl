@@ -31,41 +31,50 @@ object Design {
 
 		/**
 		 * <p>Define the configuration trait used in the classifiers and optimizers. The configuration
-		 * parameters are retrieved  using the method <<. The configuration parameters are saved
-		 * into file by overriding the method >> as follows:<br> 
-		 *  val nb = BinNaiveBayes
+		 * parameters is loaded using <b>Config.read</b> method invoked by one of the constructor of 
+		 * the configuration. The configuration parameters are saved into file by overriding the 
+		 * method >>.
 		 * </p>
 		 * @author Patrick Nicolas
-		 * @since March 4, 2014
+		 * @since April 11, 2014
 		 * @note Scale for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Config {
-					
-		/**
-		 * Name of the file that persists this configuration
-		 */
-		protected val persists: String
-		
-		/**
-		 * Read the configuration of this object from a file <b>persists</b>
-		 * @return Configuration parameters if the file exists and the configuration has
-		 * been saved successfully, None otherwise
-		 */
-		def << : Option[String] = FileUtils.read(persists, getClass.getName)
-	
-		/**
+			/**
 		 * Write the configuration parameters associated to this object into a file
 		 * @param content to write into a file
 		 * @return true if the write operation is successful, false otherwise
 		 */
-		protected def >>(content: String) : Boolean = FileUtils.write(content, persists, getClass.getName)
+		protected def write(content: String): Boolean  = 
+				FileUtils.write(content, Config.RELATIVE_PATH, getClass.getSimpleName)
 		
 		/**
 		 * <p>Write the configuration parameters associated to this object.</p>
 		 * @return true if the write operation is successful, false otherwise
 		 */
-		protected def >> : Boolean = false
+		def >> : Boolean = false
 	}
+	
+		/**
+		 * Companion singleton to the Config trait. It is used to define the simple read 
+		 * method to load the config parameters from file and instantiate the configuration
+		 * @author Patrick Nicolas
+		 * @since April 11, 2014
+		 * @note Scale for Machine Learning Chapter 2 Hello World!
+		 */
+	object Config {
+		private val RELATIVE_PATH = "configs/"
+		/**
+		 * Read this algorithm configuration parameters from a file defined as 
+		 * <b>configs/className</b>
+		 * @param className  file containing the configuration parameters
+		 * @return Configuration parameters as a comma delimited field of string  if successful, 
+		 * None otherwise
+		 */
+		def read(className: String): Option[String] = FileUtils.read(RELATIVE_PATH, className)
+	}
+	
+	
 	
 		/**
 		 * <p>Define the model trait for classification and optimization algorithms.</p>
@@ -75,12 +84,12 @@ object Design {
 		 */
 	trait Model {
 		/**
-		 * Write the configuration parameters associated to this object into a file
+		 * Write the model parameters associated to this object into a file
 		 * @param content to write into a file
 		 * @return true if the write operation is successful, false otherwise
 		 */
 		protected def write(content: String): Boolean  = 
-				FileUtils.write(content, Model.MODEL_RELATIVE_PATH, getClass.getSimpleName)
+				FileUtils.write(content, Model.RELATIVE_PATH, getClass.getSimpleName)
 		
 			/**
 			 * This operation or method has to be overwritten for a model to be saved into a file
@@ -92,15 +101,18 @@ object Design {
 		/**
 		 * Companion singleton to the Model trait. It is used to define the simple read 
 		 * method to load the model parameters from file.
+		 * @author Patrick Nicolas
+		 * @since March 4, 2014
+		 * @note Scala for Machine Learning Chapter 2 Hello World!
 		 */
 	object Model {
-		private val MODEL_RELATIVE_PATH = "model/"
+		private val RELATIVE_PATH = "models/"
 		/**
-		 * Read this model parameters from a file defined as <b>model/className</b>
+		 * Read this model parameters from a file defined as <b>models/className</b>
 		 * @param className  file containing the model parameters
-		 * @return Model parameters as string if successful, None otherwise
+		 * @return Model parameters as a comma delimited string if successful, None otherwise
 		 */
-		def read(className: String): Option[String] = FileUtils.read(MODEL_RELATIVE_PATH, className)
+		def read(className: String): Option[String] = FileUtils.read(RELATIVE_PATH, className)
 	}
 	
 	
@@ -108,6 +120,7 @@ object Design {
 		 * <p>Parameterized pipe operator for processing data within a workflow with
 		 * a T as input type and U as output type. The trait defines the F# pipe
 		 * operator |> which is implemented as a partial function.</p>
+		 * 
 		 * @author Patrick Nicolas
 		 * @since December, 15, 2013
 		 * @note Scala for Machine Learning Chapter 2 Hello World! / Designing a workflow / The pipe operator

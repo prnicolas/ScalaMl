@@ -43,11 +43,6 @@ final class GAConfig(
 	import GAConfig._
 
 	check(xover, mu, maxCycles, softLimit)
-	
-		/**
-		 * Name of the file that persists the GA configuration
-		 */
-	protected val persists = "config/ga"
   	  
 		/**
 		 * <p>re-compute the mutation factor using an attenuator</p>

@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>Scala for Machine Learning - Algorithm Configuration Directory</title>
+</head>
+<body>
+<h2>Scala for Machine Learning - Configurations</h2>
+<hr>
+<p>
+This directory is to be used to store (resp. load) configuration of machine algorithm, inheriting from the trait, <b>Config</b> into (resp. from) a file.<br>
+For instance the configuration for the Multi-layer perceptron is defined by the class org.scalaml.supervised.nnet.<b>MLPModel</b> and can be stored into the <b>configs/MLPModel</b>.<br>
+The persistency design is presented only for the sake of illustrating the concept and is not currently implemented for any of the machine learning algorithms. 
+The reader is invited to create a robust, generic implementation for all the models presented in the book.
+</p>
+<h3>Declaration:</h3>
+<pre>
+trait Config {
+  protected def write(content: String): Boolean  = 
+	FileUtils.write(content, Config.RELATIVE_PATH, getClass.getSimpleName)
+   
+   // Save these configuration parameters into a file configs/getClass.getSimpleName	
+  def >> : Boolean = false
+}
+
+object Config {
+  private val RELATIVE_PATH = "configs/"
+  def read(className: String): Option[String] = FileUtils.read(RELATIVE_PATH, className)
+}</pre>
+</body>
+</html>

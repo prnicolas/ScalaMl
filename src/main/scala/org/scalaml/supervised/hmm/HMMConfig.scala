@@ -37,11 +37,6 @@ final class HMMConfig(val _T: Int, val _N: Int, val _M: Int) extends Config {
 	import HMMConfig._
 	
 	check(_T, _N, _M)
-			
-		/**
-		 * Name of the file that persists the configuration of the HMM algorithm
-		 */
-	protected val persists = "config/hmm"
 }
 
 

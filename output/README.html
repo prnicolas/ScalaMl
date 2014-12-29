@@ -1,0 +1,29 @@
+<head>
+<title>Scala for Machine Learning - Example Output Directory</title>
+</head>
+<body>
+<h2>Scala for Machine Learning - Output</h2>
+<hr>
+Directory for output from execution of test cases
+The class <b>DataSink</b> is responsible to write content into this directory using the <b>|></b> operator
+
+<h3>Declaration:</h3>
+<pre>
+class DataSink[T <% String](sinkName: String) {
+  def write(content: String): Boolean
+  override def |> : PartialFunction[List[XTSeries[T]], Int]
+}
+</pre>
+<h3>Usage</h3>
+<pre>
+  // Store a list of time series into a file output
+val output = s"output/chap3/kalman_${alpha.toString}.csv"
+DataSink[Double](output) |> input.foldLeft(List[XTSeries[Double]]())((sk, v) => v :: sk)
+
+  // Store a frequencies spectrum into a file OUTPUT2
+private val OUTPUT2 = "output/chap3/smoothed.csv"
+val frequencies = DFT[Double] |> XTSeries[Double](values)
+DataSink[Double](OUTPUT2) write frequencies
+</pre>
+</body>
+</html>

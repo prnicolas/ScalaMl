@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Scala for Machine Learning - Models Directory</title>
+</head>
+<body>
+<h2>Scala for Machine Learning - Models</h2>
+<hr>
+<p>
+Directory used to store and load some of the machine learning models described in the book.<br>
+A model is saved into (resp. restored from) file which name is the name of the class of the model, which inherits from the trait <b>Model</b>.
+For instance, a model generated through training of a conditional random field is defined as org.scalaml.supervised.crf.<b>CrfModel</b> and saved 
+into the file <b>models/CrfModel</b><br>
+The persistency design is implemented for only few models to illustrate the concept. The reader is invited to create a more robust, generic implementation for all the models presented in the book.
+</p>
+<h3>Declaration:</h3>
+<pre>
+trait Model {
+  protected def write(content: String): Boolean  = 
+	FileUtils.write(content, Model.MODEL_RELATIVE_PATH, getClass.getSimpleName)
+   
+   // Save this model into a file models/getClass.getSimpleName	
+  def >> : Boolean = false
+}
+
+object Model {
+  private val MODEL_RELATIVE_PATH = "models/"
+  def read(className: String): Option[String] = FileUtils.read(MODEL_RELATIVE_PATH, className)
+}</pre>
+
+<h3>Example:</h3>
+The model for the conditional random field is defined as
+<pre>
+final protected class <b>CrfModel</b>(val weights: DblVector) extends Model</pre>
+This constructor takes an vector of weights and is generated through training.
+The parameters of the model, weights, are stored in file using the Model.>> method as follows:
+<pre>
+override def <b>>></b> : Boolean = write(weights.mkString(","))
+</pre>
+An instance of the model, CrfModel, is created from file instead from training, using the second constructor that takes the name of the class of the model as argument.
+<pre>
+def this(className: String) = 
+  this({ Model.read(className).map( _.split(",").map(_.toDouble)).getOrElse(Array.empty) })
+</pre>
+</body>
+</html>

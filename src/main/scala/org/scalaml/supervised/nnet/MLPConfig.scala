@@ -49,11 +49,6 @@ final class MLPConfig(
 			val eps: Double, 
 			val activation: Double => Double) extends Config {
 	import MLPConfig._
-	
-		/**
-		 * Name of the file that persists the configuration of the MLP algorithm
-		 */
-	protected val persists = "config/mlp"
 
 	check(alpha, eta, numEpochs)
 

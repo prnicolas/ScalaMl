@@ -30,12 +30,7 @@ import org.scalaml.core.Design.Config
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / 
 		 * Extended learning classifier systems
 		 */
-final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) extends Config {	
-		/**
-		 * Name of the file that persists the configuration of the XCS algorithm
-		 */
-	protected val persists = "config/xcs"
-}
+final protected class XcsConfig(val gaConfig: GAConfig, val qlConfig: QLConfig) extends Config
 
 
 // --------------------------  EOF ------------------------------------------------
