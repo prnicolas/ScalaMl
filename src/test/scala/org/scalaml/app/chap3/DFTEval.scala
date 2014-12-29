@@ -86,7 +86,7 @@ object DFTEval extends FilteringEval {
 		val sink2 = DataSink[Double](OUTPUT3 + symbol + ".csv")
 		sink2 |>  XTSeries[Double](filtered) :: List[XTSeries[Double]]()
 
-		val NUM_FREQUENCIES = 256
+		val NUM_FREQUENCIES = 128
 		val result = FormatUtils.format(filtered.take(NUM_FREQUENCIES), "DTF filtered", 
 				FormatUtils.ShortFormat)
 		DisplayUtils.show(s"$name First $NUM_FREQUENCIES frequencies: $result", logger)

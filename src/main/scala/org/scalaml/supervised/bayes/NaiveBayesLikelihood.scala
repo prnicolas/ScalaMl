@@ -71,6 +71,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		 */
 	def toString(labels: Array[String]): String = {
 		import org.scalaml.core.Types.ScalaMl
+		
+		val muSigmaStr = muSigma.map(musig => (musig._1, if(musig._2 > 0.0) musig._2 else -1.0))
 			// Format the tuple muSigma= (mean, standard deviation) and the Prior 
 		FormatUtils.format(muSigma, "Label\tMeans", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
 		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)

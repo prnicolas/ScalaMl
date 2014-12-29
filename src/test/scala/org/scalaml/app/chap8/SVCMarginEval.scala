@@ -75,10 +75,12 @@ object SVCMarginEval extends Eval {
 		val config = SVMConfig(new CSVCFormulation(c), new RbfKernel(GAMMA))
 		val svc = SVM[Double](config, XTSeries[DblVector](features), lbl)
 		
+		DisplayUtils.show(s"\n$name Margin for SVC with\nC\tMargin", logger)
 		svc.margin.map(_margin => { 
 			val margin_str = FormatUtils.format(_margin, "", FormatUtils.ShortFormat)
-			DisplayUtils.show(s"\n$name Margin for SVC with C = ${c.floor} is ${margin_str}", logger)
-		}).getOrElse(DisplayUtils.error(s"$name SVRFormulation  training failed", logger))
+			DisplayUtils.show(s"\n${c.floor}\t${margin_str}", logger)
+		})
+		.getOrElse(DisplayUtils.error(s"$name CSVC Formulation training failed", logger))
 	}
 }
 

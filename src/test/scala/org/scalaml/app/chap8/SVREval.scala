@@ -42,6 +42,7 @@ object SVREval extends Eval {
 	private val GAMMA = 0.3
 	private val EPS = 1e-3
 	private val EPSILON = 2.5
+	private val NUM_DISPLAYED_VALUES = 128
 
 		/** <p>Execution of the scalatest for evaluating the support vector regression.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
@@ -53,9 +54,11 @@ object SVREval extends Eval {
 		
 		Try {
 			val price = DataSource(path, false, true, 1) |> close
-			DisplayUtils.show(FormatUtils.format(price.toArray, "", FormatUtils.ShortFormat), logger)
-			val priceIdx = price.zipWithIndex
-								.map( x => (x._2.toDouble, x._1.toDouble))
+			DisplayUtils.show(s"First $NUM_DISPLAYED_VALUES time series datapoints\n", logger )
+			DisplayUtils.show(FormatUtils.format(price.toArray.take(NUM_DISPLAYED_VALUES), "", 
+					FormatUtils.ShortFormat), logger)
+					
+			val priceIdx = price.zipWithIndex.map( x => (x._2.toDouble, x._1.toDouble))
 	      
 			val linRg = SingleLinearRegression(priceIdx)
 			

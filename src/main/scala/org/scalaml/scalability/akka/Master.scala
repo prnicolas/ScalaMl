@@ -11,12 +11,13 @@
  */
 package org.scalaml.scalability.akka
 
+	// Scala standard library
 import scala.util.Random
 import scala.collection._
-
+	// 3rd party libraries
 import org.apache.log4j.Logger
-import akka.actor.{Props, PoisonPill}
-
+import akka.actor.{Props, PoisonPill, Terminated}
+	// ScalaMl classes
 import org.scalaml.core.Types.ScalaMl.DblVector
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Design.PipeOperator
@@ -24,7 +25,6 @@ import org.scalaml.stats.Stats
 import org.scalaml.util.{DisplayUtils, FormatUtils}
 import org.scalaml.scalability.akka.message._
 import XTSeries._
-
 
 
 		/**
@@ -59,8 +59,11 @@ abstract class Master(
 			// The master is responsible for creating the array of worker actors
 			// It uses the Akka actor system.
 	private[this] val workers = List.tabulate(partitioner.numPartitions)(n => 
-		context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
-   
+			context.actorOf(Props(new Worker(n, fct)), name = "worker_" + String.valueOf(n)))
+		
+		// This master watches the termination of its worker..
+	workers.foreach( context.watch ( _ ) )
+ 		
 	override def preStart: Unit = DisplayUtils.show("Master.preStart", logger)
 	override def postStop: Unit = DisplayUtils.show("Master postStop", logger)
    
@@ -85,13 +88,25 @@ abstract class Master(
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
 				DisplayUtils.show(s"Aggregated\n${FormatUtils.format(aggr)}", logger)
 				
-				// Terminate itself after stopping the workers.
-				context.stop(self)
+					// We are done with the computation so we can stop the workers
+					// that are no longer needed.
+				workers.foreach( context.stop(_) )
 			}
 				// Append the result from the latest worker actor
 				// to the existing list of results
 			aggregator.append(msg.xt.toArray)
 		}
+			// Get notification from worker that they were terminated.
+		case Terminated(sender) => {
+				// If all the workers have been stopped, then the
+				// master stop itself and finally shutdown the system.
+			if( aggregator.size >= partitioner.numPartitions-1) {
+				DisplayUtils.show("Master stops and shutdown system", logger)
+				context.stop(self)
+				context.system.shutdown
+		  }
+		}
+		
 		case _ => DisplayUtils.error("Message not recognized and ignored", logger)
 	}
 		
@@ -108,6 +123,7 @@ abstract class Master(
 		 */
 	private def split: Unit = {
 		DisplayUtils.show("Master.receive => Start", logger)
+				
 		val indices = partitioner.split(xt)
 			// Broadcast the Activate message
 		workers.zip(indices).foreach(w => 

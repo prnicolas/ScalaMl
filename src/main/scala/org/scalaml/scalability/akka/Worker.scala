@@ -67,14 +67,9 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 			
 				// Returns the results for processing this partition
 			sender ! Completed(msgId, output)
-			context.stop(self)
 		}
-			// Stop itself after receiving a Terminate message from the master
-	//	case Terminate => {} //context.stop(self)
 		case _ => DisplayUtils.error(s"WorkerActor${id}.receive Message not recognized", logger)
 	}
-
-//	private def transform(xt: DblSeries): DblSeries =  fct |> xt
 	
 	private def results(output: XTSeries[Double]): String = {
 		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => 

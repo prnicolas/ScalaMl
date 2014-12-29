@@ -42,6 +42,10 @@ object DKalmanEval extends FilteringEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "DKalmanEval"
+	private val OUTPUT_FILE = "output/chap3/kalman"
+	private val RESOURCE_DIR = "resources/data/chap3/"
+	private val NUM_DISPLAYED_VALUES = 128
+	  
      
 		// Noise has to be declared implicitly
 	implicit val qrNoise = new QRNoise((0.7, 0.3), (m: Double) => m*Random.nextGaussian)   
@@ -83,21 +87,21 @@ object DKalmanEval extends FilteringEval {
 			val filtered = DKalman(A, H, P0) |> XTSeries[(Double, Double)](zt_1.zip(zt))
 	     
 			// Dump results in output file along the original time series
-			val output = s"output/chap3/kalman_${alpha.toString}.csv"
+			val output = s"${OUTPUT_FILE}_${alpha.toString}.csv"
 			val results: XTSeries[Double] = filtered.map(_._1)
 			DataSink[Double](output) |> results :: XTSeries[Double](zSeries) :: List[XTSeries[Double]]()
-			val displayedResults: DblVector = results.toArray.take(256)
+			val displayedResults: DblVector = results.toArray.take(NUM_DISPLAYED_VALUES)
 			
 			display(zSeries, results.toArray, alpha)
-			val result = FormatUtils.format(displayedResults, "2-step lag smoother", 
-					FormatUtils.LongFormat)
+			val result = FormatUtils.format(displayedResults, 
+					s"2-step lag smoother first $NUM_DISPLAYED_VALUES values", FormatUtils.LongFormat)
 			DisplayUtils.show(s"$name results $result", logger)
 
 		}
       
 		Try {
 			val symbol = args(0)
-			val source = DataSource("resources/data/chap3/" + symbol + ".csv", false)
+			val source = DataSource(s"${RESOURCE_DIR}${symbol}.csv", false)
 			val zt = (source |> YahooFinancials.adjClose).toArray  
 
 			twoStepLagSmoother(zt, 0.5)

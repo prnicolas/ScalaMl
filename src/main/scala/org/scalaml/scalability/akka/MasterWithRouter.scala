@@ -16,7 +16,7 @@ import scala.util.{Random, Properties}
 import scala.collection.mutable.ListBuffer
 
 import org.apache.log4j.Logger
-import akka.actor.{ActorRef, Props, Actor, actorRef2Scala, PoisonPill}
+import akka.actor.{ActorRef, Props, Actor, actorRef2Scala, PoisonPill, Terminated}
 import akka.util.Timeout
 import akka.routing._
 
@@ -85,6 +85,9 @@ abstract class MasterWithRouter(
 		*/
 		context.actorOf(Props(new Worker(0, fct)).withRouter(routerConfig) )
 	}
+		// The master is watching the router/supervisor to all workers
+		// to be terminated.
+	context.watch(router)
 		
 		
 		/**
@@ -106,12 +109,24 @@ abstract class MasterWithRouter(
 				val aggr = aggregate.take(MAX_NUM_DATAPOINTS).toArray
 				DisplayUtils.show(s"Aggregated\n${FormatUtils.format(aggr)}", logger)
 				
-				context.stop(self)  // Alternative: router ! Terminate
+				context.stop(router)  // Alternative: router ! Terminate
 			}
 				// Append the result from the latest worker actor
 				// to the existing list of results
 			aggregator.append(msg.xt.toArray)
 		}
+		
+					// Get notification from worker that they were terminated.
+		case Terminated(sender) => {
+				// If all the workers have been stopped, then the
+				// master stop itself and finally shutdown the system.
+			if( aggregator.size >= partitioner.numPartitions-1) {
+				DisplayUtils.show("Master stops and shutdown system", logger)
+				context.stop(self)
+				context.system.shutdown
+		  }
+		}
+		
 		case _ => DisplayUtils.error("MasterWithRouter.receive Message not recognized", logger)
 	} 
 	

@@ -98,7 +98,7 @@ object ActorsManagerEval extends Eval {
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
 	def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Master-Worker model for Akka actors", logger)
+		DisplayUtils.show(s"$header Master-Worker model for Akka actors with ${args(0)}", logger)
 		val actorSystem = ActorSystem("System") 
 		
 		if(args.size > 0) {
@@ -126,7 +126,7 @@ object ActorsManagerEval extends Eval {
 				// Aggregate the results by transposing the observations
 				// and sum the value for each dimension...
 				val results = aggrBuffer.transpose.map( _.sum).toSeq
-				DisplayUtils.show(s"DFT display${results.size}", logger)
+				DisplayUtils.show(s"DFT display ${results.size} frequencies", logger)
 				display(results.toArray)
 				results
 			}
@@ -137,14 +137,10 @@ object ActorsManagerEval extends Eval {
 				actorSystem.actorOf(Props(new DFTMasterWithRouter(xt, partitioner, 
 						aggrFrequencies)),	"MasterWithRouter")
 			else
-				actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), 
-						"Master")
+				actorSystem.actorOf(Props(new DFTMaster(xt, partitioner, aggrFrequencies)), "Master")
 		
 				// Launch the execution
 			controller ! Start(1)
-			
-				// Shutdown the Actor system if this test is run independently
-			actorSystem.shutdown
 			DisplayUtils.show(s"$name.run completed", logger)
 		}
 		else
@@ -152,4 +148,8 @@ object ActorsManagerEval extends Eval {
 	}
 }
 
+
+object MyApp extends App {
+  ActorsManagerEval.run(Array[String]("router"))
+}
 // ----------------------------------  EOF ------------------------

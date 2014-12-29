@@ -58,7 +58,7 @@ object ParBenchmarkEval extends Eval {
 			 	// Arbitrary reduce function
 			val reduceF = (x:Double, y:Double) => (x+y)*x
 			 
-			DisplayUtils.show(s"$name Compartive benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
+			DisplayUtils.show(s"$name Comparative benchmark for $NUM_TASKS tasks\nIter\tRatio", logger)
 			Try {
 				if(args(0) == "array")
 					evaluateParArray(mapF, filterF, reduceF)

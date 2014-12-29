@@ -57,9 +57,6 @@ protected object AllTests extends ScalaMlTest {
 		 * for description and purpose of the test
 		 */
   def run: Unit = {
-	evaluate(MatrixEval)
-	 			
-	 			/*
 			// Core
 		evaluate(StatsEval)
 		evaluate(XTSeriesEval)
@@ -148,8 +145,6 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(ActorsManagerEval, Array[String]("router"))
 		evaluate(TransformFuturesEval)
 		evaluate(SparkKMeansEval)
-		* 
-		*/
 	}
 		
 		/**

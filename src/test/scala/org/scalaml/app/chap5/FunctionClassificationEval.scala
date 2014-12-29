@@ -11,11 +11,13 @@
  */
 package org.scalaml.app.chap5
 
+	// Scala standard library
 import scala.util.{Try, Success, Failure, Random}
 import scala.collection._
 import org.apache.log4j.Logger
 
 import org.scalaml.core.XTSeries
+import org.scalaml.core.XTSeries.DblSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import org.scalaml.filtering.SimpleMovingAverage
@@ -100,21 +102,18 @@ object FunctionClassificationEval extends Eval {
 			val values = dataRange.map(_ /DATA_SIZE.toDouble).map(f(_))
 			val min = values.min
 			val delta = values.max - min
-			val freq: XTSeries[Double] = 
+			val freq: DblSeries = 
 					(DFT[Double] |> XTSeries[Double](values.map(x =>(x -min)/delta).toArray))
 
-			val freQ = freq.toArray
-							.zipWithIndex
-							.sortWith( _._1 > _._1 )
-							
+			val freQ = freq.toArray.zipWithIndex.sortWith( _._1 > _._1 )
 			freQ.take(SPECTRUM).map( _._2.toDouble/DATA_SIZE)
 		}
 
 		/**
 		 * Method to generate datasets for testing
 		 */
-		def testDataset(f: Double =>Double): DblMatrix = createDatasets(f, Range(0, DATA_SIZE))
-																.map(Array[Double](_))
+		def testDataset(f: Double =>Double): DblMatrix = 
+				createDatasets(f, Range(0, DATA_SIZE)).map(Array[Double](_))
 
 		/**
 		 * Our test functions.
