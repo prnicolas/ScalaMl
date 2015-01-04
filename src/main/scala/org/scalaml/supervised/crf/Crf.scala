@@ -24,44 +24,12 @@ import org.apache.log4j.Logger
 	// ScalaMl classes
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Design.{PipeOperator, Model}
+import org.scalaml.core.Design.PipeOperator
 import org.scalaml.supervised.Supervised
 import org.scalaml.util.DisplayUtils
 import org.scalaml.workflow.data.DataSource
 import CrfConfig._
 
-
-		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.</p>
-		 * @constructor Instantiate a model for CRF after training is completed.
-		 * @throws IllegalArgumentException if weights is not properly defined
-		 * @param weights	Weights (or lambda parameters) for this CRF model.
-		 * @see org.scalaml.core.Design.Model
-		 * 
-		 * @author Patrick Nicolas
-		 * @since April 1, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
-		 */
-final protected class CrfModel(val weights: DblVector) extends Model {
-	require(!weights.isEmpty, "CrfModel Cannot create a model with undefined weights")
-
-		/**
-		 * Constructor that load the model from file "model/CrfModel"
-		 * @param className name of the class of the model, which is also the name of the file
-		 * @return instance of the CrfModel with appropriate weights if the model has been 
-		 * saved into file
-		 * @note The client code that instantiate the model is responsible for catching the 
-		 * exception if the file does not exist.
-		 */
-	def this(className: String) = 
-			this({ Model.read(className).map( _.split(",").map(_.toDouble)).getOrElse(Array.empty) })
-	
-			/**
-			 * Write the content of this model (weights) into a file
-			 * @return true if the model/weights were saved into file, false otherwise.
-			 */
-	override def >> : Boolean = write(weights.mkString(","))
-}
 
 		/**
 		 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular 

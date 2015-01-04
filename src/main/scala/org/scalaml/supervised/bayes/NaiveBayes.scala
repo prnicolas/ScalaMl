@@ -52,7 +52,8 @@ import NaiveBayesModel._, XTSeries._, Stats._
 final class NaiveBayes[T <% Double](
 		smoothing: Double, 
 		xt: XTSeries[(Array[T], Int)], 
-		density: Density)	extends PipeOperator[XTSeries[Array[T]], Array[Int]] with Supervised[T] {
+		density: Density)	extends PipeOperator[XTSeries[Array[T]], Array[Int]] 
+											with Supervised[T, XTSeries[Array[T]], Array[Int]] {
 
 	import NaiveBayes._
 	check(smoothing, xt)

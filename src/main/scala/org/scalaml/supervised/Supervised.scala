@@ -14,6 +14,7 @@ package org.scalaml.supervised
 
 import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.Design.PipeOperator
 
 	/**
 	 * <p>Trait that defined the interface to supervised learning algorithm.
@@ -23,8 +24,8 @@ import org.scalaml.core.Types.ScalaMl.DblVector
 	 * @since March 4, 2014
 	 * @note Scala for Machine Learning
 	 */
-trait Supervised[T] {
-	
+trait Supervised[T, U, V] {
+	self: PipeOperator[U, V] =>
 		/**
 		 * validation method for supervised learning algorithm
 		 * @param xt parameterized multidimensional time series of tuple (observation, class label)
