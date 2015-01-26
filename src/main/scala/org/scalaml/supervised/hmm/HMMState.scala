@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
- * Version 0.98
+ * Version 0.98.1
  */
 package org.scalaml.supervised.hmm
 
@@ -71,7 +71,7 @@ final protected class HMMState(val lambda: HMMLambda, val maxIters: Int) {
 		private val qStar = Array.fill(lambda.getT)(0)
 
 			/**
-			 * Update Q* the optimum sequence of state
+			 * Update Q* the optimum sequence of state using backtracking..
 			 * @param t the index in the sequence of observation 
 			 * @param index index of the state
 			 */

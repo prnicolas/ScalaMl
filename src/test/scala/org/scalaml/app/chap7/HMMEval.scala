@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98
+ * Version 0.98.1
  */
 package org.scalaml.app.chap7
 
@@ -48,7 +48,7 @@ object HMMEval extends Eval  {
 	private val MAX_ITERS = 250
 
 	implicit def discretize(x: DblVector): Array[Int] = x.map(_.toInt) 
-   		
+
 		/** <p>Execution of the scalatest for <b>HMM</b> class.
 		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
 		 * @param args array of arguments used in the test
@@ -57,13 +57,16 @@ object HMMEval extends Eval  {
 	def run(args: Array[String]): Int = args(0) match {
 		case "evaluation" => runCF1
 		case "training" => runCF2
+		case "decoding" => runCF3
 		case _ => DisplayUtils.error(s"$name.run: Incorrect argument $args", logger)
 	}
-   
 
+		// Method that illustrates the 'Training' canonical form of the Hidden
+		// Markov model: extract or learn a lambda model given a set of observations.
 	private def runCF2: Int =  {
 		DisplayUtils.show(s"$header Hidden Markov Model - Training", logger)
-  	  
+		
+		// Step 1: Speciies the sequence of observations
 		val observations = Array[Double](
 			0.0, 0.72, 0.78, 0.56, 0.61, 0.56, 0.45, 0.42, 0.46, 0.38, 
 			0.35, 0.31, 0.32, 0.34, 0.29, 0.23, 0.21, 0.24, 0.18, 0.15, 
@@ -73,10 +76,10 @@ object HMMEval extends Eval  {
 			0.62, 0.65, 0.68, 0.65, 0.69, 0.72, 0.76, 0.82, 0.87, 0.83, 
 			0.90, 0.88, 0.93, 0.92, 0.97, 0.99, 0.95, 0.91
 		)
-  	   
+
 		val min = observations.min
 		val delta = observations.max - min
-
+		
 		val obsSeq =  Array[Int](
 			4, 1, 3, 1, 0, 0, 1, 2, 0, 1, 5, 5, 
 			3, 4, 1, 1, 5, 3, 1, 3, 2, 1, 4, 5, 2, 
@@ -84,17 +87,21 @@ object HMMEval extends Eval  {
 		)
 		val config = new HMMConfig(obsSeq.size, NUM_STATES, NUM_SYMBOLS)
 		
+		// Step 2 Extract the HMM model hmm.model
 		val hmm = HMM[Array[Int]](config, obsSeq, EVALUATION, MAX_ITERS, EPS) 
 		hmm match {
 			case Some( hmm) => DisplayUtils.show(s"$name (Training):\n${hmm.getModel.toString}", logger)
 			case None => DisplayUtils.error("$name (Training) lambda model could not be created", logger)
 		}
 	}
-   
-   
+
+		// Method that evaluates the 'Evaluation' canonical form of the Hidden
+		// Markov model: compute the likelihood of an observed sequence given a
+		// defined Lambda model
 	private def runCF1: Int = {
 		DisplayUtils.show(s"$header Hidden Markov Model - Evaluation", logger)
-  	  		
+
+		// Step 1. Defined the Lambda model
 		// State-transition probabilities matrix for HMM
 		val A0 = Array[Array[Double]](
 			Array[Double](0.21, 0.23, 0.45, 0.56, 0.31, 0.30),
@@ -118,13 +125,14 @@ object HMMEval extends Eval  {
 		val PI0 = Array[Double](0.26, 0.34, 0.11, 0.56, 0.39, 0.47)
 		val NUM_OBS: Int = 12
 		val lambda = HMMLambda(Matrix[Double](A0), Matrix[Double](B0), PI0, NUM_OBS)
-
-		val hmm = HMM[Array[Int]](lambda, EVALUATION)
-	
+		
+		// Step 2: Defined the observed sequence	
 		val observedSeq = Array[Double](
 			0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0
 		)
 		
+		// Step 3: Compute the probability of observing observedQ
+		val hmm = HMM[Array[Int]](lambda, EVALUATION)
 		Try( hmm |> observedSeq ) match {
 			case Success(predictor) => {
 				val indices = predictor._2.mkString(" ")
@@ -133,7 +141,49 @@ object HMMEval extends Eval  {
 			case Failure(e) => failureHandler(e)
 		}
 	}
-}
+	
+	
+		// Method that illustrates the 'Decoding' canonical form of the Hidden
+		// Markov model: identify the most likely sequence of states given a 
+		// lambda model and a set of observations.
+	private def runCF3: Int = {
+		DisplayUtils.show(s"$header Hidden Markov Model - Decoding", logger)
+		
+		// Step 1: Define the lambda model
+		// State-transition probabilities matrix for HMM
+		val A0 = Array[Array[Double]](
+			Array[Double](0.2, 0.7, 0.1),
+			Array[Double](0.0, 0.1, 0.5),
+			Array[Double](0.8, 0.2, 0.4)
+		)
+  	  		
+		// Emission/observations probabilities matrix
+		val B0 =  Array[Array[Double]](
+			Array[Double](0.1, 0.9),
+			Array[Double](0.3, 0.7),
+			Array[Double](0.4, 0.6)
+		)
 
+		val PI0 = Array[Double](0.3, 0.2, 0.5)
+		val NUM_OBS: Int = 15
+		val lambda = HMMLambda(Matrix[Double](A0), Matrix[Double](B0), PI0, NUM_OBS)
+		
+		// Step 2: Specifies the sequence of observations 
+		val observedSeq = Array[Double](
+			1.0, 2.0, 8.9, 3.3, 1.1, 0.4, 0.5, 0.3, 0.8, 0.7, 1.8, 3.9, 6.0, 9.2, 14.8
+		)
+		
+		// Step 3: Decode the sequence of states using Viterbi algorithm
+		val hmm = HMM[Array[Int]](lambda, DECODING)
+		Try( hmm |> observedSeq ) match {
+			case Success(predictor) => { 
+				val results = predictor._2.mkString(", ")
+				DisplayUtils.show(s"$name Indices state sequence\n$results", logger)
+				1
+			}
+			case Failure(e) => failureHandler(e)
+		}
+	}
+}
 
 // --------------------------------  EOF -------------------------------

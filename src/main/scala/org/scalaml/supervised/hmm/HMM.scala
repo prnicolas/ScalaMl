@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98
+ * Version 0.98.1
  */
 package org.scalaml.supervised.hmm
 
@@ -132,7 +132,7 @@ final protected class HMM[@specialized T <% Array[Int]](
 	check(maxIters)
 	
 	private val logger = Logger.getLogger("HMM")
-	private[this] val state = HMMState(lambda, maxIters)
+//	private[this] val state = HMMState(lambda, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -164,7 +164,15 @@ final protected class HMM[@specialized T <% Array[Int]](
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of 
 		 * observations indexes)
 		 */
-	def decode(obs: T): HMMPredictor = (ViterbiPath(lambda, obs).maxDelta, state.QStar())
+	def decode(obs: T): HMMPredictor = ViterbiPath(lambda, obs).maxDelta
+	/*
+	{ 
+		val likelihood = ViterbiPath(lambda, obs).maxDelta
+		val stateIndices = state.QStar()
+		(likelihood, stateIndices)
+	}
+	* 
+	*/
 	
 		/**
 		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>

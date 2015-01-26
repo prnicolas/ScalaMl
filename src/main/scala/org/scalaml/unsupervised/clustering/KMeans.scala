@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98
+ * Version 0.98.1
  */
 package org.scalaml.unsupervised.clustering
 
@@ -97,13 +97,6 @@ final class KMeans[T <% Double](
 					// Re-assign the observations to the clusters
 					assignToClusters(xt, newClusters, membership) > 0
 				}).map(_ => newClusters).getOrElse(List.empty)
-				/*
-				match {    // Failed if the maximum number of iterations is reached.
-					case Some(index) => newClusters
-					case None => List.empty
-				} 
-				* 
-				*/
 			}
 		}
 	}

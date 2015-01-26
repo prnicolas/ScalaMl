@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98
+ * Version 0.98.1
  */
 package org.scalaml.app
 
@@ -69,6 +69,7 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 2
 		evaluate(BiasVarianceEval)
 		evaluate(WorkflowEval)
+		
 			//Chapter 3
 		evaluate(MovingAveragesEval, Array[String]("BAC", "60")) 
 		evaluate(DFTEval)
@@ -110,6 +111,7 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 7
 		evaluate(HMMEval, Array[String]("evaluation"))
 		evaluate(HMMEval, Array[String]("training"))
+		evaluate(HMMEval, Array[String]("decoding"))
 		evaluate(CrfEval)
 		
 			// Chapter 8

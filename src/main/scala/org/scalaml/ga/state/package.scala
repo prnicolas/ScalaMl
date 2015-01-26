@@ -10,15 +10,12 @@
  * 
  * Version 0.98.1
  */
-package org.scalaml.scalability
+package org.scalaml.ga
 
 		/**
-		 * This package object defines the classes used in K-means clustering using the Apache
-		 * Spark framework and MLlib machine learning library:<br>
-		 * - Conversion of data to Spark RDD <b>RDDSource</b><br>
-		 * - Typical configuration of a Spark MLlib application <b>SparkKMeansConfig</b><br>
-		 * - Wrapper for the K-Means clustering using Apache Spark <b>SparkKMeans</b>
-		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
+		 * This package object defines the state of the execution of genetic algorithm as a 
+		 * sequence of reproduction cycle on an evolving population or chromosomes.
+		 * @note Scala for Machine Learning - Chapter 10 Genetic algorithm
 		 */
-package object spark { }
+package object state { }
 // ---------------------------------------  EOF -----------------------------------------

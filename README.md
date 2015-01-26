@@ -1,10 +1,11 @@
-<b>Scala for Machine Learning</b> Version <b>0.98</b><br>
+<b>Scala for Machine Learning</b> Version <b>0.98.1</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"<br>
 <a href="#overview">Overview</a><br>
-<a href="#requirements">Minimum requirements</a><br>
 <a href="#documentation">Documentation</a><br>
+<a href="#requirements">Minimum requirements</a><br>
+<a href="#updates">Updates</a><br>
 <a href="#project">Project</a><br>
 <a href="#installation">installation</a><br>
 <a href="#build">build</a><br>
@@ -39,6 +40,21 @@ The best approach to learn about any particular learning algorithm is to
 <br>
 <b>Operating system</b>: None<br>
 <b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.1 and SBT 0.13+ (see installation section for deployment.<br>
+
+<h2 id="updates">Updates</h2>
+Version <b>0.98.1</b><br>
+- Standardized string representation of collection using mkString<br>
+- Added plots to the performance benchmark of parallel collection(Chap. 12)<br>
+- Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail 
+recursion<br>
+- Expanded scaladocs with reference to the chapters of "Scala for Machine Learning" 
+Version <b>0.98</b><br>
+- Added comments to test cases<br>
+- Added <i>Scala source guide</i>
+- Wrapped Scalatest into future<br>
+- Expand the number of test/evaluations from 39 to 60<br>
+Version <b>0.97</b><br>
+- Initial implementation<br>
 
 <h2 id="project">Project Components</h2>
 Directory structure of the source code library for <i>Scala for Machine Learning</i>:<br>
