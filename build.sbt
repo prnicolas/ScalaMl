@@ -2,7 +2,7 @@ organization := "Patrick Nicolas"
 
 name := "ScalaMl"
 
-version := "0.98"
+version := "0.98.1"
 
 scalaVersion := "2.10.4"
 
@@ -19,6 +19,7 @@ libraryDependencies ++= Seq(
    "org.scalatest" %% "scalatest" % "2.1.6"
 )
 
+// Resolver for Apache Spark framework
 resolvers += "Akka Repository" at "http://repo.akka.io/releases/"
 
 // Options for the Scala compiler should be customize
