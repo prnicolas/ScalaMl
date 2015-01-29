@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -27,7 +27,8 @@ import HMMConfig._
 		 * @constructor Create a Beta (or backward) pass for the 1st canonical form of HMM
 		 * @throws IllegalArgumentException if lambda model or the observations are undefined
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
+		 * matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Beta pass
 		 * @see org.scalaml.supervised.hmm.Pass
@@ -100,7 +101,9 @@ protected class Beta(lambda: HMMLambda, obs: Array[Int]) extends Pass(lambda, ob
 object Beta {
 		/**
 		 * Default constructor for the Beta class of forward/backward passes in HMM
-		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
+		 * probabilities, the state-transition probabilities matrix and the emission proabilities 
+		 * matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMLambda,  obs: Array[Int]): Beta = new Beta(lambda, obs)

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -35,7 +35,7 @@ import HMMConfig._
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model 
 		 *  Decoding
 		 */
-final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda, obs) {
+final protected class ViterbiPath(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda,obs){
 		/**
 		 * State of the execution of the decoding form of HMM
 		 */
@@ -119,7 +119,8 @@ object ViterbiPath {
 		/**
 		 * Default constructor for the Viterbi algorithm
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
+		 * matrix.
 		 * @param obs Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMLambda, _labels: Array[Int]): ViterbiPath = 

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  * 
@@ -35,7 +35,8 @@ import CrfConfig._
 		 * <p>Generic class for the linear chained CRF for tagging words, N-Grams or regular 
 		 * expression. The class define a Feature generator class that inherits the default 
 		 * implementation FeatureGenImpl (feature generator defined in IITB CRF java library).<br>
-		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged extensions.
+		 * The class assumes the training sequences are loaded from file with *.raw and *.tagged 
+		 * extensions.<br>
 		 * The training set of sequences is defined by the raw observations and its associated 
 		 * tagged files, taggedObs.raw and taggedObs.tagged files.</p>
 		 * @constructor Create a Linear chain conditional random fields. 

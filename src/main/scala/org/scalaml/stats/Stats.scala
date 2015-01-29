@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -17,8 +17,8 @@ import org.scalaml.core.Types.ScalaMl._
 import Stats._
 
 		/**
-		 *  <p>Parameterized class (view bound T <% Double) that compute and update the statistics (mean,
-		 *  standard deviation) for any set of observations for which the
+		 *  <p>Parameterized class (view bound T <% Double) that compute and update the statistics 
+		 *  (mean, standard deviation) for any set of observations for which the
 		 *  type can be converted to a Double.<br>
 		 *  This class is immutable as no elements can be added to the original set of values.</p>
 		 *  @constructor Create an immutable statistics instance for a vector of type T 
@@ -83,7 +83,8 @@ class Stats[T <% Double](values: DVector[T]) {
 		 * @param smoothing smoothing values ]0, 1] for Lidstone smoothing function
 		 * @param dim Dimension of the model
 		 * @return smoothed mean
-		 * @throws IllegalArgumentException if either the smoothing or dimension of the model is out of range
+		 * @throws IllegalArgumentException if either the smoothing or dimension of the model is 
+		 * out of range
 		 */
 	final def lidstoneMean(smoothing: Double, dim: Int): Double = {
 		require( smoothing >0.0 && smoothing <= 1.0, 

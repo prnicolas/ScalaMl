@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -60,7 +60,8 @@ final class Signal(
 	check(xt, weights)
    
 		/**
-		 * Computation of the score of this trading signal by comparing a value with the threshold, value
+		 * <p>Computation of the score of this trading signal by comparing a value with the threshold, 
+		 * value.</p>
 		 * @param x value to compare with the target value
 		 * @param factor amplification factor for the generation of the score
 		 * @return computed score for this trading signal

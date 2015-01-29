@@ -4,8 +4,8 @@
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -31,7 +31,8 @@ import XTSeries._
 		 * <p>Generic implementation of the distributed transformation of time series using a 
 		 * master-worker (or master-slave) design.</p>
 		 *  @constructor Create a distributed transformation for time series.
-		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or 
+		 *  out-of-range.
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 

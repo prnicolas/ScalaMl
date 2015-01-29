@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -68,7 +68,8 @@ object QLState {
   
 	private def check[T](id: Int, actions: List[QLAction[T]]): Unit = {
 		require( id >= 0, s"QLState.check id $id is out of range")
-		require( !actions.isEmpty, "QLState.check Cannot create a QLState with undefined list of actions")
+		require( !actions.isEmpty, 
+				"QLState.check Cannot create a QLState with undefined list of actions")
 	}
 }
 

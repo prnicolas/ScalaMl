@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 package org.scalaml.plots
 
@@ -52,7 +52,8 @@ trait PlotTheme {
 
 		/**
 		 * <p>Class that define the visual display of a plotting graph using jFreeChart library
-		 * with a black background. The color of the data points, graphs, labels.. are set accordingly.</p>
+		 * with a black background. The color of the data points, graphs, labels.. are set accordingly.
+		 * </p>
 		 * @see org.jfree
 		 * @author Patrick Nicolas
 		 * @since  November 20, 2013

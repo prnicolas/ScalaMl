@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
  * Version 0.98.1
  */
@@ -37,10 +37,11 @@ import HMMConfig._
 		 * maximum the probability of a single path of a sequence of t observations.[Formula M14]</li>
 		 * </ul>
 		 * @constructor Create a new execution state for the HMM for a predefined Lambda model
-		 * @see "A Revealing Introduction to Hidden Markov Models" http://www.cs.sjsu.edu/~stamp/RUA/HMM.pdf
-		 * for notation.
+		 * @see "A Revealing Introduction to Hidden Markov Models" 
+		 * http://www.cs.sjsu.edu/~stamp/RUA/HMM.pdf for notation.
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
+		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
+		 * matrix.
 		 * @param maxIters   Maximum number of iterations used in training (Baum-Welch)
 		 * 
 		 * @author Patrick Nicolas
@@ -251,7 +252,7 @@ object HMMState {
 		/**
 		 * Default constructor for the HMMState class
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * probabilities, the state-transition probabilities matrix, the emission proabilities matrix.
 		 * @param >maxIters   Maximum number of iterations used in training (Baum-Welch)
 		 */
 	def apply(lambda: HMMLambda, maxIters: Int): HMMState = new HMMState(lambda, maxIters)
@@ -260,7 +261,7 @@ object HMMState {
 		 * Constructor for the HMMState class with a predefined maximum number of iterations 
 		 * used in Baum-Welch algorithm
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission proabilities matrix.
+		 * probabilities, the state-transition probabilities matrix, the emission proabilities matrix.
 		 */
 	def apply(lambda: HMMLambda): HMMState = new HMMState(lambda, DEFAULT_MAXITERS)
 }

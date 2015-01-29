@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.96d
  */
@@ -31,7 +31,8 @@ import LogisticRegressionOptimizer._
 		 * @param eps Maximum error allowed during training for the minimization of the loss function.
 		 * @param lsOptimizer Least squares optimizer used during training.
 		 * @throws IllegalArgumentException if the maximun number of iterations, maximum number of 
-		 * evaluations or the convergence value are out of bounds, or if the least squares optimizer is undefined.
+		 * evaluations or the convergence value are out of bounds, or if the least squares optimizer 
+		 * is undefined.
 		 * @see org.apache.commons.math3.fitting.leastsquares
 		 * @see org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer
 		 * 
@@ -50,7 +51,8 @@ final protected class LogisticRegressionOptimizer(
 	check(maxIters, maxEvals, eps)
 
   		/**
-  		 * <p>Performs the minimization of the loss function by optimizing the least squares problems</p>
+  		 * <p>Performs the minimization of the loss function by optimizing the least squares problems
+  		 * </p>
   		 * @param lsProblem least squares problem as defined in the Apache Commons Math library
   		 * @return Optimum value for the weights of the logistic regression
   		 * @see org.apache.commons.math3.fitting.leastsquares

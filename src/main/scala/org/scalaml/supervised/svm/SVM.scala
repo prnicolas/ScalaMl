@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -67,7 +67,8 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 	  
 		/**
 		 * Access the accuracy of the SVM algorithm. 
-		 * @return accuracy value in the range [0, 1] if the model was successfully trained, None otherwise
+		 * @return accuracy value in the range [0, 1] if the model was successfully trained, 
+		 * None otherwise
 		 */
 	final def accuracy: Option[Double] = if( model != None) Some(model.get.accuracy) else None
 
@@ -102,7 +103,8 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
 		 * <p>Data transformation that implements the prediction value using SVM</p>
 		 * 	@throws MatchError if the model is undefined or has an incorrect size or the input feature 
 		 *  is undefined
-		 *  @return PartialFunction of feature of type Array[T] as input and the predicted value as output
+		 *  @return PartialFunction of feature of type Array[T] as input and the predicted value 
+		 *  as output
 		 */
 	override def |> : PartialFunction[Feature, Double] =  {
 		case x: Feature if(!x.isEmpty && x.size == dimension(xt) && model != None) =>

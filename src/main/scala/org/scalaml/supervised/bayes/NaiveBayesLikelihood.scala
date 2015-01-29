@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -20,14 +20,16 @@ import NaiveBayesModel._
 		/**
 		 * <p>Class that represents a likelihood for each feature for Naive Bayes classifier.<br>
 		 * The prior consists of a label (index), the mean of the prior of each dimension of the model,
-		 * the standard deviation of the prior of each dimension of the model and the class likeliHood.<br>
+		 * the standard deviation of the prior of each dimension of the model and the class likeliHood.
+		 * <br>
 		 * The Naive Bayes assume that the dimension of the model are independent, making the log of 
 		 * the prior additive.</p> 
 		 * @constructor Create a likelihood for a specific class. 
 		 * @throws IllegalArgumentException if the array of mean and standard deviation of the 
 		 * likelihood is undefined or if the class likelihood (prior) is out of range ]0,1]
 		 * @param label  Name or label of the class or prior for which the likelihood is computed.
-		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for the model
+		 * @param muSigma Array of tuples (mean, standard deviation) of the prior observations for 
+		 * the model
 		 * @param prior  Probability of occurrence for the class specified by the label.
 		 * 
 		 * @author Patrick Nicolas
@@ -74,7 +76,8 @@ protected class Likelihood[T <% Double](val label: Int, val muSigma: XYTSeries, 
 		
 		val muSigmaStr = muSigma.map(musig => (musig._1, if(musig._2 > 0.0) musig._2 else -1.0))
 			// Format the tuple muSigma= (mean, standard deviation) and the Prior 
-		FormatUtils.format(muSigma, "Label\tMeans", "Standard Deviation", FormatUtils.MediumFormat, labels) + 
+		FormatUtils.format(muSigma, "Label\tMeans", "Standard Deviation", FormatUtils.MediumFormat, 
+				labels) + 
 		FormatUtils.format(prior, "Class likelihood", FormatUtils.MediumFormat)
 	}
 	

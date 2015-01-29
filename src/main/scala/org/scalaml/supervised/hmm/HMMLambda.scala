@@ -4,8 +4,8 @@
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -53,7 +53,8 @@ final protected class HMMLambda(
 	@inline def getN: Int = A.nRows
 	
 		/**
-		 * Retrieve the number of unique symbols (problem dimension) used in the sequence of observations.
+		 * Retrieve the number of unique symbols (problem dimension) used in the sequence of 
+		 * observations.
 		 */
 	@inline def getM: Int = B.nCols
 
@@ -177,7 +178,7 @@ final protected class HMMLambda(
 		val piStr = pi.foldLeft(new StringBuilder)((b, x) => 
 				b.append(s"${FormatUtils.format(x,"", FormatUtils.ShortFormat)}") )
 				
-		s"State transition probs A\n${A.toString}\nEmission probs B\n${B.toString}\nInitial probs pi\n${piStr}"
+		s"State transition A\n${A.toString}\nEmission B\n${B.toString}\nInitial pi\n${piStr}"
 	}
  
 		/*

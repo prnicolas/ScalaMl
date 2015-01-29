@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -143,8 +143,8 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 				seriesCollection :: xs
 			})
 		  
-			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollectionsList.last, 
-						PlotOrientation.VERTICAL, true, false, false)
+			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, 
+						seriesCollectionsList.last, PlotOrientation.VERTICAL, true, false, false)
 			val plot = chart.getPlot.asInstanceOf[XYPlot]
 	  	  
 			val renderer1 = new XYDotRenderer

@@ -2,10 +2,11 @@
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
  * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to build commercial applications. 
+ * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
+ * to build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -91,7 +92,7 @@ object QLearningEval extends Eval {
 		val src = DataSource(STOCK_PRICES, false, false, 1)
 		
 			// Create an option 
-		val ibmOption = new OptionModel("IBM", STRIKE_PRICE, src, MIN_TIME_EXPIRATION, functionApproxStep)
+		val ibmOption = new OptionModel("IBM",STRIKE_PRICE,src,MIN_TIME_EXPIRATION,functionApproxStep)
 
 			// Extract the historical price of the option and create a model
 			// The for-comprehensive loop is used to process the sequence of 

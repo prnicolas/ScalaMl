@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -130,7 +130,7 @@ object Plot {
 		 * the values are undefined
 		 */
 	import scala.collection.immutable.List
-	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String =""): Boolean = {
+	def validateDisplayUtils[T](y: List[T], width: Int, height: Int, comment: String =""): Boolean ={
 		if( DisplayUtils.isChart ) {
 			require( !y.isEmpty, s"$comment Cannot display an undefined series")
 			validateDisplaySize(width, height, comment)

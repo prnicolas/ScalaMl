@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -29,7 +29,7 @@ import Population._
 		 * <p>Class that defines relative genetic index (index in the genetic code, 
 		 * an operator such as mutation or cross-over acts upon (hierarchical address)</p>
 		 * @constructor Create a genetic indexer. 
-		 * @param chOpIdx  Index of the gene in the chromosome, that is manipulated by a genetic operator
+		 * @param chOpIdx  Index of the gene in the chromosome, manipulated by a genetic operator
 		 * @param geneOpIdx Index of the bits in the gene that is manipulated by a genetic operator.
 		 * @author Patrick Nicolas
 		 * @since June 7, 2014
@@ -266,7 +266,8 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 object Population{
 		/**
 		 * Default constructor for the population of chromosomes
-		 * @param limit  Maximum number of chromosomes allowed in this population (constrained optimization)
+		 * @param limit  Maximum number of chromosomes allowed in this population (constrained 
+		 * optimization)
 		 * @param chromosomes Current pool of chromosomes (type: ArrayBuffer{Chromosome[T]])
 		 */
 	def apply[T <: Gene](limit: Int, chromosomes: Pool[T]): Population[T] = 

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -108,7 +108,8 @@ object BinNaiveBayesModel {
 		 * Default constructor for the binary Naive Bayes model as instance of BinNaiveBayesModel
 		 * @param positives  Priors for the class of positive outcomes.
 		 * @param negatives  Priors for the class of negatives outcomes.
-		 * @param density Probability density function used in computing the conditional probability <b>p(C|x)</b>
+		 * @param density Probability density function used in computing the conditional probability 
+		 * <b>p(C|x)</b>
 		 */
 	def apply[T <% Double](
 			positives: Likelihood[T], 
@@ -124,7 +125,8 @@ object BinNaiveBayesModel {
 		 * @constructor Instantiates a multi-nomial Naive Bayes model (number classes > 2)
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
-		 * @param density Probability density function used in computing the conditional probability p(C|x)
+		 * @param density Probability density function used in computing the conditional probability 
+		 *  p(C|x)
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014
 		 * @note Scala for Machine Learning  Chapter 5 Naive Bayes Models / Naive Bayes Classifiers
@@ -174,9 +176,11 @@ protected class MultiNaiveBayesModel[T <% Double](
 		 */
 object MultiNaiveBayesModel {
 		/**
-		 * Default constructor for the multi-nomial Naive Bayes model as instance of MultiNaiveBayesModel
+		 * Default constructor for the multi-nomial Naive Bayes model as instance of 
+		 * MultiNaiveBayesModel
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
-		 * @param density Probability density function used in computing the conditional probability p(C|x)
+		 * @param density Probability density function used in computing the conditional probability 
+		 *  p(C|x)
 		 */
 	def apply[T <% Double](
 			likelihoodSet: List[Likelihood[T]], 

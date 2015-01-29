@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -30,7 +30,8 @@ import ScalaMl._, XTSeries._
 		 * contains two data points with the same index.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
-		 * Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
+		 * Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to 
+		 * Cluster k with center m(k)</span></pre></p>
 		 * @constructor Instantiate a cluster with an initial centroid. 
 		 * @throws IllegalArgumenException if the center is undefined (null)
 		 * @param Initial centroid for this cluster

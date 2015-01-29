@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -60,7 +60,8 @@ object MapUtils {
 	
 			/** divide the elements of this counter by the corresponding
 			 *  elements in another counter
-			 *  @param cnt Counter which elements are used to divided corresponding elements of this counter
+			 *  @param cnt Counter which elements are used to divided corresponding elements of this 
+			 *  counter
 			 *  @return HashMap of key of type T and value as the quotient of the elements of this 
 			 *  counter by the corresponding elemetns in cnt
 			 */

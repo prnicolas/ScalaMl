@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -37,7 +37,10 @@ import libsvm._
 		 * @since April 28, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
  		 */
-protected class SVMExecution(cacheSize: Int, val eps: Double, val nFolds: Int) extends SVMConfigItem {
+protected class SVMExecution(
+		cacheSize: Int, 
+		val eps: Double, 
+		val nFolds: Int) extends SVMConfigItem {
 	import SVMExecution._
 	
 	check(cacheSize, eps, nFolds)

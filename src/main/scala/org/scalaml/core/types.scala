@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * 
  * Version 0.98.1
  */
@@ -17,8 +17,9 @@ import scala.util.Try
 	
 		/**
 		 * <p>Package that encapsulates the types and conversion used in the Scala for Machine learning
-		 * project. Internal types conversion are defined by the Primitives singleton. The type conversion
-		 * related to each specific libraries are defined by their respective singleton (i.e CommonsMath).</p>
+		 * project. Internal types conversion are defined by the Primitives singleton. The type 
+		 * conversion related to each specific libraries are defined by their respective singleton 
+		 * (i.e CommonsMath).</p>
 		 * 
 		 *  @author Patrick Nicolas
 		 *  @since February 23, 2014
@@ -27,7 +28,7 @@ import scala.util.Try
 object Types {
 
 		/**
-		 * <p>Singleton that define the types and conversion between ScalaML types and native Scala types</p>
+		 * <p>Singleton that define the Scala types and their conversion to native Scala types</p>
 		 *  @author Patrick Nicolas
 		 *  @since February 23, 2014
 		 *  @note Scala for Machine Learning Chapter 3 Data pre-processing/Time series
@@ -110,7 +111,8 @@ object Types {
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if( index)
-				v.zipWithIndex.foldLeft(new StringBuilder)((buf,x) =>buf.append(s"${x._2}:${x._1}, ")).toString
+				v.zipWithIndex.foldLeft(new StringBuilder)((buf,x) =>
+						buf.append(s"${x._2}:${x._1}, ")).toString
 			else
 				v.foldLeft(new StringBuilder)((buf, x) => buf.append(s"$x,")).toString.dropRight(1)
 		}
@@ -150,8 +152,7 @@ object Types {
 		implicit def RealVector2Double(vec: RealVector): DblVector = vec.toArray
 	}
 	
-	
-	val nullString = new String("")
+	val nullString = ""
 }
 
 // ------------------------------------------  EOF -----------------------------------------------------------

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -76,10 +76,13 @@ case class QRNoise(qr: XY, white: Double=> Double) {
 		 * @param B Control state matrix
 		 * @param H Matrix that defines the dependency of the measurement on the state of the system<
 		 * @param P Covariance error matrix
-		 * @param qrNoise Implicit value representing the white noise for the process Q and the measurement P.
+		 * @param qrNoise Implicit value representing the white noise for the process Q and the 
+		 * measurement P.
 		 * @constructor Create a scalar Kalman filter
-		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent dimension
-		 * @throws ImplicitNotFoundException if the white noise is not defined prior instantiation of the DKalman class.
+		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent 
+		 * dimension
+		 * @throws ImplicitNotFoundException if the white noise is not defined prior instantiation of 
+		 * the DKalman class.
 		 * @see org.apache.commons.math3.filter._
 		 * @author Patrick Nicolas
 		 * @since February 11, 2014
@@ -192,7 +195,11 @@ object DKalman {
 		 * @param qrNoise Implicit value representing the white noise for the process Q and the 
 		 * measurement P
 		  */
-	def apply(A: DblMatrix, B: DblMatrix, H: DblMatrix, P: DblMatrix)(implicit qrNoise: QRNoise): DKalman = 
+	def apply(
+			A: DblMatrix, 
+			B: DblMatrix, 
+			H: DblMatrix, 
+			P: DblMatrix)(implicit qrNoise: QRNoise): DKalman = 
 		new DKalman(A, B, H,P)(qrNoise)
 		
 		/**
@@ -211,11 +218,11 @@ object DKalman {
 		require( !A.isEmpty && !H.isEmpty && !P.isEmpty, 
 				"DKalman.check Cannot create a Kalman filter with undefined parameters")
 		require( A.size ==B.size && A(0).size == B(0).size, 
-				s"DKalman.check Incorrect dimension A(${A.size}x${A(0).size}) or B(${B.size}x${B(0).size})")
+				s"DKalman.check Incorrect dim. A(${A.size}x${A(0).size}) or B(${B.size}x${B(0).size})")
 		require( A.size == H.size && A(0).size == H(0).size, 
-				s"DKalman.check Incorrect dimension  A(${A.size}x${A(0).size}) or H(${H.size}x${H(0).size})")
+				s"DKalman.check Incorrect dim.  A(${A.size}x${A(0).size}) or H(${H.size}x${H(0).size})")
 		require( A.size == P.size && A(0).size == P(0).size, 
-				s"DKalman.check Incorrect dimension A(${A.size}x${A(0).size}) or P(${P.size}x${P(0).size})")
+				s"DKalman.check Incorrect dim. A(${A.size}x${A(0).size}) or P(${P.size}x${P(0).size})")
 	}
 }
 

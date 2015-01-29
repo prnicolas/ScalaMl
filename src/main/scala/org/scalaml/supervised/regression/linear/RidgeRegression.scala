@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -202,7 +202,7 @@ object RidgeRegression {
 		 * @param y Target or labeled output values
 		 * @param lambda L2 penalty factor.
 		 */
-	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector, lambda: Double): RidgeRegression[T] =
+	def apply[T <% Double](xt: XTSeries[Array[T]], y: DblVector, lambda: Double): RidgeRegression[T]=
 		new RidgeRegression(xt, y, lambda)
 	
 	private def check[T <% Double](xt: XTSeries[Array[T]], y: DblVector): Unit = {

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -28,7 +28,8 @@ import DataSource._, ScalaMl._
 		 * <ul>
 		 *   <li>A file if the path name is a csv delimited file</li>
 		 *   <li>A list of files if the path name is a directory contains csv delimited files</li>
-		 *   <li>A list of csv delimited files associated to a list of symbol as 'symbol" => "symbol.csv"</li>
+		 *   <li>A list of csv delimited files associated to a list of symbol as 'symbol" => 
+		 *   "symbol.csv"</li>
 		 * </ul></p>
 		 * @constructor Create a data source. 
 		 * @throws IllegalArgumentException if the path name is undefined or the headerLines value 
@@ -204,7 +205,8 @@ object DataSource {
 		 * @param directoryName, name of the directory containing the CSV files
 		 */
 	def listSymbolFiles(directoryName: String): Array[String] = {
-		require(directoryName != Types.nullString, "DataSource.listSymbolFiles Directory name is undefined")
+		require( !directoryName.isEmpty, 
+			"DataSource.listSymbolFiles Directory name is undefined")
 
 		val directory = new java.io.File(directoryName)
 		val filesList =  directory.listFiles

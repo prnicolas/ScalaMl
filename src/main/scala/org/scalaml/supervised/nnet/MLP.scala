@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -29,17 +29,20 @@ import XTSeries._
 		 * Neural Network. The class uses the standard pattern of machine
 		 * learning algorithm:<br>
 		 * Model are created through training during instantiation of the class. The model is 
-		 * created even in the training does not converged towards a stable network of synapse weights. In 
-		 * this case the client code is responsible for checking the value of the state variable converge 
-		 * and perform a validation run.<br>
-		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.<br>
+		 * created even in the training does not converged towards a stable network of synapse weights. 
+		 * In this case the client code is responsible for checking that the value of the state variable 
+		 * converge and a validation run is performed.<br>
+		 * The classifier is implemented as a data transformation and extends the PipeOperator trait.
+		 * <br>
 		 * This MLP uses the online training strategy suitable for time series.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
-		 * Activation function h:  y = h.[w(0) + w(1).x(1) + w(2).x(2) + ... + w(n).x(n)] with weights wi<br>
+		 * Activation function h:  y = h.[w(0) + w(1).x(1) + w(2).x(2) + ... + w(n).x(n)] with 
+		 * weights wi<br>
 		 * Output layer: h(x) = x<br>
 		 * Hidden layers:  h(x) = 1/(1+exp(-x))<br>
-		 * Error back-propagation for neuron i:  error(i) = y(i) - w(0) - w(1).x(1) - w(n).x(n)</span></pre></p>
+		 * Error back-propagation for neuron i:<br>  
+		 * error(i) = y(i) - w(0) - w(1).x(1) - w(n).x(n)</span></pre></p>
 		 * @constructor Instantiates a Multi-layer Perceptron for a specific configuration, time 
 		 * series and target or labeled data. 
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
@@ -167,7 +170,8 @@ final protected class MLP[T <% Double](
 		/**
 		 * <p>Companion object for the Multi-layer Perceptron. The singleton is used to:<br>
 		 * Define several variants of the constructor<br>
-		 * Define the class/trait hierarchy for the objective of the MLP {classification, regression}</p>
+		 * Define the class/trait hierarchy for the objective of the MLP {classification, regression}
+		 * </p>
 		 * 
 		 * @author Patrick Nicolas
 		 * @since May 8, 2014

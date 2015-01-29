@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  * 
@@ -31,7 +31,8 @@ import org.scalaml.core.Types
 		 * @param obsDelim Delimiters for observation as a sequence of N-grams or words
 		 * @param labelsDelim   Delimiter between observations string and tag/label
 		 * @param trainingDelim Delimiter between training sequences.
-		 * @see iitb.CRF.DataSequence, iitb.CRF.DataIter, iitb.Segment.DataCruncher, iitb.Model.FeatureImpl
+		 * @see iitb.CRF.DataSequence, iitb.CRF.DataIter, iitb.Segment.DataCruncher and  
+		 * iitb.Model.FeatureImpl
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 5, 2014

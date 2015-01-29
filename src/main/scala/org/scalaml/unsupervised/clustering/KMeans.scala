@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -29,7 +29,8 @@ import ScalaMl._
 		 * are ordered by their variance.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
-		 *  Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to Cluster k with center m(k)</span></pre></p>
+		 *  Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to 
+		 *  Cluster k with center m(k)</span></pre></p>
 		 * @constructor Initiate a K-means algorithm with a predefined number of cluster, maximum 
 		 * number of iterations and a distance metric. 
 		 * @throws IllegalArgumentException if the number of clusters or the maximum number of 

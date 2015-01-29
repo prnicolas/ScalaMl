@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -93,7 +93,8 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 				seriesCollection.addSeries(xSeries)
 			})
 	
-			val chart = ChartFactory.createXYLineChart(s"${config._1} - ${config._2}", config._2, config._3, 
+			val legend = s"${config._1} - ${config._2}"
+			val chart = ChartFactory.createXYLineChart(legend, config._2, config._3, 
 										seriesCollection, 
 										PlotOrientation.VERTICAL, true, true, false)
 	
@@ -102,7 +103,8 @@ final class LinePlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, th
 			plot.setDomainGridlinePaint(Color.lightGray)
 			plot.setRangeGridlinePaint(Color.lightGray)
 	
-			val xyLineRenderer: XYLineAndShapeRenderer = plot.getRenderer.asInstanceOf[XYLineAndShapeRenderer]
+			val xyLineRenderer: XYLineAndShapeRenderer = plot.getRenderer
+					.asInstanceOf[XYLineAndShapeRenderer]
 	
 			Range(0, xys.size) foreach( n => {
 				xyLineRenderer.setSeriesPaint(n, colors(n % colors.size))

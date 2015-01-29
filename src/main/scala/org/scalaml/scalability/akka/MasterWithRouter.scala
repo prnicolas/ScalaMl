@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -35,10 +35,14 @@ import XTSeries.DblSeries
 		 * master-worker and router.
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
-		 *  The routing actor is defined by the class <b>akka.routing.RoundRobinRouter</b> for Akka 2.2.4 and earlier version.<br>
-		 *  This class is deprecated in Akka 2.3.4 and later and should be replaced by the class <b>akka.routing.RoundRobinPool.</b></span></pre></p> 
-		 *  @constructor Create a distributed transformation for time series using actors and a routing actor.
-		 *  @throws IllegalArgumentException if the class parameters are either undefined or out of range.
+		 *  The routing actor is defined by the class <b>akka.routing.RoundRobinRouter</b> for Akka 
+		 *  2.2.4 and earlier version.<br>
+		 *  This class is deprecated in Akka 2.3.4 and later and should be replaced by the class 
+		 *  <b>akka.routing.RoundRobinPool.</b></span></pre></p> 
+		 *  @constructor Create a distributed transformation for time series using actors and a 
+		 *  routing actor.
+		 *  @throws IllegalArgumentException if the class parameters are either undefined or 
+		 *  out of range.
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
 		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 
@@ -61,12 +65,9 @@ abstract class MasterWithRouter(
 	
 		// Aggregation for results from each worker actors
 	protected[this] val aggregator = new ListBuffer[DblVector]
-
 	
-			// Akka version 2.3.4 and higher 
-			//private val router = context.actorOf(Props(new Worker(0, DFT[Double]))
-			//		.withRouter(RoundRobinPool(partitioner.numPartitions, supervisorStrategy = this.supervisorStrategy)))  	
 			/*
+			 * Akka version 2.3.4 and higher
 			 * Create a routing/supervising actor for an array of worker actors.
 			 * For Akka version 2.3.4 and higher, the RoundRobinPool should be used as follows
 			 * private val router = context.actorOf(Props(new Worker(0, DFT[Double]))

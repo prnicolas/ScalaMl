@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -38,7 +38,8 @@ import NaiveBayesModel._, XTSeries._, Stats._
 		 * Supervised interface.<br>
 		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
 		 * ,Arial,Helvetica,sans-serif;">
-		 *  Naive Bayes formula: p(C}x) = p(x|C).p(C)/p(x) => p(C|x) = p(x1|C).p(x2|C). .. p(xn|C).p(C)</span></pre></p> 
+		 *  Naive Bayes formula: p(C}x) = p(x|C).p(C)/p(x) => p(C|x) = p(x1|C).p(x2|C). .. p(xn|C).p(C)
+		 *  </span></pre></p> 
 		 * @constructor Instantiate a parameterized NaiveBayes model 
 		 * @param smoothing Laplace or Lidstone smoothing factor
 		 * @param xt  Input labeled time series used for training
@@ -162,16 +163,18 @@ object NaiveBayes {
 	def apply[T <% Double](xt: XTSeries[(Array[T], Int)]): NaiveBayes[T] = 
 			new NaiveBayes[T](1.0, xt, gauss)
 		
-	/*
-	def |>[T <% Double](): PartialFunction[XTSeries[Array[T]], Array[Int]] = {
-		case xt: XTSeries[Array[T]] if(!xt.isEmpty && {
-			model = 
-		  model != None }) => 
-			xt.toArray.map( model.get.classify( _))
-	}
-	* 
-	*/
-	def |>[T <% Double](model: Option[BinNaiveBayesModel[T]]): PartialFunction[XTSeries[Array[T]], Array[Int]] = {
+		/**
+		 * <p>Run-time classification of a time series using the Naive Bayes model. The method invokes
+		 * a predefined Bayes model, contrary to the run-time classification |> defined in the 
+		 * <b>NaiveBayes</b> class.</p>
+		 * @param model Model used for classification
+		 * @throws MatchError if the input time series is undefined or have no elements or the 
+		 * model was not properly trained
+		 * @return PartialFunction of time series of elements of type T as input to the Naive Bayes 
+		 * and array of class indices as output
+		 */
+	def |>[T <% Double](
+			model: Option[BinNaiveBayesModel[T]]): PartialFunction[XTSeries[Array[T]], Array[Int]] = {
 		case xt: XTSeries[Array[T]] if( !xt.isEmpty && model != None) => 
 			xt.toArray.map( model.get.classify( _))
 	}

@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -164,7 +164,7 @@ object ParArrayBenchmark {
 		require( !v.isEmpty, 
 				"ParArrayBenchmark.check: Parallel collections is undefined")
 		require(u.size == v.size, 
-				s"ParArrayBenchmark: Size of the array ${u.size} is != size of the parallel array ${v.size}")
+				s"ParArrayBenchmark: Size of the array ${u.size} is != size of parallel array ${v.size}")
 	}
 }
 
@@ -173,7 +173,8 @@ object ParArrayBenchmark {
 		 * <p>Class to evaluate the performance of the Scala parallel map. The
 		 * class override the map, reduceLeft methods to collect timing information</p>
 		 * @constructor Create a performance benchmark for Scala arrays. 
-		 * @throws IllegalArgumentException if the array of elements is undefined or the number of tasks is out of range
+		 * @throws IllegalArgumentException if the array of elements is undefined or the number of 
+		 * tasks is out of range
 		 * @param u  Parameterized map, <b>Map[Int, U]<\b>
 		 * @param v Parameterized parallel map
 		 * @param times Number of executions in the performance test.
@@ -212,10 +213,12 @@ final class ParMapBenchmark[U](
 		 * <p>Define the filter operator for the performance benchmark of Scala map</p>
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
-		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
+		 * @return duration of the execution of the parallel HashMap relative to the non-parallel 
+		 * HashMap
 		 */
 	override def filter( f: U => Boolean)(nTasks: Int): Double = {
-		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, s"ParMapBenchmark.filter number of concurrent tasks $nTasks is out of range")
+		require(nTasks > 0 && nTasks < MAX_NUM_TASKS, 
+				s"ParMapBenchmark.filter number of concurrent tasks $nTasks is out of range")
 		
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.filter(e => f(e._2))).toDouble

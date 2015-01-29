@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -37,7 +37,8 @@ import ScalaMl._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since February 26, 2014
-		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Principal Components Analysis
+		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / Principal Components 
+		 * Analysis
 		 */
 final class PCA[T <% Double] extends PipeOperator[XTSeries[Array[T]], (DblMatrix, DblVector)] {
 	import CommonMath._, XTSeries._

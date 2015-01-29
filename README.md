@@ -84,6 +84,7 @@ To build the Scala for Machine Learning library package<br><i><b> $(ROOT)/sbt cl
 To build the package including test and resource files<br><i><b> $(ROOT)/sbt clean package</b></i><br>
 To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
 To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
+To generate report for compliance to Scala style guide:<br><b><i> $(ROOT)/sbt scalastyle</i></b><br>
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
 <h2 id="run">Run examples</h2>
 <h3>examples in a chapter</h3>

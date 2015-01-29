@@ -5,8 +5,8 @@
  * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
  * build commercial applications. 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
  * Version 0.98.1
  */
@@ -33,13 +33,18 @@ object FormatUtils {
 		/**
 		 * <p>Class to format the output of double floating point, integer and string values. 
 		 * The client has the option to specify whether the value has to be rounded to the next Int.
-		 * If the rounding error is 0.001  3.9999 will be rounded to 4 and 6.0003 will be rounded to 6</p>
+		 * If the rounding error is 0.001  3.9999 will be rounded to 4 and 6.0003 will be rounded to 6
+		 * </p>
 		 * @constructor Create a format type for floating point values
 		 * @param align defines the alignment for the display of the value (i.e. '%6s')
 		 * @param fmtStr for Decimal values (i.e. '#,##0.000')
-		 * @param roudingError Specify the maximum adjustment for rounding error. Default No rounding error
+		 * @param roudingError Specify the maximum adjustment for rounding error. Default No rounding 
+		 * error
 		 */
-	protected class FormatType(align: String, fmtStr: String, roundingError: Double = NO_ROUNDING_ERROR) {	
+	protected class FormatType(
+			align: String, 
+			fmtStr: String, 
+			roundingError: Double = NO_ROUNDING_ERROR) {	
 		val fmt = new DecimalFormat(fmtStr)
 	
 			/**
