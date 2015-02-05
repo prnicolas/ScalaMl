@@ -32,7 +32,7 @@ trait Operator {
 		 * Identifier for the operator of type Integer
 		 * @return operator unique identifier
 		 */
-	def id: Int
+	def id: Int = -1
 		
 		/**
 		 * Constructor for an operator. This method returns the operator associated
@@ -102,19 +102,19 @@ class Gene(
 		val target: Double, 
 		val op: Operator)(implicit discr: Discretization) {
   
-	require(id != Types.nullString, "Cannot create a signal with undefined id")
+	require( !id.isEmpty, "Cannot create a signal with undefined id")
    
 		/**
 		 * Bits encoding of the tuple (value, operator) into bits {0, 1} executed 
-  	 * as part of the instantiation of a gene class.
-  	 */
+		 * as part of the instantiation of a gene class.
+		 */
 	val bits = {
-		val bitset = new BitSet(GENE_SIZE)
+		val bitset = new BitSet(geneBits.geneLength)
 			// Encode the operator
-		rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i))
+		geneBits.rOp foreach(i => if( ((op.id>>i) & 0x01)  == 0x01) bitset.set(i))
 		
 			// Encode the value using the discretization function
-		rValue foreach(i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
+		geneBits.rValue foreach(i => if( ((discr.toInt(target)>>i) & 0x01)  == 0x01) bitset.set(i)  )
 		bitset	
 	}
   
@@ -128,8 +128,18 @@ class Gene(
 				enc.bits.set(n)
 			enc
 		})
-     
-     
+
+			/**
+			 * <p>Virtual constructor for classes inherited from Gene. The virtual constructor
+			 * is used by cloning, mutation and cross-over genetic operators.<br>
+			 * This method has to be overriden for each Gene sub-class.</p>
+			 * @param id Identifier for the gene
+			 * @param target Target/threshold value associated to the gene
+			 * @param op Operator for the input and target value <b>input operator target</b>
+			 * @return New instance of the same gene.
+			 */
+	def getGene(id: String, target: Double, op: Operator) = new Gene(id,target, op)
+		
 		/**
 		 * <p>Generic method to compute the score of this gene. The score of the genes in a 
 		 * chromosome are summed as the score of the chromosome.
@@ -137,7 +147,6 @@ class Gene(
 		 */
 	def score: Double = -1.0
 
-   		
 		/**
 		 * <p>Implements the cross-over operator between this gene and another
 		 * parent gene.</p>
@@ -145,7 +154,7 @@ class Gene(
 		 * @param that other gene used in the cross-over
 		 * @return A single Gene as cross-over of two parents.
 		 */
-	def +- (that: Gene, gIdx: GeneticIndices): Gene = {       
+	def +- (that: Gene, gIdx: GeneticIndices): Gene = {
 		val clonedBits = cloneBits(bits)
 		Range(gIdx.geneOpIdx, bits.size).foreach(n => 
 			if( that.bits.get(n) ) 
@@ -153,9 +162,8 @@ class Gene(
 			else 
 				clonedBits.clear(n)
 		)
- 	
 		val valOp = decode(clonedBits)
-		Gene(id, valOp._1, valOp._2)
+		getGene(id, valOp._1, valOp._2)
 	}
 
 	
@@ -165,7 +173,7 @@ class Gene(
 		 * @return Size of the gene
 		 */
 	@inline
-	final def size = GENE_SIZE
+	final def size = geneBits.geneLength
   
 		/**
 		 * <p>Implements the mutation operator on this gene</p>
@@ -186,7 +194,7 @@ class Gene(
 		clonedBits.flip(idx)
 			// Decode or convert the bit set into a symbolic representation for the gene
 		val valOp = decode(clonedBits)
-		Gene(id, valOp._1, valOp._2)
+		getGene(id, valOp._1, valOp._2)
 	}
   
   
@@ -198,21 +206,20 @@ class Gene(
 		 * @return Tuple (target value, symbolic operator) for this gene
 		 */
 	def decode(bits: BitSet): (Double, Operator) = 
-		(discr.toDouble(convert(rValue, bits)), op(convert(rOp, bits)) )
-  
+		(discr.toDouble(convert(geneBits.rValue, bits)), op(convert(geneBits.rOp, bits)))
 
 		/**
 		 * Textual description of the symbolic representation of this gene
 		 * @return description of gene id, operator and target value
 		 */
 	def symbolic: String = s"$id ${op.toString} $target"
-  
+
 		/**
 		 * Textual description of the genetic representation of this gene
 		 */
 	override def toString: String = 
 		Range(0, bits.size).foldLeft(new StringBuilder) ((buf, n) => 
-			buf.append( (if( bits.get(n) == true) "1" else "0"))).toString
+				buf.append( (if( bits.get(n) == true) "1" else "0"))).toString
 }
 
 
@@ -225,7 +232,7 @@ class Gene(
 		 * 
 		 */
 object Gene {
-  
+
 		/**
 		 * Default constructor for a Gene
 		 * @param id  Identifier for the Gene
@@ -234,8 +241,18 @@ object Gene {
 		 * @param discr  implicit discretization function from Floating point value to integer.
 		 */
 	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Gene = 
-				new Gene(id, target, op)
+			new Gene(id, target, op)
 
+	class GeneBits(nValueBits: Int, nOpBits: Int) {
+		val rValue = Range(0, nValueBits)
+		val geneLength = nValueBits + nOpBits
+		val rOp = Range(nValueBits, geneLength)
+	}
+	
+	final private val VALUE_SIZE = 32
+	final private val OP_SIZE = 2
+	var geneBits = new GeneBits(VALUE_SIZE, OP_SIZE)
+ 	
 		/**
 		 * Clone the genetic code of this gene
 		 * @param bits Bitset of this gene
@@ -253,12 +270,6 @@ object Gene {
 		 */
 	private def convert(r: Range, bits: BitSet): Int = 
 		r.foldLeft(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
- 
-	final val VALUE_SIZE = 32
-	final val OP_SIZE = 2
-	final val GENE_SIZE = VALUE_SIZE + OP_SIZE
-	final val rValue = Range(0, VALUE_SIZE)
-	final val rOp = Range(VALUE_SIZE, VALUE_SIZE  + OP_SIZE)
 }
 
 // -------------------------------------------  EOF -------------------------------------------------

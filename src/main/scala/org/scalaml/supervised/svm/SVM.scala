@@ -60,17 +60,14 @@ final class SVM[T <% Double](config: SVMConfig, xt: XTSeries[Array[T]], labels: 
   
 		// The model of type SVMModel is created during training only
 		// if the training succeed during the instantiation of the SVM classifier
-	private[this] val model: Option[SVMModel] = train match {
-			case Success(model) => Some(model)
-			case Failure(e) => DisplayUtils.none("SVM.model", logger, e)
-	}
-	  
+	private[this] val model: Option[SVMModel] = train.toOption
+
 		/**
 		 * Access the accuracy of the SVM algorithm. 
 		 * @return accuracy value in the range [0, 1] if the model was successfully trained, 
 		 * None otherwise
 		 */
-	final def accuracy: Option[Double] = if( model != None) Some(model.get.accuracy) else None
+	final def accuracy: Option[Double] = model.map( _.accuracy)
 
 		/**
 		 * Method to compute the Means Square Error for the training of the SVM

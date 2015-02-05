@@ -39,7 +39,7 @@ final protected class DataSink[T <% String](
 	import XTSeries._, DataSource._
 	import scala.io.Source
 	import java.io.File
-	require(sinkName != Types.nullString, "DataSink Name of the storage is undefined")
+	require( !sinkName.isEmpty, "DataSink Name of the storage is undefined")
 	
 	private val logger = Logger.getLogger("DataSink")	
 	

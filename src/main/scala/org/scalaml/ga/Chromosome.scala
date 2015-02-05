@@ -32,8 +32,7 @@ import Gene._, Chromosome._
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final class Chromosome[T <: Gene](val code: List[T]) {  
-	require(!code.isEmpty, 
-			"Chromosome Cannot create a chromosome from undefined genetic code")
+	require(!code.isEmpty, "Chromosome Cannot create a chromosome from undefined genes")
 	var unfitness: Double = 1000*(1.0 + Random.nextDouble)
    
    
@@ -55,7 +54,7 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 				"Chromosome.+-  Cannot cross-over chromosome with an undefined parent")
 		require(this.size == that.size, 
 				s"Chromosome.+- Chromosomes ${size} and that ${that.size} have different size")
-     
+
 			// First use the global index (module the number of gene
 		val xoverIdx = gIdx.chOpIdx
 		val xGenes =  spliceGene(gIdx, that.code(xoverIdx) ) 

@@ -20,7 +20,6 @@ import org.scalaml.core.XTSeries
 import org.scalaml.util.DisplayUtils
 
 
-
 		/**
 		 * <p>Define a trading signal as used in technical analysis of financial markets. A partial
 		 * list of trading signals, include volume, Flow index, momentum or oscillators. This class
@@ -53,12 +52,25 @@ import org.scalaml.util.DisplayUtils
 final class Signal(
 		id: String, 
 		target: Double, 
-		op: Operator, 
+		op: SOperator, 
 		xt: DblVector, 
 		weights: DblVector)(implicit discr: Discretization)	extends Gene(id, target, op) {
 	import Signal._
 	check(xt, weights)
-   
+ 
+		/**
+		 * <p>Virtual constructor used in cloning, mutation and cross-over of gene, that
+		 * generate an instance of appropriate type.</p>
+		 * @param id identifier for the signal
+		 * @param target Target values in the predicate/signal
+		 * @param op Arithmetic or boolean operator used to trigger a signal from a value relative to 
+		 * the target
+		 * @return a new instance with target and operator modified through genetic reproduction but
+		 * sharing the time series input xt and weights of its parent signal
+		 */
+	override def getGene(id: String, target: Double, op: Operator): Gene = 
+			new Signal(id, target, op.asInstanceOf[SOperator], xt, weights)
+	
 		/**
 		 * <p>Computation of the score of this trading signal by comparing a value with the threshold, 
 		 * value.</p>
@@ -66,8 +78,15 @@ final class Signal(
 		 * @param factor amplification factor for the generation of the score
 		 * @return computed score for this trading signal
 		 */
-	override def score: Double = sumScore(operatorFuncMap.get(op).get)
-    
+	override def score: Double = {
+		if( !operatorFuncMap.contains(op) ) {
+			println( s"Failed operator: ${op.toString}")
+			Double.MaxValue
+		}
+		else 
+			sumScore(operatorFuncMap.get(op).get)
+	}
+
 		/**
 		 * Compare this trading signal with another one
 		 * @param that  other trading signal
@@ -80,10 +99,9 @@ final class Signal(
 		 * @return tuple (id, operator, encoded target value)
 		 */
 	override def toString: String = s"$id ${op.toString} ${String.valueOf(target)}"
-   
+
 	private def sumScore(f: (Double, Double) => Double): Double = 
 		xt.zip(weights).foldLeft(0.0)((s, x) => s + x._2*f(x._1, target))
-   
 }
 
 
@@ -108,7 +126,7 @@ object Signal {
 		 * @param discr Discretization function that convert analog or continuous signal to a 
 		 * discrete time series.
 		 */
-	def apply(id: String, target: Double, op: Operator, xt: DblVector, weights: DblVector)
+	def apply(id: String, target: Double, op: SOperator, xt: DblVector, weights: DblVector)
 			(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, xt, weights)
 
@@ -120,7 +138,7 @@ object Signal {
 		 * @param discr Discretization function that convert analog or continuous signal to a 
 		 * discrete time series.
 		 */
-	def apply(id: String, target: Double, op: Operator)(implicit discr: Discretization): Signal = 
+	def apply(id: String, target: Double, op: SOperator)(implicit discr: Discretization): Signal = 
 		new Signal(id, target, op, Array.empty, Array.empty)
 
 		/**
@@ -128,7 +146,7 @@ object Signal {
 		 */
 	val orderedSignals = Ordering.by((signal: Signal) => signal.id)
    
-	val operatorFuncMap = Map[Operator, (Double, Double) =>Double](
+	val operatorFuncMap = Map[SOperator, (Double, Double) =>Double](
 		LESS_THAN -> ((x: Double, target: Double) => target - x),
 		GREATER_THAN -> ((x: Double, target: Double) => x -target),
 		EQUAL -> ((x: Double, target: Double) => Math.abs(x -target)),

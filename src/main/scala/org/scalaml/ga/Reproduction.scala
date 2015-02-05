@@ -35,7 +35,7 @@ import Chromosome._
 		 *  @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) { 	   
-	
+	private[this] val rand = new Random(System.currentTimeMillis)
 		/**
 		 * <p>Execute the 3 phases of the genetic replication: Selection, Cross-over and Mutation.</p>
 		 * @param population current population of chromosomes used in the replication process
@@ -44,16 +44,18 @@ final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 		 * @return true if the selection, crossover and mutation phases succeed, None otherwise.
 		 */
 	import scala.annotation.switch
-	def mate(population: Population[T], 
+	def mate(
+			population: Population[T], 
 			config: GAConfig, 
 			cycle: Int): Boolean = (population.size: @switch) match {
 			// If the population has less than 3 chromosomes, exit
 		case 0 | 1 | 2 => false  
 			// Otherwise execute another reproduction cycle, starting with selection
 		case _ => {
+			rand.setSeed(rand.nextInt + System.currentTimeMillis)
 			population.select(score, config.softLimit(cycle))		//1. Selection
-			population +- (1.0 - Random.nextDouble*config.xover)	//2. Cross-over
-			population ^ (1.0 -  Random.nextDouble*config.mu)		//3. Mutation
+			population +- rand.nextDouble*config.xover			//2. Cross-over
+			population ^ rand.nextDouble*config.mu					//3. Mutation
 			true
 		}
 	}

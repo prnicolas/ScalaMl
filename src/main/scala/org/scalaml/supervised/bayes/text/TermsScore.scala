@@ -82,7 +82,7 @@ final class TermsScore[T <% Long](
   	 * extract the keywords matching the lexicon from a string or file entry.
   	 */
 	private[this] def count(term: String): Counter[String] = {
-		require(term != Types.nullString, 
+		require( !term.isEmpty, 
 				"TermsScore.count: Cannot count the number of words in undefined text")
 
 		toWords(term).foldLeft(new Counter[String])((cnt, w) => 

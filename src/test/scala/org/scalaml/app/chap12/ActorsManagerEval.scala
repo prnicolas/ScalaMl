@@ -149,8 +149,4 @@ object ActorsManagerEval extends Eval {
 	}
 }
 
-
-object MyApp extends App {
-  ActorsManagerEval.run(Array[String]("router"))
-}
 // ----------------------------------  EOF ------------------------

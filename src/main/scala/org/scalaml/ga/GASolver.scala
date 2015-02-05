@@ -21,7 +21,6 @@ import org.scalaml.core.XTSeries
 import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
 import org.scalaml.ga.state._
 import org.scalaml.util.DisplayUtils
-
 import Chromosome._
 
 
@@ -45,7 +44,8 @@ import Chromosome._
 		 */
 final protected class GASolver[T <: Gene](
 		config: GAConfig, 
-		score: Chromosome[T] => Unit) extends PipeOperator[Population[T], Population[T]] {
+		score: Chromosome[T] => Unit,
+		monitor: Option[Population[T] => Unit]) extends PipeOperator[Population[T], Population[T]] {
 	import GAConfig._
 	
 		// Initial state of the genetic algorithm solver
@@ -59,8 +59,8 @@ final protected class GASolver[T <: Gene](
 		 * @throws IllegalArgumenException If the initialization or chromosome generation function is undefined
 		 */
 	def |>(initialize: () => Population[T]): Population[T] = this.|>(initialize())
-   
-   
+
+
 		/**
 		 * <p>Uses the genetic algorithm reproduction cycle to select the fittest
 		 * chromosomes (or solutions candidate) after a predefined number of reproduction cycles.<br>
@@ -72,30 +72,36 @@ final protected class GASolver[T <: Gene](
 		 * containing the fittest chromosomes as output.
 		 */
 	override def |> : PartialFunction[Population[T], Population[T]] = {	
-		case population: Population[T] if(state != GA_RUNNING &&population.size > 1) => {
+		case population: Population[T] if(state != GA_RUNNING && population.size > 1) => {
 		
 				// Create a reproduction cycle manager with a scoring function
-		  val reproduction = Reproduction[T](score)
+			val reproduction = Reproduction[T](score)
 			state = GA_RUNNING
 
 				// Trigger a reproduction cycle 'mate' then test if 
 				// any of the convergence criteria applies.
 			Range(0, config.maxCycles).find(n => {  		 
-				if( reproduction.mate(population, config, n) )
+				if( reproduction.mate(population, config, n) ) {
+						// If the monitoring callback is defined...
+					if(monitor != None)
+						monitor.map( _(population))
 					converge(population, n) != GA_RUNNING
+				}
 				else {
 					if(population.size == 0) 
 						state = GA_FAILED(s"GASolver.PartialFunction reproduction failed after $n cycles") 
-					else 
+					else {
+		
 						state = GA_SUCCEED(s"GASolver.PartialFunction Completed in $n cycles")
+					}
 					true
 				}
 			}).getOrElse(notConverge)
 				// The population is returned no matter what..
+			population.select(score, 1.0)
 			population
 		}
 	}
-   
 
 		/*
 		 * Domain dependent convergence criteria. This version tests the size
@@ -111,8 +117,8 @@ final protected class GASolver[T <: Gene](
 	}
 	
 	private def notConverge: Int = {
-	  state = GA_NO_CONVERGENCE(s"GASolver.PartialFunction Failed to converge")
-	  -11
+		state = GA_NO_CONVERGENCE(s"GASolver.PartialFunction Failed to converge")
+		-1
 	}
 }
 
@@ -129,16 +135,31 @@ object GASolver {
 		 * Default constructor for the Genetic Algorithm (class GASolver)
 		 * @param config  Configuration parameters for the GA algorithm
 		 * @param score Scoring method for the chromosomes of this population
+		 * @param monitor optional monitoring function that display the content or the various
+		 * metric associated to the current population
 		 */
-	def apply[T <: Gene](config: GAConfig, score: Chromosome[T] =>Unit): GASolver[T] = 
-			new GASolver[T](config, score)
+	def apply[T <: Gene](
+			config: GAConfig, 
+			score: Chromosome[T] =>Unit,
+			monitor: Option[Population[T] => Unit]): GASolver[T] = 
+		new GASolver[T](config, score, monitor)
 
+		/**
+		 * Default constructor for the Genetic Algorithm (class GASolver)
+		 * @param config  Configuration parameters for the GA algorithm
+		 * @param score Scoring method for the chromosomes of this population
+		 */
+	def apply[T <: Gene](
+			config: GAConfig, 
+			score: Chromosome[T] =>Unit): GASolver[T] = 
+		new GASolver[T](config, score, None)
+			
 		/**
 		 * Constructor for the Genetic Algorithm (class GASolver) with undefined scoring function
 		 * @param config  Configuration parameters for the GA algorithm
 		 */
 	def apply[T <: Gene](config: GAConfig): GASolver[T] = 
-			new GASolver[T](config, (c: Chromosome[T]) => Unit)
+		new GASolver[T](config, (c: Chromosome[T]) => Unit, None)
 }
 
 // ---------------------------  EOF -----------------------------------------------

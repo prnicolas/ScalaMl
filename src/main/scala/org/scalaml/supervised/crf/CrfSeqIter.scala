@@ -39,11 +39,11 @@ import org.scalaml.core.Types
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
 		 */
 class CrfSeqDelimiter(val obsDelim: String, val labelsDelim: String, val trainingDelim: String) {
-	require(obsDelim != Types.nullString, 
+	require( !obsDelim.isEmpty, 
 			"Delimiter for observations in CRF training sequence is undefined")
-	require(labelsDelim != Types.nullString, 
+	require( !labelsDelim.isEmpty, 
 			"Delimiter for labels in CRF training sequence is undefined")
-	require(trainingDelim != Types.nullString, 
+	require( !trainingDelim.isEmpty, 
 			"Delimiter for training sequences in CRF training sequence is undefined")
 }
 

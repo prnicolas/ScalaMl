@@ -64,10 +64,14 @@ final class NaiveBayes[T <% Double](
 		// The model is instantiated during training for both
 		// classes if the training is successful. It is None otherwise
 	private[this] val model: Option[BinNaiveBayesModel[T]] = 
+	  Try(BinNaiveBayesModel[T](train(1), train(0), density)).toOption
+	  /*
 			Try(BinNaiveBayesModel[T](train(1), train(0), density)) match {
 		case Success(nb) => Some(nb)
 		case Failure(e) => DisplayUtils.none("NaiveBayes.model", logger, e)
-	}
+		* 
+		*/
+//	}
 		
 		/**
 		 * <p>Run-time classification of a time series using the Naive Bayes model. The method invoke
@@ -88,10 +92,9 @@ final class NaiveBayes[T <% Double](
 		 * @param index of the class, the time series or observation should belong to
 		 * @return F1 measure if the model has been properly trained (!= None), None otherwise
 		 */
-	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Option[Double] = model match {
-		case Some(m) => Some(ClassValidation(xt.map(x =>(m.classify(x._1), x._2)) , index).f1)
-		case None => DisplayUtils.none("NaiveBayes Model undefined", logger)
-	}
+	override def validate(xt: XTSeries[(Array[T], Int)], index: Int): Option[Double] =
+		model.map(m => Some(ClassValidation(xt.map(x =>(m.classify(x._1), x._2)), index).f1))
+				.getOrElse(DisplayUtils.none("NaiveBayes Model undefined", logger))
 
 
 		/**

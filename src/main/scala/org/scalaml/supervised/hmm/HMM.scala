@@ -12,29 +12,41 @@
  */
 package org.scalaml.supervised.hmm
 
+import scala.util.{Try, Success, Failure}
+import scala.annotation.{implicitNotFound, switch}
+
+import org.apache.log4j.Logger
+
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.Design.{PipeOperator, Model}
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Matrix
-import scala.util.{Try, Success, Failure}
-import scala.annotation.implicitNotFound
-import org.apache.log4j.Logger
+import org.scalaml.core.{XTSeries, Matrix}
 import org.scalaml.util.DisplayUtils
 import HMM._
 
 	/**
-	 * <p>Enumeration class to specify the canonical form of the HMM</p>
+	 * <p>Enumeration/case classes to specify the canonical form of the HMM</p>
 	 * @author Patrick Nicolas
 	 * @since March 9, 2014
 	 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 	 */
-object HMMForm extends Enumeration {
-	type HMMForm = Value
-	val EVALUATION, DECODING = Value
-}
+sealed trait HMMForm
+
+	/**
+	 * Class that defines the Evaluation (CF-1) Canonical form of the HMM
+	 */
+case class EVALUATION() extends HMMForm 
+
+	/**
+	 * Class that defines the Training (CF-2) Canonical form of the HMM
+	 */
+
+case class TRAINING() extends HMMForm 
+	/**
+	 * Class that defines the Decoding (CF-2) Canonical form of the HMM
+	 */
+case class DECODING() extends HMMForm
 
 
-import HMMForm._
 		/**
 		 * <p>Generic model for dynamic programming algorithms used in HMM.</p>
 		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
@@ -50,7 +62,6 @@ import HMMForm._
 		 */
 abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Model {
 	import HMMModel._
-	
 	check(obs)
 }
 
@@ -62,7 +73,6 @@ object HMMModel {
 	private def check(obs: Array[Int]): Unit = 
 		require(!obs.isEmpty, "HMMModel.check Cannot create a model with undefined observations")
 }
-
 
 	/**
 	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
@@ -92,7 +102,11 @@ protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda
 		alphaBeta /= (t, ct(t))
 	}
 
-	def getAlphaBeta: Matrix[Double] = alphaBeta
+		/**
+		 * Returns the Alpha (resp. Beta) matrix for the forward (resp. backward) matrix
+		 * @return Alpha or Beta matrix
+		 */
+	final def getAlphaBeta: Matrix[Double] = alphaBeta
 }
 		/**
 		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
@@ -129,12 +143,11 @@ final protected class HMM[@specialized T <% Array[Int]](
 		lambda: HMMLambda, 
 		form: HMMForm, 
 		maxIters: Int)
-		(implicit f: DblVector => T)	extends PipeOperator[DblVector, HMMPredictor] {
+		(implicit f: DblVector => T) extends PipeOperator[DblVector, HMMPredictor] {
 	
 	check(maxIters)
 	
 	private val logger = Logger.getLogger("HMM")
-//	private[this] val state = HMMState(lambda, maxIters)
 	
 		/**
 		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
@@ -146,17 +159,22 @@ final protected class HMM[@specialized T <% Array[Int]](
 		 */
 	override def |> : PartialFunction[DblVector, HMMPredictor] = {
 		case obs: DblVector if( !obs.isEmpty) => {
-			Try { 
+			Try {
 				form match {
-					case EVALUATION => evaluate(obs)
-					case DECODING => decode(obs)
-				} 
-			} match {
+					case _ : EVALUATION => evaluate(obs)
+					case _ : TRAINING => evaluate(obs)
+					case _ : DECODING => decode(obs)
+				}
+			}.getOrElse(nullHMMPredictor)
+			/*
+			match {
 				case Success(prediction) => prediction
 				case Failure(e) => 
 					DisplayUtils.error("HMM.|> ", logger, e)
 					nullHMMPredictor
 			}
+			* 
+			*/
 		}
 	}
 	
@@ -167,14 +185,6 @@ final protected class HMM[@specialized T <% Array[Int]](
 		 * observations indexes)
 		 */
 	def decode(obs: T): HMMPredictor = ViterbiPath(lambda, obs).maxDelta
-	/*
-	{ 
-		val likelihood = ViterbiPath(lambda, obs).maxDelta
-		val stateIndices = state.QStar()
-		(likelihood, stateIndices)
-	}
-	* 
-	*/
 	
 		/**
 		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>

@@ -12,15 +12,14 @@
  */
 package org.scalaml.trading
 
-import org.scalaml.ga.{Operator, Gene, Discretization}
+import scala.collection._
+
+import org.scalaml.ga.{Operator, Gene, Discretization, Chromosome}
 import org.scalaml.core.Types.ScalaMl._
-import Signal._
-import scala.collection.mutable.ListBuffer
 import org.scalaml.core.XTSeries
-
 import org.scalaml.util.DisplayUtils
-import scala.collection.mutable.TreeSet
-
+import org.scalaml.trading.operator.SOperator
+import Signal._, Chromosome._
 
 		/**
 		 * <p>Trading Strategy defined as a list of trading signals. The signals are linked through
@@ -55,12 +54,9 @@ case class TradingStrategy(val name: String ="", signals: List[Signal]) {
 		 * @note Scala for Machine Learning Chapter 10: Genetic Algorithms 
 		 */
 class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
-	import org.scalaml.ga.Chromosome
-	import Chromosome._
-
 	require(nSignals > 0, s"StrategyFactory Number of signals $nSignals should be >0")
    
-	private[this] val signals  = new ListBuffer[Signal]
+	private[this] val signals  = new mutable.ListBuffer[Signal]
    
 		/**
 		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by 
@@ -72,23 +68,24 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 		 * @param obs Observations or scalar time series used by the signal added to the pool
 		 * @param weights weights for the observations used by the signal (optional)
 		 */
-	def += (id: String, target: Double, op: Operator, obs: DblVector, weights: DblVector): Unit = {
-	  	checkArguments(obs, weights)
+	def += (id: String, target: Double, op: SOperator, obs: DblVector, weights: DblVector): Unit = {
+		checkArguments(obs, weights)
 		signals.append(Signal(id, target, op, obs, weights) )
 	}
 	
 		/**
-		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by  its identifier, id,
-		 * target value, operator, the observations its acts upon and optionally the weights.</p>
+		 * <p>Create and add a new signal to the pool of this factory. The signal is defined by 
+		 * its identifier, id, target value, operator, the observations its acts upon and optionally 
+		 * the weights.</p>
 		 * @param id Identifier for the signal created and collected
 		 * @param target target value (or threshold) for the signal created and collected
 		 * @param op Operator of type SOperator of the signal added to the pool
 		 * @param xt Scalar time series used by the signal added to the pool
 		 * @param weights weights for the observations used by the signal (optional)
 		 */
-	def += (id: String, target: Double, op: Operator, xt: XTSeries[Double], weights: DblVector): Unit = {
-		checkArguments(xt.toArray, weights)
-		signals.append(Signal(id, target, op, xt.toArray,weights) )
+	def += (id: String, target: Double, op: SOperator, xt: XTSeries[Double], w: DblVector): Unit = {
+		checkArguments(xt.toArray, w)
+		signals.append(Signal(id, target, op, xt.toArray, w) )
 	}
 
 
@@ -100,9 +97,9 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 		 */
 	lazy val strategies: Pool[Signal] = {
 		implicit val ordered = Signal.orderedSignals
-        
+
 		val xss = new Pool[Signal]
-		val treeSet = new TreeSet[Signal] ++= signals.toList
+		val treeSet = new mutable.TreeSet[Signal] ++= signals.toList
 		val subsetsIterator = treeSet.subsets(nSignals)
 
 		while( subsetsIterator.hasNext) {

@@ -264,7 +264,7 @@ object DataSource {
 		new DataSource(s"$pathName$symName", normalize, true, 1, None)
 
 	private def check(pathName: String, headerLines: Int): Unit =  {
-		require(pathName != Types.nullString, 
+		require( !pathName.isEmpty, 
 				"DataSource.check Undefined path for data source")
 		require(headerLines >=0, 
 		   	s"DataSource.check Incorrect number of header lines $headerLines for data source")

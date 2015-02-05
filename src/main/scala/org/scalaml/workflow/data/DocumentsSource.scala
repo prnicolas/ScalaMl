@@ -35,7 +35,7 @@ import DocumentsSource._
 		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
 		 */
 final class DocumentsSource(val pathName: String) {
-	require( pathName != Types.nullString, 
+	require( !pathName.isEmpty, 
 			"DocumentsSource Cannot create a data source with undefined path")
 	   
 	private val logger = Logger.getLogger("TextSource")
@@ -72,8 +72,7 @@ final class DocumentsSource(val pathName: String) {
 	}
    
 
-	private def nextField(iter: Iterator[String]): Option[String] = 
-		iter.find( s=> (s != Types.nullString))
+	private def nextField(iter: Iterator[String]): Option[String] = iter.find( s=> !s.isEmpty)
 }
 
 

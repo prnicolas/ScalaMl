@@ -42,14 +42,30 @@ class SOperator(_id: Int) extends Operator {
 		 * @param number identifier for the operator
 		 * @return new trading signal operator
 		 */
-	override def apply(idx: Int): SOperator = new SOperator(idx)
+	override def apply(idx: Int): SOperator = SOperator.SOPERATORS(idx) 
 	override def toString: String = id.toString
 }
 
+	/**
+	 * Definition of the None operator
+	 */
 object NONE extends SOperator(0) { override def toString: String = "NA" }
+	/**
+	 * Definition of the 'Lesser than' operator
+	 */
 object LESS_THAN extends SOperator(1) { override def toString: String = "<" }
+	/**
+	 * Definition of the 'Greater than' operator
+	 */
 object GREATER_THAN extends SOperator(2) { override def toString: String = ">" }
+
+	/**
+	 * Definition of the 'equal' operator
+	 */
 object EQUAL extends SOperator(3) { override def toString: String = "=" }
 
 
+object SOperator {
+	protected val SOPERATORS = Array[SOperator](NONE, LESS_THAN, GREATER_THAN, EQUAL)
+}
 // ------------------------ EOF --------------------------------------------------------

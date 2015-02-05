@@ -56,7 +56,7 @@ object DisplayUtils {
 		 * @param length Length of the box the label has to be aligned
 		 */
 	final def align(label: String, length: Int): String = {
-		require(label != Types.nullString, "DisplayUtils.align Label is undefined")
+		require( !label.isEmpty, "DisplayUtils.align Label is undefined")
 		require(length < 128, 
 				s"DisplayUtils.align Size of label placement ${label.length} is incorrect")
 		

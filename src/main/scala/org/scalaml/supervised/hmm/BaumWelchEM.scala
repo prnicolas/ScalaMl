@@ -67,7 +67,6 @@ final protected class BaumWelchEM(
 				val _likelihood = frwrdBckwrdLattice
 				val diff = likelihood - _likelihood
 				likelihood = _likelihood
-		  	  
 				diff < eps
 			}) 
 			match {
@@ -102,7 +101,6 @@ final protected class BaumWelchEM(
 		_alpha.alpha
 	}
 }
-
 
 
 		/**

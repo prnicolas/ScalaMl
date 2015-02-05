@@ -85,7 +85,7 @@ object LogBinRegressionEval extends Eval {
 		 * Method to load and normalize the volume and volatility of a stock.
 		 */
 	private def load(fileName: String): Option[XYTSeries] = {
-	require(fileName != Types.nullString, 
+	require( !fileName.isEmpty, 
 			"LogBinRegressionEval.load Cannot load data from undefined fileName")
 			
 		Try {
@@ -95,11 +95,7 @@ object LogBinRegressionEval extends Eval {
 			val data = transform(cols)
 			src.close
 			data
-		} 
-		match {
-			case Success(xySeries) => Some(xySeries)
-			case Failure(e) => DisplayUtils.none(s"$name.load", logger, e)
-		}
+		} toOption
 	}
     
 	private def transform(cols: Array[Array[String]]): XYTSeries = {

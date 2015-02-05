@@ -157,7 +157,7 @@ object RDDSource {
    
    
 	private def check(pathName: String, headerLines: Int): Unit = {
-		require(pathName == Types.nullString, 
+		require( !pathName.isEmpty, 
 				"RDDSource.check Cannot create a RDD source with undefined path name")
 		require(headerLines >= 0, 
 				s"Cannot generate a RDD from an input file with $headerLines header lines")

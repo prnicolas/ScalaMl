@@ -15,16 +15,18 @@ package org.scalaml.app.chap10
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
-import org.scalaml.ga.{Operator, GASolver, GAConfig, Population, Chromosome, Discretization, GeneticIndices, Gene}
+import org.scalaml.ga._
 import org.scalaml.core.XTSeries
 import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblVector
+
+
 		/**
 		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract 
 		 * the best trading strategy for predicting the price movement of a stock.</p>
 		 * 
-		 * @see org.scalaml.gaGene 
+		 * @see org.scalaml.ga.{Gene, Chromosome} 
 		 * @see org.scalaml.trading.TradingStrategy
 		 * @author Patrick Nicolas
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / GA for trading strategies 
@@ -53,13 +55,15 @@ object GAEval extends Eval {
 	private val softLimit = (n: Int) => CUTOFF_SLOPE*n + CUTOFF_INTERCEPT	   
 	private val NUM_SIGNALS_PER_STRATEGY = 3 // Number of trading signals per trading strategy 
 																						// (= number of genes in a chromosome)
-   	    
+ 
 		// Default data conversion
 	implicit val digitize = new Discretization(R)
-   
 
-		// Define the scoring function for the chromosomes (i.e. Trading strategies)
-		// as the sum of the score of the genes (i.e. trading signals) in this chromosome (i.e strategy).
+
+		/**
+		 * Define the scoring function for the chromosomes (i.e. Trading strategies)
+		 * as the sum of the score of the genes (i.e. trading signals) in this chromosome (i.e strategy).
+		 */
 	val scoring = (chr: Chromosome[Signal]) =>  {
 		val signals: List[Gene] = chr.code
 		chr.unfitness = signals.foldLeft(0.0)((sum, s) => sum + s.score)
@@ -74,31 +78,37 @@ object GAEval extends Eval {
 		DisplayUtils.show(s"$header Evaluation genetic algorithm", logger)
   	 
 		Try {
+				// Create trading strategies and initialize the population
 			val strategies = createStrategies
 			val population = Population[Signal]((strategies.size <<4), strategies)
-	        
+
 			population.symbolic(s"Initial population: $population\n")
-	   
+
+				// Configure, instantiates the GA solver for trading signals
 			val config = GAConfig(XOVER, MU, MAX_CYCLES, softLimit)
 			val gaSolver = GASolver[Signal](config, scoring)
-	   
-			val best = gaSolver |> population
-			best.fittest(2)
-				.getOrElse(ArrayBuffer.empty)
-				.foreach(ch => DisplayUtils.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
-	        
+
+				// Extract the best population and the fittest chromosomes = trading strategies
+				// from this final population.
+			val bestPopulation = gaSolver |> population
+			bestPopulation.fittest(1)
+					.getOrElse(ArrayBuffer.empty)
+					.foreach(ch => DisplayUtils.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
+
 			DisplayUtils.show(s"$name run completed", logger)
-		} 
+		}
 		match {
 			case Success(n) => n
 			case Failure(e) => failureHandler(e)
 		}
 	}
-   
-	
+
+		/*
+		 * Create Trading strategies by loading price data from Yahoo financial tables.
+		 */
 	private def createStrategies: Pool[Signal] = {
 		val src = DataSource(path, false, true, 1)
-  	    
+
 		// Extract relative variation of price between two consecutive trading sessions
 		val price = src |> YahooFinancials.adjClose
 		val deltaPrice: DblVector = price.drop(1)
@@ -110,16 +120,16 @@ object GAEval extends Eval {
 		val deltaVolume: DblVector = volume.drop(1)
 											.zip(volume.dropRight(1))
 											.map(p => (p._2/p._1 - 1.0))
-		                                   
+
 				// extract relative variation of volatility between two consecutive trading sessions
 		val volatility = src |> YahooFinancials.relVolatility
 		val deltaVolatility = volatility.drop(1)
 										.zip(volatility.dropRight(1))
 										.map(p => (p._2/p._1 - 1.0))
-	    
+
 		// Relative volatility within the session
 		val relVolatility = src |> YahooFinancials.volatility
-		       
+
 		// Relative difference between close and open price
 		val relCloseOpen = src |> YahooFinancials.relCloseOpen
 
@@ -133,9 +143,9 @@ object GAEval extends Eval {
 		factory +=  ("Rel_volatility", 1.3, GREATER_THAN, relVolatility.drop(1), deltaPrice)
 		factory +=  ("Rel_close-Open", 0.8, LESS_THAN, relCloseOpen.drop(1), deltaPrice)
 		factory +=  ("Delta_volatility", 0.9, GREATER_THAN, deltaVolatility, deltaPrice)
-	    
+
 		factory.strategies
-   }
+	}
 }
 
 // ----------------  EOF ------------------------------------

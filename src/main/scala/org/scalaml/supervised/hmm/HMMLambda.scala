@@ -119,11 +119,9 @@ final protected class HMMLambda(
 		 * of observations is undefined.
 		 */
 	def estimate(state: HMMState, obs: Array[Int]): Unit = {
-		require(state != null, 
-				"HMMLambda.estimate Cannot estimate the log likelihood of HMM with undefined parameters")
-		require(obs != null && obs.size > 0, 
+		require(!obs.isEmpty, 
 				"HMMLambda.estimate Cannot estimate the log likelihood of HMM for undefined observations")
-  	       
+
 			// Recompute PI
 		pi = Array.tabulate(getN)(i => state.Gamma(0, i) )
   	 
@@ -148,27 +146,18 @@ final protected class HMMLambda(
 	
 		/**
 		 * <p>Normalize the state transition matrix A, emission matrix B and the
-		 * initial probabilities pi. The normalization used the linear interpolation
-		 * f(x) = (x - x_min)/x_max- x_min)</p>
+		 * initial probabilities pi. The normalization consists of computing the sum
+		 * of values of each row and divided each values by that sum.
+		 * f(x) = x/SUM{x}</p>
 		 */
 	def normalize: Unit = {
-			// Normalize the probabilities in the transition matrix A: 
-			// a -> (a - a_min)/(a_max-a_min)
-		var min = A.data.min
-		var delta = A.data.max - min
-		Range(0, A.size).foreach(i => A.data.update(i, (A.data(i)-min)/delta) )
-
-			// Normalize the probabilities in the emission matrix B: 
-			// b -> (b - b_min)/(b_max - b_min)
-		min = B.data.min
-		delta = B.data.max - min
-		Range(0, B.size).foreach(i => B.data.update(i, (B.data(i)-min)/delta) )
+		A.normalizeRows
+		B.normalizeRows
 
 			// Normalize the initial states probabilities PI as
 			// (pi - pi_min)/(pi_max - pi_min)
-		min = pi.min
-		delta = pi.max - min
-		Range(0, pi.size).foreach(i => pi.update(i, (pi(i)-min)/delta))
+		val sum = pi.sum
+		Range(0, pi.size).foreach(i => pi.update(i, pi(i)/sum) )
 	}
   
 		/**
@@ -249,12 +238,8 @@ object HMMLambda {
 		 * @param config Configuration for the HMM to generate an initial Lambda model
 		 */
 	def apply(config: HMMConfig): HMMLambda = {
-		 val A = Matrix[Double](config._N)
-		 A.fillRandom(0.0)
-		
-		 val B = Matrix[Double](config._N, config._M)
-		 B.fillRandom(0.0)
-		 
+		 val A = Matrix(config._N, config._N, 0.0)
+		 val B = Matrix(config._N, config._M, 0.0)
 		 val pi = Array.fill(config._N)(Random.nextDouble)
 		 new HMMLambda(A, B, pi, config._T)
 	}

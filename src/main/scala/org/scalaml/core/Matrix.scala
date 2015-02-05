@@ -37,7 +37,7 @@ import org.scalaml.util.FormatUtils
 		 *  @note Scala for Machine Learning
 		 */
 @implicitNotFound("Matrix  Conversion from type T to Double is undefined")
-final class Matrix[@specialized(Double, Int) T: ClassTag](
+class Matrix[@specialized(Double, Int) T: ClassTag](
 		val nRows: Int, 
 		val nCols: Int, 
 		val data: Array[T])
@@ -53,8 +53,8 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * @throws IllegalArgumentException if either the row index or the col index are out of bounds
 		 */
 	final def apply(i: Int, j: Int): T = {
-		require(i < nRows, s"Matrix.apply Row index $i is out of bounds")
-		require(j < nCols, s"Matrix.apply Column index $j is out of bounds")
+		require(i < nRows, s"Matrix.apply Row index $i should be < $nRows")
+		require(j < nCols, s"Matrix.apply Column index $j should be < $nCols")
 		data(i*nCols+j)
 	}
 
@@ -67,7 +67,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * two matrices
 		 * @return Sum of the difference
 		 */
-	final def diff(that: Matrix[T], distance: (T, T) => Double)(implicit f: T => Double): Double = {
+	final def diff(that: Matrix[T], distance: (T, T) => Double): Double = {
 		require(nRows == that.nRows, 
 				s"Matrix.diff Matrices have different number of rows: $nRows and ${that.nRows}")
 		require(nCols == that.nCols, 
@@ -88,6 +88,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		data.slice(idx, idx + nCols) 
 	}
 	
+
 		/**
 		 * Extract the content of a column for this matrix at a given row index
 		 * @param iCol index of the column to extract from the matrix
@@ -104,9 +105,9 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * @param iRow row index
 		 * @param t value used as quotient to the element of the row
 		 * @throws IllegalArgumentException if row index is out of bounds
-		 * #throws ImplicitNotFoundException of conversion from a double to T is undefined
+		 * @throws ImplicitNotFoundException of conversion from a double to T is undefined
 		 */
-	@implicitNotFound("Matrix./= Conversion from Double to type T is undefined")
+	@implicitNotFound("Matrix./= Conversion Double => [T] undefined")
 	def /= (iRow: Int, t: T)(implicit g: Double => T): Unit =  {
 		require(iRow >= 0 & iRow < nRows, s"Matrix.cols Row index $iRow is out of bounds ")
 		val i = iRow*nCols
@@ -143,20 +144,25 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		})
 		m
 	}
-   
+
 	@inline
 	final def size = nRows*nCols
 
 		/**
-		 * <p>Initialize this matrix with random values [mean, mean + 1.0] with a given mean.</p>
-		 * @param mean Mean value for the randomly generated value
-		 * throws ImplicitNotFoundException of conversion from a double to T is undefined
+		 * Method that normalizes the rows of a matrix so the sum of values is 1.0. This method
+		 * is not immutable
+		 * @throws ImplicitNotFoundException of conversion from a double to T is undefined
 		 */
-	@implicitNotFound("Matrix./= Conversion from Double to type T is undefined")
-	def fillRandom(mean: Double = 0.0)(implicit f: Double =>T): Unit = 
-		Range(0, data.size).foreach(i => data.update(i,  mean + Random.nextDouble))
-   
+	@implicitNotFound("Matrix.normalizeRows Conversion Double => [T] undefined")
+	def normalizeRows(implicit g: Double => T): Unit =
+		Range(0, nRows).foreach(iRow => {
+			val idx = iRow*nCols
+			val dataRow: DblVector = data.slice(idx, idx + nCols)
+			val sum = dataRow.sum
+			Range(0, nCols).foreach(j => data.update(iRow*nCols + j, dataRow(j)/sum) )
+		})
 
+	
 		/**
 		 * Formatted textual representation of the matrix with rows and column indices.
 		 * The matrix is presented as a table of rows
@@ -164,7 +170,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 	override def toString: String = 
 		data.zipWithIndex.map(x => { 
 			val x_str = FormatUtils.format(x._1, "", FormatUtils.ShortFormat)
-			if(x._2 % nCols == 0) s"$x_str\n" else s"$x_str,"
+			if((x._2 % nCols) == nCols-1) s"$x_str\n" else s"$x_str,"
 		}).mkString
 }
 
@@ -174,7 +180,7 @@ final class Matrix[@specialized(Double, Int) T: ClassTag](
 		 * the Matrix constructor and validate its parameters
 		 * @author Patrick Nicolas
 		 * @since February 23, 2014
-		 *  @note Scala for Machine Learning
+		 * @note Scala for Machine Learning
 		 */
 object Matrix {
 		/**
@@ -210,10 +216,33 @@ object Matrix {
 		 */
 	def apply[T: ClassTag](xy: Array[Array[T]])(implicit f: T => Double): Matrix[T] = 
 		new Matrix(xy.size, xy(0).size, xy.flatten)
-   
+	
+	
+		/**
+		 * Constructor of a matrix with a random value ranging from [mean, mean+1.0]
+		 * This method applies only to matrix of type double.
+		 * @param nRows Number of rows in the matrix
+		 * @param nCols Number of columns in the matrix
+		 * @param mean lower band of the interval of size 1.0 for which the random values are generated
+		 */
+	def apply(nRows: Int, nCols: Int, mean: Double): Matrix[Double] = {
+		val data = Array.tabulate(nCols*nRows)(_ => mean + Random.nextDouble)
+		Matrix[Double](nRows, nCols, data)
+	}
+		/**
+		 * Create an empty Matrix
+		 */
+	def empty[T: ClassTag](implicit f: T => Double): Matrix[T] = Matrix[T](0, 0, Array.empty[T])
+	
+		/**
+		 * Test if this matrix is empty
+		 * @param Matrix to evaluate
+		 * @return true if the matrix is empty, false otherwise
+		 */
+	final def isEmpty[T: ClassTag](m: Matrix[T]): Boolean = m.data.isEmpty
+	
 	final val MAX_NUM_ROWS = 8192
 	final val MAX_NUM_COLS = 8192
-	
 	private def check[T](nRows: Int, nCols: Int, data: Array[T]): Unit = {
 		require(nRows > 0 && nRows < MAX_NUM_ROWS, 
 				s"Matrix.check Number of rows $nRows is out of range")
@@ -221,11 +250,6 @@ object Matrix {
 				s"Matrix.check Number of rows $nCols is out of range")
 		require( !data.isEmpty, "Matrix.check Data in undefined")
 	}
-	
-		/**
-		 * Create an empty Matrix
-		 */
-	def empty[T: ClassTag](implicit f: T => Double): Matrix[T] = new Matrix[T](0, 0,  Array.empty[T])
 }
 
 // ------------------------------------  EOF ---------------------------------------------

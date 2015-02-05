@@ -134,6 +134,7 @@ protected object AllTests extends ScalaMlTest {
 				
 			// Chapter 10
 		evaluate(GAEval)
+		evaluate(GAFunctionMin)
 
 			// Chapter 11
 		evaluate(QLearningEval, Array[String]("maxReward", "2", "4"))

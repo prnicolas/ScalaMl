@@ -43,15 +43,18 @@ The best approach to learn about any particular learning algorithm is to
 
 <h2 id="updates">Updates</h2>
 Version <b>0.98.1</b><br>
+- Added function minimization as test cases for Genetic algorithms<br>
+- Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
 - Standardized string representation of collection using mkString<br>
 - Added plots to the performance benchmark of parallel collection(Chap. 12)<br>
-- Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail 
-recursion<br>
-- Expanded scaladocs with reference to the chapters of "Scala for Machine Learning" 
+- Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices<br>
+- Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
+- Replace some enumeration by case classes<br>
+- Added scalastyle options<br>
 Version <b>0.98</b><br>
 - Added comments to test cases<br>
 - Added <i>Scala source guide</i>
-- Wrapped Scalatest into future<br>
+- Wrapped Scalatest routines into futures<br>
 - Expand the number of test/evaluations from 39 to 60<br>
 Version <b>0.97</b><br>
 - Initial implementation<br>
