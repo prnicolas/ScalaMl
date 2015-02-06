@@ -142,11 +142,13 @@ object Signal {
 		new Signal(id, target, op, Array.empty, Array.empty)
 
 		/**
-		 * Define the ordering of a signal using an anonymous function
+		 * Define the ordering of a set of trading signals using the signal id.
+		 * Ordering is only used for generating unique trading strategies as
+		 * unique sequence of trading signals.
 		 */
 	val orderedSignals = Ordering.by((signal: Signal) => signal.id)
-   
-	val operatorFuncMap = Map[SOperator, (Double, Double) =>Double](
+
+	protected val operatorFuncMap = Map[SOperator, (Double, Double) =>Double](
 		LESS_THAN -> ((x: Double, target: Double) => target - x),
 		GREATER_THAN -> ((x: Double, target: Double) => x -target),
 		EQUAL -> ((x: Double, target: Double) => Math.abs(x -target)),

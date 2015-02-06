@@ -19,8 +19,9 @@ Source code guidelines are defined in the companion document <b>SourceCodeGuide.
 
 The examples are related to investment portfolio management and trading strategies. For the readers interested either in mathematics or the techniques implemented in this library, I strongly recommend the following readings:
 <ul>
-<li>"Machine Learning: A Probabilistic Perspective" K. Murphy</li>
-<li>"The Elements of Statistical Learning" T. Hastie, R. Tibshirani, J. Friedman</li>
+<li>"Machine Learning: A Probabilistic Perspective" K. Murphy - MIT Press - 2012</li>
+<li>"The Elements of Statistical Learning" T. Hastie, R. Tibshirani, J. Friedman - Springer - 2001</li>
+<li>"Pattern Recognition and Machine Learning" C. Bishop - Springer 2006</li>
 </ul>
 The real-world examples, related to financial and market analysis, used for the sole purpose of illustrating the machine learning techniques. They do not constitute a recommendation or endorsement of any specific investment management or trading techniques.<br>
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
@@ -43,10 +44,10 @@ The best approach to learn about any particular learning algorithm is to
 
 <h2 id="updates">Updates</h2>
 Version <b>0.98.1</b><br>
-- Added function minimization as test cases for Genetic algorithms<br>
+- Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
 - Standardized string representation of collection using mkString<br>
-- Added plots to the performance benchmark of parallel collection(Chap. 12)<br>
+- Added plots to the performance benchmark of parallel collection (Chap. 12)<br>
 - Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices<br>
 - Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
 - Replace some enumeration by case classes<br>

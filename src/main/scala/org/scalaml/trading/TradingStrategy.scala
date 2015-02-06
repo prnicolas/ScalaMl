@@ -92,16 +92,19 @@ class StrategyFactory(nSignals: Int) (implicit discr: Discretization){
 		/**
 		 * <p>Generates the trading strategies as any unique combinations of <b>nSignals</b>
 		 * of signals currently in the pool of signals. The list of strategies is computed on demand
-		 * only once
+		 * only once (lazy value).
 		 * @return strategies extracted from the pool of signals.
 		 */
 	lazy val strategies: Pool[Signal] = {
+			// Arbitrary ordering of signals for sorted tree set.
 		implicit val ordered = Signal.orderedSignals
 
 		val xss = new Pool[Signal]
 		val treeSet = new mutable.TreeSet[Signal] ++= signals.toList
 		val subsetsIterator = treeSet.subsets(nSignals)
 
+			// Generates array of trading strategy by iterating 
+			// through the tree set.
 		while( subsetsIterator.hasNext) {
 			val subset = subsetsIterator.next
 			val signalList: List[Signal] = subset.toList
