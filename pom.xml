@@ -10,6 +10,34 @@
     <organization>
         <name>Patrick Nicolas</name>
     </organization>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -41,5 +69,47 @@
             <artifactId>spark-mllib_2.10</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>CRF</groupId>
+            <artifactId>CRF</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/CRF.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>colt</groupId>
+            <artifactId>colt</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/colt.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>crf-trove</groupId>
+            <artifactId>crf-trove</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/CRF-Trove_3.0.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>lbfgs</groupId>
+            <artifactId>lbfgs</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/LBFGS.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>libsvm</groupId>
+            <artifactId>libsvm</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/libsvm_sml.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.10</artifactId>
+            <version>2.2.4</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
