@@ -1,0 +1,69 @@
+China,China
+china,China
+chinese,China
+Chinese,China
+Beijing,China
+Shanghai,China
+Elon Musk,Musk
+Elon,Musk
+Battery,Battery
+battery,Battery
+batteries,Battery
+charger,Battery
+Supercharger,Battery
+stations,Battery
+station,Battery
+charge,Battery
+Gigafactor,Battery
+Model S,TSLA
+Model X,TSLA
+TSLA,TSLA
+Tesla Motors,TSLA
+Tesla,TSLA
+tesla,TSLA
+Tesla's,TSLA
+Upside,Upside
+upside,Upside
+upbeat,Upside
+positive,Upside
+boost,Upside
+bullish,Upside
+accelerate,Upside
+positives,Upside
+lucrative,Upside
+expand,Upside
+undervalued,Upside
+opportunity,Upside
+overperform,Upside
+turn positive,Upside
+reduce costs,Upside
+cost reduction,Upside
+increase revenue,Upside
+success,Upside
+safer,Upside
+low valuation,Upside
+winning,Upside
+potential,Upside
+Downside,Downside
+downside,Downside
+problem,Downside
+negative,Downside
+negatives,Downside
+overvalued,Downside
+risk,Downside
+risks,Downside
+risky,Downside
+issues,Downside
+overpriced,Downside
+unrealistic,Downside
+expensive,Downside
+excessive,Downside
+debt,Downside
+contract,Downside
+delays,Downside
+downturn,Downside
+short interest,Downside
+bearish,Downside
+high valuation,Downside
+defects,Downside
+underperform,Downside
