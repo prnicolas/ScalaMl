@@ -46,6 +46,7 @@ The best approach to learn about any particular learning algorithm is to
 Version <b>0.98.2</b><br>
 - Updated Errata.pdf file<br>
 - Reviewed and corrected Mathematical formula in Chapter 1, 2, 3 and 11<br>
+
 Version <b>0.98.1</b><br>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
@@ -55,11 +56,13 @@ Version <b>0.98.1</b><br>
 - Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
 - Replace some enumeration by case classes<br>
 - Added scalastyle options<br>
+
 Version <b>0.98</b><br>
 - Added comments to test cases<br>
 - Added <i>Scala source guide</i>
 - Wrapped Scalatest routines into futures<br>
 - Expand the number of test/evaluations from 39 to 60<br>
+
 Version <b>0.97</b><br>
 - Initial implementation<br>
 
