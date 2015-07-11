@@ -1,4 +1,4 @@
-<b>Scala for Machine Learning</b> Version <b>0.98.1</b><br>
+<b>Scala for Machine Learning</b> Version <b>0.98.2</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
 Source code, data files and utilities related to "Scala for Machine Learning"<br>
@@ -43,6 +43,9 @@ The best approach to learn about any particular learning algorithm is to
 <b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.1 and SBT 0.13+ (see installation section for deployment.<br>
 
 <h2 id="updates">Updates</h2>
+Version <b>0.98.2</b><br>
+- Updated Errata.pdf file<br>
+- Reviewed and corrected Mathematical formula in Chapter 1, 2, 3 and 11<br>
 Version <b>0.98.1</b><br>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
