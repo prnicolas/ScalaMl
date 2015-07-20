@@ -1,6 +1,23 @@
-<b>Scala for Machine Learning</b> Version <b>0.98.1</b><br>
+<b>Scala for Machine Learning</b> Version <b>0.98.2</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
+<b>Announcement: 2nd edition</b><br>
+The book is in the process of a second edition with some major corrections/updates in the code base:<br>
+- Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
+- Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
+- Correction and clarification of some statistical formulas.<br>
+- Implementation of magnet pattern for overloaded methods with different return types<br>
+- Standardization of the application of tail recursion for dynamic programming algorithms<br>
+- Uses of views to reduce uncessary generation of objects<br>
+- Introduction of streams in Chapter 12<br>
+- Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
+- Improved (consistency) scaladoc documentation<br>
+- New test cases<br>
+- Updates on version of Scala, Akka and Apache Spark.
+<br>
+<u>Note</u>: The release of new code base (version 0.99) is expected mid September.
+<br>
+<br>
 Source code, data files and utilities related to "Scala for Machine Learning"<br>
 <a href="#overview">Overview</a><br>
 <a href="#documentation">Documentation</a><br>
