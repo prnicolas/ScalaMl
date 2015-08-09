@@ -59,8 +59,12 @@ class Stats[T <% Double](values: DVector[T]) {
 		/**
 		 * Computation of variance for the array values
 		 */
-	lazy val variance = (_stats.sumSqr - mean*mean*values.size)/(values.size-1)
-		 
+	lazy val variance: Double = {
+		val n = values.size
+		val E2 = _stats.sumSqr / n
+		(E2 - math.pow(mean, 2)) * n / (n - 1)
+	}
+	
 		/**
 		 * Computation of standard deviation for the array values
 		 */
