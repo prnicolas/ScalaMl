@@ -8,6 +8,7 @@ The book is in the process of a significant revision with some major corrections
 - Correction and clarification of some statistical formulas.<br>
 - Tail recursion for logistic regression, genetic algorithm, Q-Learning and hidden Markov<br>
 - Implementation of magnet pattern for overloaded methods with different return types<br>
+- Definition of covariant and contravariant functors<br>
 - Fix bugs in training of Multilayer perceptron<br>
 - Monadic kernel functions<br>
 - Introduction to manifolds<br>
