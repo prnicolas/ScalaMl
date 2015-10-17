@@ -135,27 +135,8 @@ object Design {
 		 * The pipe operator
 		 */
 	trait PipeOperator[T, U] extends _FCT[T, U] {
-    val 
 		def |> : PartialFunction[T, U]
 	}
-
-		/**
-		 * Companion object for the PipeOperator trait. It used to 
-		 * define the identity (or zero) element as an instance that
-		 * implement the |> operator as an identity function.
-		 * @author Patrick Nicolas
-		 * @since March 4, 2014 0.98.2
-		 * @version 0.98.2
-		 * @see Scala for Machine Learning Chapter 2 Hello World!
-		 */
-	/*
-	object PipeOperator {
-		def identity[T, U] = new PipeOperator[T,U] { 
-			override def |> : PartialFunction[T, U] = { case t: T => t  }
-		}
-	}
-	* 
-	*/
 }
 
 // --------------------------------------------------  EOF ----------------------------------------
