@@ -1,21 +1,28 @@
 <b>Scala for Machine Learning</b> Version <b>0.98.2</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
-<b>Announcement: 2nd edition</b><br>
-The book is in the process of a second edition with some major corrections/updates in the code base:<br>
+<b>Announcement: revised edition v. 0.99 (est. end of October 2015)</b><br>
+The book is in the process of a significant revision with some major corrections/updates in the code base:<br>
 - Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
 - Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
 - Correction and clarification of some statistical formulas.<br>
+- Tail recursion for logistic regression, genetic algorithm, Q-Learning and hidden Markov<br>
 - Implementation of magnet pattern for overloaded methods with different return types<br>
+- Fix bugs in training of Multilayer perceptron<br>
+- Monadic kernel functions<br>
+- Introduction to manifolds<br>
+- Fisher-Yates shuffle for stochastic and batched gradient descent<br>
+- Execution profiling for optimization<br>
+- Class for K-fold validation
 - Standardization of the application of tail recursion for dynamic programming algorithms<br>
-- Uses of views to reduce uncessary generation of objects<br>
-- Introduction of streams in Chapter 12<br>
+- Uses of views to reduce uncessary generation of objects in pipeline<br>
+- Introduction to streams in Chapter 12<br>
 - Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
-- Improved (consistency) scaladoc documentation<br>
+- Improved scaladoc documentation<br>
 - New test cases<br>
 - Updates on version of Scala, Akka and Apache Spark.
 <br>
-<u>Note</u>: The release of new code base (version 0.99) is expected mid September.
+<u>Note</u>: The release of new code base (version 0.99) is expeced end of October
 <br>
 <br>
 Source code, data files and utilities related to "Scala for Machine Learning"<br>
@@ -60,10 +67,6 @@ The best approach to learn about any particular learning algorithm is to
 <b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.1 and SBT 0.13+ (see installation section for deployment.<br>
 
 <h2 id="updates">Updates</h2>
-Version <b>0.98.2</b><br>
-- Updated Errata.pdf file<br>
-- Reviewed and corrected Mathematical formula in Chapter 1, 2, 3 and 11<br>
-
 Version <b>0.98.1</b><br>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
@@ -73,13 +76,11 @@ Version <b>0.98.1</b><br>
 - Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
 - Replace some enumeration by case classes<br>
 - Added scalastyle options<br>
-
 Version <b>0.98</b><br>
 - Added comments to test cases<br>
 - Added <i>Scala source guide</i>
 - Wrapped Scalatest routines into futures<br>
 - Expand the number of test/evaluations from 39 to 60<br>
-
 Version <b>0.97</b><br>
 - Initial implementation<br>
 
