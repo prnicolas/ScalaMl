@@ -1,25 +1,35 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>Patrick Nicolas</groupId>
-    <artifactId>scalaml_2.10</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <groupId>PatrickNicolas</groupId>
+    <artifactId>scalaml_2.11</artifactId>
     <packaging>jar</packaging>
-    <description>scalaml</description>
-    <version>0.9</version>
-    <name>scalaml</name>
+    <description>Scala for Machine Learning</description>
+    <version>0.99</version>
+    <name>ScalaMl</name>
     <organization>
         <name>Patrick Nicolas</name>
     </organization>
-    <dependencies>
-        <dependency>
+  <profiles>
+    <profile>
+      <id>scala-2.11</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <scalaVersion>2.11.2</scalaVersion>
+        <scalaBinaryVersion>2.11.2</scalaBinaryVersion>
+      </properties>
+      <dependencies>
+          <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.10.3</version>
-        </dependency>
+            <version>${scalaVersion}</version>
+          </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.3</version>
+            <version>3.5</version>
         </dependency>
         <dependency>
             <groupId>org.jfree</groupId>
@@ -28,18 +38,137 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-actor_2.10</artifactId>
-            <version>2.1.0</version>
+            <artifactId>akka-actor_2.11</artifactId>
+            <version>2.3.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.10</artifactId>
-            <version>1.0.0</version>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>1.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_2.10</artifactId>
-            <version>1.0.0</version>
+            <artifactId>spark-mllib_2.11</artifactId>
+            <version>1.5.0</version>
         </dependency>
-    </dependencies>
+        <dependency>
+        	<groupId>org.scalatest</groupId>
+        	<artifactId>scalatest_2.11</artifactId>
+         	<version>2.2.2</version>
+        </dependency>
+        <dependency>
+          <groupId>iitb</groupId>
+        	<artifactId>CRF</artifactId>
+        	<version>1.1</version>
+        	<scope>system</scope>
+        	<systemPath>${project.basedir}/lib/CRF-1.1.jar</systemPath>
+         </dependency>
+         <dependency>
+          	<groupId>libsvm</groupId>
+        	<artifactId>libsvm-svml</artifactId>
+        	<version>3.18</version>
+        	<scope>system</scope>
+          	<systemPath>${project.basedir}/lib/libsvm_sml-3.18.jar</systemPath>
+         </dependency>
+         <dependency>
+          	<groupId>gnu</groupId>
+        	<artifactId>trove</artifactId>
+        	<version>3.0.2</version>
+        	<scope>system</scope>
+          	<systemPath>${project.basedir}/lib/Trove-3.0.2.jar</systemPath>
+         </dependency>
+      </dependencies>
+      <repositories>
+        <repository>
+            <id>AkkaRepository</id>
+            <name>Akka Repository</name>
+            <url>http://repo.akka.io/releases/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+          <id>project.local</id>
+          <name>project</name>
+          <url>file:${project.basedir}/repo</url>
+        </repository>
+     </repositories>
+    </profile>
+  </profiles>
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <plugins>
+                <!--  Maven compile plug in -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>3.2.1</source>
+          <target>3.2.1</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+               <!--  Scalatest plug in -->
+      <plugin>
+       <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-maven-plugin</artifactId>
+      <version>1.0</version>
+      <configuration>
+        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+        <junitxml>.</junitxml>
+        <filereports>WDF TestSuite.txt</filereports>
+      </configuration>
+      <executions>
+         <execution>
+           <id>test</id>
+           <goals>
+              <goal>test</goal>
+           </goals>
+        </execution>
+      </executions>
+     </plugin>
+          <!--  Maven scaladoc plug in -->
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.2</version>
+     	   <configuration> 
+           <sourceDir>src/main/scala</sourceDir>
+           <excludes>
+             <exclude>**/lib/*.jar</exclude>
+           </excludes>
+         </configuration>
+       </plugin>
+            <!--  Maven Scala compiler plug in -->
+       <plugin>
+         <groupId>net.alchim31.maven</groupId>
+         <artifactId>scala-maven-plugin</artifactId>
+         <version>3.2.1</version>
+         <executions>
+           <execution>
+             <goals>
+               <goal>compile</goal>
+               <goal>testCompile</goal>
+             </goals>
+           </execution>
+         </executions>
+         <configuration>
+           <jvmArgs>
+             <jvmArg>-Xms512m</jvmArg>
+             <jvmArg>-Xmx2048m</jvmArg>
+           </jvmArgs>
+           <args>
+            <!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+            <arg>-nobootcp</arg>
+          </args>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

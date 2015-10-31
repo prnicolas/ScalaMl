@@ -12,6 +12,7 @@ The book is in the process of a significant revision with some major corrections
 - Fix bugs in training of Multilayer perceptron<br>
 - Monadic kernel functions<br>
 - Introduction to manifolds<br>
+- Introduction to Convolution Neural Network<br>
 - Fisher-Yates shuffle for stochastic and batched gradient descent<br>
 - Execution profiling for optimization<br>
 - Class for K-fold validation
@@ -20,8 +21,7 @@ The book is in the process of a significant revision with some major corrections
 - Introduction to streams in Chapter 12<br>
 - Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
 - Improved scaladoc documentation<br>
-- New test cases<br>
-- Updates on version of Scala, Akka and Apache Spark.
+- Updates on version of Scala (2.11.2) , Akka (2.3.4) and Apache Spark (1.5.0)
 <br>
 <u>Note</u>: The release of new code base (version 0.99) is expeced end of October
 <br>
@@ -65,9 +65,12 @@ The best approach to learn about any particular learning algorithm is to
 4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
 <br>
 <b>Operating system</b>: None<br>
-<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.3/2.10.4 or 2.11.1 and SBT 0.13+ (see installation section for deployment.<br>
+<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 or 2.11.2 and SBT 0.13+ (see installation section for deployment.<br>
 
 <h2 id="updates">Updates</h2>
+Version <b>0.98.2</b><br>
+- Fixes bugs with SVR and hidden Markov model - Decoding
+- Expand the number of test/evaluations from 60 to 66<br>
 Version <b>0.98.1</b><br>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
@@ -151,10 +154,10 @@ jfreechart-1.0.17/lib/jfreechart-1.0.17.jar<br>
 com.typesafe/config/1.2.1/bundles/config.jar<br>
 akka-actor_2.10-2.2.3.jar<br>
 scalatest_2.11.jar<br>
-spark-assembly-1.0.2-hadoop2.4.0.jar<br>
+spark-assembly-1.3.0-hadoop2.4.0.jar<br>
 <b>Scala 2.11.x related libraries</b><br>
 com.typesafe/config/1.2.2/bundles/config.jar<br>
 scalatest_2.11.jar<br>
 akka-actor_2.11-2.3.6.jar<br>
-spark-assembly-1.1.0-hadoop2.4.0.jar
+spark-assembly-1.5.0-hadoop2.4.0.jar
 
