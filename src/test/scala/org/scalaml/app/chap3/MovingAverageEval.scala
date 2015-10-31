@@ -1,35 +1,43 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap3
 
-import org.scalaml.core.Types.ScalaMl.DblVector
-import org.scalaml.core.XTSeries
+import scala.util.Try
+import org.apache.log4j.Logger
+
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblArray}
+import org.scalaml.stats.XTSeries
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.util.{FormatUtils, DisplayUtils}
-import org.scalaml.filtering.{SimpleMovingAverage, WeightedMovingAverage, ExpMovingAverage}
+import org.scalaml.util.{FormatUtils, DisplayUtils, LoggingUtils}
+import org.scalaml.filtering.movaverage._
 import org.scalaml.app.Eval
-import XTSeries.DblSeries
+import LoggingUtils._, YahooFinancials._, XTSeries._, DisplayUtils._, FormatUtils._
 
 		/**
-		 * <p><b>Purpose:</b>Singleton used to test the moving average algorithms
+		 * '''Purpose:'''Singleton used to test the moving average algorithms
 		 * @author Patrick Nicolas
-		 * @note Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
+		 * @since 0.98  (March 7, 2014)
+		 * @version 0.99
+		 * @see Scala for Machine Learning Chapter 3 "Data Pre-processing" / Moving averages
+		 * @see org.scalaml.filtering.MovingAverage
 		 */
 object MovingAveragesEval extends FilteringEval {
-	import scala.util.{Try, Success, Failure}
-	import org.apache.log4j.Logger
-	import YahooFinancials._
 	
 		/**
 		 * Name of the evaluation 
@@ -42,66 +50,97 @@ object MovingAveragesEval extends FilteringEval {
 	private val OUTPUT_PATH = "output/chap3/mvaverage"
 	  
 		/**
-		 * <p>Execution of the scalatest for <b>SimpleMovingAveragte</b>, <b>WeightedMovingAverage</b>
-		 * and <b>ExpMovingAverage</b> classes
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * Execution of the scalatest for '''SimpleMovingAveragte''', '''WeightedMovingAverage'''
+		 * and '''ExpMovingAverage''' classes
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
+		 * 	
+		 * Exceptions thrown during the execution of the tests are caught by the wrapper or handler
+		 * test method in Eval trait defined as follows:
+		 * {{{
+		 *    def test(args: Array[String]) =
+		 *      Try(run(args)) match {
+		 *        case Success(n) => ...
+		 *        case Failure(e) => ...
+		 * }}}
+		 * The tests can be executed through ''sbt run'' or individually by calling 
+		 * ''TestName.test(args)'' (i.e. DKalmanEval.test(Array[String]("IBM") )
 		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	override def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Evaluation moving averages", logger)
+	override protected def run(args: Array[String]): Int = {
+		import scala.language.postfixOps
+	   
+		show(s"$header Evaluation moving averages")
+		
 		if(args.size > 1) {
 			val symbol = args(0)
 			val p = args(1).toInt
 			val p_2 = p >>1
 			val w = Array.tabulate(p)(n => if( n == p_2) 1.0 else 1.0/(Math.abs(n -p_2)+1))
-			val weights: DblVector = w.map { _ / w.sum }
-			DisplayUtils.show(FormatUtils.format(weights, "Weights", FormatUtils.ShortFormat), logger)
-	     
-			val dataSource = DataSource(RESOURCE_PATH + symbol + ".csv", false)
-			Try {
-				val price = dataSource |> YahooFinancials.adjClose
-				val sMvAve = SimpleMovingAverage[Double](p)  
-				val wMvAve = WeightedMovingAverage[Double](weights)
-				val eMvAve = ExpMovingAverage[Double](p)
+			val sum = w.sum
+			val weights: DblArray = w.map { _ / sum }
+			
+
+			val dataSrc = DataSource(s"$RESOURCE_PATH$symbol.csv", false)
+			  
+					// Extract the partial functions associated to the simple, weighted and
+					// exponential moving averages
+			val pfnSMvAve = SimpleMovingAverage[Double](p) |> 
+			val pfnWMvAve = WeightedMovingAverage[Double](weights) |>
+			val pfnEMvAve = ExpMovingAverage[Double](p) |>
 		
-				val dataSink = DataSink[Double](OUTPUT_PATH + p.toString + ".csv")
-				val results = price :: 
-										sMvAve.|>(price) :: 
-										eMvAve.|>(price) :: 
-										wMvAve.|>(price) :: 
-										List[DblSeries]()
-	
-				dataSink |> results
-				DisplayUtils.show(s"$name Results for [$START_DISPLAY, $WINDOW_DISPLAY] values", logger)
-				results.foreach(ts => {
-					val displayedValues = ts.toArray.drop(START_DISPLAY).take(WINDOW_DISPLAY)
-					DisplayUtils.show(FormatUtils.format(displayedValues, "X", FormatUtils.ShortFormat), logger)
-				})
+			val results: Try[Int] = for {
+				price <- dataSrc.get(adjClose)
+					// Executes the simple moving average
+				if( pfnSMvAve.isDefinedAt( price))
+					sMvOut <- pfnSMvAve(price)
+					
+					// Executes the exponential moving average
+				if( pfnEMvAve.isDefinedAt( price))
+					eMvOut <- pfnEMvAve(price)
 				
-				display(List[DblSeries](results(0), results(1)), "Simple Moving Average")
-				display(List[DblSeries](results(0), results(2)), "Exponential Moving Average")
-				display(List[DblSeries](results(0), results(3)), "Weighted Moving Average")
+					// Executes the weighted moving average
+				if(pfnWMvAve.isDefinedAt( price) )
+						wMvOut <- pfnWMvAve(price)
 			}
-			match {
-				case Success(n) => n
-				case Failure(e) => failureHandler(e)
+			yield {
+				val dataSink = DataSink[Double](s"$OUTPUT_PATH$p.csv")
+				
+					// Collect the results to be saved into a data sink (CSV file)
+				val results = List[DblVector](price, sMvOut, eMvOut, wMvOut)
+				dataSink |> results
+				  
+				show(s"Results for [$START_DISPLAY, $WINDOW_DISPLAY] values")
+				
+				results.map( window(_)).map( display(_)) 
+				display(price, sMvOut, "Simple Moving Average")
+				display(price, eMvOut, "Exponential Moving Average")
+				display(price, wMvOut, "Weighted Moving Average")
 			}
+			results.get
 		}
+		
 		else 
-			DisplayUtils.error(s"$name Incorrect arguments for command line", logger)
+			error(s"Incorrect args. command line required 2")
 	}
 	
-	private def display(results: List[DblSeries], label: String): Int = {
-		import org.scalaml.plots.{LinePlot, LightPlotTheme}
+
+	private def window(series: DblVector): DblVector = 
+			series.drop(START_DISPLAY).take(WINDOW_DISPLAY)
+
+	private def display(values: DblVector): Unit = show(format(values, "X", SHORT))
+	
+	private def display(price: DblVector, smoothed: DblVector, label: String): Int = {
+		import org.scalaml.plots.{LinePlot, LightPlotTheme, Legend}
 		
-		val labels = List[String]( 
+		val labels = Legend( 
 			name, label, "Trading sessions", "Stock price"
 		)
-		val dataPoints: Array[(DblVector, String)] = results.map(_.toArray).toArray.zip(labels)
+		
+		val dataPoints = List[DblVector](price,smoothed).map(_.toVector).zip(labels.toList)
 		LinePlot.display(dataPoints.toList, labels, new LightPlotTheme)
 		0
 	}
 }
+
 
 // --------------------------------------  EOF -------------------------------
