@@ -69,13 +69,12 @@ The best approach to learn about any particular learning algorithm is to
 <b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 (for Apache Spark) or 2.11.2 (for Akka) and SBT 0.13+ (see installation section for deployment.<br>
 
 <h2 id="history">History</h2>
-<h3>0.99 (10/30/2015)</h3>
+<h4>0.99 (10/30/2015)</h4>
 See <a href="#latestRelease">Latest release</a><br>
-<h3>0.98.2 (03/19/2015)</h3>
+<h4>0.98.2 (03/19/2015)</h4>
 - Fixes bugs with SVR and hidden Markov model - Decoding
 - Expand the number of test/evaluations from 60 to 66<br>
-<h3>0.98.1 (02/14/2015)</h3>
-<br>
+<h4>0.98.1 (02/14/2015)</h4>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
 - Standardized string representation of collection using mkString<br>
@@ -84,12 +83,12 @@ See <a href="#latestRelease">Latest release</a><br>
 - Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
 - Replace some enumeration by case classes<br>
 - Added scalastyle options<br>
-<h3>0.98 (12/02/2015)</h3>
+<h4>0.98 (12/02/2015)</h4>
 - Added comments to test cases<br>
 - Added <i>Scala source guide</i>
 - Wrapped Scalatest routines into futures<br>
 - Expand the number of test/evaluations from 39 to 60<br>
-<h3>0.97</h3>
+<h4>0.97</h4>
 - Initial implementation<br>
 
 <h2 id="project">Project Components</h2>
@@ -123,6 +122,11 @@ To generate scala doc for the library<br><i><b> $(ROOT)/sbt doc</b></i><br>
 To generate scala doc for the examples<br><i><b> $(ROOT)/sbt test:doc</b></i><br>
 To generate report for compliance to Scala style guide:<br><b><i> $(ROOT)/sbt scalastyle</i></b><br>
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
+<h4>Maven</h4>
+A simple <i>pom.xml</i> is available to build the library and execute the test cases:<br>
+<i>mvn compile</i> to compile the library
+<i>mvn test</i> to compile the examples
+ 
 <h2 id="run">Run examples</h2>
 <h3>examples in a chapter</h3>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
@@ -149,21 +153,21 @@ The examples have been built and tested with the following libraries:<br>
 CRF-Trove_3.0.2.jar<br>
 LBFGS.jar<br>
 colt.jar<br>
-CRF.jar<br>
-commons-math3-3.3.jar<br>
-libsvm.jar<br>
+CRF-1.1.jar<br>
+commons-math3-3.5.jar<br>
+libsvm_sml-3.18.jar<br>
 jfreechart-1.0.17/lib/jcommon-1.0.21.jar<br>
 jfreechart-1.0.17/lib/servlets.jar<br>
 junit-4.11.jar<br>
 jfreechart-1.0.17/lib/jfreechart-1.0.17.jar<br>
-<b>Scala 2.10.x related libraries</b><br>
+<b>Scala 2.10 related libraries</b><br>
 com.typesafe/config/1.2.1/bundles/config.jar<br>
 akka-actor_2.10-2.2.3.jar<br>
-scalatest_2.11.jar<br>
-spark-assembly-1.3.0-hadoop2.4.0.jar<br>
-<b>Scala 2.11.x related libraries</b><br>
+scalatest_2.1.16.jar<br>
+spark-assembly-1.5.0-hadoop2.4.0.jar<br>
+<b>Scala 2.11. related libraries</b><br>
 com.typesafe/config/1.2.2/bundles/config.jar<br>
-scalatest_2.11.jar<br>
-akka-actor_2.11-2.3.6.jar<br>
+scalatest_2.2.2.jar<br>
+akka-actor_2.11-2.3.4.jar<br>
 spark-assembly-1.5.0-hadoop2.4.0.jar
 
