@@ -124,24 +124,24 @@ To generate report for compliance to Scala style guide:<br><b><i> $(ROOT)/sbt sc
 To compile all examples:<br><i><b>$(ROOT)/sbt test:compile</b></i><br>
 <h4>Maven</h4>
 A simple <i>pom.xml</i> is available to build the library and execute the test cases:<br>
-<i>mvn compile</i> to compile the library
-<i>mvn test</i> to compile the examples
+<b>$(ROOT)/mvn compile</b> to compile the library<br>
+<b>$(ROOT)/mvn test</b> to compile and run the examples 
  
 <h2 id="run">Run examples</h2>
-<h3>examples in a chapter</h3>
+<h3>Examples in a chapter</h3>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
-<b>$sbt<br>
+<b>$(ROOT)/$sbt<br>
 &#62;test-only org.scalaml.app.chap4.Chap4</b>
 <h3>All examples</h3>
 To run all examples with output configuration:<br>
-$<b>sbt "test:run options"</b> where options is a list of possible outputs<ul>
+<b>$(ROOT)/sbt "test:run options"</b> where options is a list of possible outputs<ul>
 <li><b>console</b> to output results onto standard output</li> 
 <li><b>logger</b> to output results into a log file (log4j)</li>
 <li><b>chart</b> to plot results using <i>jFreeChart</i></li>
 </ul>
-$<b>sbt "test:run log chart"</b> write test results into a log and charts<br>
-$<b>sbt test:run</b> write test results into the standard output and the charts.<br>
-<h4>maven</h4>
+<b>$(ROOT)/sbt "test:run log chart"</b> write test results into a log and charts<br>
+<b>$(ROOT)/sbt test:run</b> write test results into the standard output and the charts.<br>
+<b>$(ROOT)/mvn test</b> to compile and run the examples 
 <br>
 <h2 id="persistency">Persistent models and configurations</h2>
 The package object <b>org.scalaml.core.Design</b> provide the trait (or skeleton implementation) of the persistent model <b>Design.Model</b> and configuration <b>Design.Config</b>.<br>
