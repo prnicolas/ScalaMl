@@ -72,24 +72,24 @@ The best approach to learn about any particular learning algorithm is to
 <h4>0.99 (10/30/2015)</h4>
 See <a href="#latestRelease">Latest release</a><br>
 <h4>0.98.2 (03/19/2015)</h4>
-- Fixes bugs with SVR and hidden Markov model - Decoding
-- Expand the number of test/evaluations from 60 to 66<br>
+Fixes bugs with SVR and hidden Markov model - Decoding
+Expand the number of test/evaluations from 60 to 66<br>
 <h4>0.98.1 (02/14/2015)</h4>
-- Added function minimization as a test case for Genetic algorithms<br>
-- Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
-- Standardized string representation of collection using mkString<br>
-- Added plots to the performance benchmark of parallel collection (Chap. 12)<br>
-- Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices<br>
-- Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
-- Replace some enumeration by case classes<br>
-- Added scalastyle options<br>
-<h4>0.98 (12/02/2015)</h4>
-- Added comments to test cases<br>
-- Added <i>Scala source guide</i>
-- Wrapped Scalatest routines into futures<br>
-- Expand the number of test/evaluations from 39 to 60<br>
-<h4>0.97</h4>
-- Initial implementation<br>
+Added function minimization as a test case for Genetic algorithms<br>
+Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
+Standardized string representation of collection using mkString<br>
+Added plots to the performance benchmark of parallel collection (Chap. 12)<br>
+Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices<br>
+Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
+Replace some enumeration by case classes<br>
+Added scalastyle options<br>
+<h4>0.98 (12/02/2014)</h4>
+Added comments to test cases<br>
+Added <i>Scala source guide</i>
+Wrapped Scalatest routines into futures<br>
+Expand the number of test/evaluations from 39 to 60<br>
+<h4>0.97 (06/12/2014)</h4>
+Initial implementation<br>
 
 <h2 id="project">Project Components</h2>
 Directory structure of the source code library for <i>Scala for Machine Learning</i>:<br>
