@@ -63,6 +63,22 @@
         	<scope>system</scope>
         	<systemPath>${project.basedir}/lib/CRF-1.1.jar</systemPath>
          </dependency>
+         
+
+        <dependency>
+          <groupId>cern</groupId>
+          <artifactId>colt</artifactId>
+          <version>2.3</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/colt.jar</systemPath>
+         </dependency>
+                 <dependency>
+          <groupId>riso</groupId>
+          <artifactId>numerical</artifactId>
+          <version>1.0</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/LBFGS.jar</systemPath>
+         </dependency>
          <dependency>
           	<groupId>libsvm</groupId>
         	<artifactId>libsvm-svml</artifactId>

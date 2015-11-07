@@ -1,36 +1,12 @@
-<b>Scala for Machine Learning</b> Version <b>0.98.2</b><br>
+<b>Scala for Machine Learning</b> Version <b>0.99</b><br>
 Copyright Patrick Nicolas All rights reserved 2013-2015<br>
 =================================================================<br>
-<b>Announcement: revised edition v. 0.99 (est. end of October 2015)</b><br>
-The book is in the process of a significant revision with some major corrections/updates in the code base:<br>
-- Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
-- Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
-- Correction and clarification of some statistical formulas.<br>
-- Tail recursion for logistic regression, genetic algorithm, Q-Learning and hidden Markov<br>
-- Implementation of magnet pattern for overloaded methods with different return types<br>
-- Definition of covariant and contravariant functors<br>
-- Fix bugs in training of Multilayer perceptron<br>
-- Monadic kernel functions<br>
-- Introduction to manifolds<br>
-- Introduction to Convolution Neural Network<br>
-- Fisher-Yates shuffle for stochastic and batched gradient descent<br>
-- Execution profiling for optimization<br>
-- Class for K-fold validation
-- Standardization of the application of tail recursion for dynamic programming algorithms<br>
-- Uses of views to reduce uncessary generation of objects in pipeline<br>
-- Introduction to streams in Chapter 12<br>
-- Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
-- Improved scaladoc documentation<br>
-- Updates on version of Scala (2.11.2) , Akka (2.3.4) and Apache Spark (1.5.0)
 <br>
-<u>Note</u>: The release of new code base (version 0.99) is expeced end of October
-<br>
-<br>
-Source code, data files and utilities related to "Scala for Machine Learning"<br>
 <a href="#overview">Overview</a><br>
+<a href="#latestRelease">Latest release</a><br>
 <a href="#documentation">Documentation</a><br>
 <a href="#requirements">Minimum requirements</a><br>
-<a href="#updates">Updates</a><br>
+<a href="#history">History</a><br>
 <a href="#project">Project</a><br>
 <a href="#installation">installation</a><br>
 <a href="#build">build</a><br>
@@ -51,12 +27,37 @@ The examples are related to investment portfolio management and trading strategi
 The real-world examples, related to financial and market analysis, used for the sole purpose of illustrating the machine learning techniques. They do not constitute a recommendation or endorsement of any specific investment management or trading techniques.<br>
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
+<h2 id="latestRelease">Latest release</h2>
+Here is the list of changes introduced in version 0.99 and revised version of "Scala for Machine Learning"<br>
+- Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
+- Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
+- Correction and update of documentation for some statistical formulas.<br>
+- Reimplementation of training of logistic regression, Q-Learning and hidden Markov and execution of genetic algorithm using tail recursion<br>
+- Implementation of magnet pattern for overloaded methods with different return types<br>
+- Definition of covariant and contravariant functors<br>
+- Fix bugs in training of Multilayer perceptron<br>
+- Generic monitoring class for profiling execution of optimizers<br>
+- Introduction of monadic kernel functions with a test case<br>
+- Introduction to manifolds<br>
+- Introduction to Convolution Neural Networks<br>
+- Fisher-Yates shuffle for stochastic and batched gradient descent<br>
+- Implementation of 1-fold and K-fold cross-validation<br>
+- Standardization of the application of tail recursion for dynamic programming algorithms<br>
+- Uses of views to reduce uncessary generation of intermediate objects in processing pipeline<br>
+- Introduction to streams in Chapter 12 with example and test code<br>
+- Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
+- Improved scaladoc documentation<br>
+- Added support for Scala 2.11.2, Akka 2.3.4 and Apache Spark 1.5.0 (with Scala 2.10.4)
+<br>
+
+
+
 <h2 id="Documentation">Documentation</h2>
 The best approach to learn about any particular learning algorithm is to 
 <ul>
 <li>Read the appropriate chapter (i.e. <i>Chapter 5: Naive Bayes modelsM</i>)</li>
 <li>Review source code guidelines used in the book <i>SourceCodeGuide.html</i></li>
-<li>Review scaladoc in scala_2.10-0.98-javadoc.jar</li>
+<li>Review scaladoc in <i>scala_2.11-0.99-sources.jar</i> or <i>scala_2.10-0.99-sources.jar</i> depending on the version of Scala you are using.</li> 
 <li>Look at the examples related to the chapter (i.e. <i>org/scalaml/app/chap5/Chap5</i>)</li>
 <li>Browse through the implementation code (i.e. <i>org/scalaml/supervised/bayes</i>)</li>
 </ul>
@@ -65,13 +66,16 @@ The best approach to learn about any particular learning algorithm is to
 4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
 <br>
 <b>Operating system</b>: None<br>
-<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 or 2.11.2 and SBT 0.13+ (see installation section for deployment.<br>
+<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 (for Apache Spark) or 2.11.2 (for Akka) and SBT 0.13+ (see installation section for deployment.<br>
 
-<h2 id="updates">Updates</h2>
-Version <b>0.98.2</b><br>
+<h2 id="history">History</h2>
+<h3>0.99 (10/30/2015)</h3>
+See <a href="#latestRelease">Latest release</a><br>
+<h3>0.98.2 (03/19/2015)</h3>
 - Fixes bugs with SVR and hidden Markov model - Decoding
 - Expand the number of test/evaluations from 60 to 66<br>
-Version <b>0.98.1</b><br>
+<h3>0.98.1 (02/14/2015)</h3>
+<br>
 - Added function minimization as a test case for Genetic algorithms<br>
 - Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
 - Standardized string representation of collection using mkString<br>
@@ -80,12 +84,12 @@ Version <b>0.98.1</b><br>
 - Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
 - Replace some enumeration by case classes<br>
 - Added scalastyle options<br>
-Version <b>0.98</b><br>
+<h3>0.98 (12/02/2015)</h3>
 - Added comments to test cases<br>
 - Added <i>Scala source guide</i>
 - Wrapped Scalatest routines into futures<br>
 - Expand the number of test/evaluations from 39 to 60<br>
-Version <b>0.97</b><br>
+<h3>0.97</h3>
 - Initial implementation<br>
 
 <h2 id="project">Project Components</h2>
@@ -108,6 +112,7 @@ Add the jars required to build and execute the code within Eclipse <i>Project/pr
 Update the JVM heap parameters in eclipse.ini file as <i>-Xms512m -Xmx8192m</i> or the maximum allowed on your specific machine.
 <br>
 <h3 id="build">Build</h3>
+<h4>build.sbt</h4>
 The Simple Build Too (SBT) has to be used to build the library from the source code using the <i>build.sbt</i> file in the root directory<br>
 Executing the examples/test in Scala for Machine Learning require sufficient JVM Heap memory (~2G):<br>
 in <i>sbt/conf/sbtconfig.text</i> set Xmx to 2058m or higher, -XX:MaxPermSize to 512m or higher i.e. <b>-Xmx4096m -Xms512m -XX:MaxPermSize=512m</b><br><br>
@@ -132,7 +137,8 @@ $<b>sbt "test:run options"</b> where options is a list of possible outputs<ul>
 </ul>
 $<b>sbt "test:run log chart"</b> write test results into a log and charts<br>
 $<b>sbt test:run</b> write test results into the standard output and the charts.<br>
-
+<h4>maven</h4>
+<br>
 <h2 id="persistency">Persistent models and configurations</h2>
 The package object <b>org.scalaml.core.Design</b> provide the trait (or skeleton implementation) of the persistent model <b>Design.Model</b> and configuration <b>Design.Config</b>.<br>
 The persistency mechanisms is implemented for a couple of supervised learning models only for illustration purpose. The reader should be able to implement the persistency for configuration and models for all relevant learning algorithms using the template operator << and >> <br>
