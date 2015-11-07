@@ -1,32 +1,39 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications.  ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap9
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.supervised.nnet.{MLPConfig, MLP}
 import org.scalaml.trading.GoogleFinancials
-import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import org.scalaml.util.DisplayUtils
+import org.scalaml.core.Types.ScalaMl.{DblArray, DblMatrix, DblVector}
+import org.scalaml.util.{DisplayUtils,  LoggingUtils}
+import org.scalaml.trading.GoogleFinancials._
 import org.scalaml.app.Eval
+import LoggingUtils._
 
 
 		/**
-		 * <p><b>Purpose:</b>Singleton to evaluate the Multi-layer perceptron by classifying
-		 * Exchange Traded funds (ETF)</p>
+		 * '''Purpose:'''Singleton to evaluate the Multi-layer perceptron by classifying
+		 * Exchange Traded funds (ETF)
 		 * @author Patrick Nicolas
 		 * @note Scala for Machine Learning Chapter 9: Artificial Neural Network / Evaluation
 		 */
 object MLPEval extends Eval {
-	import GoogleFinancials._
 	import org.apache.log4j.Logger
 	import scala.util.{Try, Success, Failure}
 	
@@ -37,17 +44,17 @@ object MLPEval extends Eval {
     
 	private val path = "resources/data/chap9/"
 	private val ALPHA = 0.8; 
-	private val ETA = 0.01
-	private val NUM_EPOCHS = 250
-	private val EPS = 1e-3
-	private val THRESHOLD = 0.12
+	private val ETA = 0.05
+	private val NUM_EPOCHS = 2500
+	private val EPS = 1e-6
+	private val THRESHOLD = 0.25
 
 	private val symbols = Array[String](
 		"FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB"
 	)
 
-		/** <p>Execution of the scalatest for <b>MLP</b> class.
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		/** Execution of the scalatest for '''MLP''' class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
 		 * @param args array of arguments used in the test
 		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
@@ -60,67 +67,74 @@ object MLPEval extends Eval {
 		symbols	
 	)
   
+	implicit val mode = new MLP.MLPBinClassifier
   		/**
-		 * <p>Execution of the scalatest for <b>MLP</b> class 
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * Execution of the scalatest for '''MLP''' class 
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
+		 * 		
+		 * Exceptions thrown during the execution of the tests are caught by the wrapper or handler
+		 * test method in Eval trait defined as follows:
+		 * {{{
+		 *    def test(args: Array[String]) =
+		 *      Try(run(args)) match {
+		 *        case Success(n) => ...
+		 *        case Failure(e) => ...
+		 * }}}
+		 * The tests can be executed through ''sbt run'' or individually by calling 
+		 * ''TestName.test(args)'' (i.e. DKalmanEval.test(Array[String]("IBM") )
+		 * 
 		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	def run(args: Array[String]): Int = {
-		require(args.size > 0, "MLPEval.run Should have at least one argument")
+	override protected def run(args: Array[String]): Int = {
+		require(args.length > 0, "MLPEval.run Should have at least one argument")
+		show(s"$header MLP evaluation")
 	  
-		val hiddenLayers = args.map( arg => arg.toInt)
-		val buf = new StringBuilder(s"$header MLP classifier without SoftMax conversion\n")
-		args.foreach(arg => buf.append(s"$arg "))
-		buf.append(" hidden layers")
-		DisplayUtils.show(buf.toString, logger)
-		Try {
-			val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
-								.map( _ |> GoogleFinancials.close )
-								.map( _.toArray)
-	  	 
-			DisplayUtils.show(s"$name size: ${prices(0).size}", logger)
-			test(hiddenLayers, prices)
-		}
-		match {
-		  case Success(n) => n
-		  case Failure(e) => failureHandler(e)
-		}
+		val hiddenLayers = args.map( _.toInt)
+		
+		val desc = s"""MLP classifier without SoftMax conversion
+			| ${args.mkString(" ")} hidden layers""".stripMargin
+		show( desc)
+		
+		val prices = symbols.map(s => DataSource(s"$path$s.csv", true, true, 1))
+				.flatMap(_.get(close).toOption)
+			
+		show(s"Data input size: ${prices(0).length}")
+		test(hiddenLayers, prices)
 	}
   
 
-	private def test(hidLayers: Array[Int], prices: DblMatrix): Int = {
-		DisplayUtils.show(s"$name \n${hidLayers.size} layers:(${hidLayers.mkString(" ")})", logger)
+	private def test(hiddenLayers: Array[Int], prices: Array[DblVector]): Int = {
+		show(s"${hiddenLayers.size} layers:(${hiddenLayers.mkString(" ")})")
   
 		val startTime = System.currentTimeMillis
-		val config = MLPConfig(ALPHA, ETA, hidLayers, NUM_EPOCHS, EPS)
+		val config = MLPConfig(ALPHA, ETA, NUM_EPOCHS, EPS)
 		
-		STUDIES.foreach(etfs => eval(prices, config, etfs))
-		DisplayUtils.show(s"$name Duration ${(System.currentTimeMillis - startTime)} msecs.", logger)	
+		STUDIES.foreach( eval(hiddenLayers, prices, config, _))
+		show(s"Duration ${(System.currentTimeMillis - startTime)} msecs.")	
 	}
 
-	private def eval(obs: DblMatrix, 
-					config: MLPConfig, 
-					etfsSet: Array[String]): Int = 
-		
-		accuracy(etfsSet, obs, config).map(acc => DisplayUtils.show(s"$name accuracy: $acc", logger))
-			.getOrElse(DisplayUtils.error(s"$name could not compute the accuracy", logger))
- 
+	private def eval(
+	    hiddenLayers: Array[Int],
+			obs: Array[DblVector], 
+			config: MLPConfig, 
+			etfsSet: Array[String]): Int = 
+		fit(hiddenLayers, etfsSet, obs, config).map(acc => show(s"Accuracy: $acc"))
+			.getOrElse(error(s"$name could not compute the accuracy"))
 
-	private def accuracy(
+	private def fit(
+			hiddenLayers: Array[Int],
 			symbols: Array[String], 
-			prices: DblMatrix, 
+			prices: Array[DblVector], 
 			config: MLPConfig): Option[Double] = {  
  
-		val obs: DblMatrix = symbols.map( sym => index.get(sym).get)
-									.map( prices( _ ) )
+		val obs = symbols.flatMap( index.get(_)).map( prices( _ ).toArray )
 
-		val features = obs.drop(1).transpose
-		val target = Array[DblVector](obs(0)).transpose
+		val xv = obs.drop(1).transpose
+		val expected = Array[DblArray](obs.head).transpose
 
-		implicit val mlpObjective = new MLP.MLPBinClassifier
-		val classifier = MLP[Double](config, features, target)
-		classifier.accuracy(THRESHOLD)
+		val classifier = MLP[Double](config, hiddenLayers, xv, expected)
+	
+		classifier.fit(THRESHOLD)
 	}
   
     
@@ -128,12 +142,13 @@ object MLPEval extends Eval {
 		import scala.collection.mutable.HashMap
   		 
 		val _index = new HashMap[String, Int]
-		symbols.zipWithIndex.foldLeft(new HashMap[String, Int])((mp, si) 
+		symbols.zipWithIndex./:(new HashMap[String, Int])((mp, si) 
 				=> {mp.put(si._1, si._2); mp}).toMap
 	}
 
 	private def toString(symbols: Array[String]): String = 
 			s"${symbols.drop(1).mkString(" ")} s => ${symbols(0)}"
 }
+
 
 // -------------------------------------  EOF ----------------------------------------------------------

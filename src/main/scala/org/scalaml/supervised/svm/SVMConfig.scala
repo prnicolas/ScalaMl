@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.svm
 
@@ -19,7 +24,7 @@ import org.scalaml.supervised.svm.formulation.SVMFormulation
 
 
 		/**
-		 * <p>Generic configuration item for support vector machine.</p>
+		 * Generic configuration item for support vector machine.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 28, 2014
@@ -27,7 +32,7 @@ import org.scalaml.supervised.svm.formulation.SVMFormulation
 		 */
 trait SVMConfigItem {
 		/**
-		 * <p>Update the LIBSVM configuration parameter.</p>
+		 * Update the LIBSVM configuration parameter.
 		 * @param param LIBSVM parameter to update.
 		 */
 	 def update(param: svm_parameter): Unit
@@ -36,8 +41,8 @@ trait SVMConfigItem {
 
 
 		/**
-		 * <p>Generic configuration manager for any category of SVM algorithm. The configuration of 
-		 * a SVM has three elements: SVM formulation, Kernel function and the execution parameters.</p>
+		 * Generic configuration manager for any category of SVM algorithm. The configuration of 
+		 * a SVM has three elements: SVM formulation, Kernel function and the execution parameters.
 		 * @constructor Create a configuration for this SVM with a given formulation, kernel function 
 		 * and execution parameters.
 		 * @see LIBSVM
@@ -48,8 +53,8 @@ trait SVMConfigItem {
 		 * @param exec Execution parameters for the training of the SVM model.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
+		 * @since 0.98 April 30, 2014
+		 * @see Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
 		 */
 final protected class SVMConfig(
 		formulation: SVMFormulation, 
@@ -83,7 +88,7 @@ final protected class SVMConfig(
 	final def isCrossValidation: Boolean = exec.nFolds > 0
 
 		/**
-		 * <p>Retrieve the number of folds used in the cross-validation
+		 * Retrieve the number of folds used in the cross-validation
 		 * @return Number of folds used in the cross-validation
 		 */
 	@inline 
@@ -93,8 +98,8 @@ final protected class SVMConfig(
 
 
 		/**
-		 * <p>Companion object for SVM configuration manager used for defining the constructors of 
-		 * SVMConfig class.</p>
+		 * Companion object for SVM configuration manager used for defining the constructors of 
+		 * SVMConfig class.
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.

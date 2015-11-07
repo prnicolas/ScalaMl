@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.ga
 
@@ -16,26 +21,35 @@ import org.scalaml.core.Design.Config
 
 
 		/**
-		 * <p>Configuration class that define the key parameters for the execution of the
-		 * genetic algorithm optimizer. Mutation and/or Cross-over parameters may be computed using an 
-		 * attenuator using the formula  newValue = oldValue*currentIteration/maximumIterations.</p>		 
+		 * Configuration class that defines the key parameters for the execution of the
+		 * genetic algorithm solver (or optimizer). The list of configuration parameters include
+		 * mutation, cross-over ratio, maximum number of optimization cycles (or epochs) and a soft limiting
+		 * function to constaint the maximum size of the population of chromosomes at each cyles
+		 * (or epochs) 
+		 * 
+		 * {{{ 
+		 *   soft limit function
+		 *   max_population_size (t) = max_population_size (t-1) *softLimit(t)		 
+		 * }}}
 		 * @constructor Create a configuration for the genetic algorithm.
 		 * @throws throw IllegalArgumentException if some of the parameters are out of bounds such 
 		 * as maxPopulationSize > 1 or rejection rate < 0.95
 		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to compute 
 		 * the index of bit string representation of the chromosome for cross-over
-		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or 
+		 * @param mu Value in the range [0.0, 1.0] used to compute the index of the bit or 
 		 * individual to be mutate in each chromosome.
 		 * @param maxCycles Maximum number of iterations allowed by the genetic solver 
 		 * (reproduction cycles).
 		 * @param softLimit  Soft limit function (Linear, Square or Boltzman) used to attenuate 
-		 * the impact of cross-over or mutation operation during optimization.</span></pre></p>
-		 * @param mutation Mutation computed using an attenuation function mutation = f(cycle)
+		 * the impact of cross-over or mutation operation during optimization
+		 * 
 		 * @author Patrick Nicolas
-		 * @since August 28, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Implementation / GA 
+		 * @since 0.97 August 28, 2013
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 10 ''Genetic Algorithm'' / Implementation / GA 
 		 * configuration
 		 */
+@throws(classOf[IllegalArgumentException])
 final class GAConfig(
 		val xover: Double, 
 		val mu: Double, 
@@ -46,25 +60,32 @@ final class GAConfig(
 	check(xover, mu, maxCycles, softLimit)
   	  
 		/**
-		 * <p>re-compute the mutation factor using an attenuator</p>
+		 * re-compute the mutation factor using an attenuator
+		 * @param cycle number of the current cycle
+		 * @return soft limit computed for this cycle
 		 */
+	@throws(classOf[IllegalArgumentException])
 	val mutation = (cycle : Int) => {
 		require(cycle >= 0 && cycle < maxCycles, s"GAConfig Iteration $cycle is out of range")
 		softLimit(cycle)
 	}
     
+		/**
+		 * Textual representation of the configuration object
+		 */
 	override def toString : String = s"Cross-over: $xover Mutation: $mu"
 }
 
 
 		/**
-		 * <p>Singleton that define the attenuator function for computing the cross-over or 
+		 * Singleton that define the attenuator function for computing the cross-over or 
 		 * mutation index of chromosomes, according the number of iterations in the genetic 
-		 * algorithm optimization.</p>
+		 * algorithm optimization.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since August 28, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / implementation / GA 
+		 * @since August 28, 2013  (0.97)
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm / implementation / GA 
 		 * configuration
 		 */
 object GAConfig {
@@ -78,14 +99,16 @@ object GAConfig {
 		 * @param maxCycles Maximum number of iterations allowed by the genetic solver 
 		 * (reproduction cycles).
 		 * @param softLimit  Soft limit function (Linear, Square or Boltzman) used to attenuate 
-		 * the impact of cross-over or mutation operation during optimization.</span></pre></p>
+		 * the impact of cross-over or mutation operation during optimization.</span></pre>
 		 */
 	def apply(xover: Double, mu: Double, maxCycles: Int, softLimit: Int =>Double): GAConfig = 
 		new GAConfig(xover, mu, maxCycles, softLimit)
 
 		/**
-		 * <p>Constructor for the GAConfig class with a default soft limit defined as<br>
-		 *  f(n) = 1.001 -0.01.n.</p>
+		 * Constructor for the GAConfig class with a default soft limit defined as
+		 * {{{
+		 *  f(n) = 1.001 -0.01.n.
+		 *  }}}
 		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to 
 		 * compute the index of bit string representation of the chromosome for cross-over
 		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or 

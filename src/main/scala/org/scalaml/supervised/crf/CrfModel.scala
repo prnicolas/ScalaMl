@@ -1,37 +1,40 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * This code uses the iitb CRF library http://sourceforge.net/projects/crf/
- * Copyright (c) <2004> <Sunita Sarawagi Indian Institute of Technology Bombay> All rights reserved.
+ * Version 0.99
  */
 package org.scalaml.supervised.crf
 
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblArray
 import org.scalaml.core.Design.Model
 
 		/**
-		 * <p>Generic model for Conditional Random fields. The model consists merely of the CRF weights.
-		 * </p>
+		 * Generic model for Conditional Random fields. The model consists merely of the CRF weights.
+		 * 
 		 * @constructor Instantiate a model for CRF after training is completed.
 		 * @throws IllegalArgumentException if weights is not properly defined
 		 * @param weights	Weights (or lambda parameters) for this CRF model.
 		 * @see org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
-		 * @since April 1, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models/Conditional Random Fields.
+		 * @since 0.98 April 1, 2014
+		 * @version 0.99
+		 * @see Scala for Machine Learning Chapter 7 "Sequential data models"/Conditional Random Fields.
 		 */
-final protected class CrfModel(val weights: DblVector) extends Model {
-	require( !weights.isEmpty, "CrfModel Cannot create a model with undefined weights")
+final protected class CrfModel(val weights: DblArray) extends Model {
+	require( weights.length >0, "CrfModel Cannot create a model with undefined weights")
 
 		/**
 		 * Constructor that load the model from file "model/CrfModel"

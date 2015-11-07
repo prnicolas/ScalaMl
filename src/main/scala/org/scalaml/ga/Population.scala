@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.ga
 
@@ -18,31 +23,31 @@ import scala.collection.mutable.ArrayBuffer
 	// 3rd party libraries
 import org.apache.log4j.Logger
 	// Scala for Machine learning classes
-import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
-import org.scalaml.core.XTSeries
+import org.scalaml.core.Types.ScalaMl.{DblArray, DblMatrix}
 import org.scalaml.util.DisplayUtils
 import Chromosome._, Population._
 
 
 		/**
-		 * <p>Class that defines relative genetic index (index in the genetic code, 
-		 * an operator such as mutation or cross-over acts upon (hierarchical address)</p>
+		 * Class that defines relative genetic index (index in the genetic code, 
+		 * an operator such as mutation or cross-over acts upon (hierarchical address)
 		 * @constructor Create a genetic indexer. 
 		 * @param chOpIdx  Index of the gene in the chromosome, manipulated by a genetic operator
 		 * @param geneOpIdx Index of the bits in the gene that is manipulated by a genetic operator.
 		 * @author Patrick Nicolas
-		 * @since June 7, 2014
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
+		 * @since 0.98.2 June 7, 2014
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
 		 */
 case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int) {
 	override def toString: String = s"ch index: $chOpIdx gene index: $geneOpIdx"
 }
 
 		/**
-		 * <p>Class that defines a population of chromosomes. A population is initialized and evolves
+		 * Class that defines a population of chromosomes. A population is initialized and evolves
 		 * through multiple reproduction cycles. The size of the population varies
 		 * over time following successive, iterative selection but is bounded by an upper limit to 
-		 * avoid a potential explosion of the number chromosomes.</p>
+		 * avoid a potential explosion of the number chromosomes.
 		 * @constructor Create a population of chromosome. [chromosomes] Current pool of chromosomes
 		 * @throws IllegalArgumenException if the limit is out of range or the pool of chromosomes 
 		 * is undefined
@@ -50,30 +55,32 @@ case class GeneticIndices(val chOpIdx: Int, val geneOpIdx: Int) {
 		 * (constrained optimization)
 		 * @param chromosomes Current pool of chromosomes (type: ArrayBuffer{Chromosome[T]])
 		 * @author Patrick Nicolas
-		 * @since August 25, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
+		 * @since 0.97 August 25, 2013
+		 * @version 0.99
+		 * @see Scala for Machine Learning Chapter 10 ''Genetic Algorithm'' / Genetic algorithm 
+		 * components
 		 */
 class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	import Population._
 	
 	check(limit, chromosomes)
 	private val logger = Logger.getLogger("Population")
-
+	private[this] var marker: Double = 0.0
 		/**
-		 * <p>Add an array of chromosomes (or new population) to this existing population and return
-		 * a new combined population. The new chromosomes are appended to the existing pool</p>
+		 * Add an array of chromosomes (or new population) to this existing population and return
+		 * a new combined population. The new chromosomes are appended to the existing pool
 		 * @param that New population to be added to the existing population
 		 * @throws IllegalArgumentException if the population is undefined
 		 * @return The combined population if the new population is not empty, this population otherwise
 		 */
 	def + (that: Population[T]): Population[T] = {
-		require( !that.isNull, "Population.+: Cannot add an undefined list of chromosomes")
+		require( !that.isEmpty, "Population.+: Cannot add an undefined list of chromosomes")
 		if(that.size > 0) Population[T](limit, chromosomes ++: that.chromosomes) else this
 	}
     
 
 		/**
-		 * <p>Add a new Chromosome to this population using a list of genes.</p>
+		 * Add a new Chromosome to this population using a list of genes.
 		 * @param newCode Genetic code (List of genes) for the new chromosome added to this population
 		 * @throws IllegalArgumentException if the newCode is either undefined or has an incorrect size.
 		 */
@@ -85,59 +92,63 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 	}
   
 		/**
-		 * <p>Selection operator for the chromosomes pool The selection relies on the
+		 * Selection operator for the chromosomes pool The selection relies on the
 		 * normalized cumulative unfitness for each of the chromosome ranked by decreasing
-		 * order.</p>
+		 * order.
 		 * @param score Scoring function applied to all the chromosomes of this population
 		 * @param cutOff Normalized threshold value for the selection of the fittest chromosomes
 		 * @throws IllegalArgumenException if the cutoff is out of bounds
 		 */
+	@throws(classOf[IllegalArgumentException])
 	def select(score: Chromosome[T]=> Unit, cutOff: Double): Unit = {
 		require(cutOff > 0.0 && cutOff < 1.01, 
 				s"Population.select Cannot select with a cutoff $cutOff out of range")
 				
 			// Compute the cumulative score for the entire population
-		val cumul = chromosomes.foldLeft(0.0)((s, xy) => {
-			score(xy)
-			s + xy.unfitness 
-		})/SCALING_FACTOR
+		val cumul = chromosomes.map( _.cost).sum/SCALING_FACTOR
+		marker = cumul/chromosomes.size
 		
 			// Normalize each chromosome unfitness value
 		chromosomes foreach( _ /= cumul)
-		
+			
 			// Sorts the chromosome by the increasing value of their unfitness
-		val newChromosomes = chromosomes.sortWith(_.unfitness < _.unfitness)
+		val newChromosomes = chromosomes.sortWith(_.cost < _.cost)
+	
+
 
 			// Apply a cutoff value to the current size of the population
 			// if the cutoff has been defined.
 		val cutOffSize: Int = (cutOff*newChromosomes.size).floor.toInt
 		val newPopSize = if(limit < cutOffSize) limit else cutOffSize
+	
+		
 		chromosomes.clear
 		chromosomes ++= newChromosomes.take(newPopSize)
 	}
   
 
 		/**
-		 * <p>Return the size of the genes that compose the chromosomes of this population. 
-		 * It is assumed that the genes in the chromosomes have identical size.</p>
+		 * Return the size of the genes that compose the chromosomes of this population. 
+		 * It is assumed that the genes in the chromosomes have identical size.
 		 * @return number of bits in the gene that compose the chromosomes of this population if 
 		 * the population is not empty, -1 otherwise
 		 */
 	final def geneSize: Int = if(chromosomes.size > 0) chromosomes.head.code.head.size else -1
     
 		/**
-		 * <p>Return the number of genes in the chromosomes of this population.</p>
+		 * Return the number of genes in the chromosomes of this population.
 		 * @return Number of genes in each of the chromosomes of this population if the population 
 		 * is not empty, -1 otherwise
 		 */
 	final def chromosomeSize: Int = if(chromosomes.size > 0) chromosomes.head.size else -1
     
 		/**
-		 * <p>Applies the cross-over operator on the population by pairing
-		 * the half most fit chromosomes with the half least fit chromosomes.</p>
+		 * Applies the cross-over operator on the population by pairing
+		 * the half most fit chromosomes with the half least fit chromosomes.
 		 * @param xOver cross-over factor [0, 1]
 		 * @throws IllegalArgumentException if xOver is out of range.
 		 */
+	@throws(classOf[IllegalArgumentException])
 	def +- (xOver: Double): Unit = {
 		require(xOver > 0.0 && xOver < 1.0, 
 				s"Population.+- Cross-over factor $xOver on the population is out of range")
@@ -155,7 +166,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 			val gIdx = geneticIndices(xOver)
 			val offSprings = chromosomes.take(mid)
 										.zip(bottom)
-										.map(p => p._1 +- (p._2, gIdx))
+										.map{ case (t, b) => t +- (b, gIdx) }
 										.unzip
 			chromosomes ++= offSprings._1 ++ offSprings._2
 		}
@@ -163,12 +174,13 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
     
     
 		/**
-		 * <p>Apply the mutation of the population. The operation produces a duplicate set of 
-		 * chromosomes that are mutated using the mutate operator ^ on chromosome.</p>
+		 * Apply the mutation of the population. The operation produces a duplicate set of 
+		 * chromosomes that are mutated using the mutate operator ^ on chromosome.
 		 * @param mu mutation factor
 		 * @return Population with original chromosomes and mutated counter-part
 		 * @throws IllegalArgumenException if the mutation ratio or coef. mu is out of range [0, 1]
 		 */
+	@throws(classOf[IllegalArgumentException])
 	def ^ (mu: Double): Unit = {
 		require(mu > 0.0 && mu < 1.0, 
 				s"Population.^ Mutation factor $mu on the population is out of range")
@@ -177,13 +189,14 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 
 	
 		/**
-		 * <p>Compute the difference between the N fittest chromosomes of two populations.</p>
+		 * Compute the difference between the N fittest chromosomes of two populations.
 		 * @param that The population to be compared to
 		 * @param depth Number of fittest chromosomes used in the comparison. If the depth exceeds 
 		 * the size the entire population is used in the comparison
 		 * @return The depth fittest chromosomes if there are common to both population, None otherwise
 		 * @throws IllegalArgumenException if mu is out of range [0, 1]
 		 */
+	@throws(classOf[IllegalArgumentException])
 	final def diff(that: Population[T], depth: Int): Option[Pool[T]] = {
 		require( that.size > 1 , "Population.diff Other population has no chromosome")
 		require(depth > 0, s"Population.diff depth $depth should be >1")
@@ -201,20 +214,22 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		for {
 			first <- fittest(fittestPoolSize)
 			second <- that.fittest(fittestPoolSize)
-			if( !first.zip(second).exists( x => x._1 != x._2 ) )
+			if( !first.zip(second).exists{ case(x1, x2) => x1 != x2 } )
 		} yield first
 	}
 
 	
 		/**
-		 * <p>Retrieve the N fittest chromosomes from this population</p>
+		 * Retrieve the N fittest chromosomes from this population.
 		 * @param Number of fittest chromosomes to retrieve
 		 * @return The depth fittest chromosomes if the population is not empty, None otherwise
 		 * @throws IllegalArgumentException If depth is not greater than 0
 		 */
+	@throws(classOf[IllegalArgumentException])
 	final def fittest(depth: Int): Option[Pool[T]] = {
 		require(depth > 0, 
 				s"Population.fittest Incorrect number of chromosomes: $depth should be >0")
+				
 		if( size > 1) 
 			Some(chromosomes.take(if(depth > size) size else depth)) 
 		else 
@@ -226,20 +241,28 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * @return Fittest chromosome if the population is not empty, None otherwise
 		 */
 	final def fittest: Option[Chromosome[T]] = if(size > 0) Some(chromosomes.head) else None
+
 	
 		/**
 		 * Compute the average score or fitness of the current population
 		 * @return sum of the score of all the chromosomes divided by the number of chromosomes.
 		 */
-	final def averageScore: Double = chromosomes.size/chromosomes.map(_.unfitness).sum
+	final def averageCost: Double = marker 
+	/*
+	{ 
+		val bestChromosomes = chromosomes.takeRight(2)
+		bestChromosomes.map(_.cost).sum/bestChromosomes.size
+	}
+	* 
+	*/
 	
 		/**
-		 * <p>Retrieve the number of chromosomes in the population</p>
+		 * Retrieve the number of chromosomes in the population
 		 * @return Number of chromosomes in this population
 		 */
 	final def size: Int = chromosomes.size
 	
-	final def isNull: Boolean = chromosomes.isEmpty
+	final def isEmpty: Boolean = chromosomes.isEmpty
 
 		/**
 		 * Textual description of the genetic code of this population
@@ -251,7 +274,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 * Symbolic representation of this population
 		 * @return Symbolic representation all the chromosomes of this population
 		 */
-	final def symbolic(comments: String): Unit = 	chromosomes.map(_.symbolic("->")).mkString("\n")
+	final def symbolic: Unit = 	chromosomes.map(_.symbolic).mkString("\n")
 
 		/*
 		 * Compute the genetic index for cross-over and mutation
@@ -279,6 +302,7 @@ class Population[T <: Gene](limit: Int, val chromosomes: Pool[T]) {
 		 */
 object Population{
 	private final val SCALING_FACTOR = 100
+
 		/**
 		 * Default constructor for the population of chromosomes
 		 * @param limit  Maximum number of chromosomes allowed in this population (constrained 

@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.util
 
@@ -21,13 +26,13 @@ import scala.collection._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since July 11, 2014
-		 * @note Scala for Machine Learning
+		 * @see Scala for Machine Learning Appendix
 		 */
 object MapUtils {
 
 		/**
-		 * <p>Count implemented as a Hash map of type <T, Int>. Contrary to a Hash map, an accumulator
-		 * is additive: Elements can share the same key.</p>
+		 * Count implemented as a Hash map of type <T, Int>. Contrary to a Hash map, an accumulator
+		 * is additive: Elements can share the same key.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 1, 2014
@@ -56,7 +61,7 @@ object MapUtils {
 			 * @param cnt Counter to aggregate to this counter
 			 * @return New counter as the aggreate of this counter and cnt
 			 */
-		def ++ (cnt: Counter[T]): Counter[T] = { cnt.foldLeft(this)((c, t) => c + t._1); this}
+		def ++ (cnt: Counter[T]): Counter[T] = { cnt./:(this)((c, t) => c + t._1); this}
 	
 			/** divide the elements of this counter by the corresponding
 			 *  elements in another counter
@@ -65,22 +70,19 @@ object MapUtils {
 			 *  @return HashMap of key of type T and value as the quotient of the elements of this 
 			 *  counter by the corresponding elemetns in cnt
 			 */
-		def / (cnt: Counter[T]): mutable.HashMap[T, Double] = 
-			//map( x => (x._1, {assert( cnt.contains(x._1) ); x._2.toDouble/cnt.get(x._1).get} ) ) 
-			
-			map( x => (x._1, if( !cnt.contains(x._1) ) 
-				throw new IllegalStateException("Counter./ Incomplete counter")
-			else 
-				x._2.toDouble/cnt.get(x._1).get ) )
-	
-	   
+		def / (cnt: Counter[T]): mutable.HashMap[T, Double] = map { 
+		  case(str, n) => (str, if( !cnt.contains(str) ) 
+						throw new IllegalStateException("Counter./ Incomplete counter")
+					else n.toDouble/cnt.get(str).get ) 
+	  }
+
 		override def apply(t: T): Int = getOrElse(t, 0)  
 	}
 
 	
 		/**
-		 * <p>Accumulator implemented as a Hash map of type <T, List[T]>. Contrary to a Hash map, 
-		 * an accumulator is additive: Elements can share the same key.</p>
+		 * Accumulator implemented as a Hash map of type <T, List[T]>. Contrary to a Hash map, 
+		 * an accumulator is additive: Elements can share the same key.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since March 1, 2014
@@ -114,8 +116,8 @@ object MapUtils {
 	
 	
 			/**
-			 * <p>Accumulator implemented as a Hash map to update a value as a tuple
-			 * <counter, Double value>. The accumulator is additive: Elements can share the same key.</p>
+			 * Accumulator implemented as a Hash map to update a value as a tuple
+			 * <counter, Double value>. The accumulator is additive: Elements can share the same key.
 			 * 
 			 * @author Patrick Nicolas
 			 * @since March 1, 2014

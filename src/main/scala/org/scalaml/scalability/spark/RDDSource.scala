@@ -1,35 +1,47 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.scalability.spark
 
-import org.apache.spark.SparkContext
-import org.apache.spark.rdd.RDD
-import org.apache.spark.storage.StorageLevel
+	// Scala standard library
 import scala.annotation.implicitNotFound
+import scala.collection._
 import scala.io.Source
+import scala.util.Try
 import java.io.{FileNotFoundException, IOException}
-import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.Design.PipeOperator
-import org.scalaml.core.Types
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.XTSeries
-import org.scalaml.util.DisplayUtils
+
+	// 3rd party library
+import org.apache.spark.SparkContext
+import org.apache.spark.rdd.{EmptyRDD, RDD}
+import org.apache.spark.storage.StorageLevel
 import org.apache.log4j.Logger
-import org.apache.spark.rdd.EmptyRDD
+
+
+	// Scala for machine classes
+import org.scalaml.workflow.data.DataSource
+import org.scalaml.core.{Types, ETransform}
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.stats.XTSeries
+import org.scalaml.util.DisplayUtils
+
 
 
 		/**
-		 * <p>Class to encapsulate a simple configuration of an RDD.</p>
+		 * Class to encapsulate a simple configuration of an RDD.
 		 * @param cache Flag to specify if the RDD should be cached (maintained) in memory
 		 * @param persist define the storage level for the RDD
 		 * @author Patrick Nicolas
@@ -40,7 +52,7 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 
 
 		/**
-		 * <P>Data extractor used to load and consolidate multiple data source (CSV files).</p>
+		 * <P>Data extractor used to load and consolidate multiple data source (CSV files).
 		 * @constructor Create a RDD associated to a source of data of type DataSource
 		 * @param pathName      Relative path for data sources
 		 * @param normalize    Flag to specify normalize of data [0, 1]
@@ -56,20 +68,24 @@ case class RDDConfig(cache: Boolean, persist: StorageLevel)
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 1, 2014
-		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
+		 * @see Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark
 		 */
-@implicitNotFound("Spark context is implicitly undefined")
+@throws(classOf[IllegalArgumentException])
+@implicitNotFound(msg = "Spark context is implicitly undefined")
 final class RDDSource(
 		pathName: String, 
 		normalize: Boolean, 
 		reverseOrder: Boolean, 
 		headerLines: Int, 
 		config: RDDConfig)
-		(implicit sc: SparkContext)	extends PipeOperator[Array[String] =>DblVector, RDD[DblVector]] {
+		(implicit sc: SparkContext)	extends ETransform[RDDConfig](config) {
 
 	import RDDSource._
-	check(pathName, headerLines)
 	
+	type U = Array[String] => DblArray
+	type V = RDD[DblArray]
+	check(pathName, headerLines)
+
 	private val src = DataSource(pathName, normalize, reverseOrder, headerLines)
 	private val logger = Logger.getLogger("RDDSource")
 
@@ -77,21 +93,20 @@ final class RDDSource(
 		 * Load, extracts, convert and normalize a list of fields using an extractors.
 		 * @param ext function to extract and convert a list of comma delimited fields into a 
 		 * vector of Doubles
-		 * @return a RDD of DblVector if succeed, None otherwise
+		 * @return a RDD of DblArray if succeed, None otherwise
 		 * @throws IllegalArgumentException if the extraction function is undefined
 		 */   
-	override def |> : PartialFunction[(Array[String] => DblVector), RDD[DblVector]] = {
-		case extractor: (Array[String] => DblVector) if( src.filesList != None) => {
-			
-			val ts = src load extractor
-			assert(!ts.isEmpty, s"RDDSource.|> Could not extract time series from $pathName" )
-			
-		  val rdd = sc.parallelize(ts.toArray)
-			rdd.persist(config.persist)
+	override def |> : PartialFunction[U, Try[V]] = {
+		case extractor: U if( src.filesList != None) => {
+	 
+			src.load(extractor).map( ts => {
+				val rdd: RDD[DblArray] = sc.parallelize(ts.toSeq)
+				rdd.persist(config.persist)
 				
-			if( config.cache)
-				rdd.cache
-			rdd
+				if( config.cache)
+					rdd.cache
+				rdd
+			})
 		}
 	}
 }
@@ -109,7 +124,7 @@ object RDDSource {
 	import org.apache.spark.mllib.linalg.{Vector, DenseVector}
 
 		/**
-		 * <p>Default RDD configuration as persistent and caching in memory only.</p>
+		 * Default RDD configuration as persistent and caching in memory only.
 		 */
 	final val DefaultRDDConfig = new RDDConfig(true, StorageLevel.MEMORY_ONLY)
 	
@@ -132,23 +147,23 @@ object RDDSource {
 					new RDDSource(pathName, normalize, reverseOrder, headerLines, DefaultRDDConfig)
    
 		/**
-		 * <p>Converts a time series of vectors of double to a Spark RDD using a predefined
-		 * set of RDD configuration parameters (Caching, Persistence).</p>
+		 * Converts a time series of vectors of double to a Spark RDD using a predefined
+		 * set of RDD configuration parameters (Caching, Persistence).
 		 * @param xt time series to be converted into a RDD
 		 * @param rddConfig configuration parameters used in the conversion
 		 * @throws IllegalArgumentException if the time series or the RDD configuration 
 		 * argument is not defined
 		 * @throws ImplicitNotFoundException if the Spark context has not been defined.
 		 */
-	@implicitNotFound("Spark context is implicitly undefined")
+	@implicitNotFound(msg = "Spark context is implicitly undefined")
 	def convert(
-			xt: XTSeries[DblVector], 
+			xt: immutable.Vector[DblArray], 
 			rddConfig: RDDConfig) (implicit sc: SparkContext): RDD[Vector] = {
 	  
 		require( !xt.isEmpty, 
 				"RDDSource.convert Cannot generate a RDD from undefined time series")
 
-		val rdd: RDD[Vector] = sc.parallelize(xt.toArray.map(new DenseVector(_)))
+		val rdd: RDD[Vector] = sc.parallelize(xt.toVector.map(new DenseVector(_)))
 		rdd.persist(rddConfig.persist)
 		if( rddConfig.cache)
 			rdd.cache

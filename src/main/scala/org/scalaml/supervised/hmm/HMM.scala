@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.hmm
 
@@ -18,16 +23,20 @@ import scala.annotation.{implicitNotFound, switch}
 import org.apache.log4j.Logger
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Design.{PipeOperator, Model}
-import org.scalaml.core.{XTSeries, Matrix}
-import org.scalaml.util.DisplayUtils
+import org.scalaml.core.Design.Model
+import org.scalaml.core.ITransform
+import org.scalaml.util.LoggingUtils._
+import org.scalaml.util.MathUtils._
+import org.scalaml.supervised.hmm.train.BaumWelchEM
+import org.scalaml.supervised.hmm.eval.Alpha
+import org.scalaml.supervised.hmm.decode.ViterbiPath
 import HMM._
 
 	/**
-	 * <p>Enumeration/case classes to specify the canonical form of the HMM</p>
+	 * case classes to specify the canonical form of the HMM
 	 * @author Patrick Nicolas
-	 * @since March 9, 2014
-	 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
+	 * @since 0.98 March 9, 2014
+	 * @see Scala for Machine Learning Chapter 7 ''Sequential Data Models'' / Hidden Markov Model
 	 */
 sealed trait HMMForm
 
@@ -37,244 +46,184 @@ sealed trait HMMForm
 case class EVALUATION() extends HMMForm 
 
 	/**
-	 * Class that defines the Training (CF-2) Canonical form of the HMM
-	 */
-
-case class TRAINING() extends HMMForm 
-	/**
 	 * Class that defines the Decoding (CF-2) Canonical form of the HMM
 	 */
 case class DECODING() extends HMMForm
 
 
 		/**
-		 * <p>Generic model for dynamic programming algorithms used in HMM.</p>
-		 * @throws IllegalArgumenException If either Lambda or the observation are undefined.
-		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
-		 * matrix.
-		 * @param obs Array of observations as integer (categorical data)
-		 * @see org.scalaml.core.Design.Model
+		 * Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
+		 * three canonical forms (Decoding, training and evaluation).
 		 * 
-		 * @author Patrick Nicolas
-		 * @since March 29, 2014
-		 * @note Scala for Machine Learning Chapter 7 / Sequential data models/Hidden Markov Model
-		 */
-abstract class HMMModel(val lambda: HMMLambda, val obs: Array[Int]) extends Model {
-	import HMMModel._
-	check(obs)
-}
-
-
-		/**
-		 * Companion object for the HMM model parameters
-		 */
-object HMMModel {
-	private def check(obs: Array[Int]): Unit = 
-		require(!obs.isEmpty, "HMMModel.check Cannot create a model with undefined observations")
-}
-
-	/**
-	 * <p>Generic class for the alpha (forward) pass and beta (backward) passes used in
-	 * the evaluation form of the HMM.</p>
-	 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-	 * probabilities, the state-transition probabilities matrix and the emission probabilities matrix.
-	 * @param obs Array of observations as integer (categorical data)
-	 * 
-	 * @author Patrick Nicolas
-	 * @since March 29, 2014
-	 * @note Scala for Machine Learning Chapter 7/Sequential data models/Hidden Markov Model
-	 */
-protected class Pass(lambda: HMMLambda, obs: Array[Int]) extends HMMModel(lambda, obs) { 
-	protected var alphaBeta: Matrix[Double] = _
-	protected val ct = Array.fill(lambda.getT)(0.0)
-
-		/**
-		 * Compute and apply the normalization factor ct for the computation of Alpha
-		 * [Formula M3] and Beta probabilities [Formula M7] for the observation at index t
-		 * @param t Index of the observation.
-		 */
-	protected def normalize(t: Int): Unit = {
-		import HMMConfig._
-		require(t >= 0 && t < lambda.getT, s"HMMModel.normalize Incorrect observation index t= $t")
-		
-		ct.update(t, foldLeft(lambda.getN, (s, n) => s + alphaBeta(t, n)))
-		alphaBeta /= (t, ct(t))
-	}
-
-		/**
-		 * Returns the Alpha (resp. Beta) matrix for the forward (resp. backward) matrix
-		 * @return Alpha or Beta matrix
-		 */
-	final def getAlphaBeta: Matrix[Double] = alphaBeta
-}
-		/**
-		 * <p>Implementation of the Hidden Markov Model (HMM). The HMM classifier defines the
-		 * three canonical forms (Decoding, training and evaluation).<br>
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
-		 * ,Arial,Helvetica,sans-serif;">
 		 * The three canonical forms are defined as
-		 * <b>Evaluation<b> Computation of the probability (or likelihood) of the observed sequence 
-		 * Ot given a Lambda (pi, A, B) model<br>
-		 * <b>Training</b> Generation of the Lambda (pi, A, B)-model given a set of observations and 
-		 * a sequence of states.<br>
-		 * <b>Decoding</b> Extraction the most likely sequence of states {qt} given a set of 
-		 * observations Ot and a Lambda (pi, A, B)-model.</span></pre></p>
+		 * - '''Evaluation''' Computation of the probability (or likelihood) of the observed sequence 
+		 * Ot given a Lambda (pi, A, B) model
+		 * - '''Training''' Generation of the Lambda (pi, A, B)-model given a set of observations and 
+		 * a sequence of states.
+		 * - '''Decoding''' Extraction the most likely sequence of states {qt} given a set of 
+		 * observations Ot and a Lambda (pi, A, B)-model
 		 * 
+		 * The implementation follows the standard design of supervised learning algorithm:
+		 * - The classifier implements the '''ITransform''' implicit monadic data transformation
+		 * - The constructor triggers the training of the classifier, making the model immutable
+		 * - The classifier implements the '''Monitor''' interface to collect profile information for 
+		 * debugging purpose
+		 * 
+		 * @tparam T type of elements of the input data
 		 * @constructor Create a HMM algorithm with either a predefined Lambda model for evaluation 
 		 * and prediction or a Lambda model to generate through training
 		 * @throws IllegalArgumentException if the any of the class parameters is undefined
-		 * @param lambda lambda model generated through training or used as input for the evaluation 
-		 * and decoding phase
-		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
-		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
-		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to 
+		 * @param config Configuration for the HMM
+		 * @param xt Time series of observations for which the hidden states have to be extracted
+		 * @param form Canonical form (evaluation or decoding) used in the prediction of sequence
+		 * @param quantize  Implicit conversion of a Double vector a parameterized type bounded to 
 		 * Array[Int] (Discretization)
-		 * @throws ImplicitNotFoundException if the implicit conversion from DblVector to T is 
+		 * @param f Implicit conversion from a T to a Double
+		 * @throws ImplicitNotFoundException if the implicit conversion from DblArray to T is 
 		 * not defined prior the instantiation of the class
-		 * @see org.scalaml.supervised.hmm.HMMLambda
-		 * @see org.scalaml.supervised.hmm.HMMState
+
 		 * @author Patrick Nicolas
-		 * @since March 23, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
+		 * @since 0.98.2 March 23, 2014
+		 * @version 0.99
+		 * @see org.scalaml.supervised.hmm.HMMModel
+		 * @see org.scalaml.supervised.hmm.HMMConfig
+		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Hidden Markov Model
 		 */
-@implicitNotFound("HMM Conversion from DblVector to type T undefined")
-final protected class HMM[@specialized T <% Array[Int]](
-		lambda: HMMLambda, 
-		form: HMMForm, 
-		maxIters: Int)
-		(implicit f: DblVector => T) extends PipeOperator[DblVector, HMMPredictor] {
+@throws(classOf[IllegalArgumentException])
+@implicitNotFound(msg = "HMM Conversion  $T => Double undefined")
+@implicitNotFound(msg = "HMM Quantization Array[$T] => Int undefined")
+final protected class HMM[@specialized(Double) T <: AnyVal](
+		config: HMMConfig,
+		xt: XVSeries[T],
+		form: HMMForm)
+		(implicit quantize: Array[T] => Int, f: T => Double) 
+	extends ITransform[Array[T]](xt) with Monitor[Double] {
 	
-	check(maxIters)
+	type V = HMMPrediction
+
+	protected val obsSeq: Vector[Int] = xt.map(quantize(_))
+
 	
-	private val logger = Logger.getLogger("HMM")
+	protected val logger = Logger.getLogger("HMM")
 	
 		/**
-		 * <p>Classifier for the Hidden Markov Model. The pipe operator evaluates the 
+		 * Model for the hidden Markov model 
+		 */
+	private[this] val model: Option[HMMModel] = train
+
+	
+		/**
+		 * Test if this model has been successfully generated and the state transition,
+		 * emission and initial probabilities are correctly normalized.
+		 * @return true if the model is valid, false otherwise.
+		 */
+	final val isModel: Boolean = model != None && model.get.validate(config.eps)
+	
+	private def train: Option[HMMModel] = Try {
+		val baumWelchEM = BaumWelchEM(config, obsSeq)
+		baumWelchEM.lambda
+	}._toOption("HMM.BaumWelch", logger)
+
+		/**
+		 * Classifier for the Hidden Markov Model. The pipe operator evaluates the 
 		 * HMM if form == EVALUATION or decodes a HMM if form == DECODING for a given
-		 * set of observations, obs and a lambda model.</p>
+		 * set of observations, obs and a lambda model.
 		 * @throws MatchError if the observations sequence is not defined
 		 * @return PartialFunction of a sequence of observations as input and a tuple 
 		 * (likelihood, sequence of observation indices)
 		 */
-	override def |> : PartialFunction[DblVector, HMMPredictor] = {
-		case obs: DblVector if( !obs.isEmpty) => {
-			Try {
-				form match {
-					case _ : EVALUATION => evaluate(obs)
-					case _ : TRAINING => evaluate(obs)
-					case _ : DECODING => decode(obs)
-				}
-			}.getOrElse(nullHMMPredictor)
-			/*
-			match {
-				case Success(prediction) => prediction
-				case Failure(e) => 
-					DisplayUtils.error("HMM.|> ", logger, e)
-					nullHMMPredictor
-			}
-			* 
-			*/
+	override def |> : PartialFunction[Array[T], Try[V]] = {
+		case ySeq: Array[T] if( isModel && ySeq.length > 1) => form match {
+			case _ : EVALUATION => evaluation(model.get, Vector[Int](quantize(ySeq)))
+			case _ : DECODING => decoding(model.get, Vector[Int](quantize(ySeq)))
 		}
 	}
-	
+
 		/**
-		 * <p>Implements the 3rd canonical form of the HMM</p>
-		 * @param obsIdx given sequence of observations
-		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of 
-		 * observations indexes)
-		 */
-	def decode(obs: T): HMMPredictor = ViterbiPath(lambda, obs).maxDelta
-	
-		/**
-		 * <p>Implements the 'Evaluation' canonical form of the HMM</p>
-		 * @param obsIdx index of the observation O in a sequence
-		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations 
-		 * indexes)
-		 */
-	def evaluate(obs: T): HMMPredictor = (-Alpha(lambda, obs).logProb, obs)
-	
-		/**
-		 * <p>Retrieve the Lambda model associated to this HMM</p>
+		 * Retrieve the Lambda model associated to this HMM
 		 * @return lambda model
 		 */
-	final def getModel: HMMLambda = lambda
+	final def getModel: Option[HMMModel] = model
+	
+	override def toString: String = model.map(_.toString).getOrElse("HMM undefined")
 }
 
 
 
 	/**
-	 * <p>Companion object for the HMM that defines a HMMPredictor type and the constructors
-	 * for the HMM and validate its input parameters</p>
+	 * Companion object for the HMM that defines a HMMPredictor type and the constructors
+	 * for the HMM and validate its input parameters
 	 * @author Patrick Nicolas
 	 * @since March 11, 2014
 	 */
 object HMM {
-		/**
-		 * <p>Define the result of the prediction (decoding or evaluation) as a
-		 * a tuple of (likelihood, sequence (array) of observations indexes).</p>
-		 */
-	type HMMPredictor = (Double, Array[Int])
-	val nullHMMPredictor = (-1.0, Array.empty[Int])
-	
-		/**
-		 * Default constructor for the Hidden Markov Model classifier (HMM)
-		 * @param lambda lambda model generated through training or used as input for the evaluation 
-		 * and decoding phase
-		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
-		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
-		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to 
-		 * Array[Int] (Discretization)
-		 */
-	def apply[T <% Array[Int]](
-			lambda: HMMLambda, 
-			form: HMMForm, 
-			maxIters: Int)
-			(implicit f: DblVector => T): HMM[T] =	new HMM[T](lambda, form, maxIters)
+	private val logger = Logger.getLogger("HMM")
 
-		/**
-		 * Constructor for the Hidden Markov Model classifier (HMM) with a predefined maximum 
-		 * number of iterations
-		 * @param lambda lambda model generated through training or used as input for the evaluation 
-		 * and decoding phase
-		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
-		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to
-		 *  Array[Int] (Discretization)
-		 */
-	def apply[T <% Array[Int]](
-			lambda: HMMLambda, 
-			form: HMMForm)
-			(implicit f: DblVector => T): HMM[T] =  new HMM[T](lambda, form, HMMState.DEFAULT_MAXITERS)
-	
-	
 		/**
 		 * Constructor for the Hidden Markov Model classifier (HMM) which model has
 		 * to be initialized by the Baum-Welch algorithm. The objective is to generate
 		 * the components A, B and pi of the lambda model
+		 * @tparam T Type of observed states
 		 * @param config Configuration parameters for the HMM
-		 * @param obsIndx Array of index of observations
-		 * @param form     Canonical form (evaluation or decoding) used in the prediction of sequence
-		 * @param maxIters Maximum number of iterations used in the Baum-Welch algorithm
-		 * @param eps Convergence criteria used in the Baum-Welch algorithm (HMM training)
+		 * @param xt time series of observed values.
+		 * @param form  Canonical form (evaluation or decoding) used in the prediction of sequence
 		 * @param f  Implicit conversion of a Double vector a parameterized type bounded to 
 		 * Array[Int] (Discretization)
 		 */
-	def apply[T <% Array[Int]](
+	@implicitNotFound(msg = "HMM Quantization is not defined for type $T")
+	def apply[T <: AnyVal](
 			config: HMMConfig, 
-			obsIndx: Array[Int], 
-			form: HMMForm,  
-			maxIters: Int, 
-			eps: Double)
-			(implicit f: DblVector => T): Option[HMM[T]] = {
+			xt: XVSeries[T], 
+			form: HMMForm)
+			(implicit quantize: Array[T] => Int, f: T => Double): HMM[T] = 
+		new HMM[T](config, xt, form)
 	  
-		val baumWelchEM = new BaumWelchEM(config, obsIndx, maxIters, eps)
-		baumWelchEM.maxLikelihood.map(_ => new HMM[T](baumWelchEM.lambda, form, maxIters))
+	 
+		/**
+		 * Implements the 3rd canonical form 'decoding' of the HMM
+		 * @tparam T Type of observed states
+		 * @param model  Lambda model composed of state transition, emission and initial probability
+		 * @param xt A given sequence of observations
+		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of 
+		 * observations indexes)
+		 */
+	@implicitNotFound(msg = "HMM Quantization is not defined for type $T")
+	def decode[T <: AnyVal](
+			model: HMMModel, 
+			xt: XVSeries[T])
+			(implicit quantize: Array[T] => Int, f: T => Double): Option[HMMPrediction] =
+		decoding(model, xt.map(quantize(_)))._toOption("HMM.decode", logger)
+
+	protected def decoding(model: HMMModel, obsSeq: Vector[Int]): Try[HMMPrediction] = Try { 
+		ViterbiPath(model, obsSeq).path
 	}
 	
+		/**
+		 * Implements the 'Evaluation' canonical form of the HMM
+		 * @tparam T Type of observed states
+		 * @param model  Lambda model composed of state transition, emission and initial probability
+		 * @param obsIdx index of the observation O in a sequence
+		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations 
+		 * indexes)
+		 */
+	@implicitNotFound(msg = "HMM Quantization is not defined for type $T")
+	def evaluate[T <: AnyVal](
+			model: HMMModel, 
+			xt: XVSeries[T])
+			(implicit quantize: Array[T] => Int, f: T => Double): Option[HMMPrediction] =  
+		evaluation(model, xt.map(quantize(_)))._toOption("HMM.evaluate", logger)
+
+	
+	protected def evaluation(model: HMMModel, obsSeq: Vector[Int]): Try[HMMPrediction] =  Try {
+		HMMPrediction(-Alpha(model, obsSeq).logProb, obsSeq.toArray) 
+	}
+		
+		
+		
 	val MAX_NUM_ITERS = 1024
 	private def check(maxIters: Int): Unit = {
 		require(maxIters > 1 && maxIters < MAX_NUM_ITERS, 
-		    s"HMM.check  Maximum number of iterations to train a HMM $maxIters is out of bounds")
+				s"HMM.check  Maximum number of iterations to train a HMM $maxIters is out of bounds")
 	}
 }
 

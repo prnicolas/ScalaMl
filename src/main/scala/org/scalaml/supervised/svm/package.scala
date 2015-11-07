@@ -1,27 +1,36 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
  * 
- * Version 0.98.1
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised
 
 		/**
 		 * This package object contains the classes implementing the different kernel functions
-		 * and support vector machines for classification, outlier detection and regression.<br>
-		 * - Typical set of configuration parameters for Support Vector Machine <b>SVMConfig</b><br>
-		 * - Configuration parameters for the support vector machine <b>SVMExecution</b><br>
-		 * - Model generated through the training of support vector machine <b>SVMModel</b>
-		 * - Implementation of the support vector machines using the LIBSVM library <b>SVM</b>
-		 * @see This implementation uses the LIBSVM library:<br>
-		 * <i>http://www.csie.ntu.edu.tw/~cjlin/libsvm/</i>
-		 * @note Scala for Machine Learning - Chapter 8/ Kernel models and support vector machines
+		 * and support vector machines for classification, outlier detection and regression
+		 * 
+		 * - Typical set of configuration parameters for Support Vector Machine '''SVMConfig'''
+		 * 
+		 * - Configuration parameters for the support vector machine '''SVMExecution'''<
+		 * 
+		 * - Model generated through the training of support vector machine '''SVMModel'''
+		 * 
+		 * - Implementation of the support vector machines using the LIBSVM library '''SVM'''
+		 * @see This implementation uses the LIBSVM library:
+		 * ''http://www.csie.ntu.edu.tw/~cjlin/libsvm/''
+		 * @see Scala for Machine Learning - Chapter 8 ''Kernel models and support vector machines''
 		 */
 package object svm { }
 // ---------------------------------------  EOF -----------------------------------------

@@ -1,35 +1,41 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap10
 
-import scala.util.Random
+import scala.util.{Try, Random}
 import scala.collection.mutable.ArrayBuffer
 
-import org.scalaml.ga._
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.{FormatUtils, DisplayUtils}
 
+import org.scalaml.stats.XTSeries
+import org.scalaml.core.Types.{ScalaMl, emptyString}
+import org.scalaml.util.{FormatUtils, DisplayUtils}
 import org.scalaml.app.Eval
-import Chromosome._
+import org.scalaml.ga._, Chromosome._, ScalaMl._, DisplayUtils._, Gene._
 
 
 		/**
-		 * <p>Class that models a simple gradient of a function. This simplistic representation of
+		 * Class that models a simple gradient of a function. This simplistic representation of
 		 * the gradient is defined a gene with the delta_x value as target and FDirector of change 
-		 * as operator (type FDirection). The initial value x0 is also a class parameter.<br>
-		 * </b>f(x0 + delta) = f(x0) + gradient*delta</b><br>
-		 * gradient = [f(x0 + delta) - f(x0)]/delta</p>
+		 * as operator (type FDirection). The initial value x0 is also a class parameter.
+		 * {{{
+		 *   f(x0 + delta) = f(x0) + gradient*delta
+		 *   gradient = [f(x0 + delta) - f(x0)]/delta
+		 * }}}
 		 * @param id Identifier of this gradient
 		 * @param delta delta(x) = x - x0 used in the gradient denominator
 		 * @param op Direction of the change as incr for delta > 0 and decr for delta < 0
@@ -39,18 +45,18 @@ final protected class FGradient (
 		id: String, 
 		delta: Double, 
 		op: FDirection,
-		x0: Double)(implicit discr: Discretization) extends Gene(id, delta, op) {
+		x0: Double)(implicit quant: Quantization, geneBits: Encoding) extends Gene(id, delta, op) {
 		
   		/**
-		 * <p>Virtual constructor used in cloning, mutation and cross-over of gene, that
-		 * generate an instance of appropriate type.</p>
+		 * Virtual constructor used in cloning, mutation and cross-over of gene, that
+		 * generate an instance of appropriate type.
 		 * @param id identifier for the gradient
 		 * @param delta delta value used in the gradient
 		 * @param op simple operator that increase or decrease the value x for the operator
 		 * @return a new instance of the gradient with delta and direction modified through 
 		 * genetic reproduction. The new gradient has the same original value x0 as its parent.
 		 */
-	override def getGene(id: String, delta: Double, op: Operator): Gene = 
+	override def toGene(id: String, delta: Double, op: Operator): Gene = 
 			new FGradient(id, delta, op.asInstanceOf[FDirection], x0)
 
 		/**
@@ -66,8 +72,8 @@ final protected class FGradient (
 }
 
 	/**
-	 * </p>Class that defines the direction of a change (delta) to compute the gradient of a 
-	 * function.</p>
+	 * Class that defines the direction of a change (delta) to compute the gradient of a 
+	 * function.
 	 * @param id Identifier for the directional operator
 	 * @param f Function that compute the value f(x0 + delta)
 	 */
@@ -135,28 +141,41 @@ object GAFunctionMin extends Eval {
 		val fActions: List[Gene] = chr.code
 			// summation of all the delta values 
 		val sumDelta =  fActions.map(_.score).reduce( _ + _)
-		chr.unfitness = gf1(sumDelta)
+		chr.cost = gf1(sumDelta)
 	}
 		/*
 		 * Discretize the 32-bit value into R = 1024 levels
 		 */
 	private val R = 1024
-	implicit private val digitize = new Discretization(R)
+	implicit private val digitize = new Quantization(R)
+	implicit val geneBits = new Gene.Encoding(32, 1)
 
 	
-		/** <p>Execution of the scalatest for <b>GASolver</b> class.
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
-		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
+		/** Execution of the scalatest for '''GASolver''' class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
+		 * 	  
+		 * Exceptions thrown during the execution of the tests are caught by the wrapper or handler
+		 * test method in Eval trait defined as follows:
+		 * {{{
+		 *    def test(args: Array[String]) =
+		 *      Try(run(args)) match {
+		 *        case Success(n) => ...
+		 *        case Failure(e) => ...
+		 * }}}
+		 * The tests can be executed through ''sbt run'' or individually by calling 
+		 * ''TestName.test(args)'' (i.e. DKalmanEval.test(Array[String]("IBM") )
+		 * @param args array of arguments used in the test 
 		 */
-	def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Apply Genetic Algorithm to function minimization", logger)
+	override protected def run(args: Array[String]): Int = {
+	  import scala.language.postfixOps
+	  
+		show(s"$header Apply Genetic Algorithm to function minimization")
 		val x0 = 8
 		val MAX_POPULATION_SIZE = 120
 		
 			// Initialize the encoding of the gradient as a 32 delta value and a single bit directional
 			// operator 0 for increase, 1 for decrease
-		Gene.geneBits = new Gene.GeneBits(32, 1)
+	
 
 			// Initialize the population and the maximum number of chromosomes or 
 			// solution candidates
@@ -168,20 +187,21 @@ object GAFunctionMin extends Eval {
 			(current: Population[FGradient]) => {
 				val topChromosomes = current.fittest(5).map( _.toArray).getOrElse(Array.empty)
 				if( !topChromosomes.isEmpty ) {
-					topChromosomes.foreach(ch => DisplayUtils.show(ch.symbolic(""), logger))
-					DisplayUtils.show( s"GASolver average fitness: ${current.averageScore}", logger)
+					topChromosomes.foreach(ch => show(ch.symbolic))
+					show( s"GASolver average cost: ${current.averageCost}")
 				}
 			}
 		)
 		
 			// Instantiate and execute the genetic solver
-		val gaSolver = GASolver[FGradient](config, scoring, monitor)
-		val best = gaSolver |> population
-			
-			// Retrieves the best solution.
-		val fittest = best.fittest.get
-		scoring(fittest)
-		DisplayUtils.show(s"$name Solution ${fittest.symbolic("")}", logger)
+		val pfnSolver = GASolver[FGradient](config, scoring, monitor) |>
+		
+		val result =  pfnSolver(population).map(best => {
+		  val fittest = best.fittest.get
+		  scoring(fittest)
+		  fittest.symbolic
+		})
+		show(s"$name Solution ${result}")
 	}
 	
 				/*
@@ -197,7 +217,7 @@ object GAFunctionMin extends Eval {
 		val fActionList_1: List[FGradient] = fActionList.take(SEED_SIZE)
 		val fActionList_2: List[FGradient] = fActionList.takeRight(SEED_SIZE)
 
-		Range(0, 30).foldLeft(new ArrayBuffer[ChAction])((buf, n) => {
+		Range(0, 30)./:(new ArrayBuffer[ChAction])((buf, n) => {
 			val xs = List[FGradient](
 				fActionList_1(Random.nextInt(SEED_SIZE)), 
 				fActionList_2(Random.nextInt(SEED_SIZE))

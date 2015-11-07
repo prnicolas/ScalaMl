@@ -1,18 +1,24 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.trading
 
-import scala.util.{Try, Success, Failure}
+
+import org.scalaml.core.Types.ScalaMl.DblArray
 import org.scalaml.util.DisplayUtils
 import org.apache.log4j.Logger
 
@@ -22,8 +28,9 @@ import org.apache.log4j.Logger
 	 *  the Yahoo finances historical data. The data is loaded from a CSV file.
 	 *  
 	 *  @author Patrick Nicolas
-	 *  @since Feb 17, 2014
-	 *  @note Scala for Machine Learning Appendix: Financials 101 
+	 *  @since 0.98 Feb 17, 2014
+	 *  @version 0.98.1
+	 *  @see Scala for Machine Learning Appendix "Financials 101"
 	 */
 object YahooFinancials extends Enumeration {
 	type YahooFinancials = Value
@@ -31,11 +38,14 @@ object YahooFinancials extends Enumeration {
 
 	import org.scalaml.workflow.data.DataSource.Fields
 	private val logger = Logger.getLogger("YahooFinancials")
-
+	private final val EPS = 1e-6
 		/** 
 		 *  Convert an field to a double value
 		 */
 	def toDouble(v: Value): Fields => Double = (s: Fields) => s(v.id).toDouble
+	def toDblArray(vs: Array[Value]): Fields => DblArray = 
+	  	(s: Fields) => vs.map(v => s(v.id).toDouble)
+
 	
 		/** 
 		 *  Divide to fields as the ratio of their converted values.
@@ -43,16 +53,20 @@ object YahooFinancials extends Enumeration {
 	def divide(v1: Value, v2: Value): Fields => Double = 
 			(s: Fields) => s(v1.id).toDouble/s(v2.id).toDouble
 	
-	def ratio(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
-		 try {  s(v1.id).toDouble/s(v2.id).toDouble - 1.0 } 
-		 catch { case e: NumberFormatException => -1.0} 
+	def ratio(v1: Value, v2: Value): Fields => Double = (s: Fields) => {
+		val den = s(v2.id).toDouble
+		if( den < EPS) -1.0
+		else  s(v1.id).toDouble/den - 1.0 
+	} 
 		 
 	def plus(v1: Value, v2: Value): Fields => Double = 
 			(s: Fields) => s(v1.id).toDouble + s(v2.id).toDouble
-	def minus(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
-			s(v1.id).toDouble - s(v2.id).toDouble
-	def times(v1: Value, v2: Value): Fields => Double = (s: Fields) => 
-			s(v1.id).toDouble * s(v2.id).toDouble
+			
+	def minus(v1: Value, v2: Value): Fields => Double = 
+	  (s: Fields) => s(v1.id).toDouble - s(v2.id).toDouble
+	  
+	def times(v1: Value, v2: Value): Fields => Double = 
+	  (s: Fields) => s(v1.id).toDouble * s(v2.id).toDouble
 
 		/**
 		 * Extract value of the ADJ_CLOSE field
@@ -64,15 +78,11 @@ object YahooFinancials extends Enumeration {
 		 */
 	val volume =  (s: Fields) => s(VOLUME.id).toDouble
 	
-		/**
-		 * Extract value of the VOLATILITY field
-		 */
-	val volatility = minus(HIGH, LOW)
 	
 		/**
 		 * Computes the relative volatility as (HIGH -LOW)/LOW
 		 */
-	val relVolatility = ratio(HIGH, LOW)
+	val volatility = ratio(HIGH, LOW)
 			
 		/**
 		 * Computes the ratio of volatility over volume
@@ -88,13 +98,16 @@ object YahooFinancials extends Enumeration {
 		/**
 		 * Computes the relative difference between ADJ_CLOSE and OPEN
 		 */
-	val relCloseOpen = ratio(ADJ_CLOSE, OPEN) 
+	val vPrice = ratio(ADJ_CLOSE, OPEN) 
 			
 		/**
 		 * Computes the ratio of relative volatility over volume as (1 - LOW/HIGH)/VOLUME
 		 */
 	val volatilityByVol = ((s: Fields) => 
 		((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
+			
+	val volatilityAndVol = ((s: Fields) => 
+		(((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble), s(VOLUME.id).toDouble)))
 }
 
 		/**
@@ -102,8 +115,9 @@ object YahooFinancials extends Enumeration {
 		 *  from the Google finances historical data. The data is loaded from a CSV file.
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @since Feb 19, 2014
-		 *  @note Scala for Machine Learning Appendix: Financials 101 
+		 *  @since 0.98 Feb 19, 2014
+		 *  @version 0.98.1
+		 *  @see Scala for Machine Learning Appendix: "Financials 101"
 		 */
 object GoogleFinancials extends Enumeration {
 	type GoogleFinancials = Value
@@ -135,8 +149,8 @@ object GoogleFinancials extends Enumeration {
 
 
 		/**
-		 * <p>Enumerator to extract corporate financial ratio. The Object methods are implemented to 
-		 * load the appropriate field and perform the type conversion</p>
+		 * Enumerator to extract corporate financial ratio. The Object methods are implemented to 
+		 * load the appropriate field and perform the type conversion
 		 * @author Patrick Nicolas
 		 * @since May 3, 2014
 		 * @note Scala for Machine Learning Appendix: Financials 101 

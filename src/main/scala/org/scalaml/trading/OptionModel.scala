@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.trading
 
@@ -18,17 +23,18 @@ import org.apache.log4j.Logger
 
 import org.scalaml.reinforcement.qlearning
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.stats.XTSeries
+import org.scalaml.core.Types.ScalaMl.{DblVector, DblArray}
 import org.scalaml.util.DisplayUtils
 import org.scalaml.util.MapUtils.NumericAccumulator
+import YahooFinancials._, qlearning._, XTSeries._
 
 
 		/**
-		 * <p>Class that defines the model for a traded option on a security. An option is fully
+		 * Class that defines the model for a traded option on a security. An option is fully
 		 * defined with the symbol of the underlying security, its strike price, the source of
 		 * data (CSV format), the minimum expiration time left in the option and the number of
-		 * steps used in the approximation of the value of the option (Discretization).</p>
+		 * steps used in the approximation of the value of the option (Discretization).
 		 * @constructor Create a model for a option on a specific security
 		 * @throws IllegalArgumentException if the strikeprice, minimum expiration or number of
 		 * steps are out of bounds
@@ -48,30 +54,30 @@ final class OptionModel(
 		src: DataSource, 
 		minExpT: Int, 
 		nSteps: Int) {
-	import YahooFinancials._, qlearning._
-	
-	check(strikePrice,minExpT,nSteps)
-		// Adjusted closing price for a security, extracted from Yahoo financials
-	val price = src |> adjClose
 
-		// extract the future price and the list of stock technical parameters
-	val futurePrice = price.drop(2)
-	
-		// Retrieve the list of stock technical parameters or properties
+	check(strikePrice,minExpT,nSteps)
+
 	val propsList = (for {
-		rVolatility <- XTSeries.normalize((src |> relVolatility).toArray)
-		volByVol <- XTSeries.normalize((src |> volatilityByVol).toArray)
-		relPriceToStrike <- XTSeries.normalize(price.map(p => 1.0 - strikePrice/p))
-	} yield {
+		price <- src.get(adjClose)
+		volatility <- src.get(volatility)
+		nVolatility <- normalize(volatility)
+		vltyByVol <- src.get(volatilityByVol)
+		nVltyByVol <- normalize(vltyByVol)
+		priceToStrike <- normalize(price.map(p => (1.0 - strikePrice/p)))
+	} 
+	yield {
 		
 		// Assemble the OptionProperties and compute the normalize minimum
 		// minimum time to the expiration of the option.
-		rVolatility.zipWithIndex
-						.foldLeft(List[OptionProperty]())((xs, e) => {
-			val normDecay = (e._2+minExpT).toDouble/(price.size+minExpT)
-			new OptionProperty(normDecay, e._1, volByVol(e._2), relPriceToStrike(e._2)) :: xs
-		}).drop(2).reverse
-	}).getOrElse(List.empty)
+	  
+		nVolatility.zipWithIndex
+						./:(List[OptionProperty]()){ case (xs, (v, n)) => {
+			val normDecay = (n + minExpT).toDouble/(price.size + minExpT)
+			new OptionProperty(normDecay, v, nVltyByVol(n), priceToStrike(n)) :: xs
+		}}
+		.drop(2).reverse
+	})
+	.getOrElse(List.empty[OptionProperty])
 
 		/**
 		 * Compute an approximation of the value of the options by 
@@ -79,42 +85,46 @@ final class OptionModel(
 		 * @param y Array of option prices
 		 * @return A map of array of levels for the option price and accuracy
 		 */
-	def approximate(o: DblVector): Map[Array[Int], Double] = {
+	def quantize(o: DblArray): Map[Array[Int], Double] = {
 		val mapper = new mutable.HashMap[Int, Array[Int]]
   	    
-		val acc = new NumericAccumulator[Int]
-		propsList.map( _.toArray)
+	//	val acc = new NumericAccumulator[Int]
+		val acc: NumericAccumulator[Int] = propsList.view.map( _.toArray)
 				.map( toArrayInt( _ ))
-				.map(ar => { val enc = encode(ar); mapper.put(enc, ar); enc})
+				.map(ar => { 
+					val enc = encode(ar)
+					mapper.put(enc, ar)
+					enc
+				})
 				.zip(o)
-				.foldLeft(acc)((acc, t) => {acc += (t._1, t._2); acc })
-  	  
-		acc.map(kv => (kv._1, kv._2._2/kv._2._1))
-				.map(kv => (mapper(kv._1), kv._2)).toMap
+				./:(new NumericAccumulator[Int]){ case (acc, (t, y)) => {
+						acc += (t, y)
+						acc }
+				}
+		
+		acc.map{ case (k, (v, w)) => (k, v/w) }
+				.map{ case( k,v) => (mapper(k), v) }.toMap
 	}
    
   
 	private def encode(arr: Array[Int]): Int = 
-		arr.foldLeft((1, 0))((s, n) => {
-			val np = s._1*n
-			(s._1*nSteps, s._2 + np)
-		})._2
+		arr./:((1, 0)){ case ((s,t), n) => (s*nSteps, t + s*n)}._2
 
-    	  
-	private def toArrayInt(feature: DblVector): Array[Int] = feature.map(x => (nSteps*x).floor.toInt)
+  
+	private def toArrayInt(feature: DblArray): Array[Int] = feature.map(x => (nSteps*x).floor.toInt)
 	
 	private def check(strikePrice: Double, minExpT: Int, nSteps: Int) : Unit = {
-		require(strikePrice > 0.0, s"OptionModel.check strike price $strikePrice is out of bounds")
+		require(strikePrice > 0.0, s"OptionModel.check price found $strikePrice required > 0")
 		require(minExpT > 2 && minExpT < 16, 
-				s"OptionModel.check Minimum expiration time, $minExpT is out of bounds")
+				s"OptionModel.check Minimum expiration time found $minExpT required ]2, 16[")
 		require(nSteps > 1, 
-				s"OptionModel.check, number of value approximation steps $nSteps is out of bounds")
+				s"OptionModel.check, number of steps found $nSteps required > 1")
 	}
 }
 
 
 		/**
-		 * <p>Class that defines the property of a  traded option on a security.</p>
+		 * Class that defines the property of a  traded option on a security.
 		 * @constructor Create the property for an option.
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @param timeToExp Time left to the option before expiration as percentage of the overall
@@ -127,17 +137,20 @@ final class OptionModel(
 		 * a given trading session.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since May 11, 2014 
-		 * @note Scala for Machine Learning / Appendix / Finance 101 /Option Trading
+		 * @since 0.98.2 May 11, 2014 
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Appendix "Finance 101" Option Trading
 		 */
+@throws(classOf[IllegalArgumentException])
 class OptionProperty(
 		timeToExp: Double, 
-		relVolatility: Double, 
-		volatilityByVol: Double, 
-		relPriceToStrike: Double) {
-	val toArray = Array[Double](timeToExp, relVolatility, volatilityByVol, relPriceToStrike)
+		volatility: Double, 
+		vltyByVol: Double, 
+		priceToStrike: Double) {
+	val toArray = Array[Double](timeToExp, volatility, vltyByVol, priceToStrike)
    
-	require(timeToExp > 0.01, s"OptionProperty time to option expiration $timeToExp if out of bounds")
+	require(timeToExp > 0.01, s"OptionProperty time to expiration found $timeToExp erquierd 0.01")
 }
+
 
 // ------------------------------------  EOF ----------------------------------

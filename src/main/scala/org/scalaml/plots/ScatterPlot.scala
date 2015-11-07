@@ -1,18 +1,24 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.plots
 
 import java.util.List
+import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
 	
 import org.jfree.data.xy.{XYSeriesCollection, XYSeries, XYDataset}
 import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
@@ -25,23 +31,27 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer
 import org.jfree.chart.axis.{ValueAxis, NumberAxis}
 import org.jfree.util.ShapeUtilities
 
-import Plot._
+import Plot._,  scala.collection._
 
 	/**
-		 * <p>Class to create a Scatter plot using the JFreeChart library.</p>
+		 * Class to create a Scatter plot using the JFreeChart library.
 		 * @constructor Create a Scatter plot instance
-		 * @param config  Configuration for the plot of type <b>PlotInfo</b>
-		 * @param theme   Configuration for the display of plots of type <b>PlotTheme</b>
+		 * @param config  Configuration for the plot of type '''PlotInfo'''
+		 * @param theme   Configuration for the display of plots of type '''PlotTheme'''
 		 * @throws IllegalArgumentException if the class parameters are undefined
-		 * @see org.jfree
 		 * @author Patrick Nicolas
-		 * @since  November 18, 2013
-		 * @note Scala for Machine Learning
+		 * @since  0.97 November 18, 2013
+		 * @version 0.97
+		 * @see Scala for Machine Learning "Appendix" Visualization
+		 * @see http://www.jfree.org
 		 */
-final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config, theme) {
+final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, theme) {
 	import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+
 	import java.awt.geom.Ellipse2D
 	import org.scalaml.core.Types.ScalaMl._
+	
+	val strokeList: immutable.List[Stroke] = ScatterPlot.strokesList
 	
 		/**
 		 * DisplayUtils array of tuple (x,y) in a Scatter plot for a given width and height
@@ -51,13 +61,16 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */
-	override def display(xy: XYTSeries, width: Int, height : Int): Unit  = {
-		if( validateDisplayUtils(xy, width, height, "ScatterPlot.display") ) {
-			val series =  xy.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+	override def display(xy: Vector[DblPair], width: Int, height : Int): Boolean  = {
+		val validDisplay = validateDisplay[Vector[DblPair]](xy, width, height, "ScatterPlot.display") 
+		if(validDisplay ) {
+			val series =  xy./:(new XYSeries(legend.title))((s, xy) => {s.add(xy._1, xy._2); s})
+			
 			val seriesCollection = new XYSeriesCollection
 			seriesCollection.addSeries(series)
 			draw(seriesCollection, width, height)
 		}
+		validDisplay
 	}
 	
 		/**
@@ -69,16 +82,19 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */
-	override def display(y: DblVector, width: Int, height: Int): Unit = {
-		if( validateDisplayUtils[Double](y, width, height, "ScatterPlot.display") ) {
-			val series =  y.zipWithIndex.foldLeft(new XYSeries(config._1))((s, xn) => {
-					s.add(xn._1, xn._2)
+	override def display(y: DblArray, width: Int, height: Int): Boolean = {
+		val validDisplay = validateDisplay[DblArray](y, width, height, "ScatterPlot.display") 
+		
+		if( validDisplay) {
+			val series =  y.zipWithIndex./:(new XYSeries(legend.title)){ case (s, (x, n)) => {
+					s.add(x, n)
 					s
-			})
+			}}
 			val seriesCollection = new XYSeriesCollection
 			seriesCollection.addSeries(series)
 			draw(seriesCollection, width, height)
 		}
+	  validDisplay
 	}
    
 
@@ -91,24 +107,27 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		 * @throws IllegalArgumentException if either dataset is undefined or the width or height 
 		 * are out of bounds.
 		 */
-	def display(xy1: XYTSeries, xy2: XYTSeries, width: Int, height : Int): Unit  = {
+	@throws(classOf[IllegalArgumentException])
+	def display(xy1: Vector[DblPair], xy2: Vector[DblPair], width: Int, height : Int): Boolean  = {
 		require( !xy1.isEmpty, 
 				"ScatterPlot.DisplayUtils Cannot display with first series undefined")
 		require( !xy1.isEmpty, 
 				"ScatterPlot.DisplayUtils Cannot display with second series undefined ")
 
-		if( validateDisplaySize(width, height, "ScatterPlot.DisplayUtils") ) {
+		val validDisplay = validateDisplaySize(width, height, "ScatterPlot.DisplayUtils")
+		if( validDisplay ) {
 
 			val seriesCollection1 = new XYSeriesCollection
 			val seriesCollection2 = new XYSeriesCollection
-			val series1 = xy1.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
-			val series2 = xy2.foldLeft(new XYSeries(config._1))((s, xy) => {s.add(xy._1, xy._2); s})
+			val series1 = xy1./:(new XYSeries(legend.title))((s, xy) => {s.add(xy._1, xy._2); s})
+			val series2 = xy2./:(new XYSeries(legend.title))((s, xy) => {s.add(xy._1, xy._2); s})
 			seriesCollection1.addSeries(series1)
 			seriesCollection2.addSeries(series2)
 		  
-			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection1, 
-						PlotOrientation.VERTICAL, true, false, false)
-	      
+			val chart = ChartFactory.createScatterPlot(legend.title, legend.xLabel, legend.yLabel, 
+					seriesCollection1, PlotOrientation.VERTICAL, true, false, false)
+			setTitle(legend.title, chart)
+					
 			val plot = chart.getPlot.asInstanceOf[XYPlot]
 			val renderer1 = new XYDotRenderer
 			plot.setRenderer(0, renderer1)
@@ -124,18 +143,21 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 			renderer2.setSeriesPaint(0, theme.color(1))
 	   
 			plot.setBackgroundPaint(theme.paint(width, height))
-			createFrame(config._1, chart)	
+			createFrame(legend.title, chart)	
 		}
+		validDisplay
 	}
 
 	import scala.collection.immutable.List
-	def display(xs: List[XYTSeries], lbls: List[String], w: Int, h : Int): Unit  = {
-		if( validateDisplayUtils[XYTSeries](xs, w, h, "ScatterPlot.display") ) {
+	type OBS = List[Vector[DblPair]]
+	def display(xs: OBS, lbls: List[String], w: Int, h : Int): Boolean  = {
+		val validDisplay = validateDisplay[OBS](xs, w, h, "ScatterPlot.display") 
+		if( validDisplay) {
 	
 			val seriesCollectionsList = xs.zipWithIndex
-					.foldLeft(scala.List[XYSeriesCollection]())((xs, xy) => { 
+					./:(scala.List[XYSeriesCollection]())((xs, xy) => { 
 				val seriesCollection = new XYSeriesCollection
-				val series = xy._1.foldLeft(new XYSeries(lbls(xy._2)))((s, t) => {
+				val series = xy._1./:(new XYSeries(lbls(xy._2)))((s, t) => {
 					s.add(t._1, t._2)
 					s
 				})
@@ -143,8 +165,9 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 				seriesCollection :: xs
 			})
 		  
-			val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, 
+			val chart = ChartFactory.createScatterPlot(legend.title, legend.xLabel, legend.yLabel, 
 						seriesCollectionsList.last, PlotOrientation.VERTICAL, true, false, false)
+			setTitle(legend.title, chart)
 			val plot = chart.getPlot.asInstanceOf[XYPlot]
 	  	  
 			val renderer1 = new XYDotRenderer
@@ -166,16 +189,19 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 			})
 	   
 			plot.setBackgroundPaint(theme.paint(w, h))
-			createFrame(config._1, chart)
+			createFrame(legend.title, chart)
 		}
+		validDisplay
 	}
    
 	
-	private def draw(seriesCollection: XYSeriesCollection, w: Int, h : Int) {	
+	private def draw(series: XYSeriesCollection, w: Int, h : Int) {	
 		validateDisplaySize(w, h, "ScatterPlot.draw")
 		
-		val chart = ChartFactory.createScatterPlot(config._2, config._2, config._3, seriesCollection, 
+		val chart = ChartFactory.createScatterPlot(legend.title, legend.xLabel, legend.yLabel, series, 
 			PlotOrientation.VERTICAL, true, false, false)
+		setTitle(legend.title, chart)
+		
 		val plot = chart.getPlot.asInstanceOf[XYPlot]
 		
 		val renderer = new XYDotRenderer
@@ -186,48 +212,53 @@ final class ScatterPlot(config: PlotInfo, theme: PlotTheme) extends Plot(config,
 		renderer.setDotWidth(3)
    
 		plot.setBackgroundPaint(theme.paint(w, h))
-		createFrame(config._1, chart)
+		createFrame(legend.title, chart)
 	}
 }
 
 
 object ScatterPlot {
-	import org.scalaml.core.Types.ScalaMl.{DblVector, XYTSeries}
+	import org.scalaml.core.Types.ScalaMl.{DblArray, DblPair}
+	import BasicStroke._
 	
+	
+  val strokesList: immutable.List[Stroke] = immutable.List[Stroke](
+		new BasicStroke(1.0f),
+		new BasicStroke(2.0f),
+		new BasicStroke(3.0f)
+	)
+  
+  
 	private val DEFAULT_WIDTH = 320
 	private val DEFAULT_HEIGHT = 260
 	
 	def display(
-			y: DblVector,
-			labels: scala.collection.immutable.List[String],
-			theme: PlotTheme): Unit = {
-		import scala.collection.JavaConversions._
+			y: DblArray,
+			legend: Legend,
+			theme: PlotTheme): Boolean = {
 		require( !y.isEmpty, 
-				s"$labels(0).display Cannot plot an undefined time series")
+				s"${legend.key}.display Cannot plot an undefined time series")
 		
-		val chartLabels = seqAsJavaList(labels)
-		val plotter = new ScatterPlot((chartLabels(1), chartLabels(2), chartLabels(3)), theme)
+		val plotter = new ScatterPlot(legend, theme)
 		plotter.display(y, DEFAULT_WIDTH, DEFAULT_WIDTH)
 	}
-	
+
+			
+  def display(
+			xySeries: Vector[DblPair], 
+			legend: Legend, 
+			theme: PlotTheme): Boolean = display(xySeries, Vector.empty[DblPair], legend, theme)
 	
 	def display(
-			xySeries: XYTSeries, 
-			labels: scala.collection.immutable.List[String], 
-			theme: PlotTheme): Unit = display(xySeries, Array.empty, labels, theme)
-	
-	def display(
-			xySeries1: XYTSeries, 
-			xySeries2: XYTSeries, 
-			labels: scala.collection.immutable.List[String], 
-			theme: PlotTheme): Unit = {
-	  
-		import scala.collection.JavaConversions._
+			xySeries1: Vector[DblPair], 
+			xySeries2: Vector[DblPair], 
+			legend: Legend, 
+			theme: PlotTheme): Boolean = {
+
 		require( !xySeries1.isEmpty, 
-				s"$labels(0).display Cannot plot an undefined time series")
+				s"${legend.key} display Cannot plot an undefined time series")
 		
-		val chartLabels = seqAsJavaList(labels)
-		val plotter = new ScatterPlot((chartLabels(1), chartLabels(2), chartLabels(3)), theme)
+		val plotter = new ScatterPlot(legend, theme)
 		
 		if( !xySeries2.isEmpty)
 			plotter.display(xySeries1, xySeries2, DEFAULT_WIDTH, DEFAULT_WIDTH)

@@ -1,67 +1,73 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.workflow.data
 
 import scala.util.{Try, Success, Failure}
 
 import org.apache.log4j.Logger
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types
+import org.scalaml.stats.XTSeries
+import org.scalaml.core.{Types, ETransform}
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.core.Design.PipeOperator
-import org.scalaml.util.{DisplayUtils, FileUtils}
-import ScalaMl._
+import org.scalaml.util.{DisplayUtils, FileUtils,  LoggingUtils}
+import ScalaMl._,  LoggingUtils.TryToOption
 
 
 		/**
-		 * <p>Generic class to load or save files into either HDFS or local files system. The 
-		 * persistency of data is defined as a data transformation and therefore inherit from the 
-		 * PipeOperator</p>
+		 * Generic class to load or save files into either HDFS or local files system. The 
+		 * persistency of data is defined as a data transformation using an explicit configuration.
+		 * Therefore '''DataSink''' inherits from ''ETransform'''
+		 * 
+		 * @tparam T type of elements of output collections or time series to be stored in file.
 		 * @constructor Create a DataSink transform associated to a specific path name or database name. 		 
 		 * @throws IllegalArgumentException if the name of the storage is undefined
 		 * @param sinkName Name of the storage (file, database, ..).
 		 * @author Patrick Nicolas
-		 * @since December 15, 2013
-		 * @note Scala for Machine Learning
+		 * @since 0.98 December 15, 2013
+		 * @version 0.99
+		 * @see Scala for Machine Learning Chapter 2 ''Hello World!''
 		 */
-final protected class DataSink[T <% String](
-		sinkName: String) extends PipeOperator[List[XTSeries[T]], Int] {
+final protected class DataSink[T](
+		sinkName: String) extends ETransform[String](sinkName) {
 	import XTSeries._, DataSource._
 	import scala.io.Source
 	import java.io.File
+  
+  type U = List[XSeries[T]]
+  type V = Int
+      
 	require( !sinkName.isEmpty, "DataSink Name of the storage is undefined")
 	
 	private val logger = Logger.getLogger("DataSink")	
 	
 		// Create an handle to a file the results needs to be dump.
 		// The directory containing results is created if it does not exist
-	private val sinkPath: Option[File] = 
+	private val sinkPath: Option[File] = {
 		Try {
 			val path = sinkName.substring(0, sinkName.lastIndexOf("/")-1)
 			val dir = new File(path)
 			if( !dir.exists )
 				dir.mkdir
 			dir
-		} match {
-		  case Success(f) => Some(f)
-		  case Failure(e) => DisplayUtils.none("DataSink.sinkFile", logger, e)
-		}
-   
-	
-    
+		}.toOption
+	}
 	
 		/**
-		 * <p>Write the content into the storage with sinkName as identifier.</p>
+		 * Write the content into the storage with sinkName as identifier.
 		 * @param content Stringized data to be stored
 		 * @return true if the content has been successfully stored, false otherwise
 		 * @throws IllegalArgumentException If the content is not defined.
@@ -74,12 +80,13 @@ final protected class DataSink[T <% String](
 	}
 
 		/**
-		 * <p>Write the content of a vector into the storage with sinkName as identifier.</p>
+		 * Write the content of a vector into the storage with sinkName as identifier.
 		 * @param vector of type Double to be stored
 		 * @return true if the vector has been successfully stored, false otherwise
 		 * @throws IllegalArgumentException If the vector is either undefined or empty.
 		 */
-	def write(v: DblVector) : Boolean = {
+	@throws(classOf[IllegalArgumentException])
+	def write(v: DblVector): Try[Boolean] = Try {
 		require( !v.isEmpty, "DataSink.write Cannot persist an undefined vector")
 		assert( sinkPath != None, "DataSink.write undefined sink path")
 		
@@ -88,14 +95,15 @@ final protected class DataSink[T <% String](
 	}
 	
 		/**
-		 * <p>Persists a set of time series into a predefined storage, sinkFile. The 
-		 * results are written one line per time series </p>
+		 * Persists a set of time series into a predefined storage, sinkFile. The 
+		 * results are written one line per time series 
 		 * @throws MatchError if the list of time series is either undefined or empty
 		 * @return PartialFunction of a list of parameterized time series as input and the number 
-		 * of time series saved as output
+		 * of time series saved as output (Option)
 		 */
-	override def |> : PartialFunction[List[XTSeries[T]], Int] = {
-		case xs: List[XTSeries[T]] if( !xs.isEmpty && sinkPath != None) => {
+  @throws(classOf[IllegalArgumentException])
+	override def |> : PartialFunction[U, Try[V]] = {
+		case xs: U if( !xs.isEmpty && sinkPath != None) => {
 			import java.io.PrintWriter
 			
 			var printWriter: Option[PrintWriter] = None
@@ -117,18 +125,14 @@ final protected class DataSink[T <% String](
 				k
 			} 
 			match {
-				case Success(k) => k
+				case Success(k) => Try(k)
 				case Failure(e) => {
 					DisplayUtils.error("DataSink.|> ", logger)
 	    		  
-					if( printWriter != None) {
-						Try {printWriter.map(_.close); 1 }
-						match {
-							case Success(res) => res
-							case Failure(e) => DisplayUtils.error("DataSink.|> ", logger)
-						}
-					}
-					else DisplayUtils.error("DataSink.|> no printWrite", logger)
+					if( printWriter != None) 
+						Try {printWriter.map(_.close); 1}
+					else 
+					  Try(DisplayUtils.failure("DataSink.|> printWriter undefined", logger, e))
 				}
 			}
 		}
@@ -137,17 +141,17 @@ final protected class DataSink[T <% String](
 
 
 		/**
-		 * <p>Companion object to the class DataSink used to defined its constructor.</p>
+		 * Companion object to the class DataSink used to defined its constructor.
 		 */
 object DataSink {
 	import scala.annotation.implicitNotFound
   
 		/**
-		 * <p>Create a DataSink with an implicit conversion of the type parameter to a string.</p>
+		 * Create a DataSink with an implicit conversion of the type parameter to a string.
 		 * @param sinkPath name of the storage.
 		 */
-	@implicitNotFound("DataSink.apply Conversion of paramerized type undefined")
-	def apply[T](sinkPath: String)(implicit f: T => String= (t:T) => t.toString): DataSink[T] 
+	@implicitNotFound("DataSink.apply type Conversion from $T to String undefined")
+	def apply[T](sinkPath: String)(implicit f: T => String = (t:T) => t.toString): DataSink[T] 
 		= new DataSink[T](sinkPath)
 }
 

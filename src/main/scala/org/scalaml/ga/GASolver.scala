@@ -1,124 +1,113 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.ga
 
-import scala.util.Random
+import scala.util.{Try, Random}
 
 import org.apache.log4j.Logger
 
-import org.scalaml.core.Design.PipeOperator
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl.{DblVector, DblMatrix}
+import org.scalaml.core.ETransform
+import org.scalaml.core.Types.ScalaMl.{DblArray, DblMatrix}
 import org.scalaml.ga.state._
 import org.scalaml.util.DisplayUtils
 import Chromosome._
 
 
 		/**
-		 * <p>Class to select the best solution or Chromosome from an initial population
+		 * Class to select the best solution or Chromosome from an initial population
 		 * or genes pool using a set of policies for selection, mutation and crossover of
 		 * chomosomes. The client code initialize the GA solver with either an initialized
 		 * population or a function () => Population{T] that initialize the population. THe
-		 * class has only one public method search.<br>
-		 * Reference: http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf</p>
-		 * @constructor Create a generic GA-based solver. [state] Configuration parameters for the 
-		 * GA algorithm, [population] Initialized population of chromosomes (solution candidates)
-		 * @param config  Configuration parameters for the GA algorithm
+		 * class has only one public method search.
+		 * @tparam T Type of the gene (inherited from '''Gene''')
+		 * @constructor Create a generic GA-based solver. 
+		 * @param conf  Configuration parameters for the GA algorithm. The configuration is used as 
+		 * a model for the explicit data transformation.
 		 * @param score Scoring method for the chromosomes of this population
-		 * @throws IllegalArgumenException if the configuration is undefined or the population 
-		 * is not initialized
+		 * @param monitor optional method to monitor the state and size of the population during
+		 * reproduction.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since August 29, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
+		 * @since August 29, 2013  (0.98)
+		 * @version 0.98.3
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm
+		 * @see http://www.kddresearch.org/Publications/Book-Chapters/Hs5.pdf
 		 */
 final protected class GASolver[T <: Gene](
 		config: GAConfig, 
 		score: Chromosome[T] => Unit,
-		monitor: Option[Population[T] => Unit]) extends PipeOperator[Population[T], Population[T]] {
-	import GAConfig._
+		_monitor: Option[Population[T] => Unit]) 
+	extends ETransform[GAConfig](config) with GAMonitor[T] {
 	
-		// Initial state of the genetic algorithm solver
-	private[this] var state: GAState = GA_NOT_RUNNING
-	private val logger = Logger.getLogger("GASolver")
+	import GAConfig._, GASolver._
+  
+	
+	type U = Population[T]
+	type V = Population[T]
+	
+
+	protected val monitor: Option[Population[T] => Unit] = _monitor
+	protected val logger = Logger.getLogger("GASolver")
 	
 		/**
-		 * <p>Method to resolve any optimization problem using a function to generate
+		 * Method to resolve any optimization problem using a function to generate
 		 * a population of Chromosomes, instead an existing initialized population
 		 * @param initialize Function to generate the chromosomes of a population
-		 * @throws IllegalArgumenException If the initialization or chromosome generation function is undefined
+		 * @throws IllegalArgumenException If the initialization or chromosome generation 
+		 * function is undefined
 		 */
-	def |>(initialize: () => Population[T]): Population[T] = this.|>(initialize())
+	def |>(initialize: () => Population[T]): Try[Population[T]] = this.|> (initialize())
 
 
 		/**
-		 * <p>Uses the genetic algorithm reproduction cycle to select the fittest
-		 * chromosomes (or solutions candidate) after a predefined number of reproduction cycles.<br>
+		 * This method leverages the genetic algorithm reproduction cycle to select the fittest
+		 * chromosomes (or solutions candidate) after a predefined number of reproduction cycles
+		 * 
 		 * Convergence criteria used to end the reproduction cycle is somewhat dependent of the
 		 * problem or domain. This implementation makes sense for the exercise in the book
-		 * chapter 10. It needs to be modified to a specific application.</p>
+		 * chapter 10. It needs to be modified to a specific application. This implementation relies on 
+		 * the tail recursion
 		 * @throws MatchError if the population is empty
 		 * @return PartialFunction with a parameterized population as input and the population 
 		 * containing the fittest chromosomes as output.
 		 */
-	override def |> : PartialFunction[Population[T], Population[T]] = {	
-		case population: Population[T] if(state != GA_RUNNING && population.size > 1) => {
+	override def |> : PartialFunction[U, Try[V]] = {	
+		case population: U if(population.size > 1 && isReady) => {
 		
+			start
 				// Create a reproduction cycle manager with a scoring function
 			val reproduction = Reproduction[T](score)
-			state = GA_RUNNING
-
-				// Trigger a reproduction cycle 'mate' then test if 
-				// any of the convergence criteria applies.
-			Range(0, config.maxCycles).find(n => {  		 
-				if( reproduction.mate(population, config, n) ) {
-						// If the monitoring callback is defined...
-					if(monitor != None)
-						monitor.map( _(population))
-					converge(population, n) != GA_RUNNING
-				}
-				else {
-					if(population.size == 0) 
-						state = GA_FAILED(s"GASolver.PartialFunction reproduction failed after $n cycles") 
-					else {
-		
-						state = GA_SUCCEED(s"GASolver.PartialFunction Completed in $n cycles")
-					}
-					true
-				}
-			}).getOrElse(notConverge)
+			
+			@scala.annotation.tailrec
+			def reproduce(population: Population[T], n: Int = 0): Population[T] = 				
+				if( !reproduction.mate(population, config, n) ) 
+					population
+				else if( isComplete(population, config.maxCycles -n) )
+					population
+				else
+					reproduce(population, n+1)
+			
+			reproduce(population)
+					
 				// The population is returned no matter what..
 			population.select(score, 1.0)
-			population
+		  Try(population)
 		}
-	}
-
-		/*
-		 * Domain dependent convergence criteria. This version tests the size
-		 * of the population and the number of reproduction cycles already executed
-		 */
-	private def converge(population: Population[T], cycle: Int): GAState = {
-		if( population.isNull ) 
-			GA_FAILED(s"GASolver.converge Reproduction failed at $cycle")
-		else if(cycle >= config.maxCycles)
-			GA_NO_CONVERGENCE(s"GASolver.converge Failed to converge at $cycle ")
-		else
-			GA_RUNNING
-	}
-	
-	private def notConverge: Int = {
-		state = GA_NO_CONVERGENCE(s"GASolver.PartialFunction Failed to converge")
-		-1
 	}
 }
 
@@ -130,6 +119,7 @@ final protected class GASolver[T <: Gene](
 		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm
 		 */
 object GASolver {
+	final val GA_COUNTER = "AvCost"
 
 		/**
 		 * Default constructor for the Genetic Algorithm (class GASolver)

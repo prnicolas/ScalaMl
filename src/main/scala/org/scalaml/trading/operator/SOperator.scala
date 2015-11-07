@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.trading.operator
 
@@ -16,12 +21,15 @@ package org.scalaml.trading.operator
 import org.scalaml.ga.Operator
 
 		/**
-		 * <p>Generic class that defines the operator of a trading signal.<br>
+		 * Generic class that defines the operator of a trading signal.
+		 * 
 		 * A trading signal is emitted once a value (or data point) in a time series reaches a 
-		 * threshold (upward or downward movement).<br>
-		 * A signal is triggers when x(n) > target value or x(n) < target value<br>
-		 * The signal operator implements the <b>Operator</b> trait defined as an element of 
-		 * a <b>Gene</b> in a genetic algorithm. The trading signal operators are None, >, < and ==.</p>
+		 * threshold (upward or downward movement).
+		 * {{{
+		 * A signal is triggers when x(n) > target value or x(n) < target value
+		 * }}}
+		 * The signal operator implements the '''Operator''' trait defined as an element of 
+		 * a '''Gene''' in a genetic algorithm. The trading signal operators are None, >, < and ==.
 		 * @constructor Create an instance of an operator for a trading signal. 
 		 * @see org.scalaml.ga.Operator
 		 * 

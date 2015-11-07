@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.svm.formulation
 
@@ -17,7 +22,7 @@ import libsvm._
 import org.scalaml.supervised.svm.SVMConfigItem
 
 		/**
-		 * <p>Trait for type or formulation of Support Vector Machine algorithms.</p>
+		 * Trait for type or formulation of Support Vector Machine algorithms.
 		 * @author Patrick Nicolas
 		 * @since April 29, 2014
 		 * @note Scala for Machine Learning
@@ -39,7 +44,7 @@ import SVMFormulation._
 
 
 		/**
-		 * <p>Class to initialize the type of SVM to a C formulated support vector classifier.</p>
+		 * Class to initialize the type of SVM to a C formulated support vector classifier.
 		 * @constructor Create a C-SVC formulation
 		 * @param c  C-penalty or inverse regularization factor.
 		 * @throws IllegalArgumentException if c is negative
@@ -52,7 +57,7 @@ final class CSVCFormulation(c: Double) extends SVMFormulation {
 			s"CSVCFormulation C penalty factor $c is out of range")
   
 		/**
-		 * <p>Initialize the LIBSVM parameters configuration</p>
+		 * Initialize the LIBSVM parameters configuration
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -69,7 +74,7 @@ final class CSVCFormulation(c: Double) extends SVMFormulation {
 }
 
 		/**
-		 * <p>Class to initialize the type of SVM to a Nu formulated support vector classifier.</p>
+		 * Class to initialize the type of SVM to a Nu formulated support vector classifier.
 		 * @constructor Create a Nu-SVC formulation
 		 * @throws IllegalArgumentException if nu is out of range [0,1]
 		 * @param nu normalized penalty factor
@@ -83,7 +88,7 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 			s"NuSVCFormulation: Nu penalty factor $nu is out of range")  
   
 		/**
-		 * <p>Initialize the LIBSVM parameters configuration</p>
+		 * Initialize the LIBSVM parameters configuration
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -102,8 +107,8 @@ final class NuSVCFormulation(nu: Double, rho: Double) extends SVMFormulation {
 
 
 		/**
-		 * <p>Class to initialize the type of SVM to a one class support vector classifier for outliers.
-		 * </p>
+		 * Class to initialize the type of SVM to a one class support vector classifier for outliers.
+		 * 
 		 * @constructor Create a 1-SVC/Nu formulation
 		 * @throws IllegalArgumentException if nu is out of range [0,1]
 		 * @param nu normalized penalty factor
@@ -115,7 +120,7 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 	require(nu >= NU_LIMITS._1 && nu <= NU_LIMITS._2, s"nu penalty factor $nu is out of range")  
   
 		/**
-		 * <p>Initialize the LIBSVM parameters configuration</p>	 
+		 * Initialize the LIBSVM parameters configuration	 
 		 * @param param svm_parameter LIBSVM instance to initialize	
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -133,8 +138,8 @@ final class OneSVCFormulation(nu: Double) extends SVMFormulation {
 
 
 		/**
-		 * <p>Class to initialize the type of SVM to the epsilon formulation of the support vector 
-		 * regressions.</p>
+		 * Class to initialize the type of SVM to the epsilon formulation of the support vector 
+		 * regressions.
 		 * @constructor Create a epsilon- SVR formulation
 		 * @throws IllegalArgumentException if nu is out of range [0,1]
 		 * @param c  C-penalty or inverse regularization factor.
@@ -150,7 +155,7 @@ final class SVRFormulation(c: Double, epsilon: Double) extends SVMFormulation {
 			s"SVRFormulation Epsilon factor $epsilon is out of range") 
    
 		/**
-		 * <p>Initialize the LIBSVM parameters configuration</p>
+		 * Initialize the LIBSVM parameters configuration
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */

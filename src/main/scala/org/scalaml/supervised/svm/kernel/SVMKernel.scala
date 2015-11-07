@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.svm.kernel
 
@@ -17,15 +22,15 @@ import org.scalaml.supervised.svm.SVMConfigItem
 
 
 		/**
-		 * <p>Generic trait for Kernel functions used for Support Vector Machine.</p>
+		 * Generic trait for Kernel functions used for Support Vector Machine.
 		 * @author Patrick Nicolas
-		 * @since April 30, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
+		 * @since 0.98 (April 30, 2014)
+		 * @see Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
 		 * Kernel functions
 		 */
 sealed trait SVMKernel extends SVMConfigItem {
 		/**
-		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
+		 * Initialize the LIBSVM type and parameter of the Kernel function.
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 */
 	def update(param: svm_parameter): Unit
@@ -38,12 +43,14 @@ sealed trait SVMKernel extends SVMConfigItem {
 object SVMKernel {
 	final val GAMMA_LIMITS = (1e-17, 1e+5)
 	final val DEGREE_LIMITS = (1, 10000)
+	
+	
 }
 
 import SVMKernel._
 
 	/**
-		 * <p>Definition of the Linear kernel.</p>
+		 * Definition of the Linear kernel.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 30, 2014
@@ -52,7 +59,7 @@ import SVMKernel._
 		 */
 object LinearKernel extends SVMKernel {
 		/**
-		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
+		 * Initialize the LIBSVM type and parameter of the Kernel function.
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -67,8 +74,8 @@ object LinearKernel extends SVMKernel {
 }
 
 		/**
-		 * <p>Definition of the Radial Basis Kernel function. The radial basis function is implemented
-		 * as a Gaussian function.</p>
+		 * Definition of the Radial Basis Kernel function. The radial basis function is implemented
+		 * as a Gaussian function.
 		 * @constructor create a Radial Basis function kernel,
 		 * @throws IllegalArgumentException if gamma is negative or null
 		 * @param gamma  Gamma or scaling parameter for the RBF kernel.
@@ -82,7 +89,7 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 			s"RbfKernel Gamma for the RBF kernel $gamma is out of range")
     
 		/**
-		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
+		 * Initialize the LIBSVM type and parameter of the Kernel function.
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -100,7 +107,7 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the Sigmoid Kernel function.</p>
+		 * Definition of the Sigmoid Kernel function.
 		 * @throws IllegalArgumentException if gamma is negative or null
 		 * @param gamma  Gamma or scaling parameter for the Sigmoid kernel.
 		 * @author Patrick Nicolas
@@ -113,7 +120,7 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 			s"SigmoidKernel Gamma for the Sigmoid kernel $gamma is out of range")
 		
 		/**
-		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
+		 * Initialize the LIBSVM type and parameter of the Kernel function.
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
@@ -131,7 +138,7 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 
 
 		/**
-		 * <p>Definition of the polynomial Kernel function.</p>
+		 * Definition of the polynomial Kernel function.
 		 * @constructor Create a polynomial kernel functionj with a given gamma, intercept coef and 
 		 * degree
 		 * @throws IllegalArgumentException if gamma is negative or null or if degree < 1
@@ -150,7 +157,7 @@ final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends 
 			s"PolynomialKernel The degree of the polynomial kernel $degree is out of range")
 	
 		/**
-		 * <p>Initialize the LIBSVM type and parameter of the Kernel function.</p>
+		 * Initialize the LIBSVM type and parameter of the Kernel function.
 		 * @param param svm_parameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */

@@ -1,40 +1,39 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.plots
 
 import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+import org.scalaml.core.Types._
+
 
 
 		/**
-		 * <p>Generic trait for visual display of a plotting graph using jFreeChart library</p>
-		 * @see org.jfree
+		 * Generic trait for visual display of a plotting graph using jFreeChart library
 		 * @author Patrick Nicolas
-		 * @since  November 20, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello World!
+		 * @since  0.97 November 20, 2013
+		 * @version 0.97
+		 * @see Scala for Machine Learning "Appendix" Visualization
+		 * @see http://www.jfree.org
 		 */
 trait PlotTheme {
-	import BasicStroke._
-	
-	protected[this] val strokeList = Array[Stroke](
-		new BasicStroke(1.0f),
-		new BasicStroke(1.0f, CAP_BUTT, JOIN_BEVEL, 8.0f, Array[Float](1.0f, 1.0f), 0.0f),
-		new BasicStroke(1.0f, CAP_BUTT, JOIN_BEVEL, 8.0f,
-				Array[Float](3.0f, 3.0f), 0.0f)
-	)
-
-	def stroke(index: Int) = strokeList(index % strokeList.size)
-	
 		/**
-		 * <p>Select the color from an existing palette or list compatible
-		 * with the background of the plot.</p>
+		 * Select the color from an existing palette or list compatible
+		 * with the background of the plot.
 		 * @param index Index of the color from the palette
 		 * @return color for a specific component of the plot
 		 */
@@ -51,20 +50,21 @@ trait PlotTheme {
 
 
 		/**
-		 * <p>Class that define the visual display of a plotting graph using jFreeChart library
+		 * Class that define the visual display of a plotting graph using jFreeChart library
 		 * with a black background. The color of the data points, graphs, labels.. are set accordingly.
-		 * </p>
+		 * 
 		 * @see org.jfree
 		 * @author Patrick Nicolas
-		 * @since  November 20, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello World!
+		 * @since  0.97 November 20, 2013
+		 * @version 0.97
+		 * @see Scala for Machine Learning Chapter 2 Hello World!
 		 */
 final class BlackPlotTheme extends PlotTheme {
 	private[this] val colorList = Array[Color](Color.white, Color.cyan, Color.yellow)
 
 		/**
-		 * <p>Select the color from an existing palette or list compatible
-		 * with the background of the plot.</p>
+		 * Select the color from an existing palette or list compatible
+		 * with the background of the plot.
 		 * @param index Index of the color from the palette
 		 * @return color for a specific component of the plot
 		 */
@@ -78,26 +78,27 @@ final class BlackPlotTheme extends PlotTheme {
 		 * @return Background color 
 		 */
 	override def paint(width: Int, height: Int): Paint = {
-		Plot.validateDisplaySize(width, height)
+		Plot.validateDisplaySize(width, height, emptyString)
 		Color.black
 	}
 }
 
 		/**
-		 * <p>Class that define the visual display of a plotting graph using jFreeChart library
+		 * Class that define the visual display of a plotting graph using jFreeChart library
 		 * with a light grey background with gradient. The color of the data points, 
-		 * graphs, labels.. are set accordingly.</p>
-		 * @see org.jfree
+		 * graphs, labels.. are set accordingly.
 		 * @author Patrick Nicolas
-		 * @since  November 20, 2013
-		 * @note Scala for Machine Learning Chapter 2 Hello World!
+		 * @since  0.97 November 20, 2013
+		 * @version 0.97
+		 * @see Scala for Machine Learning "Appendix" Visualization
+		 * @see http://www.jfree.org
 		 */
 final class LightPlotTheme extends PlotTheme {
-	private[this] val colorList = Array[Color](Color.black, Color.red, Color.blue)
+	private[this] val colorList = Array[Color](Color.black, Color.red, Color.green)
 
 		/**
-		 * <p>Select the color from an existing palette or list compatible
-		 * with the background of the plot.</p>
+		 * Select the color from an existing palette or list compatible
+		 * with the background of the plot.
 		 * @param index Index of the color from the palette
 		 * @return color for a specific component of the plot
 		 */
@@ -108,10 +109,10 @@ final class LightPlotTheme extends PlotTheme {
 		 * @param width Width of the chart
 		 * @param height Height of the chart
 		 * @throws IllegalArgumentException if the width or height is out of range
-		 * @return Background color 
+		 * @return Background color paletter
 		 */
 	override def paint(width: Int, height: Int): Paint = {
-			Plot.validateDisplaySize(width, height)
+			Plot.validateDisplaySize(width, height, emptyString)
 			new GradientPaint(0, 0, Color.white, width, height, Color.lightGray, false)
 	}
 }

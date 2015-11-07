@@ -1,63 +1,77 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.ga
 
 import scala.util.Random
 import scala.annotation.implicitNotFound
+import scala.collection._
 
+import org.scalaml.core.Types.emptyString
 import Gene._, Chromosome._
 
 
 		/**
-		 * <p>Class that implements a parameterized chromosome using an encoding scheme and
+		 * Class that implements a parameterized chromosome using an encoding scheme and
 		 * an objective/fitness function. A chromosome is a container or list of Gene that
-		 * represents candidate solution to a problem or candidate model to a dataset.<br>
-		 * This particular implementation score the chromosome unfitness. The fitness value of
-		 * a chromosome is randomly selected as a high value.</p>
+		 * represents candidate solution to a problem or candidate model to a dataset.
+		 * @tparam T Paramertized type upper bounded by '''Gene'''
 		 * @constructor Create a chromosome with the parameterized sub-type of Gene
 		 * @throws IllegalArgumentException if the genetic code is undefined or empty
 		 * @param code List of Genes or sub types composing this chromosomes.
+		 * 
 		 * @author Patrick Nicolas
-		 * @since August 27, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
+		 * @since August 27, 2013 (0.97)
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm / Genetic algorithm components
+		 * @note This particular implementation computes the chromosome cost or unfitness. 
+		 * The fitness value of a chromosome is computes as 1/cost
 		 */
+@throws(classOf[IllegalArgumentException])
 final class Chromosome[T <: Gene](val code: List[T]) {  
 	require(!code.isEmpty, "Chromosome Cannot create a chromosome from undefined genes")
-	var unfitness: Double = 1000*(1.0 + Random.nextDouble)
-   
-   
+	var cost: Double = COST_FACTOR*(1.0 + Random.nextDouble)
+
+	
 		/**
-		 * <p>Define the cross-over operator to be applied on this chromosome. The cross-over
+		 * Define the cross-over operator to be applied on this chromosome. The cross-over
 		 * is hierarchical. The algorithm selects the gene associated to the cross-over index, 
 		 * swap all the genes of higher index (below or after the cross-over gene) between
-		 * the two parents and finally swap the bits within the cross-over gene.<br>
+		 * the two parents and finally swap the bits within the cross-over gene.
+		 * 
+		 * 
 		 * The cross over operation generates two off springs from the two original parents. 
-		 * The off-springs are added to the current population along with the parents.</p>
+		 * The off-springs are added to the current population along with the parents.
 		 * @param that other parent chromosome
 		 * @param gIdx Genetic index for the cross-over.
 		 * @throws IllegalArgumentException if the other chromosome is undefined, or have a 
 		 * different size  or if the cross-over factor is out of range.
 		 * @return the pair of offspring chromosomes
 		 */
-	def +- (that: Chromosome[T], gIdx: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
-		require(!that.isNull, 
+	@throws(classOf[IllegalArgumentException])
+	def +- (that: Chromosome[T], indices: GeneticIndices): (Chromosome[T], Chromosome[T]) = {
+		require(!that.isEmpty, 
 				"Chromosome.+-  Cannot cross-over chromosome with an undefined parent")
 		require(this.size == that.size, 
 				s"Chromosome.+- Chromosomes ${size} and that ${that.size} have different size")
 
 			// First use the global index (module the number of gene
-		val xoverIdx = gIdx.chOpIdx
-		val xGenes =  spliceGene(gIdx, that.code(xoverIdx) ) 
+		val xoverIdx = indices.chOpIdx
+		val xGenes =  spliceGene(indices, that.code(xoverIdx) ) 
 		
 			// Then recombine the offspring along the cross-over bit
 		val offSprng1 = code.slice(0, xoverIdx) ::: xGenes._1 :: that.code.drop(xoverIdx+1)
@@ -69,42 +83,43 @@ final class Chromosome[T <: Gene](val code: List[T]) {
    
    		
 		/**
-		 * <p>Mutation operator that flip a gene selected through a mutation index.
-		 * The mutated gene is added to the population (gene pool).</p>
+		 * Mutation operator that flip a gene selected through a mutation index.
+		 * The mutated gene is added to the population (gene pool).
 		 * @param gIdx Genetic index
 		 * @throws IllegalArgumentException if mutation coefficient, mu is out of range
 		 * @return A new mutated chromosome
 		 */
-	def ^ (gIdx: GeneticIndices): Chromosome[T] = {
+	def ^ (indices: GeneticIndices): Chromosome[T] = {
 			// Get the mutation index in the gene to mutate, chOpIdx
-		val mutated = code(gIdx.chOpIdx) ^ gIdx
+		val mutated = code(indices.chOpIdx) ^ indices
 		
 			// Flip the bit at index 'gIdx.chOpIdx,
 		val xs = Range(0, code.size).map(i => 
-			if(i == gIdx.chOpIdx) mutated.asInstanceOf[T] else code(i)
+			if(i == indices.chOpIdx) mutated.asInstanceOf[T] else code(i)
 		).toList
 		Chromosome[T](xs)
 	}
      
      
 		/**
-		 * <p>Normalize the fitness of this chromosome with a factor. This 
-		 * operation is required by the selection algorithm.</p>
+		 * Normalize the fitness of this chromosome with a factor. This 
+		 * operation is required by the selection algorithm.
 		 * @param normalizedFactor normalization factor
 		 * @throws IllegalArgumentException if the normalization factor is less than EPS
 		 */
+	@throws(classOf[IllegalArgumentException])
 	def /= (normalizeFactor: Double): Unit = {
 		require( Math.abs(normalizeFactor) > Chromosome.EPS, 
 				s"Chromosome./= Cannot normalize with $normalizeFactor > ${Chromosome.EPS}")
-		unfitness /= normalizeFactor
+		cost /= normalizeFactor
 	}
 
 		/**
-		 * <p>Decode this chromosome by applying a type conversion from Gene to T</p>
+		 * Decode this chromosome by applying a type conversion from Gene to T
 		 * @param d implicit conversion of Gene to the parameterized type T which is a sub-class of Gene
 		 * @throws ImplicitNotFoundException if the implicit conversion d is undefined.
 		 */
-	@implicitNotFound("Chromosome.decode Conversion from Gene to parameterized type is undefined")
+	@implicitNotFound(msg = "Chromosome.decode Conversion from Gene to $T is undefined")
 	def decode(implicit d: Gene => T): List[T] = code.map( d(_)) 
 
 		/**
@@ -114,16 +129,18 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 	override def clone: Chromosome[T] = Chromosome[T](code)
     
 		/**
-		 * <p>Returns the size of this chromosome as the number of genes it contains,.</p>
+		 * Returns the size of this chromosome as the number of genes it contains,.
 		 * @return Number of genes
 		 */
 	@inline
 	final def size: Int = code.size
 	
-	final def isNull: Boolean = code.isEmpty
+	final def isEmpty: Boolean = code.isEmpty
+	
+	final def fitness: Double = if( cost < EPS) 1e+10 else 1.0/cost
 	
 		/**
-		 * <p>Stringize the genetic code of this chromosome</p>
+		 * Stringize the genetic code of this chromosome
 		 * @return Genetic code {0, 1} for this chromosome
 		 */
 	override def toString: String = String.valueOf(code.toString)
@@ -135,17 +152,17 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		 * @param comment Optional comment for the symbolic representation
 		 * @return sequence of symbolic representation of the genes of this chromosomes
 		 */
-	final def symbolic(comment: String = ""): String = 
-			s"$comment ${code.map( _.symbolic).mkString(" ")} score: $unfitness"
+	final def symbolic: String = 
+		s"${code.map( _.symbolic).mkString(" ")} cost= $cost fitness: ${fitness}"
 
 			/*
 			 * Auxiliary method to splice this chromosome with another 
 			 * chromosome with the genetic material thatCode, along the
 			 * bit of index gIdx
 			 */
-	private def spliceGene(gIdx: GeneticIndices, thatCode: T): (T, T) = {
-		((this.code(gIdx.chOpIdx) +- (thatCode, gIdx)).asInstanceOf[T], 
-		(thatCode +- (code(gIdx.chOpIdx), gIdx)).asInstanceOf[T] )
+	private def spliceGene(indices: GeneticIndices, thatCode: T): (T, T) = {
+		((this.code(indices.chOpIdx) +- (thatCode, indices)).asInstanceOf[T], 
+		(thatCode +- (code(indices.chOpIdx), indices)).asInstanceOf[T] )
 	}
 }
 
@@ -153,14 +170,15 @@ final class Chromosome[T <: Gene](val code: List[T]) {
 		/**
 		 * Companion object to a Chromosome used to define the constructors
 		 * @author Patrick Nicolas
-		 * @since September 2, 2013
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
+		 * @since September 2, 2013 v 0.97
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm/Genetic algorithm components
 		 */
 object Chromosome {
-	import scala.collection.mutable.ArrayBuffer
 	import java.util.BitSet
   
 	private val EPS = 1e-10
+	val COST_FACTOR = 500.0
 
 		/**
 		 * Default (Generic code) constructor for the Chromosome
@@ -175,6 +193,7 @@ object Chromosome {
 		 * @throws IllegalArgumentException if either the predicates are undefined (empty)
 		 * @return Chromosome built from predicates and an encoding function
 		 */
+	@throws(classOf[IllegalArgumentException])
 	def apply[T <: Gene](predicates: List[T], encode: T => Gene): Chromosome[T] = {
 		require( !predicates.isEmpty, 
 				"Chromosome.apply List of predicates is undefined")
@@ -185,14 +204,14 @@ object Chromosome {
 		new Chromosome[T](if(predicates.size == 1) 
 			List[T](encode(predicates(0)).asInstanceOf[T])
 		else 
-			predicates.foldLeft(List[T]()) ((xs, t) => encode(t).asInstanceOf[T] :: xs))
+			predicates./:(List[T]()) ((xs, t) => encode(t).asInstanceOf[T] :: xs))
 	}
 			
 		/**
 		 * Type for the pool of chromosomes. A Pool of chromosomes is an arbitrary
 		 * array of chromosomes.
 		 */
-	type Pool[T <: Gene] = ArrayBuffer[Chromosome[T]]
+	type Pool[T <: Gene] = mutable.ArrayBuffer[Chromosome[T]]
 	
 			/**
 			 * Define a Null Chromosome

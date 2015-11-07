@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.svm
 
@@ -17,13 +22,14 @@ import libsvm._
 
 
 		/**
-		 * <p>Protected class that encapsulates the execution parameters for SVM training. The
-		 * class are instantiated by the companion object.<br>
-		 * This implementation uses the LIBSVM library: <b>http://www.csie.ntu.edu.tw/~cjlin/libsvm/</b>
-		 * <br>
+		 * Protected class that encapsulates the execution parameters for SVM training. The
+		 * class are instantiated by the companion object.
+		 * 
+		 * This implementation uses the LIBSVM library: ''http://www.csie.ntu.edu.tw/~cjlin/libsvm/''
+		 * 
 		 * One of the constructor parameters refers to the cache used in LIBSVM to avoid re-computation
 		 * of derivatives during optimization. The default value,  DEFAULT_CACHE_SIZE defined 
-		 * in the constructor <b>SVMExecution.apply</b> works for small set of observations.</p>
+		 * in the constructor '''SVMExecution.apply''' works for small set of observations.
 		 * @constructor Create SVM execution configuration with the following parameters
 		 * @throws IllegalArgumentException if the cache, convergence criteria or number of folds are 
 		 * incorrectly specified.
@@ -34,8 +40,8 @@ import libsvm._
 		 * indicates no validation
 		 * 
 		 * @author Patrick Nicolas
-		 * @since April 28, 2014
-		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
+		 * @since 0.98.1 April 28, 2014
+		 * @see Scala for Machine Learning Chapter 8 Kernel models and support vector machines.
  		 */
 protected class SVMExecution(
 		cacheSize: Int, 
@@ -62,8 +68,8 @@ protected class SVMExecution(
 
 
 		/**
-		 * <p>Companion object to the SVMExecution class. The singleton
-		 * is used to define the constructors and validate their input parameters.</p>
+		 * Companion object to the SVMExecution class. The singleton
+		 * is used to define the constructors and validate their input parameters.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 28, 2014
@@ -72,10 +78,10 @@ protected class SVMExecution(
 object SVMExecution {
 	// Internal LIBSVM configuration parameters
 	private val DEFAULT_CACHE_SIZE = 1<<8
-	private val DEFAULT_EPS = 1e-5
+	private val DEFAULT_EPS = 1e-10
 
 	private val MAX_CACHE_SIZE = 1<<16
-	private val EPS_LIMITS = (1e-10, 0.35)
+	private val EPS_LIMITS = (1e-20, 0.35)
 
 		/**
 		 * Default constructor for the SVMExecution class
@@ -86,7 +92,7 @@ object SVMExecution {
 		 * no validation
 		 */
 	def apply(cacheSize: Int, eps: Double, nFolds: Int): SVMExecution = 
-		new SVMExecution(cacheSize, eps,nFolds)
+		new SVMExecution(cacheSize, eps, nFolds)
 
 	
 		/**

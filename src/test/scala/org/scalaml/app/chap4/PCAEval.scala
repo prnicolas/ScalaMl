@@ -1,37 +1,49 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap4
 
-import org.scalaml.core.XTSeries
+import scala.util.Try
+
+import org.scalaml.stats.XTSeries
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.workflow.data.DataSource
-import org.scalaml.unsupervised.pca.PCA
+import org.scalaml.unsupervised.pca.{PCA, PCAModel}
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
 
 		/**
-		 * <p><b>Purpose:</b> Singleton to evaluate the Principal Components Algorithm to 
+		 * '''Purpose:''' Singleton to evaluate the Principal Components Algorithm to 
 		 * extract principal components from a set of observations consisting of the following 
-		 * corporate financial fundamental metrics:<br>
-		 * PE: Price Earning ratio<br>
-		 * PS: Price sales ratio<br>
-		 * PB: Price book ratio<br>
-		 * ROE: Return on Equity<br>
-		 * OM: Operational margin.</p>
+		 * corporate financial fundamental metrics
+		 * {{{
+		 *    PE: Price Earning ratio
+		 *    PS: Price sales ratio
+		 *    PB: Price book ratio
+		 *    ROE: Return on Equity
+		 *    OM: Operational margin.
+		 * }}}
 		 * 
 		 * @author Patrick Nicolas
-		 * @since February 25, 2014
-		 * @note Scala for Machine Learning Chapter 4: Unsupervised learning $Principal Components 
+		 * @since 0.98 February 25, 2014
+		 * @version 0.99
+		 * @see org.scalaml.unsupervised.pca
+		 * @see Scala for Machine Learning Chapter 4 ''Unsupervised learning'' / Principal Components 
 		 * Analysis
 		 */
 object PCAEval extends UnsupervisedLearningEval {	
@@ -44,7 +56,7 @@ object PCAEval extends UnsupervisedLearningEval {
 	val name: String = "PCAEval"
 	
 	// Symbol, PE/PS/PB/ROE/OM
-	private val data = Array[(String, Array[Double])] (
+	private val data = Vector[(String, DblArray)] (
 		("QCOM", Array[Double](20.8, 5.32, 3.65, 17.65,29.2)),
 		("IBM", Array[Double](13, 1.22, 12.2, 88.1,19.9)),  
 		("BAC", Array[Double](21, 2.0, 0.78, 4.12,24.2)),    
@@ -80,31 +92,29 @@ object PCAEval extends UnsupervisedLearningEval {
 	)
   
   		/**
-		 * <p>Execution of the scalatest for <b>PCA</b> class
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
+		 * Execution of the scalatest for '''PCA''' class
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
+		 * 	
+		 * Exceptions thrown during the execution of the tests are caught by the wrapper or handler
+		 * test method in Eval trait defined as follows:
+		 * {{{
+		 *    def test(args: Array[String]) =
+		 *      Try(run(args)) match {
+		 *        case Success(n) => ...
+		 *        case Failure(e) => ...
+		 * }}}
+		 * The tests can be executed through ''sbt run'' or individually by calling 
+		 * ''TestName.test(args)'' (i.e. DKalmanEval.test(Array[String]("IBM") )
 		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	override def run(args: Array[String]): Int = {
-		DisplayUtils.show(s"$header Evaluation of Principal Component Analysis", logger)
-  	  
-		import scala.util.{Try, Success, Failure}
-		val pca = new PCA[Double]
-		  
-		Try(pca |> XTSeries[DblVector](data.map( _._2.take(3)) ) ) match {
-			case Success(covariance) => 
-					DisplayUtils.show(s"$name Results\n${this.toString(covariance)}", logger)
-			case Failure(e) => failureHandler(e)
-		}
-	}
-   
-	private def toString(covariance: (DblMatrix, DblVector)): String = {
-		val buf = new StringBuilder(s"\n$name PCA Eigenvalues:\n")
-		
-		buf.append(s"${covariance._2.mkString(" ,")}\n\n$name PCA Covariance matrix\n")
-		covariance._1.foreach(r => buf.append(s"${r.mkString(" ")}\n") )
-				
-		buf.toString
+	override protected def run(args: Array[String]): Int = {
+	  import scala.language.postfixOps
+	   
+		show(s"$header Evaluation of Principal Component Analysis")
+  	 
+		val dim = data.head._2.size
+		val pca = new PCA[Double](data.map( _._2.take(dim)))
+		show(s"PCA model: ${pca.toString}")
 	}
 }
 

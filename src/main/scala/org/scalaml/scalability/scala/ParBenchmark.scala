@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.scalability.scala
 
@@ -20,10 +25,12 @@ import scala.collection.parallel.immutable.ParVector
 import org.apache.log4j.Logger
 
 import org.scalaml.util.{FormatUtils, DisplayUtils}
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.DblArray
+import org.scalaml.core.Types.emptyString
+import FormatUtils._
 
 		/**
-		 * <p>Generic benchmark for evaluating the performance of Scala parallel collections.</p>
+		 * Generic benchmark for evaluating the performance of Scala parallel collections.
 		 * @constructor Create a performance benchmark. [times] Number of executions to be performed 
 		 * during the performance testing
 		 * @throws IllegalArgumentException if the number of executions is out of range
@@ -37,7 +44,7 @@ abstract class ParBenchmark[U](times: Int) {
 	require(times > 0 && times < 512, s"ParBenchmark number of executions $times is out of range")
 	
 		/**
-		 * <p>Define the map operator for the performance benchmark</p>
+		 * Define the map operator for the performance benchmark
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel collection relative to the 
@@ -46,7 +53,7 @@ abstract class ParBenchmark[U](times: Int) {
 	def map(f: U => U)(nTasks: Int): Double
 	
 		/**
-		 * <p>Define the filter operator for the performance benchmark</p>
+		 * Define the filter operator for the performance benchmark
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel collection relative to the 
@@ -55,8 +62,8 @@ abstract class ParBenchmark[U](times: Int) {
 	def filter(f: U => Boolean)(nTasks: Int): Double
    
 	
-		/**<p>Method to compute the execution time for a higher order Scala method 
-		 * invoking a predefined function g</p>
+		/**Method to compute the execution time for a higher order Scala method 
+		 * invoking a predefined function g
 		 * @param function invoked by map or filter during performance test
 		 * @return Duration of the execution in milliseconds
 		 */
@@ -69,8 +76,8 @@ abstract class ParBenchmark[U](times: Int) {
 }
 
 		/**
-		 * <p>Class to evaluate the performance of the Scala parallel arrays. The
-		 * class override the map, reduceLeft methods to collect timing information.</p>
+		 * Class to evaluate the performance of the Scala parallel arrays. The
+		 * class override the map, reduceLeft methods to collect timing information.
 		 * @constructor Create a performance benchmark for Scala arrays. 
 		 * @param u  Parameterized array
 		 * @param v Parameterized parallel array
@@ -90,7 +97,7 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 	private val logger = Logger.getLogger("ParArrayBenchmark")
 	
 		/**
-		 * <p>Define the map operator for the performance benchmark of the Scala array</p>
+		 * Define the map operator for the performance benchmark of the Scala array
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
@@ -103,12 +110,12 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 		val duration = timing(_ => u.map(f)).toDouble
 		val ratio = timing( _ => v.map(f) )/duration
 		
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.ShortFormat)}", logger)
+		DisplayUtils.show(s"$nTasks\t${format(ratio, emptyString, SHORT)}", logger)
 		ratio
 	}
 	
 		/**
-		 * <p>Define the filter operator for the performance benchmark of Scala arrays</p>
+		 * Define the filter operator for the performance benchmark of Scala arrays
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
@@ -121,12 +128,12 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 
 		val duration = timing(_ => u.filter(f)).toDouble
 		val ratio = timing( _ => v.filter(f) )/duration
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "",FormatUtils.MediumFormat)}",logger)
+		DisplayUtils.show(s"$nTasks\t${format(ratio, emptyString, MEDIUM)}",logger)
 		ratio
 	}
 	
 		/**
-		 * <p>Implements a reducer operator for the performance benchmark of Scala arrays</p>
+		 * Implements a reducer operator for the performance benchmark of Scala arrays
 		 * @param f function invoked by the reducer
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel Array relative to the non-parallel Array
@@ -139,15 +146,15 @@ class ParArrayBenchmark[U](u: Array[U], v: ParArray[U], times: Int)
 
 		val duration = timing(_ => u.reduceLeft(f)).toDouble
 		val ratio = timing( _ => v.reduceLeft(f) )/duration
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.MediumFormat)}",logger)
+		DisplayUtils.show(s"$nTasks\t${format(ratio, emptyString, MEDIUM)}",logger)
 		ratio
 	}
 }
 
 
 		/**
-		 * <p>Companion object for the class ParArrayBenchmark. This singleton
-		 * is used to define constant and validate the class parameters.</p>
+		 * Companion object for the class ParArrayBenchmark. This singleton
+		 * is used to define constant and validate the class parameters.
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections
@@ -170,12 +177,12 @@ object ParArrayBenchmark {
 
 
 		/**
-		 * <p>Class to evaluate the performance of the Scala parallel map. The
-		 * class override the map, reduceLeft methods to collect timing information</p>
+		 * Class to evaluate the performance of the Scala parallel map. The
+		 * class override the map, reduceLeft methods to collect timing information
 		 * @constructor Create a performance benchmark for Scala arrays. 
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of 
 		 * tasks is out of range
-		 * @param u  Parameterized map, <b>Map[Int, U]<\b>
+		 * @param u  Parameterized map, '''Map[Int, U]<\b>
 		 * @param v Parameterized parallel map
 		 * @param times Number of executions in the performance test.
 		 * @author Patrick Nicolas
@@ -189,10 +196,10 @@ final class ParMapBenchmark[U](
 	import ParMapBenchmark._
 	
 	check(u,v, times)
-    private val logger = Logger.getLogger("ParMapBenchmark")
+	private val logger = Logger.getLogger("ParMapBenchmark")
     	
     	/**
-		 * <p>Define the map operator for the performance benchmark of the Scala map</p>
+		 * Define the map operator for the performance benchmark of the Scala map
 		 * @param f function invoked by map
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel HashMap relative to the non-parallel HashMap
@@ -204,13 +211,13 @@ final class ParMapBenchmark[U](
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.map(e => (e._1, f(e._2)))).toDouble
 		val ratio = timing( _ => v.map(e => (e._1, f(e._2))) )/duration
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.MediumFormat)}",
+		DisplayUtils.show(s"$nTasks\t${format(ratio, emptyString, MEDIUM)}",
 				logger)
 		ratio
 	}
 	
 		/**
-		 * <p>Define the filter operator for the performance benchmark of Scala map</p>
+		 * Define the filter operator for the performance benchmark of Scala map
 		 * @param f function invoked by filter method
 		 * @param nTasks number of concurrent tasks to implement the operator
 		 * @return duration of the execution of the parallel HashMap relative to the non-parallel 
@@ -223,7 +230,7 @@ final class ParMapBenchmark[U](
 		v.tasksupport = new ForkJoinTaskSupport(new ForkJoinPool(nTasks))
 		val duration = timing(_ => u.filter(e => f(e._2))).toDouble
 		val ratio = timing( _ => v.filter(e => f(e._2)))/duration
-		DisplayUtils.show(s"$nTasks\t${FormatUtils.format(ratio, "", FormatUtils.MediumFormat)}",logger)
+		DisplayUtils.show(s"$nTasks\t${format(ratio,emptyString, MEDIUM)}",logger)
 		ratio
 	}
 }
@@ -231,8 +238,8 @@ final class ParMapBenchmark[U](
 
 
 		/**
-		 * <p>Companion object for the class ParMapBenchmark. This singleton
-		 * is used to define constant and validate the class parameters.</p>
+		 * Companion object for the class ParMapBenchmark. This singleton
+		 * is used to define constant and validate the class parameters.
 		 * @author Patrick Nicolas
 		 * @since March 17, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks/Scala/Parallel collections

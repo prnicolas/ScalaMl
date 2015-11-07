@@ -1,104 +1,127 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.unsupervised.clustering
 
 import scala.collection.mutable.ListBuffer
 
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Types.ScalaMl
+import org.scalaml.stats.XTSeries
+import org.scalaml.core.Types.{ScalaMl, emptyString}
 import org.scalaml.stats.Stats
 import org.scalaml.unsupervised.Distance.euclidean
-import org.scalaml.util.FormatUtils
-import ScalaMl._, XTSeries._
+import org.scalaml.util.FormatUtils._
+import ScalaMl._, XTSeries._, Cluster._, XTSeries.Transpose._
 
 
 		/**
-		 * <p>Class that define a cluster used in the KMeans++ clustering algorithm.
+		 * Class that define a cluster used in the KMeans++ clustering algorithm.
 		 * A cluster is defined by its center (scalar or vector) and its members (data point)
 		 * it contains. The membership of data points to this cluster is done through their index.
 		 * It is assumed that each data point has a unique index and therefore a cluster will never
 		 * contains two data points with the same index.
-		 * <pre><span style="font-size:9pt;color: #351c75;font-family: &quot;Helvetica Neue&quot;
-		 * ,Arial,Helvetica,sans-serif;">
-		 * Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) belonging to 
-		 * Cluster k with center m(k)</span></pre></p>
+		 * {{{
+		 *   Minimize the reconstruction error SUM all clusters [SUM d(x(i), m(k)] x(i) 
+		 *   belonging to Cluster k with center m(k)
+		 * }}}
+		 * @tparam T type of the 
 		 * @constructor Instantiate a cluster with an initial centroid. 
 		 * @throws IllegalArgumenException if the center is undefined (null)
 		 * @param Initial centroid for this cluster
 		 * @author Patrick Nicolas
-		 * @since February 22, 2014
-		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering
+		 * @since 0.98 February 22, 2014
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 4 "Unsupervised learning" K-means clustering
 		 */
-class Cluster[T <% Double](val center: DblVector) {
-	require( !center.isEmpty, "Cluster Cannot create a cluster with undefined centers")
+@throws(classOf[IllegalArgumentException])
+final class Cluster[T <: AnyVal](val center: DblArray)(implicit f: T => Double) {
+	require( center.length > 0, "Cluster Cannot create a cluster with undefined centers")
+
 	
 		// List of observations 'members' belonging to this cluster
 	private[this] val members = new ListBuffer[Int]
    
 		/**
-		 * <p>Overloaded operator += to add a new data point by its index in the membership.
+		 * Overloaded operator += to add a new data point by its index in the membership.
 		 * There is no validation whether this data points is already a member of this cluster
-		 * or any other clusters.</p>
+		 * or any other clusters.
 		 * @param n index of the new data point
 		 */
-	def += (n:Int): Unit = members.append(n)
+	def += (n: Int): Unit = members.append(n)
    
 		/**
 		 * Return the number of data points in this cluster
-		 * @return number of members in the clsuter
+		 * @return number of members in the cluster
 		 */
 	final def size: Int = members.size
-   
+	
+	final def distanceToCentroid(x: DblArray, distance: DistanceFunc[Double]): Double = 
+		distance(center, x)
+	
 		/**
-		 * <p>Recompute the coordinates for the center of this cluster.</p>
+		 * Recompute the coordinates for the center of this cluster.
 		 * @param xt Time series of observations used in the re-computation of the center
 		 * @throws IllegalArgumentException if the time series argument is undefined
 		 * @return a new cluster with the recomputed center.
 		 */
-	final def moveCenter(xt: XTSeries[Array[T]]): Cluster[T] = {  
+	@throws(classOf[IllegalArgumentException])
+	@throws(classOf[IllegalStateException])
+	final def moveCenter(
+			xt: XVSeries[T])
+		(implicit m: Manifest[T], num: Numeric[T]): Cluster[T] = {  
 		require( !xt.isEmpty, "Cluster.moveCenter Cannot relocate time series datapoint" )
+		
+		if( members.size <= 0)
+		   throw new IllegalStateException("Cluster.stdDev this cluster has no member")
   	 
 			// Compute the sum of the value of each dimension of the time series ... 
 			// The matrix observations x features has to be transposed in order to 
-			// compute the sum of observations for each featuer
-		val sums = members.map(xt(_)
-							.map(_.toDouble))
-							.toList
-							.transpose
-							.map( _.sum)
+			// compute the sum of observations for each feature
+		val sums = transpose(members.map( xt(_)).toList).map(_.sum)
 							
 			// then average it by the number  of data points in the cluster
 		Cluster[T](sums.map( _ / members.size).toArray)
 	}
+	
+	
+
    
 		/**
-		 * <p>Compute the standard deviation of the members of this cluster from its center.</p>
+		 * Compute the standard deviation of the members of this cluster from its center.
 		 * @param xt time series used in the computation of the center
 		 * @param distance metric used to measure the distance between the center and any of the 
 		 * member of the cluster.
 		 * @throws IllegalArgumentException if the time series argument is undefined
+		 * @throws IllegalStateException if there are no member in the cluster
 		 * @return standard deviation of all the members from the center of the cluster.
 		 */
-	final def stdDev(xt: XTSeries[Array[T]], distance: (DblVector, Array[T])=> Double ): Double = {
+	@throws(classOf[IllegalArgumentException])
+	@throws(classOf[IllegalStateException])
+	final def stdDev(xt: XVSeries[T], distance: DistanceFunc[T]): Double = {
 		require( !xt.isEmpty, 
 			"Cluster.stdDev Cannot compute the standard deviation wih  undefined times series")
-		assert(members.size > 0, "Cluster.stdDev this cluster has no member")
+	  
+		if( members.size <= 0)
+			throw new IllegalStateException("Cluster.stdDev this cluster has no member")
 		
 			// Extract the vector of the distance between each data
 			// point and the current center of the cluster.
-		val ts: DblVector  = members.map( xt( _))				// convert a vector
+		val ts = members.map( xt( _))			     	// convert a vector
 									.map( distance(center, _))	// compute the distance between point and center
-									.toArray
+								  .toVector
 									
 			// Compute the standard deviation of the distance between the
 			// data points and the center of the cluster using the Stats class
@@ -106,26 +129,25 @@ class Cluster[T <% Double](val center: DblVector) {
 	}
    
 		/**
-		 * <p>Returns the list of index of the data points (members) that belong to this cluster
+		 * Returns the list of index of the data points (members) that belong to this cluster
 		 * @return list of index of the members of this clusters
 		 */
+	@inline
 	final def getMembers: List[Int] = members.toList
-
+	
 			/**
-			 * <p>Textual representation of a cluster for debugging purpose.</p>
-			 * @return String representation of this clsuter
+			 * Textual representation of a cluster for debugging purpose.
+			 * @return String representation of this cluster
 			 */
 	override def toString: String = {
 			// First collect list of observations members to this cluster
-		val membersList = members.foldLeft(new StringBuffer)((b, n) => b.append(s"\t   $n")).toString
-		
-			// Then collect the value of centroids..
-		val centerString = center.foldLeft(new StringBuffer)((b, x) => {
-			val x_str = FormatUtils.format(x, "", FormatUtils.ShortFormat)
-		  b.append(s"$x_str ")
-		}).toString
+		val membersList = members.mkString("\t   ")
+			// then collect the values of the centroid (center) vector
+		val centerString = center.map(show(_)).mkString(" ")
 		s"Cluster definition\nCentroids: ${centerString}\nMembership: ${membersList}"
 	}
+	
+	private def show(x: Double): String = format(x, emptyString, SHORT)
 }
 
 
@@ -137,16 +159,19 @@ class Cluster[T <% Double](val center: DblVector) {
 		 * @note Scala for Machine Learning Chapter 4 Unsupervised learning / K-means clustering
 		 */
 object Cluster {
+	type DistanceFunc[T] = (DblArray, Array[T]) => Double
+  
 		/**
 		 * Default constructor for a cluster
 		 * @param Initial centroid for this cluster
 		 */
-	def apply[T <% Double](center: DblVector): Cluster[T] = new Cluster[T](center)
-	
+	def apply[T <: AnyVal](center: DblArray)(implicit f: T => Double): Cluster[T] = new Cluster[T](center)
+  
 		/**
 		 * Constructor for a Cluster with undefined center.
 		 */
-	def apply[T <% Double]: Cluster[T] = new Cluster[T](Array.empty)
+	def apply[T <: AnyVal](implicit f: T => Double): Cluster[T] = new Cluster[T](Array.empty[Double])
+
 }
 
 // ----------------------------  EOF -------------------------------------------

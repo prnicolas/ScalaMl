@@ -1,38 +1,46 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.scalability.akka
 
-import scala.util.Random
+import scala.util.{Try, Random}
 import scala.collection.mutable.ListBuffer
 
 import org.apache.log4j.Logger
 import akka.actor._
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Design.PipeOperator
+import org.scalaml.stats.{XTSeries, Stats}
+import org.scalaml.core.ETransform
+import org.scalaml.core.Types.emptyString
 import org.scalaml.scalability.akka.message._
-import org.scalaml.stats.Stats
-import org.scalaml.util.{FormatUtils, DisplayUtils}
-import org.scalaml.filtering.DFT
+import org.scalaml.util.{FormatUtils, LoggingUtils}
+import org.scalaml.filtering.dft.DFT
 
-import XTSeries._
+import XTSeries._, FormatUtils._, Controller._, LoggingUtils._
+
+
+
 
 
 		/**
-		 * <p>Worker actor responsible for transforming a time series using the 
+		 * Worker actor responsible for transforming a time series using the 
 		 * PipeOperator |>. The computation is initiated by the Master that acts 
-		 * as the workflow controller.</p>
+		 * as the workflow controller.
 		 * @constructor Create a worker actor. 
 		 * @param  id Identifier or counter for the worker actors.
 		 * @param fct Data transformation function to be applied to a time series.
@@ -41,15 +49,16 @@ import XTSeries._
 		 * @since March 24, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers
 		 */
-final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Actor {
-	import Worker._
+final class Worker(id: Int, fct: PfnTransform) extends Actor with Monitor[Double] {
+  import Worker._, TransformTypes._
 	check(id)
-	
-	private val logger = Logger.getLogger("WorkerActor")
-	override def postStop: Unit = DisplayUtils.show(s"WorkerActor${id}.postStop", logger)
+
+	protected val logger = Logger.getLogger("WorkerActor")
+	override def preStart: Unit = show(s"Worker${id}.preStart")
+	override def postStop: Unit = show(s"Worker${id}.postStop")
  
 		/**
-		 * <p>Event loop of the work actor that process two messages:
+		 * Event loop of the work actor that process two messages:
 		 * <ul>
 		 *  <li>Activate: to start processing this assigned partition</li>
 		 *  <li>Terminate: To stop this worker actor
@@ -59,23 +68,20 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 		case msg: Activate => {
 				// Increment the messages id
 			val msgId = msg.id+id
-			DisplayUtils.show(s"Worker_${id}.receive => Activate message ${msgId}", logger)
+			show(s"Worker_${id}.receive:  Activate message ${msgId}")
 			
 				// Execute the data transformation
-			val output: DblSeries = fct |> msg.xt
-			DisplayUtils.show(results(output.take(NUM_DATAPOINTS_DISPLAY)), logger)
+			val output: DblVector = fct(msg.xt).get
+			show(results(output.take(NUM_DATAPOINTS_DISPLAY)))
 			
 				// Returns the results for processing this partition
 			sender ! Completed(msgId, output)
 		}
-		case _ => DisplayUtils.error(s"WorkerActor${id}.receive Message not recognized", logger)
+		case _ => error(s"Worker${id}.receive Message not recognized")
 	}
 	
-	private def results(output: XTSeries[Double]): String = {
-		val res = output.toArray.foldLeft(new StringBuilder)((b, o) => 
-				b.append(s"${FormatUtils.format(o, "", FormatUtils.MediumFormat)} "))
-		s"Worker_$id results: ${res.toString}"
-	}
+	private def results(output: DblVector): String = 
+		output.map(o => s"${format(0, emptyString, MEDIUM)}").mkString(" ")
 }
 
 		/**
@@ -87,8 +93,7 @@ final class Worker(id: Int, fct: PipeOperator[DblSeries, DblSeries]) extends Act
 		 * @note Scala for Machine Learning Chapter 12 Scalable Framework/Akka/Master-workers
 		 */
 object Worker {
-	private val NUM_DATAPOINTS_DISPLAY = 12
-	
+
 	private def check(id: Int): Unit = require(id >= 0, s"Worker.check Id $id is out of range")
 }
 

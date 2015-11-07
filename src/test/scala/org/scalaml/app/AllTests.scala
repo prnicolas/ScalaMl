@@ -1,26 +1,32 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app
 
 	// Scala standard library
 import scala.annotation.switch
 import scala.util.Properties
+
 	// Third party frameworks
 import org.scalatest.concurrent._
 import org.scalatest.time.{Span, Seconds, Millis}
 import org.apache.log4j.Logger
+
 	// ScalaMl classes
-import org.scalaml.app.core._
 import org.scalaml.app.chap1._
 import org.scalaml.app.chap2._
 import org.scalaml.app.chap3._
@@ -37,18 +43,25 @@ import org.scalaml.util.DisplayUtils
 
 
 		/**
-		 * <p>Singleton that executes all the test clases in Scala for Machine Learning.<br>
+		 * Singleton that executes all the test clases in Scala for Machine Learning.
+		 * 
 		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
-		 * command line <i>sbt test:run</i><br>
+		 * command line ''sbt test:run''
+		 * 
 		 * Each test is implemented as an actor that terminates when either the test completes
-		 * or the time out is exceeded.</p>
+		 * or the time out is exceeded.
 		 */
 protected object AllTests extends ScalaMlTest {
 	val chapter: String = "All tests"
 	  
-	private val CONFIGURATION = "Recommended SBT/JVM configuration:\n -Xmx4096 (or higher)\n" +
-			" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
-			s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}"
+	private val CONFIGURATION = 
+		" ****** Scala for Machine Learning - V. 0.99 - Execution examples ****** \n" +
+		"Recommended SBT/JVM configuration:\n -Xmx4096 (or higher)\n" +
+		" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
+		s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}\n\n" +
+		"Warning: Apache Spark 1.5.0 and earlier is not compatible with Scala 2.11\n" +
+		"you need to set scalaVersion := 2.10.x in built.sbt to build and run Apache Spark\n" +
+		" ************************************************************** \n\n"
 
 	private val logger = Logger.getLogger("AllTests")
 	
@@ -58,26 +71,33 @@ protected object AllTests extends ScalaMlTest {
 		 * for description and purpose of the test
 		 */
   def run: Unit = {
-			// Core
-		evaluate(StatsEval)
-		evaluate(XTSeriesEval)
-		evaluate(MatrixEval)
-	
 			// Chapter 1
+		evaluate(MinMaxEval)
 		evaluate(LogBinRegressionEval)
+		evaluate(LogBinRegressionEval2)
 		evaluate(PlotterEval)
-		
+
 			// Chapter 2
 		evaluate(BiasVarianceEval)
 		evaluate(WorkflowEval)
-		
+		evaluate(DMatrixEval)
+		evaluate(StatsEval)
+		evaluate(ValidationEval)
+		evaluate(ETransformEval)
+		evaluate(ITransformEval)
+		evaluate(OneFoldXValidationEval)
+	
 			//Chapter 3
+		evaluate(XTSeriesEval)
+		evaluate(MovingAveragesEval2) 
 		evaluate(MovingAveragesEval, Array[String]("BAC", "60")) 
 		evaluate(DFTEval)
 		evaluate(DFTEval, Array[String]("BAC"))
+		evaluate(DFTFilterEval, Array[String]("BAC"))
 		evaluate(DKalmanEval, Array[String]("BAC"))
 
 			// Chapter 4
+		evaluate(KMeansEval2)
 		val input = Array[String]("2", "3", "4", "7", "9", "10", "13", "15")
 		evaluate(KMeansEval, input)
 		evaluate(EMEval, Array[String]("2", "40"))
@@ -98,21 +118,20 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "12"))
 		evaluate(BinomialBayesEval, Array[String]("BAC", TRAIN_VALIDATION_RATIO, "36"))
 		evaluate(TextBayesEval)
-	
 		evaluate(FunctionClassificationEval)
-		
+
 			// Chapter 6
 		evaluate(SingleLinearRegressionEval)
 		evaluate(RidgeRegressionEval)
-		evaluate(MultiLinearRegressionEval, Array[String]("trend"))
-		evaluate(MultiLinearRegressionEval, Array[String]("filter"))
-
+		evaluate(MultiLinearRegrFeaturesEval)
+		evaluate(MultiLinearRegrTrendsEval)
 		evaluate(LogisticRegressionEval)
 
 			// Chapter 7
-		evaluate(HMMEval, Array[String]("evaluation"))
-		evaluate(HMMEval, Array[String]("training"))
-		evaluate(HMMEval, Array[String]("decoding"))
+		evaluate(HMMTrainingEval)
+		evaluate(HMMEvaluationEval)
+		evaluate(HMMDecodingEval)
+		evaluate(HMMDecodingEval2)
 		evaluate(CrfEval)
 		
 			// Chapter 8
@@ -121,17 +140,16 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(SVCEval)
 		evaluate(SVCOutliersEval)
 		evaluate(SVREval)	
-		
+	
 			// Chapter 9
-	  evaluate(MLPConfigEval, Array[String]("eta"))
-		evaluate(MLPConfigEval, Array[String]("alpha"))
-		evaluate(MLPValidation)
 		evaluate(BinaryMLPEval)
+		evaluate(BinaryDeepMLPEval, Array[String]("3"))
+		evaluate(BinaryDeepMLPEval, Array[String]("4", "4"))
+		evaluate(BinaryDeepMLPEval, Array[String]("7", "7"))
+		evaluate(BinaryDeepMLPEval, Array[String]("5", "6", "5"))
 		evaluate(MLPEval, Array[String]("4"))
 		evaluate(MLPEval, Array[String]("4", "4"))
-		evaluate(MLPEval, Array[String]("7", "7"))
-		evaluate(MLPEval, Array[String]("5", "5", "5"))
-				
+
 			// Chapter 10
 		evaluate(GAEval)
 		evaluate(GAFunctionMin)
@@ -141,13 +159,14 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(QLearningEval, Array[String]("maxReward", "8", "4"))
 		evaluate(QLearningEval, Array[String]("maxReward", "8", "5"))
 		evaluate(QLearningEval, Array[String]("random"))
-		
+
 			// Chapter 12
 		evaluate(ParBenchmarkEval, Array[String]("array"))
 		evaluate(ParBenchmarkEval, Array[String]("map"))
 		evaluate(ActorsManagerEval, Array[String]("norouter"))
 		evaluate(ActorsManagerEval, Array[String]("router"))
 		evaluate(TransformFuturesEval)
+
 		evaluate(SparkKMeansEval)
 	}
 		
@@ -157,6 +176,7 @@ protected object AllTests extends ScalaMlTest {
 		 */
 	def header(args: Array[String]): Unit = {
 		val buf = new StringBuilder("\nCommand line configuration for output:")
+		
 		args.foreach(arg => buf.append(s" $arg"))
 		buf.append("\n")
 			// Display configuration and settings information  regarding OS
@@ -191,11 +211,11 @@ protected object AllTests extends ScalaMlTest {
 
 
 		/**
-		 * <p>Driver called by simple build tool (SBT) as test:run
+		 * Driver called by simple build tool (SBT) as test:run
 		 * @author Patrick Nicolas
 		 */
 object AllTestsApp extends App {
-	if( !args.isEmpty ) {
+	if( args.length > 0 ) {
 		DisplayUtils.init(args)
 		AllTests.header(args)
 	}	

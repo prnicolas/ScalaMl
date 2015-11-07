@@ -1,23 +1,28 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.reinforcement.qlearning
 
-import org.scalaml.core.Matrix
-import org.scalaml.core.Types.ScalaMl.{XY, XYTSeries}
+import org.scalaml.core.Types.ScalaMl.DblPair
+
 
 		/**
-		 * <p>Enumerator to define the type of a parameters used to update the policy during
-		 * the training of Q-learning model.</p>
+		 * Enumerator to define the type of a parameters used to update the policy during
+		 * the training of Q-learning model.
 		 */
 object QLDataVar extends Enumeration {
 	type QLDataVar = Value
@@ -26,19 +31,27 @@ object QLDataVar extends Enumeration {
 
 
 		/**
-		 * <p>Class that encapsulate the attributes of the policy in Q-learning algorithm</p>
+		 * Class that encapsulates the attributes of the policy in Q-learning algorithm
+		 * @constructor Create a QLData record or instance with a given reward, probability and
+		 * a Q-value that is computed and updated during training.
+		 * @param reward  reward assigned during initialization
+		 * @param probability probability (or hindrance) assigned during initialization
+		 * @param value Q-Value updated during training using the Q-learning formula
 		 * @author Patrick Nicolas
-		 * @since January 25, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 * @since 0.98 January 25, 2014
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chap 11 ''Reinforcement learning'' / Q-learning
 		 */
-final protected class QLData {
+final protected class QLData(val reward: Double, val probability: Double = 1.0) {
 	import QLDataVar._
-	var reward: Double = 1.0
-	var probability: Double = 1.0
+	
+		/**
+		 * Q-Value updated during training using the Q-learning formula
+		 */
 	var value: Double = 0.0
 	
 		/**
-		 * Compute the overall value for an action adjusted by its probability
+		 * Compute the overall value for an action using its reward, adjusted by its probability
 		 * @return adjusted value
 		 */
 	@inline
@@ -60,43 +73,43 @@ final protected class QLData {
 
 
 		/**
-		 * <p>Class that defines the policy for a given set of input and a number of states.</p>
+		 * Class that defines the policy for a given set of input and a number of states.
 		 * @constructor Create a policy as a model for Q-learning. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
-		 * @param numStates Number of states for this policy.
 		 * @param input Input to initialize the policy.
 		 * @see org.scalaml.design.Model
 		 * 
 		 * @author Patrick Nicolas
-		 * @since January 25, 2014
+		 * @since 0.98 January 25, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
-final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
+@throws(classOf[IllegalArgumentException])
+final protected class QLPolicy(val input: Seq[QLInput]) {
 	import QLDataVar._
-	QLPolicy.check(numStates, input)
+	
+	QLPolicy.check(input)
+
 	
 		/**
 		 * Initialization of the policy using the input probabilities and rewards
 		 */
-	val qlData = {
-		val data = Array.tabulate(numStates)(v => Array.fill(numStates)(new QLData))
-			// Initialized the reward and probability matrices
-		input.foreach(in => {  
-			data(in.from)(in.to).reward = in.reward
-			data(in.from)(in.to).probability = in.prob
-		})
-		data
-	}
+	private[this] val qlData = input.map(qlIn => new QLData(qlIn.reward, qlIn.prob))
+	private[this] val numStates = Math.sqrt(input.size).toInt
+
 
 		/**
-		 * <p>Set the Q value for an action from state from to state to</p>
+		 * Set the Q value for an action from state from to state to
 		 * @param from Source state for the action for which the value is updated
 		 * @param to destination state for the action for which the value is updated
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	def setQ(from: Int, to: Int, value: Double): Unit = {
 		check(from, to, "setQ")
-		qlData(from)(to).value = value
+		qlData(from*numStates + to).value = value
+	}
+	
+	final def get(from: Int, to: Int, varType: QLDataVar): String = {
+		f"${qlData(from*numStates + to).value(varType)}%2.2f"
 	}
    
 		/**
@@ -107,7 +120,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 */
 	final def Q(from: Int, to: Int): Double = {
 		check(from, to, "Q")
-		qlData(from)(to).value
+		qlData(from*numStates + to).value
 	}
 	
 		/**
@@ -118,7 +131,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 */
 	final def EQ(from: Int, to: Int): Double = {
 		check(from, to, "EQ")
-		qlData(from)(to).estimate
+		qlData(from*numStates + to).estimate
 	}
  
 		/**
@@ -129,7 +142,7 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 */
 	final def R(from: Int, to: Int): Double = {
 		check(from, to, "R")
-		qlData(from)(to).reward
+		qlData(from*numStates + to).reward
 	}
    
 		/**
@@ -139,19 +152,18 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * @throws IllegalArgumentException if the source or destination states are out of range
 		 */
 	final def P(from: Int, to: Int): Double = {
-	  check(from, to, "P")
-		qlData(from)(to).probability
+		check(from, to, "P")
+		qlData(from*numStates + to).probability
 	}
 	
 		/**
 		 * Compute the minimum and maximum value for Q
 		 * @return A pair (min Q-value, max Q-value)
 		 */
-	final def minMaxQ: XY = {
-		val _min = Range(0, qlData.size).minBy(from =>
-			Range(0, qlData(0).size).minBy(to => qlData(from)(to).value) )
-		val _max = Range(0, qlData.size).maxBy(from =>
-			Range(0, qlData(0).size).maxBy(to => qlData(from)(to).value) )
+	final def minMaxQ: DblPair = {
+		val r = Range(0, numStates)
+		val _min = r.minBy(from =>r.minBy(Q(from, _))) 
+		val _max = r.maxBy(from =>r.maxBy(Q(from, _)))
 		(_min, _max)
 	}
  
@@ -160,41 +172,35 @@ final protected class QLPolicy[T](numStates: Int, input: Array[QLInput]) {
 		 * is a positive value. The index of state is converted to a Double
 		 * @return Array of tuple (source state, destination state)
 		 */
-	final def EQ: XYTSeries = {
+	final def EQ: Vector[DblPair] = {
 		import scala.collection.mutable.ArrayBuffer
-		
-		Range(0, qlData.size).flatMap(from => 
-				Range(0, qlData(0).size).map(to => (from, to, qlData(from)(to).value)))
-					.map(qV => if(qV._3 > 0.0) (qV._1.toDouble, qV._2.toDouble) else (0.0, 0.0))
-					.toArray
+		val r = Range(0, numStates)
+		r.flatMap(from => 
+				r.map(to => (from, to, Q(from, to))))
+					.map{ case (i, j, q) => if(q > 0.0) (i.toDouble, j.toDouble) else (0.0, 0.0) }
+					.toVector
 	}
 	
 		/**
 		 * Textual description of the reward matrix for this policy.
 		 */
-	override def toString: String = s" Reward\n${toString(REWARD)}"
+	override def toString: String = s"Reward\n${toString(REWARD)}"
 
 		/**
 		 * Textual representation of either the Q-value, reward or probability matrix
 		 * @param varType type of variable (Q-value, reward, or probability)
 		 */
 	def toString(varType: QLDataVar): String = { 
-		val buf = new StringBuilder
-		
-			// Traverses all the state and collect the value {Reward,
-			// Q-value, probability} for this policy
-		Range(1, numStates).foreach(i => {
-			val line = qlData(i).zipWithIndex
-						.foldLeft(new StringBuilder)((b, qj) => b.append(f"${qj._1.value(varType)}%2.2f, ") )
-			line.setCharAt(line.size-1, '\n')
-			buf.append(line.toString)
-		})
-		buf.toString
+		val r = Range(1, numStates)
+		r.map(i => r.map(get(i, _, varType)).mkString(",")).mkString("\n")
 	}
+
 	
 	private def check(from: Int, to: Int, meth: String): Unit =  {
-		require(from >= 0 && from < qlData.size, s"QLPolicy.$meth source state $from is out of range")
-		require(to >= 0 && from < qlData(0).size, s"QLPolicy.$meth source state $to is out of range")
+		require(from >= 0 && from < numStates, 
+				s"QLPolicy.$meth Found from: $from required >= 0 and < $numStates")
+		require(to >= 0 && to < numStates, 
+				s"QLPolicy.$meth Found to: $to required >= 0 and < $numStates")
 	}
 }
 
@@ -213,18 +219,14 @@ object QLPolicy {
 		 * @param numStates Number of states for this policy.
 		 * @param input Input (rewards and probability) to initialize the policy.
 		 */
-	def apply[T](numStates: Int, input: Array[QLInput]): QLPolicy[T] = 
-			new QLPolicy[T](numStates, input)
+	def apply[T](input: Seq[QLInput]): QLPolicy = 
+			new QLPolicy(input)
 
-	private val MAX_NUM_STATES = 8192
+	private val MAX_NUM_TRANSITIONS = 32768
 
-	protected def check(numStates: Int, input: Array[QLInput]): Unit = {
-		require(numStates >0 && numStates < MAX_NUM_STATES, 
-				s"QLPolicy.check Number of states $numStates is out of range")
-		require( !input.isEmpty, 
-				"QLPolicy.check the input to the Q-leaning policy is undefined")
-		require(input.size < MAX_NUM_STATES, 
-				s"QLPolicy.check, the size of the input ${input.size} is out of range" )
+	protected def check(input: Seq[QLInput]): Unit = {
+		require(input.size > 0 && input.size < MAX_NUM_TRANSITIONS, 
+				s"QLPolicy found input size = ${input.size} requires 0 <  < $MAX_NUM_TRANSITIONS")
 	}
 }
 

@@ -1,23 +1,30 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
- * Unless required by applicable law or agreed to in writing, software is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
  * 
- * Version 0.98.1
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml
 
 		/**
 		 * This package object encapsulate the two reinforcement algorithms defined in Chapter 11
-		 * Reinforcement learning;<br>
-		 * - Q-learning iterative algorithm <b>qlearning</b><br>
-		 * - Extended Learning Classifiers <b>xcs</b>
-		 * @note Scala for Machine Learning Chapter 11: Reinforcement learning.
+		 * Reinforcement learning;
+		 * 
+		 * - Q-learning iterative algorithm '''qlearning'''
+		 * 
+		 * - Extended Learning Classifiers '''xcs'''
+		 * @note Scala for Machine Learning Chapter 11: ''Reinforcement learning''
 		 */
 package object reinforcement { }
 // ---------------------------------------  EOF -----------------------------------------

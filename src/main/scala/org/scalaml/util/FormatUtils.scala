@@ -1,18 +1,23 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.util
 
-import org.scalaml.core.Types.ScalaMl.{DblMatrix, XYTSeries, XY, DblVector}
+import org.scalaml.core.Types.ScalaMl._
 
 
 		/**
@@ -31,10 +36,10 @@ object FormatUtils {
 	private val ONE_ROUNDING_ERROR = 1.0 - ROUNDING_ERROR
 	
 		/**
-		 * <p>Class to format the output of double floating point, integer and string values. 
+		 * Class to format the output of double floating point, integer and string values. 
 		 * The client has the option to specify whether the value has to be rounded to the next Int.
 		 * If the rounding error is 0.001  3.9999 will be rounded to 4 and 6.0003 will be rounded to 6
-		 * </p>
+		 * 
 		 * @constructor Create a format type for floating point values
 		 * @param align defines the alignment for the display of the value (i.e. '%6s')
 		 * @param fmtStr for Decimal values (i.e. '#,##0.000')
@@ -69,6 +74,10 @@ object FormatUtils {
 			 */
 		def toString[T](t: T): String = String.format(align, t.toString)
 		
+		
+			/*
+			 * Applies a rounding error scheme is the 
+			 */
 		private def conv(x: Double): Double = roundingError match {
 			case NO_ROUNDING_ERROR => x
 			case ROUNDING_ERROR => {
@@ -83,19 +92,19 @@ object FormatUtils {
 		/**
 		 * Short format as 6.004912491 => 6.004
 		 */
-	object ShortFormat extends FormatType("%8s", "#,##0.000")
+	final object SHORT extends FormatType("%8s", "#,##0.000")
 		/**
 		 * Short format with rounding error adjustment as 6.0049124 => 6.000
 		 */
-	object ShortFormatRoundingError extends FormatType("%8s", "#,##0.000", ROUNDING_ERROR)
+	final object SHORT_ROUND extends FormatType("%8s", "#,##0.000", ROUNDING_ERROR)
 		/**
 		 * Medium format as 6.004912491 => 6.00491
 		 */
-	object MediumFormat extends FormatType("%11s", "#,##0.00000")
+	final object MEDIUM extends FormatType("%11s", "#,##0.00000")
 			/**
 		 * Medium format as 6.004912491 => 6.004913491
 		 */
-	object LongFormat extends FormatType("%15s", "#,##0.00000000")
+	final object LONG extends FormatType("%15s", "#,##0.00000000")
 	
 		/**
 		 * Method to format a time series (x,y) tuples with labels for each axis,
@@ -107,32 +116,25 @@ object FormatUtils {
 		 * @param labels  Labels for each of the data points of the time series
 		 */
 	def format(
-			xy: XYTSeries, 
+			xy: Vector[DblPair], 
 			xLabel: String, 
 			yLabel: String, 
 			fmt: FormatType, 
 			labels: Array[String] = Array.empty): String = {
+	  
 		require( !xy.isEmpty, "FormatUtils.format XYTSeries is undefined")
 
-		val buf = new StringBuilder(s"$xLabel\t$yLabel\n")
-		
-			// If the labels are not provided, display the content of the time series
-			// once formatted (=> std out or logger or both)
-		if( labels.isEmpty )
-			buf.append(xy.foldLeft(new StringBuilder)((buf, xy) => 
-				buf.append(s"${fmt.toString(xy._1)}${fmt.toString(xy._2)}\n")).toString)
-				
-			// If the labels are provided, make sure that their number matches
-			// the size of the time series and aggregate them with the data points
+		val labelsHeader = s"$xLabel\t$yLabel"
+		val content = if( labels.isEmpty )
+			xy.map { case(x, y) => s"${fmt.toString(x)}${fmt.toString(y)}"}.mkString("\n")
 		else {
 			assert(xy.size == labels.size, 
 					s"FormatUtils.toString data size ${xy.size} != number of labels ${labels.size}")
-					
-			buf.append(xy.zip(labels).foldLeft(new StringBuilder)((buf, xy) => 
-				buf.append(s"${fmt.toString(xy._2)}${fmt.toString(xy._1._1)}${fmt.toString(xy._1._2)}\n"))
-					.toString)
+			xy.zip(labels).map{ case(z, lbl) => 
+				s"$lbl${fmt.toString(z._1)}${fmt.toString(z._2)}" }.mkString("\n")
 		}
-	  buf.toString
+					
+		s"$labelsHeader$content"
 	}
 
 		
@@ -142,17 +144,20 @@ object FormatUtils {
 		 * @param label for y-Axis or values
 		 * @param fmt Format type used in the representation of the time series values
 		 */
-	def format[T](x: Array[T], label: String, fmt: FormatType): String = {
+	def format[T](x: Vector[T], label: String, fmt: FormatType): String = {
 		require( !x.isEmpty, "FormatUtils.format Array of type T is undefined")
-	  	
-		val buf = new StringBuilder
-		if(label.size > 0)
-			buf.append(s"${fmt.toString(label)}\n")
-			
-		buf.append(x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => 
-				buf.append(s"${x._2}  ${fmt.toString(x._1)}\n")).toString)
-		buf.toString
+
+		val content = x.view.zipWithIndex.map{ case(x, n) => s"${n}  ${fmt.toString(x)}"}.mkString("\n")
+		if( label.size > 0 )
+			s"${fmt.toString(label)}\n$content"
+		else
+			content
 	}
+	
+	
+  def format[T](x: Array[T], label: String, fmt: FormatType): String = 
+  	format(x.toVector, label, fmt)
+
 		
 			/**
 		 * Method to format a vector or array with a short format
@@ -161,9 +166,10 @@ object FormatUtils {
 	def format(x: DblVector): String = {
 		require( !x.isEmpty, "FormatUtils.format Vector of double is undefined")
 	  
-		x.zipWithIndex.foldLeft(new StringBuilder)((buf, x) => 
-			buf.append(s"${x._2}  ${ShortFormat.toString(x._1)} ")).toString
+		x.view.zipWithIndex.map { case (x, n) => s"$x  ${SHORT.toString(n)}"}.mkString(" ")
 	}
+	
+	def format(x: DblArray): String = format(x.toArray)
 
 		/**
 		 * Method to format a single floating point value using a given format
@@ -173,15 +179,6 @@ object FormatUtils {
 		 */
 	def format(x: Double, label: String, fmt: FormatType): String = 
 			if(label.length >1) s"$label ${fmt.toString(x)}" else fmt.toString(x)
-	/*
-		val buf = new StringBuilder
-		if(label.length > 1)
-			buf.append(label)
-		buf.append(s" ${fmt.toString(x)}")
-		buf.toString
-	}
-	* 
-	*/
 		
 			/**
 		 * Method to format a matrix (Array[Array[Double]]) given a format type
@@ -190,15 +187,11 @@ object FormatUtils {
 		 */
 	def format(m: DblMatrix, fmt: FormatType): String = {
 		require( !m.isEmpty, "FormatUtils.format Matrix is undefined")
-		
-		val buf = new StringBuilder
-		buf.append( Range(0, m(0).size).map(n => s"${fmt.toString(n)}").mkString )
-			
-		Range(0, m.size).foreach(i => {
-			buf.append(s"\n${fmt.toString(i)}")
-			buf.append(Range(0, m(0).size).map(j => s"${fmt.toString(m(i)(j))}").mkString)
-		})
-		buf.toString
+
+		val header = Range(0, m(0).size).map(n => s"${fmt.toString(n)}").mkString
+		val content = Range(0, m.size).map(i => s"${fmt.toString(i)} ${Range(0, m(0).size).map(j 
+				=> s"${fmt.toString(m(i)(j))}").mkString }").mkString("\n")
+		s"$header\n$content"
 	}
 	
 			/**
@@ -207,13 +200,13 @@ object FormatUtils {
 		 * @param index flag to display the index of the element along its value. Shown if index is 
 		 * true, not shown otherwise
 		 */
-	def toText(v: DblVector, index: Boolean): String = {
+	def toText(v: DblArray, index: Boolean): String = {
 		require( !v.isEmpty, 
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 		if( index)
-			v.zipWithIndex.map(x => s"${x._2}:${x._1}").mkString(", ")
+			v.view.zipWithIndex.map{ case(u, v) => s"$v:$u"}.mkString(", ")
 		else
-			v.dropRight(1).mkString(", ")
+			v.view.dropRight(1).mkString(", ")
 	}
 
 		/**
@@ -224,12 +217,12 @@ object FormatUtils {
 		 */
 	def toText(m: DblMatrix, index: Boolean): String = {
 		require( !m.isEmpty, 
-					"ScalaMl.toText Cannot create a textual representation of a undefined vector")
-			
+				"ScalaMl.toText Cannot create a textual representation of a undefined vector")
+
 		if(index)
-			m.zipWithIndex.map(v => s"${v._2}:${toText(v._1, true)}").mkString("\n")
+			m.view.zipWithIndex.map { case (u, v) => s"$v:${toText(u, true)}" }.mkString("\n")
 		else 
-			m.map(v => s"${toText(v, false)}").mkString("\n")
+			m.view.map(v => s"${toText(v, false)}").mkString("\n")
 	}
 }
 

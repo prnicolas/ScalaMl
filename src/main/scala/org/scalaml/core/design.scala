@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.3
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.core
 
@@ -20,12 +25,12 @@ import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
 
 		/**
-		 * Package that encapsulate the high level trait used insupervised and unsupervised learning 
+		 * Encapsulate the high level trait used insupervised and unsupervised learning 
 		 * algorithms.
 		 * @author Patrick Nicolas
-		 * @since March 4, 2014 0.98.1
+		 * @since March 4, 2014  (0.98.1)
 		 * @version 0.99
-		 * @see Scale for Machine Learning Chapter 2 Hello World!
+		 * @see Scale for Machine Learning Chapter 2 "Hello World!"
 		 */
 object Design {
 	import org.scalaml.util.FileUtils
@@ -37,7 +42,7 @@ object Design {
 		 * method '''>>'''.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since April 11, 2014 0.98.2
+		 * @since April 11, 2014 (0.98.2)
 		 * @version 0.99
 		 * @see Scale for Machine Learning Chapter 2 Hello World!
 		 */
@@ -57,11 +62,16 @@ object Design {
 		def >> : Boolean = false
 	}
 	
+	
+	class ConfigInt(val iParam: Int) extends Config 
+	class ConfigDouble(val fParam: Double) extends Config
+	
+	
 		/**
 		 * Companion singleton to the Config trait. It is used to define the simple read 
 		 * method to load the config parameters from file and instantiate the configuration
 		 * @author Patrick Nicolas
-		 * @since April 11, 2014 0.98
+		 * @since April 11, 2014 (0.98)
 		 * @version 0.99
 		 * @see Scale for Machine Learning Chapter 2 Hello World!
 		 */
@@ -69,7 +79,7 @@ object Design {
 		private val RELATIVE_PATH = "configs/"
 		/**
 		 * Read this algorithm configuration parameters from a file defined as 
-		 * ''configs/className''
+		 * '''configs/className'''
 		 * @param className  file containing the configuration parameters
 		 * @return Configuration parameters as a comma delimited field of string  if successful, 
 		 * None otherwise
@@ -82,8 +92,7 @@ object Design {
 		/**
 		 * Define the model trait for classification and optimization algorithms.
 		 * @author Patrick Nicolas
-		 * @since March 4, 2014 0.98.2
-		 * @version 0.98.2
+		 * @since 0.98.2 March 4, 2014 (0.98.2)
 		 * @see Scala for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Model {
@@ -106,36 +115,17 @@ object Design {
 		 * Companion singleton to the Model trait. It is used to define the simple read 
 		 * method to load the model parameters from file.
 		 * @author Patrick Nicolas
-		 * @since March 4, 2014 0.98.2
-		 * @version 0.98.2
+		 * @since 0.98 March 4, 2014 0.98.2
 		 * @see Scala for Machine Learning Chapter 2 Hello World!
 		 */
 	object Model {
 		private val RELATIVE_PATH = "models/"
 		/**
-		 * Read this model parameters from a file defined as <b>models/className</b>
+		 * Read this model parameters from a file defined as '''models/className'''
 		 * @param className  file containing the model parameters
 		 * @return Model parameters as a comma delimited string if successful, None otherwise
 		 */
 		def read(className: String): Option[String] = FileUtils.read(RELATIVE_PATH, className)
-	}
-	
-	
-		/**
-		 * Parameterized pipe operator for processing data within a workflow with
-		 * a T as input type and U as output type. The trait defines the F# pipe
-		 * operator |> which is implemented as a partial function.
-		 * @tparam T type of values or features in the input data set
-		 * @tparam U type of values/features processed
-		 * 
-		 * @author Patrick Nicolas
-		 * @since December, 15, 2013 0.98.2
-		 * @version 0.99
-		 * @see Scala for Machine Learning Chapter 2 Hello World! / Designing a workflow / 
-		 * The pipe operator
-		 */
-	trait PipeOperator[T, U] extends _FCT[T, U] {
-		def |> : PartialFunction[T, U]
 	}
 }
 

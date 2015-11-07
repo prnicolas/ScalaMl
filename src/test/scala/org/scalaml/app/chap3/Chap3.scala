@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap3
 
@@ -28,26 +33,28 @@ import org.scalaml.app.Eval
 trait FilteringEval extends Eval {
 	
 		/** 
-		 * <p>Execution of the scalatest for filtering technique.</p>
+		 * Execution of the scalatest for filtering technique.
 		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
 		 */
-	def run(args: Array[String]): Int
+	override protected def run(args: Array[String]): Int
 }
 
 
 		/**
-		 * <p>Test driver for the techniques described in the Chapter 3 Data pre-processing<br>
-		 * <ul>
-		 * 	 <li>Moving averages</li>
-		 *   <li>Discrete Fourier Series with Synthetic time series</li>
-		 *   <li>Discrete Fourier Series for financial analysis</li>
-		 *   <li>Kalman filter for financial analysis</li>
-		 * </ul></p>
+		 * Test driver for the techniques described in the Chapter 3 Data pre-processing
+		 * 
+		 *  - Moving averages
+		 *  
+		 *  - Discrete Fourier Series with Synthetic time series
+		 *  
+		 *  - Discrete Fourier Series for financial analysis
+		 *  
+		 *  - Kalman filter for financial analysis
+		 * 
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
 		 * @since May 28, 2014
-		 * @note Scala for Machine Learning Chapter 3 Data pre-processing
+		 * @see Scala for Machine Learning Chapter 3 ''Data pre-processing''
 		 */
 final class Chap3 extends ScalaMlTest  {  
 		/**
@@ -58,6 +65,14 @@ final class Chap3 extends ScalaMlTest  {
 		 * Maximum duration allowed for the execution of the evaluation
 		 */
 	val maxExecutionTime: Int = 10
+	
+	test(s"$chapter Time series methods") {
+		evaluate(XTSeriesEval)
+	}
+	
+	test(s"$chapter Moving averages test") {
+		evaluate(MovingAveragesEval2) 
+	}
 		
 	implicit def double2String(x: Double): String = x.toString
 	test(s"$chapter Moving averages") {
@@ -73,7 +88,7 @@ final class Chap3 extends ScalaMlTest  {
 	}
 	
 	test(s"$chapter Kalman filter for financial analysis") {
-	   evaluate(DKalmanEval, Array[String]("BAC"))
+		evaluate(DKalmanEval, Array[String]("BAC"))
 	}
 }
 

@@ -1,55 +1,65 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used 
- * to build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.app.chap10
+
+import scala.collection.mutable.ArrayBuffer
+import scala.util.{Try, Success, Failure}
+	
+import org.apache.log4j.Logger
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.{TradingStrategy, Signal, YahooFinancials, StrategyFactory}
 import org.scalaml.trading.operator.{LESS_THAN, GREATER_THAN, EQUAL, NONE, SOperator}
-import org.scalaml.ga._
-import org.scalaml.core.XTSeries
-import org.scalaml.util.{FormatUtils, DisplayUtils}
+import org.scalaml.stats.XTSeries
+import org.scalaml.util.{FormatUtils, DisplayUtils,  LoggingUtils}
 import org.scalaml.app.Eval
-import org.scalaml.core.Types.ScalaMl.DblVector
-
-
+import org.scalaml.core.Types.emptyString
+import org.scalaml.core.Types.ScalaMl.{DblArray, DblVector, DblPair}
+import org.scalaml.ga._
+import YahooFinancials._, Chromosome._, LoggingUtils._, FormatUtils._, Gene._, XTSeries._
+	
 		/**
-		 * <p><b>Purpose</b>: Evaluate the convergence a genetic algorithm optimizer for extract 
-		 * the best trading strategy for predicting the price movement of a stock.</p>
+		 * '''Purpose''': Evaluate the convergence a genetic algorithm optimizer for extract 
+		 * the best trading strategy for predicting the price movement of a stock.
 		 * 
 		 * @see org.scalaml.ga.{Gene, Chromosome} 
 		 * @see org.scalaml.trading.TradingStrategy
 		 * @author Patrick Nicolas
-		 * @note Scala for Machine Learning Chapter 10 Genetic Algorithm / GA for trading strategies 
+		 * @see Scala for Machine Learning Chapter 10 Genetic Algorithm / GA for trading strategies 
 		 * / Test case
 		 */
 object GAEval extends Eval {
-	import scala.collection.mutable.ArrayBuffer
-	import scala.util.{Try, Success, Failure}
-	import org.apache.log4j.Logger
-	import YahooFinancials._, Chromosome._
-	
+	import scala.language.postfixOps
+
+
 		/**
 		 * Name of the evaluation 
 		 */
 	val name: String = "GAEval"
+	  
       
 	private val path = "resources/data/chap10/GS.csv"
 	private val XOVER = 0.8					// Probability or ratio for cross-over
 	private val MU = 0.4					// Probability or ratio for mutation
-	private val MAX_CYCLES = 400			// Maximum number of iterations during the optimization
-	private val CUTOFF_SLOPE = -0.003		// Slope for the linear soft limit
+	private val MAX_CYCLES = 1000			// Maximum number of iterations during the optimization
+	private val CUTOFF_SLOPE = -0.001		// Slope for the linear soft limit
 	private val CUTOFF_INTERCEPT = 1.003	// Intercept value for the linear soft limit
-	private val R = 1024  					// discretization ratio for conversion Int <-> Double
+	private val R = 1024  					// Quantization ratio for conversion Int <-> Double
 	private val NFITS = 2					// Number of fittest chromosomes to consider as solution candidates
    
 	private val softLimit = (n: Int) => CUTOFF_SLOPE*n + CUTOFF_INTERCEPT	   
@@ -57,95 +67,117 @@ object GAEval extends Eval {
 																						// (= number of genes in a chromosome)
  
 		// Default data conversion
-	implicit val digitize = new Discretization(R)
+	implicit val digitize = new Quantization(R)
+	implicit val encoding = defaultEncoding
 
 
+	val relative = (xy: DblPair) => xy._2/xy._1 -1.0
+	val invRelative = (xy: DblPair) => xy._2/xy._1 -1.0
 		/**
 		 * Define the scoring function for the chromosomes (i.e. Trading strategies)
 		 * as the sum of the score of the genes (i.e. trading signals) in this chromosome (i.e strategy).
 		 */
 	val scoring = (chr: Chromosome[Signal]) =>  {
 		val signals: List[Gene] = chr.code
-		chr.unfitness = signals.foldLeft(0.0)((sum, s) => sum + s.score)
+		chr.cost = Math.log(signals.map(_.score).sum + 1.0)
 	}
-
-		/** <p>Execution of the scalatest for <b>GASolver</b> class.
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate</p>
-		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
+	
+		/**
+		 * Monitoring function for the GA execution
 		 */
-	def run(args: Array[String]): Int = { 
-		DisplayUtils.show(s"$header Evaluation genetic algorithm", logger)
-  	 
-		Try {
-				// Create trading strategies and initialize the population
-			val strategies = createStrategies
-			val population = Population[Signal]((strategies.size <<4), strategies)
+	private val averageCost = new ArrayBuffer[Double]
+	private val tracker = (p: Population[Signal]) => averageCost.append(p.averageCost)
 
-			population.symbolic(s"Initial population: $population\n")
+
+		/** Execution of the scalatest for '''GASolver''' class.
+		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
+		 * 
+		 * Exceptions thrown during the execution of the tests are caught by the wrapper or handler
+		 * test method in Eval trait defined as follows:
+		 * {{{
+		 *    def test(args: Array[String]) =
+		 *      Try(run(args)) match {
+		 *        case Success(n) => ...
+		 *        case Failure(e) => ...
+		 * }}}
+		 * The tests can be executed through ''sbt run'' or individually by calling 
+		 * ''TestName.test(args)'' (i.e. DKalmanEval.test(Array[String]("IBM") )
+		 * @param args array of arguments used in the test
+		 */
+	override def run(args: Array[String]): Int = { 
+		show(s"$header Evaluation genetic algorithm")
+  	 
+
+				// Create trading strategies
+		createStrategies.map(strategies => {
+			show(s"\n${strategies.mkString("\n")}")
+			
+				// Initialize the population with a upper bound of 16 times 
+				// the initial number of strategies
+			val initial = Population[Signal]((strategies.size <<4), strategies)
+
+			show(s"${initial.symbolic}")
 
 				// Configure, instantiates the GA solver for trading signals
 			val config = GAConfig(XOVER, MU, MAX_CYCLES, softLimit)
-			val gaSolver = GASolver[Signal](config, scoring)
-
+			val solver = GASolver[Signal](config, scoring, Some(tracker))
+			
+	
 				// Extract the best population and the fittest chromosomes = trading strategies
 				// from this final population.
-			val bestPopulation = gaSolver |> population
-			bestPopulation.fittest(1)
-					.getOrElse(ArrayBuffer.empty)
-					.foreach(ch => DisplayUtils.show(s"$name Best strategy: ${ch.symbolic("->")}", logger))
-
-			DisplayUtils.show(s"$name run completed", logger)
-		}
-		match {
-			case Success(n) => n
-			case Failure(e) => failureHandler(e)
-		}
+			(solver |> initial).map(_.fittest.map(_.symbolic).getOrElse("NA")) match {
+				case Success(results) => {
+					display(averageCost.toArray)
+					show(results)
+				}
+				case Failure(e) => error("training ", e)
+			}
+		}).getOrElse(error("GAEval failed"))
 	}
+
+	private def display(data: DblArray): Unit = {
+	  import org.scalaml.plots.{Legend, LinePlot, LightPlotTheme}
+	  
+		val labels = new Legend(name, "Genetic algorithm convergence", "Recursions", "Average cost")
+		LinePlot.display(data, labels, new LightPlotTheme)
+	}
+	
 
 		/*
 		 * Create Trading strategies by loading price data from Yahoo financial tables.
 		 */
-	private def createStrategies: Pool[Signal] = {
+	private def createStrategies: Try[Pool[Signal]] = {
 		val src = DataSource(path, false, true, 1)
-
-		// Extract relative variation of price between two consecutive trading sessions
-		val price = src |> YahooFinancials.adjClose
-		val deltaPrice: DblVector = price.drop(1)
-								.zip(price.dropRight(1))
-								.map(p => (1.0 - p._2/p._1))
 		
-				// Extract relative variation of volume between two consecutive trading sessions
-		val volume = src |> YahooFinancials.volume
-		val deltaVolume: DblVector = volume.drop(1)
-											.zip(volume.dropRight(1))
-											.map(p => (p._2/p._1 - 1.0))
+		for {
+			price <- src.get(adjClose)
+			dPrice <- delta(price, -1.0) 
+			volume <- src.get(volume)
+			dVolume <- delta(volume, 1.0)
+			volatility <- src.get(volatility)
+			dVolatility <- delta(volatility, 1.0)
+			vPrice <- src.get(vPrice)
+		} 
+		yield {
+			show(s"""GS Stock price variation
+				| ${format(dPrice, "GS stock price daily variation", SHORT)}""".stripMargin )
+			
+			val factory = new StrategyFactory(NUM_SIGNALS_PER_STRATEGY)
+	
+			val avWeights = dPrice.sum/dPrice.size
+			val weights = Vector.fill(dPrice.size)(avWeights)
+			factory +=  ("dVolume", 1.1, GREATER_THAN, dVolume, weights)
+			factory +=  ("volatility", 1.3, GREATER_THAN, volatility.drop(1), weights)
+			factory +=  ("change", 0.8, LESS_THAN, vPrice.drop(1), weights)
+			factory +=  ("dVolatility", 0.9, GREATER_THAN, dVolatility, weights)
 
-				// extract relative variation of volatility between two consecutive trading sessions
-		val volatility = src |> YahooFinancials.relVolatility
-		val deltaVolatility = volatility.drop(1)
-										.zip(volatility.dropRight(1))
-										.map(p => (p._2/p._1 - 1.0))
-
-		// Relative volatility within the session
-		val relVolatility = src |> YahooFinancials.volatility
-
-		// Relative difference between close and open price
-		val relCloseOpen = src |> YahooFinancials.relCloseOpen
-
-		DisplayUtils.show(s"$name GS Stock price variation", logger)
-		DisplayUtils.show(s"${FormatUtils.format(deltaPrice, "", FormatUtils.ShortFormat)}", logger)
-		
-			// Generate the trading strategies as a unique combinations of 
-			// NUM_SIGNALS_PER_STRATEGY trading signals (genes).
-		val factory = new StrategyFactory(NUM_SIGNALS_PER_STRATEGY)
-		factory +=  ("Delta_volume", 1.1, GREATER_THAN, deltaVolume, deltaPrice)
-		factory +=  ("Rel_volatility", 1.3, GREATER_THAN, relVolatility.drop(1), deltaPrice)
-		factory +=  ("Rel_close-Open", 0.8, LESS_THAN, relCloseOpen.drop(1), deltaPrice)
-		factory +=  ("Delta_volatility", 0.9, GREATER_THAN, deltaVolatility, deltaPrice)
-
-		factory.strategies
+			factory.strategies
+		}
 	}
+	
+	private def delta(series: DblVector, a: Double): Try[DblVector] = 
+		Try(zipWithShift(series, 1).map{ case(x, y) => a*(y/x - 1.0)})
 }
+
 
 // ----------------  EOF ------------------------------------

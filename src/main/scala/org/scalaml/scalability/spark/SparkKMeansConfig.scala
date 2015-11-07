@@ -1,14 +1,19 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.scalability.spark
 
@@ -18,14 +23,12 @@ import org.apache.spark.mllib.linalg.DenseVector
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 
-import scala.annotation.implicitNotFound
-
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.XTSeries
-import org.scalaml.core.Design.PipeOperator
+
+
 
 		/**
-		 * <p>Define the configuration of the Spark KMeans wrapper.</p>
+		 * Define the configuration of the Spark KMeans wrapper.
 		 * @constructor Create a configuration for the Spark K-means algorithm.
 		 * @param K Number of clusters used in Spark KMeans
 		 * @param numIter  Maximum number of iterations allowed for Spark KMeans
@@ -41,7 +44,7 @@ final class SparkKMeansConfig(K: Int, maxNumIters: Int, numRuns: Int =1) {
 	check(K, maxNumIters, numRuns)
 	
 		/**
-		 * <p>Reference to MLlib KMeans class that is initialized with the class parameters</p>
+		 * Reference to MLlib KMeans class that is initialized with the class parameters
 		 */
 	val kmeans = {
 		val kmeans = new KMeans
@@ -53,8 +56,8 @@ final class SparkKMeansConfig(K: Int, maxNumIters: Int, numRuns: Int =1) {
 }
 
 		/**
-		 * <p>Companion object for the Spark K-means configuration class. The singleton
-		 * defines the constructors and validate its parameters.</p>
+		 * Companion object for the Spark K-means configuration class. The singleton
+		 * defines the constructors and validate its parameters.
 		 * @author Patrick Nicolas
 		 * @since April 2, 2014
 		 * @note Scala for Machine Learning Chapter 12 Scalable frameworks / Apache Spark & MLlib

@@ -1,81 +1,99 @@
 /**
  * Copyright (c) 2013-2015  Patrick Nicolas - Scala for Machine Learning - All rights reserved
  *
- * The source code in this file is provided by the author for the sole purpose of illustrating the 
- * concepts and algorithms presented in "Scala for Machine Learning". It should not be used to 
- * build commercial applications. 
- * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * Licensed under the Apache License, Version 2.0 (the "License") you may not use this file 
+ * except in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software is distributed on an 
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * 
- * Version 0.98.1
+ * The source code in this file is provided by the author for the sole purpose of illustrating the 
+ * concepts and algorithms presented in "Scala for Machine Learning". 
+ * ISBN: 978-1-783355-874-2 Packt Publishing.
+ * 
+ * Version 0.99
  */
 package org.scalaml.supervised.nnet
 
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-import org.scalaml.core.Types.ScalaMl.DblVector
+import org.scalaml.core.Types.ScalaMl.{DblPair, DblArray, DblMatrix}
+import org.scalaml.core.Types.emptyString
+import org.scalaml.stats.XTSeries._
 import org.scalaml.supervised.nnet.MLPConfig._
 import org.scalaml.core.Design.Model
-import org.scalaml.supervised.nnet.MLP.MLPObjective
-import org.scalaml.util.FormatUtils
+import org.scalaml.supervised.nnet.MLP.MLPMode
+import org.scalaml.util.{FormatUtils, MathUtils}
+import MLPModel._, MathUtils._, FormatUtils._
+
+
 
 		/**
-		 * <p>Class that defines the connection between two consecutive (or sequential layers) 
-		 * in a Multi-layer Perceptron. The connections is composed of all the synapses between 
+		 * Class that defines the connection between two sequential layers in a Multi-layer Perceptron. 
+		 * A layer can be
+		 * - Input values
+		 * - Hidden 
+		 * - Output values 
+		 * 
+		 * The connections are composed of all the synapses between 
 		 * any neuron or variable of each layer.The Synapse is defined as a nested tuple(Double, Double) 
-		 * tuple (weights, deltaWeights)</p>
+		 * tuple (weights, delta_Weights)
 		 * @constructor Create a MLP connection between two consecutive neural layer. 
 		 * @param config  Configuration for the Multi-layer Perceptron.
 		 * @param src  Source (or input or upstream) neural layer to this connection
 		 * @param dst  Destination (or output or downstream) neural layer for this connection.
-		 * @param  mlpObjective Objective of the Neural Network (binary classification, regression...)
+		 * @param  mode Operating mode or objective of the Neural Network (binary classification, 
+		 * regression...)
+		 * 
 		 * @author Patrick Nicolas
-		 * @since May 5, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
-		 * / Model definition
+		 * @since 0.98.1 May 5, 2014
+		 * @version 0.99
+		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / Multilayer 
+		 * perceptron / Model definition
 		 */
 final protected class MLPConnection(
 		config: MLPConfig, 
 		src: MLPLayer, 
-		dst: MLPLayer)
-		(implicit mlpObjective: MLP.MLPObjective)  {
+		dst: MLPLayer,
+		model: Option[MLPModel])
+		(implicit obj: MLP.MLPMode) {
 	import MLPConnection._
 
-		/**
-		 * <p>Type of Synapse defined as a tuple of [weight, gradient(weights)]
-		 */
-	type MLPSynapse = (Double, Double)
-
+	
 		/*
 		 * Initialize the matrix (Array of Array) of Synapse by generating
-		 * a random value between 0 and BETA
+		 * a random value between 0 and ''boundary''. The boundary is computed as the inverse
+		 * of the square root of the number of output values + 1 (bias element). 
+		 * 
+		 * @note The constant BETA may have to be changed according to the type of data.
 		 */
-	private[this] val synapses: Array[Array[MLPSynapse]] = Array.tabulate(dst.len)( n => 
-			if(n > 0) Array.fill(src.len)((Random.nextDouble*BETA, 0.0)) 
-			else Array.fill(src.len)((1.0, 0.0)))
-		   
+	private[this] var synapses: MLPConnSynapses = 
+		if(model == None) {
+			val boundary = BETA/Math.sqrt(src.output.length+1.0)
+			Array.fill(dst.numNonBias)(Array.fill(src.numNodes)((Random.nextDouble*boundary, 0.00)))
+		}
+		else 
+			model.get.synapses(src.id)
+
+		
 		/**
-		 * <p>Implement the forward propagation of input value. The output
+		 * Implement the forward propagation of input value. The output
 		 * value depends on the conversion selected for the output. If the output or destination
 		 * layer is a hidden layer, then the activation function is applied to the dot product of
 		 * weights and values. If the destination is the output layer, the output value is just 
-		 * the dot product weights and values.</p>
+		 * the dot product weights and values.
 		 */
 	def connectionForwardPropagation: Unit = {
-				// Iterates over all the synapsed except the first or bian selement
-		val _output = synapses.drop(1).map(x => {
-				// Compute the dot product
-			val sum = x.zip(src.output).foldLeft(0.0)((s, xy) => s + xy._1._1 * xy._2)
-				
-				// Applies the activation function if this is a hidden layer (not output)
-			if(!isOutLayer) config.activation(sum) else sum
-		})
+			
+			// Iterates over all the synapses, compute the dot product of the output values
+			// and the weights and applies the activation function
+		val _output = synapses.map(x => dst.activation( inner(src.output, x.map(_._1)) ) )
 		
 			// Apply the objective function (SoftMax,...) to the output layer
-		val out = if(isOutLayer) mlpObjective(_output) else _output
-		out.copyToArray(dst.output, 1)     
+		dst.setOutput(_output)
 	}
 
 		/**
@@ -86,77 +104,59 @@ final protected class MLPConnection(
 	final def getLayerIds: (Int, Int) = (src.id, dst.id)
 	
 	@inline
-	final def getSynapses: Array[Array[MLPSynapse]] = synapses
+	final def getSynapses: MLPConnSynapses = synapses
 
+	
+	
 		/**
-		 * <p>Implement the back propagation of output error (target - output). The method uses
+		 * Implement the back propagation of output error (target - output). The method uses
 		 * the derivative of the logistic function to compute the delta value for the output of 	
-		 * the source layer.</p>
+		 * the source layer.
+		 * @param delta Delta error from the downstream connection (Connection with the destination
+		 * layer as a source).
+		 * @return A new delta error to be backpropagated to the upstream connection through the source
+		 * layer.
 		 */
-	def connectionBackpropagation: Unit =  
-		Range(1, src.len).foreach(i => {
-			val err = Range(1, dst.len).foldLeft(0.0)((s, j) => 
-					s + synapses(j)(i)._1*dst.delta(j) )
-					
-				// The delta value is computed as the derivative of the 
-				// output value adjusted for the back-propagated error, err
-			src.delta(i) =  src.output(i)* (1.0- src.output(i))*err
-		})
-
-
-			/**
-			 * <p>Implement the update of the synapse (weight, grad weight) following the
-			 * back propagation of output error. This method is called during training.</p>
-			 */
-	def connectionUpdate: Unit =  
-			// Iterates through all element of the destination layer except the bias element
-		Range(1, dst.len).foreach(i => {  
-			val delta = dst.delta(i)
-			
-			// Compute all the synapses (weight, gradient weight) between
-			// the destination elements (index i) and the source elements (index j)
-			Range(0, src.len).foreach(j => { 
-				val _output = src.output(j)
-				val oldSynapse = synapses(i)(j)
-					// Compute the gradient with the delta
-				val grad = config.eta*delta*_output
-					// Apply the gradient adjustment formula
-				val deltaWeight = grad + config.alpha*oldSynapse._2
-					// Update the synapse
-				synapses(i)(j) = (oldSynapse._1 + deltaWeight, grad)
-			})
-		}) 
+	def connectionBackpropagation(delta: Delta): Delta = {
+		val inputSynapses = if( delta.synapses.length > 0) delta.synapses else synapses
+		
+				// Invoke the destination layer to compute the appropriate delta error
+		val connectionDelta = dst.delta(delta.loss, src.output, inputSynapses)
+		
+				// Traverses the synapses and update the weights and gradient of weights
+		val oldSynapses = synapses.zipWithIndex.map{
+			case (synapsesj, j) => synapsesj.zipWithIndex.map{
+				case ((w, dw), i) => { 
+					val ndw = config.eta*connectionDelta.delta(j)(i)
+					(w + ndw - config.alpha*dw, ndw)
+				} 
+			}
+		}
+		synapses = oldSynapses
+		
+				// Return the new delta error for the next (upstream) connection if any.
+		new Delta(connectionDelta.loss, connectionDelta.delta, synapses)
+	}
 
 		/**
 		 * Textual representation of this connection. The description list the 
 		 * values of each synapse as a pair (weight, delta weight)
 		 */
 	override def toString: String = {
-		val buf = new StringBuilder
-		buf.append(s"\nConnections weights from layer ${src.id} to layer ${dst.id}\n")
-
-		Range(0, dst.len).foreach( i => {
-			Range(0, src.len).foreach(j => {
+		val descr = Range(0, dst.numNodes).map( i => {
+		  
+			Range(0, src.numNodes).map(j => {
 				val wij: MLPSynapse = synapses(i)(j)
-				val weights_str = FormatUtils.format(wij._1, "", FormatUtils.MediumFormat)
-				val dWeights_str = FormatUtils.format(wij._2, "", FormatUtils.MediumFormat)
-				buf.append(s"$i,$j: ($weights_str, $dWeights_str)  ")
+				val weights_str = format(wij._1, emptyString, MEDIUM)
+				val dWeights_str = format(wij._2, emptyString, MEDIUM)
+				s"$i,$j: ($weights_str, $dWeights_str)  "
 			})
-			buf.append("\n")
+			.mkString("\n")
 		})
-		buf.toString
+		.mkString("\n")
+		
+		s"\nConnections weights from layer ${src.id} to layer ${dst.id}\n $descr"
 	}
-	
-		/**
-		 * Convenient method to update the values of a synapse while 
-		 * maintaining immutability
-		 */
-	private def update(i: Int, j: Int, x: Double, dx: Double): Unit = {
-		val old = synapses(i)(j)
-		synapses(i)(j) = (old._1 + x, dx)
-	}
-   
-	private def isOutLayer: Boolean = dst.id == config.outLayerId
 }
 
 
@@ -164,11 +164,31 @@ final protected class MLPConnection(
 		/**
 		 * Companion object for the connection of Multi-layer perceptron.
 		 * @author Patrick Nicolas
-		 * @since May 5, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial Neural Network / Multilayer perceptron 
-		 * / Model definition
+		 * @since 0.98.1 May 5, 2014
+		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / Multilayer 
+		 * perceptron / Model definition
 		 */
 object MLPConnection {
-	private val BETA = 0.1
+  	/**
+  	 * Dumping factor for the random initialization of weightss
+  	 */
+	final val BETA = 0.2
+	
+		/**
+		 * Constructor for an ''MLPConnection''
+		 * @param config  Configuration for the Multi-layer Perceptron.
+		 * @param src  Source (or input or upstream) neural layer to this connection
+		 * @param dst  Destination (or output or downstream) neural layer for this connection.
+		 * @param  mode Operating mode or objective of the Neural Network (binary classification, 
+		 * regression...)
+		 */
+	def apply(config: MLPConfig, 
+			src: MLPLayer, 
+			dst: MLPLayer,
+			model: Option[MLPModel] = None)
+			(implicit mlpObjective: MLP.MLPMode): MLPConnection =
+		new MLPConnection(config, src, dst, model)
+
 }
+
 // -------------------------------------  EOF ------------------------------------------------
