@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.ga
 
@@ -57,13 +57,12 @@ final protected class Reproduction[T <: Gene](score: Chromosome[T] => Unit) {
 			// If the population has less than 3 chromosomes, exit
 		case 0 | 1 | 2 => false  
 			// Otherwise execute another reproduction cycle, starting with selection
-		case _ => {
+		case _ =>
 			rand.setSeed(rand.nextInt + System.currentTimeMillis)
 			population.select(score, config.softLimit(cycle))		//1. Selection
 			population +- rand.nextDouble*config.xover			//2. Cross-over
 			population ^ rand.nextDouble*config.mu					//3. Mutation
 			true
-		}
 	}
 }
 
