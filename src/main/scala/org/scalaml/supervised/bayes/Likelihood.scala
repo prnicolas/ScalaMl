@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.bayes
 
@@ -58,7 +58,7 @@ protected class Likelihood[T <: AnyVal](
 		 * 
 		 * The default density probability function is Normal(0, 1)
 		 * @param obs parameterized observation 
-		 * @param density probability density function (default Gauss)
+		 * @param logDensity Logarithm formulation of the probability density function (default Gauss)
 		 * @throws IllegalArgumentException if the observations are undefined
 		 * @return log of the conditional probability p(C|x)
 		 */
@@ -124,7 +124,7 @@ object Likelihood {
 		new Likelihood[T](label, muSigma, prior)
     
 	private def check(muSigma: Vector[DblPair], prior: Double): Unit =  {
-		require( !muSigma.isEmpty, 
+		require( muSigma.nonEmpty,
 				"Likelihood.check Historical mean and standard deviation is undefined")
 		require(prior > 0.0  && prior <= 1.0, 
 				s"Likelihood.check Prior for the NB prior $prior is out of range")

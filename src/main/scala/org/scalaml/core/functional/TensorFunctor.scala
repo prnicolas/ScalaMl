@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.core.functional
 
@@ -27,8 +27,8 @@ object TensorFunctor {
      */
   
   type Hom[T] = {
-    type Right[X] = Function1[X,T]
-    type Left[X] = Function1[T,X]
+    type Right[X] = (X) => T
+    type Left[X] = (T) => X
   }
   
   
@@ -51,14 +51,14 @@ object TensorFunctor {
   
   trait CoVectorFtor[T] extends CoFunctor[(Hom[T])#Right] {
     self =>
-      override def map[U,V](vu: Function1[U,T])(f: V =>U): 
-         Function1[V,T] = f.andThen(vu)
+      override def map[U,V](vu: (U) => T)(f: V =>U):
+         (V) => T = f.andThen(vu)
   }
   
-  implicit class coVector2Ftor[U, T](vu: Function1[U, T]) extends CoVectorFtor[T] {
-    final def map[V](f: V => U): Function1[V, T] = super.map(vu)(f) 
+  implicit class coVector2Ftor[U, T](vu: (U) => T) extends CoVectorFtor[T] {
+    final def map[V](f: V => U): (V) => T = super.map(vu)(f)
         
-    def compose[V, W](f: V => U, g: W => V): Function1[W, T] = super.map(vu)(f).map(g)
+    def compose[V, W](f: V => U, g: W => V): (W) => T = super.map(vu)(f).map(g)
   }
 }
 

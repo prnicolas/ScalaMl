@@ -30,13 +30,13 @@ import org.scalaml.app.Eval
 import LoggingUtils._, YahooFinancials._, XTSeries._, FormatUtils._
 
 		/**
-		 * '''Purpose:''' Singleton to evaluate the single variate linear regression.
+		 * '''Purpose:''' Singleton to evaluatcdorge the single variate linear regression.
 		 * 
 		 * The test consists of creating a linear regression y = slope.x + intercept for a stock price
 		 * 
 		 * @author Patrick Nicolas
 		 * @version 0.99
-	   * @see: Scala for Machine Learning Chapter 6: ''Regression and regularization'' / One-variate 
+	   * @see Scala for Machine Learning Chapter 6: ''Regression and regularization'' / One-variate
 	   * linear regression
 		 */ 
 object SingleLinearRegressionEval extends Eval {
