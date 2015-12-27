@@ -1,5 +1,5 @@
-<b>Scala for Machine Learning</b> Version <b>0.99</b><br>
-Copyright Patrick Nicolas All rights reserved 2013-2015<br>
+<b>Scala for Machine Learning</b> Version <b>0.99.1</b><br>
+Copyright Patrick Nicolas All rights reserved 2013-2016<br>
 =================================================================<br>
 <br>
 <a href="#overview">Overview</a><br>
@@ -28,8 +28,30 @@ The real-world examples, related to financial and market analysis, used for the 
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
 <h2 id="latestRelease">Latest release</h2>
-Here is the list of changes introduced in version 0.99 and revised version of "Scala for Machine Learning"<br>
-- Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
+Here is the list of changes introduced in version 0.99.1 of "Scala for Machine Learning"<br>
+- Add description of some algorithm in Scaladoc<br>
+- Address issues with shadowing types and variables<br>
+<h2 id="Documentation">Documentation</h2>
+The best approach to learn about any particular learning algorithm is to 
+<ul>
+<li>Read the appropriate chapter (i.e. <i>Chapter 5: Naive Bayes modelsM</i>)</li>
+<li>Review source code guidelines used in the book <i>SourceCodeGuide.html</i></li>
+<li>Review scaladoc in <i>scala_2.11-0.99-sources.jar</i> or <i>scala_2.10-0.99-sources.jar</i> depending on the version of Scala you are using.</li> 
+<li>Look at the examples related to the chapter (i.e. <i>org/scalaml/app/chap5/Chap5</i>)</li>
+<li>Browse through the implementation code (i.e. <i>org/scalaml/supervised/bayes</i>)</li>
+</ul>
+<h2 id="requirements">Minimum Requirements</h2>
+<b>Hardware</b>: 2 CPU core with 4 Gbytes RAM for small datasets to build and run examples.<br>
+4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
+<br>
+<b>Operating system</b>: None<br>
+<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 (for Apache Spark) or 2.11.2 (for Akka) and SBT 0.13+ (see installation section for deployment.<br>
+
+<h2 id="history">History</h2>
+<h4>0.99.1 (12/17/2015)</h4>
+See <a href="#latestRelease">Latest release</a><br>
+<h4>0.99 (10/30/2015)</h4>
+ Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
 - Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
 - Correction and update of documentation for some statistical formulas.<br>
 - Reimplementation of training of logistic regression, Q-Learning and hidden Markov and execution of genetic algorithm using tail recursion<br>
@@ -48,29 +70,6 @@ Here is the list of changes introduced in version 0.99 and revised version of "S
 - Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
 - Improved scaladoc documentation<br>
 - Added support for Scala 2.11.2, Akka 2.3.4 and Apache Spark 1.5.0 (with Scala 2.10.4)
-<br>
-
-
-
-<h2 id="Documentation">Documentation</h2>
-The best approach to learn about any particular learning algorithm is to 
-<ul>
-<li>Read the appropriate chapter (i.e. <i>Chapter 5: Naive Bayes modelsM</i>)</li>
-<li>Review source code guidelines used in the book <i>SourceCodeGuide.html</i></li>
-<li>Review scaladoc in <i>scala_2.11-0.99-sources.jar</i> or <i>scala_2.10-0.99-sources.jar</i> depending on the version of Scala you are using.</li> 
-<li>Look at the examples related to the chapter (i.e. <i>org/scalaml/app/chap5/Chap5</i>)</li>
-<li>Browse through the implementation code (i.e. <i>org/scalaml/supervised/bayes</i>)</li>
-</ul>
-<h2 id="requirements">Minimum Requirements</h2>
-<b>Hardware</b>: 2 CPU core with 4 Gbytes RAM for small datasets to build and run examples.<br>
-4 CPU Core and 8+ Gbytes RAM for datasets of size 75,000 or larger and/or with 50 features set or larger
-<br>
-<b>Operating system</b>: None<br>
-<b>Software</b>: JDK 1.7.0_45 or 1.8.0_25, Scala 2.10.4 (for Apache Spark) or 2.11.2 (for Akka) and SBT 0.13+ (see installation section for deployment.<br>
-
-<h2 id="history">History</h2>
-<h4>0.99 (10/30/2015)</h4>
-See <a href="#latestRelease">Latest release</a><br>
 <h4>0.98.2 (03/19/2015)</h4>
 Fixes bugs with SVR and hidden Markov model - Decoding
 Expand the number of test/evaluations from 60 to 66<br>
