@@ -28,9 +28,12 @@ The real-world examples, related to financial and market analysis, used for the 
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
 <h2 id="latestRelease">Latest release</h2>
-Here is the list of changes introduced in version 0.99.1 of "Scala for Machine Learning"<br>
-- Add description of some algorithm in Scaladoc<br>
-- Address issues with shadowing types and variables<br>
+Here is the list of changes introduced in version 0.99.1 of "Scala for Machine Learning"
+<ul>
+<li>Add description of some algorithms in Scaladoc class header</li>
+<li>Resolve issues with shadowing types and variables</li>
+<li>Rename some file names to match class names (SingleLinearRegressionEval, NaiveBayesLikelihood, TensorFunctor...)</li>
+</ul>
 <h2 id="Documentation">Documentation</h2>
 The best approach to learn about any particular learning algorithm is to 
 <ul>
@@ -51,25 +54,27 @@ The best approach to learn about any particular learning algorithm is to
 <h4>0.99.1 (12/17/2015)</h4>
 See <a href="#latestRelease">Latest release</a><br>
 <h4>0.99 (10/30/2015)</h4>
- Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ...<br>
-- Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set.<br>
-- Correction and update of documentation for some statistical formulas.<br>
-- Reimplementation of training of logistic regression, Q-Learning and hidden Markov and execution of genetic algorithm using tail recursion<br>
-- Implementation of magnet pattern for overloaded methods with different return types<br>
-- Definition of covariant and contravariant functors<br>
-- Fix bugs in training of Multilayer perceptron<br>
-- Generic monitoring class for profiling execution of optimizers<br>
-- Introduction of monadic kernel functions with a test case<br>
-- Introduction to manifolds<br>
-- Introduction to Convolution Neural Networks<br>
-- Fisher-Yates shuffle for stochastic and batched gradient descent<br>
-- Implementation of 1-fold and K-fold cross-validation<br>
-- Standardization of the application of tail recursion for dynamic programming algorithms<br>
-- Uses of views to reduce uncessary generation of intermediate objects in processing pipeline<br>
-- Introduction to streams in Chapter 12 with example and test code<br>
-- Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i><br>
-- Improved scaladoc documentation<br>
-- Added support for Scala 2.11.2, Akka 2.3.4 and Apache Spark 1.5.0 (with Scala 2.10.4)
+<ul>
+ <li>Broader uses of higher order method such as <i>aggregate</i>, <i>collect</i>, <i>partition</i>, <i>groupBy</i> ... </li>
+<li>Strict monadic encoding of data transformation from an explicit model, and data transformation from a model derived from a training set. </li>
+ <li>Correction and update of documentation for some statistical formulas.</li>
+ <li>Reimplementation of training of logistic regression, Q-Learning and hidden Markov and execution of genetic algorithm using tail recursion</li>
+ <li>Implementation of magnet pattern for overloaded methods with different return types</li>
+ <li>Definition of covariant and contravariant functors</li>
+ <li>Fix bugs in training of Multilayer perceptron</li>
+ <li>Generic monitoring class for profiling execution of optimizers</li>
+ <li>Introduction of monadic kernel functions with a test case</li>
+ <li>Introduction to manifolds</li>
+ <li>Introduction to Convolution Neural Networks</li>
+ <li>Fisher-Yates shuffle for stochastic and batched gradient descent</li>
+ <li>Implementation of 1-fold and K-fold cross-validation</li>
+ <li>Standardization of the application of tail recursion for dynamic programming algorithms</li>
+ <li>Uses of views to reduce uncessary generation of intermediate objects in processing pipeline</li>
+ <li>Introduction to streams in Chapter 12 with example and test code</li>
+  <li>Stricter adherence to coding convention for <i>implicits</i>, <i>traits</i>, <i>abstract classes</i></li>
+ <li>Improved scaladoc documentation</li>
+ <li>Added support for Scala 2.11.2, Akka 2.3.4 and Apache Spark 1.5.0 (with Scala 2.10.4)</li>
+ </ul>
 <h4>0.98.2 (03/19/2015)</h4>
 Fixes bugs with SVR and hidden Markov model - Decoding
 Expand the number of test/evaluations from 60 to 66<br>
