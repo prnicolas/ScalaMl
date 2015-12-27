@@ -109,7 +109,7 @@ object MultiLinearRegrFeaturesEval extends Eval {
 				// Filter out the noise
 			smoothed <- filter(pfnMovAve)
 			
-				// Generaates the different models to evaluates
+				// Generates the different models to evaluates
 			models <- createModels(smoothed)
 			
 				// Compute the residual sum of square errors for each model
@@ -144,13 +144,13 @@ object MultiLinearRegrFeaturesEval extends Eval {
  	private def getRss(xt: Vector[DblArray], y: DblVector, featureLabels: Array[String]): String = {
 		val regression = new MultiLinearRegression[Double](xt, y)
 
-		val modelStr = regression.weights.get.zipWithIndex.map{ case( w, n) => {
+		val modelStr = regression.weights.get.zipWithIndex.map{ case( w, n) =>
 			val weights_str = format(w, emptyString, SHORT)
 			if(n == 0 )
 				s"${featureLabels(n)} = $weights_str"
 			else
-				s"${weights_str}.${featureLabels(n)}"
-		}}.mkString(" + ")
+				s"$weights_st}.${featureLabels(n)}"
+		}.mkString(" + ")
 		s"model: $modelStr\n RSS = ${regression.get.rss}"
 	}
  	

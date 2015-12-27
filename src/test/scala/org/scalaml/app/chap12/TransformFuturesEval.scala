@@ -123,7 +123,7 @@ object TransformFuturesEval extends Eval {
 		val future = master ? Start(0)
 		Await.result(future, timeout.duration)
 
-		actorSystem.shutdown
+		actorSystem.shutdown()
 		1
 	}
 }

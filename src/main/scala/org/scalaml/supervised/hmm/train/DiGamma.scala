@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm.train
 
@@ -37,7 +37,7 @@ import HMMConfig._, LoggingUtils._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 March 24, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential Data Models'' / Hidden Markov Model 
 		 * - Training / Baum-Welch
 		 */

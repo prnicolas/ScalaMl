@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.scalability.akka.message
 
@@ -61,7 +61,7 @@ case class Completed(i: Int, xt: DblVector) extends Message(i)
 
 		/**
 		 * Message sent by the master to the worker actors to start the computation.
-		 * @param id unique identifier for this message.
+		 * @param i unique identifier for this message.
 		 * @param xt time series to transform (or process)
 		 * @author Patrick Nicolas
 		 * @since March 28, 2014

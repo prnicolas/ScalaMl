@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.stats
 
@@ -39,17 +39,16 @@ import Stats._
 	 * @param values Time series of single element of type T
 	 * @param f Implicit conversion from type T to Double
 	 * @throws IllegalArgumentException if the time series is empty
-	 * @throws implicitNotFoundException if the implicit convertion to Double is undefined
 	 * 
 	 * @author Patrick Nicolas
 	 * @since 0.99  July 18, 2015
-	 * @version 0.99
+	 * @version 0.99.1.1
 	 * @see Scala for Machine Learning Chapter 1 ''Getting Started''
 	 */
 @implicitNotFound(msg = "MinMax conversion to Double undefined")
 @throws(classOf[IllegalArgumentException])
 class MinMax[T <: AnyVal](val values: XSeries[T])(implicit f: T => Double) {
-	require( !values.isEmpty, "MinMax: Cannot initialize stats with undefined values")
+	require( values.nonEmpty, "MinMax: Cannot initialize stats with undefined values")
   
   
 	def this(values: Array[T])(implicit f: T => Double) = this(values.toVector)
@@ -106,8 +105,8 @@ class MinMax[T <: AnyVal](val values: XSeries[T])(implicit f: T => Double) {
 	 
 	 		/**
 		 * Normalize the data within a range [l, h]
-		 * @param l lower bound for the normalization
-		 * @param h higher bound for the normalization
+		 * @param low lower bound for the normalization
+		 * @param high higher bound for the normalization
 		 * @return vector of values normalized over the interval [0, 1]
 		 * @throws IllegalArgumentException of h <= l
 		 */

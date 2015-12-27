@@ -43,7 +43,7 @@ import org.scalaml.util.DisplayUtils
 
 
 		/**
-		 * Singleton that executes all the test clases in Scala for Machine Learning.
+		 * Singleton that executes all the test classes in Scala for Machine Learning.
 		 * 
 		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
 		 * command line ''sbt test:run''
@@ -70,7 +70,7 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters. See individual class xxxEval 
 		 * for description and purpose of the test
 		 */
-  def run: Unit = {
+  def run(): Unit = {
 			// Chapter 1
 		evaluate(MinMaxEval)
 		evaluate(LogBinRegressionEval)
@@ -194,12 +194,11 @@ protected object AllTests extends ScalaMlTest {
 		buf.append(s"Scala version: $scalaVersion\n")
 		(scalaVersion.charAt(2): @switch) match {
 			case '9' => buf.append("Scala version should be 2.10.2 or higher")
-			case '1' => {
+			case '1' =>
 				(scalaVersion.charAt(3): @switch) match {
 					case '0' => buf.append("Compatible Akka version should be 2.2.4 or lower")
 					case '1' => buf.append("Compatible Akka version should be 2.3.4 or higher")
 				}
-			}
 			case _ => buf.append("Could not initialize")
 		}
 		DisplayUtils.show(buf.toString, logger)
@@ -221,7 +220,7 @@ object AllTestsApp extends App {
 	}	
 	else
 		AllTests.header(Array[String]("console", "chart"))
-	AllTests.run 
+	AllTests.run()
 }
 
 

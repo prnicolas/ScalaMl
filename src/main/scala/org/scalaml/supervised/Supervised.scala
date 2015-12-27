@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised
 
@@ -27,14 +27,11 @@ import org.scalaml.validation.Validation
 	 * Trait that defined the interface to supervised learning algorithm.
 	 * The trait requires developers to create a validation routine for parameterized
 	 * multidimensional time series of tuple (observation, class label).
-	 * @tparam T type of elements in the time series
-	 * @tparam U type of the input data in the explicit transform
-	 * @author Patrick Nicolas
-	 * @since 0.98 March 4, 2014
-	 * @version 0.98.2
+	 * @tparam T Type of elements in the time series
+	 * @tparam V Type of element in the labeled data
 	 * @see Scala for Machine Learning
 	 */
-trait Supervised[T, V] {
+private[scalaml] trait Supervised[T, V] {
 	self: ITransform[V] =>
 		/**
 		 * validation method for supervised learning algorithm

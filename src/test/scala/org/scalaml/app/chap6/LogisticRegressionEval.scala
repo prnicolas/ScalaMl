@@ -39,7 +39,7 @@ import org.scalaml.app.Eval
 		 * @author Patrick Nicolas
 		 * @version 0.98.3
 		 * @see org.scalaml.supervised.regression.logistic
-		 * @see: Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Logistic 
+		 * @see Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Logistic
 		 * regression
 		 */
 object LogisticRegressionEval extends Eval {

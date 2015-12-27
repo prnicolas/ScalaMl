@@ -47,7 +47,7 @@ trait ScalaMlTest extends FunSuite with ScalaFutures {
 		/**
 		 * Trigger the execution of a Scala test for a specific method and set of arguments.
 		 * @param args argument for the Scala test
-		 * @param method Name of the method to be tested.
+		 * @param eval Name of the method to be tested or evaluated
 		 */
 	def evaluate(eval: Eval, args: Array[String] = Array.empty): Unit = {
 		val f: Future[Int] = Future { eval.test(args) }
@@ -94,7 +94,7 @@ trait Eval {
 	
 	protected def error(description: String, e: Throwable): Int = {
 		DisplayUtils.error(s"$name $description", logger, e)
-		e.printStackTrace
+		e.printStackTrace()
 		-1
 	}
 	

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.nnet
 
@@ -72,7 +72,7 @@ final protected class MLPNetwork(
 			 * Create the array of layer using the topology 
 			 */
 	private[this] val layers= topology.zipWithIndex.map{ case(t, n) => 
-		if(topology.size != n+1) MLPLayer(n, t+1, config.activation) else MLPOutLayer(n, t) }
+		if(topology.length != n+1) MLPLayer(n, t+1, config.activation) else MLPOutLayer(n, t) }
 			
 	
 			/*
@@ -90,7 +90,8 @@ final protected class MLPNetwork(
 		 * 
 		 * 
 		 * It is assumed that the method argument has been validated in the container class MLP.
-		 * @param feature new feature or data point used in the training (online or batch training)
+		 * @param x new feature or data point used in the training (online or batch training)
+		 * @param y Expected values for output layer
 		 * @throws IllegalArgumentException if the feature is either undefined or has incorrect size.
 		 */
 	def trainEpoch(x: DblArray, y: DblArray): Double = {
@@ -99,7 +100,7 @@ final protected class MLPNetwork(
 		
 			// Apply the forward progapation of input to all the connections
 			// starting with the input layer
-		connections.foreach( _.connectionForwardPropagation)
+		connections.foreach( _.connectionForwardPropagation())
 		
 		
 			// Compute the cumulative error for the output layer. The loss function is
@@ -123,7 +124,7 @@ final protected class MLPNetwork(
 		 * @return The current MLP model
 		 */
 	final def getModel: MLPModel = {
-		val allSynapses = Vector.tabulate(connections.size)(connections(_).getSynapses)
+		val allSynapses = Vector.tabulate(connections.length)(connections(_).getSynapses)
 		new MLPModel(allSynapses)
 	}
 	
@@ -132,7 +133,7 @@ final protected class MLPNetwork(
 		/**
 		 * Compute the output values for the network using the forward propagation.
 		 * It is assumed that the method argument has been validated in the container class MLP.
-		 * @param feature or data point for which the output has to be computed
+		 * @param x Data point for which the output has to be computed
 		 * @return output vector
 		 */
 	 def predict(x: DblArray): DblArray = {
@@ -143,7 +144,7 @@ final protected class MLPNetwork(
 		layers.head.setInput(x)
 		
 			// Apply the forward propagation with an input vector ...
-		connections.foreach( _.connectionForwardPropagation)
+		connections.foreach( _.connectionForwardPropagation())
 		
 			// .. and return the output of the MLP without the first (bias) element
 		layers.last.output

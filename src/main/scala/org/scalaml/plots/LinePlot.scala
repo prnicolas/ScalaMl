@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.plots
 
@@ -42,7 +42,7 @@ import Plot._, ScalaMl._
 		 * Class to create a Line plot using the JFreeChart library.
 		 * @constructor Create a Line plot instance
 		 * @throws IllegalArgumentException if the class parameters are undefined
-		 * @param config  Configuration for the plot of type '''PlotInfo'''
+		 * @param legend  legend for the plot of type '''PlotInfo'''
 		 * @param theme  Configuration for the display of plots of type '''PlotTheme'''
 		 * @author Patrick Nicolas
 		 * @since  0.97 November 18, 2013
@@ -66,8 +66,8 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		/**
 		 * DisplayUtils array of tuple (x,y) in a Line plot for a given width and height
 		 * @param xy Array of pair (x,y)
-		 * @param width Width for the display (pixels)
-		 * @param height Height of the chart (pixels)
+		 * @param w Width for the display (pixels)
+		 * @param h Height of the chart (pixels)
 		 * @return true if the plot is displayed, false otherwise
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
@@ -85,9 +85,9 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		/**
 		 * DisplayUtils a vector of Double value in a Line plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
-		 * @param xy Array of pair (x,y)
-		 * @param width Width for the display (pixels)
-		 * @param height Height of the chart (pixels)
+		 * @param y Array of values
+		 * @param w Width for the display (pixels)
+		 * @param h Height of the chart (pixels)
 		 * @return true if the plot is displayed, false otherwise
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
@@ -117,12 +117,12 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		if( validDisplay ) {
 	
 			val seriesCollection = new XYSeriesCollection
-			xys.foreach{ case(x, s) => {
+			xys.foreach{ case(x, s) =>
 				val xSeries = new XYSeries(s)
 				x.view.zipWithIndex.foreach { case(z, n) => xSeries.add(n.toDouble, z) }
 				
 				seriesCollection.addSeries(xSeries)
-			}}
+			}
 	
 
 			val chart = ChartFactory.createXYLineChart(null, legend.xLabel, legend.yLabel, 
@@ -138,10 +138,10 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 			val xyLineRenderer: XYLineAndShapeRenderer = 
 						plot.getRenderer.asInstanceOf[XYLineAndShapeRenderer]
 	
-			Range(0, xys.size) foreach( n => {
-				xyLineRenderer.setSeriesPaint(n, colors(n % colors.size))
+			xys.indices foreach( n => {
+				xyLineRenderer.setSeriesPaint(n, colors(n % colors.length))
 				xyLineRenderer.setSeriesShapesVisible(n, true)
-				xyLineRenderer.setSeriesShape(n, shapes(n % shapes.size))
+				xyLineRenderer.setSeriesShape(n, shapes(n % shapes.length))
 			})
 	  	  
 			createFrame(s"${legend.title}", chart)
@@ -157,7 +157,7 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		val plot = chart.getPlot.asInstanceOf[CategoryPlot]
 	    
 		val renderer = new LineAndShapeRenderer {
-			override def  getItemStroke(row: Int, col: Int): Stroke = strokeList(0)
+			override def  getItemStroke(row: Int, col: Int): Stroke = strokeList.head
 		}
 	 
 		plot.setRenderer(renderer)

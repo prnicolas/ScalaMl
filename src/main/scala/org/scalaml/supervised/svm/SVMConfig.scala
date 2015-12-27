@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.svm
 
@@ -30,7 +30,7 @@ import org.scalaml.supervised.svm.formulation.SVMFormulation
 		 * @since April 28, 2014
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines
 		 */
-trait SVMConfigItem {
+private[scalaml] trait SVMConfigItem {
 		/**
 		 * Update the LIBSVM configuration parameter.
 		 * @param param LIBSVM parameter to update.
@@ -109,11 +109,11 @@ object SVMConfig {
 	
 		/**
 		 * Default constructor for the configuration of the support vector machine
-		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
+		 * @param svmType Formulation of the SVM problem (type and parameters of the formulation
 		 * of the SVM algorithm)
 		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
 		 * of the Kernel function used for non-linear problems
-		 * @param exec Execution parameters for the training of the SVM model.
+		 * @param svmParams Execution parameters for the training of the SVM model.
 		 */
 	def apply(svmType: SVMFormulation, kernel: SVMKernel, svmParams: SVMExecution): SVMConfig = 
 		new SVMConfig(svmType, kernel, svmParams)
@@ -121,7 +121,7 @@ object SVMConfig {
 		/**
 		 * Constructor for the configuration of the support vector machine with a predefined execution 
 		 * parameters
-		 * @param formulation Formulation of the SVM problem (type and parameters of the formulation 
+		 * @param svmType Formulation of the SVM problem (type and parameters of the formulation
 		 * of the SVM algorithm)
 		 * @param kernel Kernel function used for non-separable training sets (type and parameter(s) 
 		 * of the Kernel function used for non-linear problems

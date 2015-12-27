@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.workflow.data
 
@@ -109,8 +109,8 @@ final class DataSource(
 		 */
 	def loadConvert[T: ClassTag](implicit c: String => T): Try[List[Array[T]]] = Try {
 		val src = Source.fromFile(config.pathName)
-		val fields = src.getLines.map( _.split(CSV_DELIM).map(c(_))).toList
-		src.close
+		val fields = src.getLines().map( _.split(CSV_DELIM).map(c(_))).toList
+		src.close()
 		fields
 	}
    
@@ -122,7 +122,7 @@ final class DataSource(
 		 *  a corresponding list of floating point value as output
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case fields: U if( !fields.isEmpty ) => load.map( data => {
+		case fields: U if fields.nonEmpty => load.map( data => {
 		  val convert = (f: Fields => Double) => data._2.map(f(_) )
 
 			if( config.normalize) 
@@ -131,9 +131,9 @@ final class DataSource(
 				fields.map(convert(_)).toVector
 		})
 	}
-	
-	
 
+
+	import scala.collection._
 		/**
 		 * Generate a Time series of single variables by applying a extractor that
 		 * converts a line in a file to an array of String and to a Double.
@@ -141,7 +141,6 @@ final class DataSource(
 		 * @return A Single variable time series
 		 * @throws IllegalArgumentException if the extractor is not defined.
 		 */
-	import scala.collection._
 	def get(extr: Fields => Double): Try[DblVector] = load.map( data =>  { 
 	  
 	  val nData = data._2.map( extr(_)).toVector
@@ -156,7 +155,7 @@ final class DataSource(
 		 */
 	def extract: Try[Seq[Double]] = 
 		Try (Source.fromFile(config.pathName)
-							.getLines
+			.getLines()
 							.drop(config.headerLines)
 							.map( _.toDouble ).toSeq)
 
@@ -175,13 +174,13 @@ final class DataSource(
 		 */
    private def load: Try[(Fields, Array[Fields])] = Try {
 		 val src = Source.fromFile(config.pathName)
-		 val rawFields = src.getLines.map( _.split(CSV_DELIM)).toArray.drop(config.headerLines)
+		 val rawFields = src.getLines().map( _.split(CSV_DELIM)).toArray.drop(config.headerLines)
 	  	 
-		 val fields = if( srcFilter != None) rawFields.filter(srcFilter.get) else rawFields
+		 val fields = if( srcFilter.isDefined) rawFields.filter(srcFilter.get) else rawFields
 		 val results = if( config.reverseOrder ) fields.reverse else  fields
 	  	 
 		 val textFields = (fields(0), results)
-		 src.close
+		 src.close()
 			
 		 textFields
 	 }
@@ -199,7 +198,8 @@ final class DataSource(
 		 * @see Scala for Machine Learning
 		 */
 object DataSource {
-	final val CSV_DELIM = ","
+	final val CSV_DELIM: String  = ","
+	final val REVERSE_ORDER: Boolean = true
 	type Fields = Array[String]
 		/**
 		 * Generate a list of CSV files within a directory, associated with a list of symbol
@@ -214,7 +214,7 @@ object DataSource {
 
 		val directory = new java.io.File(directoryName)
 		val filesList =  directory.listFiles
-		if( !filesList.isEmpty )  directory.listFiles.map( _.getName) else Array.empty
+		if( filesList.nonEmpty )  directory.listFiles.map( _.getName) else Array.empty
 	}
 
 		/**
@@ -223,7 +223,7 @@ object DataSource {
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 * @param reverseOrder Flag to re-order/index the data from the last entry to the first entry.
 		 * @param headerLines Number of header lines in the file.
-		 * @param srcFilter Source filter applied to the data source stream.
+		 * @param filter Source filter applied to the data source stream.
 		 */
 	def apply(
 			pathName: String, 
@@ -255,21 +255,21 @@ object DataSource {
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 */
 	def apply(pathName: String, normalize: Boolean): DataSource = 
-		apply(pathName, normalize, true, 1, None)
+		apply(pathName, normalize, REVERSE_ORDER, 1, None)
 
 		/**
 		 * Constructor for the DataSource without field filtering, headerlines. The extraction
-		 * of the content does not alter the order of the datarows in the file.
+		 * of the content does not alter the order of the data rows in the file.
 		 * @param symName Name of the symbol associated to a file in a directory for which the 
 		 * content is to be extracted
 		 * @param pathName Relative path for the data files.
 		 * @param normalize Flag to normalize data within the range [0,1].
 		 */
 	def apply(symName: String, pathName: String, normalize: Boolean, headerLines: Int): DataSource = 
-		apply(s"$pathName$symName", normalize, true, headerLines, None)
+		apply(s"$pathName$symName", normalize, REVERSE_ORDER, headerLines, None)
 
 	private def check(config: DataSourceConfig): Unit =  {
-		require( !config.pathName.isEmpty, 
+		require( !config.pathName.isEmpty,
 				"DataSource.check Undefined path for data source")
 		require( config.headerLines >=0, 
 		   	s"DataSource.check Incorrect number of header lines ${config.headerLines} for data source")

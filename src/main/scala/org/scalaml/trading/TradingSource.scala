@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.trading
 
@@ -87,8 +87,8 @@ object YahooFinancials extends Enumeration {
 		/**
 		 * Computes the ratio of volatility over volume
 		 */
-	val volatilityVol = ((s: Fields) => 
-			((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	val volatilityVol = (s: Fields) =>
+			(s(HIGH.id).toDouble - s(LOW.id).toDouble, s(VOLUME.id).toDouble)
 	
 		/**
 		 * Computes the difference between ADJ_CLOSE and OPEN
@@ -103,11 +103,11 @@ object YahooFinancials extends Enumeration {
 		/**
 		 * Computes the ratio of relative volatility over volume as (1 - LOW/HIGH)/VOLUME
 		 */
-	val volatilityByVol = ((s: Fields) => 
-		((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble))
+	val volatilityByVol = (s: Fields) =>
+			(1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble)/s(VOLUME.id).toDouble
 			
-	val volatilityAndVol = ((s: Fields) => 
-		(((1.0 - s(LOW.id).toDouble/s(HIGH.id).toDouble), s(VOLUME.id).toDouble)))
+	val volatilityAndVol = (s: Fields) =>
+		(1.0 - s(LOW.id).toDouble / s(HIGH.id).toDouble, s(VOLUME.id).toDouble)
 }
 
 		/**
@@ -128,23 +128,23 @@ object GoogleFinancials extends Enumeration {
 		/**
 		 * Extract stock price as session close
 		 */
-	val close = ((s: Fields) => s(CLOSE.id).toDouble)
+	val close = (s: Fields) => s(CLOSE.id).toDouble
 	
 		/**
 		 * Extract stock session volume
 		 */
-	val volume =  ((s: Fields) => s(VOLUME.id).toDouble)
+	val volume =  (s: Fields) => s(VOLUME.id).toDouble
 	
 		/**
 		 * Extract volatility of the stock within a session (HIGH - LOW)
 		 */
-	val volatility = ((s: Fields) => s(HIGH.id).toDouble - s(LOW.id).toDouble)
+	val volatility = (s: Fields) => s(HIGH.id).toDouble - s(LOW.id).toDouble
 	
 		/**
 		 * Extract stock volatility relative to session volume as (HIGH - LOW)/VOLUME
 		 */
-	val volatilityVol = ((s: Fields) => 
-		((s(HIGH.id).toDouble - s(LOW.id).toDouble), s(VOLUME.id).toDouble))
+	val volatilityVol = (s: Fields) =>
+			(s(HIGH.id).toDouble - s(LOW.id).toDouble, s(VOLUME.id).toDouble)
 }
 
 
@@ -162,15 +162,15 @@ object Fundamentals extends Enumeration {
 		CASH_PER_SHARE_TO_PRICE, EPS_TREND, DIVIDEND_YIELD, DIVIDEND_TREND = Value
 
 	import org.scalaml.workflow.data.DataSource.Fields
-	val ticker = ((s: Fields) => s(TICKER.id))
-	val relPriceChange =  ((s: Fields) => s(RELATIVE_PRICE_CHANGE.id).toDouble)
-	val debtToEquity = ((s: Fields) => s(DEBT_TO_EQUITY.id).toDouble)
-	val dividendCoverage = ((s: Fields) => s(DIVIDEND_COVERAGE.id).toDouble)
-	val shortInterest = ((s: Fields) => s(SHORT_INTEREST.id).toDouble)
-	val cashPerShareToPrice = ((s: Fields) => s(CASH_PER_SHARE_TO_PRICE.id).toDouble)
-	val epsTrend = ((s: Fields) => s(EPS_TREND.id).toDouble)
-	val dividendYield = ((s: Fields) => s(DIVIDEND_YIELD.id).toDouble)
-	val dividendTrend = ((s: Fields) => s(DIVIDEND_TREND.id).toDouble)
+	val ticker = (s: Fields) => s(TICKER.id)
+	val relPriceChange =  (s: Fields) => s(RELATIVE_PRICE_CHANGE.id).toDouble
+	val debtToEquity = (s: Fields) => s(DEBT_TO_EQUITY.id).toDouble
+	val dividendCoverage = (s: Fields) => s(DIVIDEND_COVERAGE.id).toDouble
+	val shortInterest = (s: Fields) => s(SHORT_INTEREST.id).toDouble
+	val cashPerShareToPrice = (s: Fields) => s(CASH_PER_SHARE_TO_PRICE.id).toDouble
+	val epsTrend = (s: Fields) => s(EPS_TREND.id).toDouble
+	val dividendYield = (s: Fields) => s(DIVIDEND_YIELD.id).toDouble
+	val dividendTrend = (s: Fields) => s(DIVIDEND_TREND.id).toDouble
 }
 
 

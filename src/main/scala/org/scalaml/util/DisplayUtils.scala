@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.util
 
@@ -63,7 +63,7 @@ object DisplayUtils {
 	
 	
 			/**
-		 * Class that extends the Option with a descriptive implementation ofthe getOrElse
+		 * Class that extends the Option with a descriptive implementation of the getOrElse
 		 * method
 		 * @tparam T parameter type for the Try
 		 * @param _option Option instance to be extended
@@ -99,7 +99,7 @@ object DisplayUtils {
 		 * Test if plotting of computation results has been enabled
 		 * @return true if charts have to be displayed, false otherwise
 		 */
-	final def isChart: Boolean = ((destination & 0x04) == 0x04)
+	final def isChart: Boolean = (destination & 0x04) == 0x04
 
 		/**
 		 * Global function that align a label against a boundary. There is no alignment if the 
@@ -125,7 +125,7 @@ object DisplayUtils {
 		 * or log4j log or both
 		 * @param t value to be displayed
 		 * @param logger Reference to the log4j log appender
-		 * @param alignement Align the label within its placement if alignment is greater than 
+		 * @param alignment Align the label within its placement if alignment is greater than
 		 * the label, no alignment otherwise
 		 * @return 0
 		 */
@@ -137,7 +137,7 @@ object DisplayUtils {
 			/**
 		 * Display the sequence of parameterized type in either standard output,
 		 * or log4j log or both
-		 * @param t value to be displayed
+		 * @param seq sequence of values to be displayed
 		 * @param logger Reference to the log4j log appender
 		 * @return 0
 		 */

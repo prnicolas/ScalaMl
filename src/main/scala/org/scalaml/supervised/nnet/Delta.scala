@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.nnet
 
@@ -32,15 +32,15 @@ import MLPModel._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.99 August 9, 201t
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / Multilayer 
 		 * perceptron Model definition
 		 * @see org.scalaml.supervised.nnet.MLPConnection
 		 */
-case class Delta(
-		val loss: DblArray, 
-		val delta: DblMatrix = Array.empty[DblArray],
-		val synapses: MLPConnSynapses = Array.empty[Array[MLPSynapse]] ) {
+private[scalaml] case class Delta(
+		loss: DblArray,
+		delta: DblMatrix = Array.empty[DblArray],
+		synapses: MLPConnSynapses = Array.empty[Array[MLPSynapse]] ) {
   
 	override def toString: String = {
 		val losses = loss.mkString(",")

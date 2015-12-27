@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.nnet
 
@@ -35,7 +35,6 @@ import org.scalaml.core.Design.Config
 		 * with previous value (smoothing)
 		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights 
 		 * during training
-		 * @param hidLayers  Sequence of number of neurons for the hidden layers
 		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
 		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum 
 		 * weights that minimize the sum of squared error		 
@@ -81,7 +80,6 @@ object MLPConfig {
 		 * with previous value (smoothing)
 		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights 
 		 * during training
-		 * @param hidLayers  Sequence of number of neurons for the hidden layers
 		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
 		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum 
 		 * weights that minimize the sum of squared error		 
@@ -103,7 +101,6 @@ object MLPConfig {
 		 * with previous value (smoothing)
 		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights 
 		 * during training
-		 * @param hidLayers  Sequence of number of neurons for the hidden layers
 		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
 		 * @param eps  Convergence criteria used as exit condition of the convergence toward optimum 
 		 * weights that minimize the sum of squared error		 
@@ -122,8 +119,6 @@ object MLPConfig {
 		 * with previous value (smoothing)
 		 * @param eta   Learning rate ]0, 1] used in the computation of the gradient of the weights 
 		 * during training
-		 * @param hidLayers  Sequence of number of neurons for the hidden layers
-		 * @param numEpochs  Number of epochs or iterations allowed to train the weights/model
 		 */
 	def apply(alpha: Double, eta: Double, eps: Double): MLPConfig = 
 		new MLPConfig(alpha, eta, NUM_EPOCHS_LIMITS._2, eps, 

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm.eval
 
@@ -35,7 +35,7 @@ import HMMConfig._
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
 		 * matrix.
-		 * @param obs Array of observations as integer (categorical data)
+		 * @param obsSeq Array of observations as integer (categorical data)
 		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Beta pass
 		 * @see org.scalaml.supervised.hmm.Pass
 		 * 
@@ -64,8 +64,8 @@ protected class Beta(lambda: HMMModel, obsSeq: Vector[Int])
 		treillis += (lambda.numObs-1, 1.0)
 				// Normalize by computing (ct)
 		normalize(lambda.numObs-1)
-				// Compute the beta probabilites for all the observations.
-		sumUp
+				// Compute the beta probabilities for all the observations.
+		sumUp()
 	}._toBoolean("Beta.complete failed")
 	
 	@inline
@@ -76,9 +76,9 @@ protected class Beta(lambda: HMMModel, obsSeq: Vector[Int])
 		 * (index: 0). THe value is then normalized, c(t)
 		 * @see Chapter 7 Sequential Data Models / Hidden Markov model / Evaluation / Alpha pass
 		 */
-	private def sumUp: Unit = 
+	private def sumUp(): Unit =
 			// Update and normalize the beta probabilities for all 
-			// the observations starting with index T-2.. befor normalization.
+			// the observations starting with index T-2.. before normalization.
 		(lambda.numObs-2 to 0 by -1).foreach( t =>{
 			updateBeta(t)
 			normalize(t) 
@@ -108,7 +108,7 @@ object Beta {
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission proabilities 
 		 * matrix.
-		 * @param obs Array of observations as integer (categorical data)
+		 * @param obsSeq Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMModel,  obsSeq: Vector[Int]): Beta = new Beta(lambda, obsSeq)
 }

@@ -120,7 +120,7 @@ object SVREval extends Eval {
 		r.foreach( n => {
 			for {
 				x <- pfSvr(n.toDouble) 
-				if( pfLin.isDefinedAt(n))
+				if pfLin.isDefinedAt(n)
 					y <- pfLin(n)
 			} yield  {
 				svrResults.append((n.toDouble, x))

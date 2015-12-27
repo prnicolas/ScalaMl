@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.scalability.akka
 
@@ -34,11 +34,10 @@ import Controller._
 		 *  @throws IllegalArgumentException if the time series is undefined or empty
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
-		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 
-		 *  processed by workers.
+		 *  @param nPartitions Number segments or partitions to be processed by workers.
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @since March 30, 2014
+		 *  @since 0.98 March 30, 2014
 		 *  @see Scala for Machine Learning Chapter 12 "Scalable Frameworks"  Akka
 		 */
 abstract class Controller (
@@ -46,13 +45,12 @@ abstract class Controller (
 		protected val fct: PfnTransform, 
 		protected val nPartitions: Int) extends Actor {
 	
-	require( !xt.isEmpty, 
+	require( xt.nonEmpty,
 			"Master.check Cannot create the master actor, undefined time series")
 			
 					/**
 		 * Method to split a given time series into 'numPartitions' for concurrent processing
-		 * @param xt Time series to split for concurrent processing
-		 * @return Sequence of absolute index in the time series associated with each partition.
+		 * @return Sequence/Iterator of absolute index in the time series associated with each partition.
 		 * @throws IllegalArgumentException if the time series argument is undefined.
 		 */
 	final def partition: Iterator[DblVector] = {
@@ -63,7 +61,7 @@ abstract class Controller (
 }
 
 
-final class Aggregator(partitions: Int) {
+private[scalaml] final class Aggregator(partitions: Int) {
 	private val state = new ListBuffer[DblVector]
 	
 	def += (x: DblVector): Boolean = {
@@ -71,7 +69,7 @@ final class Aggregator(partitions: Int) {
 		state.size == partitions
 	}
 	
-	def clear: Unit = state.clear
+	def clear(): Unit = state.clear()
 	
 	@inline
 	final def completed: Boolean = state.size == partitions

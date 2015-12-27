@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.core
 
@@ -41,19 +41,17 @@ import org.scalaml.core.functional._Monad
    * 
    * @author Patrick Nicolas
    * @since 0.99 April 17, 2015  
-   * @version 0.99
+   * @version 0.99.1.1
    * @see Scala for Machine Learning Chapter 2 "Hello World!" Designing a workflow / 
    * Monadic data transformation
    * @note This data transformation relies on a model which is implicitly extracted or generated
    * from a input data (or time series)
    */
-abstract class ITransform[T](val xt: Vector[T]) { 	
+private[scalaml] abstract class ITransform[T](val xt: Vector[T]) {
 	type V
 
 		/**
 		* Declaration of the actual data transformation that take an input of type t
-		* @tparam U type of the output of the data transformation (time series, observations, 
-		* model parameters...)
 		* @return A partial function that implement the conversion of data element T => Try[V]
 		*/
 	def |> : PartialFunction[T, Try[V]]
@@ -63,7 +61,7 @@ abstract class ITransform[T](val xt: Vector[T]) {
 		/**
 		 * Object wrapper for the monadic implementation of the implicit data transformation
 		 * @author Patrick Nicolas
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 */
 object ITransformMonad {
 	
@@ -93,12 +91,12 @@ object ITransformMonad {
      *   }
      * }}}
 		 * @tparam T type parameter for the transform
-		 * @param _fct element contained and managed by the monadic wrapper
+		 * @param fct element contained and managed by the monadic wrapper
 		 * @constructor Create a monadic container for data transformation.
      * 
 		 * @author Patrick Nicolas
 		 * @since December 23, 2013 0.98
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow / 
 		 * Monadic data transformation
 		 */
@@ -118,7 +116,7 @@ object ITransformMonad {
 			/**
 			 * Implementation of flatMap
 			 * @tparam U type of the output of morphism on element of a data
-			 * @param c function that converts from type T to a monadic container of type U
+			 * @param f function that converts from type T to a monadic container of type U
 			 */
 		def flatMap[U](f: T => ITransform[U]): ITransform[U] = iTransformMonad.flatMap(fct)(f)
 	  

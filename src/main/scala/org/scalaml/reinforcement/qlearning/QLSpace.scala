@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -43,7 +43,7 @@ import QLConfig._
 		 * @param goalIds List of identifiers of states that are goals.
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 17, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chap 11 ''Reinforcement learning'' / Q-learning / 
 		 * Implementation / The search space 
 		 */
@@ -136,8 +136,7 @@ object QLSpace {
 		 * Alternative constructor for a QLSpace which specifies the constraints on the selection
 		 * of neighbors state from a given state.
 		 * @tparam T type of the instance or object which state is managed by Q-learning algorithm
-		 * @param numStates Number of symbols or states used by the Q-Learning algorithm
-		 * @param goal Array of id of goal states
+		 * @param goals Array of id of goal states
 		 * @param instances Sequence of instances associated to this search or Q-learning algorithm
 		 * @param constraints Function constraining the selection of neighbors states
 		 * @return A new search space, QLSpace
@@ -151,12 +150,12 @@ object QLSpace {
 		
 		require(goals.length >  0, 
 		    s"QLSpace Found number of goals ${goals.length} required  > 0")
-		require( !instances.isEmpty, "QLSpace.apply features are undefined")
+		require( instances.nonEmpty, "QLSpace.apply features are undefined")
 		
-		val r = Range(0, instances.size)
+		val r = instances.indices
 		
 			// Generate the states using the neighbors restrictive function
-		val states = r.zipWithIndex.map{ case(x, n) => {	
+		val states = r.zipWithIndex.map{ case(x, n) =>
 			
 			// Generated the list of actions permitted by the neighbors restriction
 				val validStates = constraints.map( _(n)).getOrElse(r)
@@ -164,7 +163,7 @@ object QLSpace {
 				
 			// Create a new state to be added to the state space or search space.
 			QLState[T](n, actions, instances(n))
-		}}
+		}
 		new QLSpace[T](states, goals)
 	}
 	
@@ -172,12 +171,11 @@ object QLSpace {
 		/**
 		 * Alternative constructor for a QLSpace for which the 
 		 * @tparam T type of the instance or object which state is managed by Q-learning algorithm
-		 * @param numStates Number of symbols or states used by the Q-Learning algorithm
 		 * @param goal Id of the state selected as a goal
 		 * @param instances Sequence of instances associated to this search or Q-learning algorithm
 		 * @param constraints Function constraining the selection of neighbors states
 		 * @return A new search space, QLSpace
-		 * @throws IllegalArgumentExcetpion if one of the parameters is either undefined or out of range.
+		 * @throws IllegalArgumentException if one of the parameters is either undefined or out of range.
 		 */
 	def apply[T](
 			goal: Int, 
@@ -187,7 +185,7 @@ object QLSpace {
 		 
 	
 	private def check[T](states: Seq[QLState[T]], goalIds: Array[Int]): Unit = {
-		require( !states.isEmpty, 
+		require( states.nonEmpty,
 				"QLSpace found empty sequence of states, required at least one state")
 		require( goalIds.length > 0, 
 				"QLSpace found undefined goals, required at least one goal")

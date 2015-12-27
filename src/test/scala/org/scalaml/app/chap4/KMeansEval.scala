@@ -112,7 +112,7 @@ object KMeansEval extends UnsupervisedLearningEval {
 			pfnKmeans <- Try { KMeans[Double](KMeansConfig(5, MAX_ITERS), values.toVector) |> }
 			
 				// Generate the clusters
-			if( pfnKmeans.isDefinedAt(values.head))
+			if pfnKmeans.isDefinedAt(values.head)
 				predict <- pfnKmeans(values.head)
 		} yield {		
 			
@@ -133,11 +133,11 @@ object KMeansEval extends UnsupervisedLearningEval {
 	
 
 	private def toString(clusters: List[Cluster[Double]]): String = 
-		clusters.zipWithIndex.map { case(c, n) => {
+		clusters.zipWithIndex.map { case(c, n) =>
 			val membership = c.getMembers.map(m => 
 			  							symbolFiles(m).substring(0, symbolFiles(m).indexOf(".")-1))
 			s"\nCluster#$n => ${membership.mkString(",")}"
-		}}.mkString(" ")
+		}.mkString(" ")
 }
 
 

@@ -101,7 +101,7 @@ object BiasVarianceEval extends Eval with Assertable {
 		assertDblArray(mv._1.toArray.take(2), biasExpected, 1.0)
 		assertDblArray(mv._2.toArray.take(2), varianceExpected, 1.0)
 		
-		show(s"Result variance bias\n${result}")
+		show(s"Result variance bias\n$result")
 	}
 	
 	private def display(estF: List[(Double =>Double, String)], f: Double =>Double): Boolean = {

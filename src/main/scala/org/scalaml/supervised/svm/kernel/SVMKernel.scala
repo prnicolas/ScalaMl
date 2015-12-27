@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.svm.kernel
 
@@ -84,7 +84,7 @@ object LinearKernel extends SVMKernel {
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
 		 * Kernel functions
 		 */
-final class RbfKernel(gamma: Double) extends SVMKernel {
+private[scalaml] final class RbfKernel(gamma: Double) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
 			s"RbfKernel Gamma for the RBF kernel $gamma is out of range")
     
@@ -115,13 +115,13 @@ final class RbfKernel(gamma: Double) extends SVMKernel {
 		 * @note Scala for Machine Learning  Chapter 8 Kernel models and support vector machines / 
 		 * Kernel functions
 		 */
-final class SigmoidKernel(gamma: Double) extends SVMKernel {
+private[scalaml] final class SigmoidKernel(gamma: Double) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
 			s"SigmoidKernel Gamma for the Sigmoid kernel $gamma is out of range")
 		
 		/**
 		 * Initialize the LIBSVM type and parameter of the Kernel function.
-		 * @param param svm_parameter LIBSVM instance to initialize
+		 * @param param svm_pa rameter LIBSVM instance to initialize
 		 * @throws IllegalArgumentException if param is undefined.
 		 */
 	override def update(param: svm_parameter): Unit = {
@@ -150,7 +150,7 @@ final class SigmoidKernel(gamma: Double) extends SVMKernel {
 		 * @note Scala for Machine Learning Chapter 8 Kernel models and support vector machines / 
 		 * Kernel functions
 		 */
-final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends SVMKernel {
+private[scalaml] final class PolynomialKernel(gamma: Double, coef0: Double, degree: Int) extends SVMKernel {
 	require(gamma >= GAMMA_LIMITS._1 && gamma <= GAMMA_LIMITS._2, 
 			s"PolynomialKernel Gamma for the polynomial kernel $gamma is out of range")
 	require(degree >= DEGREE_LIMITS._1 && degree <= DEGREE_LIMITS._2, 

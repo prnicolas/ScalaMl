@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.reinforcement.xcs
 
@@ -41,17 +41,17 @@ object XcsCover {
 		 * Generates new rules from an existing population. The number of rules
 		 * to generates is the size of the chromosome representing a trading strategy.
 		 * @param sensor (or rule predicate) used to generate a set of new rules
-		 * @param list of actions (or XCS rules) used in the coverage process
-		 * @throws IllegalArgumenException if the list of actions is undefined
+		 * @param actions list of actions (or XCS rules) used in the coverage process
+		 * @throws IllegalArgumentException if the list of actions is undefined
 		 * @return list of new XCS rules. 
 		 */
 	def cover(	
 			sensor: XcsSensor, 
 			actions: List[XcsAction])(implicit quant: Quantization, geneBits: Encoding): List[XcsRule] = {
 	  
-		require( !actions.isEmpty, 
+		require( actions.nonEmpty,
 				"XcsCover.cover Cannot generates new rules from undefined list of actions")
-		require(actions.size >0 && actions.size < MAX_NUM_ACTIONS, 
+		require(actions.nonEmpty && actions.size < MAX_NUM_ACTIONS,
 				s"XcsCover.cover The number of actions per state ${actions.size} if out of range")
 		
 		actions./:(List[XcsRule]()) ((xs, act) => {

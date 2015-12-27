@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.plots
 
@@ -36,7 +36,7 @@ import Plot._,  scala.collection._
 	/**
 		 * Class to create a Scatter plot using the JFreeChart library.
 		 * @constructor Create a Scatter plot instance
-		 * @param config  Configuration for the plot of type '''PlotInfo'''
+		 * @param legend  Discription of legends (title, X-axis, Y-axis)
 		 * @param theme   Configuration for the display of plots of type '''PlotTheme'''
 		 * @throws IllegalArgumentException if the class parameters are undefined
 		 * @author Patrick Nicolas
@@ -76,7 +76,7 @@ final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, t
 		/**
 		 * DisplayUtils a vector of Double value in a Scatter plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
-		 * @param xy Array of pair (x,y)
+		 * @param y Array of floating point values
 		 * @param width Width for the display (pixels)
 		 * @param height Height of the chart (pixels)
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height 
@@ -86,10 +86,7 @@ final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, t
 		val validDisplay = validateDisplay[DblArray](y, width, height, "ScatterPlot.display") 
 		
 		if( validDisplay) {
-			val series =  y.zipWithIndex./:(new XYSeries(legend.title)){ case (s, (x, n)) => {
-					s.add(x, n)
-					s
-			}}
+			val series =  y.zipWithIndex./:(new XYSeries(legend.title)){ case (s, (x, n)) =>  s.add(x, n); s }
 			val seriesCollection = new XYSeriesCollection
 			seriesCollection.addSeries(series)
 			draw(seriesCollection, width, height)
@@ -99,7 +96,7 @@ final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, t
    
 
 		/**
-		 * DisplayUtilss two two-dimension datasets (x, y) in this scatter plot
+		 * DisplayUtils two two-dimension datasets (x, y) in this scatter plot
 		 * @param xy1 First Array of pair (x,y) to be displayed
 		 * @param xy2 Second Array of pair (x,y) to be displayed
 		 * @param width Width for the display (pixels)
@@ -109,9 +106,9 @@ final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, t
 		 */
 	@throws(classOf[IllegalArgumentException])
 	def display(xy1: Vector[DblPair], xy2: Vector[DblPair], width: Int, height : Int): Boolean  = {
-		require( !xy1.isEmpty, 
+		require( xy1.nonEmpty,
 				"ScatterPlot.DisplayUtils Cannot display with first series undefined")
-		require( !xy1.isEmpty, 
+		require( xy2.nonEmpty,
 				"ScatterPlot.DisplayUtils Cannot display with second series undefined ")
 
 		val validDisplay = validateDisplaySize(width, height, "ScatterPlot.DisplayUtils")
@@ -184,7 +181,7 @@ final class ScatterPlot(legend: Legend, theme: PlotTheme) extends Plot(legend, t
 				plot.setDataset(sColi._2+1, sColi._1)
 				val renderer = new XYShapeRenderer
 				plot.setRenderer(sColi._2+1, renderer)
-				renderer.setSeriesShape(0, shapes(sColi._2%shapes.size))
+				renderer.setSeriesShape(0, shapes(sColi._2%shapes.length))
 				renderer.setSeriesPaint(0, theme.color(sColi._2+1))
 			})
 	   
@@ -255,12 +252,12 @@ object ScatterPlot {
 			legend: Legend, 
 			theme: PlotTheme): Boolean = {
 
-		require( !xySeries1.isEmpty, 
+		require( xySeries1.nonEmpty,
 				s"${legend.key} display Cannot plot an undefined time series")
 		
 		val plotter = new ScatterPlot(legend, theme)
 		
-		if( !xySeries2.isEmpty)
+		if( xySeries2.nonEmpty)
 			plotter.display(xySeries1, xySeries2, DEFAULT_WIDTH, DEFAULT_WIDTH)
 		else
 			plotter.display(xySeries1, DEFAULT_WIDTH, DEFAULT_WIDTH)

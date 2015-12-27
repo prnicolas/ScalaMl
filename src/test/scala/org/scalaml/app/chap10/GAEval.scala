@@ -114,7 +114,7 @@ object GAEval extends Eval {
 			
 				// Initialize the population with a upper bound of 16 times 
 				// the initial number of strategies
-			val initial = Population[Signal]((strategies.size <<4), strategies)
+			val initial = Population[Signal](strategies.size << 4, strategies)
 
 			show(s"${initial.symbolic}")
 
@@ -126,10 +126,10 @@ object GAEval extends Eval {
 				// Extract the best population and the fittest chromosomes = trading strategies
 				// from this final population.
 			(solver |> initial).map(_.fittest.map(_.symbolic).getOrElse("NA")) match {
-				case Success(results) => {
+				case Success(results) =>
 					display(averageCost.toArray)
 					show(results)
-				}
+
 				case Failure(e) => error("training ", e)
 			}
 		}).getOrElse(error("GAEval failed"))

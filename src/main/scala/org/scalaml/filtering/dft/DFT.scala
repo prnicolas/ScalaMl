@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.filtering.dft
 
@@ -37,15 +37,13 @@ import DFT._, ScalaMl._
 		 * function of the trait is to pad time series to resize the original data set
 		 * to the next power to 2. The internal method assumes that the implicit conversion
 		 * from T to Double is defined.
-		 * @tparam T type of features or observations of the time series
-		 * @constructor Create a generic Fourier transform as a data transformation
 		 * @see org.scala.commons.math3.transform
 		 * @author Patrick Nicolas
 		 * @since February 9, 2014 v 0.98.1
 		 * @version 0.98.2
 		 * @see Scala for Machine Learning Chapter 3 "Data pre-processing" Discrete Fourier transform
 		 */
-trait DTransform {
+private[scalaml] trait DTransform {
   
 		/**
 		 * Define the Apache Commons Math configuration parameters for the
@@ -74,7 +72,7 @@ trait DTransform {
 			} while( (sz >> bitPos) > 0)
 				
 				// Add 1 slot for  padding to the next power of two
-			(if(even) (1<<bitPos) else (1<<bitPos)+1) - xtSz
+			(if(even) 1<<bitPos else (1<<bitPos)+1) - xtSz
 		}
 	}
 
@@ -82,16 +80,14 @@ trait DTransform {
 		 * Pads the input time series with zero values to reach the next boundary of 2 at power of N.
 		 * 
 		 * The input parameters are validated by the client code.
-		 * @param xt input time series to filter
+		 * @param vec input time series to filter
 		 * @param even flag that specifies if the boundary for the data is an even number
-		 * @param f implicit conversion of type T to Double
-		 * @throws ImplicitNotFoundException if the implicit conversion T => Double is undefined
 		 * @return New input array padded for the DFT
 		 */
 	@implicitNotFound(msg = "DTransform.pad Conversion to Double is required")
 	protected def pad(vec: DblVector, even: Boolean = true): DblVector = {
 		val newSize = padSize(vec.size, even)
-		val arr: DblVector = vec.map(_.toDouble)
+		val arr: DblVector = vec
 		
 			// Fill up the remaining array with 0.0 if the size of the 
 			// padding exceeds the size of the time series.
@@ -112,10 +108,8 @@ object DTransform {
   
   		/**
 		 * Definition of the generic convolution function used in discrete Fourier transform based 
-		 * low pass filters
-		 * @param f frequency 
-		 * @param fC frequency cutoff of this low pass filter
-		 * @param t function that defined the condition for the convolution
+		 * low pass filters with f frequency, fC frequency cutoff of this low pass filter and n the power of
+		 * the convolution
 		 * @return 1 if frequency is below cutoff, 0 otherwise
 		 */
 	val convol = (n: Int, f: Double, fC: Double) => 
@@ -126,8 +120,6 @@ object DTransform {
 		/**
 		 * Definition of the '''sinc''' convolution function used in discrete Fourier transform based 
 		 * low pass filters
-		 * @param f frequency 
-		 * @param fC frequency cutoff of this low pass filter
 		 * @return 1 if frequency is below cutoff, 0 otherwise
 		 */
    
@@ -136,8 +128,6 @@ object DTransform {
 		/**
 		 * Definition of the '''sinc2''' convolution function used in discrete Fourier transform based 
 		 * low pass filters
-		 * @param f frequency 
-		 * @param fC frequency cutoff of this low pass filter
 		 * @return 1 if frequency is below cutoff, 0 otherwise
 		 */
 	val sinc2 = convol(2, _: Double, _:Double)
@@ -157,7 +147,7 @@ object DTransform {
 		 * discrete Fourier transform
 		 * @author Patrick Nicolas
 		 * @since 0.98  Feb 24, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 3 "Data pre-processing" Discrete Fourier transform
 		 */
 @implicitNotFound(msg = "DFT Conversion from $T to Double is required")
@@ -177,7 +167,7 @@ protected class DFT[T](eps: Double)(implicit c: T => Double)
 		 * and type vector of Double for output as a time series of frequencies..
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xv: U if(xv.size >= 2 ) => fwrd(xv).map( _._2.toVector)
+		case xv: U if xv.size >= 2 => fwrd(xv).map( _._2.toVector)
 	}
 	
 	

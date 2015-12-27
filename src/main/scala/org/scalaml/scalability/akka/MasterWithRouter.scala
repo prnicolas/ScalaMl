@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.scalability.akka
 
@@ -48,14 +48,13 @@ import Controller._, LoggingUtils._
 		 *  out of range.
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
-		 *  @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 *  @param nPartitions Number of segments or partitions to be
 		 *  processed by workers.
-		 * 	@param aggr User defined function for aggregating results from a group of worker actors
 		 *  @see org.scalaml.scalability.akka.Controller
 		 *  
 		 *  @author Patrick Nicolas
 		 *  @since 0.98.1 March 30, 2014
-		 *  @version 0.99
+		 *  @version 0.99.1.1
 		 *  @see Scala for Machine Learning Chapter 12 "Scalable Frameworks" Master-workers
 		 */		
 abstract class MasterWithRouter(
@@ -102,27 +101,22 @@ abstract class MasterWithRouter(
 		 */
 	override def receive = {
 			// Partition the original time series
-		case msg: Start => start
+		case msg: Start => start()
 		
 			// If all workers have returned their results....
 			// aggregate the results using a user defined function 
 			// and finally stop the router supervisor before the master stops itself..
-		case msg: Completed => {
-		  if( aggregator += msg.xt)
-		  	context.stop(router)  // Alternative: router ! Terminate
-		}
+		case msg: Completed =>  if( aggregator += msg.xt)  context.stop(router)  // Alternative: router ! Terminate
 		
 					// Get notification from worker that they were terminated.
-		case Terminated(sender) => {
+		case Terminated(sender) =>
 				// If all the workers have been stopped, then the
 				// master stop itself and finally shutdown the system.
-		  
 			if( aggregator.completed ) {
 				show("Master stops and shutdown system")
 				context.stop(self)
-				context.system.shutdown
+				context.system.shutdown()
 		  }
-		}
 		
 		case _ => error("MasterWithRouter.receive Message not recognized")
 	} 
@@ -132,7 +126,7 @@ abstract class MasterWithRouter(
 		 * then send each time series partition (or segment) to each worker
 		 * using the Activate message.
 		 */
-	private def start: Unit = {
+	private def start(): Unit = {
 		show("MasterWithRouter.receive => Start")
 		partition.toVector.foreach { router ! Activate(0, _) }
 	}

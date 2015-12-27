@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.unsupervised.em
 
@@ -42,7 +42,7 @@ import MultivariateEM._, XTSeries._
 		 * @author Patrick Nicolas
 		 * @since 0.99 June 19, 2015
 		 */
-case class EMCluster(key: Double, val means: DblArray, val density: DblArray) 
+case class EMCluster(key: Double, means: DblArray, density: DblArray)
 
 
 
@@ -59,7 +59,7 @@ case class EMCluster(key: Double, val means: DblArray, val density: DblArray)
 		 * @param xt time series to train the expectation-maximization (Gaussian mixture)
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 25, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 4 "Unsupervised learning" Expectation-Maximization
 		 * @see Apache Commons Match org.apache.commons.math3.distribution._
 		 * @see http://commons.apache.org/proper/commons-math/
@@ -75,17 +75,16 @@ final class MultivariateEM[T <: AnyVal](K: Int, xt: XVSeries[T])(implicit f: T =
 	private[this] val model: Option[EMModel] = train
 	
 	@inline
-	final def isModel: Boolean = model != None
+	final def isModel: Boolean = model.isDefined
 	
 		/**
 		 * Implement the Expectation-Maximization algorithm as a data transformation.
-		 * @param xt time series of vectors (array) of parameterized type
 		 * @throws MatchError if the input time series is undefined or have no elements
 		 * @return PartialFunction of time series of elements of type T as input to 
 		 * Expectation-Maximization algorithm and tuple of type List[EMEntry] as output.
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if(x.length == dimension(xt) && isModel) => 
+		case x: Array[T] if x.length == dimension(xt) && isModel =>
 			Try ( model.map(_.minBy(c => euclidean(c.means, x))).get)
 	}
 	
@@ -108,7 +107,7 @@ final class MultivariateEM[T <: AnyVal](K: Int, xt: XVSeries[T])(implicit f: T =
 				// then extracts the key, mean and standard deviation
 		newMixture.getComponents.toList
 		.map(p => EMCluster(p.getKey, p.getValue.getMeans, p.getValue.getStandardDeviations))	
-	}._toOption("MultivariatEM.train failed", logger)
+	}._toOption("MultivariateEM.train failed", logger)
 
 	
 	
@@ -140,7 +139,8 @@ object MultivariateEM {
 	
 		/**
 		 * Default constructor for the Expectation Maximization
-		 * @param K Number of clusters used in the Expectation-Maximization algorithm.</span></pre>
+		 * @param numComponents Number of clusters or components used in the Expectation-Maximization algorithm
+		 * @param xt input time series
 		 */
 	def apply[T <: AnyVal](numComponents: Int, xt: XVSeries[T])(implicit f: T => Double) = 
 			new MultivariateEM[T](numComponents, xt)

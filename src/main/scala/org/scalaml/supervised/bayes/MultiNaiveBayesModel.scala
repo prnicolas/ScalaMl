@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.bayes
 
@@ -23,24 +23,22 @@ import NaiveBayesModel._
 
 
 		/**
-		 * Defines a Multi-class (or multi-nomial) Naive Bayes model for n classes.
+		 * Defines a Multi-class (or multinomial) Naive Bayes model for n classes.
 		 * The number of classes is defined as likelihoodSet.size. The binomial Naive Bayes model, 
 		 * BinNaiveBayesModel, should be used for the two class problem.
 		 * @tparam T type of features in each observation
 		 * @constructor Instantiates a multi-nomial Naive Bayes model (number classes > 2)
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
-		 * @param density Probability density function used in computing the conditional probability 
-		 *  p(C|x)
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 11, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning  Chapter 5 "Naive Bayes Models" / Naive Bayes Classifiers
 		 */
 protected class MultiNaiveBayesModel[T <: AnyVal](
 		likelihoodSet: Seq[Likelihood[T]])(implicit f: T => Double) extends NaiveBayesModel[T] {
   
-	require(!likelihoodSet.isEmpty, 
+	require( likelihoodSet.nonEmpty,
 			"MultiNaiveBayesModel Cannot classify using Multi-NB with undefined classes")
 	  
 		/**
@@ -69,7 +67,7 @@ protected class MultiNaiveBayesModel[T <: AnyVal](
 		require( labels.length > 0, "MultiNaiveBayesModel.toString Vector input is undefined")
 	  		
 		likelihoodSet.zipWithIndex
-				.map{ case (lp, n) => s"\nclass${n}: ${lp.toString(labels)}" }
+				.map{ case (lp, n) => s"\nclass$n : ${lp.toString(labels)}" }
 				.mkString(",")
 	}
 	
@@ -77,7 +75,7 @@ protected class MultiNaiveBayesModel[T <: AnyVal](
 }
 
 		/**
-		 * Companion object for the multi-nomial Naive Bayes Model. The singleton
+		 * Companion object for the multinomial Naive Bayes Model. The singleton
 		 * is used to define the constructor of MultiNaiveBayesModel
 		 * 
 		 * @author Patrick Nicolas
@@ -87,12 +85,10 @@ protected class MultiNaiveBayesModel[T <: AnyVal](
 		 */
 object MultiNaiveBayesModel {
 		/**
-		 * Default constructor for the multi-nomial Naive Bayes model as instance of 
+		 * Default constructor for the multinomial Naive Bayes model as instance of
 		 * MultiNaiveBayesModel
 		 * @tparam T type of features in each observation
 		 * @param likelihoodSet  List of likelihood or priors for every classes in the model.
-		 * @param density Probability density function used in computing the conditional probability 
-		 *  p(C|x)
 		 */
 	def apply[T <: AnyVal](
 			likelihoodSet: Seq[Likelihood[T]])(implicit f: T => Double): MultiNaiveBayesModel[T] = 

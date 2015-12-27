@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.trading
 
@@ -35,11 +35,12 @@ import Signal._, Chromosome._, ScalaMl._, Gene._
 		 * @param signals List or sequence of trading signals used in this strategy.
 		 * 
 		 * @author Patrick Nicolas
-		 * @since May 7, 2014
-		 * @note Scale for Machine Learning Appendix/Finances 101
+		 * @since 0.98.2 May 7, 2014
+		 * @version 0.99.1
+		 * @see Scale for Machine Learning Appendix/Finances 101
 		 */
-case class TradingStrategy(val name: String = emptyString, signals: List[Signal]) {
-	require( !signals.isEmpty, s"TradingStrategy The list of signals is undefined")
+case class TradingStrategy(name: String = emptyString, signals: List[Signal]) {
+	require( signals.nonEmpty, s"TradingStrategy The list of signals is undefined")
 }
 
 
@@ -95,7 +96,7 @@ class StrategyFactory(nSignals: Int) (implicit quant: Quantization, encoding: En
 			// Generates array of trading strategy by iterating 
 			// through the tree set.
 		while( subsetsIterator.hasNext) {
-			val subset = subsetsIterator.next
+			val subset = subsetsIterator.next()
 			val signalList: List[Signal] = subset.toList
 			xss.append(Chromosome[Signal](signalList))
 		}
@@ -103,9 +104,9 @@ class StrategyFactory(nSignals: Int) (implicit quant: Quantization, encoding: En
 	}
 	
 	private def checkArguments(xt: DblVector, weights: DblVector): Unit = {
-		require( !xt.isEmpty, 
+		require( xt.nonEmpty,
 				"StrategyFactory.checkArgument Input to this trading strategy is undefined")
-		require( !weights.isEmpty, 
+		require( weights.nonEmpty,
 				"StrategyFactory.checkArgument Input to this trading strategy is undefined")
 	}
 }

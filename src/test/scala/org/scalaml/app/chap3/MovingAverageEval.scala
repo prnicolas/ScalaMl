@@ -37,7 +37,7 @@ import LoggingUtils._, YahooFinancials._, XTSeries._, DisplayUtils._, FormatUtil
 		 * @see Scala for Machine Learning Chapter 3 "Data Pre-processing" / Moving averages
 		 * @see org.scalaml.filtering.MovingAverage
 		 */
-object MovingAveragesEval extends FilteringEval {
+object MovingAverageEval extends FilteringEval {
 	
 		/**
 		 * Name of the evaluation 
@@ -91,15 +91,15 @@ object MovingAveragesEval extends FilteringEval {
 			val results: Try[Int] = for {
 				price <- dataSrc.get(adjClose)
 					// Executes the simple moving average
-				if( pfnSMvAve.isDefinedAt( price))
+				if pfnSMvAve.isDefinedAt( price)
 					sMvOut <- pfnSMvAve(price)
 					
 					// Executes the exponential moving average
-				if( pfnEMvAve.isDefinedAt( price))
+				if pfnEMvAve.isDefinedAt(price)
 					eMvOut <- pfnEMvAve(price)
 				
 					// Executes the weighted moving average
-				if(pfnWMvAve.isDefinedAt( price) )
+				if pfnWMvAve.isDefinedAt(price)
 						wMvOut <- pfnWMvAve(price)
 			}
 			yield {
