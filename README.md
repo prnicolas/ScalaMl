@@ -76,22 +76,28 @@ See <a href="#latestRelease">Latest release</a><br>
  <li>Added support for Scala 2.11.2, Akka 2.3.4 and Apache Spark 1.5.0 (with Scala 2.10.4)</li>
  </ul>
 <h4>0.98.2 (03/19/2015)</h4>
-Fixes bugs with SVR and hidden Markov model - Decoding
-Expand the number of test/evaluations from 60 to 66<br>
+<ul>
+<li>Fixes bugs with SVR and hidden Markov model - Decoding</li>
+<li>Expand the number of test/evaluations from 60 to 66</li>
+</ul>
 <h4>0.98.1 (02/14/2015)</h4>
-Added function minimization as a test case for Genetic algorithms<br>
-Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals<br>
-Standardized string representation of collection using mkString<br>
-Added plots to the performance benchmark of parallel collection (Chap. 12)<br>
-Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices<br>
-Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"<br>
-Replace some enumeration by case classes<br>
-Added scalastyle options<br>
+<ul>
+<li>Added function minimization as a test case for Genetic algorithms</li>
+<li>Added monitoring callback for reproduction cycle of the genetic algorithm and update implementation of trading signals</li>
+<li>Standardized string representation of collection using mkString</li>
+<li>Added plots to the performance benchmark of parallel collection (Chap. 12)</li>
+<li>Simplified and re-implemented the Viterbi algorithm (HMM - decoding) as a tail recursion and normalize lambda probabilities matrices</li>
+<li>Expanded scaladocs with reference to the chapters of "Scala for Machine Learning"</li>
+<li>Replace some enumeration by case classes</li>
+<li>Added scalastyle options</li>
+</ul>
 <h4>0.98 (12/02/2014)</h4>
-Added comments to test cases<br>
-Added <i>Scala source guide</i>
-Wrapped Scalatest routines into futures<br>
-Expand the number of test/evaluations from 39 to 60<br>
+<ul>
+<li>Added comments to test cases</li>
+<li>Add<li>ed <i>Scala source guide</i></li>
+<li>Wrapped Scalatest routines into futures</li>
+<li>Expand the number of test/evaluations from 39 to 60</li>
+</ul>
 <h4>0.97 (06/12/2014)</h4>
 Initial implementation<br>
 
@@ -132,6 +138,8 @@ A simple <i>pom.xml</i> is available to build the library and execute the test c
 <b>$(ROOT)/mvn test</b> to compile and run the examples 
  
 <h2 id="run">Run examples</h2>
+<u>Note</u>: As the implementation evolves over-time, few test examples may differ from the original test described in the book. The implementation of the algorithm is not expected to change.
+<br>
 <h3>Examples in a chapter</h3>
 To run the examples of a particular chapter (i.e. Chapter 4)<br>
 <b>$(ROOT)/$sbt<br>
