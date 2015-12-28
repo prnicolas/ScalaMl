@@ -13,14 +13,14 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.util
 
-import scala.io.Source._
-import scala.util.{Try, Success, Failure}
 import org.apache.log4j.Logger
-import org.scalaml.util.LoggingUtils._
+
+import scala.io.Source._
+import scala.util.{Failure, Success, Try}
 
 		/**
 		 * Basic utility singleton to read and write content from and to a file
@@ -33,46 +33,41 @@ object FileUtils {
 
 		/**
 		 * Read the content of a file as a String
-		 * @param pathName Name of the file to read the content form
+		 * @param toFile Name of the file to read the content form
 		 * @param className Name of the class to read from 
 		 * @return Content of the file if successful, None otherwise
 		 */
-	def read(toFile: String, className: String): Option[String] = 
-			Try(fromFile(toFile).mkString).toOption
+	def read(toFile: String, className: String): Option[String] = Try(fromFile(toFile).mkString).toOption
 
 		/**
 		 * Write the content into a file. The content is defined as a string.
-		 * @param conntent content to write into a file
+		 * @param content content to write into a file
 		 * @param pathName Name of the file to read the content form
 		 * @param className Name of the class to read from 
 		 * @return true is successful, false otherwise
 		 */
 	def write(content: String, pathName: String, className: String): Boolean = {
 		import java.io.PrintWriter
-	
+
+		import DisplayUtils._
+
 		var printWriter: Option[PrintWriter] = None
 		var status = false
 		Try {
 			printWriter = Some(new PrintWriter(pathName))
-			printWriter.map( _.write(content) )
+			printWriter.foreach( _.write(content) )
+			printWriter.foreach( _.flush )
+			printWriter.foreach( _.close )
 			status = true
 		} 
 		match {
 				// Catch and display exception description and return false
-			case Failure(e) => {
-				DisplayUtils.error(s"$className.write failed for $pathName", logger, e)
-				
-				if( printWriter != None) {
-					Try(printWriter.map(_.close) ) match {
-						case Success(res) => res
-						case Failure(e) => 
-								DisplayUtils.error(s"$className.write Failed for $pathName", logger, e)
-					}
-				}
-			}
-			case Success(s) => { }
+			case Failure(e) =>
+				error(s"$className.write failed for $pathName", logger, e)
+				if( printWriter.isDefined ) 	printWriter.foreach( _.close )
+				status
+			case Success(s) => status
 		}
-		status
 	}
 }
 

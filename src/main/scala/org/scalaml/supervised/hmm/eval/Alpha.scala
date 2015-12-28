@@ -13,15 +13,12 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm.eval
 
 import scala.util.Try
 
-import org.scalaml.util.MathUtils._
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.LoggingUtils._
 import org.scalaml.supervised.hmm.{HMMConfig, HMMModel, HMMTreillis}
 import HMMConfig._
 
@@ -94,7 +91,7 @@ final protected class Alpha(lambda: HMMModel, obsSeq: Vector[Int])
 }
 
 		/**
-		 * Companion object for the Alpha pass that defines the constructor applhy
+		 * Companion object for the Alpha pass that defines the constructor apply
 		 * @author Patrick Nicolas
 		 * @since March 13, 2014
 		 * @see Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model /

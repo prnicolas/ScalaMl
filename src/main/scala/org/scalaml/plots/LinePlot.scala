@@ -13,27 +13,23 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.plots
 
-import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
+import java.awt.{BasicStroke, Color, Shape, Stroke}
 
-import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
-import org.jfree.data.category.{DefaultCategoryDataset, CategoryDataset}
-import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
-import org.jfree.data.xy.XYDataset
-import org.jfree.chart.{ChartFactory, JFreeChart, ChartFrame}
-import org.jfree.chart.title.TextTitle
-import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
-import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer, XYShapeRenderer}
+import org.jfree.chart.ChartFactory
+import org.jfree.chart.plot.{CategoryPlot, PlotOrientation}
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
-import org.jfree.chart.axis.{ValueAxis, NumberAxis}
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
+import org.jfree.data.category.{CategoryDataset, DefaultCategoryDataset}
+import org.jfree.data.xy.{XYSeries, XYSeriesCollection}
 import org.jfree.util.ShapeUtilities
-
 import org.scalaml.core.Types.ScalaMl
+import org.scalaml.core.Types.ScalaMl._
+import org.scalaml.plots.Plot._
 import org.scalaml.util.DisplayUtils
-import Plot._, ScalaMl._
 
 
 
@@ -42,7 +38,7 @@ import Plot._, ScalaMl._
 		 * Class to create a Line plot using the JFreeChart library.
 		 * @constructor Create a Line plot instance
 		 * @throws IllegalArgumentException if the class parameters are undefined
-		 * @param config  Configuration for the plot of type '''PlotInfo'''
+		 * @param legend  legend for the plot of type '''PlotInfo'''
 		 * @param theme  Configuration for the display of plots of type '''PlotTheme'''
 		 * @author Patrick Nicolas
 		 * @since  0.97 November 18, 2013
@@ -51,7 +47,6 @@ import Plot._, ScalaMl._
 		 * @see http://www.jfree.org
 		 */
 final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, theme)	{
-	import java.awt.geom.Ellipse2D
 	val strokeList = LinePlot.strokeList
 
 	private val colors: Array[Color] = Array[Color](
@@ -66,8 +61,8 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		/**
 		 * DisplayUtils array of tuple (x,y) in a Line plot for a given width and height
 		 * @param xy Array of pair (x,y)
-		 * @param width Width for the display (pixels)
-		 * @param height Height of the chart (pixels)
+		 * @param w Width for the display (pixels)
+		 * @param h Height of the chart (pixels)
 		 * @return true if the plot is displayed, false otherwise
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
@@ -85,9 +80,9 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		/**
 		 * DisplayUtils a vector of Double value in a Line plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
-		 * @param xy Array of pair (x,y)
-		 * @param width Width for the display (pixels)
-		 * @param height Height of the chart (pixels)
+		 * @param y Array of values
+		 * @param w Width for the display (pixels)
+		 * @param h Height of the chart (pixels)
 		 * @return true if the plot is displayed, false otherwise
 		 * @throws IllegalArgumentException if the dataset is undefined or the width or height are 
 		 * out of bounds.
@@ -111,18 +106,16 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 			xys: immutable.List[(DblVector, String)], 
 			w: Int, 
 			h: Int): Boolean  = {
-	  
-		import scala.collection.JavaConversions._
 		val validDisplay = validateDisplay[List[(DblVector, String)]](xys, w, h, "LinePlot.display")
 		if( validDisplay ) {
 	
 			val seriesCollection = new XYSeriesCollection
-			xys.foreach{ case(x, s) => {
+			xys.foreach{ case(x, s) =>
 				val xSeries = new XYSeries(s)
 				x.view.zipWithIndex.foreach { case(z, n) => xSeries.add(n.toDouble, z) }
 				
 				seriesCollection.addSeries(xSeries)
-			}}
+			}
 	
 
 			val chart = ChartFactory.createXYLineChart(null, legend.xLabel, legend.yLabel, 
@@ -138,10 +131,10 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 			val xyLineRenderer: XYLineAndShapeRenderer = 
 						plot.getRenderer.asInstanceOf[XYLineAndShapeRenderer]
 	
-			Range(0, xys.size) foreach( n => {
-				xyLineRenderer.setSeriesPaint(n, colors(n % colors.size))
+			xys.indices foreach( n => {
+				xyLineRenderer.setSeriesPaint(n, colors(n % colors.length))
 				xyLineRenderer.setSeriesShapesVisible(n, true)
-				xyLineRenderer.setSeriesShape(n, shapes(n % shapes.size))
+				xyLineRenderer.setSeriesShape(n, shapes(n % shapes.length))
 			})
 	  	  
 			createFrame(s"${legend.title}", chart)
@@ -157,7 +150,7 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		val plot = chart.getPlot.asInstanceOf[CategoryPlot]
 	    
 		val renderer = new LineAndShapeRenderer {
-			override def  getItemStroke(row: Int, col: Int): Stroke = strokeList(0)
+			override def  getItemStroke(row: Int, col: Int): Stroke = strokeList.head
 		}
 	 
 		plot.setRenderer(renderer)
@@ -179,7 +172,9 @@ final class LinePlot(legend: Legend, theme: PlotTheme) extends Plot(legend, them
 		 * @see http://www.jfree.org
 		 */
 object LinePlot {
-  import scala.collection._, 	BasicStroke._
+  import BasicStroke._
+
+  import scala.collection._
 	
 	private val DEFAULT_WIDTH = 320
 	private val DEFAULT_HEIGHT = 260
@@ -215,8 +210,6 @@ object LinePlot {
 		isDefined: Boolean, 
 		legend: Legend, 
 		theme: PlotTheme): LinePlot = {
-		
-		import scala.collection.JavaConversions._
 		require(isDefined, s"${legend.key} display Cannot plot an undefined time series")
 		
 		new LinePlot(legend, theme)

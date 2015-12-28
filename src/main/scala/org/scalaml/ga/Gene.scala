@@ -13,15 +13,13 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.ga
 
-import java.util.BitSet
-import scala.annotation.implicitNotFound
+import java.util
 
-import org.scalaml.core.Types.ScalaMl.DblArray
-import org.scalaml.core.Types
+import scala.annotation.implicitNotFound
 
 		/**
 		 * Generic operator for symbolic representation of a gene defined
@@ -59,7 +57,7 @@ object NO_OPERATOR extends Operator {
 }
 
 
-import Gene._
+import org.scalaml.ga.Gene._
 
 		/**
 		 *  Class for the conversion between time series with discrete values (digital of type Int)
@@ -91,17 +89,16 @@ case class Quantization(toInt: Double => Int, toDouble: Int => Double) {
 		 * (i.e. IF (RSI > 0.8 THEN Stock over-bought ). The gene has a fixed size
 		 * of bits with in this case, two bits allocated to the operator and 
 		 * 32 bits allocated to the value. The floating point value(min, max) is
-		 * digitized as integer [0, 2^32-1]. The discretization function is provided
+		 * digitized as integer [0, 2&#94;32-1]. The discretization function is provided
 		 * implicitly. The bits are implemented by the Java BitSet class.
 		 * @constructor Create a gene instance. 
 		 * @throws IllegalArgumentException if operator or id is undefined
-		 * @throws ImplicitNotFoundException if the conversion from double to integer (digitize) 
 		 * is not provided
 		 * @param id  Identifier for the Gene
 		 * @param target  Target or threshold value.It is a floating point value to be digitized 
 		 * as integer
 		 * @param op   Symbolic operator associated to this gene
-		 * @param discr  implicit discretization function from Floating point value to integer.
+		 * @param quant  implicit discretization function from Floating point value to integer.
 		 *
 		 * @author Patrick Nicolas
 		 * @since August 28, 2013
@@ -124,8 +121,8 @@ class Gene(
 	lazy val bits = apply(target, op)
 
 	
-	def apply(value: Double, operator: Operator): BitSet = {
-		val bitset = new BitSet(encoding.length)
+	def apply(value: Double, operator: Operator): util.BitSet = {
+		val bitset = new java.util.BitSet(encoding.length)
 			// Encode the operator
 		encoding.rOp foreach(i => if( ((operator.id>>i) & 0x01)  == 0x01) bitset.set(i))
 		
@@ -134,7 +131,7 @@ class Gene(
 		bitset	
 	}
 	
-	def unapply(bitSet: BitSet): (Double, Operator) = 
+	def unapply(bitSet: util.BitSet): (Double, Operator) =
 		(quant.toDouble(convert(encoding.rValue, bits)), op(convert(encoding.rOp, bits)))
 	
 
@@ -171,7 +168,7 @@ class Gene(
 		/**
 		 * Implements the cross-over operator between this gene and another
 		 * parent gene.
-		 * @param gIdx Genetic Index for this gene
+		 * @param indices Genetic Index for this gene
 		 * @param that other gene used in the cross-over
 		 * @return A single Gene as cross-over of two parents.
 		 */
@@ -196,7 +193,7 @@ class Gene(
   
 		/**
 		 * Implements the mutation operator on this gene
-		 * @param gIdx genetic index for the cross-over and mutation of this gene
+		 * @param indices genetic index for the cross-over and mutation of this gene
 		 * @return A mutated gene
 		 */
 	def ^ (indices: GeneticIndices): Gene = ^ (indices.geneOpIdx)
@@ -204,7 +201,7 @@ class Gene(
 
 		/**
 		 * Implements the mutation operator on this gene
-		 * @param index index of the bit to mutate (0 < idx < gene.size)
+		 * @param idx index of the bit to mutate (0 < idx < gene.size)
 		 * @return A mutated gene
 		 */
 	def ^ (idx: Int): Gene = {
@@ -227,7 +224,7 @@ class Gene(
 		 * Textual description of the genetic representation of this gene
 		 */
 	override def toString: String = 
-		Range(0, bits.size).map(n => if( bits.get(n) == true) "1" else "0").mkString("")
+		Range(0, bits.size).map(n => if( bits.get(n)) "1" else "0").mkString("")
 }
 
 
@@ -247,7 +244,8 @@ object Gene {
 		 * @param id  Identifier for the Gene
 		 * @param target  Target or threshold value.It is a floating point value to be digitized as integer
 		 * @param op   Symbolic operator associated to this gene
-		 * @param discr  implicit quantizationfunction from Floating point value to integer.
+		 * @param quant  implicit quantization function from Floating point value to integer.
+		 * @param encoding  implicit encoding function for the gene
 		 */
 	def apply(id: String, target: Double, op: Operator)
 			(implicit quant: Quantization, encoding: Encoding): Gene = 
@@ -268,8 +266,8 @@ object Gene {
 		 * @param bits Bitset of this gene
 		 * @return duplicate genetic code
 		 */
-	protected def cloneBits(bits: BitSet): BitSet = 
-		Range(0, bits.length)./:(new BitSet)((enc, n) => { 
+	protected def cloneBits(bits: util.BitSet): util.BitSet =
+		Range(0, bits.length)./:(new util.BitSet)((enc, n) => {
 			if( bits.get(n)) 
 				enc.set(n)
 			enc
@@ -278,8 +276,8 @@ object Gene {
 		/*
 		 * Convert a range of bits within a bit into an integer
 		 */
-	private def convert(r: Range, bits: BitSet): Int = 
-		r./:(0)((v,i) =>v + (if(bits.get(i)) (1<<i) else 0))
+	private def convert(r: Range, bits: util.BitSet): Int =
+		r./:(0)((v,i) =>v + (if(bits.get(i)) 1<<i else 0))
 }
 
 // -------------------------------------------  EOF -------------------------------------------------

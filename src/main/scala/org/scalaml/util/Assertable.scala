@@ -13,14 +13,14 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.util
 
 
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.stats.XTSeries
-import XTSeries._
+import org.scalaml.stats.XTSeries._
 
 
 	/**
@@ -53,7 +53,7 @@ trait Assertable {
 		  aa.sum
 		}
 		
-		assert( zipToXVSeries(predicted, expected)(fCompare).find( _ > eps ) == None, assertMsg)
+		assert( !zipToXVSeries(predicted, expected)(fCompare).exists( _ > eps ), assertMsg)
 	}
 	
 		/**
@@ -72,7 +72,7 @@ trait Assertable {
 			eps: Double): Int = {
 	  
 		val xCompare = (x: Double, y: Double) => Math.abs(x-y)
-		assert( zipToXSeries(predicted, expected)(xCompare).find( _ > eps ) == None, assertMsg)
+		assert( !zipToXSeries(predicted, expected)(xCompare).exists( _ > eps ), assertMsg)
 		1
 	}
 	
@@ -113,8 +113,8 @@ trait Assertable {
 	}
 	
 	protected def assertVector[T](predicted: Vector[T], expected: Vector[T]): Unit = {
-		val failed = predicted.zip(expected.view).map{ case( p, e) => p == e}.find(_ == false)
-		assert( failed == None, assertMsg)
+		val failed = !(!predicted.zip(expected.view).forall { case (p, e) => p == e })
+		assert( failed, assertMsg)
 	}
 		
 	protected def assertList[T](predicted: List[T], expected: List[T]): Unit = 

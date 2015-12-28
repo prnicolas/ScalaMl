@@ -13,27 +13,25 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.filtering.dft
 
 	// Scala standard library
-import scala.annotation.implicitNotFound
 import scala.util.{Try, Success, Failure}
 
-	// 3rd party libaries
-import org.apache.commons.math3.transform._
+	// 3rd party libraries
 import org.apache.log4j.Logger
 
 	// ScalaMl classes
-import org.scalaml.util.DisplayUtils
-import org.scalaml.stats.XTSeries
-import org.scalaml.core.ETransform
-import org.scalaml.core.Types.ScalaMl
-import DFT._, ScalaMl._, DFTFilter._
+import DFTFilter._
 
-
-case class DFTFilterConfig(val fC: Double, val eps: Double)
+/**
+ * Define the configuration of a low-pass filter based on discrete Fourier series
+ * @param fC  Frequency for the low-pass filter
+ * @param eps convergence/tolerance for evaluating frequencies
+ */
+case class DFTFilterConfig(fC: Double, eps: Double)
 
 		/**
 		 * Low-band filter based of the Discrete Fourier transform. The overloaded Pipe Operator 
@@ -50,13 +48,13 @@ case class DFTFilterConfig(val fC: Double, val eps: Double)
 		 * 
 		 * @author Patrick Nicolas
 		 * @since  0.98 February 9, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning  Chapter 3 "Data pre-processing"  Fourier analysis / 
 		 * DFT-based filtering
 		 * @note The class uses the Apache Commons Math library 3.5
 		 */
 @throws(classOf[IllegalArgumentException])
-final protected class DFTFilter[T <: AnyVal]( 
+final protected[scalaml] class DFTFilter[T <: AnyVal](
 		fC: Double,
 		eps: Double)(g: F2)(implicit f: T => Double)
 	extends DFT[T](eps) {
@@ -73,23 +71,21 @@ final protected class DFTFilter[T <: AnyVal](
 		 * @throws MatchError if the input time series is undefined
 		 * @return PartialFunction of time series of elements of type T as input to the Discrete 
 		 * Fourier filter and time series of frequencies of type Double as output
-		 * @param xt Parameterized time series for which the discrete transform has to be computed
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if( xt.size >= 2 ) => {
+		case xt: U if xt.size >= 2 =>
 			import Config._
 	
 				// Forward computation of the discrete Fourier series
-			fwrd(xt).map{ case(trf, freq) => {
+			fwrd(xt).map{ case(trf, freq) =>
 				// Computes the frequencies cut-off in data points
-				val cutOff = fC*freq.size
+				val cutOff = fC*freq.length
 						
 				// Applies the cutoff to the original frequencies spectrum
 				val filtered = freq.zipWithIndex.map{ case(x, n) => x*g(n, cutOff) }
 					
 						// Reconstruct the signal.
 				trf.transform(filtered, INVERSE).toVector
-			}}
 		}
 	}  
 }

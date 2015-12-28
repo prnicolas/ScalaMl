@@ -129,7 +129,7 @@ object TextBayesEval extends Eval {
 			corpus <- pfnDocs(None)
 			
 				// Extract the terms frequencies map from the corpus
-			if(pfnText.isDefinedAt(corpus))
+			if pfnText.isDefinedAt(corpus)
 			termsFreq <- pfnText(corpus)
 			
 				// Create the features set from quantization
@@ -165,7 +165,7 @@ object TextBayesEval extends Eval {
 		 */
 	private def loadLexicon: immutable.Map[String, String] = {
 		val src = Source.fromFile(pathLexicon)
-		val fields = src.getLines.map( _.split(",").map(_.trim))
+		val fields: Array[Array[String]] = src.getLines.map( _.split(",").map(_.trim)).toArray
 		val lexicon = fields./:(new mutable.HashMap[String, String])((hm, field) => 
 			hm += ((field(0), field(1)))
 		).toMap

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.workflow.data
 
@@ -30,7 +30,7 @@ import ScalaMl._,  LoggingUtils.TryToOption
 		/**
 		 * Generic class to load or save files into either HDFS or local files system. The 
 		 * persistency of data is defined as a data transformation using an explicit configuration.
-		 * Therefore '''DataSink''' inherits from ''ETransform'''
+		 * Therefore '''DataSink''' inherits from &#39;&#39;ETransform&#39;&#39;&#39;
 		 * 
 		 * @tparam T type of elements of output collections or time series to be stored in file.
 		 * @constructor Create a DataSink transform associated to a specific path name or database name. 		 
@@ -38,7 +38,7 @@ import ScalaMl._,  LoggingUtils.TryToOption
 		 * @param sinkName Name of the storage (file, database, ..).
 		 * @author Patrick Nicolas
 		 * @since 0.98 December 15, 2013
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 2 ''Hello World!''
 		 */
 final protected class DataSink[T](
@@ -74,21 +74,21 @@ final protected class DataSink[T](
 		 */
 	def write(content: String): Boolean = {
 		require(content.length > 0, "DataSink.write Content undefined")
-		assert(sinkPath != None, "DataSink.write Sink path undefined")
+		assert(sinkPath.isDefined, "DataSink.write Sink path undefined")
 		
 		FileUtils.write(content, sinkName, "DataSink")
 	}
 
 		/**
 		 * Write the content of a vector into the storage with sinkName as identifier.
-		 * @param vector of type Double to be stored
+		 * @param v vector of type Double to be stored
 		 * @return true if the vector has been successfully stored, false otherwise
 		 * @throws IllegalArgumentException If the vector is either undefined or empty.
 		 */
 	@throws(classOf[IllegalArgumentException])
 	def write(v: DblVector): Try[Boolean] = Try {
-		require( !v.isEmpty, "DataSink.write Cannot persist an undefined vector")
-		assert( sinkPath != None, "DataSink.write undefined sink path")
+		require( v.nonEmpty, "DataSink.write Cannot persist an undefined vector")
+		assert( sinkPath.isDefined, "DataSink.write undefined sink path")
 		
 		val content = v.mkString(CSV_DELIM)
 		this.write(content.substring(0, content.length-1))
@@ -103,13 +103,13 @@ final protected class DataSink[T](
 		 */
   @throws(classOf[IllegalArgumentException])
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xs: U if( !xs.isEmpty && sinkPath != None) => {
+		case xs: U if xs.nonEmpty && sinkPath.isDefined =>
 			import java.io.PrintWriter
 			
 			var printWriter: Option[PrintWriter] = None
 			Try {
 				val content = new StringBuilder
-				val numValues = xs(0).size-1
+				val numValues = xs.head.size-1
 				val last = xs.size-1
 					// Write into file with one time series per line
 				var k = 0
@@ -121,22 +121,20 @@ final protected class DataSink[T](
 				}
 				
 				printWriter = Some(new PrintWriter(sinkName))
-				printWriter.map( _.write(content.toString))
+				printWriter.foreach( _.write(content.toString()))
 				k
 			} 
 			match {
 				case Success(k) => Try(k)
-				case Failure(e) => {
+				case Failure(e) =>
 					DisplayUtils.error("DataSink.|> ", logger)
 	    		  
-					if( printWriter != None) 
-						Try {printWriter.map(_.close); 1}
+					if( printWriter.isDefined)
+						Try {printWriter.foreach(_.close); 1}
 					else 
 					  Try(DisplayUtils.failure("DataSink.|> printWriter undefined", logger, e))
-				}
 			}
 		}
-	}
 }
 
 

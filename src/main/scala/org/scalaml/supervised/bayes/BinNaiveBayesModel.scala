@@ -13,15 +13,11 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.bayes
 
-import org.scalaml.stats.Stats
-import org.scalaml.core.Design.Model
 import NaiveBayesModel._
-
-
 
 		/**
 		 * Implements the binomial (or 2-class) Naive Bayes model with a likelihood for positive and 
@@ -31,8 +27,6 @@ import NaiveBayesModel._
 		 * @see org.scalaml.supervised.bayes.NaiveBayesModel
 		 * @param pos  Priors for the class of positive outcomes.
 		 * @param neg  Priors for the class of negatives outcomes.
-		 * @param density Probability density function used in computing the conditional 
-		 * probability '''p(C|x)'''
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 11, 2014
 		 * @version 0.98.1
@@ -85,8 +79,6 @@ object BinNaiveBayesModel {
 		 * Default constructor for the binary Naive Bayes model as instance of BinNaiveBayesModel
 		 * @param pos  Priors for the class of positive outcomes.
 		 * @param neg  Priors for the class of negatives outcomes.
-		 * @param density Probability density function used in computing the conditional probability 
-		 * '''p(C|x)'''
 		 */
 	def apply[T <: AnyVal](pos: Likelihood[T], neg: Likelihood[T])
 			(implicit f: T => Double): BinNaiveBayesModel[T] = 

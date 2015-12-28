@@ -37,7 +37,7 @@ import org.scalaml.util.Assertable
 		 * @see Scala for Machine Learning Chapter 3 "Data Pre-processing" / Moving averages
 		 * @see org.scalaml.filtering.MovingAverage
 		 */
-object MovingAveragesEval2 extends FilteringEval with Assertable {
+object MovingAverageEval2 extends FilteringEval with Assertable {
 	
 		/**
 		 * Name of the evaluation 

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised
 
@@ -22,18 +22,24 @@ package org.scalaml.supervised
 		 * with the Hidden Markov algorithms
 		 * 
 		 * - Alpha or forward pass as the probability of being in state S(i) given a sequence of 
-		 * observations {0, 1,   t} '''Alpha'''
+		 * observations {0, 1,   t} <b>Alpha</b>
+		 *
 		 * - Beta or backward pass as the probability of being in state S(i) given the observations 
-		 * {t+1, t+2, ... T-1} '''Beta'''
-		 * - Typical configuration of a Hidden Markov model '''HMMConfig'''
+		 * {t+1, t+2, ... T-1} <b>Beta</b>
+            *
+		 * - Typical configuration of a Hidden Markov model <b>HMMConfig</b>
+            *
 		 * - Definition of the lambda model containing the state transition probabilities, emission
 		 * probabilities and initial state probabilities matrices for the Hidden Markov model 
-		 * '''HMMModel'''
+		 * </b>HMMModel</b>
+            *
 		 * - Baum-Welch estimator (Expectation-Maximization) for training a Hidden Markov model 
-		 * '''BaumWelchEM'''
+		 * <b>BaumWelchEM</b>
+            *
 		 * - Implementation of the Viterbi to extract the best sequence of hidden states in a HMM 
-		 * given a lambda model and a sequence of observations '''ViterbiPath'''
-		 * - Implementation of the Hidden Markov model '''HMM''
+		 * given a lambda model and a sequence of observations <b>ViterbiPath</b>
+            *
+		 * - Implementation of the Hidden Markov model
 		 * 
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential Data Models'' / Hidden Markov model
 		 */

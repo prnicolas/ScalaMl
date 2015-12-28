@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.ga
 
@@ -24,7 +24,7 @@ import org.scalaml.core.Design.Config
 		 * Configuration class that defines the key parameters for the execution of the
 		 * genetic algorithm solver (or optimizer). The list of configuration parameters include
 		 * mutation, cross-over ratio, maximum number of optimization cycles (or epochs) and a soft limiting
-		 * function to constaint the maximum size of the population of chromosomes at each cyles
+		 * function to constaint the maximum size of the population of chromosomes at each cycles
 		 * (or epochs) 
 		 * 
 		 * {{{ 
@@ -61,7 +61,6 @@ final class GAConfig(
   	  
 		/**
 		 * re-compute the mutation factor using an attenuator
-		 * @param cycle number of the current cycle
 		 * @return soft limit computed for this cycle
 		 */
 	@throws(classOf[IllegalArgumentException])
@@ -94,7 +93,7 @@ object GAConfig {
 		 * Default constructor for the GAConfig class
 		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to compute 
 		 * the index of bit string representation of the chromosome for cross-over
-		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or 
+		 * @param mu Value in the range [0.0, 1.0] used to compute the index of the bit or
 		 * individual to be mutate in each chromosome.
 		 * @param maxCycles Maximum number of iterations allowed by the genetic solver 
 		 * (reproduction cycles).
@@ -104,6 +103,8 @@ object GAConfig {
 	def apply(xover: Double, mu: Double, maxCycles: Int, softLimit: Int =>Double): GAConfig = 
 		new GAConfig(xover, mu, maxCycles, softLimit)
 
+	private val DEFAULT_SOFTLIMIT = (n : Int) => -0.01*n + 1.001
+
 		/**
 		 * Constructor for the GAConfig class with a default soft limit defined as
 		 * {{{
@@ -111,12 +112,11 @@ object GAConfig {
 		 *  }}}
 		 * @param xover Value of the cross-over parameter, in the range [0.0, 1.0] used to 
 		 * compute the index of bit string representation of the chromosome for cross-over
-		 * @param mutate Value in the range [0.0, 1.0] used to compute the index of the bit or 
+		 * @param mu Value in the range [0.0, 1.0] used to compute the index of the bit or
 		 * individual to be mutate in each chromosome.
 		 * @param maxCycles Maximum number of iterations allowed by the genetic solver 
 		 * (reproduction cycles).
 		 */
-	private val DEFAULT_SOFTLIMIT = (n : Int) => -0.01*n + 1.001
 	def apply(xover: Double, mu: Double, maxCycles: Int): GAConfig = 
 			new GAConfig(xover, mu, maxCycles, DEFAULT_SOFTLIMIT)
    

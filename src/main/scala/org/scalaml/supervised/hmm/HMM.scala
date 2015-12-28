@@ -13,20 +13,18 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm
 
-import scala.util.{Try, Success, Failure}
-import scala.annotation.{implicitNotFound, switch}
+import scala.util.Try
+import scala.annotation.implicitNotFound
 
 import org.apache.log4j.Logger
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Design.Model
 import org.scalaml.core.ITransform
 import org.scalaml.util.LoggingUtils._
-import org.scalaml.util.MathUtils._
 import org.scalaml.supervised.hmm.train.BaumWelchEM
 import org.scalaml.supervised.hmm.eval.Alpha
 import org.scalaml.supervised.hmm.decode.ViterbiPath
@@ -84,7 +82,7 @@ case class DECODING() extends HMMForm
 
 		 * @author Patrick Nicolas
 		 * @since 0.98.2 March 23, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see org.scalaml.supervised.hmm.HMMModel
 		 * @see org.scalaml.supervised.hmm.HMMConfig
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Hidden Markov Model
@@ -117,7 +115,7 @@ final protected class HMM[@specialized(Double) T <: AnyVal](
 		 * emission and initial probabilities are correctly normalized.
 		 * @return true if the model is valid, false otherwise.
 		 */
-	final val isModel: Boolean = model != None && model.get.validate(config.eps)
+	final val isModel: Boolean = model.isDefined && model.get.validate(config.eps)
 	
 	private def train: Option[HMMModel] = Try {
 		val baumWelchEM = BaumWelchEM(config, obsSeq)
@@ -133,7 +131,7 @@ final protected class HMM[@specialized(Double) T <: AnyVal](
 		 * (likelihood, sequence of observation indices)
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case ySeq: Array[T] if( isModel && ySeq.length > 1) => form match {
+		case ySeq: Array[T] if isModel && ySeq.length > 1 => form match {
 			case _ : EVALUATION => evaluation(model.get, Vector[Int](quantize(ySeq)))
 			case _ : DECODING => decoding(model.get, Vector[Int](quantize(ySeq)))
 		}
@@ -202,7 +200,7 @@ object HMM {
 		 * Implements the 'Evaluation' canonical form of the HMM
 		 * @tparam T Type of observed states
 		 * @param model  Lambda model composed of state transition, emission and initial probability
-		 * @param obsIdx index of the observation O in a sequence
+		 * @param quantize quantization function
 		 * @return HMMPredictor predictor as a tuple of (likelihood, sequence (array) of observations 
 		 * indexes)
 		 */

@@ -24,11 +24,11 @@ import org.scalaml.trading.Fundamentals
 import org.scalaml.supervised.svm.{SVMConfig, SVM, SVMExecution}
 import org.scalaml.supervised.svm.formulation._
 import org.scalaml.supervised.svm.kernel._
-import org.scalaml.stats.XTSeries
+import org.scalaml.stats.Transpose
 import org.scalaml.core.Types.ScalaMl.{DblMatrix, DblArray}
 import org.scalaml.util.{DisplayUtils,  LoggingUtils}
 import org.scalaml.app.Eval
-import LoggingUtils._, XTSeries.Transpose._
+import LoggingUtils._, Transpose._
 
 
 		/**

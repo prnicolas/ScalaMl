@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.crf
 
@@ -30,7 +30,7 @@ import org.scalaml.core.Design.Model
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 April 1, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 7 "Sequential data models"/Conditional Random Fields.
 		 */
 final protected class CrfModel(val weights: DblArray) extends Model {

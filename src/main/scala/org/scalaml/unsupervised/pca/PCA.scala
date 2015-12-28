@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.unsupervised.pca
 
@@ -31,7 +31,7 @@ import org.scalaml.util.LoggingUtils._
 import ScalaMl._, XTSeries._
 
 
-case class PCAModel(val covariance: DblMatrix, val eigenvalues: DblArray)
+case class PCAModel(covariance: DblMatrix, eigenvalues: DblArray)
 
 
 		/**
@@ -44,8 +44,7 @@ case class PCAModel(val covariance: DblMatrix, val eigenvalues: DblArray)
 		 * of the model and the complexity of any future supervised learning algorithm.
 		 * @constructor Instantiate a principal component analysis algorithm as a data transformation 
 		 * @tparam T type of element of the dataset to analyze
-		 * @param zScored Boolean flag that indicates if the time series has been already normalized
-		 * 
+		 *
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 26, 2014
 		 * @version 0.98.2
@@ -93,20 +92,19 @@ final class PCA[T <: AnyVal](xt: XVSeries[T])(implicit f:T => Double)
 		 * from a time series. The methods uses the Apache Commons Math library to compute
 		 * eigenvectors and eigenvalues. All the exceptions thrown by the Math library during 
 		 * the manipulation of matrices are caught in the method.
-		 * @param xt time series of dimension > 1 
 		 * @throws MatchError if the input time series is undefined or have no elements
 		 * @return PartialFunction of time series of elements of type T as input to the Principal 
    	 * Component Analysis and tuple Covariance matrix and vector of eigen values as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if( x.length == dimension(xt) && model != None) => 
+		case x: Array[T] if x.length == dimension(xt) && model.isDefined  =>
 			Try( inner(x, model.get.eigenvalues) )
 	}
 	
 	override def toString: String = 
 		model.map( m => {
-	   val covStr = m.covariance./:(new StringBuilder)((b, r) => 
-		        b.append(s"${r.mkString(" ")}\n") ).toString
+	   val covStr = m.covariance./:(new StringBuilder)((b, r) =>
+			 b.append(s"${r.mkString(" ")}\n")).toString()
 		
 		s"""\nEigenvalues:\n${m.eigenvalues.mkString(" ,")}\n\nCovariance matrix\n
 	  | $covStr""".stripMargin

@@ -13,21 +13,16 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.nnet
 
 import scala.util.Random
-import scala.collection.mutable.ListBuffer
 
-import org.scalaml.core.Types.ScalaMl.{DblPair, DblArray, DblMatrix}
 import org.scalaml.core.Types.emptyString
 import org.scalaml.stats.XTSeries._
-import org.scalaml.supervised.nnet.MLPConfig._
-import org.scalaml.core.Design.Model
-import org.scalaml.supervised.nnet.MLP.MLPMode
 import org.scalaml.util.{FormatUtils, MathUtils}
-import MLPModel._, MathUtils._, FormatUtils._
+import MLPModel._, FormatUtils._
 
 
 
@@ -50,7 +45,7 @@ import MLPModel._, MathUtils._, FormatUtils._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 May 5, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / Multilayer 
 		 * perceptron / Model definition
 		 */
@@ -59,7 +54,7 @@ final protected class MLPConnection(
 		src: MLPLayer, 
 		dst: MLPLayer,
 		model: Option[MLPModel])
-		(implicit obj: MLP.MLPMode) {
+		(implicit mode: MLP.MLPMode) {
 	import MLPConnection._
 
 	
@@ -71,7 +66,7 @@ final protected class MLPConnection(
 		 * @note The constant BETA may have to be changed according to the type of data.
 		 */
 	private[this] var synapses: MLPConnSynapses = 
-		if(model == None) {
+		if(model.isDefined) {
 			val boundary = BETA/Math.sqrt(src.output.length+1.0)
 			Array.fill(dst.numNonBias)(Array.fill(src.numNodes)((Random.nextDouble*boundary, 0.00)))
 		}
@@ -86,7 +81,7 @@ final protected class MLPConnection(
 		 * weights and values. If the destination is the output layer, the output value is just 
 		 * the dot product weights and values.
 		 */
-	def connectionForwardPropagation: Unit = {
+	def connectionForwardPropagation(): Unit = {
 			
 			// Iterates over all the synapses, compute the dot product of the output values
 			// and the weights and applies the activation function
@@ -126,10 +121,9 @@ final protected class MLPConnection(
 				// Traverses the synapses and update the weights and gradient of weights
 		val oldSynapses = synapses.zipWithIndex.map{
 			case (synapsesj, j) => synapsesj.zipWithIndex.map{
-				case ((w, dw), i) => { 
+				case ((w, dw), i) =>
 					val ndw = config.eta*connectionDelta.delta(j)(i)
 					(w + ndw - config.alpha*dw, ndw)
-				} 
 			}
 		}
 		synapses = oldSynapses
@@ -186,7 +180,7 @@ object MLPConnection {
 			src: MLPLayer, 
 			dst: MLPLayer,
 			model: Option[MLPModel] = None)
-			(implicit mlpObjective: MLP.MLPMode): MLPConnection =
+			(implicit mode: MLP.MLPMode): MLPConnection =
 		new MLPConnection(config, src, dst, model)
 
 }

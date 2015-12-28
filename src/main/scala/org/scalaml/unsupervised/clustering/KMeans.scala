@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.unsupervised.clustering
 
@@ -41,7 +41,7 @@ import ScalaMl._, Cluster._, XTSeries._, KMeans._
 	 * @author Patrick Nicolas
 	 * @since 0.99 July 24, 2015
 	 */
-case class KMeansConfig(val K: Int, maxIters: Int)
+case class KMeansConfig(K: Int, maxIters: Int)
 
 		/**
 		 * Class that implements the KMeans++ algorithm for which the centroids
@@ -64,7 +64,7 @@ case class KMeansConfig(val K: Int, maxIters: Int)
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 23, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning: Chapter 4 "Unsupervised learning" Clustering / K-means
 		 * @note convert the iterative method for the convergence toward minimum total reconstruction 
 		 * error into a tail recursion.
@@ -126,7 +126,7 @@ final class KMeans[T <: AnyVal](
 			}
 		
 			if( iters >= config.maxIters )
-				throw new IllegalStateException("KMeans.|> max iterations exeeded")
+				throw new IllegalStateException(s"KMeans.|> max iterations ${config.maxIters} exceeded")
 					
 					// Launch the recursion
 			update(clusters, xt, members)
@@ -150,12 +150,11 @@ final class KMeans[T <: AnyVal](
 		 * Override the ITransform operator |> to classify new observation
 		 * KMeans++ algorithm with buckets initialization.
 		 * @throws MatchError if the input time series is undefined or have no elements
-		 * @param xt time series of elements of type T
 		 * @return PartialFunction of time series of elements of type T as input to the K-means 
 		 * algorithm and a list of cluster (Option) as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if( x.length == dimension(xt) && model != None) => 
+		case x: Array[T] if x.length == dimension(xt) && model.isDefined =>
 			Try (model.map(  _.minBy(c => distance(c.center, x)) ).get )
 	}
 	
@@ -171,7 +170,7 @@ final class KMeans[T <: AnyVal](
 		val stats = statistics(xt)   
 			
 			// Extract the dimension with the highest standard deviation (2)
-		val maxSDevDim = Range(0, stats.size).maxBy(stats( _ ).stdDev )
+		val maxSDevDim = stats.indices.maxBy(stats( _ ).stdDev )
 			
 			// Rank the observations according to their increasing
 			// order of their maximum standard deviation 
@@ -206,35 +205,35 @@ final class KMeans[T <: AnyVal](
 		
 			// Filter to compute the index of the cluster which is 
 			// the closest to the data point x
-		val nReasigned = xt.view.zipWithIndex.filter{ case (x, n) => { 
-			val nearestCluster = getNearestCluster(clusters, x);
-			
-			// re-assign if the observations does not belong to this nearest cluster
+		val nReassigned = xt.view.zipWithIndex.count{ case (x, n) =>
+			val nearestCluster = getNearestCluster(clusters, x)
+
+				// re-assign if the observations does not belong to this nearest cluster
 			val reassigned = nearestCluster != members(n) 
 			
 			// Add the observation to this cluster
 			clusters(nearestCluster) += n
 			members(n) = nearestCluster
 			reassigned
-		}}.size
-		count("Reasigned", nReasigned)
-		nReasigned
+		}
+		count("Re-assigned", nReassigned)
+		nReassigned
 	}
 
 		/**
-		 * Returns the nearest {@see Cluster} to the given point
-		 * @tparam V type of the points to cluster
-		 * @param clusters the {@see Cluster}s to search
-		 * @param x the point to find the nearest {@see Cluster} for
-		 * @return the index of the nearest {@see Cluster} to the given point
+		 * Returns the nearest clusters to the given point
+		 * @param clusters The current list of cluster to evaluate
+		 * @param x The point to find the nearest clusterfor
+		 * @return The index of the nearest cluster to the given point
+		 *  @see org.scalaml.unsupervised.clustering.Cluster
 		 */
 	private def getNearestCluster(clusters: List[Cluster[T]], x: Array[T]): Int = 
 		
-	  clusters.zipWithIndex./:((Double.MaxValue, 0)){ case (p, (c, n)) => { 
+	  clusters.zipWithIndex./:((Double.MaxValue, 0)){ case (p, (c, n)) =>
 		  	// distance between this observation and the center.
 			val measure = distance(c.center, x)  
 			if( measure < p._1) (measure, n) else p
-		}}._2
+		}._2
 
 }
 
@@ -273,10 +272,12 @@ object KMeans {
 
 		/**
 		 * Constructor for KMeans using the default Euclidean distance metric
-		 * @param K Number of clusters
+		 * @param xt Input time series
 		 * @param config configuration for the execution of the KMeans algorithm
 		 * @param m Implicit declaration of manifest of type '''T''' to overcome Java erasure of 
 		 * type '''Array[T]''' when converting Array of '''T''' to Array of double and vice versa
+		 * @param num Implicit numeric type
+		 * @param f implicit conversion to Double
 		 */
 	def apply[T <: AnyVal](
 			config: KMeansConfig,
@@ -315,9 +316,9 @@ object KMeans {
 		 */
 	@throws(classOf[IllegalArgumentException])
 	def stdDev[T <: AnyVal](clusters: V[T], xt: U[T], distance: DistanceFunc[T]): DblVector = {
-		require( !clusters.isEmpty, 
+		require( clusters.nonEmpty,
 				"KMeans.stdDev Cannot compute the variance of undefined clusters")
-		require( !xt.isEmpty, 
+		require( xt.nonEmpty,
 				"KMeans.stdDev  Cannot compute the variance of clusters for undefined input data")
 				// Compute the standard deviation of the distance within each cluster
 		clusters.map( _.stdDev(xt, distance)).toVector

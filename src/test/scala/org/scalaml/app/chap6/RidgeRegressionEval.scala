@@ -21,14 +21,14 @@ import scala.language.postfixOps
 
 import org.scalaml.workflow.data.{DataSource, DataSink}
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.stats.{Difference, XTSeries}
+import org.scalaml.stats.{Difference, XTSeries, Transpose}
 import org.scalaml.core.Types.{ScalaMl, emptyString}
 import org.scalaml.core.Types.ScalaMl.{DblArray,DblVector}
 import org.scalaml.supervised.regression.linear.RidgeRegression
 import org.scalaml.supervised.regression.Regression._
 import org.scalaml.util.{DisplayUtils, FormatUtils,  LoggingUtils}
 import org.scalaml.app.Eval
-import LoggingUtils._, RidgeRegression._, XTSeries.Transpose._, Difference._, FormatUtils._, XTSeries._
+import LoggingUtils._, RidgeRegression._, Transpose._, Difference._, FormatUtils._, XTSeries._
 
 		/**
 		 * '''Purpose:''' Singleton to evaluate the Ridge regression classifier on 
@@ -37,7 +37,7 @@ import LoggingUtils._, RidgeRegression._, XTSeries.Transpose._, Difference._, Fo
 		 * @author Patrick Nicolas
 		 * @version 0.99
 		 * @see org.scalaml.supervised.regression.linear
-		 * @see: Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Ridge 
+		 * @see Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Ridge
 		 * regression
 		 */
 object RidgeRegressionEval extends Eval {
@@ -132,7 +132,7 @@ object RidgeRegressionEval extends Eval {
 			expected: DblVector, 
 			volatility: DblVector, 
 			volume: DblVector): Option[Double] = {
-		(new RidgeRegression[Double](zipToSeries(volatility, volume, 1), expected, lambda)).rss
+		new RidgeRegression[Double](zipToSeries(volatility, volume, 1), expected, lambda).rss
 	}
    
 	private def predict(

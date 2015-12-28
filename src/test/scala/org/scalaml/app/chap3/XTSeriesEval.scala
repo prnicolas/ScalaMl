@@ -21,14 +21,14 @@ import scala.util.Try
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.util.DisplayUtils
-import org.scalaml.stats.XTSeries
+import org.scalaml.stats.{XTSeries,Transpose}
 import org.apache.log4j.Logger
 import org.scalaml.util.FormatUtils
-import XTSeries.Transpose._
 import org.scalaml.util.Assertable
+import Transpose._
 
 		/**
-		 * <b>Purpose</b>Singleton to evaluate basic operation on time series.
+		 * Purpose Singleton to evaluate basic operation on time series.
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 (April 7, 2014)
 		 * @see Scala for Machine Learning Chapter 3 ''Data pre-processing'' / Time Series

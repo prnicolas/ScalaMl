@@ -13,23 +13,11 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm
 
-import scala.util.{Try, Success, Failure}
-import scala.annotation.switch
-
-import org.apache.log4j.Logger
-
-import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.core.Design.Model
-import org.scalaml.core.ETransform
-import org.scalaml.util.LoggingUtils._
 import org.scalaml.util.MathUtils._
-import HMM._
-
-
 
 	/**
 	 * Generic class for the alpha (forward) pass and beta (backward) passes used in
@@ -40,7 +28,7 @@ import HMM._
 	 * 
 	 * @author Patrick Nicolas
 	 * @since 0.98.1 March 29, 2014
-	 * @version 0.99
+	 * @version 0.99.1
 	 * @see Scala for Machine Learning Chapter 7 ''Sequential Data Models'' /Hidden Markov Model
 	 */
 protected abstract class HMMTreillis(numObs: Int, numStates: Int){ 

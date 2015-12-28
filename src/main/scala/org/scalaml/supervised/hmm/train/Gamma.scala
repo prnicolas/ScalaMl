@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm.train
 
@@ -30,40 +30,19 @@ import HMMConfig._, LoggingUtils._
 
 
 		/**
-		 * Class that encapsulates the execution parameters for the three
-		 * canonical forms of the HMM. The variables are:
-		 * '''alpha(t, i)''': Forward probability or relevant probability for state S(i) given 
-		 * a sequence of observation {0, 1,   t} [Formula M3]
-		 * '''beta(t, i)''': Backward probability or relevant probability for state S(i) given
-		 * the observations {t+1, t+2, ... T-1}
-		 * '''delta(t, i)''': Highest probability of a single path of t observations 
-		 * which ends with a given state S(i)
-		 * '''gamma(t, i)''': Probability of being in a given state S(i) at observation t
-		 * [Formula M9]
-		 * '''Di-gamma(t, i, j)''': The joint probability to be within a state S(i), transition
-		 * to state S(j) at observation t + 1 [Formula M8]
-		 * '''Psi(t, i)''': Auxiliary variable that computes the index of the state that
-		 * maximum the probability of a single path of a sequence of t observations.[Formula M14]
-		 * 
+		 * Matrix of the probability of being in a given state S(i) at observation of
+		 * index t [Formula M9]
 		 * @constructor Create a new execution state for the HMM for a predefined Lambda model
 		 * @see "A Revealing Introduction to Hidden Markov Models" 
 		 * http://www.cs.sjsu.edu/~stamp/RUA/HMM.pdf for notation.
-		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
-		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
-		 * matrix.
-		 * @param maxIters   Maximum number of iterations used in training (Baum-Welch)
+		 * @param numObs Number of observations
+		 * @param numStates  Number of states
 		 * 
 		 * @author Patrick Nicolas
-		 * @since March 24, 2014
-		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
+		 * @since 0.98.1 March 24, 2014
+		 * @see Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model
 		 */
-
-		/**
-		 * Matrix of the probability of being in a given state S(i) at observation of 
-		 * index t [Formula M9]
-		 * @see Chapter 7 Sequential data models / Hidden Markov Model / Training / Baum-Welch
-		 */
-	class Gamma(numObs: Int, numStates: Int) {
+	final class Gamma(numObs: Int, numStates: Int) {
 		private val gamma = DMatrix(numObs, numStates)
   	
 			/**

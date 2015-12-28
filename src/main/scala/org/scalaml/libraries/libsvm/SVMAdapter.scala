@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.libraries.libsvm
 
@@ -41,12 +41,12 @@ object SVMAdapter {
 	
 	def createNode(dim: Int, x: DblArray): Array[svm_node] = {
 		val newNode = new Array[svm_node](dim)
-		x.zipWithIndex.foreach{ case (y, j) =>  {
+		x.zipWithIndex.foreach{ case (y, j) =>
 			val node = new svm_node
 			node.index= j
 			node.value = y
 			newNode(j) = node 
-		}}
+		}
 		newNode
 	}
   

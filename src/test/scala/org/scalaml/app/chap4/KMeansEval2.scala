@@ -101,7 +101,7 @@ object KMeansEval2 extends Eval with Assertable {
 		val kmeans = KMeans[Double](KMeansConfig(K, MAX_ITERS), features.map(_.x))
 				
 		kmeans.model match {
-			case Some(m) => {
+			case Some(m) =>
 					// sort the model or list of clusters by the sum of features of their centroid
 				val sorted = m.sortWith( _.center.sum < _.center.sum)
 				
@@ -113,7 +113,7 @@ object KMeansEval2 extends Eval with Assertable {
 				
 				memberShip.zip(expectedId).foreach{ case (c, e) => assertList(c, e.toList)}
 				show(s"members\n${memberShip.map(_.mkString(", ")).mkString("\n")}")
-			}
+
 			case None => error("Failed building a K-means model")
 		}
 	}

@@ -25,9 +25,9 @@ import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.supervised.regression.linear.SingleLinearRegression
 import org.scalaml.util.{FormatUtils, DisplayUtils,  LoggingUtils}
-import org.scalaml.stats.XTSeries
+import org.scalaml.stats.{Loss, XTSeries}
 import org.scalaml.app.Eval
-import LoggingUtils._, YahooFinancials._, XTSeries._, FormatUtils._
+import LoggingUtils._, YahooFinancials._, XTSeries._, FormatUtils._, Loss._
 
 		/**
 		 * '''Purpose:''' Singleton to evaluatcdorge the single variate linear regression.
@@ -134,7 +134,7 @@ object SingleLinearRegressionEval extends Eval {
 			slope: Double, 
 			intercept: Double): Double = {
 		val predicted = xt.map( slope*_ + intercept)
-		XTSeries.mse(predicted, expected)
+		Loss.mse(predicted, expected)
 	}
 }
 

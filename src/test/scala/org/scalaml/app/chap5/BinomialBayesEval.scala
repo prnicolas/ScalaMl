@@ -24,22 +24,22 @@ import org.apache.log4j.Logger
 
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.stats.{Difference, XTSeries}
+import org.scalaml.stats.{Difference, XTSeries, Transpose}
 import org.scalaml.workflow.data.{DataSource,DocumentsSource}
 import org.scalaml.filtering.movaverage.SimpleMovingAverage
 import org.scalaml.supervised.bayes.NaiveBayes
 import org.scalaml.validation.OneFoldXValidation
 import org.scalaml.util.DisplayUtils
 import org.scalaml.app.Eval
-import YahooFinancials._, ScalaMl._, SimpleMovingAverage._, XTSeries._, Difference._, XTSeries.Transpose._
+import YahooFinancials._, ScalaMl._, SimpleMovingAverage._, XTSeries._, Difference._, Transpose._
 
 		/**
 		 * Generic trait that implements the extraction of data associated to a stock
 		 * or ETF ticker symbol, located into a directory
 		 * @author Patrick Nicolas
-		 * @note Scala for Machine learning Chapter 5 Naive Bayes Models
+		 * @see Scala for Machine learning Chapter 5 Naive Bayes Models
 		 */
-trait BayesEval extends Eval {
+private[scalaml] trait BayesEval extends Eval {
 	protected val path = "resources/data/chap5/"
 
 	  
@@ -70,8 +70,7 @@ object BinomialBayesEval extends BayesEval {
 		 * Name of the evaluation 
 		 */
 	val name: String = "BinomialBayesEval"
-	  
-	  
+
 	type Output = List[Array[Int]]
 	  
 		/** 
@@ -125,10 +124,10 @@ object BinomialBayesEval extends BayesEval {
 				// Compute the difference between the value of a feature and its moving average
 			(x, deltas) <- computeDeltas(obs)
 			
-				// Extract the labels or expected outcome using the XTSeries.difference
+				// Extract the labels or expected outcome using the Difference
 			expected <- Try { difference(x.head.toVector, diffInt) }
 			
-				// Extract the time series of features using XTSeries.transpose
+				// Extract the time series of features using Transpose
 			features <- Try { transpose(deltas) }
 			
 				// Applies a one fold validation of the features and expected values using

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.reinforcement.qlearning
 	
@@ -67,7 +67,7 @@ final class QLModel(val bestPolicy: QLPolicy, val coverage: Double) extends Mode
 		 * }}}
 		 * @constructor Create a Q-learning algorithm. [config] Configuration for Q-Learning algorithm. 
 		 * @tparam T type of the object for which the state is used in the reinforcement learning
-		 * @param config Configuration for the Q-learning algorithm
+		 * @param conf Configuration for the Q-learning algorithm
 		 * @param qlSpace Initial search space of states
 		 * @param qlPolicy Initial policy for the search
 		 * 
@@ -108,7 +108,7 @@ final class QLearning[T](
 		 * type QLState[T]
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case st: U if(isModel) => 
+		case st: U if isModel =>
 			Try(if( st.isGoal) st else nextState(QLIndexedState[T](st, 0)).state)
 	}
 
@@ -119,7 +119,7 @@ final class QLearning[T](
 	final def getModel: Option[QLModel] = model
 	
 	@inline 
-	final def isModel: Boolean = model != None
+	final def isModel: Boolean = model.isDefined
 	  
 	override def toString: String = qlPolicy.toString + qlSpace.toString
 
@@ -228,11 +228,7 @@ final class QLearning[T](
 		 * @since January 22, 2014
 		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
-case class QLInput(
-		val from: Int, 
-		val to: Int, 
-		val reward: Double = 1.0, 
-		val prob: Double = 1.0)
+case class QLInput(from: Int, to: Int, reward: Double = 1.0, prob: Double = 1.0)
 
 
 		/**
@@ -240,7 +236,7 @@ case class QLInput(
 		 * and validate their input parameters
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 22, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chap 11 Reinforcement learning Q-learning
 		 */
 object QLearning {  
@@ -260,12 +256,12 @@ object QLearning {
 		/** 
 		 * Constructor of the Q-learning with a given configuration, array of id of goal states,
 		 * input (or initial) states, the sequence of instance associated to each state and
-		 * the optional contraints on actions available to any given state during training.
+		 * the optional constraints on actions available to any given state during training.
 		 * @tparam T type of the instance or object which state is managed by Q-learning algorithm
 		 * @param config Configuration for the Q-learning algorithm
 		 * @param input Input to the search space as tuple of rewards and probability for each 
 		 * action between states
-		 * @param Instances Sequence of instances associated to the states managed by Q-learning
+		 * @param instances Sequence of instances associated to the states managed by Q-learning
 		 * @param constraints User provided function that computes the list of states available to a
 		 * given state through an action.
 		 * @throws IllegalArgumentException if one of the parameters is undefined or improperly initialized
@@ -279,9 +275,9 @@ object QLearning {
 			constraints: Option[Int => List[Int]] = None): QLearning[T] = {
 	  
 	
-		require( !input.isEmpty, "QLearning Cannot initialize with undefine input rewards")
-		require( goals.length > 0, "QLearning Cannot initialize with undefined goals")
-		require( !instances.isEmpty, "QLearning Cannot initialize with undefined features")
+		require( input.nonEmpty, "QLearning Cannot initialize with undefine input rewards")
+		require( goals.nonEmpty, "QLearning Cannot initialize with undefined goals")
+		require( instances.nonEmpty, "QLearning Cannot initialize with undefined features")
 		
 		new QLearning[T](
 				config, 
@@ -294,7 +290,7 @@ object QLearning {
 		 * input (or initial) states, the input data set, a reward function used in the
 		 * creation of the rewards matrix, a probability function used in the creation of the
 		 * probabilities matrix, the sequence of instance associated to each state and
-		 * the optional contraints on actions available to any given state during training.
+		 * the optional constraints on actions available to any given state during training.
 		 * 
 		 * The ''input'' or initial states are computed from the data set, ''xt'' and the 
 		 * ''reward'' and the ''probability'' functions are 
@@ -304,7 +300,7 @@ object QLearning {
 		 * @param xt Input date set
 		 * @param reward Function that populates the rewards matrix
 		 * @param probability Function that populates the probabilities matrix
-		 * @param Instances Sequence of instances associated to the states managed by Q-learning
+		 * @param instances Sequence of instances associated to the states managed by Q-learning
 		 * @param constraints User provided function that computes the list of states available to a
 		 * given state through an action.
 		 * @throws IllegalArgumentException if one of the parameters is undefined or improperly initialized
@@ -321,10 +317,10 @@ object QLearning {
 	
 		require( xt.size > 2, s"QLearning Cannot initialize with ${xt.size} states")
 		require( goals.length > 0, "QLearning Cannot initialize with undefined goals")
-		require( !instances.isEmpty, "QLearning Cannot initialize with undefined features")
+		require( instances.nonEmpty, "QLearning Cannot initialize with undefined features")
 		
 		
-		val r = Range(0, xt.size)
+		val r = xt.indices
 		val input = new ArrayBuffer[QLInput]
 		r.foreach(i => 
 			r.foreach(j => 
@@ -355,10 +351,9 @@ object QLearning {
 		 * Constructor of the Q-learning with a predefined number of states, index of the goal state,
 		 * input (or initial) states and a features set.
 		 * @param config Configuration for the Q-learning algorithm
-		 * @param numStates Number of states in the model 
 		 * @param goal Index of the goal state
 		 * @param input Input to the search space
-		 * @param features Features set as a set of variables of type Array[Int] generated through 
+		 * @param instances Features set as a set of variables of type Array[Int] generated through
 		 * quantization of signal (floating point values)
 		 */
 	def apply[T](

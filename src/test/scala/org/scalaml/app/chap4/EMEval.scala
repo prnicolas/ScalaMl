@@ -93,7 +93,7 @@ object EMEval extends UnsupervisedLearningEval {
 				xs <- pfnSrc(extractor)
 				
 					// Apply the simple moving average of the first variable
-				if( pfnSmAve.isDefinedAt(xs.head.toVector))
+				if pfnSmAve.isDefinedAt(xs.head.toVector)
 					values <- pfnSmAve(xs.head.toVector)
 					
 					// Generate the features by filtering using a sampling rate

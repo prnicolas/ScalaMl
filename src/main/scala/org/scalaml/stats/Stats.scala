@@ -13,14 +13,12 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.stats
 
-import scala.Array.canBuildFrom
-import scala.util.Try
 import org.scalaml.core.Types.ScalaMl._
-import Stats._
+import org.scalaml.stats.Stats._
 
 
 
@@ -41,7 +39,7 @@ import Stats._
 		 */
 @throws(classOf[IllegalArgumentException])
 class Stats[T <: AnyVal](values: XSeries[T])(implicit f: T => Double) extends MinMax[T](values){
-	require( !values.isEmpty, "Stats: Cannot initialize stats with undefined values")
+	require( values.nonEmpty, "Stats: Cannot initialize stats with undefined values")
   
 	private[this] val sums = values./:((0.0, 0.0))((acc, s) => (acc._1 + s, acc._2 + s*s))
 	
@@ -81,7 +79,7 @@ class Stats[T <: AnyVal](values: XSeries[T])(implicit f: T => Double) extends Mi
     
     	/**
 		 * Compute the Laplace smoothing factor for a set of values
-		 * @param smoothing smoothing values ]0, 1] for Laplace smoothing function
+		 * @param dim smoothing correction factor ]0, 1] for Laplace smoothing function
 		 * @return smoothed mean
 		 * @throws IllegalArgumentException if the smoothing factor is out of range
 		 */
@@ -157,9 +155,9 @@ object Stats {
 		 * Compute the Gauss density function for a value given a mean and standard deviation
 		 * @param mean mean values of the Gauss probability density function
 		 * @param stdDev standard deviation of the Gauss probability density function
-		 * @param value  value for which the Gauss probability density function has to be computed
+		 * @param x  value for which the Gauss probability density function has to be computed
 		 * @return Gaussian probability
-		 * @throws IllegalArgumentExeption if stdDev is close t zero
+		 * @throws IllegalArgumentException if stdDev is close t zero
 		 */
 	
 	final def gauss(mean: Double, stdDev: Double, x: Double): Double = {
@@ -196,9 +194,8 @@ object Stats {
    
 		/**
 		 * Compute the Normal (Normalized Gaussian) density (mean = 0, standard deviation = 1.0)
-		 * @param x list of parameters
 		 * @return Gaussian probability
-		 * @throws IllegalArgumentExeption if stdDev is close to zero or the number of parameters 
+		 * @throws IllegalArgumentException if stdDev is close to zero or the number of parameters
 		 * is less than 3
 		 */
 	val normal = gauss(0.0, 1.0, _: Double)
@@ -215,7 +212,7 @@ object Stats {
 		 * of parameters
 		 * @param x list of parameters
 		 * @return Bernoulli probability 
-		 * @throws IllegalArgumentExeption if the number of parameters is less than 3
+		 * @throws IllegalArgumentException if the number of parameters is less than 3
 		 */
 	@throws(classOf[IllegalArgumentException])
 	final def bernoulli(x: Double*): Double = {

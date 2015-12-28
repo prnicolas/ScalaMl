@@ -17,10 +17,9 @@
  */
 package org.scalaml.supervised.bayes
 
-import org.scalaml.stats.Stats
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.util.{FormatUtils, DisplayUtils}
-import NaiveBayesModel._, Stats._, Likelihood._, FormatUtils._
+import org.scalaml.util.FormatUtils
+import NaiveBayesModel._, Likelihood._, FormatUtils._
 
 		/**
 		 * Class that represents a likelihood for each feature for Naive Bayes classifier.
@@ -46,9 +45,9 @@ import NaiveBayesModel._, Stats._, Likelihood._, FormatUtils._
 		 * @see Scala for Machine Learning Chapter 5 "Naive Bayes Models"
 		 */
 protected class Likelihood[T <: AnyVal](
-    val label: Int, 
-    val muSigma: Vector[DblPair], 
-    val prior: Double)(implicit f: T => Double) {
+    	val label: Int,
+    	val muSigma: Vector[DblPair],
+    	val prior: Double)(implicit f: T => Double) {
   
 	check(muSigma, prior)
   
@@ -69,8 +68,7 @@ protected class Likelihood[T <: AnyVal](
 			// The log likelihood is computed by adding the log of the density for each dimension.
 			// Sum {log p(xi|C) }
 		(obs, muSigma).zipped
-				.map{ case(x, (mu, sig)) => (x, mu, sig)}
-				./:(0.0)((post, entry) => {
+				.map{ case(x, (mu, sig)) => (x, mu, sig)}./:(0.0)((post, entry) => {
 				  
 					val mean = entry._2		// mean
 					val stdDev = entry._3	// standard deviation

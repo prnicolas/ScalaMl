@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.util
 
@@ -68,7 +68,7 @@ object MapUtils {
 			 *  @param cnt Counter which elements are used to divided corresponding elements of this 
 			 *  counter
 			 *  @return HashMap of key of type T and value as the quotient of the elements of this 
-			 *  counter by the corresponding elemetns in cnt
+			 *  counter by the corresponding elements in cnt
 			 */
 		def / (cnt: Counter[T]): mutable.HashMap[T, Double] = map { 
 		  case(str, n) => (str, if( !cnt.contains(str) ) 
@@ -94,7 +94,7 @@ object MapUtils {
 			 * Override the put method of the Hash map to enforce additive update
 			 * @param key key of the new element
 			 * @param _xs value of the new element of type List
-			 * @return Option of the updated list if method is successful, None otherwies
+			 * @return Option of the updated list if method is successful, None otherwise
 			 */
 		override def put(key: T, _xs: List[T]): Option[List[T]] = {
 			val xs = getOrElse(key, List[T]())
@@ -106,7 +106,7 @@ object MapUtils {
 			 * with a element which value is identical to the key.
 			 * @param key key of the new element
 			 * @param t value of the new element with the same type as the key
-			 * @return Option of the updated list if method is successful, None otherwies
+			 * @return Option of the updated list if method is successful, None otherwise
 			 */
 		def add(key: T, t: T): Option[List[T]] = {
 			val xs = getOrElse(key, List[T]())

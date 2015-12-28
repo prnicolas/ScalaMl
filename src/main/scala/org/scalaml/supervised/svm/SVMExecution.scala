@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.svm
 
@@ -97,8 +97,6 @@ object SVMExecution {
 	
 		/**
 		 * Constructor for the SVMExecution class with a default cache size
-		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation 
-		 * during training.
 		 * @param eps Convergence Criteria to exit the training cycle
 		 * @param nFolds Number of folds used in K-fold validation of the SVM model. Value -1 indicates 
 		 * no validation
@@ -108,8 +106,6 @@ object SVMExecution {
 	
 		/**
 		 * Constructor for the SVMExecution class with a default cache size and no validation fold
-		 * @param cacheSize Size of the cache used in LIBSVM to preserve intermediate computation 
-		 * during training.
 		 * @param eps Convergence Criteria to exit the training cycle
 		 */
 	def apply(eps: Double): SVMExecution = new SVMExecution(DEFAULT_CACHE_SIZE, eps, -1)

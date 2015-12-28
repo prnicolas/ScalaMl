@@ -13,27 +13,23 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.regression.linear
 
 	// Scala classes
-import scala.util.{Try, Success, Failure}
+import scala.util.Try
 import scala.language.implicitConversions
 import scala.annotation.implicitNotFound
-
-	// Third party libraries classes
-import org.apache.log4j.Logger
 
 	// ScalaML classes
 import org.scalaml.libraries.commonsmath.RidgeRAdapter
 
 import org.scalaml.core.Types.ScalaMl
-import org.scalaml.stats.XTSeries
 import org.scalaml.core.ITransform
 import org.scalaml.supervised.regression.{Regression, RegressionModel}
 import org.scalaml.util.LoggingUtils
-import ScalaMl._, LoggingUtils._, Regression._
+import ScalaMl._, Regression._
 
 
 		/**
@@ -57,12 +53,12 @@ import ScalaMl._, LoggingUtils._, Regression._
 		 * @constructor Instantiates a Ridge regression model. 
 		 * @throws IllegalArgumentException if the class parameters are undefined
 		 * @param xt Time series of features observations
-		 * @param y Target/ labeled/ expected output values
+		 * @param expected Target/ labeled/ expected output values
 		 * @param lambda L2 penalty factor.
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 April 14, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
 		 * @see org.apache.commons.math3.linear._
 		 * @see org.scalaml.core.ITransform
@@ -88,14 +84,14 @@ final class RidgeRegression[T <: AnyVal](
 		 * type Double as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if(isModel && x.length == model.get.size - 1) 
+		case x: Array[T] if isModel && x.length == model.get.size - 1
 			=> Try ( dot(x, model.get) )
 	}
 
 	
 	import scala.language.reflectiveCalls
 	override protected def train:  RegressionModel = {
-	  val mlr = new RidgeRAdapter(lambda, xt.head.size)
+	  val mlr = new RidgeRAdapter(lambda, xt.head.length)
 				// Invoke Apache Commons Math generation of the X and Y values.
 		mlr.createModel(xt, expected)
 				// Extract the tuple (regression weights, residual sum of squared errors)
@@ -117,7 +113,7 @@ object RidgeRegression {
 		/**
 		 * Default constructor for the Ridge regression
 		 * @param xt Time series of features observations
-		 * @param y Target or labeled output values
+		 * @param expected Target or labeled output values
 		 * @param lambda L2 penalty factor.
 		 */
 	def apply[T <: AnyVal](
@@ -131,9 +127,9 @@ object RidgeRegression {
 	
 	
 	private def check[T <: AnyVal](xt: XVSeries[T], y: DblVector)(implicit f: T => Double): Unit = {
-		require( !xt.isEmpty, 
+		require( xt.nonEmpty,
 				"Cannot create Ridge regression model with undefined features")
-		require( y.length > 0, 
+		require( y.nonEmpty,
 				"Cannot create Ridge regression model with undefined observed data")
 		require(xt.size == y.length, 
 				s"Size of the features set ${xt.size} differs for the size of observed data ${y.length}")

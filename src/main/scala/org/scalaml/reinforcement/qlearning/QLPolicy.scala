@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -36,7 +36,6 @@ object QLDataVar extends Enumeration {
 		 * a Q-value that is computed and updated during training.
 		 * @param reward  reward assigned during initialization
 		 * @param probability probability (or hindrance) assigned during initialization
-		 * @param value Q-Value updated during training using the Q-learning formula
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 25, 2014
 		 * @version 0.98.2
@@ -59,7 +58,7 @@ final protected class QLData(val reward: Double, val probability: Double = 1.0) 
 	
 		/**
 		 * Select the attribute of an element of Q-learning policy using its type
-		 * @param type of the attribute {REWARD, PROBABILITY, VALUE}
+		 * @param varType of the attribute {REWARD, PROBABILITY, VALUE}
 		 * @return value of this attribute
 		 */
 	final def value(varType: QLDataVar): Double = varType match {
@@ -216,16 +215,14 @@ final protected class QLPolicy(val input: Seq[QLInput]) {
 object QLPolicy {
 		/**
 		 * Default constructor for a Q-learning policy
-		 * @param numStates Number of states for this policy.
 		 * @param input Input (rewards and probability) to initialize the policy.
 		 */
-	def apply[T](input: Seq[QLInput]): QLPolicy = 
-			new QLPolicy(input)
+	def apply[T](input: Seq[QLInput]): QLPolicy = new QLPolicy(input)
 
 	private val MAX_NUM_TRANSITIONS = 32768
 
 	protected def check(input: Seq[QLInput]): Unit = {
-		require(input.size > 0 && input.size < MAX_NUM_TRANSITIONS, 
+		require(input.nonEmpty && input.size < MAX_NUM_TRANSITIONS,
 				s"QLPolicy found input size = ${input.size} requires 0 <  < $MAX_NUM_TRANSITIONS")
 	}
 }

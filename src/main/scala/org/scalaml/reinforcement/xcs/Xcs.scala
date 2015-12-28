@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.reinforcement.xcs
 
@@ -38,7 +38,7 @@ import org.scalaml.core.ETransform
 		 * @note Scala for Machine Learning Chapter 11 Reinforcement learning / Extended learning 
 		 * classifier systems
 		 */
-case class XcsSensor(val id: String, val value: Double)
+case class XcsSensor(id: String, value: Double)
 
 		/**
 		 * Example of implementation of the XCS algorithm with a predefined
@@ -46,7 +46,7 @@ case class XcsSensor(val id: String, val value: Double)
 		 * credit to individual rules that improve the performance (or objective
 		 * function) of a system. 
 		 * @constructor Create an extended learning classifiers system.
-		 * @throws IllegalArgumenException if the configuration, input information or training 
+		 * @throws IllegalArgumentException if the configuration, input information or training
 		 * episodes is undefined
 		 * @param config  Configuration for the XCS algorithm (GA and Q-Learning parameters)
 		 * @param population Initial population for the search space of classifiers

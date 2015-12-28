@@ -19,14 +19,14 @@ package org.scalaml.app.chap8
 
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.Fundamentals
-import org.scalaml.stats.XTSeries
+import org.scalaml.stats.Transpose
 import org.scalaml.core.Types
 import org.scalaml.supervised.svm.{SVM, SVMConfig, SVMExecution}
 import org.scalaml.supervised.svm.kernel.RbfKernel
 import org.scalaml.supervised.svm.formulation.OneSVCFormulation
 import org.scalaml.util.{DisplayUtils,  LoggingUtils}
 import org.scalaml.app.Eval
-import LoggingUtils._, XTSeries.Transpose._
+import LoggingUtils._, Transpose._
 
 
 		/**

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.trading
 
@@ -63,7 +63,7 @@ final class OptionModel(
 		nVolatility <- normalize(volatility)
 		vltyByVol <- src.get(volatilityByVol)
 		nVltyByVol <- normalize(vltyByVol)
-		priceToStrike <- normalize(price.map(p => (1.0 - strikePrice/p)))
+		priceToStrike <- normalize(price.map(p => 1.0 - strikePrice / p))
 	} 
 	yield {
 		
@@ -71,10 +71,10 @@ final class OptionModel(
 		// minimum time to the expiration of the option.
 	  
 		nVolatility.zipWithIndex
-						./:(List[OptionProperty]()){ case (xs, (v, n)) => {
+						./:(List[OptionProperty]()){ case (xs, (v, n)) =>
 			val normDecay = (n + minExpT).toDouble/(price.size + minExpT)
 			new OptionProperty(normDecay, v, nVltyByVol(n), priceToStrike(n)) :: xs
-		}}
+		}
 		.drop(2).reverse
 	})
 	.getOrElse(List.empty[OptionProperty])
@@ -82,7 +82,7 @@ final class OptionModel(
 		/**
 		 * Compute an approximation of the value of the options by 
 		 * discretization the actual value in multiple levels
-		 * @param y Array of option prices
+		 * @param o Array of option prices
 		 * @return A map of array of levels for the option price and accuracy
 		 */
 	def quantize(o: DblArray): Map[Array[Int], Double] = {
@@ -97,10 +97,8 @@ final class OptionModel(
 					enc
 				})
 				.zip(o)
-				./:(new NumericAccumulator[Int]){ case (acc, (t, y)) => {
-						acc += (t, y)
-						acc }
-				}
+				./:(new NumericAccumulator[Int]){ case (_acc, (t, y)) => _acc += (t, y); _acc
+		}
 		
 		acc.map{ case (k, (v, w)) => (k, v/w) }
 				.map{ case( k,v) => (mapper(k), v) }.toMap
@@ -129,11 +127,11 @@ final class OptionModel(
 		 * @throws IllegalArgumentException if any of the class parameters is undefined
 		 * @param timeToExp Time left to the option before expiration as percentage of the overall
 		 * duration of the option
-		 * @param relVolatility normalized relative volatility of the underlying security for a given
+		 * @param volatility normalized relative volatility of the underlying security for a given
 		 * trading session.
-		 * @param volatilityByVol Volatility of the underlying security for a given trading session 
+		 * @param vltyByVol Volatility of the underlying security for a given trading session
 		 * relative to a trading volume for the session
-		 * @param relPriceToStrike Price of the underlying security relative to the Strike price for 
+		 * @param priceToStrike Price of the underlying security relative to the Strike price for
 		 * a given trading session.
 		 * 
 		 * @author Patrick Nicolas
@@ -149,7 +147,7 @@ class OptionProperty(
 		priceToStrike: Double) {
 	val toArray = Array[Double](timeToExp, volatility, vltyByVol, priceToStrike)
    
-	require(timeToExp > 0.01, s"OptionProperty time to expiration found $timeToExp erquierd 0.01")
+	require(timeToExp > 0.01, s"OptionProperty time to expiration found $timeToExp required 0.01")
 }
 
 

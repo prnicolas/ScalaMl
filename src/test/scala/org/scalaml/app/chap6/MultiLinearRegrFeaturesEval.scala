@@ -23,7 +23,7 @@ import scala.language.postfixOps
 import org.apache.log4j.Logger
 
 import org.scalaml.trading.YahooFinancials
-import org.scalaml.stats.XTSeries
+import org.scalaml.stats.{Loss, XTSeries}
 import org.scalaml.core.Types.ScalaMl
 import org.scalaml.core.Types.emptyString
 import org.scalaml.workflow.data.{DataSink, DataSource}
@@ -31,9 +31,7 @@ import org.scalaml.supervised.regression.linear.MultiLinearRegression
 import org.scalaml.filtering.movaverage.SimpleMovingAverage
 import org.scalaml.util.{FormatUtils, DisplayUtils,  LoggingUtils}
 import org.scalaml.app.Eval
-import LoggingUtils._, XTSeries._, YahooFinancials._, MultiLinearRegression._, FormatUtils._, ScalaMl._
-
-
+import LoggingUtils._, XTSeries._, YahooFinancials._, MultiLinearRegression._, FormatUtils._, ScalaMl._, Loss._
 
 		/**
 		 * '''Purpose:''' Singleton to test the multi-variate least squares regression. 
@@ -56,7 +54,6 @@ object MultiLinearRegrFeaturesEval extends Eval {
 	final val SMOOTHING_PERIOD: Int = 16
 	
 	type Models = List[(Array[String], DblMatrix)]
-
 
 		/**
 		 * Name of the evaluation 
@@ -109,7 +106,7 @@ object MultiLinearRegrFeaturesEval extends Eval {
 				// Filter out the noise
 			smoothed <- filter(pfnMovAve)
 			
-				// Generaates the different models to evaluates
+				// Generates the different models to evaluates
 			models <- createModels(smoothed)
 			
 				// Compute the residual sum of square errors for each model
@@ -144,13 +141,13 @@ object MultiLinearRegrFeaturesEval extends Eval {
  	private def getRss(xt: Vector[DblArray], y: DblVector, featureLabels: Array[String]): String = {
 		val regression = new MultiLinearRegression[Double](xt, y)
 
-		val modelStr = regression.weights.get.zipWithIndex.map{ case( w, n) => {
+		val modelStr = regression.weights.get.zipWithIndex.map{ case( w, n) =>
 			val weights_str = format(w, emptyString, SHORT)
 			if(n == 0 )
 				s"${featureLabels(n)} = $weights_str"
 			else
-				s"${weights_str}.${featureLabels(n)}"
-		}}.mkString(" + ")
+				s"$weights_str}.${featureLabels(n)}"
+		}.mkString(" + ")
 		s"model: $modelStr\n RSS = ${regression.get.rss}"
 	}
  	

@@ -13,16 +13,14 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.core
 
-import scala.language.higherKinds
-
-import scala.util.Try
-
-import org.scalaml.core.Design.Config
 import org.scalaml.core.functional._Monad
+
+import scala.language.higherKinds
+import scala.util.Try
 
 		/**
 		 * Data transformation using an explicit model or configuration parameter
@@ -30,7 +28,7 @@ import org.scalaml.core.functional._Monad
 		 *   |>[U,V]     u: U -> | _config: T | -> v: V
 		 * }}}
 		 * @tparam T type parameter of the model or configuration parameter
-		 * @param _config configuration or model used to implement the }> (partial function) operator
+		 * @param config configuration or model used to implement the }> (partial function) operator
 		 * @note This data transformation is different from ''ITransform'' class which relies on an 
 		 * implicit model generated from a input data set (i.e. supervised learning algorithm 
 		 * @see Scala for Machine learning Chapter 2 "Hello World!" Designing a workflow / 
@@ -38,10 +36,9 @@ import org.scalaml.core.functional._Monad
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.99  May 06, 2015
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 */
-abstract class ETransform[T](val config: T) { 
-	import ETransform._
+private[scalaml] abstract class ETransform[T](val config: T) {
 	
 		/**
 		 * Input type for the data transformation using config
@@ -54,9 +51,6 @@ abstract class ETransform[T](val config: T) {
   
 	/**
 	 * Declaration of the  data transformation on an explicit model
-	 * @tparam U type of the input data (time series, observations, 
-	 * model parameters...)
-	 * @tparam V type of the output data
 	 * @return A partial function that implement the data transformation U => Try[V]
 	 */
 	def |> : PartialFunction[U, Try[V]]
@@ -67,7 +61,7 @@ abstract class ETransform[T](val config: T) {
    * Companion object to the ETransform class that define the zero value
    * @author Patrick Nicolas
    * @since May 06, 2015
-   * @version 0.99
+   * @version 0.99.1.1
    */
 object ETransform {
     /**
@@ -113,7 +107,7 @@ object ETransformMonad {
      * 
 		 * @author Patrick Nicolas
 		 * @since  0.99
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 2 Hello World!/Designing a workflow / 
 		 * Monadic data transformation
 		 */

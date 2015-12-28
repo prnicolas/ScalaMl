@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.svm
 
@@ -39,7 +39,7 @@ import org.scalaml.util.LoggingUtils._
 		 * model either is properly trained or does not exists. The class relies on the LIBSVM library: 
 		 * [[http://www.csie.ntu.edu.tw/~cjlin/libsvm/ libsvm]]
 		 * 
-		 * The implemantation follows the standard design of supervised learning algorithm:
+		 * The implementation follows the standard design of supervised learning algorithm:
 		 * - The classifier implements the '''ITransform''' implicit monadic data transformation
 		 * - The constructor triggers the training of the classifier, making the model immutable
 		 * - The classifier implements the '''Monitor''' interface to collect profile information for 
@@ -48,9 +48,9 @@ import org.scalaml.util.LoggingUtils._
 		 * @tparam T type of elements or features in the time series.
 		 * @constructor Create a SVM algorithm for a labeled time series given a configuration.	
 		 * @throws IllegalArgumentException if the configuration or the time series is undefined.
-		 * @param configConfiguration of this SVM
+		 * @param config Configuration of this SVM
 		 * @param xt Time series to regress or classify
-		 * @param labels Labeled values for the time series used in the training of the SVM.
+		 * @param expected Labeled values for the time series used in the training of the SVM.
 		 * @author Patrick Nicolas
 		 * @since 0.98 April 28, 2014
 		 * @see org.scalaml.core.ITransform
@@ -89,7 +89,7 @@ final class SVM[T <: AnyVal](
 	final def accuracy: Option[Double] = model.map( _.accuracy)
 
 	@inline 
-	final def isModel: Boolean = model != None
+	final def isModel: Boolean = model.isDefined
 		/**
 		 * Method to compute the Means Square Error for the training of the SVM
 		 * @return Mean square error as square root of the sum of the square errors, if model was 
@@ -134,7 +134,7 @@ final class SVM[T <: AnyVal](
 		 *  as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] =  {
-		case x: Array[T] if( x.size == dimension(xt) && isModel) =>
+		case x: Array[T] if x.length == dimension(xt) && isModel =>
 			Try( predictSVM(model.get, x) )
 	}
 
@@ -154,8 +154,8 @@ final class SVM[T <: AnyVal](
 				// compute the sum of the difference of norm between the labels (actual)
 				// and the target values (expected or predicted)
 			target.view.zip(expected.view)
-						.filter{ case(x, y) => Math.abs(x- y) < config.eps }
-						.size.toDouble/expected.size
+						.count{ case(x, y) => Math.abs(x- y) < config.eps }
+						.toDouble/expected.size
 		}
 		else 0.0
 	}
@@ -170,36 +170,18 @@ final class SVM[T <: AnyVal](
 
 				// Creates a indexed time series, then
 		  	// initialize the vector of LIBSVM nodes
-		xt.zipWithIndex.foreach{ case (_x, n) => {  
+		xt.zipWithIndex.foreach{ case (_x, n) =>
 		 
 		  val nodeCol = createNode(dim, _x)
 					// initialize the SVMMNodes 
 			svmProblem.update(n, nodeCol)
-		}}
+		}
 		
 		new SVMModel(trainSVM(svmProblem, config.param), accuracy(svmProblem))
 	}._toOption("SVM training failed", logger)
- 
-		/*
-		 * Convert a ScalaMl feature (vector of type T) into 
-		 * a vector /array of LIBSVM nodes
-		 */
-	/*
-	private def toNodes(x: Array[T]): Array[svm_node] = 
-		x.zipWithIndex./:(new ArrayBuffer[svm_node])((xs, f) =>  {
-			val node = new svm_node
-			node.index = f._2
-			node.value = f._1
-			xs.append(node)
-			xs
-		}).toArray
-		* 
-		*/
 
 	override def toString: String =
-		if(model != None) 
-			s"${config.toString}\n${model.get.toString}" 
-		else "SVM model undefined"
+		if(model.isDefined)  s"${config.toString}\n${model.get.toString}" else "SVM model undefined"
 }
 
 
@@ -213,15 +195,15 @@ final class SVM[T <: AnyVal](
 object SVM {
 		/**
 		 * Default constructor for the support vector machine
-		 * @param configConfiguration of this SVM
+		 * @param config Configuration of this SVM
 		 * @param xt Time series to regress or classify
-		 * @param labels Labeled values for the time series used in the training of the SVM.
+		 * @param expected Labeled values for the time series used in the training of the SVM.
 		 */
 	def apply[T <: AnyVal](
 			config: SVMConfig, 
 			xt: XVSeries[T], 
-			labels: DblVector)(implicit f: T => Double): SVM[T] = 
-		new SVM[T](config, xt, labels)
+			expected: DblVector)(implicit f: T => Double): SVM[T] =
+		new SVM[T](config, xt, expected)
 
 			/**
 		 * Implicit conversion from a SVM[T] to a Try[SVM[T]] type.
@@ -230,14 +212,14 @@ object SVM {
 		
 	private def check[T <: AnyVal](
 			state: SVMConfig, 
-			xt: XVSeries[T], 
-			labels: DblVector)(implicit f: T => Double) {
+			xt: XVSeries[T],
+			expected: DblVector)(implicit f: T => Double) {
 	  
-		require( !xt.isEmpty, "SVM.check  Features for the SVM are undefined")
-		require( labels.length > 0, 
+		require( xt.nonEmpty, "SVM.check  Features for the SVM are undefined")
+		require( expected.nonEmpty,
 				"SVM.check  Labeled observations for the SVM are undefined")
-		require(xt.size == labels.length, 
-				s"SVM.check found ${xt.size} observation != ${labels.length} labels required =")
+		require(xt.size == expected.length,
+				s"SVM.check found ${xt.size} observation != ${expected.length} labels required =")
 	}
 }
 

@@ -13,28 +13,17 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.plots
 
-import scala.collection._
-
-import org.jfree.data.xy.XYDataset
-import org.jfree.data.xy.{XYSeriesCollection, XYSeries}
-import org.jfree.data.statistics.DefaultMultiValueCategoryDataset
-import org.jfree.chart.{ChartFactory, JFreeChart}
-import org.jfree.chart.plot.{PlotOrientation, XYPlot, CategoryPlot}
-import org.jfree.chart.renderer.xy.XYShapeRenderer
-import org.jfree.chart.axis.{ValueAxis, NumberAxis}
-import org.jfree.chart.ChartFrame
+import org.jfree.chart.{ChartFrame, JFreeChart}
 import org.jfree.chart.title.TextTitle
-import org.jfree.chart.renderer.xy.{XYDotRenderer, XYLineAndShapeRenderer}
-import org.jfree.chart.renderer.category.LineAndShapeRenderer
-import org.jfree.util.ShapeUtilities
-
 import org.scalaml.core.Types.ScalaMl
+import org.scalaml.plots.Plot._
 import org.scalaml.util.DisplayUtils
-import Plot._
+
+import scala.collection._
 
 object ChartType extends Enumeration {
 	type ChartType = Value
@@ -46,13 +35,11 @@ case class Legend(key: String, title: String, xLabel: String, yLabel: String) {
 	def toList: List[String] = List[String](key, title, xLabel, yLabel)
 }
 
-import java.util.List
-import java.awt.{GradientPaint, Color, Stroke, Shape, Paint, BasicStroke}
-import java.awt.geom.Ellipse2D
+import java.awt.Stroke
 
 		/**
 		 * Generic plotting class that uses the JFreeChart library.
-		 * @param config  Configuration for the plot of type '''PlotInfo'''
+		 * @param legend  Legend for the plot of type '''PlotInfo'''
 		 * @param theme Configuration for the display of plots of type '''PlotTheme'''
 		 * @author Patrick Nicolas
 		 * @since  0.97 November 18, 2013
@@ -82,7 +69,7 @@ abstract class Plot(legend: Legend, theme: PlotTheme) {
 		/**
 		 * DisplayUtils a vector of Double value in a 2D plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
-		 * @param y Arrayva;ie  double values
+		 * @param y Array of double values
 		 * @param width Width for the display (pixels)
 		 * @param height Height of the chart (pixels)
 		 */
@@ -94,7 +81,7 @@ abstract class Plot(legend: Legend, theme: PlotTheme) {
 		val frame = new ChartFrame(s"Chart ${count+1}: $id", chart)		
 		val anchor = getLocation
 		frame.setLocation(anchor._1, anchor._2)
-		frame.pack
+		frame.pack()
 		frame.setVisible(true)
 	}
 	
@@ -118,6 +105,7 @@ abstract class Plot(legend: Legend, theme: PlotTheme) {
 		 */
 object Plot {
   import org.scalaml.core.Types.ScalaMl._
+
   import scala.collection._
   	
 	// type PlotInfo = (String, String, String)

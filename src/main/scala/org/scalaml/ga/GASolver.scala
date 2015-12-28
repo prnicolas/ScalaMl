@@ -13,19 +13,15 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.ga
 
-import scala.util.{Try, Random}
-
 import org.apache.log4j.Logger
-
 import org.scalaml.core.ETransform
-import org.scalaml.core.Types.ScalaMl.{DblArray, DblMatrix}
 import org.scalaml.ga.state._
-import org.scalaml.util.DisplayUtils
-import Chromosome._
+
+import scala.util.Try
 
 
 		/**
@@ -36,10 +32,10 @@ import Chromosome._
 		 * class has only one public method search.
 		 * @tparam T Type of the gene (inherited from '''Gene''')
 		 * @constructor Create a generic GA-based solver. 
-		 * @param conf  Configuration parameters for the GA algorithm. The configuration is used as 
+		 * @param config  Configuration parameters for the GA algorithm. The configuration is used as
 		 * a model for the explicit data transformation.
 		 * @param score Scoring method for the chromosomes of this population
-		 * @param monitor optional method to monitor the state and size of the population during
+		 * @param _monitor optional method to monitor the state and size of the population during
 		 * reproduction.
 		 * 
 		 * @author Patrick Nicolas
@@ -53,8 +49,6 @@ final protected class GASolver[T <: Gene](
 		score: Chromosome[T] => Unit,
 		_monitor: Option[Population[T] => Unit]) 
 	extends ETransform[GAConfig](config) with GAMonitor[T] {
-	
-	import GAConfig._, GASolver._
   
 	
 	type U = Population[T]
@@ -68,7 +62,7 @@ final protected class GASolver[T <: Gene](
 		 * Method to resolve any optimization problem using a function to generate
 		 * a population of Chromosomes, instead an existing initialized population
 		 * @param initialize Function to generate the chromosomes of a population
-		 * @throws IllegalArgumenException If the initialization or chromosome generation 
+		 * @throws IllegalArgumentException If the initialization or chromosome generation
 		 * function is undefined
 		 */
 	def |>(initialize: () => Population[T]): Try[Population[T]] = this.|> (initialize())
@@ -87,9 +81,9 @@ final protected class GASolver[T <: Gene](
 		 * containing the fittest chromosomes as output.
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {	
-		case population: U if(population.size > 1 && isReady) => {
+		case population: U if population.size > 1 && isReady =>
 		
-			start
+			start()
 				// Create a reproduction cycle manager with a scoring function
 			val reproduction = Reproduction[T](score)
 			
@@ -107,7 +101,6 @@ final protected class GASolver[T <: Gene](
 				// The population is returned no matter what..
 			population.select(score, 1.0)
 		  Try(population)
-		}
 	}
 }
 

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.core
 
@@ -51,14 +51,19 @@ object Types {
 		type XSeries[T] = Vector[T]
 		type XVSeries[T] = Vector[Array[T]]
 
-		case class Pair(val p: DblPair) {
+		case class Pair(p: DblPair) {
 		   def + (o: Pair): Pair = Pair((p._1 + o.p._1, p._2 + o.p._2))
 		   def / (o: Pair): Pair = Pair((p._1/o.p._1, p._2/o.p._2))
 		}
 
 			
 		final def sqr(x: Double): Double = x*x
-		
+
+			/**
+			 * Default conversion from Int to Double
+			 * @param n  Integer input
+			 * @return Double version of the integer
+			 */
 		implicit def intToDouble(n: Int): Double = n.toDouble
 	 
 		import scala.reflect.ClassTag
@@ -66,24 +71,40 @@ object Types {
 		implicit def arrayT2DblArray[T <: AnyVal](vt: Array[T])(implicit f: T => Double): DblArray = 
 			vt.map( _.toDouble)
 
-			
-		
+
+			/**
+			 * In place division of all elements of a given row of a matrix
+			 * @param m Matrix of elements of type Double
+			 * @param row  Index of the row
+			 * @param z  Quotient for the division of elements of the given row
+			 * @throws java.lang.IllegalArgumentException If the row index is out of bounds
+			 */
 		@throws(classOf[IllegalArgumentException])
-		implicit def /(m: DblMatrix, n: Int, z: Double): Unit  = {
-			require(n < m.length, s"/ matrix column $n out of bounds")
+		implicit def /(m: DblMatrix, row: Int, z: Double): Unit  = {
+			require(row < m.length, s"/ matrix column $row out of bounds")
 			require(Math.abs(z) > 1e-32, s"/ divide column matrix by $z too small")
 			
-			Range(0, m(n).size).foreach( m(n)(_) /= z)
+			m(row).indices.foreach( m(row)(_) /= z)
 		}
 
+			/**
+			 * Implicit conversion of a XVSeries[T] to a Matrix of Double
+			 * @param xt  Time series of elements Array[T]
+			 * @param f  Implicit conversion of element (or data point) of type T to Double
+			 * @tparam T  Type of elements of feature
+			 * @return Matrix of type Array[Array[Double]]
+			 */
 		implicit def seriesT2Double[T <: AnyVal](xt: XVSeries[T])(implicit f: T => Double): DblMatrix = 
 				xt.map( _.map(_.toDouble)).toArray
-		
-		
+
+			/**
+			 * Implicit conversion of a pair of pairs to a Matrix with elements of type Double
+			 * @param x  Pair of tuple (Double, Double)
+			 * @return 2x2 matrix of elements of type Double
+			 */
 		implicit def dblPairs2DblMatrix2(x: ((Double, Double), (Double, Double))): DblMatrix = 
 				Array[DblArray](Array[Double](x._1._1, x._1._2), Array[Double](x._2._1, x._2._2))
-			
-    
+
 		implicit def /(v: DblArray, n: Int): Try[DblArray] = Try(v.map( _/n))
 	
 		/**
@@ -92,17 +113,13 @@ object Types {
 		 * @param index flag to display the index of the element along its value. Shown if index is 
 		 * true, not shown otherwise
 		 */
-						
 		@throws(classOf[IllegalArgumentException])
 		def toText(v: DblArray, index: Boolean): String = {
 			require( v.length > 0, 
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
-			if( index)
-			  v.zipWithIndex.map{ case(x ,n) => s"${x}:${n}"}.mkString(", ")
-
-			else
-			  v.mkString(", ").dropRight(1)
+			if( index)  v.zipWithIndex.map{ case(x ,n) => s"$x:$n"}.mkString(", ")
+			else  v.mkString(", ").trim
 		}
 
 		/**
@@ -117,13 +134,11 @@ object Types {
 					"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if(index)
-			  m.zipWithIndex.map{ case(v, n) => s"$n:${toText(v, true)}"}.mkString("\n")
-
+			  m.zipWithIndex.map{ case(v, n) => s"$n:${toText(v, index)}"}.mkString("\n")
 			else 
-			  m.map(v => s"${toText(v, false)}").mkString("\n")
+			  m.map(v => s"${toText(v, index)}").mkString("\n")
 		}
 	}
-
 
 	val emptyString = ""
 }

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.libraries.crf
 
@@ -24,8 +24,8 @@ import iitb.Segment.{DataCruncher, LabelMap, TrainData, DCTrainRecord}
 
 
 	/**
-	 * Singleton adapter to the iitb CRF Java library. The object is responsible for defining
-	 * the following interface classes to the iitb library
+	 * Singleton adapter to the IITB CRF Java library. The object is responsible for defining
+	 * the following interface classes to the IITB library
 	 * 
 	 * - CrfTagger Labeling or tagging utility
 	 * - CrfDataSeq Generation of the sequence of observations
@@ -33,7 +33,7 @@ import iitb.Segment.{DataCruncher, LabelMap, TrainData, DCTrainRecord}
 	 * - CrfSeqIter Iterator for the sequence of observations.
 	 * 
 	 * @author Patrick Nicolas
-	 * @version 0.99
+	 * @version 0.99.1.1
 	 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Conditional 
 	 * Random Fields.
 	 * @see iitb.CRF.*
@@ -60,13 +60,13 @@ object CrfAdapter {
 		 * 	
 		 * @author Patrick Nicolas
 		 * @since 0.98.2 April 2, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Conditional 
 		 * Random Fields.
 		 * @see ittb.CRF.FeatureGenImpl
 		 */
 	@throws(classOf[IllegalArgumentException])
-	class CrfTagger(nLabels: Int) 	
+	private[scalaml] class CrfTagger(nLabels: Int)
 			extends FeatureGenImpl(new CompleteModel(nLabels), nLabels, true) {
 	  
 		require(nLabels > 0 && nLabels < MAX_NUM_LABELS, 
@@ -81,17 +81,17 @@ object CrfAdapter {
 		 * undefined or out of range
 		 * @see ittb.CRF.DataSequence
 		 * @param nLabels  Number of labels (or tags) used in the training of CRF
-		 * @param entry  Recommendation or observation as a sequence of words.
+		 * @param words  Recommendation or observation as a sequence of words.
 		 * @param delim  Delimiter of segments in the sequence
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.2 April 2, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Conditional 
 		 * Random Fields.
 		 */
 	@throws(classOf[IllegalArgumentException])
-	class CrfDataSeq(nLabels: Int, words: Vector[String], delim: String) extends DataSequence {
+	private[scalaml] class CrfDataSeq(nLabels: Int, words: Vector[String], delim: String) extends DataSequence {
 		check(nLabels, words)
 		
 		def this(nLabels: Int, taggedObs: String, delim: String) = this(nLabels, taggedObs.split(delim).toVector, delim)
@@ -106,7 +106,7 @@ object CrfAdapter {
 		private def check(nLabels: Int, words: Vector[String]): Unit = {
 			require(nLabels > 0 && nLabels < MAX_NUM_LABELS, 
 				s"CrfDataSeq: Found nlabels $nLabels required > 0 and < $MAX_NUM_LABELS")
-			require(words.size > 0, "CrfDataSeq vector of token is undefined")
+			require(words.nonEmpty, "CrfDataSeq vector of token is undefined")
 	  }
 	}
 	
@@ -128,7 +128,7 @@ object CrfAdapter {
 		 * Random Fields.
 		 */
 	@throws(classOf[IllegalArgumentException])
-	case class CrfSeqDelimiter(obsDelim: String, labelsDelim: String, seqDelim: String) {
+	private[scalaml] case class CrfSeqDelimiter(obsDelim: String, labelsDelim: String, seqDelim: String) {
 		require( !obsDelim.isEmpty, 
 			"Delimiter for observations record is undefined")
 		require( !labelsDelim.isEmpty, 
@@ -156,7 +156,7 @@ object CrfAdapter {
 		 * Random Fields.
 		 */
 	@throws(classOf[IllegalArgumentException])
-	class CrfSeqIter(nLabels: Int, input: String, delim: CrfSeqDelimiter) extends DataIter {
+	private[scalaml] class CrfSeqIter(nLabels: Int, input: String, delim: CrfSeqDelimiter) extends DataIter {
 		import CrfSeqIter._
 		check(nLabels, input)
 	
@@ -180,7 +180,7 @@ object CrfAdapter {
 		/**
 		 * Override the DataIter.startScan interface method. Delegate the call to DataCruncher
 		 */
-		override def startScan: Unit = trainData.startScan
+		override def startScan(): Unit = trainData.startScan()
 	}	
 
 

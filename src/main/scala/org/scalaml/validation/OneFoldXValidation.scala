@@ -13,15 +13,14 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.validation
 
-import scala.collection.immutable.VectorBuilder
 import scala.util.{Try, Random}
 import scala.language.implicitConversions
 
-import org.scalaml.core.Types.ScalaMl.{DblArray, XVSeries}
+import org.scalaml.core.Types.ScalaMl.XVSeries
 
 
 			/**
@@ -60,7 +59,7 @@ final class OneFoldXValidation[T <: AnyVal](
 			// The random ordering of the dataset in the training set
 			// and validation set are created by assigning a random value
 			// to each labeled observations then sort them 
-		val ordLabeledData = labeledData.map((_, Random.nextDouble))
+		val ordLabeledData = labeledData.map((_, Random.nextDouble()))
 							.sortWith( _._2 < _._2).unzip._1
 
 			// Return the pair of training and validation sets.
@@ -85,7 +84,7 @@ final class OneFoldXValidation[T <: AnyVal](
 	 * Object companion to OneFoldXValidation that defines internal type
 	 * and constructors.
 	 * @author Patrick Nicolas
-	 * @version 0.99
+	 * @version 0.99.1
 	 * @see Scala for Machine Learning Chapter 2 Hello World! / Assessing a model / 
 		 * K-Fold validation
 	 */

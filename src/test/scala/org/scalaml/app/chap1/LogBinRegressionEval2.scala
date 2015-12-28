@@ -102,7 +102,7 @@ object LogBinRegressionEval2 extends Eval {
 		
 			// Generation of a binomial logistic model for a two variable model
 		normalize(y1.map(_.toDouble)) match {
-			case Success(yn1) => {
+			case Success(yn1) =>
 				val regr = new LogBinRegression(x1, yn1, NITERS, ETA, EPS)
 								
 				val res = regr.counters(COUNT_ERR).map( _.map(_.toString).mkString("\n"))
@@ -117,13 +117,13 @@ object LogBinRegressionEval2 extends Eval {
 				show(s"${regr.classify(test0)}")
 				val test1 = Array[Double](0.07, 0.71)
 				show(s"${regr.classify(test1)}")
-			}
+
 			case Failure(e) => error("Binomial logistic regression test 2- dimension", e)
 		}
 		
 			// Generation of a binomial logistic model for a single variable model
 		normalize(y2.map(_.toDouble)) match {
-			case Success(yn2) => {
+			case Success(yn2) =>
 				val regr = new LogBinRegression(x2, yn2, NITERS, ETA, EPS)
 				val res = regr.counters(COUNT_ERR).map( _.map(_.toString).mkString("\n"))
 						.getOrElse("Empty data")
@@ -137,7 +137,7 @@ object LogBinRegressionEval2 extends Eval {
 				show(s"${regr.classify(test0)}")
 				val test1 =  Array[Double](0.91)
 				show(s"${regr.classify(test1)}")
-			}
+
 			case Failure(e) => error("Binomial logistic regression test single dimension", e)
 		}
 	}

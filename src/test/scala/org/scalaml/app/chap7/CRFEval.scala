@@ -17,14 +17,13 @@
  */
 package org.scalaml.app.chap7
 
-import org.scalaml.util.MathUtils._
+// import org.scalaml.util.MathUtils._
 import org.scalaml.supervised.crf.{CrfConfig, Crf}
-import org.scalaml.libraries.crf.CrfAdapter
-import org.scalaml.util.{DisplayUtils, FormatUtils, LoggingUtils}
+import org.scalaml.libraries.crf.CrfAdapter._
+import org.scalaml.util.{FormatUtils, LoggingUtils}
 import org.scalaml.app.Eval
-import org.scalaml.core.Types.emptyString
 import org.scalaml.core.Types.ScalaMl.DblArray
-import LoggingUtils._, FormatUtils._, CrfAdapter._
+import LoggingUtils._
 
 		/**
 		 * '''Purpose:'''Singleton for the evaluation of Conditional Random Fields
@@ -34,8 +33,6 @@ import LoggingUtils._, FormatUtils._, CrfAdapter._
 		 * @see Scala for Machine Learning  Chapter 7 ''Sequential data models'' Conditional Random Fields.
 		 */
 object CrfEval extends Eval {
-	import scala.util.Try
-	import org.apache.log4j.Logger
 	
 		/**
 		 * Name of the evaluation 
@@ -74,14 +71,13 @@ object CrfEval extends Eval {
 
 			// Step 2: Create a CRF model (weights) through training by instantiating
 			// 				 the Crf class
-		
 		val crf = Crf(NLABELS, config, delimiters, PATH)
 		
 			// Step 3: Display the model for the Crf classifier
 		if(crf.weights != None ) {
 			val results = crf.weights.map( w => {
 				display(w)
-				format(w, "CRF weights", SHORT)
+				FormatUtils.format(w, "CRF weights", SHORT)
 			})
 			show(s"weights for conditional random fields\n${results.mkString(",")}") 
 		}

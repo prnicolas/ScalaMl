@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml
 
@@ -24,7 +24,7 @@ package org.scalaml
 		 * - Q-learning iterative algorithm '''qlearning'''
 		 * 
 		 * - Extended Learning Classifiers '''xcs'''
-		 * @note Scala for Machine Learning Chapter 11: ''Reinforcement learning''
+		 * @see Scala for Machine Learning Chapter 11: ''Reinforcement learning''
 		 */
 package object reinforcement { }
 // ---------------------------------------  EOF -----------------------------------------

@@ -13,21 +13,16 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.workflow.module
 
 import scala.util.Try
 import scala.language.implicitConversions
 
-import org.scalaml.stats.XTSeries
-import org.scalaml.filtering.movaverage.ExpMovingAverage
 import org.scalaml.core.Types.ScalaMl._
 import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
-
-import DisplayUtils._
-
 
 	/**
 	 * Preprocessing module used to instantiate a pre-processing/filtering component 
@@ -51,13 +46,13 @@ trait PreprocessingModule[T] {
 		/**
 		 * Base class for all pre-processing algorithms
 		 */
-	trait Preprocessor[T] {
+	trait Preprocessor[U] {
 		/**
 		 * Pre-process a time series using this specific filtering algorithm
 		 * @param xt vector of input data 
 		 * @return A vector of Double values if computation is successful, None otherwise
 		 */
-		def execute(xt: Vector[T]): Try[DblVector]
+		def execute(xt: Vector[U]): Try[DblVector]
 	}
 
 
@@ -65,7 +60,7 @@ trait PreprocessingModule[T] {
 		 * Wrapper for the exponential moving average defined in Chapter 3 "Data pre-processing"
 		 * @author Patrick Nicolas
 		 * @since 0.98.1
-		 * @version 0.99
+		 * @version 0.99.1
 		 * 
 		 * @tparam  T type of single feature input data bounded (view) by Double
 		 * @constructor Create an exponential moving average wrapper 
@@ -74,12 +69,12 @@ trait PreprocessingModule[T] {
 		 * @see Scala for machine learning Chapter 2 "Hello World!" modularization
 		 * @see org.scalaml.filtering.ExpMovingAverage
 		 */
-	final class ExpMovingAverage[T <: AnyVal](period: Int)(implicit num: Numeric[T], f: T=> Double) 
-			extends Preprocessor[T] {
+	final class ExpMovingAverage[U <: AnyVal](period: Int)(implicit num: Numeric[T], f: U=> Double)
+			extends Preprocessor[U] {
 		import scala.language.postfixOps
  
 		private[this] val expMovingAverage = 
-				org.scalaml.filtering.movaverage.ExpMovingAverage[T](period)
+				org.scalaml.filtering.movaverage.ExpMovingAverage[U](period)
 		private val pfn = expMovingAverage |>
 		
 		/**
@@ -87,28 +82,28 @@ trait PreprocessingModule[T] {
 		 * @param x vector of input data
 		 * @return A vector of Double values if computation is successful, None otherwise
 		 */
-		override def execute(x: Vector[T]): Try[DblVector] = pfn(x)
+		override def execute(x: Vector[U]): Try[DblVector] = pfn(x)
 	}
 	
     /**
 		 * Wrapper for the Low-band filter based of the Discrete Fourier transform..
 		 * @tparam  T type of single feature input data bounded (view) by Double
 		 * @param g   Filtering function y = g(x, fC)used in the convolution
-		 * @param fC  Frequency cutoff for this low pass filter.
+		 * @param fc  Frequency cutoff for this low pass filter.
 		 * @constructor Create a wrapper low-pass filter using the discrete Fourier transform
 		 * @throws IllegalArgumentException if the cut-off value is out of bounds
 		 * @see Scala for machine learning Chapter 2 "Hello World!" modularization
 		 * @see org.scalaml.filtering.DFTFir
 		 */
-	final class DFTFilter[T <: AnyVal](
+	final class DFTFilter[U <: AnyVal](
 			fc: Double)
-			(g: (Double, Double) => Double)(implicit f: T => Double) extends Preprocessor[T]  {
+			(g: (Double, Double) => Double)(implicit f: U => Double) extends Preprocessor[U]  {
 	  import scala.language.postfixOps
 	   
-		private[this] val filter = org.scalaml.filtering.dft.DFTFilter[T](fc, 1e-5)(g)
+		private[this] val filter = org.scalaml.filtering.dft.DFTFilter[U](fc, 1e-5)(g)
 		private[this] val pfn = filter |>
 		
-		override def execute(x: Vector[T]): Try[DblVector] = pfn(x).map(_.toVector)
+		override def execute(x: Vector[U]): Try[DblVector] = pfn(x).map(_.toVector)
   }
 }
 

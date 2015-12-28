@@ -13,12 +13,12 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.crf
 	
 	// Scala standard library
-import scala.util.{Try, Success, Failure}
+import scala.util.Try
 	// 3rd party frameworks or libraries
 
 import org.apache.log4j.Logger
@@ -26,11 +26,9 @@ import org.apache.log4j.Logger
 import org.scalaml.stats.XTSeries
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.core.ITransform
-import org.scalaml.supervised.Supervised
 import org.scalaml.util.LoggingUtils
-import org.scalaml.workflow.data.DataSource
 import org.scalaml.libraries.crf.CrfAdapter
-import CrfConfig._, LoggingUtils._, CrfAdapter._, XTSeries._
+import LoggingUtils._, CrfAdapter._, XTSeries._
 
 
 		/**
@@ -64,7 +62,7 @@ import CrfConfig._, LoggingUtils._, CrfAdapter._, XTSeries._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 April 3, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 7 "Sequential data models" / 
 		 * Conditional Random Fields.
 		 * @see org.scalaml.core.ITransform
@@ -102,10 +100,9 @@ final class Crf(
 		 * of type Double as output
 		 */
 	override def |> : PartialFunction[String, Try[V]] = {
-		case obs: String if( !obs.isEmpty && model != None) => {
+		case obs: String if obs.nonEmpty && model.isDefined =>
 			val dataSeq =  new CrfDataSeq(nLabels, obs, delims.obsDelim)
 			Try (crf.apply(dataSeq))
-		}
 	}
 	
 		/**
@@ -155,32 +152,32 @@ object Crf {
 		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
 		 * @param config Minimum set of configuration parameters required to train a CRF model
 		 * @param delims Delimiters used in extracting labels and data from the training files
-		 * @param tagFiles Vector of name for the pair of *.raw (observations) and *.tagged (labels) fiels
+		 * @param xs Vector of name for the pair of *.raw (observations) and *.tagged (labels) fiels
 		 * (taggedIdentifier for the training data set. The training set of sequences 
 		 */
 	def apply(
 			nLabels: Int, 
 			config: CrfConfig, 
 			delims: CrfSeqDelimiter, 
-			xt: Vector[String]): Crf = 
-		new Crf(nLabels, config, delims, xt)
+			xs: Vector[String]): Crf =
+		new Crf(nLabels, config, delims, xs)
 	
 		/**
 		 * Default constructor for the conditional random field.
 		 * @param nLabels Number of labels (or tags) used in tagging training sequences of observations.
 		 * @param config Minimum set of configuration parameters required to train a CRF model
 		 * @param delims Delimiters used in extracting labels and data from the training files
-		 * @param tagFiles Vector of name for the pair of *.raw (observations) and *.tagged (labels) fiels
+		 * @param tagFile prefix fo rthe files *.raw (observations) and *.tagged (labels) fiels
 		 * (taggedIdentifier for the training data set. The training set of sequences 
 		 */
 	def apply(nLabels: Int, config: CrfConfig, delims: CrfSeqDelimiter, tagFile: String): Crf = 
 		new Crf(nLabels, config, delims, Vector[String](tagFile))
   
   
-	private def check(nLabels: Int, xt: Vector[String]): Unit = {
+	private def check(nLabels: Int, xs: Vector[String]): Unit = {
 		require(nLabels > NUM_LABELS_LIMITS._1 && nLabels < NUM_LABELS_LIMITS._2, 
 				s"Number of labels for generating tags for CRF $nLabels is out of range")
-		require( xt.size > 0, "Crf number of tag files is 0")
+		require( xs.nonEmpty, "Crf number of tag files is 0")
 	}
 }
 

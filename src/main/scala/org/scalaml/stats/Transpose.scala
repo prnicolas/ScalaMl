@@ -21,8 +21,6 @@ import scala.reflect.ClassTag
 import scala.language.implicitConversions
 import org.scalaml.core.Types.ScalaMl._
 
-
-
 /**
  * Singleton that encapsulates the magnet design pattern for the transposition
  * of parameterized multi-dimension time series
@@ -32,7 +30,7 @@ import org.scalaml.core.Types.ScalaMl._
  */
 object Transpose {
   /**
-   * Generic Magnet interface for Transposition of multi-dimensional time series
+   * Generic "Magnet pattern" interface for Transposition of multi-dimensional time series
    */
   sealed trait Transpose[T] {
     type Result
@@ -46,7 +44,7 @@ object Transpose {
    * @param from Vector of array of elements of type T
    * @return Transposed matrix of type Array of Array
    */
-  implicit def xvSeries2MatrixT[T: ClassTag](from: XVSeries[T]): Transpose[T] = new Transpose[T] {
+  implicit def xvSeries2MatrixT[T: ClassTag](from: XVSeries[T])  = new Transpose[T] {
     type Result = Array[Array[T]]
     def apply(): Result =  from.toArray.transpose
   }

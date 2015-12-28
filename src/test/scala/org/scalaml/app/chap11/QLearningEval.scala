@@ -165,9 +165,8 @@ object QLearningEval extends Eval {
 	
 		val reward = (x: Double, y: Double) => Math.exp(30.0*(y-x))
 		val probabilities = (x: Double, y: Double) => if(y < 0.3*x) 0.0 else 1.0
-		
 						
-		show(s"Goal state index: ${maxProfitIndex}")
+		show(s"Goal state index: $maxProfitIndex")
 		
 			// Create a Q-learning algorithm
 		Try {
@@ -189,7 +188,7 @@ object QLearningEval extends Eval {
 			show(s"Coverage $coverage for $numStates states and $numTransitions transitions")
 					
 			val profile = qLearning.dump
-			show(s"Execution profile\n${profile}")
+			show(s"Execution profile\n$profile")
 			
 			display(qLearning)
 			qLearning

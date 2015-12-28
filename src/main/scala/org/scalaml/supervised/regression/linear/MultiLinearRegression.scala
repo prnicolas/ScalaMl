@@ -13,16 +13,13 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.regression.linear
 
-import scala.collection._
-import scala.util.{Try, Success, Failure}
+import scala.util.Try
 import scala.language.implicitConversions
 import scala.annotation.implicitNotFound
-
-import org.apache.log4j.Logger
 
 import org.scalaml.stats.XTSeries
 import org.scalaml.core.Types.ScalaMl
@@ -30,7 +27,7 @@ import org.scalaml.core.ITransform
 import org.scalaml.libraries.commonsmath.MultiLinearRAdapter
 import org.scalaml.supervised.regression.{Regression, RegressionModel}
 import org.scalaml.util.LoggingUtils
-import ScalaMl._, LoggingUtils._, ScalaMl._, XTSeries._, Regression._
+import  ScalaMl._, XTSeries._, Regression._
 
 
 		/**
@@ -53,11 +50,11 @@ import ScalaMl._, LoggingUtils._, ScalaMl._, XTSeries._, Regression._
 		 * @throws IllegalArgumentException if the input time series or the labeled data are undefined 
 		 * or have different sizes
 		 * @param xt Input multi-dimensional time series for which regression is to be computed.
-		 * @param y Labeled data for the Multivariate linear regression
+		 * @param expected Labeled data for the Multivariate linear regression
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 April 19, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 6 "Regression and regularization" / Ordinary least 
 		 * squares regression
 		 * @see org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
@@ -84,7 +81,7 @@ final class MultiLinearRegression[T <: AnyVal](
 		 * type Double as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if(isModel && x.length == model.get.size - 1) => Try( dot(x, model.get) )
+		case x: Array[T] if isModel && x.length == model.get.size - 1 => Try( dot(x, model.get) )
 	}
 	
 
@@ -106,7 +103,7 @@ final class MultiLinearRegression[T <: AnyVal](
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 April 19, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 6 "Regression and regularization" Ordinary least 
 		 * squares regression
 		 */
@@ -133,9 +130,9 @@ object MultiLinearRegression {
 			
 			// Class parameters validation function
 	private def check[T <: AnyVal](xt: XVSeries[T], y: DblVector)(implicit f: T => Double): Unit = {
-		require( !xt.isEmpty,
+		require( xt.nonEmpty,
 				"MultiLinearRegression.check Cannot create a regression with undefined time series")
-		require( y.length > 0, 
+		require( y.nonEmpty,
 				"MultiLinearRegression.check  Cannot train aregression model with undefined labels")
 		require (xt.size == y.length, 
 			s"MultiLinearRegression.check Size of input${xt.size} != size of labels ${y.length}")

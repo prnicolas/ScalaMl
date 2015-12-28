@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.libraries.commonsmath
 
@@ -73,7 +73,7 @@ final class LogisticRegressionOptimizer(
 		 * its parameters
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 May 13, 2014
-		 * @version 0.99
+		 * @version 0.99.1.1
 		 * @see Scala for Machine Learning Chapter 6 Regression and Regularization/Logistic regression
 		 */
 object LogisticRegressionOptimizer {

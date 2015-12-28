@@ -13,18 +13,14 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.supervised.hmm.decode
 
-
 import scala.annotation.tailrec
-import scala.util._
 
 import org.scalaml.util.MathUtils._
-import org.scalaml.supervised.hmm.{HMMModel, HMMConfig, HMMPrediction}
-import HMMConfig._
-
+import org.scalaml.supervised.hmm.{HMMModel, HMMPrediction}
 
 		/**
 		 * Class that implements the Viterbi algorithm to extract the best sequence
@@ -41,12 +37,11 @@ import HMMConfig._
 		 *  
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 16, 2015
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Hidden Markov Model 
 		 *  / Decoding
 		 */
 final protected class ViterbiPath(lambda: HMMModel, obsSeq: Vector[Int]) {
-  
 	private val numStates = lambda.numStates
 	private val numObs = lambda.numObs
   	
@@ -76,7 +71,6 @@ final protected class ViterbiPath(lambda: HMMModel, obsSeq: Vector[Int]) {
 		 * of observations, and prob its likelihood. The states of sequence uses a tail recursion.
 		 * The method uses the notation introduced in "Scala for Machine Learning"
 		 * and "Introduction to Machine Learning" by E. Alpaydin.
-		 * 
 		 */
 	val path: HMMPrediction = {
 	  
@@ -98,7 +92,6 @@ final protected class ViterbiPath(lambda: HMMModel, obsSeq: Vector[Int]) {
 			else 
 				viterbi(t+1)
 		}
-
 	  HMMPrediction(viterbi(1), qStar())
 	}
 
@@ -117,51 +110,21 @@ final protected class ViterbiPath(lambda: HMMModel, obsSeq: Vector[Int]) {
 		psi(t)(j) = idxDelta._1
 		delta += (t, j, idxDelta._2)
 	}
-	
-			/*
-		 * Non tail recursive alternative computation of psi and delta 
-		 */
-	/*
-	private def viterbi2(t: Int, idx: Int): Double = {
-		if( t == 0) {
-			delta(t,idx) = lambda.pi(idx)*lambda.B(idx, obsSeq(t))
-			delta(t,idx)
-		}
-		else if( t == obsSeq.size) {
-			val _max = Range(0, numStates).map(i => (i, viterbi2(t-1, i))).maxBy(_._2)
-			qStar.update(t, _max._1, psi)
-			_max._2
-		}
-		else {
-			val _max = Range(0, numStates).map(i => 
-				viterbi2(t-1, i)*lambda.A(i, idx)*lambda.B(idx,obsSeq(t))).max
-				
-			val _idx = Range(0, numStates).map(i => 
-				(i, viterbi2(t-1, i)*lambda.A(i, idx))).maxBy(_._2)._1 
-			psi(t)(idx) = idx
-			delta(t, idx) = _max
-			_max
-		}
-	}
-	* 
-	*/
-	
 }
 
 	/**
-	 * Object companion for the Viterbi algorithm for the extraction of 
-	 * best sequences. Implements the constructor - apply
+	 * Object companion for the Viterbi algorithm for the extraction of best sequences. Implements the constructor - apply
 	 * @author Patrick Nicolas
-	 * @since March 17, 2014
+	 * @since 0.98 March 17, 2014
+	 * @version 0.98.2
 	 */
 object ViterbiPath {
-
 		/**
 		 * Default constructor for the Viterbi algorithm
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
 		 * matrix.
-		 * @param obs Array of observations as integer (categorical data)
+		 * @param obsSeq Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMModel, obsSeq: Vector[Int]): ViterbiPath = 
 			new ViterbiPath(lambda, obsSeq)

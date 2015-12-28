@@ -20,7 +20,7 @@ package org.scalaml.app.chap6
 import org.apache.log4j.Logger
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
 
-import org.scalaml.stats.{Difference, XTSeries}
+import org.scalaml.stats.{Difference, XTSeries, Transpose}
 import org.scalaml.core.Types.emptyString
 import org.scalaml.core.Types.ScalaMl.{DblMatrix, DblArray, DblVector}
 import org.scalaml.supervised.regression.logistic.LogisticRegression
@@ -28,7 +28,7 @@ import org.scalaml.libraries.commonsmath.LogisticRegressionOptimizer
 import org.scalaml.workflow.data.DataSource
 import org.scalaml.trading.YahooFinancials
 import org.scalaml.util.{FormatUtils, DisplayUtils,  LoggingUtils}
-import LoggingUtils._, DisplayUtils._, XTSeries.Transpose._, Difference._, XTSeries._, FormatUtils._
+import LoggingUtils._, DisplayUtils._, Transpose._, Difference._, XTSeries._, FormatUtils._
 import org.scalaml.app.Eval
 
 
@@ -39,7 +39,7 @@ import org.scalaml.app.Eval
 		 * @author Patrick Nicolas
 		 * @version 0.98.3
 		 * @see org.scalaml.supervised.regression.logistic
-		 * @see: Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Logistic 
+		 * @see Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Logistic
 		 * regression
 		 */
 object LogisticRegressionEval extends Eval {

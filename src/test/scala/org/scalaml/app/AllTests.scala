@@ -18,16 +18,17 @@
 package org.scalaml.app
 
 	// Scala standard library
-import scala.annotation.switch
-import scala.util.Properties
 
 	// Third party frameworks
-import org.scalatest.concurrent._
-import org.scalatest.time.{Span, Seconds, Millis}
 import org.apache.log4j.Logger
 
 	// ScalaMl classes
+import org.scalaml.util.DisplayUtils._
+
 import org.scalaml.app.chap1._
+import org.scalaml.app.chap10._
+import org.scalaml.app.chap11._
+import org.scalaml.app.chap12._
 import org.scalaml.app.chap2._
 import org.scalaml.app.chap3._
 import org.scalaml.app.chap4._
@@ -36,14 +37,10 @@ import org.scalaml.app.chap6._
 import org.scalaml.app.chap7._
 import org.scalaml.app.chap8._
 import org.scalaml.app.chap9._
-import org.scalaml.app.chap10._
-import org.scalaml.app.chap11._
-import org.scalaml.app.chap12._
-import org.scalaml.util.DisplayUtils
 
 
 		/**
-		 * Singleton that executes all the test clases in Scala for Machine Learning.
+		 * Singleton that executes all the test classes in Scala for Machine Learning.
 		 * 
 		 * The tests are triggered from the Simple Build Tool (SBT) and Scalatest using the
 		 * command line ''sbt test:run''
@@ -52,6 +49,9 @@ import org.scalaml.util.DisplayUtils
 		 * or the time out is exceeded.
 		 */
 protected object AllTests extends ScalaMlTest {
+	import scala.util.Properties
+	import scala.annotation.switch
+
 	val chapter: String = "All tests"
 	  
 	private val CONFIGURATION = 
@@ -70,7 +70,7 @@ protected object AllTests extends ScalaMlTest {
 		 * Following the order of the chapters. See individual class xxxEval 
 		 * for description and purpose of the test
 		 */
-  def run: Unit = {
+  def run(): Unit = {
 			// Chapter 1
 		evaluate(MinMaxEval)
 		evaluate(LogBinRegressionEval)
@@ -89,8 +89,8 @@ protected object AllTests extends ScalaMlTest {
 	
 			//Chapter 3
 		evaluate(XTSeriesEval)
-		evaluate(MovingAveragesEval2) 
-		evaluate(MovingAveragesEval, Array[String]("BAC", "60")) 
+		evaluate(MovingAverageEval2)
+		evaluate(MovingAverageEval, Array[String]("BAC", "60"))
 		evaluate(DFTEval)
 		evaluate(DFTEval, Array[String]("BAC"))
 		evaluate(DFTFilterEval, Array[String]("BAC"))
@@ -167,7 +167,7 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(ActorsManagerEval, Array[String]("router"))
 		evaluate(TransformFuturesEval)
 
-		evaluate(SparkKMeansEval)
+		// evaluate(SparkKMeansEval)
 	}
 		
 		/**
@@ -194,21 +194,19 @@ protected object AllTests extends ScalaMlTest {
 		buf.append(s"Scala version: $scalaVersion\n")
 		(scalaVersion.charAt(2): @switch) match {
 			case '9' => buf.append("Scala version should be 2.10.2 or higher")
-			case '1' => {
+			case '1' =>
 				(scalaVersion.charAt(3): @switch) match {
 					case '0' => buf.append("Compatible Akka version should be 2.2.4 or lower")
 					case '1' => buf.append("Compatible Akka version should be 2.3.4 or higher")
 				}
-			}
 			case _ => buf.append("Could not initialize")
 		}
-		DisplayUtils.show(buf.toString, logger)
+		show(buf.toString, logger)
 		count = 0
 	}
 	var count: Int = _	
 	def testCount: String = { count += 1;  String.valueOf(count) }
 }
-
 
 		/**
 		 * Driver called by simple build tool (SBT) as test:run
@@ -216,12 +214,12 @@ protected object AllTests extends ScalaMlTest {
 		 */
 object AllTestsApp extends App {
 	if( args.length > 0 ) {
-		DisplayUtils.init(args)
+		init(args)
 		AllTests.header(args)
 	}	
 	else
 		AllTests.header(Array[String]("console", "chart"))
-	AllTests.run 
+	AllTests.run()
 }
 
 

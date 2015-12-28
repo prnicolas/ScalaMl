@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml
 
@@ -34,7 +34,7 @@ package org.scalaml
 		 * - Reproduction cycle (selection, cross-over, mutation with exit conditions 
 		 * '''Reproduction'''
 		 * 
-		 * - Genetic Algorithm solver '''GASolver'''<br>
+		 * - Genetic Algorithm solver '''GASolver'''
 		 * @see Scala for Machine Learning - Chapter 10 Genetic algorithm
 		 */
 package object ga { }

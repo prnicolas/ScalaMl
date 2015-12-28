@@ -43,7 +43,7 @@ object MLPEval extends Eval {
 	val name: String = "MLPEval"
     
 	private val path = "resources/data/chap9/"
-	private val ALPHA = 0.8; 
+	private val ALPHA = 0.8
 	private val ETA = 0.05
 	private val NUM_EPOCHS = 2500
 	private val EPS = 1e-6
@@ -53,11 +53,6 @@ object MLPEval extends Eval {
 		"FXE", "FXA", "SPY", "GLD", "FXB", "FXF", "FXC", "FXY", "CYB"
 	)
 
-		/** Execution of the scalatest for '''MLP''' class.
-		 * This method is invoked by the  actor-based test framework function, ScalaMlTest.evaluate
-		 * @param args array of arguments used in the test
-		 * @return -1 in case error a positive or null value if the test succeeds. 
-		 */
 	private val STUDIES = List[Array[String]](
 		Array[String]("FXY", "FXC", "GLD", "FXA"),
 		Array[String]("FXE", "FXF", "FXB", "CYB"),
@@ -110,7 +105,7 @@ object MLPEval extends Eval {
 		val config = MLPConfig(ALPHA, ETA, NUM_EPOCHS, EPS)
 		
 		STUDIES.foreach( eval(hiddenLayers, prices, config, _))
-		show(s"Duration ${(System.currentTimeMillis - startTime)} msecs.")	
+		show(s"Duration ${System.currentTimeMillis - startTime} msecs.")
 	}
 
 	private def eval(

@@ -13,25 +13,21 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.validation
 
-import org.scalaml.util.MapUtils.Counter
-import org.scalaml.supervised.Supervised
 import org.scalaml.core.Types.ScalaMl._
-
-
 
 		/**
 		 * Generic trait for the validation method that define a single validation scoring method
 		 * @author Patrick Nicolas
 		 * @since 0.98.2 January 29, 2014
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chapter 2 "Hello World!" / Assessing a model / Validation
 		 * @see org.scalaml.stats.FValidation
 		 */
-trait Validation {
+private[scalaml] trait Validation {
 	type LabeledData[T] = (Array[T], Int)
 	type ValidationType[T] = Vector[LabeledData[T]]
 		/**
@@ -40,19 +36,6 @@ trait Validation {
 		 */
 	def score: Double
 }
-
-
-		/**
-		 * Companion object to the validation 
-		 */
-/*
-object Validation {
-  type LabeledData[T] = (Array[T], Int)
-  type ValidationType[T] = Vector[LabeledData[T]]
-}
-* 
-*/
-
 
 	/**
 	 * Generic classifier model validation using a F score.
@@ -63,7 +46,7 @@ object Validation {
 	 * prediction for an observation.
 	 * @param f  Implicit view bound (conversion of the type of feature to a Double)
 	 * @author Patrick Nicolas
-	 * @version 0.99
+	 * @version 0.99.1
 	 * @see Scala for Machine Learning Chap 2 ''Hello World!'' / Assessing a model / Validation
 	 */
 abstract protected class FValidation[T <: AnyVal](labeled: Vector[(Array[T], Int)])
