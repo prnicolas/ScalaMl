@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.libraries.commonsmath
 
@@ -28,7 +28,7 @@ import org.apache.commons.math3.optim.PointVectorValuePair
 import org.apache.commons.math3.util.Pair
 
 import org.scalaml.core.Types.ScalaMl._
-import org.scalaml.stats.Loss._
+import org.scalaml.stats.XTSeries._
 import org.scalaml.supervised.regression.Regression._
 import org.scalaml.libraries.commonsmath.CommonsMath._
 
@@ -83,12 +83,13 @@ object LogisticRAdapter {
 		//	val jacobian = Array.ofDim[Double](xv.size, weights0.size)
 					
 			val jacobian =
-			  xv.zipWithIndex./:(Array.ofDim[Double](xv.size, weights0.length)) {
-				case (j, (x,i)) =>
+			  xv.zipWithIndex./:(Array.ofDim[Double](xv.size, weights0.size)) {
+				case (j, (x,i)) => {   
 					val df = gradient(i)._2
-					x.indices.foreach(n => j(i)(n+1) = x(n)*df)
+					Range(0, x.size).foreach(n => j(i)(n+1) = x(n)*df)
 					j(i)(0) = 1.0
 					j
+				}
 			}
 
 					// Need to return the gradient and Jacobian using Apache Commons math types.

@@ -13,18 +13,18 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.unsupervised.clustering
 
 import scala.collection.mutable.ListBuffer
 
+import org.scalaml.stats.XTSeries
 import org.scalaml.core.Types.{ScalaMl, emptyString}
-import org.scalaml.stats.{XTSeries, Transpose, Stats}
-
+import org.scalaml.stats.Stats
 import org.scalaml.unsupervised.Distance.euclidean
 import org.scalaml.util.FormatUtils._
-import ScalaMl._, XTSeries._, Cluster._, Transpose._
+import ScalaMl._, XTSeries._, Cluster._, XTSeries.Transpose._
 
 
 		/**
@@ -39,15 +39,15 @@ import ScalaMl._, XTSeries._, Cluster._, Transpose._
 		 * }}}
 		 * @tparam T type of the 
 		 * @constructor Instantiate a cluster with an initial centroid. 
-		 * @throws IllegalArgumentException if the center is undefined (null)
-		 * @param center initial centroid for this cluster
+		 * @throws IllegalArgumenException if the center is undefined (null)
+		 * @param Initial centroid for this cluster
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 22, 2014
 		 * @version 0.98.2
 		 * @see Scala for Machine Learning Chapter 4 "Unsupervised learning" K-means clustering
 		 */
 @throws(classOf[IllegalArgumentException])
-private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit f: T => Double) {
+final class Cluster[T <: AnyVal](val center: DblArray)(implicit f: T => Double) {
 	require( center.length > 0, "Cluster Cannot create a cluster with undefined centers")
 
 	
@@ -68,7 +68,8 @@ private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit
 		 */
 	final def size: Int = members.size
 	
-	final def distanceToCentroid(x: DblArray, distance: DistanceFunc[Double]): Double = distance(center, x)
+	final def distanceToCentroid(x: DblArray, distance: DistanceFunc[Double]): Double = 
+		distance(center, x)
 	
 		/**
 		 * Recompute the coordinates for the center of this cluster.
@@ -81,7 +82,7 @@ private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit
 	final def moveCenter(
 			xt: XVSeries[T])
 		(implicit m: Manifest[T], num: Numeric[T]): Cluster[T] = {  
-		require( xt.nonEmpty, "Cluster.moveCenter Cannot relocate time series datapoint" )
+		require( !xt.isEmpty, "Cluster.moveCenter Cannot relocate time series datapoint" )
 		
 		if( members.size <= 0)
 		   throw new IllegalStateException("Cluster.stdDev this cluster has no member")
@@ -92,7 +93,7 @@ private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit
 		val sums = transpose(members.map( xt(_)).toList).map(_.sum)
 							
 			// then average it by the number  of data points in the cluster
-		Cluster[T](sums.map( _ / members.size))
+		Cluster[T](sums.map( _ / members.size).toArray)
 	}
 	
 	
@@ -110,7 +111,7 @@ private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit
 	@throws(classOf[IllegalArgumentException])
 	@throws(classOf[IllegalStateException])
 	final def stdDev(xt: XVSeries[T], distance: DistanceFunc[T]): Double = {
-		require( xt.nonEmpty,
+		require( !xt.isEmpty, 
 			"Cluster.stdDev Cannot compute the standard deviation wih  undefined times series")
 	  
 		if( members.size <= 0)
@@ -143,7 +144,7 @@ private[scalaml] final class Cluster[T <: AnyVal](val center: DblArray)(implicit
 		val membersList = members.mkString("\t   ")
 			// then collect the values of the centroid (center) vector
 		val centerString = center.map(show(_)).mkString(" ")
-		s"Cluster definition\nCentroids: $centerString\nMembership: $membersList"
+		s"Cluster definition\nCentroids: ${centerString}\nMembership: ${membersList}"
 	}
 	
 	private def show(x: Double): String = format(x, emptyString, SHORT)
@@ -162,7 +163,7 @@ object Cluster {
   
 		/**
 		 * Default constructor for a cluster
-		 * @param center Initial centroid for this cluster
+		 * @param Initial centroid for this cluster
 		 */
 	def apply[T <: AnyVal](center: DblArray)(implicit f: T => Double): Cluster[T] = new Cluster[T](center)
   

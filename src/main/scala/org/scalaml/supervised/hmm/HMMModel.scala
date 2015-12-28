@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.hmm
 
@@ -57,7 +57,7 @@ case class HMMPrediction(likelihood: Double, states: Array[Int]) {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 March 6, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Hidden Markov Model
 		 */
 final protected class HMMModel(
@@ -179,9 +179,9 @@ final protected class HMMModel(
 		 * of values of each row and divided each values by that sum.
 		 * f(x) = x/SUM{x}
 		 */
-	def normalize(): Unit = {
-		A.normalizeRows()
-		B.normalizeRows()
+	def normalize: Unit = {
+		A.normalizeRows
+		B.normalizeRows
 
 		val sum = pi.sum
 		pi = pi.map( _ /sum)
@@ -192,7 +192,7 @@ final protected class HMMModel(
 		 */
 	override def toString: String = {
 		val piStr = pi.map(x => s"${format(x, emptyString, SHORT)}").mkString(", ")
-		s"State transition A\n${A.toString}\nEmission B\n${B.toString}\nInitial pi\n$piStr"
+		s"State transition A\n${A.toString}\nEmission B\n${B.toString}\nInitial pi\n${piStr}"
 	}
  
 		/*
@@ -220,17 +220,17 @@ object HMMModel {
 		 * point values)
 		 */
 	def apply(statesSeq: Seq[DblArray], symbolsSeq: Seq[DblArray]): HMMModel = {
-		require(statesSeq.nonEmpty,
-				"Cannot create a HMM lambda model with undefined states")
-		require(symbolsSeq.nonEmpty,
+		require(statesSeq.size > 0, 
+				"Cannot create a HMM lambda model with underfined states")
+		require(symbolsSeq.size > 0, 
 				"Cannot create a HMM lambda model with undefined symbol values")
 
-		val pi = Array.fill(statesSeq.size)(Random.nextDouble())
+		val pi = Array.fill(statesSeq.size)(Random.nextDouble)
 		
 		// Square matrix A of the transition probabilities between states  (N states by N states)
 		val A = DMatrix.fill(statesSeq.size)(statesSeq)
 		val B =  DMatrix.fill(statesSeq.size)(symbolsSeq)
-		new HMMModel(A, B, pi, statesSeq.head.length)
+		new HMMModel(A, B, pi, statesSeq(0).size)
 	}
 	
 		/**
@@ -256,7 +256,7 @@ object HMMModel {
 	def apply(config: HMMConfig): HMMModel = {
 		 val A = DMatrix(config.numStates, config.numStates, 0.0)
 		 val B = DMatrix(config.numStates, config.numSymbols, 0.0)
-		 val pi = Array.fill(config.numStates)(Random.nextDouble())
+		 val pi = Array.fill(config.numStates)(Random.nextDouble)
 		 
 		 new HMMModel(A, B, pi, config.numObs)
 	}

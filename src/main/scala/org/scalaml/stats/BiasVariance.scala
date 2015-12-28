@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.stats
 
@@ -31,14 +31,15 @@ import LoggingUtils._, BiasVariance._
 		 * Class to emulate the Bias-Variance decomposition using an emulation or synthetic 
 		 * function to generate values. The purpose is to compute the bias and variance of a list 
 		 * of single variable function '''y = f(x)'''
-		 * @constructor Create emulator function to compute the bias and variance of a list of single
+		 * @tparam T type of element of data to be processed
+		 * @constructor Create emulator function to compute the bias and variance of a list of single 
 		 * variable function y = f(x).
-		 * @param target  Emulator for the bias-variance decomposition
+		 * @param emul  Emulator for the bias-variance decomposition
 		 * @param nValues Size of the dataset to use in the computation of Bias and Variance.
 		 * @throws IllegalArgumentException if the number of values, nValues is out of range 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 (April 3, 2014)
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 2 "Hello World!" / Assessing a model / 
 		 * Bias-Variance decomposition
 		 */
@@ -60,7 +61,7 @@ class BiasVariance(target: Double => Double, nValues: Int) {
 		 */
   @throws(classOf[IllegalArgumentException])
 	def fit(models: List[Double => Double]): List[DblPair] = {
-		require( models.nonEmpty,
+		require( !models.isEmpty, 
 				"BiasVarianceEmulator.fit Cannot test the fitness of an undefined function")
 
 				// Compute the mean value for the different models		  
@@ -75,10 +76,10 @@ class BiasVariance(target: Double => Double, nValues: Int) {
 	private def accumulate(f: Double => Double, numModels: Int): DblPair = {
 	  val r = Range(0, nValues)
 	  
-	 	r./:(0.0, 0.0){ case ((s,t), x) =>
+	 	r./:(0.0, 0.0){ case ((s,t), x) => { 
 			val diff = (f(x) - target(x))/numModels
 		  (s + diff*diff, t + Math.abs(f(x) -target(x)) )
-		}
+		}}
 	}
 }
 

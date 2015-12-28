@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.util
 
@@ -53,7 +53,7 @@ trait Assertable {
 		  aa.sum
 		}
 		
-		assert( !zipToXVSeries(predicted, expected)(fCompare).exists( _ > eps ), assertMsg)
+		assert( zipToXVSeries(predicted, expected)(fCompare).find( _ > eps ) == None, assertMsg)
 	}
 	
 		/**
@@ -72,7 +72,7 @@ trait Assertable {
 			eps: Double): Int = {
 	  
 		val xCompare = (x: Double, y: Double) => Math.abs(x-y)
-		assert( !zipToXSeries(predicted, expected)(xCompare).exists( _ > eps ), assertMsg)
+		assert( zipToXSeries(predicted, expected)(xCompare).find( _ > eps ) == None, assertMsg)
 		1
 	}
 	
@@ -113,8 +113,8 @@ trait Assertable {
 	}
 	
 	protected def assertVector[T](predicted: Vector[T], expected: Vector[T]): Unit = {
-		val failed = !(!predicted.zip(expected.view).forall { case (p, e) => p == e })
-		assert( failed, assertMsg)
+		val failed = predicted.zip(expected.view).map{ case( p, e) => p == e}.find(_ == false)
+		assert( failed == None, assertMsg)
 	}
 		
 	protected def assertList[T](predicted: List[T], expected: List[T]): Unit = 

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.stats
 
@@ -32,7 +32,7 @@ import org.scalaml.core.Types.ScalaMl._
 	 * }}}
 	 * 
 	 * @author Patrick Nicolas
-	 * @version 0.99.1.1
+	 * @version 0.99
 	 * @see org.scalaml.supervised.MultilinearRegression
 	 * @see Scala for Machine Learning Chap 3, ''Data Pre-processing'' / Time series in Scala
 	 */
@@ -55,7 +55,7 @@ sealed trait Difference[T] {
 		 * series.
 		 * 
 		 * @author Patrick Nicolas
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chap 3, ''Data Pre-processing'' / Time series in Scala
 		 */
 object Difference {
@@ -90,8 +90,8 @@ object Difference {
 		 */
 	implicit def vector2Series[T](valuesf: (XVSeries[Double], (DblArray, DblArray) => Array[T])) = new Difference[T] {
 		type Result = Vector[Array[T]]
-
-	  def apply(): Result = XTSeries.zipWithShift1(valuesf._1).collect { case( next, prev) => valuesf._2(prev, next) }
+			def apply(): Result = 
+			XTSeries.zipWithShift1(valuesf._1).collect { case( next, prev) => valuesf._2(prev, next) }
 	}
 
 		/**
@@ -106,16 +106,13 @@ object Difference {
 			 * Helper method to compute the differential of a target, single variable times series
 			 * @param x input time series
 			 * @param target Time series to be differentiated
-			 * @param f differential function
+			 * @param reducing or differential function
 			 * @return Try wrapper for the differential time series
 			 */
 	def differentialData[T](
 			x: DblVector, 
 			target: DblVector,
-			f: (Double, Double) =>T): Try[(DblVector, Vector[T])] = {
-				val v: Vector[T] = difference(target, f)
-				Try((x, v))
-			}
+			f: (Double, Double) =>T): Try[(DblVector, Vector[T])] = Try((x, difference(target, f)))
 			
 			
 			/**
@@ -124,7 +121,7 @@ object Difference {
 			 * @param x First input time series
 			 * @param y Second input time series
 			 * @param target Time series to be differentiated
-			 * @param f differential function
+			 * @param reducing or differential function
 			 * @return Try wrapper for the differential time series
 			 */
 	def differentialData[T](

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised
 
@@ -24,7 +24,7 @@ package org.scalaml.supervised
 		 * - Configuration of the conditional random fields with L2 regularization '''CrfConfig'''<br>
 		 * - Definition of data sequence used in training of Conditional Random fields 
 		 * '''CrfTrainingSet'''<br>
-		 * - Implementation of the Conditional Random fields using the IITB CRF library '''Crf'''<br>
+		 * - Implementation of the Conditional Random fields using the iitb CRF library '''Crf'''<br>
 		 * - Definition of a CRF model '''CrfModel'''
 		 * @see iitb CRF library http://sourceforge.net/projects/crf/
 		 * @note Scala for Machine Learning Chapter 7 Sequential data models / Conditional random fields

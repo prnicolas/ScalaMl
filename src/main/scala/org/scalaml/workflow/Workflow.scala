@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.workflow
 
@@ -30,7 +30,7 @@ import org.scalaml.core.ETransform
 		 * to build a dynamic computation workflow.
 		 * @author Patrick Nicolas
 		 * @since 0.98.1  December 11, 2013
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
 		 * Dependency injection
 		 */
@@ -41,7 +41,7 @@ trait Sampling[T,A,B] { val sampler: ETransform[T] { type U = A; type V = B} }
 		 * to build a dynamic computation workflow
 		 * @author Patrick Nicolas
 		 * @since 0.908.1 December 11, 2013
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
 		 * 	Dependency injection
 		 */
@@ -52,7 +52,7 @@ trait Normalization[T,A,B] { val normalizer: ETransform[T] { type U = A; type V 
 		 * to build a dynamic computation workflow
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 December 11, 2013
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
 		 * Dependency injection
 		 */
@@ -64,7 +64,7 @@ trait Aggregation[T,A,B] { val aggregator: ETransform[T] { type U = A; type V = 
 		 * are initialize at run-time.
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 December 11, 2013
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 2 Hello world! / Designing a workflow / 
 		 * Dependency injection
 		 */

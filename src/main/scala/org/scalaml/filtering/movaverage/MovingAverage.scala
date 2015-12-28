@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.filtering.movaverage
 
@@ -37,7 +37,7 @@ import ScalaMl._, XTSeries._, SimpleMovingAverage._, WeightedMovingAverage._
 		 * @version 0.98
 		 * @see Scala for Machine Learning Chapter 3 Data Pre-processing / Moving averages
 		 */
-private[scalaml] trait MovingAverage[T]
+trait MovingAverage[T]
 
 
 		/**
@@ -52,7 +52,8 @@ private[scalaml] trait MovingAverage[T]
 		 * @constructor Create a simple moving average with a period '''period'''
 		 * @param period period or size of the time window, p in the moving average
 		 * @param num instance of Numeric type using for summation
-		 * @throws IllegalArgumentException period is non positive
+		 * @throws IllegalArgumentExceptionif period is non positive
+		 * @throws ImplicitNotFoundException if the numeric instance is not defined prior 
 		 * instantiation of the moving average
 		 * 
 		 * @author Patrick Nicolas
@@ -85,7 +86,7 @@ protected class SimpleMovingAverage[T <: AnyVal](period: Int)
 		 * Double as output.
 		 */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if xt.nonEmpty  => Try( get(xt))
+		case xt: U if( !xt.isEmpty) => Try( get(xt))
 	}
    
 
@@ -96,7 +97,7 @@ protected class SimpleMovingAverage[T <: AnyVal](period: Int)
 		 * type vector of Double for output.
 		 */
 	def get : PartialFunction[XSeries[T], DblVector] = {
-		case data: XSeries[T] if data.size >= period =>
+		case data: XSeries[T] if( data.size >= period ) => {
 		  
 				// Create a sliding window as a array of pairs of values (x(t), x(t-p))
 			val splits = data.splitAt(period)
@@ -107,7 +108,8 @@ protected class SimpleMovingAverage[T <: AnyVal](period: Int)
 			val zero = splits._1.sum/period
 			
 			val smoothed = slider.scanLeft(zero){ case (s, (x,y)) => s + (y - x)/period }
-			if( zeros.nonEmpty ) zeros ++ smoothed else smoothed
+			if( !zeros.isEmpty ) zeros ++ smoothed else smoothed
+		}
 	}
 }
 
@@ -181,9 +183,9 @@ final protected class ExpMovingAverage[@specialized(Double) T <: AnyVal](
 		  * as output
 		  */
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if xt.size > 1 =>
+		case xt: U if(xt.size > 1) => {
 			val alpha_1 = 1-alpha
-			var y: Double = xt.head
+			var y: Double = xt(0)
 			
 				// Applies the exponential smoothing formula for each data point
 			Try(xt.map(x => {
@@ -191,6 +193,7 @@ final protected class ExpMovingAverage[@specialized(Double) T <: AnyVal](
 				y = z
 				z 
 			}))
+		}
 	}
 }
 
@@ -199,7 +202,7 @@ final protected class ExpMovingAverage[@specialized(Double) T <: AnyVal](
 	 * Companion object for the Exponential moving average to define the constructors apply
 	 * @author Patrick Nicolas
 	 * @since 0.98 February 7, 2014
-	 * @version 0.99.1.1
+	 * @version 0.99
 	 * @see Scala for Machine Learning Chapter 3 "Data Pre-processing" / Moving averages
 	 */
 object ExpMovingAverage {
@@ -247,13 +250,15 @@ final class WeightedMovingAverage[T <: AnyVal](weights: DblArray)
      
 		/**
 		 * Implementation of the data transformation.
+		 * @tparam U type of input data
+		 * @tparam V type of output data
 		 * @throws MatchError if the number of weights exceeds the number of observations
 		 * @return '''PartialFunction''' of type vector of '''Double''' for input to the transformation, and 
 		 * type vector of '''Double''' for output.
 		 */
   
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if xt.size >= weights.length =>
+		case xt: U if(xt.size >= weights.length ) => {
 		  	
 		  	// Compute the smoothed time series by apply zipping a
 				// time window (array slice) and normalized weights distribution
@@ -263,7 +268,8 @@ final class WeightedMovingAverage[T <: AnyVal](weights: DblArray)
 			)
 			
 				// Create a time series with the weighted data points
-			if( zeros.nonEmpty ) Try(zeros ++ smoothed) else Try(smoothed.toVector)
+			if( !zeros.isEmpty ) Try(zeros ++ smoothed) else Try(smoothed.toVector)
+		}
 	}
 }
 

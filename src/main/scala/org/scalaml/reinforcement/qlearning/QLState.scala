@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -46,7 +46,7 @@ class QLState[T](val id: Int, val actions: Seq[QLAction] = List.empty, instance:
 		 * @return true if the state has no actions, false otherwise
 		 */
 	@inline
-	final def isGoal: Boolean = actions.nonEmpty
+	final def isGoal: Boolean = !actions.isEmpty
   
 		/**
 		 * Textual representation of a state in Q-learning. The state is defined
@@ -63,10 +63,8 @@ class QLState[T](val id: Int, val actions: Seq[QLAction] = List.empty, instance:
 		 * @tparam T type of the instance or object which state is managed by Q-learning algorithm
 		 * @param state current state in the search for the optimal policy
 		 * @param iter number of iterations executed so far within this episode or epoch
-		 * @author Patrick Nicolas
-		 * @version 0.99.1
 		 */
-case class QLIndexedState[T](state: QLState[T], iter: Int)
+case class QLIndexedState[T](val state: QLState[T], val iter: Int)
 
 
 		/**
@@ -84,6 +82,7 @@ object QLState {
 		 * @param id Identifier for the state.
 		 * @param actions List of actions for that transition from this state to other states. 
 		 * Each action transition the model to single state.
+		 * @param property Optional property of this state. 
 		 */
 	def apply[T](id: Int, actions: Seq[QLAction], instance: T): QLState[T] = 
 			new QLState(id, actions, instance)

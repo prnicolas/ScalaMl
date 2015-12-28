@@ -35,7 +35,7 @@ import DisplayUtils._, HMM._
 		 * '''Purpose:''' Singleton for the decoding of Hidden Markov Models 
 		 * presented in chapter 7 ''Sequential Data Models''
 		 * 
-		 * - Symbols: Continuous values {'low' 'high' }
+		 * - Symbols: Continous values {'low' 'high' }
 		 * - Number of states 3
 		 * - Number of symbols 2
 		 * - Number of observations 22

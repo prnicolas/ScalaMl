@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.trading.operator
 
@@ -47,7 +47,7 @@ class SOperator(_id: Int) extends Operator {
    
 		/**
 		 * Create a new trading signal operator with a new identifier
-		 * @param idx identifier for the operator
+		 * @param number identifier for the operator
 		 * @return new trading signal operator
 		 */
 	override def apply(idx: Int): SOperator = SOperator.SOPERATORS(idx) 

@@ -13,11 +13,11 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.filtering.kalman
 
-	// Scala standard library
+	// Scala standard libraary
 import scala.annotation.implicitNotFound
 import scala.util.{Try, Random}
 import scala.collection._
@@ -40,7 +40,7 @@ import DKalman._, XTSeries._
 		 * of this class has to be provided implicitly in the scope of the Kalman filter
 		 * instance (DKalman).
 		 * @param qr Tuples that define the mean values of the process and measurement noise.
-		 * @param profile Scalar function that specify the white noise distribution
+		 * @param white Scalar function that specify the white noise distribution
 		 * @constructor Create an instance of QRNoise with a tuple {mean q noise, mean R noise}. 
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 12, 2014
@@ -73,13 +73,7 @@ case class QRNoise(qr: DblPair, profile: Double => Double = normal) {
 	lazy val noisyR: DblArray = Array[Double](r, r)
 }
 
-/**
- * Configuration for Kalman
- * @param A State transition matrix
- * @param B Control state matrix
- * @param H Matrix that defines the dependency of the measurement on the state of the system<
- * @param P Covariance error matrix
- */
+
 case class KalmanConfig(A: DblMatrix, B: DblMatrix, H: DblMatrix, P: DblMatrix)
 
 
@@ -88,13 +82,18 @@ case class KalmanConfig(A: DblMatrix, B: DblMatrix, H: DblMatrix, P: DblMatrix)
 		 * provide the time independent state transition t to t+1, the input matrix B. the measurement 
 		 * dependency matrix, H and the error matrix P. This implementation uses the ''Apache Commons 
 		 * math library.'' The process and measurement white noise is provided as an implicit value.
-		 * @param config Configuration for Kalman contains the state transition matrix, Control state matrix, Matrix that
-		 *               defines the dependency of the measurement on the state of the system and Covariance error matrix
+		 * @param A State transition matrix
+		 * @param B Control state matrix
+		 * @param H Matrix that defines the dependency of the measurement on the state of the system<
+		 * @param P Covariance error matrix
 		 * @param qrNoise Implicit value representing the white noise for the process Q and the 
 		 * measurement P.
 		 * @constructor Create a scalar Kalman filter
 		 * @throws IllegalArgumentException if the input matrices are undefined or have inconsistent 
 		 * dimension
+		 * @throws ImplicitNotFoundException if the white noise is not defined prior instantiation of 
+		 * the DKalman class.
+
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 11, 2014
 		 * @version 0.98.3
@@ -143,15 +142,15 @@ final protected class DKalman(config: KalmanConfig)
 	@throws(classOf[NonPositiveDefiniteMatrixException])
 	@throws(classOf[MatrixDimensionMismatchException])
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if  xt.nonEmpty => Try(
-			xt.map { case (prev, next) =>
+		case xt: U if( !xt.isEmpty) => Try(
+			xt.map { case (prev, next) => {
 		  
 				// 1. Initialize the measurement and process models defined in Apache Commons Math
 				// 2. Extract the new state a two values vector
 				val nState = newState(initialize(prev, next)) //Array[Double](y._1, y._2)) )
 				(nState(0), nState(1))
 			}
-		)
+		})
 	}
 	
 
@@ -178,7 +177,7 @@ final protected class DKalman(config: KalmanConfig)
 		
 			// Update the filter with the predictive value for x
 			// and update it with the A transition matrix with the process noise qr.Q
-		state._1.predict()
+		state._1.predict
 		
 		 // Conversion to Apache Commons Math internal types
 		val x: RealVector = config.A.operate(state._2).add(qrNoise.noisyQ) 
@@ -231,7 +230,7 @@ object DKalman {
 		 * measurement P
 		  */
 	def apply(A: DblMatrix, H: DblMatrix, P: DblMatrix)(implicit qrNoise: QRNoise): DKalman = 
-		new DKalman(A, noControl(A.length, A(0).length), H,P)(qrNoise)
+		new DKalman(A, noControl(A.size, A(0).size), H,P)(qrNoise)
 
   
 	private def check(A: DblMatrix,  B: DblMatrix, H: DblMatrix, P: DblMatrix): Unit = {

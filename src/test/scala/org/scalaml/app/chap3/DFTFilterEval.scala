@@ -87,16 +87,16 @@ object DFTFilterEval extends FilteringEval {
 			price <- src.get(adjClose)
 			
 				// Applies the first DFT filter with  CUTOFF = 0.005
-			if pfnDFTfilter.isDefinedAt(price)
+			if(pfnDFTfilter.isDefinedAt(price))
 				filtered <- pfnDFTfilter(price)
 				
 				// Applies the second DFT filter with  CUTOFF = 0.01
-			if pfnDFTfilter2.isDefinedAt(price)
+			if(pfnDFTfilter2.isDefinedAt(price))
 				filtered2 <- pfnDFTfilter2(price)
 		} 
 		yield {
 				// Store filtered data in output file
-			val sink2 = DataSink[Double](s"$OUTPUT$symbol.csv")
+			val sink2 = DataSink[Double](s"${OUTPUT}$symbol.csv")
 			sink2 |> filtered :: List[DblVector]()
 
 				// Display the low pass filter with CUTOFF

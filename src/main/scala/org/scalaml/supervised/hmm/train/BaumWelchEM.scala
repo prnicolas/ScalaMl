@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.hmm.train
 
@@ -36,7 +36,9 @@ import LoggingUtils._
 		 *  @throws IllegalArgumentException if lambda, params and observations are undefined or 
 		 *  eps is out of range
 		 *  @param config Configuration parameters class instance for the HMM
-		 *  @param obsSeq Observations defined as an array of Integer (or categorical data)
+		 *  @param obs Observations defined as an array of Integer (or categorical data)
+		 *  @param numIters	Number of iterations allowed in the Baum-Welch EM optimization
+		 *  @param eps Convergence criteria for the exit of the Baum-Welch EM.
 		 *  @see org.scalaml.supervised.hmm.HMMModel
 		 *  
 		 *  @author Patrick Nicolas
@@ -44,7 +46,7 @@ import LoggingUtils._
 		 *  @note Scala for Machine Learning Chapter 7 Sequential data models / Hidden Markov Model / 
 		 *  Training
 		 */
-final protected[scalaml] class BaumWelchEM(
+final protected class BaumWelchEM(
 		config: HMMConfig, 
 		obsSeq: Vector[Int]) {
 	import BaumWelchEM._
@@ -81,7 +83,7 @@ final protected[scalaml] class BaumWelchEM(
 		}
 		
 		val likelihood = getLikelihood(frwrdBckwrdLattice, 0)
-		lambda.normalize()
+		lambda.normalize
 		likelihood
 	}._toOption("BaumWelchEM not initialized", logger)
 
@@ -124,8 +126,9 @@ object BaumWelchEM {
 		/**
 		 * Default constructor for the BaumWelchEM class
 		 *  @param config Configuration parameters class instance for the HMM
-		 *  @param obsSeq Observations defined as an array of Integer (or categorical data)
-		 *  @return New instance of the Baum-Welch algorithm
+		 *  @param obs Observations defined as an array of Integer (or categorical data)
+		 *  @param numIters	Number of iterations allowed in the Baum-Welch EM optimization
+		 *  @param eps Convergence criteria for the exit of the Baum-Welch EM.
 		 */
 	def apply(config: HMMConfig, obsSeq: Vector[Int]): BaumWelchEM = 
 		new BaumWelchEM(config, obsSeq)

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.core.functional
 
@@ -23,7 +23,7 @@ import scala.language.higherKinds
    * Generic Covariant functor
    * @tparam M[_] Single type Higher hind type 
    * @author Patrick Nicolas
-   * @version 0.99.1.1
+   * @version 0.99
    * @see Scala for Machine Learning Chapter 1 "Getting Started" Abstraction / 
    * Covariant functors
    */
@@ -44,7 +44,7 @@ import scala.language.higherKinds
 		 * Generic Contravariant functor
 		 * @tparam M[_] Single type Higher hind type 
 		 * @author Patrick Nicolas
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 1 "Getting Started" Abstraction / 
 		 * Contravariant functors
 		 */
@@ -66,7 +66,7 @@ trait CoFunctor[M[_]] {
 		 * Generic BiFunctor 
 		 * @tparam M[_, _] Two type Higher hind type 
 		 * @author Patrick Nicolas
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 */
 trait BiFunctor[M[_, _]] {
 		/**
@@ -89,7 +89,7 @@ trait BiFunctor[M[_, _]] {
 		 * @tparam M[_] Single type Higher hind representing the contravariant functor
 		 * @tparam N[_] Single type Higher hind representing the covariant functor
 		 * @author Patrick Nicolas
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 */
 trait BiProdFunctor[M[_, _], N[_,_]]  
 		extends BiFunctor[({type L[X, Y] = (M[X, Y], N[X, Y])})#L ] {

@@ -71,7 +71,7 @@ object ParBenchmarkEval extends Eval {
 			// Arbitrary map function
 			val mapF = (x: Double) => Math.sin(x*0.01) + Math.exp(-x)
 				// Arbitrary filter function
-			val filterF = (x: Double) => x > 0.8
+			val filterF = (x: Double) => (x > 0.8)
 			 	// Arbitrary reduce function
 			val reduceF = (x:Double, y:Double) => (x+y)*x
 			 

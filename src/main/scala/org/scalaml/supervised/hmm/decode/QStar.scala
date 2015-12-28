@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.hmm.decode
 
@@ -32,7 +32,7 @@ import org.apache.log4j.Logger
 		 * @see org.scalaml.supervised.hmm.decode.ViterbiPath
 		 */
 
-private[scalaml] final class QStar(numObs: Int, numStates: Int) {
+final class QStar(numObs: Int, numStates: Int) {
 	private val qStar = Array.fill(numObs)(0)		
 
 		/**

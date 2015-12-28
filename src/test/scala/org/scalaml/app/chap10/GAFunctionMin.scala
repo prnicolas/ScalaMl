@@ -74,17 +74,17 @@ final protected class FGradient (
 	/**
 	 * Class that defines the direction of a change (delta) to compute the gradient of a 
 	 * function.
-	 * @param _type Identifier for the directional operator
+	 * @param id Identifier for the directional operator
 	 * @param f Function that compute the value f(x0 + delta)
 	 */
-protected[scalaml] class FDirection(_type: Int, val f: (Double, Double) => Double) extends Operator {
+protected class FDirection(_type: Int, val f: (Double, Double) => Double) extends Operator {
 		/**
 		 * Type of the directional operator (0 for delta > 0, 1 for delta < 0)
 		 */
 	override def id: Int = _type
 		/**
 		 * Return the actual type of the operator, FIncrease or FDecrease
-		 * @param _type of the directional operator
+		 * @param type of the directional operator
 		 * @return instance of the directional operator (singleton)
 		 */
 	override def apply(_type: Int): FDirection = if(_type == 0) FIncrease else FDecrease
@@ -129,7 +129,7 @@ object GAFunctionMin extends Eval {
 	private val MAX_CYCLES = 200		// Maximum number of iterations during the optimization
 	private val softLimit = (n: Int) => 0.95
 	private val SEED_SIZE = 10
-	private val SEED_SIZE_2 = SEED_SIZE << 1
+	private val SEED_SIZE_2 = (SEED_SIZE<<1)
 	
 			// Minimum values is (x = 4.0, y = 2.5)
 	val gf1 = (x: Double) => { val y = x- 4.0; y*y + 2.5 }
@@ -201,7 +201,7 @@ object GAFunctionMin extends Eval {
 		  scoring(fittest)
 		  fittest.symbolic
 		})
-		show(s"$name Solution $result")
+		show(s"$name Solution ${result}")
 	}
 	
 				/*

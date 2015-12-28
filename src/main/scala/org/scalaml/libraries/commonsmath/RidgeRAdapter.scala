@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.libraries.commonsmath
 
@@ -75,7 +75,7 @@ import org.scalaml.libraries.commonsmath.CommonsMath._
 			 * Override the computation of the beta value
 			 * @return A vector with beta values of type RealVector
 			 */
-		override protected def calculateBeta: RealVector = qr.getSolver.solve(getY)
+		override protected def calculateBeta: RealVector = qr.getSolver().solve(getY())
 			
 			 /**
 			 * Override the calculateBetaVariance method of the Common Math class 
@@ -84,16 +84,16 @@ import org.scalaml.libraries.commonsmath.CommonsMath._
 			 * @return the matrix of variance of model
 			 */
 		override protected def calculateBetaVariance: RealMatrix = {
-			val colDim = getX.getColumnDimension
+			val colDim = getX().getColumnDimension
 					
 					// Extracts the matrix of residuals 
-			val R = qr.getR.getSubMatrix(0, colDim - 1 , 0, colDim - 1)
+			val R = qr.getR().getSubMatrix(0, colDim - 1 , 0, colDim - 1)
 				
 					// Solve the linear system and compute the inverse matrix
 					// using the LU decomposition.
 			val Rinv = new LUDecomposition(R).getSolver.getInverse
-			Rinv.multiply(Rinv.transpose)
-			 }
+			Rinv.multiply(Rinv.transpose);
+		}
 			
 			
 			/**

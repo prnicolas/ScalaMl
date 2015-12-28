@@ -42,7 +42,7 @@ import LoggingUtils._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since July 3, 2014
-		 * @note Scala for Machine Learning Chapter 5: Naive Bayes Models
+		 * @note: Scala for Machine Learning Chapter 5: Naive Bayes Models
 		 */
 object FunctionClassificationEval extends Eval {
 	import ScalaMl._,  SimpleMovingAverage._
@@ -109,7 +109,7 @@ object FunctionClassificationEval extends Eval {
 		 * the frequencies related to the datasets, ranks the data points in decreasing order of their
 		 * frequency and return the SPECTUM indices of the data point with the highest frequency.
 		 * @param f Transformation of Double floating point values
-		 * @param numSamples Number of samples to be used for the Discrete Fourier series
+		 * @param dataRange Range of the data to be selected for the Discrete Fourier series
 		 * @return normalized vector of frequencies
 		 */
 		def createDatasets(f: Double => Double, numSamples: Int): DblArray = {
@@ -152,10 +152,10 @@ object FunctionClassificationEval extends Eval {
 			
 			show(s"$header Trained model for function classification ${nb.toString}")
 			val result1 = testDataset(g).map( nb |> _).mkString(",")
-			show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' classes: $result}")
+			show(s"$name Naive Bayes classification for 'cos(ALPHA*x)' classes: ${result1}")
 	
 			val result2 = testDataset(h).map( nb |> _).mkString(",")
-			show(s"$name Naive Bayes classify for 'if(x ~ 0.5) 1.0 else 0' class: $result2")
+			show(s"$name Naive Bayes classify for 'if(x ~ 0.5) 1.0 else 0' class: ${result2}")
 
 	}
 }

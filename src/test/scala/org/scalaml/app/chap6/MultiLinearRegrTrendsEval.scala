@@ -95,7 +95,7 @@ object MultiLinearRegrTrendsEval extends Eval {
 	
 					// Use the model created through training
 	
-				val weightsStr = regression.weights.get.view.zipWithIndex.map{ case (w, n) => s"$w$n"}
+				val weightsStr = regression.weights.get.view.zipWithIndex.map{ case (w, n) => s"${w}${n}"} 
 				val trend = features.map( dot(_, regression.weights.get) ) //w(0) + z(0)*w(1) +z(1)*w(2))
 	
 				display(expected, trend)

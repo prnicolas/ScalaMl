@@ -82,7 +82,7 @@ object BinaryMLPEval extends Eval {
 
 		
 			// Generate the synthetic time series of features
-  	val HALF_TEST_SIZE = TEST_SIZE>>1
+  	val HALF_TEST_SIZE = (TEST_SIZE>>1)
 		val xt = Vector.tabulate(TEST_SIZE)(n => 
 				if( n < HALF_TEST_SIZE) f1(n) else f2(n - HALF_TEST_SIZE))
 

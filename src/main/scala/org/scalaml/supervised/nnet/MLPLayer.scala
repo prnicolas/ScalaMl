@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.nnet
 
@@ -82,13 +82,12 @@ protected class MLPLayer(
 	
 		/**
 		 * Update the output values for the non-bias neurons
-		 * @param xt New values for the output of this layer
+		 * @param x New values for the output of this layer
 		 * @throws IllegalArgumentException if the size of output values does not match the
 		 * number of non-bias neurons
 		 */
-		@throws(classOf[IllegalArgumentException])
 	def setOutput(xt: DblArray): Unit = {
-		require(xt.length == numNodes -1, "MLPLayer found xt.size =${xt.size}, required ${numNodes -1}")
+		require(xt.size == numNodes -1, "MLPLayer found xt.size =${xt.size}, required ${numNodes -1}")
 		xt.copyToArray(output, 1)
 	}
 		/**
@@ -122,10 +121,11 @@ protected class MLPLayer(
 		val weights: DblMatrix = synapses.map(_.map(_._1)).transpose.drop(1)
 		  		
 		val deltaValues = output.drop(1).zipWithIndex./:(deltaMatrix){
-			case (m, (zh, n)) =>
+			case (m, (zh, n)) => {
 				val nextDelta = inner(prevDelta, weights(n))*zh*(1.0 - zh)
 				m.append( (nextDelta, srcOut.map( _ * nextDelta)) )
 				m
+			} 
 		}.unzip
 	  
 		new Delta(deltaValues._1.toArray, deltaValues._2.toArray)
@@ -141,6 +141,7 @@ protected class MLPLayer(
 
 		/**
 		 * Test if this neural network layer is the output layer (last layer in the network).
+		 * @param lastId id of the output layer in this neural network
 		 * @return true if this layer is the output layer, false, otherwise
 		 */
 	@inline
@@ -227,7 +228,7 @@ final protected class MLPOutLayer(
   
 	/**
 		 * Update the output values for the non-bias neurons
-		 * @param xt New values for the output of this layer
+		 * @param x New values for the output of this layer
 		 * @throws IllegalArgumentException if the size of output values does not match the
 		 * number of non-bias neurons
 		 */
@@ -260,6 +261,7 @@ final protected class MLPOutLayer(
    
 		/**
 		 * Test if this neural network layer is the output layer (last layer in the network).
+		 * @param lastId id of the output layer in this neural network
 		 * @return true if this layer is the output layer, false, otherwise
 		 */
 	@inline

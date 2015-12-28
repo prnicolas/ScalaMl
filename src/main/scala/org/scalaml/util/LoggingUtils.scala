@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.util
 
@@ -43,7 +43,6 @@ object LoggingUtils {
 		/**
 		 * Method that converts a Try monad to an Option with a comment string.
 		 * @param str Description included in the conversion.
-		 * @param _logger reference ot logger
 		 * @return a parameterized option.
 		 */
 		def _toOption(str: String, _logger: Logger): Option[T] = _try match {
@@ -62,7 +61,7 @@ object LoggingUtils {
 		
 		def _toBoolean(str: String): Boolean = _try match {
 			case Success(res) => true
-			case Failure(e) => DisplayUtils.error(s"$str", logger, e); false
+			case Failure(e) => { DisplayUtils.error(s"$str", logger, e); false }
 		}
 
 		
@@ -85,7 +84,7 @@ object LoggingUtils {
 		
 		private def failureHandler(str: String, e: Throwable): Int = e match {
 			case e: MatchError => 
-				DisplayUtils.error(s"$str ${e.getMessage()} caused by ${e.getCause.toString}", logger)
+				DisplayUtils.error(s"$str ${e.getMessage} caused by ${e.getCause.toString}", logger)
 			case _ => 
 				DisplayUtils.error(s"$str ${e.toString}", logger)
 		}
@@ -103,20 +102,23 @@ object LoggingUtils {
 		final def counters(key: String): Option[mutable.ArrayBuffer[T]] = _counters.get(key)
 		
 		def count(key: String, value: T): Unit = {
-			val buffer: mutable.ArrayBuffer[T] = _counters.getOrElse(key, new mutable.ArrayBuffer[T])
+			val buffer: mutable.ArrayBuffer[T] = _counters.get(key).getOrElse(new mutable.ArrayBuffer[T])
 			buffer.append(value)
 			_counters.put(key, buffer)
 		}
 		
 		def dump: String = _counters.map{ case(k, v) => s"$k -> ${v.mkString(", ")}" }.mkString("\n")
 		
-		final def display(key: String, legend: Legend)(implicit f: T => Double): Boolean =
-			counters(key).exists(x => LinePlot.display(x.map(_.toDouble).toArray, legend, new LightPlotTheme))
+		final def display(key: String, legend: Legend)(implicit f: T => Double): Boolean = {
+			counters(key).map(x => 
+				LinePlot.display(x.map(_.toDouble).toArray, legend, new LightPlotTheme)
+			).getOrElse(false)
+		}
 		
 		final def display(keys: List[String], legend: Legend)(implicit f: T => Double): Boolean = {
-			val isCount = _counters.nonEmpty
+			val isCount = _counters.size > 0
 			if( isCount ){
-				val counts: List[DblVector] = keys.map(counters(_)).filter( _.isDefined)
+				val counts: List[DblVector] = keys.map(counters(_)).filter( _ != None)
 						.map(_.get.map(_.toDouble).toVector)
 				LinePlot.display( counts.zip(keys), legend, new LightPlotTheme)
 			}

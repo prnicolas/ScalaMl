@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -36,7 +36,7 @@ import org.scalaml.stats.XTSeries
 	 * 
 	 * @author Patrick Nicolas
 	 * @since 0.99
-	 * @version 0.99.1
+	 * @version 0.99
 	 * @see Scala for Machine Learning Chapter 1 "Getting Started" Wrting an application
 	 * @see org.scalaml.supervised.regression.RegressionModel
 	 * @note The binomial logistic regression computes the '''intercept''' (or weight for observations
@@ -64,7 +64,7 @@ case class LogBinRegressionModel(weights: DblArray) {
 		 *    weights <- weights - eta.(predicted - y).x
      * }}}
 		 * @constructor Create a simple logistic regression for binary classification 
-		 * @param expected expected values or labels used to train a model
+		 * @param labels Data used to train a model
 		 * @param maxIters Maximum number of iterations used during training
 		 * @param eta Slope used in the computation of the gradient
 		 * @param eps Convergence criteria used to exit the training loop.
@@ -73,7 +73,7 @@ case class LogBinRegressionModel(weights: DblArray) {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 11, 2014 
-     * @version 0.99.1
+     * @version 0.99
 		 * @see Scala for Machine Learning Chapter 1 "Getting started" Let's kick the tires / Writing 
 		 * a simple workflow
      * @see org.scalaml.supervised.regression.logistic.LogisticRegression
@@ -105,7 +105,7 @@ final class LogBinRegression(
   
 		/**
 		 * classification of a two dimension data (xy) using a binomial logistic regression.
-		 * @param obs a new observation
+		 * @param obls a new observation
 		 * @return Try (class, likelihood) for the logistic regression is the training was completed
 		 * , None otherwise
 		 */
@@ -143,13 +143,13 @@ final class LogBinRegression(
 		
 					// Traverses the (observation, label) pairs set, to compute the prediced value
 					// using the logistic function (sigmoid) and compare to the labeled data.	
-			val errorGrad: (DblVector, Vector[DblArray]) = shuffled.map{ case (x, y) =>
+			val errorGrad: (DblVector, Vector[DblArray]) = shuffled.map{ case (x, y) => {
 				val inner = dot(x, weights)
 					// Difference between the predicted and labeled data
 				val error = sigmoid(inner) - y
 
 				(error, x.map( _ * error))
-			}.unzip
+			}}.unzip
 			
 	
 				// Compute the new cost as the sum of square value of the error for each point
@@ -181,7 +181,7 @@ final class LogBinRegression(
 		
 			// The weights are initialized as random values over [min labels, max labels]
 
-		val initialWeights = Array.fill(obsSet.head.length+1)( Random.nextDouble() )
+		val initialWeights = Array.fill(obsSet.head.length+1)( Random.nextDouble )
 			
 			// Apply the gradient descent.
 		val weights = gradientDescent( obsSet.zip(expected), 0.0, 0, initialWeights)
@@ -195,7 +195,7 @@ final class LogBinRegression(
 	  */
 	private def intercept(weights: DblArray): Double = {
 		val zeroObs = obsSet.filter(!_.exists( _ > 0.01))
-		if( zeroObs.nonEmpty )
+		if( zeroObs.size > 0)
 			zeroObs.aggregate(0.0)((s,z) => s + dot(z, weights), _ + _ )/zeroObs.size
 		else 
 		  0.0
@@ -211,7 +211,7 @@ final class LogBinRegression(
 		 * is used to define some constants and validate the class parameters.
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 11, 2014 
-     * @version 0.99.1
+     * @version 0.99
      * @note Add shuffling capabilities to the batch gradient descent algorithm
 		 */
 object LogBinRegression {
@@ -236,8 +236,8 @@ object LogBinRegression {
 		 */
 	@throws(classOf[IllegalArgumentException])
 	final def dot(obs: DblArray, weights: DblArray): Double = {
-		require(obs.length + 1 == weights.length,
-			s"LogBinRegression.dot found obs.length ${obs.length} +1 != weights.length ${weights.length}")
+		require(obs.size + 1 == weights.size, 
+			s"LogBinRegression.dot found obs.size ${obs.size} +1 != weights.size ${weights.size}") 
 
 		weights.zip(Array[Double](1.0) ++ obs.view)
 			.aggregate(0.0)((s,x) => s + x._1*x._2, _ + _)
@@ -254,7 +254,7 @@ object LogBinRegression {
 			 */
 	@throws(classOf[IllegalArgumentException])
 	def shuffle(labelObs: LabelObs): LabelObs = {
-		require( labelObs.nonEmpty,
+		require( !labelObs.isEmpty, 
 				"LogBinRegression.shuffle Cannot proceed with undefined labeled observations")
 		
 		import scala.util.Random 
@@ -265,7 +265,7 @@ object LogBinRegression {
 		@scala.annotation.tailrec
 		def shuffle(indices: mutable.ArrayBuffer[Int], count: Int, start: Int): Array[Int] = {
 			val end = start + Random.nextInt(maxChunkSize)
-			val isOdd = (count & 0x01) != 0x01
+			val isOdd = ((count & 0x01) != 0x01)
 
 			if(end >= sz)
 				indices.toArray ++ slice(isOdd, start, sz)
@@ -275,7 +275,7 @@ object LogBinRegression {
 	  
 		def slice(isOdd: Boolean, start: Int, end: Int): Array[Int] = {
 			val r = Range(start, end).toArray
-			if (isOdd) r else r.reverse
+			(if(isOdd) r else r.reverse)
 		}
 	  
 		shuffle(new mutable.ArrayBuffer[Int], 0, 0).map(labelObs( _ ) ).toVector

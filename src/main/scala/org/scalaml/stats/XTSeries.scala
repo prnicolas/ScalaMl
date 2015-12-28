@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.stats
 
@@ -39,7 +39,7 @@ import XTSeries._
 		 * conversion (implicit)
 		 * @author Patrick Nicolas
 		 * @since 0.98 January, 22, 2014 
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 3 "Data pre-processing" Time series
 		 * @note Added ''splitAt'' method in 0.98.3, Added ''zipWithShift'', ''delta'', ''binaryDelta'',
 		 * ''sse'' and ''mse'' in 0.99 
@@ -81,7 +81,7 @@ object XTSeries {
   @throws(classOf[IllegalArgumentException])
 	def zipWithShift[T](xv: Array[T], n: Int): Array[(T, T)] = {
 		require( n > 0 && n < xv.length,  
-			s"XTSeries.zipWithShift found shift n= $n required n < ${xv.length}")
+			s"XTSeries.zipWithShift found shift n= $n required n < ${xv.size}")  
 
 		xv.drop(n).zip(xv.view.dropRight(n))
 	}
@@ -111,7 +111,7 @@ object XTSeries {
 		 * @param n index in the time series used in the split
 		 * @return 2-tuple or pair of times series ''(ts1, ts2)'' ts1 containing n first elements
 		 * in the original time series, ts2 containing the remaining elements
-		 * @throws IllegalArgumentException if parameter n is out of bounds
+		 * @throws IllegalArgumentsException if parameter n is out of bounds
 		 */
 	@throws(classOf[IllegalArgumentException])
 	def splitAt[T](xv: XSeries[T], n: Int): (XSeries[T], XSeries[T]) = {
@@ -173,18 +173,18 @@ object XTSeries {
 		 * @return normalized time series as double elements if max > min, None otherwise
 		 */
 	@throws(classOf[IllegalArgumentException])
-	@implicitNotFound(msg = "XTSeries.normalize conversion from $T to Double undefined")
+	@implicitNotFound(msg = "XTSeries.normalize convertion from $T to Double undefined")
 	def normalize[T <: AnyVal](
 			xt: XVSeries[T])
 			(implicit order: Ordering[T], m: Manifest[T], f: T => Double): Try[Vector[DblArray]] = {
 	  
-	  require( xt.nonEmpty,
+	  require( !xt.isEmpty, 
 				"XTSeries.normalize Cannot normalize an undefined time series of elements")
 		require( dimension(xt) > 0, 
 				"XTSeries.normalize Incorrect function to normalize a single dimension time series")
     
-		var k = 0
-			val res = new Array[Array[T]](xt.size)
+		var k = 0;
+		val res = new Array[Array[T]](xt.size)
 		val dim = dimension(xt)
 
 		val min = Array.fill(dim)( Double.MaxValue)
@@ -219,7 +219,7 @@ object XTSeries {
         data += arr
 				k += 1
 			}
-			data.result()
+			data.result
 		}
 	}
   
@@ -238,12 +238,12 @@ object XTSeries {
 		 */
   @throws(classOf[IllegalArgumentException])
 	def zScores[T <: AnyVal](xt: XVSeries[T])(implicit f: T => Double): Try[XVSeries[Double]] = {
-		require( xt.nonEmpty, "XTSeries.zScoring Cannot zScore an undefined time series")
+		require( !xt.isEmpty, "XTSeries.zScoring Cannot zScore an undefined time series")
   	import scala.collection.immutable.VectorBuilder
     
 		val stats = statistics(xt)
-		var k = 0
-		val dimension = xt.head.length
+		var k = 0;
+		val dimension = xt(0).length
 
     val data = new VectorBuilder[DblArray]
     
@@ -258,38 +258,215 @@ object XTSeries {
         data += arr
 				k += 1
 			}
-			data.result()
+			data.result
 		}
 	}
 	
 	def unit[T <: AnyVal](xt: XVSeries[T])(implicit f: T => Double): Try[Vector[DblArray]] = 
 		Try(xt.map(_.map( _.toDouble)))
 	
+	
+			/**
+			 * Singleton that encapsulates the magnet design pattern for the transposition
+			 * of parameterized multi-dimension time series
+			 * @version 0.99
+			 * @see Scala for Machine Learning Chapter 3, "Data Pre-processing" / Time Series
+			 */
+	object Transpose {
+		/**
+		 * Generic Magnet interface for Transposition of multi-dimensional time series 
+		 */
+		sealed trait Transpose[T] {
+			type Result
+			def apply(): Result
+		}
+		
+		
+		/**
+			 * Transpose a time series fo type XVSeries
+			 * @tparam T type of element (or data point or observation) of the time series
+			 * @param from Vector of array of elements of type T
+			 * @return Transposed matrix of type Array of Array
+			 */
+		implicit def xvSeries2MatrixT[T: ClassTag](from: XVSeries[T]) = new Transpose[T] {
+			type Result = Array[Array[T]]
+			def apply(): Result =  from.toArray.transpose
+		}
+		
+		/**
+		 * Transpose an array of array of data
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from Array of array of elements of type T
+		 * @return Transposed time series of type XVSeries
+		 */
+		implicit def arrays2XVSeries[T: ClassTag](from: Array[Array[T]]) = new Transpose[T] {
+			type Result = XVSeries[T]
+			def apply(): Result =  from.toArray.transpose.toVector
+		}
+	
+		/**
+		 * Transpose a vector of vectors
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from Vector of vector of element of type T
+		 * @return Transposed time series of type XVSeries
+		 */
+		implicit def vector2XVSeries[T: ClassTag](from: Vector[Vector[T]]) = new Transpose[T] {
+			type Result = XVSeries[T]
+			def apply(): Result =  from.map(_.toArray).toArray.transpose.toVector
+		}
+	
+		
+		/**
+		 * Transpose a list of multi-dimensional data of type T
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from list of observations of type ''Array[T]''
+		 * @return Transposed array of array
+		 */	 
+		implicit def list2Matrix[T: ClassTag](from: List[Array[T]]) = new Transpose[T] {
+			type Result = Array[Array[T]]
+			def apply(): Result =  from.toArray.transpose
+		}
+		
+		/**
+		 * Transpose a list of multi-dimensional data of type T
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from list of observations of type ''Vector[T]''
+		 * @return Transposed vector of vectors.
+		 */	
+		implicit def list2Vector[T: ClassTag](from: List[Vector[T]]) = new Transpose[T] {
+			type Result = Vector[Vector[T]]
+			def apply(): Result = from.toVector.transpose
+		}
+		
+			/**
+			 * Lifted function for the transposition of multi-dimensional time series
+			 * @param transposition element of subtype of Transpose
+			 * @return return type of the constructor on the subtype of Transpose
+			 */
+		def transpose[T: ClassTag](transposition: Transpose[T]): transposition.Result = transposition()
+	}
 
+	
+				/**
+			 * Singleton that encapsulates the magnet design pattern for the difference between
+			 * two consecutive elements in parameterized multi-dimension time series
+			 * @version 0.99
+			 * @see Scala for Machine Learning Chapter 3, "Data Pre-processing" / Time Series
+			 */
+	/*
+			sealed trait Difference {
+			type Result
+			def apply(): Result
+		}
+
+	object Difference {
+	  import language.implicitConversions
+		/**
+		 * Generic Magnet interface for Difference of consecutive values in a 
+		 * multi-dimensional time series 
+		 */
+
+		/**
+		 * Transform a time series by computing the difference of two consecutive elements.
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from Array of array of elements of type T
+		 * @return Transposed time series of type XVSeries
+		 */
+		/*
+		implicit def vector2Double[T](values: DblVector) = new Difference[T] {
+			type Result = Vector[T]
+			def apply(f: (Double, Double) => T): Result = 
+				zipWithShift1(values).collect { case(next, prev) => f(prev, next) }
+		}
+		* 
+		*/
+		
+		implicit def vector2Double(valuesf: (DblVector, (Double, Double) => Double)) = new Difference {
+			type Result = Vector[Double]
+			def apply(): Result = 
+				zipWithShift1(valuesf._1).collect { case( next, prev) => valuesf._2(prev, next) }
+		}
+		
+	//	implicit def array2Double[T: ClassTag](values: DblArray) = vector2Double(values.toVector)
+
+		
+	
+
+		val diffDouble = (x: Double, y: Double) => y -x
+		val diffInt = (x: Double, y: Double) => if(y > x) 1 else 0
+		val diffBoolean = (x: Double, y: Double) => if(y > x) true else false
+	}
+	* 
+	*/
+	/*
+	object Difference {
+		/**
+		 * Generic Magnet interface for Difference of consecutive values in a 
+		 * multi-dimensional time series 
+		 */
+		sealed trait Difference[T] {
+			type Result
+			def apply(f: (Double, Double) => T): Result
+		}
+
+		/**
+		 * Transform a time series by computing the difference of two consecutive elements.
+		 * @tparam T type of element (or data point or observation) of the time series
+		 * @param from Array of array of elements of type T
+		 * @return Transposed time series of type XVSeries
+		 */
+		/*
+		implicit def vector2Double[T](values: DblVector) = new Difference[T] {
+			type Result = Vector[T]
+			def apply(f: (Double, Double) => T): Result = 
+				zipWithShift1(values).collect { case(next, prev) => f(prev, next) }
+		}
+		* 
+		*/
+		
+		implicit class Vector2Double[T](values: DblVector) extends Difference[T] {
+			type Result = Vector[T]
+			def apply(f: (Double, Double) => T): Result = 
+				zipWithShift1(values).collect { case(next, prev) => f(prev, next) }
+		}
+		
+		implicit def array2Double[T: ClassTag](values: DblArray) = vector2Double(values.toVector)
+
+		
+		def difference[T](diff: Difference[T], f: (Double, Double) => T): Difference[T]#Result = diff(f)
+
+		val diffDouble = (x: Double, y: Double) => y -x
+		val diffInt = (x: Double, y: Double) => if(y > x) 1 else 0
+		val diffBoolean = (x: Double, y: Double) => if(y > x) true else false
+	}
+	* 
+	*/
+
+	
 	def zipToXVSeries[T](x: XVSeries[T], y: XVSeries[T])
 		(f: (Array[T], Array[T]) => Double): XSeries[Double] = {
 		require( x.size == y.size,  
 			s"XTSeries.zipSeries found x.size = ${x.size} != y.size  ${y.size}")
-		x.zip(y.view).map{ case (_x, _y) => f(_x, _y)}
+		x.zip(y.view).map{ case (x, y) => f(x, y)}
 	}
 	
 	def zipToXSeries[T](x: Vector[T], y: Vector[T])(f: (T, T) => Double): XSeries[Double] = {
 		require( x.size == y.size,  
 			s"XTSeries.zipSeries found x.size = ${x.size} != y.size  ${y.size}")
-		x.zip(y.view).map{ case (_x, _y) => f(_x, _y)}
+		x.zip(y.view).map{ case (x, y) => f(x, y)}
 	}
 	
 	def zipToArray[T](x: Array[T], y: Array[T])(f: (T, T) => Double): DblArray = {
-		require( x.length == y.length,
-			s"XTSeries.zipSeries found x.length = ${x.length} != y.length  ${y.length}")
-		x.zip(y.view).map{ case (_x, _y) => f(_x, _y)}
+		require( x.size == y.size,  
+			s"XTSeries.zipSeries found x.size = ${x.size} != y.size  ${y.size}")
+		x.zip(y.view).map{ case (x, y) => f(x, y)}
 	}
 	
 	
 	def zipToSeries[T](x: Vector[T], y: Vector[T])(implicit f: T => Double): XVSeries[Double] = {
 		require( x.size == y.size,  
 			s"XTSeries.zipSeries found x.size = ${x.size} != y.size  ${y.size}")
-		x.zip(y.view).map{ case (_x, _y) => Array[Double](_x, _y)}
+		x.zip(y.view).map{ case (x, y) => Array[Double](x, y)}
 	}
 	
 	
@@ -299,14 +476,80 @@ object XTSeries {
 		require( x.size == y.size,  
 			s"XTSeries.zipSeries found x.size = ${x.size} != y.size  ${y.size}")
 			
-		x.zip(y.view).map{ case (_x, _y) => Array[Double](_x, _y)}.dropRight(nSteps)
+		x.zip(y.view).map{ case (x, y) => Array[Double](x, y)}.dropRight(nSteps)
 	}
 
+	/*
+	def difference(diff: Difference): diff.Result = diff()
+	
+	def differentialData[T](
+			x: DblVector, 
+			target: DblVector,
+			f: (Double, Double) =>Double): Try[(DblVector, Vector[T])] = {
+
+		import Difference._
+		Try{
+		  
+			val _diff: Vector[T] = difference((target, f))
+		  (x, _diff)
+		}
+	//	Try((x, difference(target, f)))
+	}
+	
+	def differentialData[T](
+			x: DblVector, 
+			y: DblVector, 
+			target: DblVector,
+			f: (Double, Double) =>T): Try[(XVSeries[Double], Vector[T])] = {
+	  
+	  import Difference._
+		Try((zipToSeries(x, y, 1), difference((target, f))))
+	}
+	* 
+	*/
+
+	
 	def inner[T <: AnyVal](xt: Array[T], zt: DblArray)(implicit f: T => Double): Double = 
-		xt.zip(zt).map{ case (_x, z) => _x*z }.sum
-
+		xt.zip(zt).map{ case (x, z) => x*z }.sum
+	
+	
 	def transform[T: ClassTag](xt: XVSeries[T]): Try[XVSeries[T]] = Try(xt.transpose.map(_.toArray))
+	  
 
+	def sse[T <: AnyVal](x: Array[T], z: Array[T])(implicit f: T => Double): Double = {
+		val sumSqr = x.zip(z).aggregate(0.0)((s,xz) => s + sqr(xz._1 - xz._2), _ + _)
+		Math.sqrt(sumSqr)
+	}
+	
+	def mse[T <: AnyVal](x: Array[T], z: Array[T])(implicit f: T => Double): Double = 
+		sse(x, z)/Math.sqrt(z.size.toDouble)
+
+	def mse(x: DblVector, z: DblVector): Double = sse(x.toArray, z.toArray)
+	
+		/**
+		 * Compute the cross entropy function for the binary classification of the MLP
+		 * @param x first value
+		 * @param y second value
+		 * @return binary cross-entropy value
+		 */
+	def crossEntropy(x: Double, y: Double): Double = -(x*Math.log(y) + (1.0 - x)*Math.log(1.0 - y))
+	
+			/**
+		 * Compute the cross entropy function for the binary classification of the MLP
+		 * @param xt first array
+		 * @param yt second array
+		 * @return cross-entropy value
+		 * @throws IllegalStateException if the input array have different length
+		 */
+	@throws(classOf[IllegalArgumentException])
+	def crossEntropy(xt: DblArray, yt: DblArray): Double = {
+		require( xt.length == yt.length,
+				"XTSeries.crossEntropy found ${output.length} outputs required 1")
+		
+		yt.zip(xt).aggregate(0.0)({ case (s, (y, x)) => s - y*Math.log(x)}, _ + _)
+	}
+	
+	
 		/**
 		 * Compute the basic aggregate statistics for a time series
 		 * @tparam T type of element (or data point or observation) of the time series
@@ -324,7 +567,7 @@ object XTSeries {
 		 */
   @throws(classOf[IllegalArgumentException])
 	def statistics[T <: AnyVal](xt: XVSeries[T])(implicit f: T => Double): Vector[Stats[T]] = {
-		require( xt.nonEmpty || dimension(xt) > 0, "XTSeries.statistics input time series undefined")
+		require( xt.size > 0 || dimension(xt) > 0, "XTSeries.statistics input time series undefined")
 		xt.transpose.map( Stats[T]( _ ))
 	}
 }

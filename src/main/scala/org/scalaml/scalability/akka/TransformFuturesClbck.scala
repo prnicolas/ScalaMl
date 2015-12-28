@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.scalability.akka
 
@@ -42,12 +42,12 @@ import Controller._
 		 *  range.
 		 *  @param xt Time series to be processed
 		 *  @param fct Data transformation of type PipeOperator
-		 *  @param nPartitions Number of segments or partitions to
+		 *  @param partitioner Methodology to partition a time series in segments or partitions to 
 		 *  be processed by workers.
 		 *  
 		 *  @author Patrick Nicolas
-		 *  @since 0.98 March 30, 2014
-		 *  @see Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures
+		 *  @since March 30, 2014
+		 *  @note Scala for Machine Learning Chapter 12 Scalable Frameworks/Akka/Futures
 		 */			
 abstract class TransformFuturesClbck[T] (
 		xt: DblVector,
@@ -75,9 +75,9 @@ abstract class TransformFuturesClbck[T] (
 			// Once the futures are created, they are assigned to
 			// execute the data transform fct to their related partition.
 		val futures = new Array[Future[DblVector]](nPartitions)
-		partition.zipWithIndex.foreach{ case( x, n) =>
+		partition.zipWithIndex.foreach{ case( x, n) => {
 			futures(n) = Future[DblVector] { fct(x).get }
-		}
+		}}
 		futures
 	}
 	
@@ -102,9 +102,10 @@ abstract class TransformFuturesClbck[T] (
 				// If the notification is a failure, process the exception
 				// and append an empty time series to the existing results.
 			f onFailure {	
-				case e: Exception =>
+				case e: Exception => {
 					error("TransformFuturesClbck.aggregate failed")
 					buffer.append(Vector.empty[Double])
+				}
 			}
 		}) 
 			// Returns the aggregated results only if all the partition were

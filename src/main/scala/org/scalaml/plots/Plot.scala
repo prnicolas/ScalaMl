@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.plots
 
@@ -52,7 +52,7 @@ import java.awt.geom.Ellipse2D
 
 		/**
 		 * Generic plotting class that uses the JFreeChart library.
-		 * @param legend  Legend for the plot of type '''PlotInfo'''
+		 * @param config  Configuration for the plot of type '''PlotInfo'''
 		 * @param theme Configuration for the display of plots of type '''PlotTheme'''
 		 * @author Patrick Nicolas
 		 * @since  0.97 November 18, 2013
@@ -82,7 +82,7 @@ abstract class Plot(legend: Legend, theme: PlotTheme) {
 		/**
 		 * DisplayUtils a vector of Double value in a 2D plot with counts [0, n] on X-Axis and
 		 * vector value on Y-Axis with a given width and height
-		 * @param y Array of double values
+		 * @param y Arrayva;ie  double values
 		 * @param width Width for the display (pixels)
 		 * @param height Height of the chart (pixels)
 		 */
@@ -94,7 +94,7 @@ abstract class Plot(legend: Legend, theme: PlotTheme) {
 		val frame = new ChartFrame(s"Chart ${count+1}: $id", chart)		
 		val anchor = getLocation
 		frame.setLocation(anchor._1, anchor._2)
-		frame.pack()
+		frame.pack
 		frame.setVisible(true)
 	}
 	

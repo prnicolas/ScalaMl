@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.svm
 
@@ -34,7 +34,7 @@ import org.scalaml.util.FormatUtils._
 		 * @constructor Create a SVMModel with a given LIBSVM model and accuracy
 		 * @see LIBSVM
 		 * @see org.scalaml.core.Design.Model
-		 * @throws IllegalArgumentException if LIBSVM model is undefined.
+		 * @throws IllegalArgumentExceptin if LIBSVM model is undefined.
 		 * @param svmmodel Model parameters as defined in '''LIBSVM'''
 		 * @param accuracy	Accuracy of the model from the training process
 		 * 
@@ -57,7 +57,7 @@ final class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Mode
 		
 			// Stringize LIBSVM nodes
 		val nodes = svmmodel.SV
-		if( nodes.nonEmpty) {
+		if( !nodes.isEmpty) {
 			description.append("SVM nodes:\n")
 			val _nodes: DblMatrix = Array.tabulate(nodes.size)(n => {
 				val row = nodes(n)
@@ -67,7 +67,7 @@ final class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Mode
 		}
   		// Stringize the LIBSVM coefficients
 		val coefs = svmmodel.sv_coef
-		if( coefs.nonEmpty ) {
+		if( !coefs.isEmpty ) {
 			description.append("\nSVM basis functions:\n")
 			coefs.foreach(w => {
 				w.foreach(c => description.append(s"${format(c, emptyString, SHORT)}\n"))
@@ -75,8 +75,8 @@ final class SVMModel(val svmmodel: svm_model, val accuracy: Double) extends Mode
 			})
 		}
 			// Aggregate the description
-		description.append(s"Accuracy: ${format(accuracy, emptyString, SHORT)}\n")
-			.toString()
+		description.append(s"Accuracy: ${format(accuracy,emptyString, SHORT)}\n")
+						.toString
 	}
 }
 

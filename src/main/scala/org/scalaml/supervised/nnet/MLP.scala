@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.nnet
 
@@ -26,7 +26,6 @@ import org.apache.log4j.Logger
 	// ScalaMl classes
 import org.scalaml.core.Types.ScalaMl._
 import org.scalaml.util.MathUtils._
-import org.scalaml.stats.Loss._
 import org.scalaml.stats.XTSeries._
 import org.scalaml.core.ITransform
 import org.scalaml.util.LoggingUtils._
@@ -66,7 +65,7 @@ import MLP._
 		 * 
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 May 8, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see org.scalaml.core.ITransform
 		 * @see org.scalaml.util.Monitor
 		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / 
@@ -74,6 +73,7 @@ import MLP._
 		 */
 @throws(classOf[IllegalArgumentException])
 @implicitNotFound(msg = "MultiLinearRegression Implicit conversion $T to Double undefined")
+@implicitNotFound(msg = "MultiLinearRegression Objective type undefined")
 final class MLP[T <: AnyVal](
 		config: MLPConfig, 
 		hidden: Array[Int] = Array.empty[Int],
@@ -98,9 +98,9 @@ final class MLP[T <: AnyVal](
 		 */
 	lazy val topology = 
 		if(hidden.length ==0) 
-			Array[Int](xt.head.length, expected.head.length)
+			Array[Int](xt.head.size, expected.head.size) 
 		else 
-			Array[Int](xt.head.length) ++ hidden ++ Array[Int](expected.head.length)
+			Array[Int](xt.head.size) ++ hidden ++ Array[Int](expected.head.size)
 	
 	
 		/**
@@ -117,7 +117,7 @@ final class MLP[T <: AnyVal](
 		 * @return true if the training execution converges, false otherwise
 		 */
 	@inline
-	final def isModel: Boolean = model.isDefined
+	final def isModel: Boolean = model != None
 	
 		/**
 		 * Define the predictive function of the classifier or regression as a data
@@ -127,8 +127,10 @@ final class MLP[T <: AnyVal](
 		 * the predicted vector values as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if isModel && x.length == dimension(xt) =>
+		case x: Array[T] if(isModel && x.size == dimension(xt) ) => {
+			
 			Try(MLPNetwork(config, topology, model).predict(x))
+		}
 	}
 
 
@@ -202,7 +204,7 @@ final class MLP[T <: AnyVal](
 		 * - Define the class/trait hierarchy for the objective of the MLP {classification, regression}
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 May 8, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 9 ''Artificial Neural Network'' / 
 		 * Multilayer perceptron/Training cycle/epoch
 		 */
@@ -275,7 +277,7 @@ object MLP {
 		override def apply(output: DblArray): DblArray = softmax(output)
 		
 		private def softmax(y: DblArray): DblArray = {
-			val softmaxValues = new DblArray(y.length)
+			val softmaxValues = new DblArray(y.size)
 			val expY = y.map( Math.exp(_) )
 			val expYSum = expY.sum
 			
@@ -287,63 +289,48 @@ object MLP {
 		/**
 		 * Default constructor for the Multi-layer perceptron (type MLP)
 		 * @param config  Configuration parameters class for the MLP
-		 * @param hidden Array of size of the hidden layers (i.e. Array[Int](4, 6) represents two hidden layers of 4 m
-		 *               and 6 nodes
 		 * @param xt Time series of features in the training set
-		 * @param expected  Labeled or target observations used for training
-		 * @param mode mode or Objective of the model (classification or regression)
+		 * @param labels  Labeled or target observations used for training
+		 * @param objective Objective of the model (classification or regression)
 		 */
 	def apply[T <: AnyVal](
 			config: MLPConfig, 
 			hidden: Array[Int],
 			xt: XVSeries[T],
-			expected: XVSeries[T])
-			(implicit mode: MLP.MLPMode, f: T => Double): MLP[T] =
-		new MLP[T](config, hidden, xt, expected)
+			labels: XVSeries[T])
+			(implicit mlpObjective: MLP.MLPMode, f: T => Double): MLP[T] = 
+		new MLP[T](config, hidden, xt, labels)
 
-			/**
-			 * Constructor for the Multi-layer perceptron (type MLP) without hidden layer
-			 * @param config  Configuration parameters class for the MLP
-			 * @param xt Time series of features in the training set
-			 * @param expected  Labeled or target observations used for training
-			 * @param mode mode or Objective of the model (classification or regression)
-			 */
+
 	def apply[T <: AnyVal](
 			config: MLPConfig, 
 			xt: XVSeries[T],
-			expected: XVSeries[T])
-			(implicit mode: MLP.MLPMode, f: T => Double): MLP[T] =
-		new MLP[T](config, Array.empty[Int], xt, expected)
-
-			/**
-			 * Constructor for the Multi-layer perceptron (type MLP) with one hidden layer
-			 * @param config  Configuration parameters class for the MLP
-			 * @param nHiddenNodes Number of nodes in the single hidden layer
-			 * @param xt Time series of features in the training set
-			 * @param expected  Labeled or target observations used for training
-			 * @param mode mode or Objective of the model (classification or regression)
-			 */
+			labels: XVSeries[T])
+			(implicit mlpObjective: MLP.MLPMode, f: T => Double): MLP[T] = 
+		new MLP[T](config, Array.empty[Int], xt, labels)
+		
+		
 	def apply[T <: AnyVal](
 			config: MLPConfig, 
 			nHiddenNodes: Int,
 			xt: XVSeries[T],
-			expected: XVSeries[T])
-			(implicit mode: MLP.MLPMode, f: T => Double): MLP[T] =
-		new MLP[T](config, Array[Int](nHiddenNodes), xt, expected)
+			labels: XVSeries[T])
+			(implicit mlpObjective: MLP.MLPMode, f: T => Double): MLP[T] = 
+		new MLP[T](config, Array[Int](nHiddenNodes), xt, labels)
 		
 	def apply[T <: AnyVal](
 			config: MLPConfig, 
 			hiddenLayers: Array[Int],
 			xt: Array[Array[T]],
-			expected: Array[Array[T]])
-			(implicit mode: MLP.MLPMode, f: T => Double): MLP[T] =
-		new MLP[T](config, hiddenLayers, xt.toVector, expected.toVector)
+			labels: Array[Array[T]])
+			(implicit mlpObjective: MLP.MLPMode, f: T => Double): MLP[T] = 
+		new MLP[T](config, hiddenLayers, xt.toVector, labels.toVector)
 
             
 	private def check[T](xt: XVSeries[T], labels: XVSeries[T]): Unit = {
-		require( xt.nonEmpty,
+		require( !xt.isEmpty, 
 				"Features for the MLP are undefined")
-		require( labels.nonEmpty,
+		require( !labels.isEmpty, 
 				"Labeled observations for the MLP are undefined")
 		require(xt.size == labels.size, 
 			s"MLP.check Found xt.size ${xt.size} != label.size ${labels.size} required ==")

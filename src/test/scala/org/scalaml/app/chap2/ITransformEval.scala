@@ -18,7 +18,6 @@
 package org.scalaml.app.chap2
 
 import scala.util.Try
-import scala.collection.mutable.Vector
 
 import org.apache.log4j.Logger
 
@@ -69,7 +68,7 @@ object ITransformEval extends Eval {
 			type V = Double
     
 			override def |> : PartialFunction[Float, Try[V]] = {
-				case y: Float if Math.abs(y) < 100 => Try(Math.exp(y))
+				case y: Float if(Math.abs(y) < 100) => Try(Math.exp(y))
 			}
 		}
   

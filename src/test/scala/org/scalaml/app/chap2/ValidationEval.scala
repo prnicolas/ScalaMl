@@ -68,7 +68,7 @@ object ValidationEval extends Eval with Assertable {
 		show(s"$header Basic validation")
 	
 			// Display the profile of different Fn score
-		displayFnScore()
+		displayFnScore
 		
 			// Create a stats object and compute the normalized and zScored value
 		val predicted = source.map(_.toDouble).map( Array[Double](_))
@@ -85,7 +85,7 @@ object ValidationEval extends Eval with Assertable {
 	}
 	
 	
-	private def displayFnScore(): Unit = {
+	private def displayFnScore: Unit = {
 	  import org.scalaml.plots._
        val info = Legend(
 				"ValidationEval", 

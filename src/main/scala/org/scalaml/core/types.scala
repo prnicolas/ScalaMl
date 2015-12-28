@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.core
 
@@ -51,7 +51,7 @@ object Types {
 		type XSeries[T] = Vector[T]
 		type XVSeries[T] = Vector[Array[T]]
 
-		case class Pair(p: DblPair) {
+		case class Pair(val p: DblPair) {
 		   def + (o: Pair): Pair = Pair((p._1 + o.p._1, p._2 + o.p._2))
 		   def / (o: Pair): Pair = Pair((p._1/o.p._1, p._2/o.p._2))
 		}
@@ -73,7 +73,7 @@ object Types {
 			require(n < m.length, s"/ matrix column $n out of bounds")
 			require(Math.abs(z) > 1e-32, s"/ divide column matrix by $z too small")
 			
-			m(n).indices.foreach( m(n)(_) /= z)
+			Range(0, m(n).size).foreach( m(n)(_) /= z)
 		}
 
 		implicit def seriesT2Double[T <: AnyVal](xt: XVSeries[T])(implicit f: T => Double): DblMatrix = 
@@ -99,7 +99,7 @@ object Types {
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if( index)
-			  v.zipWithIndex.map{ case(x ,n) => s"$x:$n"}.mkString(", ")
+			  v.zipWithIndex.map{ case(x ,n) => s"${x}:${n}"}.mkString(", ")
 
 			else
 			  v.mkString(", ").dropRight(1)
@@ -117,10 +117,10 @@ object Types {
 					"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 			
 			if(index)
-			  m.zipWithIndex.map{ case(v, n) => s"$n:${toText(v, index)}"}.mkString("\n")
+			  m.zipWithIndex.map{ case(v, n) => s"$n:${toText(v, true)}"}.mkString("\n")
 
 			else 
-			  m.map(v => s"${toText(v, index)}").mkString("\n")
+			  m.map(v => s"${toText(v, false)}").mkString("\n")
 		}
 	}
 

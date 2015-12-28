@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.workflow.module
 
@@ -23,7 +23,7 @@ import org.scalaml.core.Types.ScalaMl.{DblArray, XVSeries}
 import org.scalaml.unsupervised.clustering.Cluster
 import org.scalaml.unsupervised.clustering.{KMeansConfig, KMeans}
 import org.apache.log4j.Logger
-
+import org.scalaml.util.DisplayUtils
 
 	/**
 	 * Clustering module used to instantiate a clustering component in a workflow. The
@@ -45,13 +45,13 @@ trait ClusteringModule[T] {
 		/**
 		 * Base class for all clustering algorithm
 		 */
-	trait Clustering[U] {
+	trait Clustering[T] {
 
 		/**
 		 * Process a time series using this specific clustering algorithm
 		 * @param xt time series
 		 */
-		def execute(xt: Array[U]): Unit
+		def execute(xt: Array[T]): Unit 	
 	}
 
 		/**
@@ -63,32 +63,31 @@ trait ClusteringModule[T] {
 		 * @param maxIters Maximum number of iterations allowed for the generation of clusters.
 		 * @param distance Metric used in computing distance between data points.
 		 */
-	final class KMeans[U <: AnyVal](
+	final class KMeans[T <: AnyVal](
 			K: Int, 
 			maxIters: Int, 
-			distance: (DblArray, Array[U]) => Double,
-			xt: XVSeries[U])
-			(implicit m: Manifest[U], num: Numeric[U], f: U => Double) extends Clustering[U] {
+			distance: (DblArray, Array[T]) => Double,
+			xt: XVSeries[T])
+			(implicit m: Manifest[T], num: Numeric[T], f: T => Double) extends Clustering[T] { 
 
-		import org.scalaml.util.DisplayUtils._
 	  import org.scalaml._
-
-		private[this] val kmeans = unsupervised.clustering.KMeans[U](K, maxIters, distance, xt)
+		private[this] val kmeans = unsupervised.clustering.KMeans[T](K, maxIters, distance, xt)
 		
 		/**
 		 * Apply K-means to the time series
-		 * @param x time series
+		 * @param xt time series
 		 */
-		override def execute(x: Array[U]): Unit =  {
+		override def execute(x: Array[T]): Unit =  {
 			try {
 				val clusters = kmeans |> x
-				show(clusters, logger)
+				DisplayUtils.show(clusters, logger)
 			}
 			catch {
-				case e: MatchError =>
-					val errMsg = s"${e.getMessage()} caused by ${e.getCause.toString}"
-					error(s"ClusteringModule.Kmeans $errMsg", logger)
-			  case e: Throwable => error("ClusteringModule.Kmeans", logger, e)
+				case e: MatchError => {
+					val errMsg = s"${e.getMessage} caused by ${e.getCause.toString}"
+					DisplayUtils.error(s"ClusteringModule.Kmeans $errMsg", logger)
+			  }
+			  case e: Throwable => DisplayUtils.error("ClusteringModule.Kmeans", logger, e)
 			}
 		}
 	}
@@ -106,7 +105,6 @@ trait ClusteringModule[T] {
 	final class MultivariateEM[T <: AnyVal](K: Int, xt: XVSeries[T])(implicit f: T =>Double) 
 			extends Clustering[T] {
 
-		import org.scalaml.util.DisplayUtils._
 		private[this] val em = org.scalaml.unsupervised.em.MultivariateEM[T](K, xt)
 		/**
 		 * Apply Expectation-Maximization algorithm to the time series
@@ -115,13 +113,14 @@ trait ClusteringModule[T] {
 		override def execute(xt: Array[T]): Unit = {
 			try {
 				val results = em |> xt 
-				show(results, logger)
+				DisplayUtils.show(results, logger)
 			}
 			catch {
-				case e: MatchError =>
-					val errMsg = s"${e.getMessage()} caused by ${e.getCause.toString}"
-					error(s"ClusteringModule.MultivariateEM $errMsg", logger)
-				case e: Throwable => error("ClusteringModule.Kmeans", logger, e)
+				case e: MatchError => {
+					val errMsg = s"${e.getMessage} caused by ${e.getCause.toString}"
+					DisplayUtils.error(s"ClusteringModule.MultivariateEM $errMsg", logger)
+				}
+				case e: Throwable => DisplayUtils.error("ClusteringModule.Kmeans", logger, e)
 			}
 		}
 	}

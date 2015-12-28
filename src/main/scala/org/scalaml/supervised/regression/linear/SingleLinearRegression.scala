@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.regression.linear
 
@@ -69,7 +69,7 @@ final class SingleLinearRegression[T <: AnyVal](
 	extends ITransform[T](xt) with Monitor[Double] {
 	
 	type V = Double
-	require( xt.nonEmpty,
+	require( !xt.isEmpty, 
 			"SingleLinearRegression. Single linear regression has undefined input")
 	
 			
@@ -92,7 +92,7 @@ final class SingleLinearRegression[T <: AnyVal](
 	final def intercept: Option[Double] = model.map( _._2)
 
 	@inline
-	final def isModel: Boolean = model.isDefined
+	final def isModel: Boolean = model != None
 	
 		/**
 		 * Data transformation that computes the predictive value of a time series
@@ -104,7 +104,7 @@ final class SingleLinearRegression[T <: AnyVal](
 		 */	
 	override def |> : PartialFunction[T, Try[V]] = {
 			// Compute the linear function y = slope.x + intercept
-		case x: Double if model.isDefined => Try(slope.get*x + intercept.get)
+		case x: Double if(model != None) => Try(slope.get*x + intercept.get)
 	}
 	
 		

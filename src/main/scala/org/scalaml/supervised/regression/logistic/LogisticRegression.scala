@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.regression.logistic
 
@@ -59,11 +59,11 @@ import XTSeries._, Regression._
 		 * @throws IllegalArgumentException if the class parameters are undefined. 
 
 		 * @param xt Input time series observations.
-		 * @param expected Labeled class data used during training of the classifier
+		 * @param labels Labeled class data used during training of the classifier
 		 * @param optimizer Optimization method used to minimize the loss function during training
 		 * @author Patrick Nicolas
 		 * @since 0.98.1 May 11, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see org.apache.commons.math3.fitting.leastsquares._
 		 * @see org.apache.commons.math3.optim._
 		 * @see org.scalaml.core.ITransform
@@ -93,7 +93,7 @@ final class LogisticRegression[T <: AnyVal](
 		 * @return PartialFunction of feature of type Array[T] as input and the predicted class as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if  isModel && model.get.size -1 == x.length => Try {
+		case x: Array[T] if( isModel && model.get.size -1 == x.length) => Try {	
 				if( dot(x, model.get) > HYPERPLANE) 1 else 0
 		}
 	}
@@ -164,7 +164,7 @@ object LogisticRegression {
 
 			/**
 		 * Default constructor for the logistic regression
-		 * @param xv Input time series observations.
+		 * @param xt Input time series observations.
 		 * @param expected Labeled class data used during training of the classifier
 		 * @param optimizer Optimization method used to minimmize the loss function during training
 		 * @return Try wrapped instance of logistic regression
@@ -181,7 +181,7 @@ object LogisticRegression {
 	
 	private def check[T <: AnyVal](xt: XVSeries[T], expected: Vector[Int])
 			(implicit f: T => Double): Unit = {
-		require( xt.nonEmpty,
+		require( !xt.isEmpty,
 				"Cannot compute the logistic regression of undefined time series")
 		require(xt.size == expected.size,
 				s"Size of input data ${xt.size} is different from size of labels ${expected.size}")

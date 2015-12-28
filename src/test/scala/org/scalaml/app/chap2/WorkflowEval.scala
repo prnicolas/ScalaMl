@@ -92,7 +92,7 @@ object WorkflowEval extends Eval {
 				type V = DblVector
   
 				override def |> : PartialFunction[U, Try[V]] = { 
-					case x: U if !x.isEmpty => Try(MinMax[Double](x).get.normalize(0.0, 1.0))
+					case x: U if( !x.isEmpty) => Try(MinMax[Double](x).get.normalize(0.0, 1.0))
 				}
 			}
 			
@@ -102,7 +102,7 @@ object WorkflowEval extends Eval {
 				type V = Int
   
 				override def |> : PartialFunction[U, Try[V]] = { 
-				   case x: U if !x.isEmpty => Try(Range(0, x.size).find(x(_) == 1.0).get)
+				   case x: U if( !x.isEmpty) => Try(Range(0, x.size).find(x(_) == 1.0).get)
 				}
 			}
 		}

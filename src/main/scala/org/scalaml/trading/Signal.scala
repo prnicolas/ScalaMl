@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.trading
 
@@ -134,7 +134,7 @@ object Signal {
 		 * @param op Operator that is used to defined the condition such as greater than, equals.... 
 		 * @param xt Times series of single variable the signal acts upon.
 		 * @param weights Weights applied to each value of the time series (optional).
-		 * @param quant Quantization function that convert analog or continuous signal to a
+		 * @param discr Quantization function that convert analog or continuous signal to a 
 		 * discrete time series.
 		 */
 	def apply(id: String, target: Double, op: SOperator, xt: DblVector, weights: DblVector)
@@ -173,12 +173,12 @@ object Signal {
 	private val MAX_TIME_SERIES_SIZE = 10000000
 	
 	private def check(xt: DblVector, weights: DblVector): Unit = {
-		require( xt.nonEmpty, "Signal.check Cannot create a signal with undefined time series input")
+		require( !xt.isEmpty, "Signal.check Cannot create a signal with undefined time series input")
 		require( xt.size < MAX_TIME_SERIES_SIZE, 
 				s"Signalcheck Size of the time series input, ${xt.size} if out of range")
 				
 
-		require( weights.nonEmpty, "Signal.check Cannot create a signal with undefined weights")
+		require( !weights.isEmpty, "Signal.check Cannot create a signal with undefined weights")
 		require(weights.size < MAX_TIME_SERIES_SIZE, 
 					s"Signalcheck Number of weights ${weights.size} if out of range")
 		require(xt.size == weights.size, 

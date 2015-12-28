@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.reinforcement.qlearning
 
@@ -33,11 +33,12 @@ package org.scalaml.reinforcement.qlearning
 		 * @see Scala for Machine Learning Chapter 11 "Reinforcement learning" / Q-learning
 		 */
 @throws(classOf[IllegalArgumentException])
-protected case class QLAction(from: Int, to: Int) {
+protected case class QLAction(val from: Int, val to: Int) {
 	require(from >= 0, s"QLAction found from: $from required: >=0")
 	require(to >= 0, s"QLAction found to: $to required: >=0")
 
-	override def toString: String = s"\nAction: state $from => state $to"
+	override def toString: String = s"\nAction: state ${from} => state ${to}"
 }
+
 
 // ----------------------------  EOF --------------------------------------------------------------

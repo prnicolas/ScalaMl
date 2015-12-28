@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.bayes
 
@@ -27,9 +27,11 @@ import NaiveBayesModel._
 		 * trait that defines the methods for all the Naive Bayes model. The purpose of the model is to 
 		 * classify a new set of observations.
 		 * @tparam T type of features in each observation
+		 * @constructor Create a generic Naive Bayes Model using a specific density.
+		 * @param density Function used in computing the conditional probability '''p(C|x)'''
 		 * @author Patrick Nicolas
 		 * @since 0.98 March 8, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 5 "Naive Bayes Models"
 		 */
 trait NaiveBayesModel[T <: AnyVal] extends Model {
@@ -44,7 +46,7 @@ trait NaiveBayesModel[T <: AnyVal] extends Model {
 		 */
 	def classify(x: Array[T], logDensity: LogDensity): Int
 	def toString(labels: Array[String]): String 
-	def toString: String
+	def toString(): String
 }
 		/**
 		 * Companion object to the abstract NaiveBayesModel class. This singleton 

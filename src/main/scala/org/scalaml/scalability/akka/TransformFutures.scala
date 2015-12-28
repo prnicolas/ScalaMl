@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.scalability.akka
 
@@ -44,7 +44,7 @@ import Controller._
 		 * @throws IllegalArgumentException if the class parameters are either undefined or out of range.
 		 * @param xt Time series to be processed
 		 * @param fct Data transformation of type PipeOperator
-		 * @param nPartitions Number of segments or partitions to be
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
 		 * processed by workers.
 		 * @see org.scalaml.scalability.akka.Controller
 		 * 
@@ -85,7 +85,9 @@ abstract class TransformFutures(
 			// Create an array of futures to apply the data
 			// transform 'fct' to each partition pi._1
 		val futures = new Array[Future[DblVector]](nPartitions)
-		partition.zipWithIndex.foreach { case (x, n) =>  futures(n) = Future[DblVector] { fct(x).get } }
+		partition.zipWithIndex.foreach { case (x, n) => {
+			futures(n) = Future[DblVector] { fct(x).get }
+		}}
 		futures
 	}
 	

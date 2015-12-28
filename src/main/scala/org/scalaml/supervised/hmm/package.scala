@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised
 
@@ -33,7 +33,7 @@ package org.scalaml.supervised
 		 * '''BaumWelchEM'''
 		 * - Implementation of the Viterbi to extract the best sequence of hidden states in a HMM 
 		 * given a lambda model and a sequence of observations '''ViterbiPath'''
-		 * - Implementation of the Hidden Markov model &#39;&#39;&#39;HMM&#39;&#39;&#39;
+		 * - Implementation of the Hidden Markov model '''HMM''
 		 * 
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential Data Models'' / Hidden Markov model
 		 */

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.scalability.akka
 
@@ -54,8 +54,8 @@ final class Worker(id: Int, fct: PfnTransform) extends Actor with Monitor[Double
 	check(id)
 
 	protected val logger = Logger.getLogger("WorkerActor")
-	override def preStart(): Unit = show(s"Worker${id}.preStart")
-	override def postStop(): Unit = show(s"Worker${id}.postStop")
+	override def preStart: Unit = show(s"Worker${id}.preStart")
+	override def postStop: Unit = show(s"Worker${id}.postStop")
  
 		/**
 		 * Event loop of the work actor that process two messages:
@@ -65,10 +65,10 @@ final class Worker(id: Int, fct: PfnTransform) extends Actor with Monitor[Double
 		 *  </ul>
 		 */
 	override def receive = {
-		case msg: Activate =>
+		case msg: Activate => {
 				// Increment the messages id
 			val msgId = msg.id+id
-			show(s"Worker_${id}.receive:  Activate message $msgId")
+			show(s"Worker_${id}.receive:  Activate message ${msgId}")
 			
 				// Execute the data transformation
 			val output: DblVector = fct(msg.xt).get
@@ -76,7 +76,7 @@ final class Worker(id: Int, fct: PfnTransform) extends Actor with Monitor[Double
 			
 				// Returns the results for processing this partition
 			sender ! Completed(msgId, output)
-
+		}
 		case _ => error(s"Worker${id}.receive Message not recognized")
 	}
 	

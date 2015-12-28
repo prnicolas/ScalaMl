@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.hmm.decode
 
@@ -41,7 +41,7 @@ import HMMConfig._
 		 *  
 		 * @author Patrick Nicolas
 		 * @since 0.98 January 16, 2015
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 7 ''Sequential data models'' / Hidden Markov Model 
 		 *  / Decoding
 		 */
@@ -161,7 +161,7 @@ object ViterbiPath {
 		 * @param lambda Lambda (pi, A, B) model for the HMM composed of the initial state 
 		 * probabilities, the state-transition probabilities matrix and the emission probabilities 
 		 * matrix.
-		 * @param obsSeq Array of observations as integer (categorical data)
+		 * @param obs Array of observations as integer (categorical data)
 		 */
 	def apply(lambda: HMMModel, obsSeq: Vector[Int]): ViterbiPath = 
 			new ViterbiPath(lambda, obsSeq)

@@ -93,7 +93,7 @@ object DFTEval extends FilteringEval {
 			values <- Try{ Vector.tabulate(FREQ_SIZE)(n => h(n*INV_FREQ)) }
 			output1 <- DataSink[Double](OUTPUT1) write values
 			
-			if pfnDFT.isDefinedAt(values)
+			if( pfnDFT.isDefinedAt(values))
 				frequencies <- pfnDFT(values)
 			output2 <- DataSink[Double](OUTPUT2) write frequencies
 		} 
@@ -104,14 +104,14 @@ object DFTEval extends FilteringEval {
 			display(displayed.drop(1))
 			
 			val results = format(displayed, "x/1025", SHORT)
-			show(s"$DISPLAY_SIZE frequencies: $results")
+			show(s"$DISPLAY_SIZE frequencies: ${results}")
 		}).getOrElse(-1)
 	}
 			
 	private def display(data: DblVector): Unit = {
 	  import org.scalaml.plots.{Legend, LinePlot, LightPlotTheme}
 	  
-		val title = s"Discrete Fourier Frequencies 1 - $DISPLAY_SIZE"
+		val title = s"Discrete Fourier Frequencies 1 - ${DISPLAY_SIZE}"
 		val labels = Legend(name, title, "Frequencies", "Amplitude")
 		LinePlot.display(data, labels, new LightPlotTheme)
 	}

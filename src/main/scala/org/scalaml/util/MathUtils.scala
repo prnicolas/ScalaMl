@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.util
 
@@ -35,14 +35,17 @@ object MathUtils {
 			 * Class that contains basic Matrix manipulation methods. This class is used to simplify some
 			 * operations in '''hidden Markov models''' and '''Reinforcement learning''' algorithms.
 			 *  @constructor Create a matrix with a given number of rows, columns and optional content
+			 *  @tparam type of element in the matrix
 			 *  @param nRows Number of rows in this matrix
 			 *  @param nCols Number of columns in this matrix
 			 *  @param data Content of this matrix, flatten as an array which size should be nRows*nCols.
 			 *  @throws IllegalArgumentException if the parameters are out of bounds
+			 *  @throws ImplicitNotFoundException if the conversion from T to Double is undefined prior 
+			 *  the instantiation of a matrix
 			 *  
 			 *  @author Patrick Nicolas
 			 *  @since 0.98.1 February 23, 2014
-			 *  @version 0.99.1
+			 *  @version 0.99
 			 *  @see Scala for Machine Learning
 			 */
 	@throws(classOf[IllegalArgumentException])
@@ -74,7 +77,7 @@ object MathUtils {
 			 * method sums of the distances between all the elements of each matrix (i.e. Least square 
 			 * error).
 			 * @param that The matrix to compare to
-			 * @param distance method that compute the difference or distance between corresponding elements in
+			 * @param compare method that compute the difference between corresponding elements in 
 			 * two matrices
 			 * @return Sum of the difference
 			 */
@@ -112,7 +115,7 @@ object MathUtils {
 		final def col(iCol: Int): IndexedSeq[Double] = { 
 			require(iCol >= 0 & iCol < nCols, s"Matrix.cols The column index $iCol is out of bounds ")
 			
-			(iCol until data.length by nCols).map( data(_) )
+			(iCol until data.size by nCols).map( data(_) )
 		}
 	
 			/**
@@ -170,7 +173,7 @@ object MathUtils {
 			require(i >= 0 & i < nRows, s"Matrix.+= Row index -und $i is out of bounds ")
 			require(j >= 0 & j < nCols, s"Matrix.+= Column index $j is out of bounds ")
 			
-			val newData = data.clone()
+			val newData = data.clone
 			val index = i*nCols +j
 			newData.update(index, data(index) + t)
 			new DMatrix(nRows,nCols, newData)
@@ -223,23 +226,25 @@ object MathUtils {
 			/**
 			 * Method that normalizes the rows of a matrix so the sum of values is 1.0. This method
 			 * is not immutable
+			 * @param g implicit conversion from double to T
+			 * @throws ImplicitNotFoundException of conversion from a double to T is undefined
 			 */
 		@implicitNotFound("Matrix.normalizeRows Conversion Double => [T] undefined")
-		def normalizeRows(): Unit =
+		def normalizeRows: Unit =
 			Range(0, nRows).foreach(iRow => {
 				val idx = iRow*nCols
 				val dataRow: DblArray = data.slice(idx, idx + nCols)
 				val sum = dataRow.sum
-				Range(0, nCols).foreach(j => data.update(iRow*nCols + j, dataRow(j)/sum) )
+				Range(0, nCols).foreach(j => data.update(iRow*nCols + j, dataRow(j).toDouble/sum) )
 			})
 			
 			
-		def diagonal: IndexedSeq[Double] = (data.indices by nCols+1).map( data(_))
+		def diagonal: IndexedSeq[Double] = (0 until data.size by nCols+1).map( data(_))
 		
 		def trace: Double = diagonal.sum
 		
 		def toArrayArray: DblMatrix = 
-			(data.indices by nCols).map(n => data.slice(n, n+nCols)).toArray
+			(0 until data.size by nCols).map(n => data.slice(n, n+nCols)).toArray
 		
 			/**
 			 * Formatted textual representation of the matrix with rows and column indices.
@@ -290,7 +295,7 @@ object MathUtils {
 			 * @param xy Array of Array of elements
 			 */
 		def apply(xy: DblMatrix): DMatrix = 
-			new DMatrix(xy.length, xy.head.length, xy.flatten)
+			new DMatrix(xy.size, xy(0).size, xy.flatten)
 		
 		
 			/**
@@ -309,20 +314,22 @@ object MathUtils {
 		def fill(nCols: Int)(data: Seq[DblArray]): DMatrix = {
 			val matrix = 	DMatrix(nCols, data.size)
 		  Range(0, nCols).foreach(i => {
-				data.indices.foreach(j => matrix.update(i,j, data(i)(j)))
+				Range(0, data.size).foreach(j => matrix.update(i,j, data(i)(j)))
 			})	  
 			matrix
 		}
 	
 			/**
 			 * Create an empty Matrix with no rows and no columns
+			 * @tparam type of element of the matrix
+			 * @param f implicit conversion of parameterized type of elements of the matrix to a double
 			 * @return Empty matrix
 			 */
 		def empty: DMatrix = DMatrix(0, 0, Array.empty[Double])
 		
 			/**
 			 * Test if this matrix is empty
-			 * @param m Matrix to evaluate
+			 * @param Matrix to evaluate
 			 * @return true if the matrix is empty, false otherwise
 			 */
 		final def isEmpty(m: DMatrix): Boolean = m.data.isEmpty
@@ -373,14 +380,14 @@ object MathUtils {
 		def fisherYates(n: Int): IndexedSeq[Int] = {
 		  
 			def fisherYates(seq: mutable.Seq[Int]): IndexedSeq[Int] = {
-				require(seq.nonEmpty, "Undefined argument")
+				require(seq.size > 0, "Undefined argument")
 				Random.setSeed(System.currentTimeMillis)
 				
-				seq.indices.map(i => {
+				(0 until seq.size).map(i => {
 					var randomIdx: Int = i + Random.nextInt(seq.size-i)
 					seq(randomIdx) ^= seq(i)
 					seq(i) = seq(randomIdx) ^ seq(i) 
-					seq(randomIdx) ^= seq(i)
+					seq(randomIdx) ^= (seq(i))
 					seq(i)
 				})
 			}

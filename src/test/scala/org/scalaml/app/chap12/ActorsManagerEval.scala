@@ -39,8 +39,9 @@ import DFTMaster._
 		 * @constructor Create a master actor for the distributed discrete Fourier transform. 
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
 		 * @param xt Time series to be processed
-		 * @param nPartitions Number of partitions used to distributed the input to the discrete Fourier transform
-		 * @param reducer User defined aggregation and monitoring method
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 * processed by workers
+		 * @param aggrFreq User defined aggregation and monitoring method
 		 * 
 		 * @author Patrick Nicolas
 		 * @since June 5, 2014
@@ -58,8 +59,9 @@ protected class DFTMaster(
 		 * @constructor Create a master actor for the distributed discrete Fourier transform. 
 		 * @throws IllegalArgumentException if the time series or the partitioner are not defined.
 		 * @param xt Time series to be processed
-		 * @param reducer Reducing or aggregation method
-		 * @param nPartitions Number of partitions used in processing the DFT
+		 * @param partitioner Methodology to partition a time series in segments or partitions to be 
+		 * processed by workers
+		 * @param aggrFreq User defined aggregation and monitoring method
 		 * 
 		 * @author Patrick Nicolas
 		 * @since June 5, 2014

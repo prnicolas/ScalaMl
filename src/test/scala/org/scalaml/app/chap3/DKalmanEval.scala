@@ -124,15 +124,14 @@ object DKalmanEval extends FilteringEval {
 				show(s"$name results $result\nCompleted")
 			
 			})
-			.error(-1, s"Kalman failed", logger)
+			.error(-1, s"$name Kalman failed", logger)
 		}
       
 		import org.scalaml.util.DisplayUtils._
 	
-		val symbol = args.head
-		val source = DataSource(s"$RESOURCE_DIR$symbol.csv", false)
-
-		source.get(adjClose).map( zt => {
+		val symbol = args(0)
+		val source = DataSource(s"${RESOURCE_DIR}${symbol}.csv", false)
+		(source.get(adjClose)).map( zt => {
 			twoStepLagSmoother(zt, 0.5)
 			twoStepLagSmoother(zt, 0.8)
 		})

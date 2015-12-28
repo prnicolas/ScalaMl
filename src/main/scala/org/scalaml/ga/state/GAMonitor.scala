@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.ga.state
 
@@ -30,7 +30,7 @@ import org.scalaml.ga.{Gene, Population, GASolver}
 		 * @tparam T type of the gene used in the genetic algorithm, with ''Gene'' as the
 		 * type upper-bound
 		 * @author Patrick Nicolas
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scala for Machine learning Chap 10 ''Genetic Algorithms'' / Implementation
 		 *  / Solver
 		 */
@@ -56,7 +56,7 @@ trait GAMonitor[T <: Gene] extends Monitor[Double] {
 			/**
 			 * Initialize the state of the genetic algorithm as running
 			 */
-		def start(): Unit = state = GA_RUNNING
+		def start: Unit = state = GA_RUNNING
 		
 		
 			/**
@@ -74,7 +74,7 @@ trait GAMonitor[T <: Gene] extends Monitor[Double] {
 			else if(remainingCycles < 1)
 				GA_NO_CONVERGENCE(s"GASolver.converge failed")
 			else {
-				monitor.foreach( _(population))
+				monitor.map( _(population))
 				GA_RUNNING
 			}
 			!(state == GA_RUNNING)

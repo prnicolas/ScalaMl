@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.plots
 
@@ -30,7 +30,7 @@ import org.scalaml.core.Types._
 		 * @see Scala for Machine Learning "Appendix" Visualization
 		 * @see http://www.jfree.org
 		 */
-private[scalaml] trait PlotTheme {
+trait PlotTheme {
 		/**
 		 * Select the color from an existing palette or list compatible
 		 * with the background of the plot.
@@ -68,7 +68,7 @@ final class BlackPlotTheme extends PlotTheme {
 		 * @param index Index of the color from the palette
 		 * @return color for a specific component of the plot
 		 */
-	override def color(index: Int): Color = colorList(index % colorList.length)
+	override def color(index: Int): Color = colorList(index % colorList.size)
 	
 		/**
 		 * Define the background color of the plot at black
@@ -102,7 +102,7 @@ final class LightPlotTheme extends PlotTheme {
 		 * @param index Index of the color from the palette
 		 * @return color for a specific component of the plot
 		 */
-	override def color(index: Int): Color = colorList(index % colorList.length)
+	override def color(index: Int): Color = colorList(index % colorList.size)
 	
 		/**
 		 * Define the background color of the plot as a gradient of light gray

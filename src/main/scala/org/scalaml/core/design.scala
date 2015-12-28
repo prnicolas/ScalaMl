@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.core
 
@@ -25,11 +25,11 @@ import org.apache.log4j.Logger
 import org.scalaml.util.DisplayUtils
 
 		/**
-		 * Encapsulate the high level trait used for supervised and unsupervised learning
+		 * Encapsulate the high level trait used insupervised and unsupervised learning 
 		 * algorithms.
 		 * @author Patrick Nicolas
 		 * @since March 4, 2014  (0.98.1)
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scale for Machine Learning Chapter 2 "Hello World!"
 		 */
 object Design {
@@ -43,7 +43,7 @@ object Design {
 		 * 
 		 * @author Patrick Nicolas
 		 * @since April 11, 2014 (0.98.2)
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scale for Machine Learning Chapter 2 Hello World!
 		 */
 	trait Config {
@@ -72,7 +72,7 @@ object Design {
 		 * method to load the config parameters from file and instantiate the configuration
 		 * @author Patrick Nicolas
 		 * @since April 11, 2014 (0.98)
-		 * @version 0.99.1.1
+		 * @version 0.99
 		 * @see Scale for Machine Learning Chapter 2 Hello World!
 		 */
 	object Config {

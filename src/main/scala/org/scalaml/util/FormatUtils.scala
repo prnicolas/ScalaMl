@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.util
 
@@ -43,7 +43,7 @@ object FormatUtils {
 		 * @constructor Create a format type for floating point values
 		 * @param align defines the alignment for the display of the value (i.e. '%6s')
 		 * @param fmtStr for Decimal values (i.e. '#,##0.000')
-		 * @param roundingError Specify the maximum adjustment for rounding error. Default No rounding
+		 * @param roudingError Specify the maximum adjustment for rounding error. Default No rounding 
 		 * error
 		 */
 	protected class FormatType(
@@ -80,11 +80,12 @@ object FormatUtils {
 			 */
 		private def conv(x: Double): Double = roundingError match {
 			case NO_ROUNDING_ERROR => x
-			case ROUNDING_ERROR =>
+			case ROUNDING_ERROR => {
 				val xFloor = x.floor
 				if(x - xFloor < ROUNDING_ERROR) xFloor 
 				else if(x - xFloor > ONE_ROUNDING_ERROR) xFloor+1.0 
 				else x
+			}
 		}
 	}
 		
@@ -121,14 +122,14 @@ object FormatUtils {
 			fmt: FormatType, 
 			labels: Array[String] = Array.empty): String = {
 	  
-		require( xy.nonEmpty, "FormatUtils.format XYTSeries is undefined")
+		require( !xy.isEmpty, "FormatUtils.format XYTSeries is undefined")
 
 		val labelsHeader = s"$xLabel\t$yLabel"
 		val content = if( labels.isEmpty )
 			xy.map { case(x, y) => s"${fmt.toString(x)}${fmt.toString(y)}"}.mkString("\n")
 		else {
-			assert(xy.size == labels.length,
-					s"FormatUtils.toString data size ${xy.size} != number of labels ${labels.length}")
+			assert(xy.size == labels.size, 
+					s"FormatUtils.toString data size ${xy.size} != number of labels ${labels.size}")
 			xy.zip(labels).map{ case(z, lbl) => 
 				s"$lbl${fmt.toString(z._1)}${fmt.toString(z._2)}" }.mkString("\n")
 		}
@@ -144,10 +145,10 @@ object FormatUtils {
 		 * @param fmt Format type used in the representation of the time series values
 		 */
 	def format[T](x: Vector[T], label: String, fmt: FormatType): String = {
-		require( x.nonEmpty, "FormatUtils.format Array of type T is undefined")
+		require( !x.isEmpty, "FormatUtils.format Array of type T is undefined")
 
-		val content = x.view.zipWithIndex.map{ case(_x, n) => s"$n ${fmt.toString(_x)}"}.mkString("\n")
-		if( label.nonEmpty )
+		val content = x.view.zipWithIndex.map{ case(x, n) => s"${n}  ${fmt.toString(x)}"}.mkString("\n")
+		if( label.size > 0 )
 			s"${fmt.toString(label)}\n$content"
 		else
 			content
@@ -163,9 +164,9 @@ object FormatUtils {
 		 * @param x vector or single variable time seriesT
 		 */
 	def format(x: DblVector): String = {
-		require( x.nonEmpty, "FormatUtils.format Vector of double is undefined")
+		require( !x.isEmpty, "FormatUtils.format Vector of double is undefined")
 	  
-		x.view.zipWithIndex.map { case (_x, n) => s"${_x}  ${SHORT.toString(n)}"}.mkString(" ")
+		x.view.zipWithIndex.map { case (x, n) => s"$x  ${SHORT.toString(n)}"}.mkString(" ")
 	}
 	
 	def format(x: DblArray): String = format(x.toArray)
@@ -187,8 +188,8 @@ object FormatUtils {
 	def format(m: DblMatrix, fmt: FormatType): String = {
 		require( !m.isEmpty, "FormatUtils.format Matrix is undefined")
 
-		val header = m.head.indices.map(n => s"${fmt.toString(n)}").mkString
-		val content = m.indices.map(i => s"${fmt.toString(i)} ${ m.head.indices.map(j
+		val header = Range(0, m(0).size).map(n => s"${fmt.toString(n)}").mkString
+		val content = Range(0, m.size).map(i => s"${fmt.toString(i)} ${Range(0, m(0).size).map(j 
 				=> s"${fmt.toString(m(i)(j))}").mkString }").mkString("\n")
 		s"$header\n$content"
 	}
@@ -203,7 +204,7 @@ object FormatUtils {
 		require( !v.isEmpty, 
 						"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 		if( index)
-			v.view.zipWithIndex.map{ case(u, _v) => s"${_v}:$u"}.mkString(", ")
+			v.view.zipWithIndex.map{ case(u, v) => s"$v:$u"}.mkString(", ")
 		else
 			v.view.dropRight(1).mkString(", ")
 	}
@@ -219,9 +220,9 @@ object FormatUtils {
 				"ScalaMl.toText Cannot create a textual representation of a undefined vector")
 
 		if(index)
-			m.view.zipWithIndex.map { case (u, v) => s"$v:${toText(u, index)}" }.mkString("\n")
+			m.view.zipWithIndex.map { case (u, v) => s"$v:${toText(u, true)}" }.mkString("\n")
 		else 
-			m.view.map(v => s"${toText(v, index)}").mkString("\n")
+			m.view.map(v => s"${toText(v, false)}").mkString("\n")
 	}
 }
 

@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.svm.kernel
 
@@ -27,7 +27,7 @@ object KernelMonad {
 	type F1 = Double => Double
 	type F2 = (Double, Double) => Double
 	
-	case class KF[G](g: G, h: F2) {
+	case class KF[G](val g: G, h: F2) {
 		def metric(v: DblVector, w: DblVector)(implicit gf: G => F1): Double =
 			g(v.zip(w).map{ case(_v, _w) => h(_v, _w)}.sum)
 	}

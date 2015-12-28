@@ -37,7 +37,7 @@ import LoggingUtils._, RidgeRegression._, XTSeries.Transpose._, Difference._, Fo
 		 * @author Patrick Nicolas
 		 * @version 0.99
 		 * @see org.scalaml.supervised.regression.linear
-		 * @see Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Ridge
+		 * @see: Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Ridge 
 		 * regression
 		 */
 object RidgeRegressionEval extends Eval {
@@ -132,7 +132,7 @@ object RidgeRegressionEval extends Eval {
 			expected: DblVector, 
 			volatility: DblVector, 
 			volume: DblVector): Option[Double] = {
-		new RidgeRegression[Double](zipToSeries(volatility, volume, 1), expected, lambda).rss
+		(new RidgeRegression[Double](zipToSeries(volatility, volume, 1), expected, lambda)).rss
 	}
    
 	private def predict(

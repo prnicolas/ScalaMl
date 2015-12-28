@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.bayes
 
@@ -56,18 +56,18 @@ import NaiveBayesModel._, XTSeries._, Stats._, NaiveBayes._
 		 * @constructor Instantiate a parameterized NaiveBayes model 
 		 * @param smoothing Laplace or Lidstone smoothing factor
 		 * @param xt  Input labeled time series used for training
-		 * @param expected in the training of a model
-		 * @param classes Number of classes used in the Naive Bayes
+		 * @param y label data used in the training of a model
+		 * @param density Density function used to compute the discriminant
 		 * 
 		 * @throws IllegalArgumentException if one of the class parameters is undefined
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 13, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine learning Chapter 5 "Naive Bayes Models" / Naive Bayes classifiers
 		 * @see org.scalaml.core.ITransform
 		 */
 @throws(classOf[IllegalArgumentException])
-private[scalaml] final class NaiveBayes[T <: AnyVal](
+final class NaiveBayes[T <: AnyVal](
 		smoothing: Double, 
 		xt: XVSeries[T],
 		expected: Vector[Int],
@@ -103,14 +103,14 @@ private[scalaml] final class NaiveBayes[T <: AnyVal](
 		 * and array of class indices as output
 		 */
 	override def |> : PartialFunction[Array[T], Try[V]] = {
-		case x: Array[T] if x.length > 0 && model.isDefined =>
+		case x: Array[T] if(x.length > 0 && model != None) =>
 			Try( model.map(_.classify(x, logDensity)).get )
 	}
 	
 		/**
 		 * Compute the F1 statistics for the Naive Bayes.
 		 * @param xt Time series of features of type Array[T], and class indices as labels
-		 * @param expected expected value or label
+		 * @param index of the class, the time series or observation should belong to
 		 * @return F1 measure if the model has been properly trained, Failure otherwise
 		 */
 	override def validate(xt: XVSeries[T], expected: Vector[V]): Try[Double] = Try {
@@ -134,7 +134,7 @@ private[scalaml] final class NaiveBayes[T <: AnyVal](
 		 * @return Stringized features with their label if model exists.
 		 */
 	def toString(labels: Array[String]): String = 
-		if( model.isDefined) "No model"
+		if( model == None) "No model"
 		else 
 			if(labels.length > 0) model.get.toString(labels) else model.get.toString
 		
@@ -195,7 +195,7 @@ object NaiveBayes {
 		 * @param smoothing Laplace or Lidstone smoothing factor
 		 * @param xt Input time series of observations used for training
 		 * @param expected Input labeled time series used for training
-		 * @param logDensity  logarithm formulation of the probability density function
+		 * @param density Density function used to compute the discriminant
 		 * @param classes Number of classes used in the Naive Bayes model
 		 */
 	def apply[T <: AnyVal](
@@ -212,7 +212,7 @@ object NaiveBayes {
 		 * @tparam T type of features in the time series xt
 		 * @param smoothing Laplace or Lidstone smoothing factor
 		 * @param xty Input time series of pair (observations, expected outcome) used for training
-		 * @param logDensity  logarithm formulation of the probability density function
+		 * @param density Density function used to compute the discriminant
 		 * @param classes Number of classes used in the Naive Bayes model
 		 */
 	def apply[T <: AnyVal] (
@@ -245,10 +245,10 @@ object NaiveBayes {
 			classes: Int): Unit = {
 	  
 		require(smoothing > 0.0 && smoothing <= 1.0, 
-			s"NaiveBayes: Found smoothing $smoothing required 0 < smoothing <= 1")
-		require( xt.nonEmpty,
+			s"NaiveBayes: Found smooting $smoothing required 0 < smoothing <= 1")
+		require( !xt.isEmpty, 
 			"NaiveBayes: Time series input for training Naive Bayes is undefined")
-		require( expected.nonEmpty,
+		require( !expected.isEmpty, 
 			"NaiveBayes: labeled values for training Naive Bayes is undefined")
 		require( classes > 1, 
 			s"NaiveBayes: Naive Bayes found $classes required classes > 1")

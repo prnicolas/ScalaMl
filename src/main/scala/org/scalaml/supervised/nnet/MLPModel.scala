@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.supervised.nnet
 
@@ -28,13 +28,13 @@ import MLPModel._
 		 * @param synapses Vector of matrices of synapses..
 		 * 
 		 * @author Patrick Nicolas
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 10 ''Artificial Neural Network'' / Multi-layer
 		 * perceptron
 		 */
 @throws(classOf[IllegalArgumentException])
 class MLPModel(val synapses: Vector[MLPConnSynapses]) extends Model {
-	require(synapses.nonEmpty, "MLPModel synapses undefined" )
+	require(!synapses.isEmpty, "MLPModel synapses undefined" )
 	
 	final def getSynapses(n: Int): MLPConnSynapses = synapses(n)
 	
@@ -45,7 +45,7 @@ class MLPModel(val synapses: Vector[MLPConnSynapses]) extends Model {
 		 * Write the content of this model (weights) into a file
 		 * @return true if the model/weights were saved into file, false otherwise.
 		 */
-	override def >> : Boolean = write(s"$toString")
+	override def >> : Boolean = write(s"${toString}")
 	
 	override def toString: String = 
 		synapses.map( _.map( _.mkString(",")).mkString("\n")).mkString("\n")

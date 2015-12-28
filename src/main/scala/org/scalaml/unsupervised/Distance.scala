@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.unsupervised
 
@@ -23,7 +23,7 @@ package org.scalaml.unsupervised
 		 * techniques.
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 16, 2014
-		 * @version 0.99.1
+		 * @version 0.99
 		 * @see Scala for Machine Learning Chapter 4 "Unsupervised Learning" Measuring similarity
 		 * @note replace ''/:'' by ''aggregate''
 		 */

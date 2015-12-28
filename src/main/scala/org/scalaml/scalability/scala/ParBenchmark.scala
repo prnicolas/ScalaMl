@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99.1
+ * Version 0.99
  */
 package org.scalaml.scalability.scala
 
@@ -64,7 +64,7 @@ abstract class ParBenchmark[U](times: Int) {
 	
 		/**Method to compute the execution time for a higher order Scala method 
 		 * invoking a predefined function g
-		 * @param g invoked by map or filter during performance test
+		 * @param function invoked by map or filter during performance test
 		 * @return Duration of the execution in milliseconds
 		 */
 	protected def timing(g: Int => Unit ): Long = {
@@ -166,12 +166,12 @@ object ParArrayBenchmark {
 	val MAX_NUM_TASKS = 64
 	
 	protected def check[U](u: scala.Array[U], v: ParArray[U]): Unit = {
-		require( u.nonEmpty,
+		require( !u.isEmpty, 
 				"ParArrayBenchmark.check: scala collections undefined")
-		require( v.nonEmpty,
+		require( !v.isEmpty, 
 				"ParArrayBenchmark.check: Parallel collections is undefined")
-		require(u.length == v.size,
-				s"ParArrayBenchmark: Size of the array ${u.length} is != size of parallel array ${v.size}")
+		require(u.size == v.size, 
+				s"ParArrayBenchmark: Size of the array ${u.size} is != size of parallel array ${v.size}")
 	}
 }
 
@@ -182,7 +182,7 @@ object ParArrayBenchmark {
 		 * @constructor Create a performance benchmark for Scala arrays. 
 		 * @throws IllegalArgumentException if the array of elements is undefined or the number of 
 		 * tasks is out of range
-		 * @param u  Parameterized map, &#39;&#39;&#39;Map[Int, U]<\b>
+		 * @param u  Parameterized map, '''Map[Int, U]<\b>
 		 * @param v Parameterized parallel map
 		 * @param times Number of executions in the performance test.
 		 * @author Patrick Nicolas
@@ -253,8 +253,8 @@ object ParMapBenchmark {
 	private val MAX_NUM_TIMES = 250
 	
 	protected def check[U](u: immutable.Map[Int, U], v: ParMap[Int, U], times: Int): Unit = {
-		require(u.nonEmpty, "ParMapBenchmark.check immutable map is undefined ")
-		require( v.nonEmpty, "ParMapBenchmark.check Parallel mutable map is undefined")
+		require(!u.isEmpty, "ParMapBenchmark.check immutable map is undefined ")
+		require(!v.isEmpty, "ParMapBenchmark.check Parallel mutable map is undefined")
 		require(u.size == v.size, 
 				"ParMapBenchmark.check: Size immutable map ${u.size} != size parallel map ${v.size}")
 		require(times > 0 && times < MAX_NUM_TIMES, 
