@@ -1,3 +1,0 @@
-0.6-0.2 Delta_volume GREATER_THAN 1.1 Rel_close-Open GREATER_THAN 0.7998046875 Rel_close-Open LESS_THAN 0.8  score: 0.025332518163341138
-0.3-0.1 Best strategy: Delta_volatility GREATER_THAN 0.9 Rel_close-Open LESS_THAN 0.8 Rel_volatility GREATER_THAN 1.2998046875  score: 0.1
-0.2-0.6 Best strategy: Delta_volatility GREATER_THAN 0.9 Delta_volume GREATER_THAN 33.099609375 Rel_volatility GREATER_THAN 1.2998046875  score: 0.09999999999999998
