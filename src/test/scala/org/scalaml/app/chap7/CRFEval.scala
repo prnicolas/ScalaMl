@@ -23,7 +23,7 @@ import org.scalaml.libraries.crf.CrfAdapter._
 import org.scalaml.util.{FormatUtils, LoggingUtils}
 import org.scalaml.app.Eval
 import org.scalaml.core.Types.ScalaMl.DblArray
-import LoggingUtils._
+
 
 		/**
 		 * '''Purpose:'''Singleton for the evaluation of Conditional Random Fields
@@ -33,7 +33,7 @@ import LoggingUtils._
 		 * @see Scala for Machine Learning  Chapter 7 ''Sequential data models'' Conditional Random Fields.
 		 */
 object CrfEval extends Eval {
-	
+	import LoggingUtils._, FormatUtils._
 		/**
 		 * Name of the evaluation 
 		 */
@@ -77,7 +77,7 @@ object CrfEval extends Eval {
 		if(crf.weights != None ) {
 			val results = crf.weights.map( w => {
 				display(w)
-				FormatUtils.format(w, "CRF weights", SHORT)
+				format(w, "CRF weights", SHORT)
 			})
 			show(s"weights for conditional random fields\n${results.mkString(",")}") 
 		}
