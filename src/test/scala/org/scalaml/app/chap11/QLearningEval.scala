@@ -87,7 +87,8 @@ object QLearningEval extends Eval {
 		 * @param args array of arguments used in the test 
 		 */
 	override protected def run(args: Array[String]): Int = { 
-		show(s"$header Q-learning")
+		show(s"$header Q-learning with ${args.mkString(",")}")
+		
 		run("Maximum reward", QUANTIZATION_STEP, ALPHA, DISCOUNT)
 		run("Random", QUANTIZATION_STEP, ALPHA, DISCOUNT)
 	}
@@ -107,7 +108,7 @@ object QLearningEval extends Eval {
 		val model = for {
 			option <- Try(createOptionModel(src, quantizeR))
 			oPrices <- DataSource(OPTION_PRICES, false, false, 1).extract
-			_model <- createModel(option, oPrices, alpha, gamma)
+	    _model <- createModel(option, oPrices, alpha, gamma)
 		} yield _model
 		
 			// Display the distribution of values in the model and
@@ -119,6 +120,10 @@ object QLearningEval extends Eval {
 		}).get
 	}
 	
+	  /*
+	   * Create an option model for a given stock with default strike 
+	   * and minimum expiration time parameters.
+	   */
 	private def createOptionModel(src: DataSource, quantizeR: Int): OptionModel = 
 	  new OptionModel("IBM",STRIKE_PRICE, src, MIN_TIME_EXPIRATION, quantizeR) 
 	  
@@ -143,7 +148,7 @@ object QLearningEval extends Eval {
 			/**
 			 * Constraining method to limit the number of actions available
 			 * to any given state. This simple implementation identifies 
-			 * the neigbhoring state within a predefined radius
+			 * the neighboring states within a predefined radius
 			 */
 		val neighbors = (n: Int) => {
 					// Compute the list of all the states within a radius
@@ -169,13 +174,12 @@ object QLearningEval extends Eval {
 		show(s"Goal state index: $maxProfitIndex")
 		
 			// Create a Q-learning algorithm
-		Try {
-			if( !QLearning.validateConstraints(profit.size, neighbors) ) 
-				throw new IllegalStateException("QLearningEval Incorrect states transition constraint")
+	  if( !QLearning.validateConstraints(profit.size, neighbors) ) 
+			throw new IllegalStateException("QLearningEval Incorrect states transition constraint")
 			
-			val instances = qPriceMap.keySet.toSeq.drop(1)
-			val config = QLConfig(alpha, gamma, MAX_EPISODE_LEN, NUM_EPISODES)
-			val qLearning = QLearning[Array[Int]](config, 
+		val instances = qPriceMap.keySet.toSeq.drop(1)
+		val config = QLConfig(alpha, gamma, MAX_EPISODE_LEN, NUM_EPISODES)
+		val qLearning = QLearning[Array[Int]](config, 
 					Array[Int](maxProfitIndex), 
 					profit, 
 					reward, 
@@ -183,17 +187,18 @@ object QLearningEval extends Eval {
 					instances,
 					Some(neighbors))
 				
-			val coverage = qLearning.getModel.get.coverage
-			val numTransitions = numStates*(numStates-1)
-			show(s"Coverage $coverage for $numStates states and $numTransitions transitions")
+		val modelO = qLearning.getModel
+		if( modelO != None ) {
+      val numTransitions = numStates*(numStates-1)
+      show(s"Coverage ${modelO.get.coverage} for $numStates states and $numTransitions transitions")
 					
-			val profile = qLearning.dump
-			show(s"Execution profile\n$profile")
-			
-			display(qLearning)
-			qLearning
-		}.
-		map( _.getModel.get )
+		  val profile = qLearning.dump
+      show(s"Execution profile\n$profile")
+      display(qLearning)
+      Success(modelO.get)
+    }
+		else
+		  Failure(new IllegalStateException("QLearningEval model undefined") )
 	}
 	
 	

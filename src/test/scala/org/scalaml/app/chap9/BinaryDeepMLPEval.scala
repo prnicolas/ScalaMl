@@ -44,7 +44,7 @@ object BinaryDeepMLPEval extends Eval {
 		/**
 		 * Name of the evaluation 
 		 */
-	val name: String = "BinaryMLPEval"
+	val name: String = "BinaryDeepMLPEval"
 	
 	private val ALPHA = 0.3
 	private val ETA = 0.03
@@ -75,7 +75,7 @@ object BinaryDeepMLPEval extends Eval {
 		
 		val hidden = if( args.length > 0) args.map(_.toInt) else HIDDEN
 		
-		show(s"$header Binary Multi-layer perceptron with multiple hidden layers")
+		show(s"$header Deep Binary Multi-layer perceptron ${args.mkString(",")}")
 
 	
 			// Function to generate synthetic input data

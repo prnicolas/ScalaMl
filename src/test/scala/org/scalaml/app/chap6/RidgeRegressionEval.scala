@@ -35,7 +35,7 @@ import LoggingUtils._, RidgeRegression._, Transpose._, Difference._, FormatUtils
 		 * technical analysis of an Exchange Traded Fund.
 		 * 
 		 * @author Patrick Nicolas
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see org.scalaml.supervised.regression.linear
 		 * @see Scala for Machine Learning  Chapter 6 ''Regression and regularization'' / Ridge
 		 * regression
@@ -112,10 +112,11 @@ object RidgeRegressionEval extends Eval {
 				val y2 = predict(5.0, expected, volatility, volume)
 				display(expected, y1, y2, 0.2, 5.0)
 					
+				  // Generate the prediction for different values of the regularization factor.. 
 				val output = (2 until 10 by 2).map( n => { 
 					val lambda = n*0.1
 					val y = predict(lambda, expected, volatility, volume)
-					s"Lambda  $lambda\n${format(y, emptyString, SHORT)}"
+					s"\nLambda  $lambda\n${format(y, emptyString, SHORT)}"
 				})
 				show(output.mkString(".")) 
 			}

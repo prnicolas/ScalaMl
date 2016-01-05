@@ -31,8 +31,8 @@ import org.scalaml.app.ScalaMlTest
 		 * }}}
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since May 28, 2014
-		 * @note Scala for Machine Learning Chapter 9 Artificial neural networks
+		 * @since 0.98 May 28, 2014
+		 * @see Scala for Machine Learning Chapter 9 Artificial neural networks
 		 */
 final class Chap9 extends ScalaMlTest {
 		/**
@@ -42,7 +42,7 @@ final class Chap9 extends ScalaMlTest {
 		/**
 		 * Maximum duration allowed for the execution of the evaluation
 		 */
-	val maxExecutionTime: Int = 40
+	val maxExecutionTime: Int = 80
 	
 	test(s"$chapter Multi-layer perceptron - eta factor") {
 		evaluate(MLPConfigEval, Array[String]("eta"))

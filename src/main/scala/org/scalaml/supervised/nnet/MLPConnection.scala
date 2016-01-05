@@ -66,7 +66,7 @@ final protected class MLPConnection(
 		 * @note The constant BETA may have to be changed according to the type of data.
 		 */
 	private[this] var synapses: MLPConnSynapses = 
-		if(model.isDefined) {
+		if( model == None ) {
 			val boundary = BETA/Math.sqrt(src.output.length+1.0)
 			Array.fill(dst.numNonBias)(Array.fill(src.numNodes)((Random.nextDouble*boundary, 0.00)))
 		}

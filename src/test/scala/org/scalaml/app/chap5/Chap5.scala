@@ -20,7 +20,6 @@ package org.scalaml.app.chap5
 import org.scalaml.app.ScalaMlTest
 
 
-
 		/**
 		 * Test driver for the techniques described in the Chapter 5 Naive Bayes models
 		 * {{{
@@ -30,8 +29,9 @@ import org.scalaml.app.ScalaMlTest
 		 * }}}
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since May 28, 2014
-		 * @note Scala for Machine Learning Chapter 5 Naive Bayes models
+		 * @since 0.98 May 28, 2014
+		 * @version 0.98.2
+		 * @see Scala for Machine Learning Chapter 5 ''Naive Bayes models''
 		 */
 final class Chap5 extends ScalaMlTest {
 		/**

@@ -121,5 +121,4 @@ object Design {
 		def read(className: String): Option[String] = FileUtils.read(RELATIVE_PATH, className)
 	}
 }
-
 // --------------------------------------------------  EOF ----------------------------------------

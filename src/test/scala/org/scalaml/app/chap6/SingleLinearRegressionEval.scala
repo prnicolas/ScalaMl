@@ -35,7 +35,7 @@ import LoggingUtils._, YahooFinancials._, XTSeries._, FormatUtils._, Loss._
 		 * The test consists of creating a linear regression y = slope.x + intercept for a stock price
 		 * 
 		 * @author Patrick Nicolas
-		 * @version 0.99
+		 * @version 0.99.1
 	   * @see Scala for Machine Learning Chapter 6: ''Regression and regularization'' / One-variate
 	   * linear regression
 		 */ 
@@ -89,12 +89,11 @@ object SingleLinearRegressionEval extends Eval {
 				display(entries.zip(List[String]("raw price", "Linear regression")))
 				
 					// Dump model parameters and tabulate data into standard out.
-				val results = s"""$name regression ${format(slope, "y= ", SHORT)}.x +
-									| ${format(intercept, " ", SHORT)}
-									| \nError: ${mse(days, price, slope, intercept)}""".stripMargin
+				val results = s"""Regression ${format(slope, "y= ", SHORT)}.x + ${format(intercept, " ", SHORT)}
+									| Mean square error: ${mse(days, price, slope, intercept)}""".stripMargin
 	
 									
-				show(s"$results\n${tabulate(days, price, slope, intercept)}")
+				show(s"$results\nPredicted   Expected\n${tabulate(days, price, slope, intercept)}")
 			} else -1
 		}).get
 	}
@@ -123,9 +122,9 @@ object SingleLinearRegressionEval extends Eval {
 			expected: DblVector, 
 			slope: Double, 
 			intercept: Double): String = 
-			
+		
 		predict(xt, expected, slope, intercept).map{ case (p, e) => 
-				s"\n${slope*p + intercept}, $e" }.mkString("\n")
+				s"${slope*p + intercept}, $e" }.mkString("\n")
 
 	
 	private def mse(

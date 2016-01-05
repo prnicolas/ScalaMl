@@ -13,7 +13,7 @@
  * concepts and algorithms presented in "Scala for Machine Learning". 
  * ISBN: 978-1-783355-874-2 Packt Publishing.
  * 
- * Version 0.99
+ * Version 0.99.1
  */
 package org.scalaml.app
 
@@ -55,13 +55,13 @@ protected object AllTests extends ScalaMlTest {
 	val chapter: String = "All tests"
 	  
 	private val CONFIGURATION = 
-		" ****** Scala for Machine Learning - V. 0.99 - Execution examples ****** \n" +
+		" ****** Scala for Machine Learning - V. 0.99.1 - Execution examples ****** \n" +
 		"Recommended SBT/JVM configuration:\n -Xmx4096 (or higher)\n" +
 		" -XX:MaxPermSize=512m (or higher)\n -XX:ReservedCodeCacheSize=256m (or higher)\n" +
 		s"Context:\nUser:${Properties.userName}, OS:${Properties.osName}\n\n" +
 		"Warning: Apache Spark 1.5.0 and earlier is not compatible with Scala 2.11\n" +
-		"you need to set scalaVersion := 2.10.x in built.sbt to build and run Apache Spark\n" +
-		" ************************************************************** \n\n"
+		"You need to set scalaVersion := 2.10.x in built.sbt to build and run Apache Spark\n" +
+		" **************************************************************\n"
 
 	private val logger = Logger.getLogger("AllTests")
 	
@@ -71,6 +71,7 @@ protected object AllTests extends ScalaMlTest {
 		 * for description and purpose of the test
 		 */
   def run(): Unit = {
+		  
 			// Chapter 1
 		evaluate(MinMaxEval)
 		evaluate(LogBinRegressionEval)
@@ -104,7 +105,7 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(EMEval, Array[String]("3", "25"))
 		evaluate(EMEval, Array[String]("4", "15"))
 		evaluate(PCAEval)
-
+  
 			// Chapter 5
 		val TRAIN_VALIDATION_RATIO = "0.8"
 		evaluate(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))
@@ -143,10 +144,12 @@ protected object AllTests extends ScalaMlTest {
 	
 			// Chapter 9
 		evaluate(BinaryMLPEval)
+	
 		evaluate(BinaryDeepMLPEval, Array[String]("3"))
 		evaluate(BinaryDeepMLPEval, Array[String]("4", "4"))
 		evaluate(BinaryDeepMLPEval, Array[String]("7", "7"))
 		evaluate(BinaryDeepMLPEval, Array[String]("5", "6", "5"))
+
 		evaluate(MLPEval, Array[String]("4"))
 		evaluate(MLPEval, Array[String]("4", "4"))
 
@@ -178,14 +181,14 @@ protected object AllTests extends ScalaMlTest {
 		val buf = new StringBuilder("\nCommand line configuration for output:")
 		
 		args.foreach(arg => buf.append(s" $arg"))
-		buf.append("\n")
+	  buf.append("\n")
 			// Display configuration and settings information  regarding OS
 		buf.append(CONFIGURATION)
 		if( !Properties.isWin && !Properties.isMac)
 			buf.append("The library has not be tested for this Operating System")
 	
 			// Correct version of Java
-		buf.append(s" Java version: ${Properties.javaVersion}\n")
+		buf.append(s"Java version: ${Properties.javaVersion}\n")
 		if(!Properties.isJavaAtLeast("1.7"))
 			buf.append("Incompatible version of Java, should be 1.7 or later\n")
 			

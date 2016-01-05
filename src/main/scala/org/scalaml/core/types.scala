@@ -71,7 +71,6 @@ object Types {
 		implicit def arrayT2DblArray[T <: AnyVal](vt: Array[T])(implicit f: T => Double): DblArray = 
 			vt.map( _.toDouble)
 
-
 			/**
 			 * In place division of all elements of a given row of a matrix
 			 * @param m Matrix of elements of type Double

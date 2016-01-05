@@ -92,39 +92,48 @@ object DKalmanEval extends FilteringEval {
 			// as there is no external control on the time series.
 		val H: DblMatrix = ((0.9, 0.0), (0.0, 0.1))
 		val P0: DblMatrix = ((0.4, 0.3), (0.5, 0.4))
-     
+
 		/**
 		 * Inner function that updates the parameters/matrices for a two-step lag
 		 * Kalman filter.
 		 */
 		def twoStepLagSmoother(xSeries: DblVector, alpha: Double): Int = {
-			require(alpha > 0.0 && alpha < 1.0, s"$name smoothing factor $alpha is out of range")
+			require(alpha > 0.0 && alpha < 1.0, s"Smoothing factor $alpha is out of range")
     	 
 			// Generates the A state transition matrix from the times series updating equation
-			val A: DblMatrix = ((alpha, 1.0-alpha), (1.0, 0.0))
+			val A: DblMatrix = ((alpha, 1.0-alpha), (0.9, 0.1))
+			
+			// The control matrix is null
+			val B: DblMatrix =  ((0.0, 0.0), (0.0, 0.0))
 
 			// Generate the state as a time series of pair [x(t+1), x(t)]
-			val xt = zipWithShift(xSeries, 1)
+			val xt: Vector[(Double, Double)] = zipWithShift(xSeries, 1)
+			val DISPLAY_LENGTH = 20
+			show(s"First $DISPLAY_LENGTH data points x[t+1] - x[t]\n${xt.take(DISPLAY_LENGTH).mkString("\n")}")
+
 			val pfnKalman = DKalman(A, H, P0) |>
 
 			// Applied the Kalman smoothing for [x(t+1), x(t)]
-			pfnKalman(xt).map(filtered => {
-	     
-				// Dump results in output file along the original time series
-				val output = s"${OUTPUT_FILE}_${alpha.toString}.csv"
-				val results = filtered.map(_._1)
-				
-				DataSink[Double](output) |>  results :: xSeries :: List[DblVector]()
-				
-				val displayedResults = results.take(NUM_VALUES)
-				
-				display(xSeries, results, alpha)
-				val result = format(displayedResults.toVector, 
+			pfnKalman(xt) match {
+				case Success(filtered) => {
+					// Dump results in output file along the original time series
+					val output = s"${OUTPUT_FILE}_${alpha.toString}.csv"
+					val results = filtered.map(_._1)
+
+					// Illustration of usage of the data sink
+					DataSink[Double](output) |>  results :: xSeries :: List[DblVector]()
+
+					// For convenience, on the first NUM_VALUES are plotted
+					val displayedResults = results.take(NUM_VALUES)
+					display(xSeries, results, alpha)
+					
+					// Formatted rsults
+					val result = format(displayedResults.toVector,
 						s"2-step lag smoother first $NUM_VALUES values", LONG)
-				show(s"$name results $result\nCompleted")
-			
-			})
-			.error(-1, s"Kalman failed", logger)
+					show(s"results $result\nCompleted")
+				}
+				case Failure(e) => error(s"DKalman failed with ${e.toString}")
+			}
 		}
       
 		import org.scalaml.util.DisplayUtils._
@@ -132,14 +141,18 @@ object DKalmanEval extends FilteringEval {
 		val symbol = args.head
 		val source = DataSource(s"$RESOURCE_DIR$symbol.csv", false)
 
+		  // Evaluate two different step lag smoothers.
 		source.get(adjClose).map( zt => {
-			twoStepLagSmoother(zt, 0.5)
-			twoStepLagSmoother(zt, 0.8)
+			twoStepLagSmoother(zt, 0.4)
+			twoStepLagSmoother(zt, 0.7)
 		})
 		1
 	}
-	
-	
+
+	  /*
+	   * Ubiquitous method to plot two single variable time series using
+	   * org.scalaml.plot.LinePlot class
+	   */
 	private def display(z: DblVector, x: DblVector, alpha: Double): Unit =   {
 		import org.scalaml.plots.{LinePlot, LightPlotTheme, Legend}
 		
@@ -150,6 +163,5 @@ object DKalmanEval extends FilteringEval {
 		LinePlot.display(data, labels, new LightPlotTheme)
 	}
 }
-
 
 // --------------------------------------  EOF -------------------------------

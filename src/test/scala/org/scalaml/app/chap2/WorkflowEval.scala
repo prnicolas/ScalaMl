@@ -83,7 +83,11 @@ object WorkflowEval extends Eval {
 				type V = DblVector
 	
 				override def |> : PartialFunction[U, Try[V]] = { 
-					case f: U => Try(Vector.tabulate(samples)(n => f(n.toDouble/samples))) 
+					case f: U => Try {
+						val sampled = Vector.tabulate(samples)(n => f(n.toDouble/samples))
+						show(s"sampling : ${sampled.mkString(",")}")
+						sampled
+					}
 				}
 			}
 				
@@ -92,23 +96,31 @@ object WorkflowEval extends Eval {
 				type V = DblVector
   
 				override def |> : PartialFunction[U, Try[V]] = { 
-					case x: U if !x.isEmpty => Try(MinMax[Double](x).get.normalize(0.0, 1.0))
+					case x: U if x.nonEmpty => Try {
+						val minMax = MinMax[Double](x).map(_.normalize(0.0, 1.0)).getOrElse(Vector.empty[Double])
+						show(s"normalization : ${minMax.mkString(",")}")
+						minMax
+					}
 				}
 			}
-			
 
 			val aggregator = new ETransform[Int](splits) {
 				type U = DblVector
 				type V = Int
   
-				override def |> : PartialFunction[U, Try[V]] = { 
-				   case x: U if !x.isEmpty => Try(Range(0, x.size).find(x(_) == 1.0).get)
+				override def |> : PartialFunction[U, Try[V]] = {
+					case x: U if x.nonEmpty => Try {
+						show("aggregation")
+						Range(0, x.size).find(x(_) == 1.0).getOrElse(-1)
+					}
 				}
 			}
 		}
-		(workflow |> g).get
+		(workflow |> g) match {
+			case Success(res) => show(s"WorkflowEval result = ${res.toString}")
+			case Failure(e) => error(s"WorkflowEval", e)
+		}
 	}
 }
 
-     
 // -------------------------------------  EOF -----------------------------------------

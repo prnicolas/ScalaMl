@@ -29,8 +29,6 @@ import org.scalaml.supervised.bayes.text.TextAnalyzer
 import org.scalaml.app.Eval
 import LoggingUtils._, XTSeries._, Difference._
 
-
-
 		/**
 		 * '''Purpose:''' Singleton to evaluate a text retrieval application using the 
 		 * Naive Bayes algorithm. 
@@ -46,7 +44,7 @@ import LoggingUtils._, XTSeries._, Difference._
 		 * }}}
 		 * 
 		 * @author Patrick Nicolas
-		 * @version 0.99
+		 * @version 0.99.1
 		 * @see org.scalaml.supervised.bayes.text
 		 * @see Scala for Machine Learning Chapter 5 ''Naive Bayes Model''
 		 */
@@ -147,7 +145,7 @@ object TextBayesEval extends Eval {
 			val means: Seq[DblVector] = likelihoods.map( _.muSigma.map(_._1))
 			display(means, "Naive Bayes text classification", Set[String]("Positives", "Negatives"))
 			
-			val results = s"""Corpus ----- \n${corpus.mkString("\n")}
+			val results = s"""Corpus ----- \n${corpus.mkString("\n\n")}
 				| Terms frequencies ----- \n
 				| ${termsFreq.map( _.map(e => s"(${e._1},${e._2})").mkString(" | ")).mkString("\n")}
 				| Expected ----- \n${expected.mkString("\n")}
@@ -155,9 +153,7 @@ object TextBayesEval extends Eval {
 				| \n${featuresSet._2.map( _.mkString(",")).mkString("\n")}
 				| \nText extraction model${nb.toString(featuresSet._1)}""".stripMargin
 		  show(results)
-		}).get
-		
-		
+		}).getOrElse(-1)
 	}
 
 		/**
@@ -185,6 +181,5 @@ object TextBayesEval extends Eval {
 		LinePlot.display(dataPoints.toList, legend, new LightPlotTheme)
 	}
 }
-
 
 // -----------------------------  EOF ------------------------------------

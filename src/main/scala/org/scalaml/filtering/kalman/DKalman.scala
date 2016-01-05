@@ -72,9 +72,9 @@ case class QRNoise(qr: DblPair, profile: Double => Double = normal) {
 }
 
 /**
- * Configuration for Kalman
+ * Configuration for the Kalman filter
  * @param A State transition matrix
- * @param B Control state matrix
+ * @param B Control state matrix  (Null matrix for process without external input)
  * @param H Matrix that defines the dependency of the measurement on the state of the system<
  * @param P Covariance error matrix
  */
@@ -96,7 +96,7 @@ case class KalmanConfig(A: DblMatrix, B: DblMatrix, H: DblMatrix, P: DblMatrix)
 		 * @author Patrick Nicolas
 		 * @since 0.98 February 11, 2014
 		 * @version 0.98.3
-		 * @see Scala for Machine Learning  chapter 3 Data pre-processing / Kalman filter
+		 * @see Scala for Machine Learning  chapter 3 ''Data pre-processing'' / Kalman filter
 		 * @see org.apache.commons.math3.filter._
 		 * @see http://apache.org/
 		 * @note 0.98.3 update implementation mse with ''aggregate''
@@ -200,7 +200,7 @@ final protected class DKalman(config: KalmanConfig)
 		 */
 object DKalman {
 	import org.scalaml.stats.Stats
-	val normal = Stats.normal(_)  //(x: Double) => Stats.normal(x)
+	val normal = Stats.normal(_)
   
 	private def noControl(nCols: Int, nRows: Int): DblMatrix = 
 			Array.fill(nCols)(Array.fill(nRows)(0.0))

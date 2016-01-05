@@ -33,7 +33,7 @@ import org.scalaml.core.Types.ScalaMl.DblArray
 		 * @see Scala for Machine Learning  Chapter 7 ''Sequential data models'' Conditional Random Fields.
 		 */
 object CrfEval extends Eval {
-	import LoggingUtils._, FormatUtils._
+	import FormatUtils._
 		/**
 		 * Name of the evaluation 
 		 */
