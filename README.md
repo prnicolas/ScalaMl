@@ -28,18 +28,18 @@ The real-world examples, related to financial and market analysis, used for the 
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
 <h2 id="latestRelease">Latest release</h2>
-<font color="red"><u>Note</u>: The implementation of Cholesky decomposition for the adjustment (or correction) of the state <b>x</b> of the Kalman filter using the measured value (<b>z</b> may throw an <b>NonSymmetricMatrixException</b> depending on the input value. The problem is caused by the default values used to validate that the matrix is indeed symmetric.
-<br>
-The problem is fixed in version 3.6:<br>
-"A call to "KalmanFilter#correct(...)" may have resulted in "NonSymmetricMatrixException" as the internally used matrix inversion method was using a too strict symmetry check. Fixes MATH-1062."
-</font>
-<br>
 Here is the list of changes introduced in version 0.99.1 of "Scala for Machine Learning"
 <ul>
 <li>Add description of some algorithms in Scaladoc class header</li>
 <li>Resolve issues with shadowing types and variables</li>
 <li>Rename some file names to match class names (SingleLinearRegressionEval, NaiveBayesLikelihood, TensorFunctor...)</li>
 </ul>
+<br>
+<u>Note</u>: The implementation of Cholesky decomposition for the adjustment (or correction) of the state <b>x</b> of the Kalman filter using the measured value (<b>z</b> may throw an <b>NonSymmetricMatrixException</b> depending on the input value. The problem is caused by the default values used to validate that the matrix is indeed symmetric.
+<br>
+The problem is fixed in version 3.6:<br>
+"A call to "KalmanFilter#correct(...)" may have resulted in "NonSymmetricMatrixException" as the internally used matrix inversion method was using a too strict symmetry check. Fixes MATH-1062."
+<br>
 <h2 id="Documentation">Documentation</h2>
 The best approach to learn about any particular learning algorithm is to 
 <ul>
