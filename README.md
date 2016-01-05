@@ -28,6 +28,8 @@ The real-world examples, related to financial and market analysis, used for the 
 The Appendix contains an introduction to the basic concepts of investment and trading strategies as well as technical analysis of financial markets. 
 
 <h2 id="latestRelease">Latest release</h2>
+<p color='red'><u>Note</u>: The implementation of Cholesky decomposition for the adjustment (or correction) of the state <b>x</b> of the Kalman filter using the measured value (<b>z</b> may throw an <b>NonSymmetricMatrixException</b> depending on the input value</p>
+<br>
 Here is the list of changes introduced in version 0.99.1 of "Scala for Machine Learning"
 <ul>
 <li>Add description of some algorithms in Scaladoc class header</li>
