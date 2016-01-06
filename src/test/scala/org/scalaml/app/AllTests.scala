@@ -17,8 +17,6 @@
  */
 package org.scalaml.app
 
-	// Scala standard library
-
 	// Third party frameworks
 import org.apache.log4j.Logger
 
@@ -53,7 +51,8 @@ protected object AllTests extends ScalaMlTest {
 	import scala.annotation.switch
 
 	val chapter: String = "All tests"
-	  
+	val maxExecutionTime: Int = -1  
+	
 	private val CONFIGURATION = 
 		" ****** Scala for Machine Learning - V. 0.99.1 - Execution examples ****** \n" +
 		"Recommended SBT/JVM configuration:\n -Xmx4096 (or higher)\n" +
@@ -71,7 +70,8 @@ protected object AllTests extends ScalaMlTest {
 		 * for description and purpose of the test
 		 */
   def run(): Unit = {
-		  
+		show("Full test run: may takes several minutes", logger)
+		
 			// Chapter 1
 		evaluate(MinMaxEval)
 		evaluate(LogBinRegressionEval)

@@ -39,10 +39,11 @@ final class Chap9 extends ScalaMlTest {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chapter 9"
+
 		/**
 		 * Maximum duration allowed for the execution of the evaluation
 		 */
-	val maxExecutionTime: Int = 80
+	val maxExecutionTime: Int = -1
 	
 	test(s"$chapter Multi-layer perceptron - eta factor") {
 		evaluate(MLPConfigEval, Array[String]("eta"))

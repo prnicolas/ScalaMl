@@ -33,6 +33,7 @@ final class Chap10 extends ScalaMlTest  {
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chapter 10"
+	val maxExecutionTime: Int = 20
 	
 	test(s"$chapter Genetic algorithm") {
 		evaluate(GAEval)

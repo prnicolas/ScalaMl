@@ -37,6 +37,8 @@ final class Chap1 extends ScalaMlTest {
 		 */
 	val chapter: String = "Chapter 1"
 	
+	val maxExecutionTime: Int = 5
+	
 	test(s"$chapter Simple binomial logistic regression") {
 		evaluate(LogBinRegressionEval)
 	}

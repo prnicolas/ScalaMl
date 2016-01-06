@@ -141,19 +141,18 @@ final protected class DKalman(config: KalmanConfig)
 	@throws(classOf[NonPositiveDefiniteMatrixException])
 	@throws(classOf[MatrixDimensionMismatchException])
 	override def |> : PartialFunction[U, Try[V]] = {
-		case xt: U if  xt.nonEmpty => Try(
+		case xt: U if xt.nonEmpty => Try(
 			xt.map { case (prev, next) =>
 		  
 				// 1. Initialize the measurement and process models defined in Apache Commons Math
 				// 2. Extract the new state a two values vector
-				val nState = newState(initialize(prev, next)) //Array[Double](y._1, y._2)) )
+				val nState = newState(initialize(prev, next)) 
 				(nState(0), nState(1))
 			}
 		)
 	}
 	
 
-  
 		/**
 		 * Initialize the Kalman filter class of Apache Commons Math with an input of values
 		 */
@@ -183,7 +182,7 @@ final protected class DKalman(config: KalmanConfig)
 
 			// Compute the measured value z with the new update input value 
 			// using the measurement-statement dependency matrix H
-		val z = config.H.operate(x).add(qrNoise.noisyR)
+		val z: RealVector = config.H.operate(x).add(qrNoise.noisyR)
 		
 			// Update the filter with the new estimated measured value z
 		state._1.correct(z)

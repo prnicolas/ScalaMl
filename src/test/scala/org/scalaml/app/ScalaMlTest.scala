@@ -34,15 +34,15 @@ import org.scalaml.util.FormatUtils
 		 * Generic template for the scalatest invocation.
 		 * @author Patrick Nicolas
 		 * @since 0.98.2 July, 13, 2014
-		 * @note Scala for Machine Learning
+		 * @see Scala for Machine Learning
 		 */
 trait ScalaMlTest extends FunSuite with ScalaFutures {
 	val chapter: String
+	val maxExecutionTime: Int
 	
 		// Define the maximum time allowed for a Scala test to execute
-	private val MAX_EXECUTION_TIME: Int = 70
-	implicit protected val patience = PatienceConfig(timeout = Span(MAX_EXECUTION_TIME, Seconds), 
-			interval = Span(500, Millis))
+	implicit protected val patience = PatienceConfig(timeout = Span(maxExecutionTime, Seconds), 
+			interval = Span(1000, Millis))
 			
 		/**
 		 * Trigger the execution of a Scala test for a specific method and set of arguments.
@@ -50,10 +50,15 @@ trait ScalaMlTest extends FunSuite with ScalaFutures {
 		 * @param eval Name of the method to be tested or evaluated
 		 */
 	def evaluate(eval: Eval, args: Array[String] = Array.empty[String]): Unit = {
-		val ft = Future[Int] { eval.test(args) }
+	  println(s"Maximum execution time: $maxExecutionTime")
+	  
+	  if( maxExecutionTime > 0) {
+		  val ft = Future[Int] { eval.test(args) }
 		
-  		// Block until the Scala test either terminates or times out.
-		whenReady(ft) { r => assert(r >= 0, "OK") }
+  		  // Block until the Scala test either terminates or times out.
+		  whenReady(ft) { r => assert(r >= 0, "OK") }
+	  } 
+	  else  eval.test(args)
 	}
 }
 

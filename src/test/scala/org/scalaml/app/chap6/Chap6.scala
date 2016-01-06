@@ -22,24 +22,25 @@ import org.scalaml.app.ScalaMlTest
 
 		/**
 		 * Test driver for the techniques described in the Chapter 6 Regression and Regularization
-		 * <ul>
-		 * 	 <li>Single variable linear regression</li>
-		 *   <li>Least squares regression for trend analysis</li>
-		 *   <li>Least squares regression for features selection</li>
-		 *   <li>Ridge regression</li>
-		 *   <li>Binomial logistic regression</li>
-		 * </ul>
+		 * {{{
+		 * 	 Single variable linear regression
+		 *   Least squares regression for trend analysis
+		 *   Least squares regression for features selection
+		 *   Ridge regression
+		 *   Binomial logistic regression
+		 * }}}
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since May 28, 2014
-		 * @note Scala for Machine Learning Chapter 6 Regression and Regularization
+		 * @since 0.98 May 28, 2014
+		 * @see Scala for Machine Learning Chapter 6 ''Regression and Regularization''
 		 */
 final class Chap6 extends ScalaMlTest {
 		/**
 		 * Name of the chapter the tests are related to
 		 */
 	val chapter: String = "Chap 6"
-	
+  val maxExecutionTime: Int = 3
+		
 	test(s"$chapter Single variable linear regression") {
 		evaluate(SingleLinearRegressionEval)
 	}

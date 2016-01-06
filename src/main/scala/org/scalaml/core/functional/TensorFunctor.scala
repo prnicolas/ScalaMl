@@ -18,30 +18,34 @@
 package org.scalaml.core.functional
 
 
-
+    /**
+     * Singleton for the Co-variant and Contra-variant Functors related to the 
+     * category of Tensors. The functors are introduced through the HOM functor
+     * to illustrate the concept of variance in functor (algebraic topology)
+     * @author Patrick Nicolas
+     * @since 0.99
+     */
 object TensorFunctor {
 
     /**
      * Definition of the Functor for the the vector field. The transformation is implemented
      * through a covariant functor 'map'
+     * @tParam T  Type of elements (Vector, Co-vector,...)
      */
-  
   type Hom[T] = {
     type Right[X] = (X) => T
     type Left[X] = (T) => X
   }
   
-  
+
+     /**
+      * Definition of the type of co-variant vector fields a Vector Field => Field
+     */
   trait VectorFtor[T] extends Functor[(Hom[T])#Left] { 
     self =>
       override def map[U,V](vu: Function1[T,U])(f: U =>V): 
         Function1[T,V] = f.compose(vu)
   }
-
-  
-     /**
-      * Definition of the type of co-variant vector fields a Vector Field => Field
-     */
 
   
      /**
@@ -55,6 +59,9 @@ object TensorFunctor {
          (V) => T = f.andThen(vu)
   }
   
+    /**
+     * Implementation of the implicit conversionfor the Covariant functor
+     */
   implicit class coVector2Ftor[U, T](vu: (U) => T) extends CoVectorFtor[T] {
     final def map[V](f: V => U): (V) => T = super.map(vu)(f)
         
