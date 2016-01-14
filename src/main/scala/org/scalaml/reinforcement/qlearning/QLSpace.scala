@@ -158,8 +158,8 @@ object QLSpace {
 		val states = r.zipWithIndex.map{ case(x, n) =>
 			
 			// Generated the list of actions permitted by the neighbors restriction
-				val validStates = constraints.map( _(n)).getOrElse(r)
-				val actions = validStates.view.map(new QLAction(n, _)).filter(n != _.to)
+			val validStates = constraints.map( _(n)).getOrElse(r)
+			val actions = validStates.map(new QLAction(n, _)).filter(n != _.to)
 				
 			// Create a new state to be added to the state space or search space.
 			QLState[T](n, actions, instances(n))

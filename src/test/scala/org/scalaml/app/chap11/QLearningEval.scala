@@ -60,7 +60,7 @@ object QLearningEval extends Eval {
 		// Run configuration parameters
 	private val STRIKE_PRICE = 190.0			// Option strike price
 	private val MIN_TIME_EXPIRATION = 6		// Minimum expiration time for the option recorded
-	private val QUANTIZATION_STEP = 32			// Quantization step (Double => Int)
+	private val QUANTIZATION_STEP = 32		// Quantization step (Double => Int)
 	private val ALPHA = 0.2								// Learning rate
 	private val DISCOUNT = 0.6						// Discount rate used in the Q-Value update equation
 	private val MAX_EPISODE_LEN = 128			// Maximum number of iteration for an episode
@@ -223,6 +223,5 @@ object QLearningEval extends Eval {
 		ScatterPlot.display(eq, labels, new BlackPlotTheme)
 	}
 }
-
 
 // ------------------------------------  EOF ----------------------------------

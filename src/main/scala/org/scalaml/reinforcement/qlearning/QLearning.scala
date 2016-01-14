@@ -225,8 +225,8 @@ final class QLearning[T](
 		 * to the state with id '''to'''
 		 * @param prob Probability to transition from state '''from''' to state '''to'''
 		 * @author Patrick Nicolas
-		 * @since January 22, 2014
-		 * @note Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
+		 * @since 0.98 (January 22, 2014)
+		 * @see Scala for Machine Learning Chap 11 Reinforcement learning/Q-learning
 		 */
 case class QLInput(from: Int, to: Int, reward: Double = 1.0, prob: Double = 1.0)
 
@@ -235,8 +235,8 @@ case class QLInput(from: Int, to: Int, reward: Double = 1.0, prob: Double = 1.0)
 		 * Companion object to the Q-Learning class used to define constructors 
 		 * and validate their input parameters
 		 * @author Patrick Nicolas
-		 * @since 0.98 January 22, 2014
-		 * @version 0.99.1.1
+		 * @since 0.98 (January 22, 2014)
+		 * @version 0.99.1
 		 * @see Scala for Machine Learning Chap 11 Reinforcement learning Q-learning
 		 */
 object QLearning {  

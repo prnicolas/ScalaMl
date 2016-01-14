@@ -33,12 +33,12 @@ import org.scalaml.util.FormatUtils
 	/**
 		 * Generic template for the scalatest invocation.
 		 * @author Patrick Nicolas
-		 * @since 0.98.2 July, 13, 2014
+		 * @since 0.98.1 (July, 13, 2014)
 		 * @see Scala for Machine Learning
 		 */
 trait ScalaMlTest extends FunSuite with ScalaFutures {
 	val chapter: String
-	val maxExecutionTime: Int
+	val maxExecutionTime: Int    // Maximum execution time allowed (in seconds)
 	
 		// Define the maximum time allowed for a Scala test to execute
 	implicit protected val patience = PatienceConfig(timeout = Span(maxExecutionTime, Seconds), 
@@ -46,26 +46,29 @@ trait ScalaMlTest extends FunSuite with ScalaFutures {
 			
 		/**
 		 * Trigger the execution of a Scala test for a specific method and set of arguments.
-		 * @param args argument for the Scala test
+		 * @param args argument for the Scala test  (Default arguments is an empty array)
 		 * @param eval Name of the method to be tested or evaluated
 		 */
 	def evaluate(eval: Eval, args: Array[String] = Array.empty[String]): Unit = {
 	  println(s"Maximum execution time: $maxExecutionTime")
 	  
+	    // If the maxExecutionTime value is positive, then the scala test is executed
+	    // within a thread which times out after maxExecutionTime seconds
+	    // otherwise the test is executed synchronously without time out
 	  if( maxExecutionTime > 0) {
 		  val ft = Future[Int] { eval.test(args) }
 		
   		  // Block until the Scala test either terminates or times out.
 		  whenReady(ft) { r => assert(r >= 0, "OK") }
 	  } 
-	  else  eval.test(args)
+	  else eval.test(args)
 	}
 }
 
 		/**
 		 * Generic trait to name and execute a test case using Scalatest
 		 * @author Patrick Nicolas
-		 * @since 0.98.1 July, 13, 2014
+		 * @since 0.98.1 (July, 13, 2014)
 		 * @see Scala for Machine Learning
 		 */
 trait Eval {
@@ -80,7 +83,8 @@ trait Eval {
 	
 		/**
 		 * Execution of scalatest case.
-		 * Display 
+		 * @param args  Command line argument for the programm.
+		 * @return positive value if test succeeds, -1 in case of failure
 		 */
 	def test(args: Array[String]): Int = Try (run(args) ) match {
 		case Success(n) => show(s"Completed")
@@ -101,14 +105,11 @@ trait Eval {
 	
 	protected def error(description: String, e: Throwable): Int = {
 		DisplayUtils.error(s"$name $description", logger, e)
-		// e.printStackTrace()
 		0
 	}
 	
 	protected def none(description: String): Option[Int] = 
 		DisplayUtils.none(s"$name $description", logger)
-		
-	
 
 		  /**
 		   * Handler for MatchErr exception thrown by Partial Functions.

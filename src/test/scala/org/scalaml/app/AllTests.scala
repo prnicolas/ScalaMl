@@ -52,6 +52,7 @@ protected object AllTests extends ScalaMlTest {
 
 	val chapter: String = "All tests"
 	val maxExecutionTime: Int = -1  
+	val sparkEnabled = false
 	
 	private val CONFIGURATION = 
 		" ****** Scala for Machine Learning - V. 0.99.1 - Execution examples ****** \n" +
@@ -87,7 +88,7 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(ETransformEval)
 		evaluate(ITransformEval)
 		evaluate(OneFoldXValidationEval)
-	
+
 			//Chapter 3
 		evaluate(XTSeriesEval)
 		evaluate(MovingAverageEval2)
@@ -105,7 +106,7 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(EMEval, Array[String]("3", "25"))
 		evaluate(EMEval, Array[String]("4", "15"))
 		evaluate(PCAEval)
-  
+
 			// Chapter 5
 		val TRAIN_VALIDATION_RATIO = "0.8"
 		evaluate(BinomialBayesEval, Array[String]("IBM", TRAIN_VALIDATION_RATIO, "8"))
@@ -141,7 +142,7 @@ protected object AllTests extends ScalaMlTest {
 		evaluate(SVCEval)
 		evaluate(SVCOutliersEval)
 		evaluate(SVREval)	
-	
+
 			// Chapter 9
 		evaluate(BinaryMLPEval)
 	
@@ -166,11 +167,13 @@ protected object AllTests extends ScalaMlTest {
 			// Chapter 12
 		evaluate(ParBenchmarkEval, Array[String]("array"))
 		evaluate(ParBenchmarkEval, Array[String]("map"))
+		evaluate(StreamsEval)
 		evaluate(ActorsManagerEval, Array[String]("norouter"))
 		evaluate(ActorsManagerEval, Array[String]("router"))
 		evaluate(TransformFuturesEval)
 
-		// evaluate(SparkKMeansEval)
+//		if( sparkEnabled )
+//			evaluate(SparkKMeansEval)
 	}
 		
 		/**
@@ -196,7 +199,7 @@ protected object AllTests extends ScalaMlTest {
 		val scalaVersion = Properties.versionNumberString
 		buf.append(s"Scala version: $scalaVersion\n")
 		(scalaVersion.charAt(2): @switch) match {
-			case '9' => buf.append("Scala version should be 2.10.2 or higher")
+			case '9' => buf.append("Scala version should be 2.10.4 or higher")
 			case '1' =>
 				(scalaVersion.charAt(3): @switch) match {
 					case '0' => buf.append("Compatible Akka version should be 2.2.4 or lower")

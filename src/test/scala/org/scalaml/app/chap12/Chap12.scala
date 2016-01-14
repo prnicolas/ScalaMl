@@ -24,6 +24,7 @@ import org.scalaml.app.ScalaMlTest
 		 * Test driver for the techniques described in the Chapter 12 Scalable frameworks
 		 * {{{
 		 * 	 Scala parallel collections
+		 * 	 Scala streamiong
 		 * 	 Akka actors Master-worker
 		 *   Akka futures
 		 *   Apache Spark MLlib-K-mean
@@ -41,10 +42,14 @@ final class Chap12 extends ScalaMlTest  {
 		/**
 		 * Maximum duration allowed for the execution of the evaluation
 		 */
-	val maxExecutionTime: Int = 7
+	val maxExecutionTime: Int = 12
 	
 	test(s"$chapter Scala parallel collections") {
 		evaluate(ParBenchmarkEval)
+	}
+	
+	test(s"$chapter scala streams") {
+	  evaluate(StreamsEval)
 	}
 	test(s"$chapter Akka actors Master-worker") {
 		evaluate(ActorsManagerEval)

@@ -24,7 +24,7 @@ import org.scalaml.app.ScalaMlTest
 		 * Test driver for the techniques described in the Chapter 11 Reinforcement learning
 		 * @see org.scalaml.app.ScalaMlTest
 		 * @author Patrick Nicolas
-		 * @since May 28, 2014
+		 * @since 0.98.1 May 28, 2014
 		 * @see Scala for Machine Learning Chapter 11 Reinforcement learning
 		 */
 final class Chap11 extends ScalaMlTest { 
@@ -34,7 +34,7 @@ final class Chap11 extends ScalaMlTest {
 	val chapter: String = "Chapter 11"
 
 		/**
-		 * Maximum duration allowed for the execution of the evaluation
+		 * Maximum duration (in seconds) allowed for the execution of the evaluation
 		 */
 	val maxExecutionTime: Int = 12
 	test(s"$chapter QLearning reinforcement learning")  {

@@ -17,7 +17,7 @@
  */
 package org.scalaml.app.chap2
 
-import scala.util.Try
+import scala.util.{Try, Success, Failure}
 
 import org.apache.log4j.Logger
 
@@ -60,26 +60,39 @@ object ETransformEval extends Eval {
   
 			/**
 			 * A simple data transformation using an explicit configuration, n
-			 * @param n configuration parameters
+			 * @param n configuration parameter
 			 */
-		class _ETransform(n: Int) extends ETransform[Int](n) {
+		final class _ETransform(n: Int) extends ETransform[Int](n) {
 			type U = Int
 			type V = Double
-    
+			  /**
+			   * Partial function that applies a scaling factor to the input parameter
+			   */
 			override def |> : PartialFunction[U, Try[V]] = {
-      	case u: U if u > 0 => Try(2.0*u)
+      	case u: U if u > 0 => Try(n*u)
 			}
 		}
   
 			// instantiate the transformation
 		val _eTransform = new _ETransform(5)
   
-			// Get the new ETransform
+			// Get the new ETransform and apply a map function
 		val result = _eTransform.map( _ + 1 ).config
-		assert(result == 6, s"$header found $result require 6")
-		show(s"$header test completed")
+		assert(result == 6, s"$name found $result require 6")
+	  show(s"Map ${_eTransform.config} + 1 = $result")
+	  
+		  // Test the new explicit transform with the |> operator
+		val input: Int = 3
+		_eTransform |> (3) match {		
+		  case Success(x) => {
+		    assert(x == 15, s"$name found $x require 15")
+		    show(s"Transform $input by ${_eTransform.config} = ${x}")
+		  }
+		  case Failure(e) => error(e.toString)
+		}
 	}
 }  
+
 
 
 // ------------------------------  EOF ------------------------

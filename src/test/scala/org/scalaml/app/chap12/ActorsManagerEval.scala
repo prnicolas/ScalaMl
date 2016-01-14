@@ -21,6 +21,7 @@ import scala.util.{Try, Random}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable}
 import scala.collection._
+
 import org.apache.log4j.Logger
 import akka.actor.{Props, ActorSystem}
 
@@ -43,7 +44,7 @@ import DFTMaster._
 		 * @param reducer User defined aggregation and monitoring method
 		 * 
 		 * @author Patrick Nicolas
-		 * @since June 5, 2014
+		 * @since 0.98.2 (June 5, 2014)
 		 * @see Scala for Machine Learning Chapter 12 Scalable frameworks / Akka
 		 */
 protected class DFTMaster(
